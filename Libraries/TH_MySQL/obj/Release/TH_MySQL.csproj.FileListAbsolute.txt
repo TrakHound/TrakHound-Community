@@ -1,0 +1,65 @@
+G:\Documents\Revelation Automation\RevAuto01\TH_MySQL\bin\Release\TH_MySQL.dll
+G:\Documents\Revelation Automation\RevAuto01\TH_MySQL\bin\Release\TH_MySQL.pdb
+G:\Documents\Revelation Automation\RevAuto01\TH_MySQL\bin\Release\TH_Functions.dll
+G:\Documents\Revelation Automation\RevAuto01\TH_MySQL\bin\Release\TH_Functions.pdb
+G:\Documents\Revelation Automation\RevAuto01\TH_MySQL\obj\Release\TH_MySQL.csprojResolveAssemblyReference.cache
+G:\Documents\Revelation Automation\RevAuto01\TH_MySQL\obj\Release\TH_MySQL.dll
+G:\Documents\Revelation Automation\RevAuto01\TH_MySQL\obj\Release\TH_MySQL.pdb
+G:\Documents\Revelation Automation\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.dll
+G:\Documents\Revelation Automation\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.pdb
+G:\Documents\Revelation Automation\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.dll
+G:\Documents\Revelation Automation\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.pdb
+G:\Documents\Revelation Automation\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.csprojResolveAssemblyReference.cache
+G:\Documents\Revelation Automation\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.dll
+G:\Documents\Revelation Automation\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.pdb
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.dll
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.pdb
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\MySql.Data.dll
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\Newtonsoft.Json.dll
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Configuration.dll
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.dll
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Logger.dll
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Configuration.pdb
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.pdb
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Logger.pdb
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.csprojResolveAssemblyReference.cache
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.dll
+\\TRAKHOUND-01-PC\Shared Folder\feenuX\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.pdb
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.dll
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.pdb
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\MySql.Data.dll
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\Newtonsoft.Json.dll
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Configuration.dll
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.dll
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Logger.dll
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Configuration.pdb
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.pdb
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Logger.pdb
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.csprojResolveAssemblyReference.cache
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.dll
+Z:\feenuX\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.dll
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_MySQL.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\MySql.Data.dll
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Configuration.dll
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.dll
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Logger.dll
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Configuration.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Functions.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\bin\Release\TH_Logger.pdb
+F:\feenux\TrakHound\TH_Libraries\Output\TH_MySQL.dll
+F:\feenux\TrakHound\TH_Libraries\Output\TH_MySQL.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.dll
+F:\feenux\TrakHound\TH_Libraries\TH_MySQL\obj\Release\TH_MySQL.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\Output\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Libraries\Output\TH_MySQL.dll
+F:\feenux\TrakHound\TrakHound\Libraries\Output\TH_MySQL.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Release\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Release\TH_MySQL.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Release\MySql.Data.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Release\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Release\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Release\TH_MySQL.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Release\TH_MySQL.dll

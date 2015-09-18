@@ -1,0 +1,13 @@
+C:\TrakHound\Plugins\Pages\WebSample.dll
+C:\TrakHound\Plugins\Pages\WebSample.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\WebSample.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\UserControl1.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\UserControl1.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\WebSample_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\WebSample.g.resources
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\WebSample.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\WebSample.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\WebSample.dll
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\WebSample\obj\Debug\WebSample.pdb
+C:\TrakHound\Plugins\Pages\Web Sample\WebSample.dll
+C:\TrakHound\Plugins\Pages\Web Sample\WebSample.pdb

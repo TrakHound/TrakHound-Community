@@ -1,0 +1,356 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TH_TableManager.TableManager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:controls="clr-namespace:TH_TableManager.Controls"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="700">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Admin Functions Toolbar-->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,2">
+
+            <!--Admin Functions Label-->
+            <TextBlock Text="Admin Functions" FontSize="8pt" Foreground="#66ffffff" Margin="10,0" VerticalAlignment="Center"/>
+
+            <!--Seperator-->
+            <Rectangle Fill="#33000000" Width="1" Margin="5" />
+
+            <controls:Button Clicked="DropTables_Button_Clicked" Image="Resources/TrashCan_01.png" ToolTip="Drop ALL Tables in Database"/>
+
+        </StackPanel>
+
+        <!--Content-->
+        <Grid Grid.Row="1">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#33000000" Offset="0"/>
+                    <GradientStop Color="#66000000" Offset="0.4"/>
+                    <GradientStop Color="#66000000" Offset="0.6"/>
+                    <GradientStop Color="#33000000" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" MinWidth="120"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Device List-->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Devices" FontSize="12pt" Foreground="#88ffffff" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+
+                <Rectangle Grid.Row="1" Height="1" Margin="5,10" Fill="#33000000"/>
+
+                <ItemsControl Grid.Row="2" ItemsSource="{Binding DeviceList}" Margin="5,0"/>
+
+                <Grid Grid.Row="3" Background="#00000000" PreviewMouseDown="TableList_MouseDown"/>
+
+            </Grid>
+
+            <!--Table List-->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="MaxWidth" Value="0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding TableListShown}" Value="true">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.4" Storyboard.TargetProperty="MaxWidth" From="0" To="300" By="20" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="MaxWidth" From="300" To="0" By="20" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                
+                <!--Header-->
+                <StackPanel>
+                    
+                    <TextBlock Grid.Row="0" Text="Tables" FontSize="12pt" Foreground="#88ffffff" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    <!--Seperator-->
+                    <Rectangle Grid.Row="1" Height="1" Margin="5,10" Fill="#33000000"/>
+
+                </StackPanel>
+                
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+
+                    <ItemsControl ItemsSource="{Binding TableList}" Margin="5,0"/>
+
+                </ScrollViewer>
+                
+            </Grid>
+
+            <!--Table View-->
+            <Grid Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Table Info-->
+                <Grid Margin="0,0,10,0">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#33000000" Offset="0"/>
+                            <GradientStop Color="#22000000" Offset="0.4"/>
+                            <GradientStop Color="#22000000" Offset="0.6"/>
+                            <GradientStop Color="#33000000" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="MaxHeight" Value="0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TableInfoShown}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:1" Storyboard.TargetProperty="MaxHeight" From="0" To="100" BeginTime="00:00:0.3">
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxHeight" Duration="0">
+                                                    <DiscreteDoubleKeyFrame Value="0" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    
+                    <!--Info-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Table Name-->
+                        <TextBlock Text="{Binding SelectedTableName}" FontSize="20pt" Foreground="#aaffffff" VerticalAlignment="Center" Margin="20,10" />
+
+                        <!--Seperator-->
+                        <Rectangle Grid.Column="1" Fill="#33000000" Width="1" Margin="10" />
+
+                        <!--Table Info-->
+                        <Grid Grid.Column="2" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="8pt"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Margin" Value="10,5"/>
+                                </Style>
+                            </Grid.Resources>
+
+                            <!--Row Count-->
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Row Count :" Foreground="#66ffffff"/>
+                            <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding TableRowCount}" Foreground="#aaffffff"/>
+
+                            <!--Table Size-->
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Size :" Foreground="#66ffffff"/>
+                            <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TableSize}" Foreground="#aaffffff"/>
+
+                        </Grid>
+
+                    </Grid>
+                    
+                    <!--Display Options-->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="Page" FontSize="8pt" Foreground="#33ffffff" Margin="10,0" VerticalAlignment="Center"/>
+                        
+                        <StackPanel x:Name="PageNumbers_STACK" Grid.Column="1" Orientation="Horizontal"/>
+                        
+                    </Grid>
+                    
+                    <!--Info Refresh Button-->
+                    <controls:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Table Info"
+                                     Height="30" Width="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
+                                     Clicked="TableInfoRefresh_Button_Clicked"/>
+
+                </Grid>
+                
+                <!--Loading Data Display-->
+                <TextBlock Text="Loading Data..." FontSize="26pt" Foreground="#66ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TableDataLoading}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                    <!--Table Data-->
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding TableDataView}"
+                                      Background="{x:Null}"
+                                      Margin="0,0,10,10"
+                                      HeadersVisibility="Column"
+                                      BorderBrush="#33000000" BorderThickness="1"
+                                      IsReadOnly="True" CanUserReorderColumns="False"
+                                      HorizontalGridLinesBrush="#33000000" VerticalGridLinesBrush="#33000000">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#33000000"/>
+                                <Setter Property="MinHeight" Value="30"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                            <Border Background="{TemplateBinding Background}"
+                                                            Margin="0"
+                                                            Padding="10,0"
+                                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                                            BorderThickness="0"
+                                                            >
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="#00000000" />
+                                <Setter Property="BorderBrush" Value="#33000000" />
+                                <Setter Property="BorderThickness" Value="0,0,0,0" />
+                                <Setter Property="Foreground" Value="#fff" />
+                                <Setter Property="MinHeight" Value="30"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#22ffffff"/>
+                                        <Setter Property="BorderBrush" Value="#00000000"/>
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#33ffffff"/>
+                                        <Setter Property="BorderBrush" Value="#00000000"/>
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                            <Border Background="{TemplateBinding Background}"
+                                                            Margin="0"
+                                                            Padding="10,0"
+                                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                                            BorderThickness="0"
+                                                            >
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsFocused" Value="false">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#00000000"/>
+                                        <Setter Property="BorderBrush" Value="#00000000"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                    </DataGrid>
+
+                </ScrollViewer>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

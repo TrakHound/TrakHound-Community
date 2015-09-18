@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="TH_WPF.Info_BT"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_WPF"
+             mc:Ignorable="d" 
+             x:Name="Info_Button"
+             >
+    
+    <UserControl.Resources>
+
+        <!--Disabled-->
+        <LinearGradientBrush x:Key="Info_Button_Disabled" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#C0EEEEEE" Offset="0"/>
+            <GradientStop Color="#C0EEEEEE" Offset="0.5"/>
+            <GradientStop Color="#C0EEEEEE" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!--Enabled-->
+        <LinearGradientBrush x:Key="Info_Button_Enabled" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFEEEEEE" Offset="0"/>
+            <GradientStop Color="#FFFFFFFF" Offset="0.5"/>
+            <GradientStop Color="#FFEEEEEE" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!--Selected-->
+        <LinearGradientBrush x:Key="Info_Button_Selected" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFCFE6FF" Offset="0"/>
+            <GradientStop Color="#FFB0D7FF" Offset="0.5"/>
+            <GradientStop Color="#FFCFE6FF" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!--Mouse Over-->
+        <LinearGradientBrush x:Key="Info_Button_MouseOver" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFE5E5E5" Offset="0"/>
+            <GradientStop Color="#FFF5F5F5" Offset="0.5"/>
+            <GradientStop Color="#FFE5E5E5" Offset="1"/>
+        </LinearGradientBrush>
+
+
+        <!--Border Colors-->
+        <Color x:Key="DarkGrayBorder_Color">#FF636363</Color>
+        <Color x:Key="BlueBorder_Color">#FF0050A0</Color>
+
+        <!--Border Brushes-->
+        <SolidColorBrush x:Key="DarkGrayBorder" Color="{StaticResource DarkGrayBorder_Color}" />
+        <SolidColorBrush x:Key="BlueBorder" Color="{StaticResource BlueBorder_Color}" />
+
+
+        <!--Text Colors-->
+        <Color x:Key="DarkText_Color">#FF323232</Color>
+
+        <!--Text Brushes-->
+        <SolidColorBrush x:Key="DarkText" Color="{StaticResource DarkText_Color}" />
+
+    </UserControl.Resources>
+    
+    <Grid x:Name="Main_GRID" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MouseDown="Main_GRID_MouseDown">
+
+        <Border x:Name="BackGround_BD" BorderThickness="1" Margin="0" CornerRadius="1">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="{StaticResource Info_Button_Enabled}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DarkGrayBorder}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Info_Button_Selected}" />
+                            <Setter Property="BorderBrush" Value="{StaticResource BlueBorder}"/>
+                        </Trigger>
+                        <DataTrigger Binding="{Binding IsSelected, ElementName=Info_Button}" Value="True">
+                            <Setter Property="Background" Value="{StaticResource Info_Button_Selected}" />
+                            <Setter Property="BorderBrush" Value="{StaticResource BlueBorder}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Image x:Name="Image_IMG" MaxWidth="25" Margin="10,0,0,0" Opacity="0.25" Source="{Binding Image, ElementName=Info_Button}" />
+
+                <TextBlock x:Name="Item_TXT" Grid.Column="1" HorizontalAlignment="Center" Margin="5,5,15,5" FontSize="12" Text="Item Name" FontWeight="Bold" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource DarkText}" />
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+    
+</UserControl>

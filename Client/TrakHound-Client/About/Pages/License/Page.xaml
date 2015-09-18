@@ -1,0 +1,39 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TrakHound_Client.About.Pages.License.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800">
+
+    <Grid MaxWidth="800">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="/TrakHound-Client;component/Resources/gplv3-127x51.png" Height="30" HorizontalAlignment="Left"/>
+
+            <TextBlock Grid.Column="1" Margin="20,0,0,0" FontSize="12" Foreground="#333" VerticalAlignment="Center" TextWrapping="Wrap" 
+                       Text="TrakHound is licensed under the GPLv3 software license."/>
+
+        </Grid>
+        
+        <TextBlock Grid.Row="1" Text="{Binding LicenseText}" />
+        
+        <!--<WebBrowser x:Name="License_WEB" Grid.Row="1"/>-->
+        
+    </Grid>
+    
+</UserControl>

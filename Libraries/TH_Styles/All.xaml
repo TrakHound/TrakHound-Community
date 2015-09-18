@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <ResourceDictionary.MergedDictionaries>
+        
+        <ResourceDictionary Source="Styles/Alert.Xaml" />
+
+        <ResourceDictionary Source="Styles/Buttons.Xaml" />
+
+        <ResourceDictionary Source="Styles/CheckBoxes.Xaml" />
+
+        <ResourceDictionary Source="Styles/RadioButtons.Xaml" />
+
+        <ResourceDictionary Source="Styles/Text.Xaml" />
+        
+        <ResourceDictionary Source="Styles/Borders.Xaml" />
+
+        <ResourceDictionary Source="Styles/Windows.Xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+    
+    
+</ResourceDictionary>

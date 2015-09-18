@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="TrakHound_Client.Options.Pages.Updates.UpdateItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border CornerRadius="1" BorderThickness="1" BorderBrush="{StaticResource VeryLightText}" Margin="0, 0, 0, 20">
+        <Grid Margin="10, 5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Plugin Image-->
+            <Image Height="30" Margin="10,0,20,0" Source="{Binding PluginImage}"/>
+
+            <StackPanel Grid.Column="1">
+
+                <!--Build Version-->
+                <TextBlock Text="{Binding PluginVersion}" FontSize="12" Foreground="{StaticResource DarkText}" Margin="0,5,0,0"/>
+
+                <!--Plugin Title-->
+                <TextBlock Text="{Binding PluginTitle}" FontSize="18" Margin="0,2,0,2" Foreground="{StaticResource DarkText}"/>
+
+                <!--Plugin Author-->
+                <TextBlock FontSize="10" Margin="0,0,0,2">
+                    <Run Text="Author :" Foreground="{StaticResource VeryLightText}"/>
+                    <Run Text="{Binding PluginAuthor}" Foreground="{StaticResource LightText}"/>
+                </TextBlock>
+
+                <!--Plugin Author Info (Copyright info)-->
+                <TextBlock Text="{Binding PluginAuthorInfo}" Margin="0,0,0,5" FontSize="8" Foreground="{StaticResource LightText}" />
+
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="60,0,40,0">
+
+                <TextBlock Text="{Binding UpdateCheckResult}" FontSize="14" Foreground="{Binding UpdateCheckBrush}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+
+                <Rectangle Height="20" Width="20" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding UpdateCheckImage}" />
+                    </Rectangle.Resources>
+
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Fill" Value="{Binding UpdateCheckBrush}"/>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+
+            </StackPanel>
+
+        </Grid>
+    </Border>
+
+</UserControl>

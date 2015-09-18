@@ -1,0 +1,12 @@
+C:\TestClientPlugIns\Pages\Dashboard.dll
+C:\TestClientPlugIns\Pages\Dashboard.pdb
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\DashboardPage.baml
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\DashboardPage.g.cs
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\Dashboard_MarkupCompile.cache
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\Dashboard.g.resources
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\Dashboard.Properties.Resources.resources
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\Dashboard.csproj.GenerateResource.Cache
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\Dashboard.dll
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\Dashboard.pdb
+C:\TestClientPlugIns\Pages\Dashboard.dll.config
+C:\Users\Patrick\Documents\Visual Studio 2013\Projects\TestClient\Dashboard\obj\Debug\Dashboard.csprojResolveAssemblyReference.cache

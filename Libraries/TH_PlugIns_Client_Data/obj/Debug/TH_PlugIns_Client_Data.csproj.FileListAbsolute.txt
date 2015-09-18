@@ -1,0 +1,6 @@
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Data\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Data\bin\Debug\TH_PlugIns_Client_Data.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Data\bin\Debug\TH_PlugIns_Client_Data.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Data\obj\Debug\TH_PlugIns_Client_Data.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Data\obj\Debug\TH_PlugIns_Client_Data.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Data\obj\Debug\TH_PlugIns_Client_Data.pdb

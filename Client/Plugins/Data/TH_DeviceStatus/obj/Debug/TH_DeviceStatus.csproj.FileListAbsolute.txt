@@ -1,0 +1,10 @@
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\bin\Debug\TH_DeviceStatus.dll
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\bin\Debug\TH_DeviceStatus.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\bin\Debug\TH_Global.dll
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\bin\Debug\TH_Global.pdb
+C:\TrakHound\Plugins\Data\LICENSE.txt
+C:\TrakHound\Plugins\Data\TH_DeviceStatus.dll
+C:\TrakHound\Plugins\Data\TH_DeviceStatus.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\obj\Debug\TH_DeviceStatus.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\obj\Debug\TH_DeviceStatus.dll
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\obj\Debug\TH_DeviceStatus.pdb

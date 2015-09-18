@@ -1,0 +1,50 @@
+﻿Uninstalling assembly 'F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe
+   logfile = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.InstallLog
+Removing EventLog source TrakHound-Server.
+Service TrakHound-Server is being removed from the system...
+Service TrakHound-Server was successfully removed from the system.
+Installing assembly 'F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe
+   logfile = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.InstallLog
+Installing service TrakHound-Server...
+Service TrakHound-Server has been successfully installed.
+Creating EventLog source TrakHound-Server in log Application...
+Committing assembly 'F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe
+   logfile = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.InstallLog
+Uninstalling assembly 'F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe
+   logfile = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.InstallLog
+Removing EventLog source TrakHound-Server.
+Service TrakHound-Server is being removed from the system...
+Service TrakHound-Server was successfully removed from the system.
+Installing assembly 'F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe
+   logfile = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.InstallLog
+Installing service TrakHound-Server...
+Service TrakHound-Server has been successfully installed.
+Creating EventLog source TrakHound-Server in log Application...
+Committing assembly 'F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe
+   logfile = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.InstallLog
+Uninstalling assembly 'F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe'.
+Affected parameters are:
+   logtoconsole = 
+   assemblypath = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe
+   logfile = F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.InstallLog
+Removing EventLog source TrakHound-Server.
+Service TrakHound-Server is being removed from the system...
+Service TrakHound-Server was successfully removed from the system.

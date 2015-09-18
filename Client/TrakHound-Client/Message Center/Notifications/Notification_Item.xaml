@@ -1,0 +1,147 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TrakHound_Client.Notifications.Notification_Item"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid MinWidth="100" MinHeight="45" PreviewMouseDown="Grid_PreviewMouseDown">
+        
+        <Border>
+
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Bell Icon-->
+                <Rectangle Height="20" Width="20" Margin="10" Fill="#aaffffff" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="IMG" ImageSource="/TrakHound-Client;component/Resources/Bell_01.png" Stretch="Uniform" />
+                    </Rectangle.Resources>
+
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+                
+                <Grid Grid.Column="1" Margin="10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Notification Title-->
+                    <TextBlock Text="{Binding Notification_Title}" TextWrapping="Wrap" FontSize="16" FontWeight="ExtraLight" Margin="0,5" Foreground="#aaffffff"/>
+
+                    <!--Notification Text-->
+                    <TextBlock Grid.Row="1" Text="{Binding Notification_Text}" TextWrapping="Wrap" FontSize="12" FontWeight="ExtraLight" Margin="0,0" Foreground="#aaffffff"/>
+                    
+                    <!--More Info-->
+                    <TextBlock Grid.Row="2" Text="More Info" FontSize="8" Margin="0,2" MouseDown="MoreInfo_MouseDown">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#aaffffff"/>
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="#ffffff"/>
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding Notification_AdditionalInfo}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                </Grid>
+
+                <!--Close Button-->
+                <Border x:Name="close_BD" Grid.Column="2" DockPanel.Dock="Right" Width="30" PreviewMouseDown="close_BD_PreviewMouseDown" ToolTip="Close" >
+                    <Border.Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Background" Value="#00000000" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#33ffffff" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid>
+
+                        <Rectangle Width="12" Height="1.5" RenderTransformOrigin="0.5,0.5">
+                            <Rectangle.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="135"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.Style>
+                                <Style TargetType="{x:Type Rectangle}">
+                                    <Setter Property="Fill" Value="#aaffffff" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="True">
+                                            <Setter Property="Fill" Value="White" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+                        </Rectangle>
+
+                        <Rectangle Width="12" Height="1.5" RenderTransformOrigin="0.5,0.5" >
+                            <Rectangle.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="45"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Rectangle.RenderTransform>
+                            <Rectangle.Style>
+                                <Style TargetType="{x:Type Rectangle}">
+                                    <Setter Property="Fill" Value="#aaffffff" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="True">
+                                            <Setter Property="Fill" Value="White" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+                        </Rectangle>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+
+        </Border>
+            
+    </Grid>
+    
+</UserControl>

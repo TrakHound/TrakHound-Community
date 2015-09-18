@@ -1,0 +1,30 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<Window x:Class="TH_DataCenter.FullScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FullScreen" Height="300" Width="300"
+        
+        Closing="Window_Closing" WindowStyle="None"
+        
+        Background="#0080ff"
+        
+        PreviewKeyDown="Window_PreviewKeyDown"
+        
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        WindowState="Maximized"
+        Topmost="True"
+        Cursor="None"
+        >
+    
+    <Grid>
+        
+        <ContentControl Content="{Binding WindowContent}"/>
+        
+    </Grid>
+    
+</Window>

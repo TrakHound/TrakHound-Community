@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Machines>
+  
+  <!--Device Machines-->
+
+  <!--<Device>
+    <Settings_Path>C:\Temp\MTConnect\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>C:\Temp\AdapterSim1\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>C:\Temp\Multicam1\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>G:\Documents\Revelation Automation\Customers\SeasSide Casual\Configuration Files\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>F:\feenuX\TrakHound\Configuration Files\Onsrud1\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>F:\feenuX\TrakHound\Configuration Files\Multicam1\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>F:\feenuX\TrakHound\Configuration Files\Mazak1-1\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <Device>
+    <Settings_Path>MTConnect\Device_Configuration.xml</Settings_Path>
+  </Device>
+
+  <!--<Device>
+    <Settings_Path>F:\feenux\TrakHound\Configuration Files\Itamco Mill\Settings.xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>F:\feenuX\TrakHound\Configuration Files\Mazak1-3\Settings.Xml</Settings_Path>
+  </Device>
+
+  <Device>
+    <Settings_Path>F:\feenuX\TrakHound\Configuration Files\Mazak1-4\Settings.Xml</Settings_Path>
+  </Device>-->
+
+  <!--<Device>
+    <Settings_Path>C:\Temp\Thermwood1\Settings.Xml</Settings_Path>
+  </Device>
+  
+  <Device>
+    <Settings_Path>C:\Temp\Laguna1\Settings.Xml</Settings_Path>
+  </Device>-->
+  
+ <!--Manual Machines-->
+
+  <!--<Device>
+    <Settings_Path>C:\Temp\Basic Devices\TableSaw-1\Settings.Xml</Settings_Path>
+  </Device>-->
+  
+ <!--Vacuum Pumps-->
+  
+  <!--<Device>
+    <Settings_Path>C:\Temp\Basic Devices\Basic-1\Settings.Xml</Settings_Path>
+  </Device>
+  <Device>
+    <Settings_Path>C:\Temp\Basic Devices\Basic-2\Settings.Xml</Settings_Path>
+  </Device>
+  <Device>
+    <Settings_Path>C:\Temp\Basic Devices\Basic-3\Settings.Xml</Settings_Path>
+  </Device>
+  <Device>
+    <Settings_Path>C:\Temp\Basic Devices\Basic-4\Settings.Xml</Settings_Path>
+  </Device>-->
+  
+ <!--Other-->
+  
+  <!--<Device>
+    <Settings_Path>C:\Temp\Basic Devices\DustCollector-1\Settings.Xml</Settings_Path>
+  </Device>
+
+  <Device>
+    <Settings_Path>C:\Temp\Basic Devices\Compressor-1\Settings.Xml</Settings_Path>
+  </Device>-->
+
+</Machines>

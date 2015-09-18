@@ -1,0 +1,2 @@
+c:\users\patrick\documents\visual studio 2013\Projects\TrakHound\TrakHound\bin\Debug\TrakHound.exe.config
+C:\Users\Patrick\Desktop\Trakhound\TrakHound\TrakHound\TrakHound\bin\Debug\TrakHound.exe.config

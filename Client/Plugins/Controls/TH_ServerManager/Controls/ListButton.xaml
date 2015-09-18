@@ -1,0 +1,123 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TH_ServerManager.Controls.ListButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             
+             Height="40"
+             MinWidth="150"
+
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" MouseDown="Main_GRID_MouseDown">
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="Background" Value="#00000000"/>
+                <Style.Triggers>
+                    
+                    <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#33ffffff"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="Stop">
+                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                        <!--<Setter Property="Background" Value="{StaticResource DWDarkBlue}"/>-->
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#33000000"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="Stop">
+                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                    
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+          
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Selection Indicator-->
+        <Rectangle >
+            <Rectangle.Style>
+                <Style TargetType="Rectangle">
+                    <Setter Property="Fill" Value="#00FFFFFF"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                            <Setter Property="Fill" Value="#ff9500"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
+
+        <!--Page Icon-->
+        <Rectangle Grid.Column="1" Height="20" Width="20" Margin="10,0" Fill="#333">
+            <Rectangle.Resources>
+                <ImageBrush x:Key="IMG" ImageSource="{Binding Image}" Stretch="Uniform" />
+            </Rectangle.Resources>
+
+            <Rectangle.Style>
+                <Style TargetType="Rectangle">
+                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                </Style>
+            </Rectangle.Style>
+        </Rectangle>
+
+        <!--Page Name-->
+        <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,10,0" >
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#fff"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                            <Setter Property="Foreground" Value="#fff"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                            <Setter Property="Foreground" Value="#fff"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        
+    </Grid>
+    
+</UserControl>

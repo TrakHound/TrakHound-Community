@@ -1,0 +1,352 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TH_DataCenter.DataCenter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:controls="clr-namespace:TH_DataCenter.Controls"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000">
+    
+    <Grid x:Name="Root_GRID">
+
+        <Grid x:Name="Content_GRID">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Side Bar-->
+                <Grid Grid.Column="0">
+                    <Grid.Resources>
+                        <GradientStopCollection x:Key="gradient">
+                            <GradientStop Color="#ee000000" Offset="1"/>
+                            <GradientStop Color="#aa000000" Offset="0"/>
+                        </GradientStopCollection>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="0"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Side Shadow-->
+                    <Grid Background="#aa0080ff">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5" GradientStops="{StaticResource gradient}"/>
+                            </Grid.Background>
+                        </Grid>
+                    </Grid>
+
+                    <!--Content-->
+                    <Grid Grid.Column="1">
+                        <Grid.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#99000000" Offset="0"/>
+                                <GradientStop Color="#aa000000" Offset="0.4"/>
+                                <GradientStop Color="#aa000000" Offset="0.6"/>
+                                <GradientStop Color="#99000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!--Logo and Clock-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!--Image-->
+                            <Grid>
+                                <Grid.Background>
+                                    <RadialGradientBrush>
+                                        <GradientStop Color="#660080ff" Offset="0"/>
+                                        <GradientStop Color="#00000000" Offset="1"/>
+                                    </RadialGradientBrush>
+                                </Grid.Background>
+                                <Image Source="Resources/TrakHound_Logo_10_200px.png" Margin="25"/>
+                            </Grid>
+
+                            <!--Seperator-->
+                            <Rectangle Grid.Row="1" Height="1" Margin="10,0" Fill="#33000000"/>
+
+                            <!--Clock & Date-->
+                            <Grid Grid.Row="2" Margin="0,5,0,5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!--Clock-->
+                                <TextBlock Grid.Row="0" Text="8:29 PM" FontSize="30pt" Foreground="#66ffffff" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <!--Date-->
+                                <TextBlock Grid.Row="1" Text="9/1/2015" FontSize="16pt" Foreground="#33ffffff" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                            </Grid>
+
+                            <!--Seperator-->
+                            <Rectangle Grid.Row="3" Height="1" Margin="10,0" Fill="#33000000"/>
+
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Corner Shadow-->
+                    <Grid Background="#aa0080ff" Grid.Row="1">
+                        <Rectangle Width="20" Height="40" VerticalAlignment="Top">
+                            <Rectangle.Fill>
+                                <RadialGradientBrush Center="1,0" RadiusX="1" RadiusY="0.5" GradientOrigin="1,0">
+                                    <GradientStop Color="#ee000000" Offset="0"/>
+                                    <GradientStop Color="#aa000000" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Grid>
+
+                    <!--Bottom Shadow-->
+                    <Grid Grid.Row="1" Grid.Column="1" Background="#aa0080ff">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                                    <GradientStop Color="#ee000000" Offset="1"/>
+                                    <GradientStop Color="#aa000000" Offset="0.5"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+
+                <!--Content-->
+                <Grid Grid.Column="1">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#aa000000" Offset="0"/>
+                            <GradientStop Color="#bb000000" Offset="0.4"/>
+                            <GradientStop Color="#bb000000" Offset="0.6"/>
+                            <GradientStop Color="#aa000000" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    
+                </Grid>
+
+            </Grid>
+
+            
+            
+            <!--Ticker Marquee-->
+            <Grid VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <!--Device Info-->
+                <Grid MaxHeight="200" MinWidth="150" Background="#22ffffff">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.RenderTransform>
+                        <TranslateTransform />
+                    </Grid.RenderTransform>
+                    <Grid.Triggers>
+                        <EventTrigger RoutedEvent="Grid.Loaded">
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="Stop">
+                                    <DoubleAnimation Duration="00:00:2" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="200" To="0" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Grid.Triggers>
+
+                    <!--Device Description-->
+                    <TextBlock Text="MTConnect Test Agent" Foreground="#aaffffff" FontSize="14pt" Margin="10,5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    
+                    <!--Device Image-->
+                    <Image Grid.Row="1" Source="Resources/MTConnect-Logo.png" MaxWidth="200" Margin="10,10" Opacity="0.75"/>
+                    
+                </Grid>
+                
+                <!--Data Line-->
+                <Grid Grid.Column="1" Height="50" VerticalAlignment="Bottom">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#66000000" Offset="0"/>
+                            <GradientStop Color="#aa000000" Offset="0.3"/>
+                            <GradientStop Color="#aa000000" Offset="0.7"/>
+                            <GradientStop Color="#66000000" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    
+                    <Grid>
+                        <!--<Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>-->
+
+                        <!--<Grid Background="#33ffffff">
+
+                            --><!--Device Name/Description--><!--
+                            <TextBlock Text="MTConnect Test Agent" FontSize="12pt" Margin="10,0" Foreground="#aaffffff" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                        </Grid>
+
+                        --><!--Shadow Seperator--><!--
+                        <Rectangle Grid.Column="1">
+                            <Rectangle.Fill>
+                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                    <GradientStop Color="#aa000000" Offset="0"/>
+                                    <GradientStop Color="#00000000" Offset="0.5"/>
+                                </LinearGradientBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>-->
+
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center" Orientation="Horizontal">
+                            <StackPanel.Resources>
+                                <Style TargetType="controls:NumberDisplay">
+                                    <Setter Property="Margin" Value="20,0"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <StackPanel.RenderTransform>
+                                <TranslateTransform />
+                            </StackPanel.RenderTransform>
+                            <StackPanel.Triggers>
+                                <EventTrigger RoutedEvent="StackPanel.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard FillBehavior="Stop">
+                                            <DoubleAnimation Duration="00:00:10" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="2000" To="0" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </StackPanel.Triggers>
+
+                            <controls:NumberDisplay Value_Type="OEE" Value="73.5%" ValueIncreasing="true"/>
+
+                            <controls:NumberDisplay Value_Type="OEE Availability" Value="90.1%" ValueIncreasing="true"/>
+
+                            <controls:NumberDisplay Value_Type="OEE Peformance" Value="71.8%" ValueIncreasing="true"/>
+
+                            <controls:NumberDisplay Value_Type="OEE Quality" Value="63.4%" ValueDecreasing="true"/>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                </Grid>
+
+            </Grid>
+            
+        </Grid>
+
+        <!--Fullscreen Button-->
+        <Grid x:Name="FullScreen_GRID" Width="75" Height="75" HorizontalAlignment="Right" VerticalAlignment="Top" PreviewMouseDown="FullScreen_PreviewMouseDown">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Background" Value="#00000000"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#18000000">
+                                            <ColorAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </ColorAnimation.EasingFunction>
+                                        </ColorAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard FillBehavior="Stop">
+                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
+                                            <ColorAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </ColorAnimation.EasingFunction>
+                                        </ColorAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <Rectangle Width="50" Height="50">
+                <Rectangle.Resources>
+                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/FullScreen_02.png" />
+                </Rectangle.Resources>
+
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                        <Setter Property="Fill" Value="#22ffffff"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=FullScreen_GRID}" Value="true">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#66ffffff">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard FillBehavior="Stop">
+                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#22ffffff">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

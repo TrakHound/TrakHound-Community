@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CCF5820B-BD12-417C-A1D5-B0A07D3AA493}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TH_ServerManager</RootNamespace>
+    <AssemblyName>TH_ServerManager</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>C:\TrakHound\Plugins\Pages\ServerManager\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>TrakHound_Logo_Initials_10.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\ListButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TH_Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TH_TabHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Control_Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DeviceItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ServerManager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Controls\ListButton.xaml.cs">
+      <DependentUpon>ListButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TH_Page.xaml.cs">
+      <DependentUpon>TH_Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TH_TabHeader.xaml.cs">
+      <DependentUpon>TH_TabHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TH_TabItem.cs" />
+    <Compile Include="Controls\Control_Button.xaml.cs">
+      <DependentUpon>Control_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DeviceItem.xaml.cs">
+      <DependentUpon>DeviceItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ServerManager.xaml.cs">
+      <DependentUpon>ServerManager.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TrakHound_Logo_10_200px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Server_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
+      <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
+      <Name>TH_Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
+      <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
+      <Name>TH_Device_Client</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_Device_Server\TH_Device_Server.csproj">
+      <Project>{de797c18-8530-40b6-964f-3164e34420f9}</Project>
+      <Name>TH_Device_Server</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_Functions\TH_Functions.csproj">
+      <Project>{79f4879c-44e9-4915-849a-b4c190db4aa8}</Project>
+      <Name>TH_Functions</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_Global\TH_Global.csproj">
+      <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
+      <Name>TH_Global</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
+      <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
+      <Name>TH_MySQL</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj">
+      <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
+      <Name>TH_PlugIns_Client_Control</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
+      <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
+      <Name>TH_PlugIns_Server</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
+      <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
+      <Name>TH_Styles</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
+      <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
+      <Name>TH_WPF</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Server\Plugins\TH_InstanceTable\TH_InstanceTable.csproj">
+      <Project>{86a72f6d-0c7d-40fd-b7ce-d0b9d75ee99b}</Project>
+      <Name>TH_InstanceTable</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Machines.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="TrakHound_Logo_Initials_10.ico" />
+    <Resource Include="Resources\Stop_30px.png" />
+    <Resource Include="Resources\Start_30px.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

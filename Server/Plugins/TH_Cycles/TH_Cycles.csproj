@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AD70962E-E836-494B-8DFF-444D7BC74C80}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TH_Cycles</RootNamespace>
+    <AssemblyName>TH_Cycles</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>C:\TrakHound\Server\Plugins\TH_Cycles\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cycles.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
+      <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
+      <Name>TH_Configuration</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_Global\TH_Global.csproj">
+      <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
+      <Name>TH_Global</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_MTC_Data\TH_MTC_Data.csproj">
+      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
+      <Name>TH_MTC_Data</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
+      <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
+      <Name>TH_MySQL</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
+      <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
+      <Name>TH_PlugIns_Server</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_GeneratedData\TH_GeneratedData.csproj">
+      <Project>{51202eb2-c838-456e-9bd0-50840d12a19c}</Project>
+      <Name>TH_GeneratedData</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_ShiftTable\TH_ShiftTable.csproj">
+      <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
+      <Name>TH_ShiftTable</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

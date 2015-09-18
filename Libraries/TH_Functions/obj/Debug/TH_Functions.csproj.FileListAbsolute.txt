@@ -1,0 +1,16 @@
+G:\Documents\Revelation Automation\RevAuto01\TH_Functions\bin\Debug\TH_Functions.dll
+G:\Documents\Revelation Automation\RevAuto01\TH_Functions\bin\Debug\TH_Functions.pdb
+G:\Documents\Revelation Automation\RevAuto01\TH_Functions\obj\Debug\TH_Functions.csprojResolveAssemblyReference.cache
+G:\Documents\Revelation Automation\RevAuto01\TH_Functions\obj\Debug\TH_Functions.dll
+G:\Documents\Revelation Automation\RevAuto01\TH_Functions\obj\Debug\TH_Functions.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_Functions\bin\Debug\TH_Functions.dll
+F:\feenux\TrakHound\TH_Libraries\TH_Functions\bin\Debug\TH_Functions.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_Functions\bin\Debug\TH_Logger.dll
+F:\feenux\TrakHound\TH_Libraries\TH_Functions\bin\Debug\TH_Logger.pdb
+F:\feenux\TrakHound\TH_Libraries\TH_Functions\obj\Debug\TH_Functions.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TH_Libraries\TH_Functions\obj\Debug\TH_Functions.dll
+F:\feenux\TrakHound\TH_Libraries\TH_Functions\obj\Debug\TH_Functions.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\bin\Debug\TH_Functions.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\bin\Debug\TH_Functions.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\obj\Debug\TH_Functions.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\obj\Debug\TH_Functions.pdb
