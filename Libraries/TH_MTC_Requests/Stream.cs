@@ -170,7 +170,7 @@ namespace TH_MTC_Requests
                 catch (Exception e)
                 {
                     tryCount += 1;
-                    Logger.Log(e.Message);
+                    Logger.Log("TH_MTC_Requests.Streams.GetHttpRequest() : " + e.Message);
                 }
             }
 

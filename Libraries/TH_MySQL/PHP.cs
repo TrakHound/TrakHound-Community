@@ -843,6 +843,8 @@ namespace TH_MySQL
 
                 values["query"] = "INSERT IGNORE INTO " + TableName + " (" + cols + ") " + vals + update;
 
+                //values["query"] = TH_MySQL.Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
+
                 string PHP_Directory = "";
                 if (SQL_S.PHP_Directory != "") PHP_Directory = "/" + SQL_S.PHP_Directory;
 
@@ -852,6 +854,43 @@ namespace TH_MySQL
                 client.UploadValuesAsync(new Uri("http://" + SQL_S.PHP_Server + PHP_Directory + "/Send.php"), values);
 
             }
+        }
+
+        public static bool Row_Insert(SQL_Settings SQL_S, string Query)
+        {
+
+            bool Result = false;
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+
+                    NameValueCollection values = new NameValueCollection();
+                    if (SQL_S.Port > 0) values["server"] = SQL_S.Server + ":" + SQL_S.Port;
+                    else values["server"] = SQL_S.Server;
+
+                    values["user"] = SQL_S.Username;
+                    values["password"] = SQL_S.Password;
+                    values["db"] = SQL_S.Database;
+
+                    values["query"] = Query;
+
+                    string PHP_Directory = "";
+                    if (SQL_S.PHP_Directory != "") PHP_Directory = "/" + SQL_S.PHP_Directory;
+
+                    byte[] response = client.UploadValues("http://" + SQL_S.PHP_Server + PHP_Directory + "/Send.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    if (responseString.ToLower().Trim() == "true") Result = true;
+
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return Result;
+
         }
 
         public static DataRow Row_Get(SQL_Settings SQL_S, string TableName, string TableKey, string RowKey)

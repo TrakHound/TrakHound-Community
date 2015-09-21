@@ -511,197 +511,228 @@ namespace TH_Device_Server
             else Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
         }
 
+
+        class InitializeWorkerInfo
+        {
+            public Configuration config { get; set; }
+            public Table_PlugIn tablePlugin { get; set; }
+        }
+
+        class ComponentWorkerInfo
+        {
+            public TH_MTC_Data.Components.ReturnData returnData { get; set; }
+            public Table_PlugIn tablePlugin { get; set; }
+        }
+
+        class StreamWorkerInfo
+        {
+            public TH_MTC_Data.Streams.ReturnData returnData { get; set; }
+            public Table_PlugIn tablePlugin { get; set; }
+        }
+
+        class DataEventWorkerInfo
+        {
+            public DataEvent_Data de_data { get; set; }
+            public Table_PlugIn tablePlugin { get; set; }
+        }
+
         void TablePlugIns_Initialize(Configuration Config)
         {
-
-            //Thread worker = new Thread(new ParameterizedThreadStart(TablePlugIns_Initialize_Worker));
-            //worker.Start(Config);
-
-
-            if (TablePlugIns != null)
+            if (TablePlugIns != null && Config != null)
             {
-                IEnumerable<int> priorities = Table_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
+                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    List<Lazy<Table_PlugIn>> pluginsAtPriority = Table_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Table_PlugIn> TP in pluginsAtPriority)
+                    if (tp.IsValueCreated)
                     {
-                        try
-                        {
-                            Table_PlugIn TPI = TP.Value;
-                            TPI.DataEvent -= TPI_DataEvent;
-                            TPI.DataEvent += TPI_DataEvent;
-                            TPI.Initialize(Config);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log("TablePlugIns_Initialize() : Exception : " + ex.Message);
-                        }
+                        InitializeWorkerInfo info = new InitializeWorkerInfo();
+                        info.config = Config;
+                        info.tablePlugin = tp.Value;
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
                     }
                 }
             }
         }
 
-        void TablePlugIns_Initialize_Worker(object config)
+        void TablePlugIn_Initialize_Worker(object o)
         {
-            Configuration Config = (Configuration)config;
+            InitializeWorkerInfo info = (InitializeWorkerInfo)o;
 
-            if (TablePlugIns != null)
+            try
             {
-                IEnumerable<int> priorities = Table_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
-                {
-                    List<Lazy<Table_PlugIn>> pluginsAtPriority = Table_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Table_PlugIn> TP in pluginsAtPriority)
-                    {
-                        try
-                        {
-                            Table_PlugIn TPI = TP.Value;
-                            TPI.DataEvent -= TPI_DataEvent;
-                            TPI.DataEvent += TPI_DataEvent;
-                            TPI.Initialize(Config);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log("TablePlugIns_Initialize() : Exception : " + ex.Message);
-                        }
-                    }
-                }
+                Table_PlugIn tpi = info.tablePlugin;
+                tpi.DataEvent -= TablePlugIn_Update_DataEvent;
+                tpi.DataEvent += TablePlugIn_Update_DataEvent;
+                tpi.Initialize(info.config);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Plugin Exception! : " + ex.Message);
             }
         }
+
 
         void TablePlugIns_Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
         {
-            if (TablePlugIns != null)
+            if (TablePlugIns != null && returnData != null)
             {
-                IEnumerable<int> priorities = Table_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
+                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    List<Lazy<Table_PlugIn>> pluginsAtPriority = Table_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Table_PlugIn> TP in pluginsAtPriority)
+                    if (tp.IsValueCreated)
                     {
-                        Table_PlugIn TPI = TP.Value;
-                        TPI.Update_Probe(returnData);
+                        ComponentWorkerInfo info = new ComponentWorkerInfo();
+                        info.returnData = returnData;
+                        info.tablePlugin = tp.Value;
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
                     }
                 }
             }
         }
+
+        void TablePlugIns_Update_Probe_Worker(object o)
+        {
+            ComponentWorkerInfo info = (ComponentWorkerInfo)o;
+
+            try
+            {
+                Table_PlugIn tpi = info.tablePlugin;
+                tpi.Update_Probe(info.returnData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Plugin Exception! : " + ex.Message);
+            }
+        }
+
 
         void TablePlugIns_Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            if (TablePlugIns != null)
+            if (TablePlugIns != null && returnData != null)
             {
-                IEnumerable<int> priorities = Table_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
+                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    List<Lazy<Table_PlugIn>> pluginsAtPriority = Table_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Table_PlugIn> TP in pluginsAtPriority)
+                    if (tp.IsValueCreated)
                     {
-                        Table_PlugIn TPI = TP.Value;
-                        TPI.Update_Current(returnData);
+                        StreamWorkerInfo info = new StreamWorkerInfo();
+                        info.returnData = returnData;
+                        info.tablePlugin = tp.Value;
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
                     }
                 }
             }
         }
+
+        void TablePlugIns_Update_Current_Worker(object o)
+        {
+            StreamWorkerInfo info = (StreamWorkerInfo)o;
+
+            try
+            {
+                Table_PlugIn tpi = info.tablePlugin;
+                tpi.Update_Current(info.returnData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Plugin Exception! : " + ex.Message);
+            }
+        }
+
 
         void TablePlugIns_Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            Thread worker = new Thread(new ParameterizedThreadStart(TablePlugIns_Update_Sample_Worker));
-            worker.Start(returnData);
-        }
-
-        void TablePlugIns_Update_Sample_Worker(object returnData)
-        {
-            TH_MTC_Data.Streams.ReturnData rd = (TH_MTC_Data.Streams.ReturnData)returnData;
-
-            if (TablePlugIns != null)
+            if (TablePlugIns != null && returnData != null)
             {
-                IEnumerable<int> priorities = Table_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
+                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    List<Lazy<Table_PlugIn>> pluginsAtPriority = Table_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Table_PlugIn> TP in pluginsAtPriority)
+                    if (tp.IsValueCreated)
                     {
-                        try
-                        {
-                            Table_PlugIn TPI = TP.Value;
-                            TPI.Update_Sample(rd);
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine("Plugin Exception!");
-                        }
+                        StreamWorkerInfo info = new StreamWorkerInfo();
+                        info.returnData = returnData;
+                        info.tablePlugin = tp.Value;
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
                     }
                 }
             }
         }
 
-        void TPI_DataEvent(DataEvent_Data de_data)
+        void TablePlugIns_Update_Sample_Worker(object o)
         {
-            if (TablePlugIns != null)
+            StreamWorkerInfo info = (StreamWorkerInfo)o;
+
+            try
             {
-                IEnumerable<int> priorities = Table_Plugins.Select(x => x.Value.Priority).Distinct();
+                Table_PlugIn tpi = info.tablePlugin;
+                tpi.Update_Sample(info.returnData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Plugin Exception! : " + ex.Message);
+            }
+        }
 
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
 
-                foreach (int priority in sortedPriorities)
+        void TablePlugIn_Update_DataEvent(DataEvent_Data de_data)
+        {
+            if (TablePlugIns != null && de_data != null)
+            {
+                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    List<Lazy<Table_PlugIn>> pluginsAtPriority = Table_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Table_PlugIn> TP in pluginsAtPriority)
+                    if (tp.IsValueCreated)
                     {
-                        Table_PlugIn TPI = TP.Value;
-                        TPI.Update_DataEvent(de_data);
+                        DataEventWorkerInfo info = new DataEventWorkerInfo();
+                        info.de_data = de_data;
+                        info.tablePlugin = tp.Value;
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
                     }
                 }
             }
         }
+
+        void TablePlugIn_Update_DataEvent_Worker(object o)
+        {
+            DataEventWorkerInfo info = (DataEventWorkerInfo)o;
+
+            try
+            {
+                Table_PlugIn tpi = info.tablePlugin;
+                tpi.Update_DataEvent(info.de_data);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Plugin Exception! : " + ex.Message);
+            }
+        }
+
 
         void TablePlugIns_Closing()
         {
             if (TablePlugIns != null)
             {
-                IEnumerable<int> priorities = Table_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
+                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    List<Lazy<Table_PlugIn>> pluginsAtPriority = Table_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Table_PlugIn> TP in pluginsAtPriority)
+                    if (tp.IsValueCreated)
                     {
-                        Table_PlugIn TPI = TP.Value;
-                        TPI.Closing();
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Closing_Worker), tp.Value);
                     }
                 }
+            }
+        }
+
+        void TablePlugIn_Closing_Worker(object o)
+        {
+            Table_PlugIn tp = (Table_PlugIn)o;
+
+            try
+            {
+                tp.Closing();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Plugin Exception! : " + ex.Message);
             }
         }
 
@@ -850,6 +881,7 @@ namespace TH_Device_Server
         Sample sample;
 
         Int64 lastSequenceSampled = -1;
+        //Int64 lastSequenceSampled_temp = -1;
         Int64 agentInstanceId = -1;
 
         bool inProgress = false;
@@ -887,7 +919,7 @@ namespace TH_Device_Server
             return Result;
         }
 
-        const Int64 MaxSampleCount = 100000;
+        const Int64 MaxSampleCount = 5000;
 
         void Sample_Start(TH_MTC_Data.Header_Streams header)
         {
@@ -924,7 +956,7 @@ namespace TH_Device_Server
 
                     // Increment some sequences since the Agent might change the first sequence
                     // before the Sample request gets read
-                    // (should be fixed in Agent to automatically read the last first 'available' sequence
+                    // (should be fixed in Agent to automatically read the first 'available' sequence
                     // instead of returning an error)
                     First += 20;
                     Log("First = " + First.ToString() + " : " + first.ToString());
@@ -942,6 +974,7 @@ namespace TH_Device_Server
                 }
 
                 // Update Last Sequence Sampled for the subsequent samples
+                //lastSequenceSampled_temp = Last;
                 lastSequenceSampled = Last;
                 Variables.Update(configuration.SQL, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
 
@@ -975,6 +1008,10 @@ namespace TH_Device_Server
         void sample_SampleFinished(TH_MTC_Data.Streams.ReturnData returnData)
         {
             UpdateProcessingStatus("Sample Received..");
+
+            // Update Last Sequence Sampled for the subsequent samples
+            //lastSequenceSampled = lastSequenceSampled_temp;
+            //Variables.Update(configuration.SQL, "Last_Sequence_Sampled", lastSequenceSampled.ToString(), returnData.header.creationTime);
 
             inProgress = true;
 

@@ -721,6 +721,8 @@ namespace TH_MySQL
 
                 Command.CommandText = "INSERT IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")" + update;
 
+                //Command.CommandText = TH_MySQL.Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
+
                 Command.Prepare();
                 Command.ExecuteNonQuery();
 
@@ -919,6 +921,49 @@ namespace TH_MySQL
             }
 
             catch (Exception ex) { }
+
+        }
+
+        public static bool Row_Insert(SQL_Settings SQL, string Query)
+        {
+
+            bool Result = false;
+
+            try
+            {
+
+                MySqlConnection conn;
+                conn = new MySqlConnection();
+                conn.ConnectionString = "server=" + SQL.Server + ";user=" + SQL.Username + ";port=" + SQL.Port + ";password=" + SQL.Password + ";database=" + SQL.Database + ";";
+                conn.Open();
+
+                MySqlCommand Command;
+                Command = new MySqlCommand();
+                Command.Connection = conn;
+
+                Command.CommandText = Query;
+
+                Command.Prepare();
+                Command.ExecuteNonQuery();
+
+                Command.Dispose();
+
+                conn.Close();
+
+                Command.Dispose();
+                conn.Dispose();
+
+                Result = true;
+
+            }
+            catch (MySqlException ex)
+            {
+                Logger.Log("Insert_Row : " + ex.Message);
+            }
+
+            catch (Exception ex) { }
+
+            return Result;
 
         }
 

@@ -324,6 +324,110 @@ namespace TH_MySQL
 
         #region "Rows"
 
+        public static string Row_Insert_CreateQuery(string TableName, object[] Columns, object[] Values, bool Update)
+        {
+
+            //Create Columns string
+            string cols = "";
+            for (int x = 0; x <= Columns.Length - 1; x++)
+            {
+                cols += Columns[x].ToString().ToUpper();
+                if (x < Columns.Length - 1) cols += ", ";
+            }
+
+            //Create Values string
+            string vals = "";
+            for (int x = 0; x <= Values.Length - 1; x++)
+            {
+                // Dont put the ' characters if the value is null
+                if (Values[x] == null) vals += "null";
+                else
+                {
+                    if (Values[x].ToString().ToLower() != "null") vals += "'" + Values[x].ToString() + "'";
+                    else vals += Values[x].ToString();
+                }
+
+                if (x < Values.Length - 1) vals += ", ";
+            }
+
+            //Create Update string
+            string update = "";
+            if (Update)
+            {
+                update = " ON DUPLICATE KEY UPDATE ";
+                for (int x = 0; x <= Columns.Length - 1; x++)
+                {
+                    if (Values[x] != null)
+                    {
+                        update += Columns[x].ToString().ToUpper();
+                        update += "=";
+                        update += "'" + Values[x].ToString() + "'";
+
+                        if (x < Columns.Length - 1) update += ", ";
+                    }
+                }
+            }
+
+            return "INSERT IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")" + update;
+
+        }
+
+        public static string Row_Insert_CreateQuery(string TableName, object[] Columns, List<List<object>> Values, bool Update)
+        {
+            //Create Columns string
+            string cols = "";
+            for (int x = 0; x <= Columns.Length - 1; x++)
+            {
+                cols += Columns[x].ToString().ToUpper();
+                if (x < Columns.Length - 1) cols += ", ";
+            }
+
+            //Create Values string
+            string vals = "VALUES ";
+            for (int i = 0; i <= Values.Count - 1; i++)
+            {
+                vals += "(";
+
+                for (int x = 0; x <= Values[i].Count - 1; x++)
+                {
+
+                    List<object> ValueSet = Values[i];
+
+                    // Dont put the ' characters if the value is null
+                    if (ValueSet[x] == null) vals += "null";
+                    else
+                    {
+                        if (ValueSet[x].ToString().ToLower() != "null") vals += "'" + ValueSet[x].ToString() + "'";
+                        else vals += ValueSet[x].ToString();
+                    }
+
+
+                    if (x < ValueSet.Count - 1) vals += ", ";
+                }
+
+                vals += ")";
+
+                if (i < Values.Count - 1) vals += ",";
+
+            }
+
+            //Create Update string
+            string update = "";
+            if (Update)
+            {
+                update = " ON DUPLICATE KEY UPDATE ";
+                for (int x = 0; x <= Columns.Length - 1; x++)
+                {
+                    update += Columns[x].ToString().ToUpper();
+                    update += "=";
+                    update += "VALUES(" + Columns[x].ToString().ToUpper() + ")";
+                    if (x < Columns.Length - 1) update += ", ";
+                }
+            }
+
+            return "INSERT IGNORE INTO " + TableName + " (" + cols + ") " + vals + update;
+        }
+
         public static bool Row_Insert(SQL_Settings SQL, string TableName, object[] Columns, object[] Values)
         {
             bool Result = false;
@@ -391,6 +495,24 @@ namespace TH_MySQL
             {
                 MySQL.Row_Insert(SQL, TableName, Columns, Values, Update);
                 if (SQL.AdminSQL != null) Global.Row_Insert(SQL.AdminSQL, TableName, Columns, Values, Update);
+            }
+
+            return Result;
+        }
+
+        public static bool Row_Insert(SQL_Settings SQL, string Query)
+        {
+            bool Result = false;
+
+            if (SQL.PHP_Server != null)
+            {
+                Result = PHP.Row_Insert(SQL, Query);
+                if (SQL.AdminSQL != null) Global.Row_Insert(SQL.AdminSQL, Query);
+            }
+            else
+            {
+                Result = MySQL.Row_Insert(SQL, Query);
+                if (SQL.AdminSQL != null) Global.Row_Insert(SQL.AdminSQL, Query);
             }
 
             return Result;

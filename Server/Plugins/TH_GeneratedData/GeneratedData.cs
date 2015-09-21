@@ -10,6 +10,7 @@ using System.Linq;
 using System.Data;
 using System.Xml;
 using System.Reflection;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Global;
@@ -27,7 +28,7 @@ namespace TH_GeneratedData
 
         public string Name { get { return "TH_GeneratedData"; } }
 
-        public int Priority { get { return 1; } }
+        //public int Priority { get { return 1; } }
 
         public void Initialize(Configuration configuration)
         {
@@ -54,6 +55,9 @@ namespace TH_GeneratedData
                     foreach (GeneratedEvents.Event e in gdc.generatedEvents.events) CreateGeneratedEventTable(e);
                 }  
             }
+
+            SQL_Queue = new Queue();
+            SQL_Queue.SQL = configuration.SQL;
 
         }
 
@@ -703,6 +707,8 @@ namespace TH_GeneratedData
 
         #region "MySQL"
 
+        Queue SQL_Queue;
+
         #region "Snapshot"
 
         public const string SnapshotsTableName = TableNames.SnapShots;
@@ -859,12 +865,37 @@ namespace TH_GeneratedData
 
                     }
 
-                    Global.Row_Insert(config.SQL, TablePrefix + eventName, columns.ToArray(), rowValues);
+                    ThreadInfo threadInfo = new ThreadInfo();
+                    threadInfo.tableName = TablePrefix + eventName;
+                    threadInfo.columns = columns.ToArray();
+                    threadInfo.values = rowValues;
+                    threadInfo.update = false;
+
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
+
+                    //Global.Row_Insert(config.SQL, TablePrefix + eventName, columns.ToArray(), rowValues);
 
                 }
 
             }
 
+        }
+
+        class ThreadInfo
+        {
+            public string tableName { get; set; }
+            public object[] columns { get; set; }
+            public List<List<object>> values { get; set; }
+            public bool update { get; set; }
+        }
+
+        void AddItemToSQLQueue(object o)
+        {
+            ThreadInfo threadInfo = (ThreadInfo)o;
+
+            string query = Global.Row_Insert_CreateQuery(threadInfo.tableName, threadInfo.columns, threadInfo.values, threadInfo.update);
+
+            SQL_Queue.Add(query);
         }
 
         string FormatCaptureItemValue(string val)

@@ -94,28 +94,31 @@ namespace TH_Global
 
         void queue_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!Directory.Exists(FileLocations.TrakHound)) Directory.CreateDirectory(FileLocations.TrakHound);
-
-            string LogDirectory = FileLocations.TrakHound + @"\Logs";
-
-            if (!Directory.Exists(LogDirectory)) Directory.CreateDirectory(LogDirectory);
-
-            string LogFile = LogDirectory + @"\Log-" + FormatDate(DateTime.Now) + ".xml";
-
-            // Create Log (XmlDocument)
-            XmlDocument doc = CreateDocument(LogFile);
-
-            Line[] lines = LineQueue.ToArray();
-
-            foreach (Line line in lines)
+            try
             {
-                AddToLog(doc, line);
+                if (!Directory.Exists(FileLocations.TrakHound)) Directory.CreateDirectory(FileLocations.TrakHound);
+
+                string LogDirectory = FileLocations.TrakHound + @"\Logs";
+
+                if (!Directory.Exists(LogDirectory)) Directory.CreateDirectory(LogDirectory);
+
+                string LogFile = LogDirectory + @"\Log-" + FormatDate(DateTime.Now) + ".xml";
+
+                // Create Log (XmlDocument)
+                XmlDocument doc = CreateDocument(LogFile);
+
+                Line[] lines = LineQueue.ToArray();
+
+                foreach (Line line in lines)
+                {
+                    AddToLog(doc, line);
+                }
+
+                WriteDocument(doc, LogFile);
+
+                LineQueue.Clear();
             }
-
-            WriteDocument(doc, LogFile);
-
-            LineQueue.Clear();
-
+            catch { }
         }
 
         void AddToLog(XmlDocument doc, Line line)

@@ -51,13 +51,13 @@ namespace TrakHound_Client.Options.Pages.Updates
 
         void AutoUpdater_Initialize()
         {
-            Updater updater = new Updater();
-            updater.AppInfoReceived += AutoUpdater_AppInfoReceived;
-            updater.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.txt");
+            UpdateCheck updateCheck = new UpdateCheck();
+            updateCheck.AppInfoReceived += AutoUpdater_AppInfoReceived;
+            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.txt");
         }
 
 
-        void AutoUpdater_AppInfoReceived(Updater.AppInfo info)
+        void AutoUpdater_AppInfoReceived(UpdateCheck.AppInfo info)
         {
             // Print Auto Update info to Console
             Console.WriteLine("---- Auto-Update Info ----");
@@ -65,15 +65,22 @@ namespace TrakHound_Client.Options.Pages.Updates
             Console.WriteLine("Release Type : " + info.releaseType);
             Console.WriteLine("Version : " + info.version);
             Console.WriteLine("Build Date : " + info.buildDate);
-            Console.WriteLine("URL : " + info.url);
+            Console.WriteLine("Download URL : " + info.downloadUrl);
+            Console.WriteLine("Update URL : " + info.updateUrl);
             Console.WriteLine("File Size : " + info.size);
             Console.WriteLine("--------------------------");
 
-            this.Dispatcher.BeginInvoke(new Action<Updater.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
+            // $$ $  DEBUG  $ $$$
+            Updater updater = new Updater();
+            updater.assembly = Assembly.GetExecutingAssembly();
+            updater.Start(info.updateUrl);
+
+            this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
         }
 
-        void AutoUpdater_AppInfoReceived_GUI(Updater.AppInfo info)
+        void AutoUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
         {
+
             // Check if version is Up-to-date
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             Version version = assembly.GetName().Version;

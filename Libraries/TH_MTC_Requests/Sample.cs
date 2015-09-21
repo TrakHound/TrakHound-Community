@@ -136,6 +136,7 @@ namespace TH_MTC_Requests
         private void Stream_Start(string Variable, Int64 BeginSeq, Int64 Count)
         {
             stream = new Stream();
+            stream.failureRetryInterval = 3000;
 
             string port;
             if (configuration.Agent.Port > 0)
@@ -189,6 +190,7 @@ namespace TH_MTC_Requests
         {
             if (responseString != null) Stream_Process(responseString);
         }
+        
 
         void Stream_Process(string xml)
         {

@@ -3,3 +3,4 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\bin\Debug\TH_MTC_Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\bin\Debug\TH_MTC_Data.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.csprojResolveAssemblyReference.cache

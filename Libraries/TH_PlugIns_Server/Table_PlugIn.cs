@@ -26,7 +26,7 @@ namespace TH_PlugIns_Server
         /// (ex. TH_GeneratedData relies on TH_IntstanceTable's data so 
         /// TH_GeneratedData's priority would be a bigger number than TH_InstanceTable's)
         /// </summary>
-        int Priority { get; }
+        //int Priority { get; }
 
         /// <summary>
         /// Called to initialize the plugin using the Configuration file passed as a parameter

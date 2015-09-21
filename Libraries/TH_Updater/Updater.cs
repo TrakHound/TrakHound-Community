@@ -1,140 +1,117 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
-
 using System.IO;
-using System.Net;
-
-using Newtonsoft.Json;
+using System.IO.Compression;
+using System.Reflection;
 
 namespace TH_Updater
 {
     public class Updater
     {
 
+        public Assembly assembly;
+
         public void Start(string url)
         {
-            Thread worker = new Thread(new ParameterizedThreadStart(CheckVersion));
+            Thread worker = new Thread(new ParameterizedThreadStart(Prepare));
             worker.Start(url);
         }
 
-        void CheckVersion(object url)
+        void Prepare(object url)
         {
             if (url != null)
             {
-                //string directory = AppDomain.CurrentDomain.BaseDirectory + "temp";
-                //if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-
-                string localFile = CreateLocalFileName();
+                // Create local path to download 'appinfo' file to
+                string localFile = Tools.CreateLocalFileName() + ".zip";
 
                 // Download File
-                DownloadFile(url.ToString(), localFile);
+                Tools.DownloadFile(url.ToString(), localFile);
 
-                // Parse File as AppInfo class
-                AppInfo info = ParseFile(localFile);
-                if (info != null)
+                if (File.Exists(localFile))
                 {
-                    // Raise AppInfoReceived Event
-                    if (AppInfoReceived != null) AppInfoReceived(info);
+                    string unzipDirectory = UnZip(localFile);
+                    if (unzipDirectory != null)
+                    {
+                        if (assembly != null)
+                        {
+                            string updateDirectory = Path.GetDirectoryName(assembly.Location);
+                            Console.WriteLine("Update Directory = " + updateDirectory);
+                        }
+                    }
                 }
             } 
         }
 
-        public delegate void AppInfoReceived_Handler(AppInfo info);
-        public event AppInfoReceived_Handler AppInfoReceived;
-
-        /// <summary>
-        /// Downloads json file with Application Information
-        /// </summary>
-        static void DownloadFile(string url, string localFile)
+        string UnZip(string zipFilePath)
         {
-            try
-            {
-                WebClient webClient = new WebClient();
-                webClient.DownloadFile(url, localFile); 
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error during Update Check DownloadFile() : " + ex.Message);
-            }
-        }
-
-        public class AppInfo
-        {
-            public string version;
-            public string releaseType;
-            public string buildDate;
-            public string operatingSystem;
-            public string url;
-            public string size;
-        }
-
-        static AppInfo ParseFile(string localFile)
-        {
-            AppInfo Result = null;
+            string Result = null;
 
             try
             {
-                if (File.Exists(localFile))
+                string path = Tools.CreateLocalFileName();
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+
+                if (Directory.Exists(path))
                 {
-                    using (StreamReader r = new StreamReader(localFile))
-                    {
-                        string json = r.ReadToEnd();
-
-                        JsonSerializer serializer = new JsonSerializer();
-                        try
-                        {
-                            Result = (AppInfo)serializer.Deserialize(new JsonTextReader(new StringReader(json)), typeof(AppInfo));
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Error During AppInfo File JSON Parse : " + localFile);
-                        }
-
-                    }
+                    System.IO.Compression.ZipFile.ExtractToDirectory(zipFilePath, path);
+                    Result = path;
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error during Update Check ParseFile() : " + ex.Message);
-            }
+            catch (Exception ex) { Console.WriteLine("Update UnZip : Exception: " + ex.Message); }
 
             return Result;
         }
 
-        #region "Local File Management"
+        //public void Update()
+        //{
+        //    Thread worker = new Thread(new ThreadStart(UpdateWorker));
+        //    worker.Start();
+        //}
 
-        static Random random = new Random();
-        static string RandomString(int size)
-        {
-            StringBuilder builder = new StringBuilder();
-            char ch;
-            for (int i = 0; i < size; i++)
-            {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
-            }
+        //void UpdateWorker()
+        //{
+        //    if (unzipDirectory != null && updateDirectory != null)
+        //    {
 
-            return builder.ToString();
-        }
+        //        foreach (string file in Directory.GetFiles(unzipDirectory))
+        //        {
+        //            string filename = Path.GetFileName(file);
 
-        static string CreateLocalFileName()
-        {
-            string directory = AppDomain.CurrentDomain.BaseDirectory + "temp";
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-
-            string file = RandomString(20);
-
-            string path = directory + "\\" + file;
-
-            if (File.Exists(path)) CreateLocalFileName();
-
-            return path;
-        }
-
-        #endregion
+        //            File.Copy(file, updateDirectory + "\\" + filename, true);
+        //        }
+        //    }
+        //}
 
     }
+
+    public class UpdatePerformer
+    {
+
+        string updateDirectory;
+        string unzipDirectory;
+
+
+        public void Update()
+        {
+            Thread worker = new Thread(new ThreadStart(UpdateWorker));
+            worker.Start();
+        }
+
+        void UpdateWorker()
+        {
+            if (unzipDirectory != null && updateDirectory != null)
+            {
+
+                foreach (string file in Directory.GetFiles(unzipDirectory))
+                {
+                    string filename = Path.GetFileName(file);
+
+                    File.Copy(file, updateDirectory + "\\" + filename, true);
+                }
+            }
+        }
+
+    }
+
 }

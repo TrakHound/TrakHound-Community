@@ -10,6 +10,7 @@ using System.Xml;
 using System.Data;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Global;
@@ -28,7 +29,7 @@ namespace TH_InstanceTable
 
         public string Name { get { return "TH_InstanceTable"; } }
 
-        public int Priority { get { return 0; } }
+        //public int Priority { get { return 0; } }
 
         public void Initialize(Configuration configuration)
         {
@@ -51,6 +52,9 @@ namespace TH_InstanceTable
             firstPass = false;
 
             config = configuration;
+
+            SQL_Queue = new Queue();
+            SQL_Queue.SQL = configuration.SQL;
 
         }
 
@@ -253,14 +257,14 @@ namespace TH_InstanceTable
 
         #region "MySQL"
 
+        Queue SQL_Queue;
+
         public const string TableName = TableNames.Instance;
 
         void CreateInstanceTable(List<string> variablesToRecord)
         {
 
             List<string> Columns = new List<string>();
-
-            //Columns.Add("ROW " + MySQL_Tools.BigInt + " AUTO_INCREMENT");
 
             Columns.Add("TIMESTAMP " + MySQL_Tools.Datetime);
             Columns.Add("SEQUENCE " + MySQL_Tools.BigInt);
@@ -414,19 +418,42 @@ namespace TH_InstanceTable
             int interval = 100;
             int countLeft = rowValues.Count;
 
+
             while (countLeft > 0)
             {
                 IEnumerable<List<object>> ValuesToAdd = rowValues.Take(interval);
 
                 countLeft -= interval;
 
-                // Add Rows to MySQL
-                Global.Row_Insert(config.SQL, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), false);
+                ThreadInfo threadInfo = new ThreadInfo();
+                threadInfo.tableName = TableName;
+                threadInfo.columns = columnsMySQL.ToArray();
+                threadInfo.values = ValuesToAdd.ToList();
+                threadInfo.update = false;
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
             }
 
             stpw.Stop();
             Logger.Log("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
 
+        }
+
+        class ThreadInfo
+        {
+            public string tableName { get; set; }
+            public object[] columns { get; set; }
+            public List<List<object>> values { get; set; }
+            public bool update { get; set; }
+        }
+
+        void AddItemToSQLQueue(object o)
+        {
+            ThreadInfo threadInfo = (ThreadInfo)o;
+
+            string query = Global.Row_Insert_CreateQuery(threadInfo.tableName, threadInfo.columns, threadInfo.values, threadInfo.update);
+
+            SQL_Queue.Add(query);
         }
 
         #endregion
