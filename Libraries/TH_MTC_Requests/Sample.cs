@@ -89,38 +89,7 @@ namespace TH_MTC_Requests
             if (handler != null) Stopped();
 
             if (worker != null) worker.Abort();
-            //Stream_Stop();
         }
-
-        //public void Start(string Variable, Int64 BeginSeq, Int64 Count)
-        //{
-        //    Status = MTC_Stream_Status.Started;
-
-        //    Connection_Handler handler = Started;
-        //    if (handler != null) Started();
-
-        //    //Allow for local file for Simulation ------------------------------------------------
-        //    if (configuration.Agent.Simulation_Sample_Path != null)
-        //    {
-        //        if (System.IO.File.Exists(configuration.Agent.Simulation_Sample_Path))
-        //        {
-        //            System.IO.StreamReader SimReader = new System.IO.StreamReader(configuration.Agent.Simulation_Sample_Path);
-        //            Stream_Process(SimReader.ReadToEnd());
-        //        }
-        //    }
-        //    //------------------------------------------------------------------------------------
-        //    else Stream_Start(Variable, BeginSeq, Count);
-        //}
-
-        //public void Stop()
-        //{
-        //    Status = MTC_Stream_Status.Stopped;
-
-        //    Connection_Handler handler = Stopped;
-        //    if (handler != null) Stopped();
-
-        //    Stream_Stop();
-        //}
 
         #endregion
 
@@ -237,9 +206,9 @@ namespace TH_MTC_Requests
 
                     DataItemCollection dataItems = Tools.GetDataItemsFromDeviceStream(deviceStream);
 
-                    Console.WriteLine("Conditions.Count = " + dataItems.Conditions.Count.ToString());
-                    Console.WriteLine("Events.Count = " + dataItems.Events.Count.ToString());
-                    Console.WriteLine("Samples.Count = " + dataItems.Samples.Count.ToString());
+                    //Console.WriteLine("Conditions.Count = " + dataItems.Conditions.Count.ToString());
+                    //Console.WriteLine("Events.Count = " + dataItems.Events.Count.ToString());
+                    //Console.WriteLine("Samples.Count = " + dataItems.Samples.Count.ToString());
 
                     Result = deviceStream;
                 }

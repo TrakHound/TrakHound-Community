@@ -23,7 +23,17 @@
             </Grid.ColumnDefinitions>
 
             <!--Plugin Image-->
-            <Image Height="30" Margin="10,0,20,0" Source="{Binding PluginImage}"/>
+            <Rectangle Height="30" Width="30" Fill="{StaticResource DarkText}" Margin="10,0,20,0">
+                <Rectangle.Resources>
+                    <ImageBrush x:Key="IMG" ImageSource="{Binding PluginImage}" Stretch="Uniform" />
+                </Rectangle.Resources>
+
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
 
             <StackPanel Grid.Column="1">
 

@@ -19,7 +19,7 @@
 
     <Grid>
         <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">10</GridLength>
+            <GridLength x:Key="ShadowWidth">0</GridLength>
 
             <Color x:Key="inside">#22000000</Color>
             <GradientStopCollection x:Key="gradient">
@@ -28,7 +28,7 @@
             </GradientStopCollection>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="0"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.Style>

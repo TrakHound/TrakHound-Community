@@ -1,4 +1,5 @@
 C:\TrakHound\Plugins\Pages\TH_TableManager.dll
+C:\TrakHound\Plugins\Pages\TH_TableManager.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\Controls\Button.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TableManager.g.cs
@@ -12,4 +13,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.pdb
-C:\TrakHound\Plugins\Pages\TH_TableManager.pdb

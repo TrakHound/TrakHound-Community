@@ -74,6 +74,12 @@ namespace TH_Dashboard
 
         #endregion
 
+        #region "Update Information"
+
+        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/dashboard-appinfo.txt"; } }
+
+        #endregion
+
         #region "Methods"
 
         const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;

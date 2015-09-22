@@ -16,5 +16,5 @@ DEBUG;TRACE
 17-712399946
 Controls\NumberDisplay.xaml;DataCenter.xaml;FullScreen.xaml;
 
-False
+True
 

@@ -213,8 +213,8 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_PlugIns_Clien
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Pages\Information\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Pages\License\Page.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\UpdateItem.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Plugins\Launcher\PluginItem.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_Button.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_ToolBarItem.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Main Menu\Exit_BT.baml
@@ -234,6 +234,8 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Manager.g.
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Pages\Information\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Pages\License\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Developer Console\PopUp.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\UpdateItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Plugins\Launcher\PluginItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Plugins\Launcher\Menu.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_Button.g.cs
@@ -264,7 +266,9 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Manager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Developer Console\PopUp.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Plugins\Launcher\Menu.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_Button.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_TabHeader_Top.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Main Menu\DropDown.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\MainWindow.baml
@@ -279,7 +283,3 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\Page.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\UpdateItem.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\UpdateItem.g.cs

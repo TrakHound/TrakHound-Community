@@ -15,6 +15,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
+        Topmost="True"
         
         Background="#00000000"
                

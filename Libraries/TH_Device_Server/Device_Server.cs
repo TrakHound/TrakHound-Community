@@ -260,7 +260,6 @@ namespace TH_Device_Server
                 else if (!PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP Not Reachable!");
                 else Log("Device (" + configuration.Index.ToString() + ") SQL Not Reachable!");
 
-
                 if (Status == ConnectionStatus.Started || FirstAttempt)
                 {
                     FirstAttempt = false;
@@ -268,14 +267,6 @@ namespace TH_Device_Server
                     Connection_Timer.Interval = 5000;
 
                     Log("Attempting to Connect...(Attempt #" + TryCount.ToString() + ")");
-
-                    //if (!MTC_PingResult && !SQL_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC, SQL, and PHP Not Reachable!");
-                    //else if (!MTC_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and SQL Not Reachable!");
-                    //else if (!MTC_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and PHP Not Reachable!");
-                    //else if (!PHP_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP and SQL Not Reachable!");
-                    //else if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
-                    //else if (!PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP Not Reachable!");
-                    //else Log("Device (" + configuration.Index.ToString() + ") SQL Not Reachable!");
 
                     if (TryCount >= ConnectionAttempts)
                     {
@@ -881,7 +872,6 @@ namespace TH_Device_Server
         Sample sample;
 
         Int64 lastSequenceSampled = -1;
-        //Int64 lastSequenceSampled_temp = -1;
         Int64 agentInstanceId = -1;
 
         bool inProgress = false;
@@ -932,7 +922,6 @@ namespace TH_Device_Server
 
             if (sample != null)
             {
-
                 // Check/Update Agent Instance Id -------------------
                 Int64 lastInstanceId = agentInstanceId;
                 agentInstanceId = header.instanceId;
@@ -959,7 +948,6 @@ namespace TH_Device_Server
                     // (should be fixed in Agent to automatically read the first 'available' sequence
                     // instead of returning an error)
                     First += 20;
-                    Log("First = " + First.ToString() + " : " + first.ToString());
                 }
                     
                 // Get Last Sequence Number available from Header
@@ -974,7 +962,7 @@ namespace TH_Device_Server
                 }
 
                 // Update Last Sequence Sampled for the subsequent samples
-                //lastSequenceSampled_temp = Last;
+                // lastSequenceSampled_temp = Last;
                 lastSequenceSampled = Last;
                 Variables.Update(configuration.SQL, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
 
@@ -1009,21 +997,8 @@ namespace TH_Device_Server
         {
             UpdateProcessingStatus("Sample Received..");
 
-            // Update Last Sequence Sampled for the subsequent samples
-            //lastSequenceSampled = lastSequenceSampled_temp;
-            //Variables.Update(configuration.SQL, "Last_Sequence_Sampled", lastSequenceSampled.ToString(), returnData.header.creationTime);
-
-            inProgress = true;
-
-            Log("Device_Server Received Sample : " + DateTime.Now.ToLongTimeString() + "." + DateTime.Now.Millisecond.ToString());
-
             // Update all of the Table Plugins with the ReturnData
             TablePlugIns_Update_Sample(returnData);
-
-            // Create/Update Individual Sample tables in MySQL
-            //if (configuration.Server.Tables.MTConnect.Sample) ProcessSampleTables(returnData);
-
-            inProgress = false;
 
             ClearProcessingStatus();
         }
@@ -1114,76 +1089,7 @@ namespace TH_Device_Server
         void InitializeTables()
         {
             Variables.CreateTable(configuration.SQL);
-            //AgentInfo.Initialize(configuration);
         }
-
-        //#region "Samples"
-
-        //DataSet CreateIndividualSampleTables(DataSet DS)
-        //{
-        //    DataSet Result = new DataSet();
-
-        //    foreach (DataTable DT in DS.Tables)
-        //    {
-        //        DataView DV = DT.AsDataView();
-
-        //        DataTable Distinct_DT = DV.ToTable(true, "dataItemId");
-
-        //        foreach (DataRow Row in Distinct_DT.Rows)
-        //        {
-        //            if (Row.Table.Columns.Contains("dataItemId"))
-        //            {
-        //                DV = DT.AsDataView();
-
-        //                DV.RowFilter = "dataItemId = '" + Row["dataItemId"].ToString() + "'";
-
-        //                DataTable Variable_DT = DV.ToTable();
-        //                Variable_DT.TableName = Row["dataItemId"].ToString();
-
-        //                Result.Tables.Add(Variable_DT);
-        //            }
-        //        }
-        //    }
-
-        //    return Result;
-        //}
-
-        //void CreateSampleTables_MySQL(DataSet DS)
-        //{
-        //    List<string> TableNames = new List<string>();
-        //    foreach (DataTable DT in DS.Tables)
-        //    {
-        //        foreach (DataRow Row in DT.Rows)
-        //        {
-        //            if (DT.Columns.Contains("id")) TableNames.Add("SAMPLE_" + Row["id"].ToString().ToUpper());
-        //        }
-        //    }
-                
-        //    bool TablesExist = Global.TableExists(configuration.SQL, TableNames);
-
-        //}
-
-        //void ProcessSampleTables(TH_MTC_Data.Streams.ReturnData returnData)
-        //{
-        //    if (returnData.deviceStream != null)
-        //    {
-        //        TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(returnData.deviceStream);
-
-        //        if (ProbeData != null)
-        //        {
-        //            TH_MTC_Data.Components.DataItemCollection Probe_dataItems = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(ProbeData.device);
-
-        //            foreach (TH_MTC_Data.Components.DataItem DI in Probe_dataItems.Samples)
-        //            {
-        //                List<TH_MTC_Data.Streams.Sample> SampleTest = dataItems.Samples.FindAll(x => x.dataItemId.ToLower() == DI.id.ToLower());
-
-        //                Log(DI.id + " count = " + SampleTest.Count.ToString());
-        //            }
-        //        }
-        //    }
-        //}
-
-        //#endregion
 
         #endregion
 

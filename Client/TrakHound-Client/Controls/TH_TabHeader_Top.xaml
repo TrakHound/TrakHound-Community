@@ -88,7 +88,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Right Side Shadow-->
-            <Rectangle Grid.Column="0" Width="3" Margin="0,2,0,2">
+            <Rectangle Grid.Column="0" Width="2" Margin="0,2,0,2">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                         <GradientStop Color="#33000000" Offset="0.8"/>
@@ -435,7 +435,7 @@
             </Border>
 
             <!--Right Side Shadow-->
-            <Rectangle Grid.Column="2" Width="3" Margin="0,2,0,2">
+            <Rectangle Grid.Column="2" Width="2" Margin="0,2,0,2">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                         <GradientStop Color="#33000000" Offset="0.2"/>

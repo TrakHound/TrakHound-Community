@@ -20,36 +20,49 @@ namespace TH_Updater
 
         void Prepare(object url)
         {
-            if (url != null)
+            if (url != null && assembly != null)
             {
+                string tempDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                tempDirectory = tempDirectory + "\\" + "TrakHound";
+                if (!Directory.Exists(tempDirectory)) Directory.CreateDirectory(tempDirectory);
+                tempDirectory = tempDirectory + "\\" + "temp";
+                if (!Directory.Exists(tempDirectory)) Directory.CreateDirectory(tempDirectory);
+
+                // Get assembly directory
+                string localDirectory = Path.GetDirectoryName(assembly.Location);
+
                 // Create local path to download 'appinfo' file to
-                string localFile = Tools.CreateLocalFileName() + ".zip";
+                string localFile = Tools.CreateLocalFileName(tempDirectory);
 
                 // Download File
                 Tools.DownloadFile(url.ToString(), localFile);
 
                 if (File.Exists(localFile))
                 {
-                    string unzipDirectory = UnZip(localFile);
+                    string unzipDirectory = UnZip(localFile, tempDirectory);
                     if (unzipDirectory != null)
                     {
-                        if (assembly != null)
-                        {
-                            string updateDirectory = Path.GetDirectoryName(assembly.Location);
-                            Console.WriteLine("Update Directory = " + updateDirectory);
-                        }
+                        string keyName = assembly.FullName.Substring(0, assembly.FullName.IndexOf(','));
+
+                        string keyValue = unzipDirectory + ";" + localDirectory;
+
+                        Tools.SetRegistryKey(keyName, keyValue);
+
+                        Console.WriteLine("Update Registry Key :: " + keyName + " :: " + localDirectory + " :: " + unzipDirectory);
+
+                        if (Finished != null) Finished();
                     }
                 }
-            } 
+            }
         }
 
-        string UnZip(string zipFilePath)
+        string UnZip(string zipFilePath, string destinationPath)
         {
             string Result = null;
 
             try
             {
-                string path = Tools.CreateLocalFileName();
+                string path = Tools.CreateLocalFileName(destinationPath);
                 if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
                 if (Directory.Exists(path))
@@ -63,25 +76,8 @@ namespace TH_Updater
             return Result;
         }
 
-        //public void Update()
-        //{
-        //    Thread worker = new Thread(new ThreadStart(UpdateWorker));
-        //    worker.Start();
-        //}
-
-        //void UpdateWorker()
-        //{
-        //    if (unzipDirectory != null && updateDirectory != null)
-        //    {
-
-        //        foreach (string file in Directory.GetFiles(unzipDirectory))
-        //        {
-        //            string filename = Path.GetFileName(file);
-
-        //            File.Copy(file, updateDirectory + "\\" + filename, true);
-        //        }
-        //    }
-        //}
+        public delegate void Finished_Handler();
+        public event Finished_Handler Finished;
 
     }
 
@@ -90,7 +86,6 @@ namespace TH_Updater
 
         string updateDirectory;
         string unzipDirectory;
-
 
         public void Update()
         {
@@ -102,7 +97,6 @@ namespace TH_Updater
         {
             if (unzipDirectory != null && updateDirectory != null)
             {
-
                 foreach (string file in Directory.GetFiles(unzipDirectory))
                 {
                     string filename = Path.GetFileName(file);

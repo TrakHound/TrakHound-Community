@@ -365,8 +365,10 @@
 		<row><td>TH_Ping.Primary_output</td><td>{ADB24745-6947-4E99-8BD7-1FF6A72367D4}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_ping.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_PlugIns_Client_Control.Primary_output</td><td>{3AE72CF1-2044-48DE-B14A-D66BF96EBE99}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_plugins_client_control.pr</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_PlugIns_Client_Data.Primary_output</td><td>{E5F2B9EA-1B35-4B2B-B935-F1A66176B859}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_plugins_client_data.prima</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TH_Startup.Primary_output</td><td>{8CBEC569-0CC8-4C79-B486-7D3427B18DAA}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_startup.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Styles.Primary_output</td><td>{D34A8A1A-A9E0-415C-A10E-D0E8C76F96F1}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_styles.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_TableManager.Primary_output</td><td>{2551BF00-53DC-4D0F-8920-3E0EEA385180}</td><td>PAGES</td><td>2</td><td/><td>th_tablemanager.primary_outp</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TH_Updater.Primary_output</td><td>{390A64AB-1455-4F82-8ED2-0BFA22438341}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_updater.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_WPF.Primary_output</td><td>{57ECB012-A9C7-4D00-BFC5-CB2686EF2DF2}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_wpf.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Client.Content_Files</td><td>{484E3E65-63DC-48FD-970D-747A7AF318A2}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_client.content_fil</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Client.Primary_output</td><td>{95E070AE-54F1-40A2-AC1F-BD71F512433B}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_client.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1218,8 +1220,7 @@
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
-		<row><td>feenux</td><td>ProgramMenuFolder</td><td>Feenux</td><td/><td>1</td><td/></row>
-		<row><td>trakho_1_trakhound_client</td><td>feenux</td><td>TRAKHO~1|TrakHound-Client</td><td/><td>1</td><td/></row>
+		<row><td>feenux</td><td>ProgramMenuFolder</td><td>TRAKHO~1|TrakHound</td><td/><td>1</td><td/></row>
 	</table>
 
 	<table name="DrLocator">
@@ -1932,8 +1933,10 @@
 		<row><td>AlwaysInstall</td><td>TH_Ping.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_PlugIns_Client_Control.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_PlugIns_Client_Data.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TH_Startup.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Styles.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_TableManager.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TH_Updater.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_WPF.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Client.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Client.Primary_output</td></row>
@@ -1967,8 +1970,10 @@
 		<row><td>th_ping.primary_output</td><td>TH_Ping.Primary_output</td><td>TH_Ping.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Ping&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_plugins_client_control.pr</td><td>TH_PlugIns_Client_Control.Primary_output</td><td>TH_PlugIns_Client_Control.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_PlugIns_Client_Control&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_plugins_client_data.prima</td><td>TH_PlugIns_Client_Data.Primary_output</td><td>TH_PlugIns_Client_Data.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_PlugIns_Client_Data&gt;|Built</td><td>3</td><td/></row>
+		<row><td>th_startup.primary_output</td><td>TH_Startup.Primary_output</td><td>TH_Startup.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Startup&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_styles.primary_output</td><td>TH_Styles.Primary_output</td><td>TH_Styles.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Styles&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_tablemanager.primary_outp</td><td>TH_TableManager.Primary_output</td><td>TH_TableManager.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_TableManager&gt;|Built</td><td>3</td><td/></row>
+		<row><td>th_updater.primary_output</td><td>TH_Updater.Primary_output</td><td>TH_Updater.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Updater&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_wpf.primary_output</td><td>TH_WPF.Primary_output</td><td>TH_WPF.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_WPF&gt;|Built</td><td>3</td><td/></row>
 		<row><td>trakhound_client.content_fil</td><td>TrakHound_Client.Content_Files</td><td>TrakHound-Client.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Client&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>trakhound_client.primary_out</td><td>TrakHound_Client.Primary_output</td><td>TrakHound-Client.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;TrakHound-Client&gt;|Built</td><td>3</td><td/></row>
@@ -2136,8 +2141,10 @@
 		<row><td>TH_Ping.Primary_output</td><td/><td/><td>_0083A24F_A905_4D3E_86AB_11EB9366791C_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_PlugIns_Client_Control.Primary_output</td><td/><td/><td>_294C27F2_1D9F_43E6_B416_91D980E22596_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_PlugIns_Client_Data.Primary_output</td><td/><td/><td>_BBF8A9C7_16F6_4B4A_9D11_A0E13B309E53_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TH_Startup.Primary_output</td><td/><td/><td>_12AAB5EE_A336_4ADA_997A_4A147D49E707_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Styles.Primary_output</td><td/><td/><td>_06C3B40D_952A_4308_B9EC_4ADDA24EB16E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_TableManager.Primary_output</td><td/><td/><td>_F5448BB2_C7D8_4BDD_A87E_4486BD9D4F87_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TH_Updater.Primary_output</td><td/><td/><td>_90F160AC_3EF1_4966_908D_889737C862AC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_WPF.Primary_output</td><td/><td/><td>_5617C430_2CB0_449E_984D_6F764F7E4478_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Client.Content_Files</td><td/><td/><td>_C35FB64E_5B86_4541_994B_7917EAD492D4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Client.Primary_output</td><td/><td/><td>_24C4A910_9FE4_4A20_A1BF_5970A79F7257_FILTER</td><td/><td/><td/><td/></row>
@@ -2473,9 +2480,11 @@
 		<row><td>TH_Ping</td><td>Libraries\TH_Ping\TH_Ping.csproj</td><td/><td>2</td></row>
 		<row><td>TH_PlugIns_Client_Control</td><td>Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj</td><td/><td>2</td></row>
 		<row><td>TH_PlugIns_Client_Data</td><td>Libraries\TH_PlugIns_Client_Data\TH_PlugIns_Client_Data.csproj</td><td/><td>2</td></row>
+		<row><td>TH_Startup</td><td>Client\TH_Startup\TH_Startup.csproj</td><td/><td>2</td></row>
 		<row><td>TH_StopService</td><td>Server\Admin Functions\TH_StopService\TH_StopService.csproj</td><td/><td>2</td></row>
 		<row><td>TH_Styles</td><td>Libraries\TH_Styles\TH_Styles.csproj</td><td/><td>2</td></row>
 		<row><td>TH_TableManager</td><td>Client\Plugins\Controls\TH_TableManager\TH_TableManager.csproj</td><td/><td>2</td></row>
+		<row><td>TH_Updater</td><td>Libraries\TH_Updater\TH_Updater.csproj</td><td/><td>2</td></row>
 		<row><td>TH_WPF</td><td>Libraries\TH_WPF\TH_WPF.csproj</td><td/><td>2</td></row>
 		<row><td>TrakHound-Client</td><td>Client\TrakHound-Client\TrakHound-Client.csproj</td><td/><td>2</td></row>
 		<row><td>WindowsFolder</td><td/><td/><td>1</td></row>
@@ -3600,7 +3609,6 @@
 		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>1033</td><td>This setup was built with an evaluation version of InstallShield and can only be launched from setup.exe.</td><td>0</td><td/><td>1420001680</td></row>
-		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>TrakHound Client</td><td>0</td><td/><td>1419979287</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>1420001680</td></row>
@@ -3892,6 +3900,11 @@
 		<row><td>ID_STRING1</td><td>1033</td><td>http://www.TrakHound.com</td><td>0</td><td/><td>1419983415</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>TrakHound</td><td>0</td><td/><td>1419983415</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>1420001808</td></row>
+		<row><td>ID_STRING4</td><td>1033</td><td>Run TrakHound Client</td><td>0</td><td/><td>-1398569397</td></row>
+		<row><td>ID_STRING5</td><td>1033</td><td>Run TrakHound Client with Automatic Update</td><td>0</td><td/><td>-1398577621</td></row>
+		<row><td>ID_STRING6</td><td>1033</td><td>Run TrakHound Client</td><td>0</td><td/><td>-1398577589</td></row>
+		<row><td>ID_STRING7</td><td>1033</td><td>TRAKHO~1|TrakHound Client</td><td>0</td><td/><td>-1398581685</td></row>
+		<row><td>ID_STRING8</td><td>1033</td><td>TRAKHO~1|TrakHound Client</td><td>0</td><td/><td>-1398569397</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>1420001680</td></row>
 	</table>
 
@@ -4000,6 +4013,8 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I2">ISIconIndex</col>
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
+		<row><td>NewShortcut111_29170405AC9246E987E0BB8B9155CBD3.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
+		<row><td>NewShortcut11_7BA1216BEEB64C109BF4464FC2BD1679.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4132,7 +4147,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{423FA3E0-8C17-4B12-86D4-8636A7CB190B}</td></row>
 		<row><td>ISUSSignature</td><td>{100DCA65-FA24-4D40-B85E-F1461B02504A}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppV,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewSupportFiles,viewRelease,viewAppFiles,viewFeatureFiles,viewDependencies,viewObjects,viewUpdateService,viewUpgradePaths,viewSetupDesign,viewDesignPatches</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppV,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewSupportFiles,viewRelease,viewAppFiles,viewFeatureFiles,viewDependencies,viewObjects,viewUpdateService,viewUpgradePaths,viewSetupDesign,viewDesignPatches,viewShortcuts</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4589,7 +4604,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="i2">InstallMode</col>
 		<row><td>FileKey1</td><td>TrakHound_Client.Primary_output</td><td/><td>feenux</td><td>2</td></row>
 		<row><td>FileKey2</td><td>TrakHound_Client.Primary_output</td><td/><td>trakho_1_trakhound_client</td><td>2</td></row>
-		<row><td>_Built</td><td>TrakHound_Client.Primary_output</td><td/><td>trakho_1_trakhound_client</td><td>2</td></row>
+		<row><td>NewShortcut11</td><td>TH_Startup.Primary_output</td><td/><td>feenux</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4675,8 +4690,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>_Built</td><td>trakho_1_trakhound_client</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>TrakHound_Client.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>_Built1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>TrakHound_Client.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td/><td/><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut11</td><td>feenux</td><td>##ID_STRING7##</td><td>TH_Startup.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING6##</td><td/><td>NewShortcut11_7BA1216BEEB64C109BF4464FC2BD1679.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut111</td><td>DesktopFolder</td><td>##ID_STRING8##</td><td>TH_Startup.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING4##</td><td/><td>NewShortcut111_29170405AC9246E987E0BB8B9155CBD3.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

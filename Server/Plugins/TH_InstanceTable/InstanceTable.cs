@@ -29,8 +29,6 @@ namespace TH_InstanceTable
 
         public string Name { get { return "TH_InstanceTable"; } }
 
-        //public int Priority { get { return 0; } }
-
         public void Initialize(Configuration configuration)
         {
             InstanceConfiguration ic = null;
@@ -280,7 +278,6 @@ namespace TH_InstanceTable
 
         void AddRowsToMySQL(List<string> columns, List<InstanceData> instanceDatas)
         {
-
             System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
             stpw.Start();
 
@@ -436,7 +433,6 @@ namespace TH_InstanceTable
 
             stpw.Stop();
             Logger.Log("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
-
         }
 
         class ThreadInfo

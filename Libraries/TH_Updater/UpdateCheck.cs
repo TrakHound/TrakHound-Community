@@ -85,7 +85,6 @@ namespace TH_Updater
                         {
                             Console.WriteLine("Error During AppInfo File JSON Parse : " + localFile);
                         }
-
                     }
                 }
             }

@@ -77,6 +77,10 @@
 			<Name>TH_PlugIns_Client_Data</Name>
 			<Project>{62109EC3-E65A-493F-8120-2E4EA2EF30A1}</Project>
 		</ProjectReference>
+		<ProjectReference Include="..\TH_Startup\TH_Startup.csproj">
+			<Name>TH_Startup</Name>
+			<Project>{2F57AA7E-C892-4FA1-A8F5-55AE3412BC23}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Styles\TH_Styles.csproj">
 			<Name>TH_Styles</Name>
 			<Project>{EBFABB3A-6FB4-47AE-8CB1-B663D57CF5B1}</Project>
@@ -84,6 +88,10 @@
 		<ProjectReference Include="..\Plugins\Controls\TH_TableManager\TH_TableManager.csproj">
 			<Name>TH_TableManager</Name>
 			<Project>{06B0562F-4CD5-431F-9C2C-7A7E5959711C}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_Updater\TH_Updater.csproj">
+			<Name>TH_Updater</Name>
+			<Project>{908A68DA-2BA5-49B5-AFC0-044E37D8D92A}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_WPF\TH_WPF.csproj">
 			<Name>TH_WPF</Name>

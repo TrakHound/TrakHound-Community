@@ -17,11 +17,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Microsoft.Win32;
 using System.Reflection;
 
 using TH_PlugIns_Client_Control;
 using TH_Updater;
+using TH_Global;
 
 namespace TrakHound_Client.Options.Pages.Updates
 {
@@ -37,10 +38,15 @@ namespace TrakHound_Client.Options.Pages.Updates
 
             mw = Application.Current.MainWindow as MainWindow;
 
-            ProcessUpdateBehavior();
+            updateBehavior = ProcessUpdateBehavior();
 
-            AutoUpdater_Initialize();
+            if (updateBehavior == 0) AutoUpdater_Start();
+            if (updateBehavior == 1) ManualUpdater_Start();
+
+            Download_BT.AlternateStyle = true;
         }
+
+        int updateBehavior = 0;
 
         MainWindow mw;
 
@@ -49,38 +55,39 @@ namespace TrakHound_Client.Options.Pages.Updates
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Up_01.png")); } }
 
 
-        void AutoUpdater_Initialize()
+        void AutoUpdater_Start()
         {
             UpdateCheck updateCheck = new UpdateCheck();
             updateCheck.AppInfoReceived += AutoUpdater_AppInfoReceived;
             updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.txt");
         }
 
-
         void AutoUpdater_AppInfoReceived(UpdateCheck.AppInfo info)
         {
-            // Print Auto Update info to Console
-            Console.WriteLine("---- Auto-Update Info ----");
-            Console.WriteLine("TrakHound - Client");
-            Console.WriteLine("Release Type : " + info.releaseType);
-            Console.WriteLine("Version : " + info.version);
-            Console.WriteLine("Build Date : " + info.buildDate);
-            Console.WriteLine("Download URL : " + info.downloadUrl);
-            Console.WriteLine("Update URL : " + info.updateUrl);
-            Console.WriteLine("File Size : " + info.size);
-            Console.WriteLine("--------------------------");
+            if (info != null)
+            {
+                // Print Auto Update info to Console
+                Console.WriteLine("---- Auto-Update Info ----");
+                Console.WriteLine("TrakHound - Client");
+                Console.WriteLine("Release Type : " + info.releaseType);
+                Console.WriteLine("Version : " + info.version);
+                Console.WriteLine("Build Date : " + info.buildDate);
+                Console.WriteLine("Download URL : " + info.downloadUrl);
+                Console.WriteLine("Update URL : " + info.updateUrl);
+                Console.WriteLine("File Size : " + info.size);
+                Console.WriteLine("--------------------------");
 
-            // $$ $  DEBUG  $ $$$
-            Updater updater = new Updater();
-            updater.assembly = Assembly.GetExecutingAssembly();
-            updater.Start(info.updateUrl);
+                // Run Updater
+                Updater updater = new Updater();
+                updater.assembly = Assembly.GetExecutingAssembly();
+                updater.Start(info.updateUrl);
 
-            this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
+                this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
+            }
         }
 
         void AutoUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
         {
-
             // Check if version is Up-to-date
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             Version version = assembly.GetName().Version;
@@ -89,6 +96,8 @@ namespace TrakHound_Client.Options.Pages.Updates
 
             Version latestVersion = null;
             Version.TryParse(info.version, out latestVersion);
+
+            ClientUpdateShown = false;
 
             if (latestVersion != null)
             {
@@ -103,9 +112,98 @@ namespace TrakHound_Client.Options.Pages.Updates
 
                     mw.messageCenter.AddNotification(mData);
 
-                    ClientCheckResult = "Version " + latestVersion.ToString() + " is available to Download";
+                    
+                    ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
                     ClientCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));
-                    ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Down_01.png"));
+                    ClientCheckImage = null;
+                    //ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Down_01.png"));
+
+                    ClientUpdateShown = true;
+                }
+                else
+                {
+                    ClientCheckResult = "Up to Date";
+                    ClientCheckBrush = new SolidColorBrush(Colors.Green);
+                    ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/CheckMark_01.png"));
+                }
+            }
+            else
+            {
+                ClientCheckResult = "Error during Update Check";
+                ClientCheckBrush = new SolidColorBrush(Colors.Red);
+                ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/X_01.png"));
+            }
+        }
+
+
+        UpdateCheck.AppInfo appInfo;
+
+        void ManualUpdater_Start()
+        {
+            UpdateCheck updateCheck = new UpdateCheck();
+            updateCheck.AppInfoReceived += ManualUpdater_AppInfoReceived;
+            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.txt");
+        }
+
+        void ManualUpdater_AppInfoReceived(UpdateCheck.AppInfo info)
+        {
+            appInfo = info;
+
+            if (info != null)
+            {
+                // Print Auto Update info to Console
+                Console.WriteLine("---- Manual-Update Info ----");
+                Console.WriteLine("TrakHound - Client");
+                Console.WriteLine("Release Type : " + info.releaseType);
+                Console.WriteLine("Version : " + info.version);
+                Console.WriteLine("Build Date : " + info.buildDate);
+                Console.WriteLine("Download URL : " + info.downloadUrl);
+                Console.WriteLine("Update URL : " + info.updateUrl);
+                Console.WriteLine("File Size : " + info.size);
+                Console.WriteLine("--------------------------");
+
+                //// Run Updater
+                //Updater updater = new Updater();
+                //updater.assembly = Assembly.GetExecutingAssembly();
+                //updater.Start(info.updateUrl);
+
+                this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(ManualUpdater_AppInfoReceived_GUI), new object[] { info });
+            }
+        }
+
+        void ManualUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
+        {
+            // Check if version is Up-to-date
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            Version version = assembly.GetName().Version;
+
+            ClientVersion = "v" + version.ToString();
+
+            Version latestVersion = null;
+            Version.TryParse(info.version, out latestVersion);
+
+            ClientUpdateShown = false;
+
+            if (latestVersion != null)
+            {
+                if (version < latestVersion)
+                {
+                    Console.WriteLine("Update Available : " + latestVersion.ToString());
+
+                    // Add Notification to Message Center
+                    Message_Center.Message_Data mData = new Message_Center.Message_Data();
+                    mData.title = "Version " + latestVersion.ToString() + " is Available";
+                    mData.text = "Click to Update";
+
+                    mw.messageCenter.AddNotification(mData);
+
+
+                    ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
+                    ClientCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));
+                    ClientCheckImage = null;
+                    //ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Down_01.png"));
+
+                    ClientUpdateShown = true;
                 }
                 else
                 {
@@ -150,7 +248,8 @@ namespace TrakHound_Client.Options.Pages.Updates
                                     ui.PluginImage = CP.Image;
 
                                     // Build Information
-                                    System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                                    //System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                                    Assembly assembly = Assembly.GetAssembly(CP.GetType());
                                     Version version = assembly.GetName().Version;
 
                                     ui.PluginVersion = "v" + version.ToString();
@@ -162,7 +261,7 @@ namespace TrakHound_Client.Options.Pages.Updates
                                     // Update Info
                                     ui.UpdateFileUrl = CP.UpdateFileURL;
 
-                                    ui.CheckUpdateVersion();
+                                    //ui.CheckUpdateVersion();
 
                                     Plugin_STACK.Children.Add(ui);
                                 }
@@ -214,43 +313,129 @@ namespace TrakHound_Client.Options.Pages.Updates
             DependencyProperty.Register("ClientCheckImage", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
 
 
+        public bool ClientUpdateShown
+        {
+            get { return (bool)GetValue(ClientUpdateShownProperty); }
+            set { SetValue(ClientUpdateShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClientUpdateShownProperty =
+            DependencyProperty.Register("ClientUpdateShown", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        public bool ClientInstalledShown
+        {
+            get { return (bool)GetValue(ClientInstalledShownProperty); }
+            set { SetValue(ClientInstalledShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClientInstalledShownProperty =
+            DependencyProperty.Register("ClientInstalledShown", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+ 
         #region "Update Behavior"
 
-        void ProcessUpdateBehavior()
+        int tryCount = 0;
+
+        int ProcessUpdateBehavior()
         {
-            switch (Properties.Settings.Default.UpdateBehavior)
+            int Result = -1;
+
+            tryCount += 1;
+
+            object updateBehavior = GetRegistryKey("Update_Behavior");
+
+            if (updateBehavior != null)
             {
-                case 1: SemiAuto_RADIO.IsChecked = true; break;
+                int val = -1;
+                int.TryParse(updateBehavior.ToString(), out val);
+                if (val >= 0)
+                {
+                    switch (val)
+                    {
+                        case 1: SemiAuto_RADIO.IsChecked = true; break;
 
-                case 2: Manual_RADIO.IsChecked = true; break;
+                        case 2: Manual_RADIO.IsChecked = true; break;
 
-                default: Auto_RADIO.IsChecked = true; break;
+                        default: Auto_RADIO.IsChecked = true; break;
+                    }
+
+                    Result = val;
+                }
+            }
+            else
+            {
+                SetRegistryKey("Update_Behavior", 0);
+                // Try max of 3 times before giving up (don't want to get stuck in a loop)
+                if (tryCount < 4) ProcessUpdateBehavior();
+            }
+
+            return Result;
+        }
+
+        private void Auto_RadioButton_Checked(object sender, RoutedEventArgs e) { SetRegistryKey("Update_Behavior", 0); }
+
+        private void SemiAuto_RadioButton_Checked(object sender, RoutedEventArgs e) { SetRegistryKey("Update_Behavior", 1); }
+
+        private void Manual_RadioButton_Checked(object sender, RoutedEventArgs e) { SetRegistryKey("Update_Behavior", 2); }
+
+        static void SetRegistryKey(string keyName, object keyValue)
+        {
+            try
+            {
+                // Open CURRENT_USER/Software Key
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+                // Create/Open CURRENT_USER/Software/TrakHound Key
+                RegistryKey rootKey = key.CreateSubKey("TrakHound");
+
+                // Create/Open CURRENT_USER/Software/TrakHound/[keyName] Key
+                RegistryKey updateKey = rootKey.CreateSubKey(keyName);
+
+                // Update value for [keyName] to [keyValue]
+                updateKey.SetValue(keyName, keyValue, RegistryValueKind.String);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("TrakHound-Client.Options.Pages.Update.Page.SetRegistryKey() : " + ex.Message);
             }
         }
 
-        private void Auto_RadioButton_Checked(object sender, RoutedEventArgs e)
+        static string GetRegistryKey(string keyName)
         {
-            Properties.Settings.Default.UpdateBehavior = 0;
-            Properties.Settings.Default.Save();
-        }
+            string Result = null;
 
-        private void SemiAuto_RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.UpdateBehavior = 1;
-            Properties.Settings.Default.Save();
-        }
+            try
+            {
+                // Open CURRENT_USER/Software Key
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
 
-        private void Manual_RadioButton_Checked(object sender, RoutedEventArgs e)
-        {
-            Properties.Settings.Default.UpdateBehavior = 2;
-            Properties.Settings.Default.Save();
+                // Open CURRENT_USER/Software/TrakHound Key
+                RegistryKey rootKey = key.OpenSubKey("TrakHound");
+
+                // Open CURRENT_USER/Software/TrakHound/[keyName] Key
+                RegistryKey updateKey = rootKey.OpenSubKey(keyName);
+
+                if (updateKey != null)
+                {
+                    // Read value for [keyName] to [keyValue]
+                    object val = updateKey.GetValue(keyName, 0);
+                    if (val != null) Result = val.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("TrakHound-Client.Options.Pages.Updates.Page.GetRegistryKey() : " + ex.Message);
+            }
+
+            return Result;
         }
 
         #endregion
 
         private void CheckForUpdates_Button_Clicked(Controls.TH_Button bt)
         {
-            AutoUpdater_Initialize();
+            ManualUpdater_Start();
 
             foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
             {
@@ -261,6 +446,38 @@ namespace TrakHound_Client.Options.Pages.Updates
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             LoadPluginConfigurations();
+
+            if (updateBehavior < 2)
+            {
+                foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
+                {
+                    ui.CheckUpdateVersion();
+                }
+            }  
+        }
+
+        private void Download_Button_Clicked(Controls.TH_Button bt)
+        {
+            if (appInfo != null)
+            {
+                // Run Updater
+                Updater updater = new Updater();
+                updater.assembly = Assembly.GetExecutingAssembly();
+                updater.Finished += updater_Finished;
+                updater.Start(appInfo.updateUrl);
+            }
+        }
+
+        void updater_Finished()
+        {
+            this.Dispatcher.BeginInvoke(new Action(updater_Finished_GUI));
+        }
+
+        void updater_Finished_GUI()
+        {
+            ClientUpdateShown = false;
+            ClientInstalledShown = true;
+            ClientCheckResult = "";
         }
 
     }

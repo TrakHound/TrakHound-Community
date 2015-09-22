@@ -31,7 +31,7 @@
 
             <RadioButton x:Name="SemiAuto_RADIO" Content="Check for updates, but let me decide when to install them" Style="{StaticResource TH_RadioButton_Style}" GroupName="UpdateBehavior" Margin="0,5" Checked="SemiAuto_RadioButton_Checked"/>
 
-            <RadioButton x:Name="Manual_RADIO" Content="Never check for updates" GroupName="UpdateBehavior" Style="{StaticResource TH_RadioButton_Style}" Margin="0,5" Checked="Manual_RadioButton_Checked"/>
+            <RadioButton x:Name="Manual_RADIO" Content="Never automatically check for updates" GroupName="UpdateBehavior" Style="{StaticResource TH_RadioButton_Style}" Margin="0,5" Checked="Manual_RadioButton_Checked"/>
 
         </StackPanel>
 
@@ -62,11 +62,11 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="60,0,40,0">
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="60,0,20,0">
 
-                    <TextBlock Text="{Binding ClientCheckResult}" FontSize="18" Foreground="{Binding ClientCheckBrush}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding ClientCheckResult}" FontSize="14" MaxWidth="200" Margin="10,0,10,0" Foreground="{Binding ClientCheckBrush}" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
 
-                    <Rectangle Height="30" Width="30" Margin="10,0,0,0" VerticalAlignment="Center">
+                    <Rectangle Height="25" Width="25" Margin="10,0,0,0" VerticalAlignment="Center">
                         <Rectangle.Resources>
                             <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding ClientCheckImage}" />
                         </Rectangle.Resources>
@@ -75,9 +75,50 @@
                             <Style TargetType="Rectangle">
                                 <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                                 <Setter Property="Fill" Value="{Binding ClientCheckBrush}"/>
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IMG}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
+
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ClientUpdateShown}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <controls:TH_Button x:Name="Download_BT" Text="Update" Height="40" Margin="10,0,0,0"
+                                        Clicked="Download_Button_Clicked"
+                                        
+                                       />
+
+                    </Grid>
+                    
+                    <Border BorderBrush="Green" BorderThickness="1">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ClientInstalledShown}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <TextBlock Text="Restart TrakHound to Apply Update" Width="100" Margin="10" FontSize="12" Foreground="Green" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        
+                    </Border>
 
                 </StackPanel>
              
