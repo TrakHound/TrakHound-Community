@@ -50,14 +50,14 @@ namespace TH_MTC_Data
                 {
                     Type t = info.PropertyType;
 
-                    // Make sure DateTime gets converted to UTC
+                    // Make sure DateTime gets set as UTC
                     if (t == typeof(DateTime))
                     {
                         DateTime dt = DateTime.MinValue;
                         DateTime.TryParse(Value, out dt);
                         if (dt > DateTime.MinValue)
                         {
-                            dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
+                            //dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
                             info.SetValue(obj, dt, null);
                         }
                     }

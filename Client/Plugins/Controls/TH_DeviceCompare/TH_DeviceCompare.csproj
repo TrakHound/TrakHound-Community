@@ -34,6 +34,9 @@
   <PropertyGroup>
     <ApplicationIcon>TrakHound_Logo_Initials_10.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Server|AnyCPU'">
+    <OutputPath>bin\Server\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="OxyPlot">
       <HintPath>..\..\..\..\packages\OxyPlot.Core.2014.1.546\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
@@ -215,11 +218,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Compare_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="License\License.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TrakHound_Logo_10_200px.png" />

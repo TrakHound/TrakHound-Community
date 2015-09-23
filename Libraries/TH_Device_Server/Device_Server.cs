@@ -56,37 +56,14 @@ namespace TH_Device_Server
 
         public void Initialize()
         {
-            System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
-            stpw.Start();
-
             Requests_Initialize();
-
-            stpw.Stop();
-            Console.WriteLine("Initialize() : Requests_Initialize() : " + stpw.ElapsedMilliseconds + "ms");
-
-
-            stpw = new System.Diagnostics.Stopwatch();
-            stpw.Start();
 
             InitializeTables();
 
-            stpw.Stop();
-            Console.WriteLine("Initialize() : InitializeTables() : " + stpw.ElapsedMilliseconds + "ms");
-
-
-            stpw = new System.Diagnostics.Stopwatch();
-            stpw.Start();
-
             TablePlugIns_Initialize(configuration);
-
-            stpw.Stop();
-            Console.WriteLine("Initialize() : TablePlugIns_Initialize() : " + stpw.ElapsedMilliseconds + "ms");
         }
 
-        public void Start()
-        {
-            start();
-        }
+        public void Start() { start(); }
 
         public void Start(bool startSampleFromFirst)
         {
@@ -122,7 +99,6 @@ namespace TH_Device_Server
 
             worker = new Thread(new ThreadStart(Worker_Start));
             worker.Start();
-
         }    
 
         public void Stop()
@@ -130,8 +106,6 @@ namespace TH_Device_Server
             RunningTimeSTPW.Stop();
 
             if (worker != null) worker.Abort();
-
-            //Requests_Stop();
 
             Status = ConnectionStatus.Stopped;
 
@@ -163,18 +137,11 @@ namespace TH_Device_Server
 
         #endregion
 
-        #region "Events"
-
-        #endregion
-
         #endregion
 
         #region "Worker Thread"
 
-        void Worker_Start()
-        {
-            Connection_Initialize();
-        }
+        void Worker_Start() { Connection_Initialize(); }
 
         void Worker_Stop()
         {
@@ -184,7 +151,7 @@ namespace TH_Device_Server
 
             Status = ConnectionStatus.Stopped;
 
-            Log("CNC (" + configuration.Index.ToString() + ") Stopped");
+            Log("Device Server (" + configuration.Index.ToString() + ") Stopped");
         }
 
         #endregion
@@ -227,23 +194,11 @@ namespace TH_Device_Server
                 {
                     Status = ConnectionStatus.Started;
 
-                    System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
-                    stpw.Start();
-
                     Initialize();
-
-                    stpw.Stop();
-                    Console.WriteLine("Connection_Check() : Intialize() : " + stpw.ElapsedMilliseconds + "ms");
 
                     RunningTimeSTPW.Start();
 
-                    stpw = new System.Diagnostics.Stopwatch();
-                    stpw.Start();
-
                     Requests_Start();
-
-                    stpw.Stop();
-                    Console.WriteLine("Connection_Check() : Requests_Start() : " + stpw.ElapsedMilliseconds + "ms");
 
                     Log("Device (" + configuration.Index.ToString() + ") Started...");
                 }
@@ -857,7 +812,6 @@ namespace TH_Device_Server
                     Sample_Start(returnData.header);
                     sampleCounter = 0;
                 }
-                //else Log("Previous Sample still in Progress : Sample Skipped!");
             }
 
             ClearProcessingStatus();
@@ -909,7 +863,7 @@ namespace TH_Device_Server
             return Result;
         }
 
-        const Int64 MaxSampleCount = 5000;
+        const Int64 MaxSampleCount = 10000;
 
         void Sample_Start(TH_MTC_Data.Header_Streams header)
         {

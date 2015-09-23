@@ -1,0 +1,7 @@
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Server\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Server\TH_MySQL.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Server\MySql.Data.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Server\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Server\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Server\TH_MySQL.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Server\TH_MySQL.dll

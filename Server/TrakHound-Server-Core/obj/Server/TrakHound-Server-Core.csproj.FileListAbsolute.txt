@@ -1,0 +1,15 @@
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Server\TrakHound-Server-Core.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TrakHound-Server-Core.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_Device_Server.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_Functions.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_Global.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_MTC_Data.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_MTC_Requests.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_MySQL.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_Ping.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\TH_PlugIns_Server.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\MySql.Data.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Server\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Server\TrakHound-Server-Core.dll

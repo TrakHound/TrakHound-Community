@@ -1,0 +1,3 @@
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\bin\Server\TH_ShiftTable.dll
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Server\TH_ShiftTable.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Server\TH_ShiftTable.dll

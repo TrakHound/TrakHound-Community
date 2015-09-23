@@ -369,8 +369,7 @@ namespace TH_InstanceTable
                         else
                         {
                             values.Add("");
-                        }
-                        
+                        }          
                     }
 
                     if (anyDifferent) rowValues.Add(values);
@@ -640,10 +639,6 @@ namespace TH_InstanceTable
         InstanceData ProcessSingleInstance(TH_MTC_Data.Streams.ReturnData currentData)
         {
             InstanceData Result = new InstanceData(); ;
-
-            //DateTime ts = DateTime.MinValue;
-
-            //DateTime.TryParse(currentData.header.creationTime, out ts);
 
             Result.timestamp = currentData.header.creationTime.ToUniversalTime();
 

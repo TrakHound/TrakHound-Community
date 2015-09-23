@@ -865,15 +865,15 @@ namespace TH_GeneratedData
 
                     }
 
-                    ThreadInfo threadInfo = new ThreadInfo();
-                    threadInfo.tableName = TablePrefix + eventName;
-                    threadInfo.columns = columns.ToArray();
-                    threadInfo.values = rowValues;
-                    threadInfo.update = false;
+                    //ThreadInfo threadInfo = new ThreadInfo();
+                    //threadInfo.tableName = TablePrefix + eventName;
+                    //threadInfo.columns = columns.ToArray();
+                    //threadInfo.values = rowValues;
+                    //threadInfo.update = false;
 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
 
-                    //Global.Row_Insert(config.SQL, TablePrefix + eventName, columns.ToArray(), rowValues);
+                    Global.Row_Insert(config.SQL, TablePrefix + eventName, columns.ToArray(), rowValues);
 
                 }
 
@@ -881,22 +881,22 @@ namespace TH_GeneratedData
 
         }
 
-        class ThreadInfo
-        {
-            public string tableName { get; set; }
-            public object[] columns { get; set; }
-            public List<List<object>> values { get; set; }
-            public bool update { get; set; }
-        }
+        //class ThreadInfo
+        //{
+        //    public string tableName { get; set; }
+        //    public object[] columns { get; set; }
+        //    public List<List<object>> values { get; set; }
+        //    public bool update { get; set; }
+        //}
 
-        void AddItemToSQLQueue(object o)
-        {
-            ThreadInfo threadInfo = (ThreadInfo)o;
+        //void AddItemToSQLQueue(object o)
+        //{
+        //    ThreadInfo threadInfo = (ThreadInfo)o;
 
-            string query = Global.Row_Insert_CreateQuery(threadInfo.tableName, threadInfo.columns, threadInfo.values, threadInfo.update);
+        //    string query = Global.Row_Insert_CreateQuery(threadInfo.tableName, threadInfo.columns, threadInfo.values, threadInfo.update);
 
-            SQL_Queue.Add(query);
-        }
+        //    SQL_Queue.Add(query);
+        //}
 
         string FormatCaptureItemValue(string val)
         {

@@ -29,7 +29,6 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-using TrakHound_Client;
 
 
 namespace TrakHound_Client.Options.Pages.Updates {
