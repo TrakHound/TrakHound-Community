@@ -88,12 +88,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Devices.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

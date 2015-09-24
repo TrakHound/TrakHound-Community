@@ -24,7 +24,7 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Logger.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Logger.pdb
 C:\TrakHound\Server\TrakHound-Server\LICENSE.txt
-C:\TrakHound\Server\TrakHound-Server\Devices.xml
+C:\TrakHound\Server\TrakHound-Server\Configuration.xml
 C:\TrakHound\Server\TrakHound-Server\TrakHound-Server.exe.config
 C:\TrakHound\Server\TrakHound-Server\TrakHound-Server.exe
 C:\TrakHound\Server\TrakHound-Server\TrakHound-Server.pdb

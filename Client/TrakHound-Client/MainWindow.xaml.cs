@@ -1474,29 +1474,35 @@ namespace TrakHound_Client
 
                 foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
                 {
-                    switch (Node.Name.ToLower())
+                    if (Node.NodeType == XmlNodeType.Element)
                     {
-                        case "devices":
-                            foreach (XmlNode ChildNode in Node.ChildNodes)
-                            {
-                                switch (ChildNode.Name.ToLower())
+                        switch (Node.Name.ToLower())
+                        {
+                            case "devices":
+                                foreach (XmlNode ChildNode in Node.ChildNodes)
                                 {
-                                    case "device":
-
-                                        Configuration config = GetSettingsFromNode(ChildNode);
-                                        if (config != null)
+                                    if (ChildNode.NodeType == XmlNodeType.Element)
+                                    {
+                                        switch (ChildNode.Name.ToLower())
                                         {
-                                            Device_Client device = new Device_Client(config);
-                                            device.Index = index;
-                                            device.DataUpdated += Device_DataUpdated;
-                                            Devices.Add(device);
-                                            index += 1;
+                                            case "device":
+
+                                                Configuration config = GetSettingsFromNode(ChildNode);
+                                                if (config != null)
+                                                {
+                                                    Device_Client device = new Device_Client(config);
+                                                    device.Index = index;
+                                                    device.DataUpdated += Device_DataUpdated;
+                                                    Devices.Add(device);
+                                                    index += 1;
+                                                }
+                                                break;
                                         }
-                                        break;
+                                    }
                                 }
-                            }
-                            break;
-                    }
+                                break;
+                        }
+                    }             
                 }
             }
         }

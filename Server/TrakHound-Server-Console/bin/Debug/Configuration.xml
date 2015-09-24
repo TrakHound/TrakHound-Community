@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration>
+
+  <Devices>
+
+    <Device>
+      <!--<Configuration_Path>MTConnect\Device_Configuration.xml</Configuration_Path>-->
+      <Configuration_Path>Mazak1-1\Device_Configuration.xml</Configuration_Path>
+    </Device>
+
+  </Devices>
+
+</Configuration>

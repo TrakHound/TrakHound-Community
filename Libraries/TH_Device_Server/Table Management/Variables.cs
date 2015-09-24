@@ -54,7 +54,7 @@ namespace TH_Device_Server.TableManagement
                 else
                 {
                     prev_Value = OldRow["value"].ToString();
-                    lastchanged = DateTime.Now.ToString();
+                    lastchanged = DateTime.UtcNow.ToString();
                 }
 
                 Columns = new object[] { "variable_name", "value", "last_changed", "prev_value" };

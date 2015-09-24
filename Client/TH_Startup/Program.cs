@@ -65,7 +65,10 @@ namespace TH_Startup
         {
             try
             {
-                Process.Start("trakhound-client.exe");
+
+                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+
+                Process.Start(clientPath);
             }
             catch (Exception ex ) { Console.WriteLine("TH_StartUp.OpenClient() :: " + ex.Message); }
         }

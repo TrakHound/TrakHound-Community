@@ -577,7 +577,7 @@ namespace TH_InstanceTable
                         else FillInstanceDataWithCurrentData(usedVariables.ToList(), data, currentData);
 
                         // Set timestamp for InstanceData object
-                        data.timestamp = timestamp.ToUniversalTime();
+                        data.timestamp = timestamp;
 
                         data.agentInstanceId = currentData.header.instanceId;
 
@@ -640,7 +640,7 @@ namespace TH_InstanceTable
         {
             InstanceData Result = new InstanceData(); ;
 
-            Result.timestamp = currentData.header.creationTime.ToUniversalTime();
+            Result.timestamp = currentData.header.creationTime;
 
             FillInstanceDataWithCurrentData(new List<string>(), Result, currentData);
 

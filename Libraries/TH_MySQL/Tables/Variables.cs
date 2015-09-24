@@ -44,7 +44,7 @@ namespace TH_MySQL.Tables
             List<object> values = new List<object>();
             values.Add(variable);
             values.Add(value);
-            values.Add(TH_MySQL.MySQL_Tools.ConvertDateStringtoMySQL(timestamp.ToUniversalTime().ToString()));
+            values.Add(TH_MySQL.MySQL_Tools.ConvertDateStringtoMySQL(timestamp.ToString()));
 
             Global.Row_Insert(SQL, TableNames.Variables, columns.ToArray(), values.ToArray());
         }

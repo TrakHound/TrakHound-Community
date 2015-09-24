@@ -486,6 +486,9 @@ namespace TH_DeviceCompare
 
                 if (progress > DateTime.MinValue)
                 {
+                    // Current Shift Time is stored as UTC so convert it to Local
+                    progress = progress.ToLocalTime();
+
                     duration = Convert.ToInt64((end - progress).TotalSeconds);
                     if (duration <= int.MaxValue && duration >= int.MinValue) sd.Bar_Value = Convert.ToInt16(duration);
                 }

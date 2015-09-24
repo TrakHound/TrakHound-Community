@@ -374,10 +374,10 @@
 		<row><td>TH_ShiftTable.Primary_output2</td><td>{46E59A18-DFA2-4C5E-8354-8329CD9CEA2E}</td><td>TH_SHIFTTABLE</td><td>2</td><td/><td>th_shifttable.primary_output2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_StartService.Primary_output</td><td>{B0BBE550-9ABE-48FB-9987-30DE0C6D1BFF}</td><td>ADMIN_FUNCTIONS</td><td>2</td><td/><td>th_startservice.primary_outp</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_StopService.Primary_output</td><td>{82623C7C-BA84-44CE-B10C-C5F45EC7D896}</td><td>ADMIN_FUNCTIONS</td><td>2</td><td/><td>th_stopservice.primary_outpu</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>TrakHound_Server.Content_Files</td><td>{991D49A6-BA29-4A96-A484-309CD3F9FE60}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_server.content_fil</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Server.Primary_output</td><td>{C8600CAA-9C22-4B20-8592-23C91C29B760}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_server.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Server_Console.Primary_output</td><td>{EFE2F934-BD51-4FE0-998D-250BDFC19B1B}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_server_console.pri</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Server_Controller.Primary_output</td><td>{56470A7C-5CEA-40E4-A32D-9C03621A6D0A}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_server_controller.</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TrakHound_Server_Core.Content_Files</td><td>{3428BAAF-CD0F-4FDB-B759-9CE574BB9345}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_server_core.conten</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Server_Core.Primary_output</td><td>{E2D2708A-9C92-443E-9E4E-386D4C28AB4A}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_server_core.primar</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -1950,10 +1950,10 @@
 		<row><td>AlwaysInstall</td><td>TH_ShiftTable.Primary_output2</td></row>
 		<row><td>AlwaysInstall</td><td>TH_StartService.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_StopService.Primary_output</td></row>
-		<row><td>AlwaysInstall</td><td>TrakHound_Server.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Server.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Server_Console.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Server_Controller.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TrakHound_Server_Core.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Server_Core.Primary_output</td></row>
 	</table>
 
@@ -1991,10 +1991,10 @@
 		<row><td>th_shifttable.primary_output2</td><td>TH_ShiftTable.Primary_output2</td><td>TH_ShiftTable.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_ShiftTable&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_startservice.primary_outp</td><td>TH_StartService.Primary_output</td><td>TH_StartService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_StartService&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_stopservice.primary_outpu</td><td>TH_StopService.Primary_output</td><td>TH_StopService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_StopService&gt;|Built</td><td>3</td><td/></row>
-		<row><td>trakhound_server.content_fil</td><td>TrakHound_Server.Content_Files</td><td>TrakHound-Server.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Server&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>trakhound_server.primary_out</td><td>TrakHound_Server.Primary_output</td><td>TrakHound-Server.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;TrakHound-Server&gt;|Built</td><td>3</td><td/></row>
 		<row><td>trakhound_server_console.pri</td><td>TrakHound_Server_Console.Primary_output</td><td>TrakHound-Server-Console.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Server-Console&gt;|Built</td><td>3</td><td/></row>
 		<row><td>trakhound_server_controller.</td><td>TrakHound_Server_Controller.Primary_output</td><td>TrakHound-Server-Controller.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Server-Controller&gt;|Built</td><td>3</td><td/></row>
+		<row><td>trakhound_server_core.conten</td><td>TrakHound_Server_Core.Content_Files</td><td>TrakHound-Server-Core.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Server-Core&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>trakhound_server_core.primar</td><td>TrakHound_Server_Core.Primary_output</td><td>TrakHound-Server-Core.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Server-Core&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
@@ -2170,10 +2170,10 @@
 		<row><td>TH_ShiftTable.Primary_output2</td><td/><td/><td>_FC600821_2E11_4F44_8BF4_A90D06A1633F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_StartService.Primary_output</td><td/><td/><td>_180C6A00_B49F_4458_8B62_ABD31DEE6E79_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_StopService.Primary_output</td><td/><td/><td>_0C029E6B_B0E1_4F6D_89CE_8FD0B68551D6_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>TrakHound_Server.Content_Files</td><td/><td/><td>_41148300_A03D_4E73_9D0A_23EB925FFF75_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Server.Primary_output</td><td/><td/><td>_44A6B671_A3CB_41FC_81DD_BCC2B08875E1_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Server_Console.Primary_output</td><td/><td/><td>_A5130DDD_9368_4140_B54A_F532FC03AD79_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Server_Controller.Primary_output</td><td/><td/><td>_92DBC990_13DC_41C8_AD19_D28ECD24CA5A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TrakHound_Server_Core.Content_Files</td><td/><td/><td>_AB055372_B798_472E_B99F_369D2A5CADD7_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Server_Core.Primary_output</td><td/><td/><td>_D73C9EBD_37BE_49F7_9D06_5711054EF021_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 

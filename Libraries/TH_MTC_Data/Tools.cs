@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Globalization;
 using System.Xml;
 using System.Data;
 
@@ -53,13 +54,8 @@ namespace TH_MTC_Data
                     // Make sure DateTime gets set as UTC
                     if (t == typeof(DateTime))
                     {
-                        DateTime dt = DateTime.MinValue;
-                        DateTime.TryParse(Value, out dt);
-                        if (dt > DateTime.MinValue)
-                        {
-                            //dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
-                            info.SetValue(obj, dt, null);
-                        }
+                        DateTime dt = TH_Global.Functions.ConvertStringToUTC(Value);
+                        info.SetValue(obj, dt, null);
                     }
                     else
                     {

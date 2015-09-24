@@ -22,7 +22,7 @@ namespace TrakHound_Server_Core
         public void Start()
         {
 
-            Devices = ReadDevices();
+            Devices = ReadConfigurationFile();
 
             foreach (Device_Server device in Devices)
             {
@@ -38,45 +38,111 @@ namespace TrakHound_Server_Core
             }
         }
 
-        static List<Device_Server> ReadDevices()
+        static List<Device_Server> ReadConfigurationFile()
         {
             List<Device_Server> Result = new List<Device_Server>();
 
-            string path = AppDomain.CurrentDomain.BaseDirectory + "Devices.Xml";
+            string configPath;
 
-            Logger.Log(path);
+            string localPath = AppDomain.CurrentDomain.BaseDirectory + "Configuration.Xml";
+            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
 
-            if (System.IO.File.Exists(path))
+            // systemPath takes priority (easier for user to navigate to)
+            if (File.Exists(systemPath)) configPath = systemPath;
+            else configPath = localPath;
+
+            Logger.Log(configPath);
+
+            if (System.IO.File.Exists(configPath))
             {
                 XmlDocument doc = new XmlDocument();
-                doc.Load(path);
+                doc.Load(configPath);
 
                 int index = 0;
 
-                if (doc.DocumentElement.Name.ToLower() == "devices")
+                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
                 {
-                    foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+                    if (Node.NodeType == XmlNodeType.Element)
                     {
-                        if (node.NodeType == XmlNodeType.Element)
+                        switch (Node.Name.ToLower())
                         {
-                            if (node.Name.ToLower() == "device")
-                            {
-                                Device_Server device = ProcessDevice(index, node);
-                                if (device != null)
+                            case "devices":
+                                foreach (XmlNode ChildNode in Node.ChildNodes)
                                 {
-                                    Result.Add(device);
-                                    index += 1;
+                                    if (ChildNode.NodeType == XmlNodeType.Element)
+                                    {
+                                        switch (ChildNode.Name.ToLower())
+                                        {
+                                            case "device":
+
+                                                Device_Server device = ProcessDevice(index, ChildNode);
+                                                if (device != null)
+                                                {
+                                                    Result.Add(device);
+                                                    index += 1;
+                                                }
+                                                break;
+                                        }
+                                    }
                                 }
-                            }
+                                break;
                         }
-                    }
-                    Logger.Log("Devices File Successfully Read From : " + path);
+                    }  
                 }
+
+                Logger.Log("Configuration File Successfully Read From : " + configPath);
             }
-            else Logger.Log("Devices File Not Found : " + path);
+            else Logger.Log("Configuration File Not Found : " + configPath);
 
             return Result;
         }
+
+        //static List<Device_Server> ReadDevices()
+        //{
+        //    List<Device_Server> Result = new List<Device_Server>();
+
+        //    string configPath;
+
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "Configuration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
+
+        //    Logger.Log(configPath);
+
+        //    if (System.IO.File.Exists(configPath))
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(configPath);
+
+        //        int index = 0;
+
+        //        if (doc.DocumentElement.Name.ToLower() == "configuration")
+        //        {
+        //            foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+        //            {
+        //                if (node.NodeType == XmlNodeType.Element)
+        //                {
+        //                    if (node.Name.ToLower() == "device")
+        //                    {
+        //                        Device_Server device = ProcessDevice(index, node);
+        //                        if (device != null)
+        //                        {
+        //                            Result.Add(device);
+        //                            index += 1;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            Logger.Log("Devices File Successfully Read From : " + configPath);
+        //        }
+        //    }
+        //    else Logger.Log("Devices File Not Found : " + configPath);
+
+        //    return Result;
+        //}
 
         static Device_Server ProcessDevice(int index, XmlNode node)
         {

@@ -1,4 +1,5 @@
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Configuration.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TrakHound-Server-Core.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Configuration.dll

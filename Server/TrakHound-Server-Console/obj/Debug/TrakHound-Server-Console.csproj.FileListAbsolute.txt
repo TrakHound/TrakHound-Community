@@ -1,5 +1,4 @@
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Devices.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.exe.config
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.pdb
@@ -26,3 +25,4 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Ping.
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Configuration.xml

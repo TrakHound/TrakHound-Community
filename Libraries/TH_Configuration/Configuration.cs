@@ -69,24 +69,27 @@ namespace TH_Configuration
         {
             get
             {
-                string Result = "";
+                return GetDatabaseName(SQL);
 
-                List<string> Items = new List<string>();
 
-                if (SQL.Database_Prefix != null) Items.Add(SQL.Database_Prefix.ToLower());
-                if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
-                if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
-                if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
-                if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
-                if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
+                //string Result = "";
 
-                for (int x = 0; x <= Items.Count - 1; x++)
-                {
-                    if (x > 0) Result += "_";
-                    Result += Items[x];
-                }
+                //List<string> Items = new List<string>();
 
-                return Result;
+                //if (SQL.Database_Prefix != null) Items.Add(SQL.Database_Prefix.ToLower());
+                //if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
+                //if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
+                //if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
+                //if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
+                //if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
+
+                //for (int x = 0; x <= Items.Count - 1; x++)
+                //{
+                //    if (x > 0) Result += "_";
+                //    Result += Items[x];
+                //}
+
+                //return Result;
             }
         }
 
@@ -97,6 +100,28 @@ namespace TH_Configuration
         static string GetUniqueID(Configuration config)
         {
             return config.DataBaseName + ";" + config.SQL.Server + ";" + config.SQL.Port.ToString();
+        }
+
+        public string GetDatabaseName(SQL_Settings sql)
+        {
+            string Result = "";
+
+            List<string> Items = new List<string>();
+
+            if (sql.Database_Prefix != null) Items.Add(sql.Database_Prefix.ToLower());
+            if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
+            if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
+            if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
+            if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
+            if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
+
+            for (int x = 0; x <= Items.Count - 1; x++)
+            {
+                if (x > 0) Result += "_";
+                Result += Items[x];
+            }
+
+            return Result;
         }
 
 
@@ -139,7 +164,12 @@ namespace TH_Configuration
                     }
                 }
 
-                Result.SQL.Database = Result.DataBaseName;
+                Result.SQL.Database = Result.GetDatabaseName(Result.SQL);
+                if (Result.SQL.AdminSQL != null) Result.SQL.AdminSQL.Database = Result.GetDatabaseName(Result.SQL.AdminSQL);
+
+                string databaseNames = Result.SQL.Database;
+                if (Result.SQL.AdminSQL != null) databaseNames += " :: " + Result.SQL.AdminSQL.Database;
+                Console.WriteLine("Database Name = " + databaseNames);
 
                 Result.UniqueId = GetUniqueID(Result);
 
@@ -187,7 +217,6 @@ namespace TH_Configuration
 
         }
 
-
         private static SQL_Settings Process_SQL(XmlNode Node)
         {
 
@@ -208,6 +237,13 @@ namespace TH_Configuration
                             Type t = info.PropertyType;
                             info.SetValue(Result, Convert.ChangeType(Child.InnerText, t), null);
                         }
+                        else
+                        {
+                            if (Child.Name.ToLower() == "admin_sql")
+                            {
+                                Result.AdminSQL = Process_SQL(Child);
+                            }
+                        }
 
                     }
                 }
@@ -216,7 +252,6 @@ namespace TH_Configuration
             return Result;
 
         }
-
 
         private static Description_Settings Process_Description(XmlNode Node)
         {
