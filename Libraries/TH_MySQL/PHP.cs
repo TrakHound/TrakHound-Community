@@ -664,51 +664,53 @@ namespace TH_MySQL
                     values["db"] = SQL_S.Database;
 
 
-                    //Create Columns string
-                    string cols = "";
-                    for (int x = 0; x <= Columns.Length - 1; x++)
-                    {
-                        cols += Columns[x].ToString().ToUpper();
-                        if (x < Columns.Length - 1) cols += ", ";
-                    }
+                    ////Create Columns string
+                    //string cols = "";
+                    //for (int x = 0; x <= Columns.Length - 1; x++)
+                    //{
+                    //    cols += Columns[x].ToString().ToUpper();
+                    //    if (x < Columns.Length - 1) cols += ", ";
+                    //}
 
-                    //Create Values string
-                    string vals = "";
-                    for (int x = 0; x <= Values.Length - 1; x++)
-                    {
-                        // Dont put the ' characters if the value is null
-                        if (Values[x] == null) vals += "null";
-                        else
-                        {
-                            if (Values[x].ToString().ToLower() != "null") vals += "'" + Values[x].ToString() + "'";
-                            else vals += Values[x].ToString();
-                        }
+                    ////Create Values string
+                    //string vals = "";
+                    //for (int x = 0; x <= Values.Length - 1; x++)
+                    //{
+                    //    // Dont put the ' characters if the value is null
+                    //    if (Values[x] == null) vals += "null";
+                    //    else
+                    //    {
+                    //        if (Values[x].ToString().ToLower() != "null") vals += "'" + Values[x].ToString() + "'";
+                    //        else vals += Values[x].ToString();
+                    //    }
 
 
-                        if (x < Values.Length - 1) vals += ", ";
-                    }
+                    //    if (x < Values.Length - 1) vals += ", ";
+                    //}
 
-                    //Create Update string
-                    string update = "";
-                    if (Update)
-                    {
-                        update = " ON DUPLICATE KEY UPDATE ";
-                        for (int x = 0; x <= Columns.Length - 1; x++)
-                        {
-                            if (Values[x] != null)
-                            {
+                    ////Create Update string
+                    //string update = "";
+                    //if (Update)
+                    //{
+                    //    update = " ON DUPLICATE KEY UPDATE ";
+                    //    for (int x = 0; x <= Columns.Length - 1; x++)
+                    //    {
+                    //        if (Values[x] != null)
+                    //        {
 
-                                update += Columns[x].ToString().ToUpper();
-                                update += "=";
-                                update += "'" + Values[x].ToString() + "'";
+                    //            update += Columns[x].ToString().ToUpper();
+                    //            update += "=";
+                    //            update += "'" + Values[x].ToString() + "'";
 
-                                if (x < Columns.Length - 1) update += ", ";
+                    //            if (x < Columns.Length - 1) update += ", ";
 
-                            }
-                        }
-                    }
+                    //        }
+                    //    }
+                    //}
 
-                    values["query"] = "INSERT IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")" + update;
+                    //values["query"] = "INSERT IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")" + update;
+
+                    values["query"] = Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
 
                     string PHP_Directory = "";
                     if (SQL_S.PHP_Directory != "") PHP_Directory = "/" + SQL_S.PHP_Directory;
@@ -789,59 +791,61 @@ namespace TH_MySQL
                 values["db"] = SQL_S.Database;
 
 
-                //Create Columns string
-                string cols = "";
-                for (int x = 0; x <= Columns.Length - 1; x++)
-                {
-                    cols += Columns[x].ToString().ToUpper();
-                    if (x < Columns.Length - 1) cols += ", ";
-                }
+                ////Create Columns string
+                //string cols = "";
+                //for (int x = 0; x <= Columns.Length - 1; x++)
+                //{
+                //    cols += Columns[x].ToString().ToUpper();
+                //    if (x < Columns.Length - 1) cols += ", ";
+                //}
 
-                //Create Values string
-                string vals = "VALUES ";
-                for (int i = 0; i <= Values.Count - 1; i++)
-                {
-                    vals += "(";
+                ////Create Values string
+                //string vals = "VALUES ";
+                //for (int i = 0; i <= Values.Count - 1; i++)
+                //{
+                //    vals += "(";
 
-                    for (int x = 0; x <= Values[i].Count - 1; x++)
-                    {
+                //    for (int x = 0; x <= Values[i].Count - 1; x++)
+                //    {
 
-                        List<object> ValueSet = Values[i];
+                //        List<object> ValueSet = Values[i];
 
-                        // Dont put the ' characters if the value is null
-                        if (ValueSet[x] == null) vals += "null";
-                        else
-                        {
-                            if (ValueSet[x].ToString().ToLower() != "null") vals += "'" + ValueSet[x].ToString() + "'";
-                            else vals += ValueSet[x].ToString();
-                        }
+                //        // Dont put the ' characters if the value is null
+                //        if (ValueSet[x] == null) vals += "null";
+                //        else
+                //        {
+                //            if (ValueSet[x].ToString().ToLower() != "null") vals += "'" + ValueSet[x].ToString() + "'";
+                //            else vals += ValueSet[x].ToString();
+                //        }
 
 
-                        if (x < ValueSet.Count - 1) vals += ", ";
-                    }
+                //        if (x < ValueSet.Count - 1) vals += ", ";
+                //    }
 
-                    vals += ")";
+                //    vals += ")";
 
-                    if (i < Values.Count - 1) vals += ",";
+                //    if (i < Values.Count - 1) vals += ",";
 
-                }
+                //}
 
-                //Create Update string
-                string update = "";
-                if (Update)
-                {
-                    update = " ON DUPLICATE KEY UPDATE ";
-                    for (int x = 0; x <= Columns.Length - 1; x++)
-                    {
-                        update += Columns[x].ToString().ToUpper();
-                        update += "=";
-                        update += "VALUES(" + Columns[x].ToString().ToUpper() + ")";
+                ////Create Update string
+                //string update = "";
+                //if (Update)
+                //{
+                //    update = " ON DUPLICATE KEY UPDATE ";
+                //    for (int x = 0; x <= Columns.Length - 1; x++)
+                //    {
+                //        update += Columns[x].ToString().ToUpper();
+                //        update += "=";
+                //        update += "VALUES(" + Columns[x].ToString().ToUpper() + ")";
 
-                        if (x < Columns.Length - 1) update += ", ";
-                    }
-                }
+                //        if (x < Columns.Length - 1) update += ", ";
+                //    }
+                //}
 
-                values["query"] = "INSERT IGNORE INTO " + TableName + " (" + cols + ") " + vals + update;
+                //values["query"] = "INSERT IGNORE INTO " + TableName + " (" + cols + ") " + vals + update;
+
+                values["query"] = Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
 
                 //values["query"] = TH_MySQL.Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
 

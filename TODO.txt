@@ -1,0 +1,12 @@
+
+
+
+
+
+TODO:
+
+
+
+- Fix issue with admin_Sql and ShiftTable Columns
+
+- Fix issue with Previous shift time (racking up several hours on the first shift of the day)

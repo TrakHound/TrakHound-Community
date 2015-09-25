@@ -7,6 +7,8 @@ namespace TH_ShiftTable
         public ShiftTime() { }
         public ShiftTime(DateTime dt)
         {
+            //dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
+
             DateTime local = dt.ToLocalTime();
 
             hour = local.Hour;

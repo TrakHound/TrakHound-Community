@@ -26,10 +26,10 @@ namespace TH_ShiftTable
 
         public List<GenEventRowInfo> genEventRowInfos { get; set; }
 
-        public static string GetId(ShiftDate date, int id, int segmentId)
-        {
-            return date.year.ToString("0000") + date.month.ToString("00") + date.day.ToString("00") + "_" + id.ToString("00") + "_" + segmentId.ToString("00");
-        }
+        //public static string GetId(ShiftDate date, int id, int segmentId)
+        //{
+        //    return date.year.ToString("0000") + date.month.ToString("00") + date.day.ToString("00") + "_" + id.ToString("00") + "_" + segmentId.ToString("00");
+        //}
 
         public ShiftRowInfo Copy()
         {

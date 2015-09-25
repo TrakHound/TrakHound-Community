@@ -346,7 +346,8 @@ namespace TH_Cycles
                     TH_GeneratedData.GeneratedData.GeneratedEvents.CaptureItem ci = item.CaptureItems.Find(x => x.id.ToLower() == cc.CycleIdLink.ToLower());
                     if (ci != null)
                     {
-                        string shift_id = ShiftRowInfo.GetId(item.shiftDate, item.segment.shiftConfiguration.id, item.segment.id);
+                        //string shift_id = ShiftRowInfo.GetId(item.shiftDate, item.segment.shiftConfiguration.id, item.segment.id);
+                        string shift_id = ShiftTable.GetShiftId(item.shiftDate, item.segment.shiftConfiguration.id, item.segment.id);
                         string cycle_id = ci.value;
 
                         CycleRowInfo info = null;

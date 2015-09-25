@@ -33,5 +33,12 @@ namespace TH_MySQL
             return Result;
         }
 
+        public static string ConvertToSafe(string s)
+        {
+            string r = s;
+            if (r.Contains("'")) r = r.Replace("'", "\'");
+            return r;
+        }
+
     }
 }

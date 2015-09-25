@@ -805,12 +805,19 @@ namespace TH_Device_Server
 
             sampleCounter += 1;
 
-            if (sampleCounter >= sampleInterval || (sampleCounter <= 0 || configuration.Agent.Simulation_Sample_Path != null))
+            if (configuration.Agent.Simulation_Sample_Path != null)
             {
-                if (!inProgress)
+                Sample_Start();
+            }
+            else
+            {
+                if (sampleCounter >= sampleInterval || (sampleCounter <= 0))
                 {
-                    Sample_Start(returnData.header);
-                    sampleCounter = 0;
+                    if (!inProgress)
+                    {
+                        Sample_Start(returnData.header);
+                        sampleCounter = 0;
+                    }
                 }
             }
 
@@ -921,12 +928,13 @@ namespace TH_Device_Server
                 Variables.Update(configuration.SQL, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
 
 
-                if (configuration.Agent.Simulation_Sample_Path != null)
-                {
-                    Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
-                    sample.Start(null, First, SampleCount);
-                }
-                else if (SampleCount > 0)
+                //if (configuration.Agent.Simulation_Sample_Path != null)
+                //{
+                //    Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
+                //    sample.Start(null, First, SampleCount);
+                //}
+                //else if (SampleCount > 0)
+                if (SampleCount > 0)
                 {
                     Log("Sample_Start() : " + First.ToString() + " to " + Last.ToString());
                     sample.Start(null, First, SampleCount);
@@ -940,6 +948,21 @@ namespace TH_Device_Server
                 }
                     
             }
+        }
+
+        // Simulation File Sample
+        void Sample_Start()
+        {
+            Probe_Stop();
+            Current_Stop();
+
+            Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
+
+            sample = new Sample();
+            sample.configuration = configuration;
+            sample.SampleFinished -= sample_SampleFinished;
+            sample.SampleFinished += sample_SampleFinished;
+            sample.Start(null, 0, 0);
         }
 
         void Sample_Stop()

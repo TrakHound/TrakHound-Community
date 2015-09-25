@@ -120,6 +120,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Adapter", "Libraries\TH_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_History", "Client\Plugins\Controls\TH_History\TH_History.csproj", "{04008560-D904-496C-82BC-54E1B3458D90}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ADAEDDC0-659A-4052-8903-F58E7495C61B}"
+	ProjectSection(SolutionItems) = preProject
+		TODO.txt = TODO.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU

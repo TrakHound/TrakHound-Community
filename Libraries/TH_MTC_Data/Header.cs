@@ -78,7 +78,8 @@ namespace TH_MTC_Data
         public Header_Devices(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
+            creationTime = TH_Global.Functions.ConvertDateTimeToUTC(creationTime);
+            //creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
         }
 
         // Required
@@ -101,7 +102,8 @@ namespace TH_MTC_Data
         public Header_Streams(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
+            creationTime = TH_Global.Functions.ConvertDateTimeToUTC(creationTime);
+            //creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
         }
 
         // Required
@@ -126,7 +128,8 @@ namespace TH_MTC_Data
         public Header_Assets(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
+            creationTime = TH_Global.Functions.ConvertDateTimeToUTC(creationTime);
+            //creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
         }
 
         // Required
@@ -148,7 +151,8 @@ namespace TH_MTC_Data
         public Header_Error(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
+            creationTime = TH_Global.Functions.ConvertDateTimeToUTC(creationTime);
+            //creationTime = new DateTime(creationTime.Ticks, DateTimeKind.Local);
         }
 
         // Required

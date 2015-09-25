@@ -343,7 +343,7 @@ namespace TH_MySQL
                 if (Values[x] == null) vals += "null";
                 else
                 {
-                    if (Values[x].ToString().ToLower() != "null") vals += "'" + Values[x].ToString() + "'";
+                    if (Values[x].ToString().ToLower() != "null") vals += "'" + MySQL_Tools.ConvertToSafe(Values[x].ToString()) + "'";
                     else vals += Values[x].ToString();
                 }
 
@@ -361,7 +361,7 @@ namespace TH_MySQL
                     {
                         update += Columns[x].ToString().ToUpper();
                         update += "=";
-                        update += "'" + Values[x].ToString() + "'";
+                        update += "'" + MySQL_Tools.ConvertToSafe(Values[x].ToString()) + "'";
 
                         if (x < Columns.Length - 1) update += ", ";
                     }
@@ -397,7 +397,7 @@ namespace TH_MySQL
                     if (ValueSet[x] == null) vals += "null";
                     else
                     {
-                        if (ValueSet[x].ToString().ToLower() != "null") vals += "'" + ValueSet[x].ToString() + "'";
+                        if (ValueSet[x].ToString().ToLower() != "null") vals += "'" + MySQL_Tools.ConvertToSafe(ValueSet[x].ToString()) + "'";
                         else vals += ValueSet[x].ToString();
                     }
 

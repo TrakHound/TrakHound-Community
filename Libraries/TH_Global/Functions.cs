@@ -41,5 +41,19 @@ namespace TH_Global
             }
             else return new DateTime(year, month, day, hour, minute, second, DateTimeKind.Utc);
         }
+
+        public static DateTime ConvertDateTimeToUTC(DateTime dt)
+        {         
+            int year = dt.Year;
+            int month = dt.Month;
+            int day = dt.Day;
+
+            int hour = dt.Hour;
+            int minute = dt.Minute;
+            int second = dt.Second;
+            int millisecond = dt.Millisecond;
+
+            return new DateTime(year, month, day, hour, minute, second, millisecond, DateTimeKind.Utc);
+        }
     }
 }

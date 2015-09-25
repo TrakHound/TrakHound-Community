@@ -69,7 +69,7 @@ namespace TH_ShiftTable
                 TH_MySQL.Tables.Variables.Update(config.SQL, "shift_begintime", currentShift.shift.beginTime.ToString(), returnData.header.creationTime);
                 TH_MySQL.Tables.Variables.Update(config.SQL, "shift_endtime", currentShift.shift.endTime.ToString(), returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", new ShiftTime(returnData.header.creationTime).ToString(), returnData.header.creationTime);
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", currentShift.currentTime.ToString(), returnData.header.creationTime);
             }
         }
 
@@ -643,6 +643,371 @@ namespace TH_ShiftTable
 
         List<GeneratedData.GeneratedEventItem> previousItems;
 
+
+
+
+        // NEW Algorithm 9-24-15 ------------------------------------------------------------------
+
+        class ListInfo
+        {
+            public ListInfo() { genEventItems = new List<GeneratedData.GeneratedEventItem>(); }
+
+            public string title { get; set; }
+            public object data { get; set; }
+            public List<GeneratedData.GeneratedEventItem> genEventItems { get; set; }
+        }
+
+        static List<ListInfo> GetListByName(List<GeneratedData.GeneratedEventItem> genEventItems)
+        {
+            List<ListInfo> Result = new List<ListInfo>();
+
+            // Get a list of all of the distinct (by Event Name) genEventItems
+            IEnumerable<string> distinctNames = genEventItems.Select(x => x.eventName).Distinct();
+
+            // Loop through the distinct event names  
+            foreach (string distinctName in distinctNames.ToList())
+            {
+                ListInfo info = new ListInfo();
+                info.title = distinctName;
+                info.genEventItems = genEventItems.FindAll(x => x.eventName.ToLower() == distinctName.ToLower());
+                Result.Add(info);
+            }
+
+            return Result;
+        }
+
+        static List<ListInfo> GetListByDate(List<GeneratedData.GeneratedEventItem> genEventItems)
+        {
+            List<ListInfo> Result = new List<ListInfo>();
+
+            IEnumerable<ShiftDate> distinctDates = genEventItems.Select(x => new ShiftDate(x.timestamp)).Distinct();
+
+            // Loop through the distinct ShiftDates  
+            foreach (ShiftDate shiftDate in distinctDates.ToList())
+            {
+                // Get a list of all of the eventitems during this shiftDate
+                List<GeneratedData.GeneratedEventItem> sameDates = genEventItems.FindAll(x => new ShiftDate(x.timestamp) == shiftDate);
+
+                // Make sure they are Sorted First to Last
+                sameDates.Sort((a, b) => a.timestamp.CompareTo(b.timestamp));
+
+                ListInfo info = new ListInfo();
+                info.title = shiftDate.ToString();
+                info.genEventItems = sameDates;
+                Result.Add(info);
+            }
+
+            return Result;
+        }
+
+        static List<ListInfo> GetListByShift(ShiftTableConfiguration stc, List<GeneratedData.GeneratedEventItem> genEventItems)
+        {
+            List<ListInfo> Result = new List<ListInfo>();
+
+            foreach (ShiftConfiguration shift in stc.shifts)
+            {
+                ListInfo info = new ListInfo();
+                info.title = shift.name;
+                info.data = shift;
+                info.genEventItems = genEventItems.FindAll(x => (new ShiftTime(x.timestamp) >= shift.beginTime && new ShiftTime(x.timestamp) < shift.endTime));
+                Result.Add(info);
+            }
+
+            return Result;
+        }
+
+        static List<ListInfo> GetListByShiftSegment(ShiftConfiguration shift, List<GeneratedData.GeneratedEventItem> genEventItems)
+        {
+            List<ListInfo> Result = new List<ListInfo>();
+
+            foreach (SegmentConfiguration segment in shift.segments)
+            {
+                ListInfo info = new ListInfo();
+                info.title = segment.id.ToString();
+                info.data = segment;
+                info.genEventItems = genEventItems.FindAll(x => (new ShiftTime(x.timestamp) >= segment.beginTime && new ShiftTime(x.timestamp) < segment.endTime));
+                Result.Add(info);
+            }
+
+            return Result;
+        }
+
+        static List<GenEventShiftItem> GetItemsBetween(GenEventShiftItem gesi_1, GenEventShiftItem gesi_2)
+        {
+            List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
+
+            // Get ShiftId's for both GenEventShiftItems
+            string id1 = GetShiftId(gesi_1.shiftDate, gesi_1.segment.shiftConfiguration.id, gesi_1.segment.id);
+            string id2 = GetShiftId(gesi_2.shiftDate, gesi_2.segment.shiftConfiguration.id, gesi_2.segment.id);
+
+            // if not in the same segment during the same shift on the same day
+            if (id1 != id2)
+            {
+                if (gesi_1.shiftDate != gesi_2.shiftDate)
+                {
+
+                }
+                else if (gesi_1.segment.shiftConfiguration != gesi_2.segment.shiftConfiguration)
+                {
+
+                }
+                else if (gesi_1.segment != gesi_2.segment)
+                {
+
+                }
+            }
+
+            return Result;
+        }
+
+        List<GenEventShiftItem> NewGetGenEventShiftItems(List<GeneratedData.GeneratedEventItem> genEventItems)
+        {
+            List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
+
+            ShiftTableConfiguration stc = GetConfiguration(config);
+            if (stc != null)
+            {
+                List<ListInfo> nameInfos = GetListByName(genEventItems);
+
+                foreach (ListInfo nameInfo in nameInfos)
+                {
+                    Console.WriteLine(nameInfo.title + " ---------------------------");
+
+                    GenEventShiftItem previousItem = null;
+
+                    List<ListInfo> dateInfos = GetListByDate(nameInfo.genEventItems);
+
+                    for (int x = 0; x <= dateInfos.Count - 1; x++)
+                    {
+                        Console.WriteLine(dateInfos[x].title + " --------------------");
+
+                        List<ListInfo> shiftInfos = GetListByShift(stc, dateInfos[x].genEventItems);
+
+                        for (int i = 0; i <= shiftInfos.Count - 1; i++)
+                        {
+                            Console.WriteLine(shiftInfos[i].title + " --------------");
+
+                            ShiftConfiguration shift = (ShiftConfiguration)shiftInfos[i].data;
+
+                            List<ListInfo> segmentInfos = GetListByShiftSegment(shift, shiftInfos[i].genEventItems);
+
+                            for (int u = 0; u <= segmentInfos.Count - 1; u++)
+                            {
+                                Console.WriteLine(segmentInfos[u].title + "------");
+
+                                foreach (GeneratedData.GeneratedEventItem item in segmentInfos[u].genEventItems)
+                                {
+                                    GenEventShiftItem gesi = new GenEventShiftItem();
+                                    gesi.eventName = item.eventName;
+                                    gesi.eventValue = item.value;
+                                    gesi.eventNumVal = item.numval;
+
+                                    gesi.shiftName = shift.name;
+                                    gesi.segment = (SegmentConfiguration)segmentInfos[u].data;
+
+                                    gesi.CaptureItems = item.CaptureItems;
+
+                                    gesi.shiftDate = new ShiftDate(item.timestamp);
+
+
+                                    if (previousItem != null) gesi.start_timestamp = previousItem.end_timestamp;
+                                    else gesi.start_timestamp = item.timestamp;
+                                    gesi.end_timestamp = item.timestamp;
+
+                                    TimeSpan duration = gesi.end_timestamp - gesi.start_timestamp;
+
+                                    if (previousItem != null) previousItem.duration = duration;
+
+                                    previousItem = gesi;
+
+                                    Console.WriteLine(gesi.eventValue + " :: " + gesi.end_timestamp.ToString());
+
+                                    Result.Add(gesi);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (GenEventShiftItem gesi in Result)
+                Console.WriteLine(gesi.eventValue + " :: " + gesi.end_timestamp.ToString() + " :: " + gesi.duration.ToString());
+
+
+
+
+
+
+
+
+            //ShiftTableConfiguration stc = GetConfiguration(config);
+            //if (stc != null)
+            //{
+            //    // Get a list of all of the distinct (by Event Name) genEventItems
+            //    IEnumerable<string> distinctNames = genEventItems.Select(x => x.eventName).Distinct();
+
+            //    // Loop through the distinct event names  
+            //    foreach (string distinctName in distinctNames.ToList())
+            //    {
+            //        // Get a list of all of the eventitems with this eventname
+            //        List<GeneratedData.GeneratedEventItem> sameNames = genEventItems.FindAll(x => x.eventName.ToLower() == distinctName.ToLower());
+
+            //        // Get a list of all of the distinct (by ShiftDate) genEventItems with this EventName
+            //        IEnumerable<ShiftDate> distinctDates = sameNames.Select(x => new ShiftDate(x.timestamp)).Distinct();
+
+            //        GeneratedData.GeneratedEventItem previousItem = previousItems.Find(x => x.eventName.ToLower() == distinctName.ToLower());
+
+            //        int daycount = 0;
+
+            //        // Loop through the distinct ShiftDates  
+            //        foreach (ShiftDate shiftDate in distinctDates.ToList())
+            //        {
+            //            // Get a list of all of the eventitems during this shiftDate
+            //            List<GeneratedData.GeneratedEventItem> sameDates = genEventItems.FindAll(x => new ShiftDate(x.timestamp) == shiftDate && x.eventName.ToLower() == distinctName.ToLower());
+            //            sameDates.Sort((a, b) => a.timestamp.CompareTo(b.timestamp));
+
+            //            // Dont allow item from previous day to be the previous item (will count all of the time between ~12+ hours)
+            //            if (daycount > 0) previousItem = null;
+
+            //            // Loop through the ShiftInfo objects
+            //            foreach (ShiftConfiguration shift in stc.shifts)
+            //            {
+            //                // Loop through the Shift Segment objects in the ShiftInfo
+            //                foreach (SegmentConfiguration segment in shift.segments)
+            //                {
+            //                    // Get a list of all of the genEventItems with Timestamps within this Segment
+            //                    List<GeneratedData.GeneratedEventItem> sameSegments = sameDates.FindAll(x => (new ShiftTime(x.timestamp) >= segment.beginTime && new ShiftTime(x.timestamp) <= segment.endTime));
+
+            //                    sameSegments.Sort((a, b) => a.timestamp.CompareTo(b.timestamp));
+
+            //                    int z = 0;
+
+            //                    foreach (GeneratedData.GeneratedEventItem sameSegment in sameSegments)
+            //                    {
+            //                        if (previousItem != null)
+            //                        {
+            //                            // If previous timestamp was during previous shift or shift segment split the duration between two GenEventShiftItem objects
+            //                            ShiftTime prev_ShiftTime = new ShiftTime(previousItem.timestamp);
+            //                            if (prev_ShiftTime < segment.beginTime)
+            //                            {
+            //                                TimeSpan totalduration = sameSegment.timestamp - previousItem.timestamp;
+
+            //                                TimeSpan prev_duration = segment.beginTime - prev_ShiftTime;
+            //                                TimeSpan duration = new ShiftTime(sameSegment.timestamp) - segment.beginTime;
+
+            //                                ShiftConfiguration prevShiftConfiguration = stc.shifts.Find(x => x.beginTime <= prev_ShiftTime && x.endTime.AdjustForDayValue() >= prev_ShiftTime);
+            //                                if (prevShiftConfiguration != null)
+            //                                {
+            //                                    SegmentConfiguration prevSegment = prevShiftConfiguration.segments.Find(x => x.beginTime <= prev_ShiftTime && x.endTime >= prev_ShiftTime);
+            //                                    if (prevSegment != null)
+            //                                    {
+            //                                        if (prev_duration > TimeSpan.Zero)
+            //                                        {
+            //                                            GenEventShiftItem prev_gesi = new GenEventShiftItem();
+            //                                            prev_gesi.eventName = previousItem.eventName;
+            //                                            prev_gesi.eventValue = previousItem.value;
+            //                                            prev_gesi.eventNumVal = previousItem.numval;
+
+            //                                            prev_gesi.shiftName = prevShiftConfiguration.name;
+            //                                            prev_gesi.segment = prevSegment;
+
+            //                                            prev_gesi.CaptureItems = previousItem.CaptureItems;
+
+            //                                            DateTime prev_ts = previousItem.timestamp;
+            //                                            prev_gesi.start_timestamp = prev_ts;
+            //                                            prev_gesi.end_timestamp = new DateTime(prev_ts.Year, prev_ts.Month, prev_ts.Day, segment.beginTime.hour, segment.beginTime.minute, segment.beginTime.second);
+
+            //                                            prev_gesi.shiftDate = new ShiftDate(prev_ts);
+
+            //                                            prev_gesi.duration = prev_duration;
+
+            //                                            Result.Add(prev_gesi);
+            //                                        }
+            //                                    }
+            //                                }
+
+            //                                if (duration > TimeSpan.Zero)
+            //                                {
+            //                                    GenEventShiftItem gesi = new GenEventShiftItem();
+            //                                    gesi.eventName = sameSegment.eventName;
+            //                                    gesi.eventValue = sameSegment.value;
+            //                                    gesi.eventNumVal = sameSegment.numval;
+
+            //                                    gesi.shiftName = shift.name;
+            //                                    gesi.segment = segment;
+
+            //                                    gesi.CaptureItems = sameSegment.CaptureItems;
+
+            //                                    DateTime ts = sameSegment.timestamp;
+            //                                    gesi.start_timestamp = new DateTime(ts.Year, ts.Month, ts.Day, segment.beginTime.hour, segment.beginTime.minute, segment.beginTime.second);
+            //                                    gesi.end_timestamp = sameSegment.timestamp;
+
+            //                                    gesi.shiftDate = new ShiftDate(sameSegment.timestamp);
+
+            //                                    gesi.duration = duration;
+
+            //                                    Result.Add(gesi);
+            //                                }
+            //                            }
+            //                            else
+            //                            {
+            //                                TimeSpan duration = sameSegment.timestamp - previousItem.timestamp;
+
+            //                                if (duration > TimeSpan.Zero)
+            //                                {
+            //                                    GenEventShiftItem gesi = new GenEventShiftItem();
+            //                                    gesi.eventName = sameSegment.eventName;
+            //                                    gesi.eventValue = sameSegment.value;
+            //                                    gesi.eventNumVal = sameSegment.numval;
+
+            //                                    gesi.shiftName = shift.name;
+            //                                    gesi.segment = segment;
+
+            //                                    gesi.CaptureItems = sameSegment.CaptureItems;
+
+            //                                    gesi.start_timestamp = previousItem.timestamp;
+            //                                    gesi.end_timestamp = sameSegment.timestamp;
+
+            //                                    gesi.shiftDate = new ShiftDate(sameSegment.timestamp);
+
+            //                                    gesi.duration = duration;
+
+            //                                    Result.Add(gesi);
+            //                                }
+            //                            }
+            //                        }
+            //                        else
+            //                        {
+            //                            previousItems.Add(sameSegment);
+            //                        }
+
+            //                        previousItem = sameSegment;
+
+            //                        int prevIndex = -1;
+
+            //                        prevIndex = previousItems.FindIndex(x => x.eventName.ToLower() == distinctName.ToLower());
+            //                        if (prevIndex >= 0) previousItems[prevIndex] = previousItem;
+
+            //                        z += 1;
+
+            //                    }
+            //                }
+            //            }
+
+            //            daycount += 1;
+            //        }
+            //    }
+            //}
+
+            return Result;
+
+        }
+
+        // ----------------------------------------------------------------------------------------
+
+
+
+
         List<GenEventShiftItem> GetGenEventShiftItems(List<GeneratedData.GeneratedEventItem> genEventItems)
         {
             List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
@@ -830,7 +1195,7 @@ namespace TH_ShiftTable
                     foreach (SegmentConfiguration segment in segments)
                     {
                         ShiftRowInfo sri = new ShiftRowInfo();
-                        sri.id = ShiftRowInfo.GetId(shiftDate, segment.shiftConfiguration.id, segment.id);
+                        sri.id = GetShiftId(shiftDate, segment.shiftConfiguration.id, segment.id);
                         sri.date = shiftDate;
                         sri.shift = shiftName;
                         sri.segmentId = segment.id;
@@ -952,6 +1317,8 @@ namespace TH_ShiftTable
             public string name { get; set; }
             public string date { get; set; }
 
+            public ShiftTime currentTime { get; set; }
+
             public ShiftConfiguration shift { get; set; }
 
             public SegmentConfiguration segment { get; set; }
@@ -972,16 +1339,18 @@ namespace TH_ShiftTable
                     {
                         Result = new CurrentShiftInfo();
 
+                        Result.currentTime = currentTime;
+
                         Result.name = shift.name;
                         Result.shift = shift;
                         Result.date = new ShiftDate(rd.header.creationTime).ToString();
                         
                         foreach (SegmentConfiguration segment in shift.segments)
                         {
-                            if (currentTime >= segment.beginTime && currentTime <= segment.endTime)
+                            if (Result.currentTime >= segment.beginTime && Result.currentTime <= segment.endTime)
                             {
                                 Result.segment = segment;
-                                Result.id = ShiftRowInfo.GetId(new ShiftDate(rd.header.creationTime), shift.id, segment.id);
+                                Result.id = GetShiftId(new ShiftDate(rd.header.creationTime), shift.id, segment.id);
                                 break;
                             }
                         }
@@ -1027,6 +1396,11 @@ namespace TH_ShiftTable
             }
 
             return Result;
+        }
+
+        public static string GetShiftId(ShiftDate date, int id, int segmentId)
+        {
+            return date.year.ToString("0000") + date.month.ToString("00") + date.day.ToString("00") + "_" + id.ToString("00") + "_" + segmentId.ToString("00");
         }
 
         #endregion
