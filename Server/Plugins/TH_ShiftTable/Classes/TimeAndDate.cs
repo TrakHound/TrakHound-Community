@@ -7,8 +7,6 @@ namespace TH_ShiftTable
         public ShiftTime() { }
         public ShiftTime(DateTime dt)
         {
-            //dt = new DateTime(dt.Ticks, DateTimeKind.Utc);
-
             DateTime local = dt.ToLocalTime();
 
             hour = local.Hour;
@@ -40,7 +38,21 @@ namespace TH_ShiftTable
 
         public override string ToString()
         {
-            return hour.ToString() + ":" + minute.ToString() + ":" + second.ToString();
+            return hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00");
+        }
+
+        public string ToString(bool Hour12)
+        {
+            int adjHour = hour;
+
+            string meridian = "AM";
+            if (hour > 12)
+            {
+                meridian = "PM";
+                adjHour -= 12;
+            }
+
+            return adjHour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00") + " " + meridian;
         }
 
         public ShiftTime AdjustForDayValue()
@@ -175,6 +187,25 @@ namespace TH_ShiftTable
             day = local.Day;
         }
 
+        public ShiftDate(DateTime dt, bool convertToLocal)
+        {
+            if (convertToLocal)
+            {
+                DateTime local = dt.ToLocalTime();
+
+                year = local.Year;
+                month = local.Month;
+                day = local.Day;
+            }
+            else
+            {
+                year = dt.Year;
+                month = dt.Month;
+                day = dt.Day;
+            }
+
+        }
+
         public int day { get; set; }
         public int month { get; set; }
         public int year { get; set; }
@@ -255,6 +286,22 @@ namespace TH_ShiftTable
         public static bool operator >=(ShiftDate sd1, ShiftDate sd2)
         {
             return sd1 > sd2 || sd1 == sd2;
+        }
+
+        public static int operator -(ShiftDate sd1, ShiftDate sd2)
+        {
+            int Result = 0;
+
+            DateTime d1 = DateTime.MinValue;
+            DateTime d2 = DateTime.MinValue;
+
+            if (DateTime.TryParse(sd1.ToString(), out d1) && DateTime.TryParse(sd2.ToString(), out d2))
+            {
+                TimeSpan ts = d1 - d2;
+                Result = ts.Days;
+            }
+
+            return Result;
         }
 
         #endregion

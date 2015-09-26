@@ -804,49 +804,52 @@ namespace TH_DeviceCompare
             {
                 List<Dictionary<string, string>> data = (List<Dictionary<string, string>>)oeedata;
 
-                Dictionary<string, string> lastRow = data[data.Count - 1];
-
-                string oeeVal = null;
-                lastRow.TryGetValue("OEE", out oeeVal);
-                if (oeeVal != null)
+                if (data.Count > 0)
                 {
-                    double oee = -1;
-                    double.TryParse(oeeVal, out oee);
-                    if (oee >= 0)
+                    Dictionary<string, string> lastRow = data[data.Count - 1];
+
+                    string oeeVal = null;
+                    lastRow.TryGetValue("OEE", out oeeVal);
+                    if (oeeVal != null)
                     {
-                        int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeesegment");
-                        if (cellIndex >= 0)
+                        double oee = -1;
+                        double.TryParse(oeeVal, out oee);
+                        if (oee >= 0)
                         {
-                            Controls.NumberDisplay oeeSegment;
-
-                            object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
-
-                            if (ddData == null)
+                            int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeesegment");
+                            if (cellIndex >= 0)
                             {
-                                oeeSegment = new Controls.NumberDisplay();
-                                dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeSegment;
-                            }
-                            else oeeSegment = (Controls.NumberDisplay)ddData;
+                                Controls.NumberDisplay oeeSegment;
 
-                            oeeSegment.Value = oee.ToString("P2");
+                                object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
-                            if (oee > prev_oeeSegment)
-                            {
-                                oeeSegment.ValueIncreasing = true;
-                                oeeSegment.ValueDecreasing = false;
-                            }
-                            else if (oee < prev_oeeSegment)
-                            {
-                                oeeSegment.ValueIncreasing = false;
-                                oeeSegment.ValueDecreasing = true;
-                            }
-                            else
-                            {
-                                oeeSegment.ValueIncreasing = false;
-                                oeeSegment.ValueDecreasing = false;
-                            }
+                                if (ddData == null)
+                                {
+                                    oeeSegment = new Controls.NumberDisplay();
+                                    dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeSegment;
+                                }
+                                else oeeSegment = (Controls.NumberDisplay)ddData;
 
-                            prev_oeeSegment = oee;
+                                oeeSegment.Value = oee.ToString("P2");
+
+                                if (oee > prev_oeeSegment)
+                                {
+                                    oeeSegment.ValueIncreasing = true;
+                                    oeeSegment.ValueDecreasing = false;
+                                }
+                                else if (oee < prev_oeeSegment)
+                                {
+                                    oeeSegment.ValueIncreasing = false;
+                                    oeeSegment.ValueDecreasing = true;
+                                }
+                                else
+                                {
+                                    oeeSegment.ValueIncreasing = false;
+                                    oeeSegment.ValueDecreasing = false;
+                                }
+
+                                prev_oeeSegment = oee;
+                            }
                         }
                     }
                 }
