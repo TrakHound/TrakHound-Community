@@ -107,16 +107,30 @@ namespace TH_History
 
                 Configuration config = Devices[index].configuration;
 
-                DataTable dt = Global.Table_Get(config.SQL, "shifts");
 
-                GraphInfo info = new GraphInfo();
-                info.Name = "Production Seconds";
-                info.Table = dt;
-                info.DataColumn = "Production_Status__Full_Production";
-                info.CategoryColumn = "Shift";
+                Controls.HistoryContainer container = new HistoryContainer();
 
-                HistoryItem item = new HistoryItem(info);
-                HistoryItems.Add(item);
+                container.Info_GRID.Children.Add(new ShiftComparison(config));
+                
+                // Create Calendar
+                Controls.Calendar.Calendar calendar = new Controls.Calendar.Calendar();
+                calendar.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                container.Calendar_GRID.Children.Add(calendar);
+
+                HistoryItems.Add(container);
+
+
+
+            //    DataTable dt = Global.Table_Get(config.SQL, "shifts");
+
+            //    GraphInfo info = new GraphInfo();
+            //    info.Name = "Production Seconds";
+            //    info.Table = dt;
+            //    info.DataColumn = "Production_Status__Full_Production";
+            //    info.CategoryColumn = "Segment";
+
+            //    HistoryItem item = new HistoryItem(info);
+            //    HistoryItems.Add(item);
             }
         }
 
@@ -170,56 +184,6 @@ namespace TH_History
                 historyitems = value;
             }
         }
-
-        //class GraphInfo
-        //{
-        //    public string Name { get; set; }
-
-        //    public DataTable Table { get; set; }
-
-        //    public string CategoryColumn { get; set; }
-        //    public string DataColumn { get; set; }
-
-        //    public string SortColumn { get; set; }
-
-        //    public string SortBegin { get; set; }
-        //    public string SortEnd { get; set; }
-        //}
-
-        //void CreateGraph(GraphInfo info)
-        //{
-
-        //    DataTable dt = info.Table;
-
-        //    DataColumn categoryColumn = dt.Columns[info.CategoryColumn];
-        //    DataColumn dataColumn = dt.Columns[info.DataColumn];
-        //    Type dataType = dataColumn.DataType;
-
-        //    List<string> categories = dt.AsEnumerable().Select(x => x.Field<string>(categoryColumn)).ToList();
-        //    List<object> data = dt.AsEnumerable().Select(x => x.Field<object>(dataColumn)).ToList();
-
-        //    List<KeyValuePair<string, double>> graphData = new List<KeyValuePair<string, double>>();
-
-        //    for (int x = 0; x <= categories.Count - 1; x++)
-        //    {
-        //        double val = double.MinValue;
-        //        double.TryParse(data[x].ToString(), out val);
-        //        if (val > double.MinValue)
-        //        {
-        //            KeyValuePair<string, double> kvp = new KeyValuePair<string, double>(categories[x], val);
-        //            graphData.Add(kvp);
-        //        }
-
-
-
-        //    }
-
-        //    Controls.HistoryItem hi = new Controls.HistoryItem();
-        //    hi.CreateData(graphData);
-        //    HistoryItems.Add(hi);
-
-        //}
-
 
         #endregion
 

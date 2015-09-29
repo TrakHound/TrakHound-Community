@@ -11,3 +11,14 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_Da
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_History.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_DataCenter.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_DataCenter.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\ShiftComparison.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\ShiftComparison.g.cs
+C:\TrakHound\Plugins\Pages\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Calendar.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Day.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Calendar.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Day.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\DayOfWeekTitle.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\DayOfWeekTitle.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\HistoryContainer.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\HistoryContainer.g.cs

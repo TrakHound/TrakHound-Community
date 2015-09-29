@@ -55,5 +55,38 @@ namespace TH_Global
 
             return new DateTime(year, month, day, hour, minute, second, millisecond, DateTimeKind.Utc);
         }
+
+        public static class Math
+        {
+            #region "GetMedian"
+
+            public static double GetMedian(double[] vals)
+            {
+                int size = vals.Length;
+                int index = size / 2;
+                double median = -1;
+
+                if (vals.Length > 1)
+                {
+                    if (IsOdd(index)) median = vals[index];
+                    else median = (double)(vals[index] + vals[index - 1]) / 2;
+                }
+                else median = vals[0];
+
+                return median;
+            }
+
+            #endregion
+
+
+
+            public static bool IsOdd(int val)
+            {
+                return val % 2 != 0;
+            }
+
+        }
+
     }
+
 }

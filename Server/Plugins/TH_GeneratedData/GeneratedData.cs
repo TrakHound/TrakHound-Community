@@ -804,8 +804,8 @@ namespace TH_GeneratedData
 
             Columns.Add("Value " + MySQL_Tools.VarChar);
             Columns.Add("Numval " + MySQL_Tools.BigInt);
-            Columns.Add("Previous_Value " + MySQL_Tools.VarChar);
-            Columns.Add("Previous_Numval " + MySQL_Tools.BigInt);
+            //Columns.Add("Previous_Value " + MySQL_Tools.VarChar);
+            //Columns.Add("Previous_Numval " + MySQL_Tools.BigInt);
 
             foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) Columns.Add(item.id + " " + MySQL_Tools.VarChar);
 
@@ -827,8 +827,8 @@ namespace TH_GeneratedData
                 columns.Add("Timestamp");
                 columns.Add("Value");
                 columns.Add("Numval");
-                columns.Add("Previous_Value");
-                columns.Add("Previous_Numval");
+                //columns.Add("Previous_Value");
+                //columns.Add("Previous_Numval");
 
                 // Add columns to update for CaptureItems
                 GenDataConfiguration gdc = GetConfiguration(config);
@@ -855,8 +855,8 @@ namespace TH_GeneratedData
                             values.Add(MySQL_Tools.ConvertDateStringtoMySQL(eventItem.timestamp.ToString()));
                             values.Add(eventItem.value);
                             values.Add(eventItem.numval);
-                            values.Add(eventItem.previous_value);
-                            values.Add(eventItem.previous_numval);
+                            //values.Add(eventItem.previous_value);
+                            //values.Add(eventItem.previous_numval);
                             
                             foreach (GeneratedEvents.CaptureItem item in eventItem.CaptureItems) values.Add(FormatCaptureItemValue(item.value));
 

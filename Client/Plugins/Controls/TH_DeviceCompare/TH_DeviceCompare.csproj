@@ -157,6 +157,7 @@
     <Compile Include="DeviceCompare.xaml.cs">
       <DependentUpon>DeviceCompare.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DeviceDisplay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

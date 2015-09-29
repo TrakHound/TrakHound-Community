@@ -23,7 +23,9 @@ namespace TH_Configuration
 
         public int Max_Sample_Interval { get; set; }
 
-        public string Simulation_Sample_Path { get; set; }
+        public List<string> Simulation_Sample_Files = new List<string>();
+
+        //public string Simulation_Sample_Path { get; set; }
 
         // Row Limit : <MTC Data Item Link>Limit of Rows</MTC Data Item Link>
         public List<Tuple<string, int>> RowLimits = new List<Tuple<string, int>>();

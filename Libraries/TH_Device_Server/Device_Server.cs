@@ -520,7 +520,7 @@ namespace TH_Device_Server
 
         void TablePlugIns_Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
         {
-            if (TablePlugIns != null && returnData != null)
+            if (TablePlugIns != null)
             {
                 foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
@@ -554,7 +554,7 @@ namespace TH_Device_Server
 
         void TablePlugIns_Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            if (TablePlugIns != null && returnData != null)
+            if (TablePlugIns != null)
             {
                 foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
@@ -588,7 +588,7 @@ namespace TH_Device_Server
 
         void TablePlugIns_Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            if (TablePlugIns != null && returnData != null)
+            if (TablePlugIns != null)
             {
                 foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
@@ -622,7 +622,7 @@ namespace TH_Device_Server
 
         void TablePlugIn_Update_DataEvent(DataEvent_Data de_data)
         {
-            if (TablePlugIns != null && de_data != null)
+            if (TablePlugIns != null)
             {
                 foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
@@ -805,7 +805,7 @@ namespace TH_Device_Server
 
             sampleCounter += 1;
 
-            if (configuration.Agent.Simulation_Sample_Path != null)
+            if (configuration.Agent.Simulation_Sample_Files.Count > 0)
             {
                 Sample_Start();
             }
@@ -934,7 +934,7 @@ namespace TH_Device_Server
                 //    sample.Start(null, First, SampleCount);
                 //}
                 //else if (SampleCount > 0)
-                if (SampleCount > 0)
+                if (SampleCount > 0 && configuration.Agent.Sample_Heartbeat >= 0)
                 {
                     Log("Sample_Start() : " + First.ToString() + " to " + Last.ToString());
                     sample.Start(null, First, SampleCount);
@@ -956,7 +956,7 @@ namespace TH_Device_Server
             Probe_Stop();
             Current_Stop();
 
-            Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
+            //Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
 
             sample = new Sample();
             sample.configuration = configuration;

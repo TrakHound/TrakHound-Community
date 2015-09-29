@@ -219,160 +219,95 @@ namespace TH_DeviceCompare
         {
             if (Devices != null && rd != null)
             {
-                //List<Device_Client> clients = Devices.FindAll(x => (x.configuration.UniqueId == rd.configuration.UniqueId));
-
                 foreach (Device_Client device in Devices)
                 {
-                    if (device.configuration.UniqueId == rd.configuration.UniqueId)
+                    if (device.configuration != null)
                     {
-                        int index = Devices.IndexOf(device);
-
-                        if (index >= 0)
+                        if (device.configuration.UniqueId == rd.configuration.UniqueId)
                         {
-                            DeviceDisplay dd = DeviceDisplays[index];
+                            int index = Devices.IndexOf(device);
 
-                            Header hdr = dd.ComparisonGroup.header;
-
-                            hdr.LastUpdatedTimestamp = DateTime.Now.ToLongTimeString();
-
-                            int cellIndex = -1;
-
-                            // Get connection data from TH_DeviceStatus
-                            object connectiondata = null;
-                            rd.data.TryGetValue("DeviceStatus_Connection", out connectiondata);
-                            if (connectiondata != null)
+                            if (index >= 0)
                             {
-                                if (connectiondata.GetType() == typeof(bool))
+                                DeviceDisplay dd = DeviceDisplays[index];
+                                Header hdr = dd.ComparisonGroup.header;
+
+                                hdr.LastUpdatedTimestamp = DateTime.Now.ToLongTimeString();
+
+                                int cellIndex = -1;
+
+                                // Get connection data from TH_DeviceStatus
+                                object connectiondata = null;
+                                rd.data.TryGetValue("DeviceStatus_Connection", out connectiondata);
+                                if (connectiondata != null)
                                 {
-                                    bool connected = (bool)connectiondata;
-                                    if (connected)
+                                    if (connectiondata.GetType() == typeof(bool))
                                     {
-                                        dd.connectionAttempts = 0;
-                                        dd.Connected = connected;
-                                    }
-                                    else
-                                    {
-                                        if (dd.connectionAttempts < DeviceDisplay.maxConnectionAttempts)
+                                        bool connected = (bool)connectiondata;
+                                        if (connected)
                                         {
-                                            dd.connectionAttempts += 1;
+                                            dd.connectionAttempts = 0;
+                                            dd.Connected = connected;
                                         }
                                         else
                                         {
-                                            dd.Connected = connected;
+                                            if (dd.connectionAttempts < DeviceDisplay.maxConnectionAttempts) dd.connectionAttempts += 1;
+                                            else dd.Connected = connected;
                                         }
                                     }
                                 }
-                            }
 
-                            // Get data from Snapshots Table
-                            object snapshotdata = null;
-                            rd.data.TryGetValue("DeviceStatus_Snapshots", out snapshotdata);
+                                // Get data from Snapshots Table
+                                object snapshotdata = null;
+                                rd.data.TryGetValue("DeviceStatus_Snapshots", out snapshotdata);
 
-                            if (snapshotdata != null)
-                            {
-                                // Update Header ----------------------------------------------------------
-                                this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority, new object[] { dd, snapshotdata });
-                                // ------------------------------------------------------------------------
-
-                                // Shift Info
-                                this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo), Priority, new object[] { dd, snapshotdata });
-                            }
-
-                            // Get data from Shifts Table
-                            object shiftdata = null;
-                            rd.data.TryGetValue("DeviceStatus_Shifts", out shiftdata);
-
-                            if (shiftdata != null)
-                            {
-
-                                // Production Status Times
-                                this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateProductionStatusTimes), Priority, new object[] { dd, shiftdata, snapshotdata });
-
-                            }
-
-                            // Get data from Production Status
-                            object productionstatusdata = null;
-                            rd.data.TryGetValue("DeviceStatus_ProductionStatus", out productionstatusdata);
-
-                            if (productionstatusdata != null && snapshotdata != null)
-                            {
-                                if (productionstatusdata.GetType() == typeof(List<Dictionary<string, string>>))
+                                if (snapshotdata != null)
                                 {
-                                    List<Dictionary<string, string>> data = (List<Dictionary<string, string>>)productionstatusdata;
+                                    // Update Header ----------------------------------------------------------
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority, new object[] { dd, snapshotdata });
+                                    // ------------------------------------------------------------------------
 
-                                    List<Tuple<DateTime, string>> data_forShift = new List<Tuple<DateTime, string>>();
-
-                                    string begin = GetSnapShotValue("Current Shift Begin", snapshotdata);
-                                    DateTime shift_begin = DateTime.MinValue;
-                                    DateTime.TryParse(begin, out shift_begin);
-
-                                    string end = GetSnapShotValue("Current Shift End", snapshotdata);
-                                    DateTime shift_end = DateTime.MinValue;
-                                    DateTime.TryParse(end, out shift_end);
-
-                                    if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
-
-                                    foreach (Dictionary<string, string> row in data)
-                                    {
-                                        string val = null;
-                                        row.TryGetValue("TIMESTAMP", out val);
-
-                                        if (val != null)
-                                        {
-                                            DateTime timestamp = DateTime.MinValue;
-                                            DateTime.TryParse(val, out timestamp);
-
-                                            if (timestamp > DateTime.MinValue)
-                                            {
-                                                if (shift_begin > DateTime.MinValue && shift_end > DateTime.MinValue)
-                                                {
-                                                    if (timestamp >= shift_begin && timestamp <= shift_end)
-                                                    {
-                                                        val = null;
-                                                        row.TryGetValue("Value", out val);
-
-                                                        if (val != null)
-                                                        {
-                                                            data_forShift.Add(new Tuple<DateTime, string>(timestamp, val));
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    // Production Status Timeline
-                                    Controls.TimeLineDisplay timeline = new Controls.TimeLineDisplay(shift_begin, shift_end);
-
-                                    List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
-                                    colors.Add(new Tuple<Color, string>(Colors.Red, "Alert"));
-                                    colors.Add(new Tuple<Color, string>(Colors.Yellow, "Idle"));
-                                    colors.Add(new Tuple<Color, string>(Colors.Green, "Full Production"));
-
-                                    timeline.CreateData(data_forShift, colors);
-
-                                    cellIndex = -1;
-                                    cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
-                                    if (cellIndex >= 0) dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
+                                    // Shift Info
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo), Priority, new object[] { dd, snapshotdata });
                                 }
-                            }
 
-
-                            // Get data from OEE Info
-                            object oeedata = null;
-                            rd.data.TryGetValue("DeviceStatus_OEE", out oeedata);
-                            if (oeedata != null)
-                            {
-                                // Update Average OEE display
-                                this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority, new object[] { dd, oeedata });
-
-                                // Update Segment OEE display
-                                this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority, new object[] { dd, oeedata });
+                                // Get data from Shifts Table
+                                object shiftdata = null;
+                                rd.data.TryGetValue("DeviceStatus_Shifts", out shiftdata);
 
                                 if (shiftdata != null)
                                 {
-                                    // Update OEE Timeline display
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_OEE_Timeline), Priority, new object[] { dd, oeedata, shiftdata });
+                                    // Production Status Times
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateProductionStatusTimes), Priority, new object[] { dd, shiftdata, snapshotdata });
+                                }
+
+                                // Get data from Production Status
+                                object productionstatusdata = null;
+                                rd.data.TryGetValue("DeviceStatus_ProductionStatus", out productionstatusdata);
+
+                                if (productionstatusdata != null && snapshotdata != null)
+                                {
+                                    // Production Status Timeline
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority, new object[] { dd, productionstatusdata, snapshotdata });
+                                }
+
+
+                                // Get data from OEE Info
+                                object oeedata = null;
+                                rd.data.TryGetValue("DeviceStatus_OEE", out oeedata);
+                                if (oeedata != null)
+                                {
+                                    // Update Average OEE display
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority, new object[] { dd, oeedata });
+
+                                    // Update Segment OEE display
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority, new object[] { dd, oeedata });
+
+                                    if (shiftdata != null)
+                                    {
+                                        // Update OEE Timeline display
+                                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_OEE_Timeline), Priority, new object[] { dd, oeedata, shiftdata });
+                                    }
                                 }
                             }
                         }
@@ -380,6 +315,8 @@ namespace TH_DeviceCompare
                 }
             }
         }
+
+        #region "Data"
 
         string GetSnapShotValue(string key, object obj)
         {
@@ -492,7 +429,7 @@ namespace TH_DeviceCompare
 
                 sd.Shift_Times = "(" + begin.ToShortTimeString() + " - " + end.ToShortTimeString() + ")";
 
-                Int64 duration = Convert.ToInt64((end - begin).TotalSeconds);               
+                Int64 duration = Convert.ToInt64((end - begin).TotalSeconds);
                 if (duration <= int.MaxValue && duration >= int.MinValue) sd.Bar_Maximum = Convert.ToInt32(duration);
                 // --------------------------------------------------------------------------------
 
@@ -652,44 +589,44 @@ namespace TH_DeviceCompare
 
                 //if (currentShiftData != null)
                 //{
-                    int totalSeconds = 0;
-                    List<ProductionStatus_Variable> variables = new List<ProductionStatus_Variable>();
+                int totalSeconds = 0;
+                List<ProductionStatus_Variable> variables = new List<ProductionStatus_Variable>();
 
-                    // Tuple<[SHIFTNAME], Dictionary<[COLUMN, VALUE]>
-                    foreach (Dictionary<string, string> row in shiftData)
+                // Tuple<[SHIFTNAME], Dictionary<[COLUMN, VALUE]>
+                foreach (Dictionary<string, string> row in shiftData)
+                {
+                    // KeyValuePair<[COLUMN, VALUE]>
+                    foreach (KeyValuePair<string, string> cell in row)
                     {
-                        // KeyValuePair<[COLUMN, VALUE]>
-                        foreach (KeyValuePair<string, string> cell in row)
+                        if (cell.Key.ToLower() == "totaltime")
                         {
-                            if (cell.Key.ToLower() == "totaltime")
+                            int seconds = 0;
+                            int.TryParse(cell.Value, out seconds);
+                            totalSeconds += seconds;
+                        }
+                        else if (cell.Key.Contains("Production_Status"))
+                        {
+                            ProductionStatus_Variable variable;
+                            int index = variables.FindIndex(x => x.name.ToLower() == cell.Key.ToLower());
+                            if (index < 0)
                             {
-                                int seconds = 0;
-                                int.TryParse(cell.Value, out seconds);
-                                totalSeconds += seconds;
+                                variable = new ProductionStatus_Variable();
+                                variable.name = cell.Key;
+                                variables.Add(variable);
+                                index = variables.FindIndex(x => x.name.ToLower() == cell.Key.ToLower());
                             }
-                            else if (cell.Key.Contains("Production_Status"))
-                            {
-                                ProductionStatus_Variable variable;
-                                int index = variables.FindIndex(x => x.name.ToLower() == cell.Key.ToLower());
-                                if (index < 0)
-                                {
-                                    variable = new ProductionStatus_Variable();
-                                    variable.name = cell.Key;
-                                    variables.Add(variable);
-                                    index = variables.FindIndex(x => x.name.ToLower() == cell.Key.ToLower());
-                                }
 
-                                variable = variables[index];
+                            variable = variables[index];
 
-                                int seconds = 0;
-                                int.TryParse(cell.Value, out seconds);
-                                variable.seconds += seconds;
-                            }
+                            int seconds = 0;
+                            int.TryParse(cell.Value, out seconds);
+                            variable.seconds += seconds;
                         }
                     }
+                }
 
-                    Result.totalSeconds = totalSeconds;
-                    Result.variables = variables;
+                Result.totalSeconds = totalSeconds;
+                Result.variables = variables;
 
                 //}
             }
@@ -890,8 +827,8 @@ namespace TH_DeviceCompare
                                     oees.Add(kvp);
                                 }
                             }
-                        }   
-                    }                  
+                        }
+                    }
                 }
 
                 if (oees.Count > 0)
@@ -930,7 +867,7 @@ namespace TH_DeviceCompare
                         // Get Segment start Time
                         string start = null;
                         row.TryGetValue("Start", out start);
-                        
+
                         // Get Segment end Time
                         string end = null;
                         row.TryGetValue("End", out end);
@@ -946,7 +883,7 @@ namespace TH_DeviceCompare
                             DateTime.TryParse(end, out dt);
                             if (dt > DateTime.MinValue) end = dt.ToShortTimeString();
 
-                            Result = start + " - " + end;  
+                            Result = start + " - " + end;
                         }
 
                         break;
@@ -957,6 +894,78 @@ namespace TH_DeviceCompare
         }
 
         #endregion
+
+        #region "Production Status Timeline"
+
+        void Update_ProductionStatusTimeline(DeviceDisplay dd, object productionstatusdata, object snapshotdata)
+        {
+            if (productionstatusdata.GetType() == typeof(List<Dictionary<string, string>>))
+            {
+                List<Dictionary<string, string>> data = (List<Dictionary<string, string>>)productionstatusdata;
+
+                List<Tuple<DateTime, string>> data_forShift = new List<Tuple<DateTime, string>>();
+
+                string begin = GetSnapShotValue("Current Shift Begin", snapshotdata);
+                DateTime shift_begin = DateTime.MinValue;
+                DateTime.TryParse(begin, out shift_begin);
+
+                string end = GetSnapShotValue("Current Shift End", snapshotdata);
+                DateTime shift_end = DateTime.MinValue;
+                DateTime.TryParse(end, out shift_end);
+
+                if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
+
+                foreach (Dictionary<string, string> row in data)
+                {
+                    string val = null;
+                    row.TryGetValue("TIMESTAMP", out val);
+
+                    if (val != null)
+                    {
+                        DateTime timestamp = DateTime.MinValue;
+                        DateTime.TryParse(val, out timestamp);
+
+                        if (timestamp > DateTime.MinValue)
+                        {
+                            if (shift_begin > DateTime.MinValue && shift_end > DateTime.MinValue)
+                            {
+                                if (timestamp >= shift_begin && timestamp <= shift_end)
+                                {
+                                    val = null;
+                                    row.TryGetValue("Value", out val);
+
+                                    if (val != null)
+                                    {
+                                        data_forShift.Add(new Tuple<DateTime, string>(timestamp, val));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Production Status Timeline
+                Controls.TimeLineDisplay timeline = new Controls.TimeLineDisplay(shift_begin, shift_end);
+
+                List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
+                colors.Add(new Tuple<Color, string>(Colors.Red, "Alert"));
+                colors.Add(new Tuple<Color, string>(Colors.Yellow, "Idle"));
+                colors.Add(new Tuple<Color, string>(Colors.Green, "Full Production"));
+
+                timeline.CreateData(data_forShift, colors);
+
+                int cellIndex = -1;
+                cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
+                if (cellIndex >= 0) dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region "Components"
+
 
         #region "Column Headers"
 
@@ -1181,119 +1190,15 @@ namespace TH_DeviceCompare
 
         void CheckHeaderHeight()
         {
-            if (this.RenderSize.Height < 650) foreach (Header header in ColumnHeaders) header.Minimized = true;
+            if (this.RenderSize.Height < 850) foreach (Header header in ColumnHeaders) header.Minimized = true;
             else foreach (Header header in ColumnHeaders) header.Minimized = false;
         }
+
+
+        #endregion
 
         #endregion
 
     }
 
-
-    class DeviceDisplay
-    {
-        public DeviceDisplay()
-        {
-            Init();
-        }
-        public DeviceDisplay(Configuration config)
-        {
-            configuration = config;
-            Init();
-        }
-
-        void Init()
-        {
-            DataItems_Init();
-            ComparisonGroup = new Comparison_Group();
-        }
-
-        private bool connected;
-        public bool Connected
-        {
-            get { return connected; }
-            set
-            {
-                connected = value;
-                if (ConnectedChanged != null) ConnectedChanged(this);
-            }
-        }
-        public delegate void ConnectedChanged_Handler(DeviceDisplay dd);
-        public event ConnectedChanged_Handler ConnectedChanged;
-
-        public int connectionAttempts { get; set; }
-        public const int maxConnectionAttempts = 3;
-
-        public Configuration configuration;
-
-        public class DataItem
-        {
-            public string id { get; set; }
-
-            public string header { get; set; }
-
-            public object data { get; set; }
-
-            public int rowHeight { get; set; }
-        }
-
-        public class Comparison_Group
-        {
-            public Header header;
-
-            public Column column;
-        }
-
-        public List<DataItem> DataItems;
-
-        void DataItems_Init()
-        {
-            DataItems = new List<DataItem>();
-
-            DataItem dd;
-
-            dd = new DataItem();
-            dd.id = "ShiftInfo";
-            dd.header = "Shift Info";
-            DataItems.Add(dd);
-
-            dd = new DataItem();
-            dd.id = "OEEAverage";
-            dd.header = "OEE Shift Average";
-            DataItems.Add(dd);
-
-            dd = new DataItem();
-            dd.id = "OEESegment";
-            dd.header = "OEE Shift Segment";
-            DataItems.Add(dd);
-
-            dd = new DataItem();
-            dd.id = "productionstatustimes";
-            dd.header = "Production Status Times";
-            DataItems.Add(dd);
-
-            //dd = new DataItem();
-            //dd.id = "CNCInfo";
-            //dd.header = "CNC Info";
-            //DataItems.Add(dd);
-
-            dd = new DataItem();
-            dd.id = "ProductionStatusTimeline";
-            dd.header = "Production Status Timeline";
-            DataItems.Add(dd);
-
-            dd = new DataItem();
-            dd.id = "OEETimeLine";
-            dd.header = "OEE Timeline";
-            DataItems.Add(dd);
-        }
-
-        public Comparison_Group ComparisonGroup;
-
-        public ImageSource Logo { get; set; }
-
-        public bool Alert { get; set; }
-        public int Index { get; set; }
-        public bool IsConnected { get; set; }
-    }
 }

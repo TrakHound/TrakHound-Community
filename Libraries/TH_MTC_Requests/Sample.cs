@@ -67,16 +67,29 @@ namespace TH_MTC_Requests
         {
             StartParameters sp = (StartParameters)startParameters;
 
-            //Allow for local file for Simulation ------------------------------------------------
-            if (configuration.Agent.Simulation_Sample_Path != null)
+            // Allow for local file for Simulation ------------------------------------------------
+            if (configuration.Agent.Simulation_Sample_Files.Count > 0)
             {
-                if (System.IO.File.Exists(configuration.Agent.Simulation_Sample_Path))
+                foreach (string filePath in configuration.Agent.Simulation_Sample_Files)
                 {
-                    System.IO.StreamReader SimReader = new System.IO.StreamReader(configuration.Agent.Simulation_Sample_Path);
-                    Stream_Process(SimReader.ReadToEnd());
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.StreamReader SimReader = new System.IO.StreamReader(filePath);
+                        Stream_Process(SimReader.ReadToEnd());
+                        Thread.Sleep(500);
+                    }
                 }
             }
-            //------------------------------------------------------------------------------------
+
+            //if (configuration.Agent.Simulation_Sample_Path != null)
+            //{
+            //    if (System.IO.File.Exists(configuration.Agent.Simulation_Sample_Path))
+            //    {
+            //        System.IO.StreamReader SimReader = new System.IO.StreamReader(configuration.Agent.Simulation_Sample_Path);
+            //        Stream_Process(SimReader.ReadToEnd());
+            //    }
+            //}
+            // ------------------------------------------------------------------------------------
             else Stream_Start(sp.variable, sp.beginSeq, sp.count);
         }
 

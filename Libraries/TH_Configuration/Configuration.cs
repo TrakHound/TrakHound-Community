@@ -209,6 +209,22 @@ namespace TH_Configuration
                             Type t = info.PropertyType;
                             info.SetValue(Result, Convert.ChangeType(Child.InnerText, t), null);
                         }
+                        else
+                        {
+                            if (Child.Name.ToLower() == "simulation_sample_files")
+                            {
+                                foreach (XmlNode simNode in Child.ChildNodes)
+                                {
+                                    if (simNode.NodeType == XmlNodeType.Element)
+                                    {
+                                        if (simNode.Name.ToLower() == "simulation_sample_path")
+                                        {
+                                            Result.Simulation_Sample_Files.Add(simNode.InnerText);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
