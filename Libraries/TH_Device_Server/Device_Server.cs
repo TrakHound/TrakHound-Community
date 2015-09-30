@@ -956,13 +956,29 @@ namespace TH_Device_Server
             Probe_Stop();
             Current_Stop();
 
+
+            if (configuration.Agent.Simulation_Sample_Files.Count > 0)
+            {
+                foreach (string filePath in configuration.Agent.Simulation_Sample_Files)
+                {
+                    Sample simSample = new Sample();
+                    simSample.configuration = configuration;
+                    //simSample.SampleFinished -= sample_SampleFinished;
+                    simSample.SampleFinished += sample_SampleFinished;
+                    simSample.Start(filePath);
+                }
+            }
+
+
+
+
             //Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
 
-            sample = new Sample();
-            sample.configuration = configuration;
-            sample.SampleFinished -= sample_SampleFinished;
-            sample.SampleFinished += sample_SampleFinished;
-            sample.Start(null, 0, 0);
+            //sample = new Sample();
+            //sample.configuration = configuration;
+            //sample.SampleFinished -= sample_SampleFinished;
+            //sample.SampleFinished += sample_SampleFinished;
+            //sample.Start(null, 0, 0);
         }
 
         void Sample_Stop()

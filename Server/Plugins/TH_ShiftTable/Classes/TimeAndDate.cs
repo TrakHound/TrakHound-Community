@@ -18,6 +18,7 @@ namespace TH_ShiftTable
             if (convertToLocal)
             {
                 DateTime local = dt.ToLocalTime();
+
                 hour = local.Hour;
                 minute = local.Minute;
                 second = local.Second;
@@ -30,11 +31,58 @@ namespace TH_ShiftTable
             }
         }
 
+        public static bool TryParse(string text, out ShiftTime time)
+        {
+            return TryParse(text, out time, 0);
+        }
+
+        public static bool TryParse(string text, out ShiftTime time, int dayOffset)
+        {
+            bool Result = false;
+            time = null;
+
+            if (text.Contains(":"))
+            {
+                int colon = text.IndexOf(':');
+
+                int h = -1;
+                int m = -1;
+
+                bool pm = false;
+
+                // Get AM or PM
+                if (text.Contains("AM")) { text.Substring(text.IndexOf("AM"), 2); }
+                if (text.Contains("am")) { text.Substring(text.IndexOf("am"), 2); }
+                if (text.Contains("PM")) { text.Substring(text.IndexOf("PM"), 2); pm = true; }
+                if (text.Contains("pm")) { text.Substring(text.IndexOf("pm"), 2); pm = true; }
+
+                // Hour and Minute
+                string sHour = text.Substring(0, colon);
+                string sMinute = text.Substring(colon + 1, 2);
+
+                if (int.TryParse(sHour, out h) && int.TryParse(sMinute, out m))
+                {
+                    time = new ShiftTime();
+                    time.hour = h;
+                    time.minute = m;
+                    time.second = 0;
+
+                    time.dayOffset = dayOffset;
+
+                    if (pm) time.hour += 12;
+
+                    Result = true;
+                }
+            }
+
+            return Result;
+        }
+
         public int hour { get; set; }
         public int minute { get; set; }
         public int second { get; set; }
 
-        public int dayValue { get; set; }
+        public int dayOffset { get; set; }
 
         public override string ToString()
         {
@@ -55,16 +103,16 @@ namespace TH_ShiftTable
             return adjHour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00") + " " + meridian;
         }
 
-        public ShiftTime AdjustForDayValue()
-        {
-            ShiftTime Result = new ShiftTime();
-            Result.hour = hour + (24 * dayValue);
-            Result.minute = minute;
-            Result.second = second;
-            Result.dayValue = dayValue;
+        //public ShiftTime AdjustForDayValue()
+        //{
+        //    ShiftTime Result = new ShiftTime();
+        //    Result.hour = hour + (24 * dayValue);
+        //    Result.minute = minute;
+        //    Result.second = second;
+        //    Result.dayValue = dayValue;
 
-            return Result;
-        }
+        //    return Result;
+        //}
 
         #region "Operator Overrides"
 
@@ -98,8 +146,8 @@ namespace TH_ShiftTable
         static bool LessThan(ShiftTime c1, ShiftTime c2)
         {
             // Adjust hours to account for dayValue (ex. c1.hour = 18 & c2.hour = 0 when (c1 = 6 PM & c2 = 12 AM (the next day)))
-            int c1Hour = c1.hour + (24 * c1.dayValue);
-            int c2Hour = c2.hour + (24 * c2.dayValue);
+            int c1Hour = c1.hour + (24 * c1.dayOffset);
+            int c2Hour = c2.hour + (24 * c2.dayOffset);
 
             if (c1Hour > c2Hour) return false;
             else if (c1Hour == c2Hour && c1.minute > c2.minute) return false;
@@ -110,8 +158,8 @@ namespace TH_ShiftTable
         static bool GreaterThan(ShiftTime c1, ShiftTime c2)
         {
             // Adjust hours to account for dayValue (ex. c1.hour = 18 & c2.hour = 0 when (c1 = 6 PM & c2 = 12 AM (the next day)))
-            int c1Hour = c1.hour + (c1.hour * c1.dayValue);
-            int c2Hour = c2.hour + (c2.hour * c2.dayValue);
+            int c1Hour = c1.hour + (c1.hour * c1.dayOffset);
+            int c2Hour = c2.hour + (c2.hour * c2.dayOffset);
 
             if (c1Hour < c2Hour) return false;
             else if (c1Hour == c2Hour && c1.minute < c2.minute) return false;
@@ -203,7 +251,6 @@ namespace TH_ShiftTable
                 month = dt.Month;
                 day = dt.Day;
             }
-
         }
 
         public int day { get; set; }

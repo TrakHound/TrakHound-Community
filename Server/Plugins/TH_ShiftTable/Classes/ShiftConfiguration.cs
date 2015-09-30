@@ -34,7 +34,10 @@ namespace TH_ShiftTable
 
         public ShiftConfiguration shiftConfiguration { get; set; }
 
-        public int dayOffset { get; set; }
+        //public int dayOffset { get; set; }
+
+        public int beginDayOffset { get; set; }
+        public int endDayOffset { get; set; }
 
         #region "operator overrides"
 
