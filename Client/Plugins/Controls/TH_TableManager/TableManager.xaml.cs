@@ -194,22 +194,47 @@ namespace TH_TableManager
             DependencyProperty.Register("TableListShown", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
 
 
-        void LoadTablesList(Configuration config)
+        Thread TableList_WORKER;
+
+        void LoadTableList(Configuration config)
         {
-            TableList.Clear();
+            TableListShown = false;
+            TableDataView = null;
+
+            if (TableList_WORKER != null) TableList_WORKER.Abort();
+
+            TableList_WORKER = new Thread(new ParameterizedThreadStart(LoadTableList_Worker));
+            TableList_WORKER.Start(config);
+        }
+
+        void LoadTableList_Worker(object o)
+        {
+            Configuration config = (Configuration)o;
 
             string[] tableNames = Global.Table_List(config.SQL);
+
+            this.Dispatcher.BeginInvoke(new Action<string[]>(LoadTableList_Finished), Priority, new object[] { tableNames });
+        }
+
+        void LoadTableList_Finished(string[] tableNames)
+        {
+            TableList.Clear();
 
             foreach (string tableName in tableNames)
             {
                 TH_WPF.ListButton lb = new TH_WPF.ListButton();
                 lb.Text = tableName;
                 lb.Selected += lb_Table_Selected;
-                TableList.Add(lb);
+                this.Dispatcher.BeginInvoke(new Action<ListButton>(LoadTableList_AddItem), Priority, new object[] { lb });
             }
 
             if (tableNames.Length > 0) TableListShown = true;
             else TableListShown = false;
+        }
+
+        void LoadTableList_AddItem(ListButton lb)
+        {
+            TableList.Add(lb);
         }
 
         void lb_Table_Selected(TH_WPF.ListButton LB)
@@ -229,7 +254,7 @@ namespace TH_TableManager
 
         #endregion
 
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
+        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
         Device_Client selectedDevice = null;
 
@@ -243,8 +268,7 @@ namespace TH_TableManager
 
             selectedDevice = device;
 
-            LoadTablesList(device.configuration);
-
+            LoadTableList(device.configuration);
         }
 
 

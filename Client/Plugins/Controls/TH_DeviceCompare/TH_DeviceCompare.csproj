@@ -127,6 +127,10 @@
     <Compile Include="Controls\ShiftDisplay.xaml.cs">
       <DependentUpon>ShiftDisplay.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\ShiftSegmentIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TextDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -145,6 +149,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ShiftSegmentIndicator.xaml.cs">
+      <DependentUpon>ShiftSegmentIndicator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextDisplay.xaml.cs">
       <DependentUpon>TextDisplay.xaml</DependentUpon>
     </Compile>
@@ -175,6 +182,21 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\Calculator.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\DIGITALDREAM.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\DIGITALDREAMFAT.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\DIGITALDREAMFATNARROW.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Fonts\DIGITALDREAMNARROW.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -240,6 +262,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

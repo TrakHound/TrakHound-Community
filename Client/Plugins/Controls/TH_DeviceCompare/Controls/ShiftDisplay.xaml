@@ -63,17 +63,21 @@
 
                                 <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
 
-                                    <TextBlock Text="Time Left" FontSize="8pt" FontWeight="Normal" Foreground="#33ffffff" HorizontalAlignment="Center" />
+                                    <TextBlock Text="Time Left" FontSize="6pt" FontWeight="Normal" Foreground="#33ffffff" HorizontalAlignment="Center" />
+                                    
                                     <TextBlock  Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource FriendlyTimeConverter}}"
-                                       Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontWeight="Normal"
-                                           FontSize="12pt"
-                                           />
+                                        Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                        FontWeight="Normal"
+                                        FontSize="16pt"
+                                        FontFamily="/TH_DeviceCompare;component/Fonts/#Calculator"
+                                        />
+                                    
                                     <TextBlock  Text="{Binding Maximum, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource FriendlyTimeConverter}}"
-                                       Foreground="#66ffffff" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                       FontWeight="Normal"
-                                           FontSize="8pt"
-                                           />
+                                        Foreground="#66ffffff" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                        FontWeight="Normal"
+                                        FontSize="12pt"
+                                        FontFamily="/TH_DeviceCompare;component/Fonts/#Calculator"
+                                        />
 
                                 </StackPanel>
 
@@ -89,6 +93,7 @@
 
     <Grid>
 
+        <!--No Shift Label-->
         <Grid x:Name="NoShiftSelected_GRID">
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -96,7 +101,7 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Shift_Name}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Visible"/>
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <!--<Setter Property="Visibility" Value="Collapsed"/>-->
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -112,7 +117,7 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
@@ -122,13 +127,13 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Shift_Name}" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <!--<Setter Property="Visibility" Value="Visible"/>-->
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
 
-            <Grid Grid.Row="0" VerticalAlignment="Center" Margin="10,5">
+            <Grid Grid.Row="0" VerticalAlignment="Center" Margin="10,0">
 
                 <StackPanel HorizontalAlignment="Right">
 
@@ -136,7 +141,7 @@
                     <TextBlock Text="{Binding Month}" FontSize="8pt" Foreground="#11ffffff" HorizontalAlignment="Right"/>
 
                     <!--Day-->
-                    <TextBlock Text="{Binding Day}" FontSize="26pt" Foreground="#11ffffff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    <TextBlock Text="{Binding Day}" FontSize="24pt" Foreground="#11ffffff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
                 </StackPanel>
                 
@@ -153,10 +158,28 @@
 
             </Grid>
 
-            <Rectangle Grid.Row="1" Height="1" Margin="10,5" Fill="#66ffffff" />
+            <Rectangle Grid.Row="1" Height="1" Margin="10,5,10,10" Fill="#11ffffff" />
+            
+            <!--Shift Progress & Segment Indicators-->
+            <Grid Grid.Row="2" Margin="10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <ProgressBar Grid.Row="2" Style="{StaticResource ProgressBarStyle}" Height="100" Width="100" Maximum="{Binding Bar_Maximum}" Minimum="0" Value="{Binding Bar_Value}" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <!--Segment Indicators-->
+                <StackPanel Grid.Column="0" >
 
+                    <ItemsControl ItemsSource="{Binding SegmentIndicators}"/>
+
+                </StackPanel>
+                
+                <!--Shift Progress-->
+                <ProgressBar Grid.Column="1" Style="{StaticResource ProgressBarStyle}" Height="100" Width="100" Maximum="{Binding Bar_Maximum}" Minimum="0" Value="{Binding Bar_Value}" Margin="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            </Grid>
+
+            
         </Grid>
 
     </Grid>

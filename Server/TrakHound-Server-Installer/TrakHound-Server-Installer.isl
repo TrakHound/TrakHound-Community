@@ -2813,7 +2813,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>TrakHound</td><td>0</td><td/><td>1554218741</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>TrakHound</td><td>0</td><td/><td>-190625545</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>1554216693</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>1554216693</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL</td><td>1033</td><td>Microsoft .NET Framework 4.5 Full package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>1554241301</td></row>
@@ -4169,7 +4169,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{FD7473F4-BCCE-4AF0-A754-2690616DBA49}</td></row>
 		<row><td>ISUSSignature</td><td>{35850693-3516-4D34-A4B1-A946614132D8}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppFiles,viewComponentServices,viewServices,viewUI,viewXMLConfig,viewShortcuts,viewTextMessages,viewRelease</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppFiles,viewComponentServices,viewServices,viewUI,viewXMLConfig,viewShortcuts,viewTextMessages,viewRelease,viewISToday,viewProject,viewUpdateService</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4546,9 +4546,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKAPPPOOLS</td><td>##IDS_PROGMSG_IIS_ROLLBACKAPPPOOLS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
-		<row><td>ProductCode</td><td>{14DDA3C8-A131-4188-9C11-3ECD8F1EB9B9}</td><td/></row>
+		<row><td>ProductCode</td><td>{2B6A7111-A9EA-4AD8-89DA-B26FA0EDA798}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Server</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.0.3</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4563,7 +4563,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION45FULL</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
-		<row><td>UpgradeCode</td><td>{EC2C0B0F-7CFA-45E3-A5D4-8A99147626C9}</td><td/></row>
+		<row><td>UpgradeCode</td><td>{104B0252-4A12-445B-9113-780E747B5568}</td><td/></row>
 		<row><td>_IsMaintenance</td><td>Change</td><td/></row>
 		<row><td>_IsSetupTypeMin</td><td>Typical</td><td/></row>
 	</table>

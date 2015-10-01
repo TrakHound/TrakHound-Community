@@ -951,23 +951,28 @@ namespace TH_Device_Server
         }
 
         // Simulation File Sample
+
+        
+
         void Sample_Start()
         {
             Probe_Stop();
             Current_Stop();
 
 
-            if (configuration.Agent.Simulation_Sample_Files.Count > 0)
-            {
-                foreach (string filePath in configuration.Agent.Simulation_Sample_Files)
-                {
-                    Sample simSample = new Sample();
-                    simSample.configuration = configuration;
-                    //simSample.SampleFinished -= sample_SampleFinished;
-                    simSample.SampleFinished += sample_SampleFinished;
-                    simSample.Start(filePath);
-                }
-            }
+            SampleSimulation_Start();
+
+            //if (configuration.Agent.Simulation_Sample_Files.Count > 0)
+            //{
+            //    foreach (string filePath in configuration.Agent.Simulation_Sample_Files)
+            //    {
+            //        Sample simSample = new Sample();
+            //        simSample.configuration = configuration;
+            //        //simSample.SampleFinished -= sample_SampleFinished;
+            //        simSample.SampleFinished += sample_SampleFinished;
+            //        simSample.Start(filePath);
+            //    }
+            //}
 
 
 
@@ -980,6 +985,39 @@ namespace TH_Device_Server
             //sample.SampleFinished += sample_SampleFinished;
             //sample.Start(null, 0, 0);
         }
+
+        int simulationIndex = 0;
+
+        System.Timers.Timer SampleSimulation_TIMER;
+
+        void SampleSimulation_Start()
+        {
+            SampleSimulation_TIMER = new System.Timers.Timer();
+            SampleSimulation_TIMER.Interval = 2000;
+            SampleSimulation_TIMER.Elapsed += SampleSimulation_TIMER_Elapsed;
+            SampleSimulation_TIMER.Enabled = true;
+        }
+
+        void SampleSimulation_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (configuration.Agent.Simulation_Sample_Files.Count > simulationIndex)
+            {
+                string filePath = configuration.Agent.Simulation_Sample_Files[simulationIndex];
+
+                Sample simSample = new Sample();
+                simSample.configuration = configuration;
+                simSample.SampleFinished += sample_SampleFinished;
+                simSample.Start(filePath);
+
+                simulationIndex += 1;
+            }
+            else
+            {
+                SampleSimulation_TIMER.Enabled = false;
+            }
+        }
+
+        
 
         void Sample_Stop()
         {

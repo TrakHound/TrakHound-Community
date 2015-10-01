@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-13481585837
+14-1436341842
 
-211904592938
+22-821691139
 22-2136259009
-Components\Cell.xaml;Components\Column.xaml;Components\Header.xaml;Components\Row_Header.xaml;Controls\CNC_Display.xaml;Controls\HistogramDisplay.xaml;Controls\NumberDisplay.xaml;Controls\PieChartDisplay.xaml;Controls\ShiftDisplay.xaml;Controls\TextDisplay.xaml;Controls\TimeDisplay.xaml;Controls\TimeLineDisplay.xaml;DeviceCompare.xaml;
+Components\Cell.xaml;Components\Column.xaml;Components\Header.xaml;Components\Row_Header.xaml;Controls\CNC_Display.xaml;Controls\HistogramDisplay.xaml;Controls\NumberDisplay.xaml;Controls\PieChartDisplay.xaml;Controls\ShiftDisplay.xaml;Controls\ShiftSegmentIndicator.xaml;Controls\TextDisplay.xaml;Controls\TimeDisplay.xaml;Controls\TimeLineDisplay.xaml;DeviceCompare.xaml;
 
-False
+True
 

@@ -103,17 +103,6 @@ namespace TH_ShiftTable
             return adjHour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00") + " " + meridian;
         }
 
-        //public ShiftTime AdjustForDayValue()
-        //{
-        //    ShiftTime Result = new ShiftTime();
-        //    Result.hour = hour + (24 * dayValue);
-        //    Result.minute = minute;
-        //    Result.second = second;
-        //    Result.dayValue = dayValue;
-
-        //    return Result;
-        //}
-
         #region "Operator Overrides"
 
         public override bool Equals(object obj)
@@ -346,6 +335,21 @@ namespace TH_ShiftTable
             {
                 TimeSpan ts = d1 - d2;
                 Result = ts.Days;
+            }
+
+            return Result;
+        }
+
+        public static ShiftDate operator -(ShiftDate sd1, int days)
+        {
+            ShiftDate Result = sd1;
+
+            DateTime d1 = DateTime.MinValue;
+
+            if (DateTime.TryParse(sd1.ToString(), out d1))
+            {
+                d1 = d1.Subtract(TimeSpan.FromDays(days));
+                Result = new ShiftDate(d1, false);
             }
 
             return Result;

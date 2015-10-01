@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Collections.ObjectModel;
+
 using System.Globalization;
 
 using TH_Configuration;
@@ -34,6 +36,25 @@ namespace TH_DeviceCompare.Controls
             InitializeComponent();
             DataContext = this;
         }
+
+        #region "Segment Indicators"
+
+        ObservableCollection<ShiftSegmentIndicator> segmentindicators;
+        public ObservableCollection<ShiftSegmentIndicator> SegmentIndicators
+        {
+            get
+            {
+                if (segmentindicators == null) segmentindicators = new ObservableCollection<ShiftSegmentIndicator>();
+                return segmentindicators;
+            }
+            set
+            {
+                segmentindicators = value;
+            }
+        }
+
+        #endregion
+
 
         public string Shift_Name
         {

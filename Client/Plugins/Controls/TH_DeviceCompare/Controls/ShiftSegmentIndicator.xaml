@@ -1,0 +1,70 @@
+﻿<UserControl x:Class="TH_DeviceCompare.Controls.ShiftSegmentIndicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             
+             Width="75"
+             >
+    <UserControl.ToolTip>
+        <ToolTip>
+            <StackPanel>
+                <TextBlock>
+                    <Run Text="{Binding SegmentId, StringFormat=[{0:0}]}"/>
+                    <Run FontWeight="Bold" Text="{Binding SegmentTimes}"/>
+                </TextBlock>
+                <TextBlock>
+                    <Run Text="Duration : "/>
+                    <Run Text="{Binding SegmentDuration}"/>
+                </TextBlock>
+                <TextBlock Text="{Binding SegmentType}"/>
+            </StackPanel>
+        </ToolTip>
+    </UserControl.ToolTip>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Break Indicator-->
+        <TextBlock Grid.Column="0" Width="10" Text="{Binding SegmentId}" FontSize="8" Foreground="#33ffffff" VerticalAlignment="Center"/>
+
+        <!--Time Bar-->
+        <Grid Grid.Column="1" Width="{Binding ProgressWidth}" HorizontalAlignment="Left">
+
+            <ProgressBar Height="3" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Margin="5,0" Background="#33000000" BorderThickness="0" VerticalAlignment="Center" >
+                <ProgressBar.Style>
+                    <Style TargetType="ProgressBar">
+                        <Setter Property="Foreground" Value="#33ffffff"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentShift}" Value="true">
+                                <Setter Property="Foreground" Value="#aaffffff"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ProgressBar.Style>
+            </ProgressBar>
+
+        </Grid>
+        
+        <!--Break Indicator-->
+        <TextBlock Grid.Column="2" Width="10" Text="B" FontSize="8" Foreground="#33ffffff" VerticalAlignment="Center">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding BreakType}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+        
+    </Grid>
+
+</UserControl>

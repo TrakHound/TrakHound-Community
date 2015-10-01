@@ -55,8 +55,8 @@ namespace TH_History.Controls
             if (configuration != null)
             {
 
-                ShiftTable.ShiftTableConfiguration stc = ShiftTable.ReadXML(configuration.ConfigurationXML);
-                if (stc != null)
+                ShiftConfiguration sc = ShiftConfiguration.ReadXML(configuration.ConfigurationXML);
+                if (sc != null)
                 {
                     DataTable table = new DataTable();
                     table.Columns.Add("Shift Name");
@@ -68,7 +68,7 @@ namespace TH_History.Controls
                     // Get entire table (may need to be sorted using user input)
                     DataTable oeeTable = Global.Table_Get(configuration.SQL, "oee");
 
-                    foreach (ShiftConfiguration shift in stc.shifts)
+                    foreach (Shift shift in sc.shifts)
                     {
 
                         DataView dv = oeeTable.AsDataView();

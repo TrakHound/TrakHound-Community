@@ -347,7 +347,7 @@ namespace TH_Cycles
                     if (ci != null)
                     {
                         //string shift_id = ShiftRowInfo.GetId(item.shiftDate, item.segment.shiftConfiguration.id, item.segment.id);
-                        string shift_id = ShiftTable.GetShiftId(item.shiftDate, item.segment.shiftConfiguration.id, item.segment.id);
+                        string shift_id = Tools.GetShiftId(item.shiftDate, item.segment);
                         string cycle_id = ci.value;
 
                         CycleRowInfo info = null;

@@ -24,6 +24,10 @@
     <Device>
       <Configuration_Path>Okuma-Lathe\Device_Configuration.xml</Configuration_Path>
     </Device>
+
+    <Device>
+      <Configuration_Path>Okuma-MC\Device_Configuration.xml</Configuration_Path>
+    </Device>
     
   </Devices>
 
