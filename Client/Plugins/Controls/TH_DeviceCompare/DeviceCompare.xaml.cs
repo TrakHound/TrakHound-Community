@@ -97,7 +97,7 @@ namespace TH_DeviceCompare
 
         public void Update(ReturnData rd)
         {
-            this.Dispatcher.BeginInvoke(new Action<ReturnData>(Update_GUI), Priority, new object[] { rd });
+            this.Dispatcher.BeginInvoke(new Action<ReturnData>(Update_GUI), Priority_Background, new object[] { rd });
         }
 
         public void Closing() { }
@@ -171,7 +171,9 @@ namespace TH_DeviceCompare
 
         #region "Device Compare"
 
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
+        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
+
+        const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
         List<DeviceDisplay> DeviceDisplays { get; set; }
 
@@ -264,7 +266,7 @@ namespace TH_DeviceCompare
                                 if (snapshotdata != null)
                                 {
                                     // Update Header ----------------------------------------------------------
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority, new object[] { dd, snapshotdata });
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority_Context, new object[] { dd, snapshotdata });
                                     // ------------------------------------------------------------------------
                                 }
 
@@ -275,13 +277,13 @@ namespace TH_DeviceCompare
                                 if (shiftdata != null)
                                 {
                                     // Production Status Times
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateProductionStatusTimes), Priority, new object[] { dd, shiftdata, snapshotdata });
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateProductionStatusTimes), Priority_Context, new object[] { dd, shiftdata, snapshotdata });
                                 }
 
                                 if (snapshotdata != null && shiftdata != null)
                                 {
                                     // Shift Info
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateShiftInfo), Priority, new object[] { dd, snapshotdata, shiftdata });
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateShiftInfo), Priority_Context, new object[] { dd, snapshotdata, shiftdata });
                                 }
 
                                 // Get data from Production Status
@@ -291,7 +293,7 @@ namespace TH_DeviceCompare
                                 if (productionstatusdata != null && snapshotdata != null)
                                 {
                                     // Production Status Timeline
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority, new object[] { dd, productionstatusdata, snapshotdata });
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd, productionstatusdata, snapshotdata });
                                 }
 
 
@@ -301,15 +303,15 @@ namespace TH_DeviceCompare
                                 if (oeedata != null)
                                 {
                                     // Update Average OEE display
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority, new object[] { dd, oeedata });
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority_Context, new object[] { dd, oeedata });
 
                                     // Update Segment OEE display
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority, new object[] { dd, oeedata });
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, oeedata });
 
                                     if (shiftdata != null)
                                     {
                                         // Update OEE Timeline display
-                                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_OEE_Timeline), Priority, new object[] { dd, oeedata, shiftdata });
+                                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_OEE_Timeline), Priority_Context, new object[] { dd, oeedata, shiftdata });
                                     }
                                 }
                             }
@@ -404,7 +406,13 @@ namespace TH_DeviceCompare
                     dd.ComparisonGroup.column.Cells[cellIndex].Data = sd;
                 }
 
+                string prevShiftName = sd.Shift_Name;
+                bool shiftChanged = false;
+
                 sd.Shift_Name = GetSnapShotValue("Current Shift Name", snapshotdata);
+
+                if (prevShiftName != sd.Shift_Name) shiftChanged = true;
+
 
                 string shiftdate = GetSnapShotValue("Current Shift Date", snapshotdata);
                 if (shiftdate != null)
@@ -453,7 +461,8 @@ namespace TH_DeviceCompare
 
                 List<SegmentInfo> shiftSegments = GetShiftSegments(shiftdata);
 
-                sd.SegmentIndicators.Clear();
+
+                if (shiftChanged) sd.SegmentIndicators.Clear();
 
                 double maxDuration = -1;
 
@@ -465,8 +474,17 @@ namespace TH_DeviceCompare
 
                 foreach (SegmentInfo segment in shiftSegments)
                 {
-                    Controls.ShiftSegmentIndicator indicator = new Controls.ShiftSegmentIndicator();
+                    Controls.ShiftSegmentIndicator indicator;
 
+                    int indicatorIndex = sd.SegmentIndicators.ToList().FindIndex(x => x.id == segment.segmentId);
+                    if (indicatorIndex >= 0) indicator = sd.SegmentIndicators[indicatorIndex];
+                    else
+                    {
+                        indicator = new Controls.ShiftSegmentIndicator();
+                        sd.SegmentIndicators.Add(indicator);
+                    }
+
+                    indicator.id = segment.segmentId;
 
                     DateTime segmentEnd = segment.segmentEnd;
                     if (segment.segmentEnd < segment.segmentStart) segmentEnd = segmentEnd.AddDays(1);
@@ -492,26 +510,17 @@ namespace TH_DeviceCompare
                             indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentProgress));
                         }
                     }
-                    else
-                    {
-                        indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentDuration));
-                    }
+                    else indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentDuration));
 
                     indicator.SegmentId = (segment.segmentId + 1).ToString("00");
 
                     if (segment.segmentType.ToLower() == "break") indicator.BreakType = true;
 
                     indicator.SegmentType = segment.segmentType;
-
-                    sd.SegmentIndicators.Add(indicator);
                 }
 
                 // --------------------------------------------------------------------------------
 
-
-
-
-                //sd.Bar_Maximum = ;
             }
         }
 
@@ -577,7 +586,7 @@ namespace TH_DeviceCompare
 
         #endregion
 
-        #region "Production Status"
+        #region "Production Status Times"
 
         class ProductionStatus_Return
         {
@@ -644,7 +653,7 @@ namespace TH_DeviceCompare
                     updateData.stack = stack;
                     updateData.color = color;
 
-                    this.Dispatcher.BeginInvoke(new Action<ProductionStatus_UpdateData>(AddProductionStatusTime), Priority, new object[] { updateData });
+                    this.Dispatcher.BeginInvoke(new Action<ProductionStatus_UpdateData>(AddProductionStatusTime), Priority_Context, new object[] { updateData });
 
                     colorIndex += 1;
                 }
@@ -689,7 +698,7 @@ namespace TH_DeviceCompare
 
             // Set Percentage (seconds / totalseconds)
             double percentage = (double)updateData.variable.seconds / updateData.statusReturn.totalSeconds;
-            td.Percentage = percentage.ToString("P0");
+            td.Percentage = percentage.ToString("P1");
 
             // Set Bar Values 
             td.BarMaximum = updateData.statusReturn.totalSeconds;
@@ -705,12 +714,6 @@ namespace TH_DeviceCompare
 
             if (shiftData != null)
             {
-                // Get a List of all rows that match the current shift
-                // NO LONGER NEEDED! ONLY RETURNS DATA FOR CURRENT SHIFT NOW || 8-31-15
-                //List<Tuple<string, Dictionary<string, string>>> currentShiftData = GetCurrentShiftData(shiftData);
-
-                //if (currentShiftData != null)
-                //{
                 int totalSeconds = 0;
                 List<ProductionStatus_Variable> variables = new List<ProductionStatus_Variable>();
 
@@ -749,8 +752,6 @@ namespace TH_DeviceCompare
 
                 Result.totalSeconds = totalSeconds;
                 Result.variables = variables;
-
-                //}
             }
 
             return Result;
@@ -825,30 +826,29 @@ namespace TH_DeviceCompare
                         if (ddData == null)
                         {
                             oeeAverage = new Controls.NumberDisplay();
-                            //oeeAverage.Value_Type = "Avg";
                             dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeAverage;
                         }
                         else oeeAverage = (Controls.NumberDisplay)ddData;
 
                         oeeAverage.Value = average.ToString("P2");
 
-                        if (average > prev_oeeAvg)
-                        {
-                            oeeAverage.ValueIncreasing = true;
-                            oeeAverage.ValueDecreasing = false;
-                        }
-                        else if (average < prev_oeeAvg)
-                        {
-                            oeeAverage.ValueIncreasing = false;
-                            oeeAverage.ValueDecreasing = true;
-                        }
-                        else
-                        {
-                            oeeAverage.ValueIncreasing = false;
-                            oeeAverage.ValueDecreasing = false;
-                        }
+                        //if (average > prev_oeeAvg)
+                        //{
+                        //    oeeAverage.ValueIncreasing = true;
+                        //    oeeAverage.ValueDecreasing = false;
+                        //}
+                        //else if (average < prev_oeeAvg)
+                        //{
+                        //    oeeAverage.ValueIncreasing = false;
+                        //    oeeAverage.ValueDecreasing = true;
+                        //}
+                        //else
+                        //{
+                        //    oeeAverage.ValueIncreasing = false;
+                        //    oeeAverage.ValueDecreasing = false;
+                        //}
 
-                        prev_oeeAvg = average;
+                        //prev_oeeAvg = average;
                     }
                 }
             }
@@ -1088,7 +1088,6 @@ namespace TH_DeviceCompare
 
         #region "Components"
 
-
         #region "Column Headers"
 
         ObservableCollection<Header> columnheaders;
@@ -1315,7 +1314,6 @@ namespace TH_DeviceCompare
             if (this.RenderSize.Height < 850) foreach (Header header in ColumnHeaders) header.Minimized = true;
             else foreach (Header header in ColumnHeaders) header.Minimized = false;
         }
-
 
         #endregion
 

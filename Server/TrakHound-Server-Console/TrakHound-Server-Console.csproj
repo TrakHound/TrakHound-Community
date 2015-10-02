@@ -88,6 +88,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

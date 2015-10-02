@@ -56,6 +56,8 @@ namespace TH_DeviceStatus
 
         }
 
+
+
         public void Update_DataEvent(DataEvent_Data de_d) { }
 
         public event DataEvent_Handler DataEvent;

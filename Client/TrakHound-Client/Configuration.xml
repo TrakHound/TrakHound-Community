@@ -3,31 +3,27 @@
 
   <Devices>
 
-    <Device>
-      <!--<Configuration_Path>MTConnect\Device_Configuration.xml</Configuration_Path>-->
-      <!--<Configuration_Path>Mazak1-1\Device_Configuration.xml</Configuration_Path>-->
+    <!--<Device>
       <Configuration_Path>Seaside1-1\Device_Configuration.xml</Configuration_Path>
-    </Device>
+    </Device>-->
 
     <Device>
-      <!--<Configuration_Path>MTConnect\Device_Configuration.xml</Configuration_Path>-->
       <Configuration_Path>Mazak1-1\Device_Configuration.xml</Configuration_Path>
-      <!--<Configuration_Path>Seaside1-1\Device_Configuration.xml</Configuration_Path>-->
     </Device>
 
-    <Device>
+    <!--<Device>
       <Configuration_Path>MTConnect\Device_Configuration.xml</Configuration_Path>
-      <!--<Configuration_Path>Mazak1-1\Device_Configuration.xml</Configuration_Path>-->
-      <!--<Configuration_Path>Seaside1-1\Device_Configuration.xml</Configuration_Path>-->
-    </Device>
+      --><!--<Configuration_Path>Mazak1-1\Device_Configuration.xml</Configuration_Path>--><!--
+      --><!--<Configuration_Path>Seaside1-1\Device_Configuration.xml</Configuration_Path>--><!--
+    </Device>-->
 
-    <Device>
+    <!--<Device>
       <Configuration_Path>Okuma-Lathe\Device_Configuration.xml</Configuration_Path>
-    </Device>
+    </Device>-->
 
-    <Device>
+    <!--<Device>
       <Configuration_Path>Okuma-MC\Device_Configuration.xml</Configuration_Path>
-    </Device>
+    </Device>-->
     
   </Devices>
 

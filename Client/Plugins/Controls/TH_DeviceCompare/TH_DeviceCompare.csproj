@@ -197,6 +197,10 @@
     <Resource Include="Fonts\DIGITALDREAMNARROW.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Fonts\DS-DIGI.TTF" />
+    <Resource Include="Fonts\DS-DIGIB.TTF" />
+    <Resource Include="Fonts\DS-DIGII.TTF" />
+    <Resource Include="Fonts\DS-DIGIT.TTF" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -262,7 +266,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Carrot_Arrow_Down_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Carrot_Arrow_Up_02.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

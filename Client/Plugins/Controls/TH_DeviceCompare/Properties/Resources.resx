@@ -127,6 +127,12 @@
   <data name="Arrow_Up_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Arrow_Up_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Carrot_Arrow_Down_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Carrot_Arrow_Down_02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Carrot_Arrow_Up_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Carrot_Arrow_Up_02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Compare_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Compare_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

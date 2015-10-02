@@ -93,6 +93,26 @@ namespace TH_DeviceCompare.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Carrot_Arrow_Down_02 {
+            get {
+                object obj = ResourceManager.GetObject("Carrot_Arrow_Down_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Carrot_Arrow_Up_02 {
+            get {
+                object obj = ResourceManager.GetObject("Carrot_Arrow_Up_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Compare_01 {
             get {
                 object obj = ResourceManager.GetObject("Compare_01", resourceCulture);

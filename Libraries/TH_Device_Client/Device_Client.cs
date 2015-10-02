@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Ping;
@@ -193,35 +194,82 @@ namespace TH_Device_Client
         {
             if (Data_Plugins != null)
             {
-                IEnumerable<int> priorities = Data_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
+                foreach (Lazy<Data_PlugIn> ldp in Data_Plugins)
                 {
-                    List<Lazy<Data_PlugIn>> pluginsAtPriority = Data_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Data_PlugIn> LDP in pluginsAtPriority)
+                    if (ldp.IsValueCreated)
                     {
-                        Data_PlugIn DP = LDP.Value;
-                        DP.Update_DataEvent(de_d);
+                        UpdateWorkerInfo info = new UpdateWorkerInfo();
+                        info.dataPlugin = ldp.Value;
+                        info.de_d = de_d;
+
+                        ThreadPool.QueueUserWorkItem(new WaitCallback(DataPlugin_Update_Worker), info);
                     }
                 }
+
+
+                //IEnumerable<int> priorities = Data_Plugins.Select(x => x.Value.Priority).Distinct();
+
+                //List<int> sortedPriorities = priorities.ToList();
+                //sortedPriorities.Sort();
+
+                //foreach (int priority in sortedPriorities)
+                //{
+                //    List<Lazy<Data_PlugIn>> pluginsAtPriority = Data_Plugins.FindAll(x => x.Value.Priority == priority);
+
+                //    foreach (Lazy<Data_PlugIn> LDP in pluginsAtPriority)
+                //    {
+                //        Data_PlugIn DP = LDP.Value;
+                //        DP.Update_DataEvent(de_d);
+                //    }
+                //}
             }
 
-            lock (returnData)
+            //lock (returnData)
+            //{
+            //    // Add or Update new data in ReturnData
+            //    if (returnData.data.ContainsKey(de_d.id))
+            //    {
+            //        returnData.data[de_d.id] = de_d.data;
+            //    }
+            //    else
+            //    {
+            //        returnData.data.Add(de_d.id, de_d.data);
+            //    }
+            //}  
+        }
+
+        class UpdateWorkerInfo
+        {
+            public Data_PlugIn dataPlugin { get; set; }
+            public DataEvent_Data de_d { get; set; }
+        }
+
+        void DataPlugin_Update_Worker(object o)
+        {
+            UpdateWorkerInfo info = (UpdateWorkerInfo)o;
+
+            try
             {
-                // Add or Update new data in ReturnData
-                if (returnData.data.ContainsKey(de_d.id))
+                Data_PlugIn DP = info.dataPlugin;
+                DP.Update_DataEvent(info.de_d);
+
+                lock (returnData)
                 {
-                    returnData.data[de_d.id] = de_d.data;
-                }
-                else
-                {
-                    returnData.data.Add(de_d.id, de_d.data);
-                }
-            }  
+                    // Add or Update new data in ReturnData
+                    if (returnData.data.ContainsKey(info.de_d.id))
+                    {
+                        returnData.data[info.de_d.id] = info.de_d.data;
+                    }
+                    else
+                    {
+                        returnData.data.Add(info.de_d.id, info.de_d.data);
+                    }
+                }  
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Data Plugin Exception : " + ex.Message);
+            }
         }
 
         #endregion

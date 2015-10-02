@@ -3,3 +3,4 @@ C:\TrakHound\Server\Plugins\TH_Cycles\TH_Cycles.pdb
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.dll
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.pdb
+C:\TrakHound\Server\Plugins\TH_Cycles\LICENSE.txt

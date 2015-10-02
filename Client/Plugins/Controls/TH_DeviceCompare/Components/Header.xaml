@@ -102,9 +102,31 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
+                <RowDefinition >
+                    <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                            <Setter Property="Height" Value="3*"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="*"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition >
+                    <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                            <Setter Property="Height" Value="7*"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="auto"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             
@@ -139,7 +161,7 @@
             </Image>
 
             <!--Device Description-->
-            <TextBlock Grid.Row="2" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5" TextAlignment="Center" Foreground="#fff"/>
+            <TextBlock Grid.Row="2" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5,10,0" TextAlignment="Center" Foreground="#fff"/>
 
             <!--Device Image and Info-->
             <Grid Grid.Row="3">

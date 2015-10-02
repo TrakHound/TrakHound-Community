@@ -76,8 +76,6 @@ namespace TH_Ping
             }
         }
 
-
-
         private string GetIPFromHost(string HostName)
         {
             string Result = null;
@@ -93,7 +91,6 @@ namespace TH_Ping
 
             return Result;
         }
-
 
         public static bool PingHost(string nameOrAddress)
         {

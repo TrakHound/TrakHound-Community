@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Threading;
+
 using System.Xml;
 using System.IO;
 using System.Collections.ObjectModel;
@@ -1513,16 +1515,6 @@ namespace TrakHound_Client
         {
             if (rd != null)
             {
-                //ReturnData dd = DeviceData.Find(x => x.configuration.DataBaseName == rd.configuration.DataBaseName);
-                //if (dd != null)
-                //{
-                //    dd = rd;
-                //}
-                //else
-                //{
-                //    DeviceData.Add(rd);
-                //}
-
                 // Set Update Interval if changed
                 if (rd.index >= 0) 
                 {
@@ -1548,30 +1540,49 @@ namespace TrakHound_Client
                                     {
                                         if (LCP.Value.Title.ToLower() == config.name.ToLower())
                                         {
-                                            try
-                                            {
-                                                Control_PlugIn CP = LCP.Value;
-                                                CP.Update(rd);
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                if (!UpdateExceptionsThrown.Contains(config.name))
-                                                {
-                                                    Message_Center.Message_Data mData = new Message_Center.Message_Data();
-                                                    mData.title = config.name + ": PlugIn Error";
-                                                    mData.text = "Error during plugin update";
-                                                    mData.additionalInfo = ex.Message;
+                                            UpdateWorkerInfo info = new UpdateWorkerInfo();
+                                            info.returnData = rd;
+                                            info.controlPlugin = LCP.Value;
+                                            info.config = config;
 
-                                                    messageCenter.AddError(mData);
-                                                    UpdateExceptionsThrown.Add(config.name);
-                                                }
-                                            }
+                                            ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), info);
                                         }
                                     }
                                 }
                             }
                         }
                     }
+                }
+            }
+        }
+
+        class UpdateWorkerInfo
+        {
+            public ReturnData returnData { get; set; }
+            public Control_PlugIn controlPlugin { get; set; }
+            public PlugInConfiguration config { get; set; }
+        }
+
+        void Update_Worker(object o)
+        {
+            UpdateWorkerInfo info = (UpdateWorkerInfo)o;
+
+            try
+            {
+                Control_PlugIn CP = info.controlPlugin;
+                CP.Update(info.returnData);
+            }
+            catch (Exception ex)
+            {
+                if (!UpdateExceptionsThrown.Contains(info.config.name))
+                {
+                    Message_Center.Message_Data mData = new Message_Center.Message_Data();
+                    mData.title = info.config.name + ": PlugIn Error";
+                    mData.text = "Error during plugin update";
+                    mData.additionalInfo = ex.Message;
+
+                    messageCenter.AddError(mData);
+                    UpdateExceptionsThrown.Add(info.config.name);
                 }
             }
         }

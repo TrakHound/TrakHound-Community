@@ -67,30 +67,7 @@ namespace TH_Configuration
         /// </summary>
         public string DataBaseName
         {
-            get
-            {
-                return GetDatabaseName(SQL);
-
-
-                //string Result = "";
-
-                //List<string> Items = new List<string>();
-
-                //if (SQL.Database_Prefix != null) Items.Add(SQL.Database_Prefix.ToLower());
-                //if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
-                //if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
-                //if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
-                //if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
-                //if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
-
-                //for (int x = 0; x <= Items.Count - 1; x++)
-                //{
-                //    if (x > 0) Result += "_";
-                //    Result += Items[x];
-                //}
-
-                //return Result;
-            }
+            get { return GetDatabaseName(SQL); }
         }
 
         #endregion
@@ -106,20 +83,25 @@ namespace TH_Configuration
         {
             string Result = "";
 
-            List<string> Items = new List<string>();
-
-            if (sql.Database_Prefix != null) Items.Add(sql.Database_Prefix.ToLower());
-            if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
-            if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
-            if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
-            if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
-            if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
-
-            for (int x = 0; x <= Items.Count - 1; x++)
+            // Generate Database name if NOT specified in Device_Configuration file
+            if (sql.Database == null)
             {
-                if (x > 0) Result += "_";
-                Result += Items[x];
+                List<string> Items = new List<string>();
+
+                if (sql.Database_Prefix != null) Items.Add(sql.Database_Prefix.ToLower());
+                if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
+                if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
+                if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
+                if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
+                if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
+
+                for (int x = 0; x <= Items.Count - 1; x++)
+                {
+                    if (x > 0) Result += "_";
+                    Result += Items[x];
+                }
             }
+            else Result = sql.Database;
 
             return Result;
         }
@@ -164,7 +146,7 @@ namespace TH_Configuration
                     }
                 }
 
-                Result.SQL.Database = Result.GetDatabaseName(Result.SQL);
+                if (Result.SQL != null) Result.SQL.Database = Result.GetDatabaseName(Result.SQL);
                 if (Result.SQL.AdminSQL != null) Result.SQL.AdminSQL.Database = Result.GetDatabaseName(Result.SQL.AdminSQL);
 
                 string databaseNames = Result.SQL.Database;

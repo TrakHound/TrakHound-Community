@@ -60,8 +60,8 @@ namespace TH_DeviceCompare.Controls
 
         #endregion
 
-        
 
+        public int id { get; set; }
         
 
         public string SegmentId

@@ -40,7 +40,7 @@ namespace TH_DeviceCompare
         public event ConnectedChanged_Handler ConnectedChanged;
 
         public int connectionAttempts { get; set; }
-        public const int maxConnectionAttempts = 3;
+        public const int maxConnectionAttempts = 5;
 
         public Configuration configuration;
 

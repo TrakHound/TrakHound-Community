@@ -9,40 +9,65 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
+             Width="200"
+             Height="50"
              >
     
-    <Grid HorizontalAlignment="Center">
+    <Grid HorizontalAlignment="Center" Margin="0,10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="50"/>
         </Grid.ColumnDefinitions>    
         
         <!--Number Type-->
-        <TextBlock Text="{Binding Value_Type}" FontSize="12" Foreground="#33ffffff" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"/>
+        <!--<TextBlock Text="{Binding Value_Type}" FontSize="12" Foreground="#33ffffff" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"/>-->
+        
+        <!--Previous Values-->
+        <Grid Grid.Column="0" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--Previous Value 3-->
+            <TextBlock Grid.Row="0" Text="{Binding PreviousValue3}" FontSize="10" Foreground="#33ffffff" Opacity="0.25"
+                       FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"/>
+
+            <!--Previous Value 2-->
+            <TextBlock Grid.Row="1" Text="{Binding PreviousValue2}" FontSize="10" Foreground="#33ffffff" Opacity="0.5"
+                       FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"/>
+
+            <!--Previous Value 1-->
+            <TextBlock Grid.Row="2" Text="{Binding PreviousValue1}" FontSize="10" Foreground="#33ffffff" Opacity="0.75"
+                       FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"/>
+        </Grid>
 
         <!--Number Value-->
-        <TextBlock Grid.Column="1" Text="{Binding Value}" FontSize="18" Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0,0,0"/>
+        <TextBlock Grid.Column="1" Text="{Binding Value}" FontSize="24"
+                   Foreground="#aaffffff"
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"
+                   />
         
         <!--Trend Arrow-->
-        <Rectangle Grid.Column="2" Width="30" Height="30" Margin="5,0,0,0">
+        <Rectangle Grid.Column="2" Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Rectangle.Resources>
-                <ImageBrush x:Key="UP_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Arrow_Up_01.png" />
-                <ImageBrush x:Key="DOWN_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Arrow_Down_01.png" />
+                <ImageBrush x:Key="UP_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Carrot_Arrow_Up_02.png" />
+                <ImageBrush x:Key="DOWN_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Carrot_Arrow_Down_02.png" />
             </Rectangle.Resources>
 
             <Rectangle.Style>
                 <Style TargetType="Rectangle">
-                    <!--<Setter Property="OpacityMask" Value="{x:Null}" />
-                    <Setter Property="Fill" Value="{x:Null}"/>-->
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ValueIncreasing}" Value="true">
                             <Setter Property="OpacityMask" Value="{StaticResource UP_Arrow_IMG}" />
-                            <Setter Property="Fill" Value="Green"/>
+                            <Setter Property="Fill" Value="#00ff00"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueDecreasing}" Value="true">
                             <Setter Property="OpacityMask" Value="{StaticResource DOWN_Arrow_IMG}" />
-                            <Setter Property="Fill" Value="Red"/>
+                            <Setter Property="Fill" Value="#ff0000"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

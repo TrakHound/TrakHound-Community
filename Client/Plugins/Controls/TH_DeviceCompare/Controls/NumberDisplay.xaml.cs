@@ -31,10 +31,67 @@ namespace TH_DeviceCompare.Controls
             DataContext = this;
         }
 
+        #region "Previous Values"
+
+        private string previousvalue;
+        public string PreviousValue
+        {
+            get { return previousvalue; }
+            set
+            {
+                previousvalue = value;
+
+                PreviousValue3 = PreviousValue2;
+                PreviousValue2 = PreviousValue1;
+                PreviousValue1 = previousvalue;
+
+                //if (PreviousValue1 != PreviousValue)
+                //{
+                //    PreviousValue3 = PreviousValue2;
+                //    PreviousValue2 = PreviousValue1;
+                //    PreviousValue1 = PreviousValue;
+                //}        
+            }
+        }
+
+        public string PreviousValue1
+        {
+            get { return (string)GetValue(PreviousValue1Property); }
+            set { SetValue(PreviousValue1Property, value); }
+        }
+
+        public static readonly DependencyProperty PreviousValue1Property =
+            DependencyProperty.Register("PreviousValue1", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+
+        public string PreviousValue2
+        {
+            get { return (string)GetValue(PreviousValue2Property); }
+            set { SetValue(PreviousValue2Property, value); }
+        }
+
+        public static readonly DependencyProperty PreviousValue2Property =
+            DependencyProperty.Register("PreviousValue2", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+
+        public string PreviousValue3
+        {
+            get { return (string)GetValue(PreviousValue3Property); }
+            set { SetValue(PreviousValue3Property, value); }
+        }
+
+        public static readonly DependencyProperty PreviousValue3Property =
+            DependencyProperty.Register("PreviousValue3", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+
+        #endregion
+
         public string Value
         {
             get { return (string)GetValue(ValueProperty); }
-            set { SetValue(ValueProperty, value); }
+            set 
+            {
+                if (Value != value) PreviousValue = Value;
+
+                SetValue(ValueProperty, value); 
+            }
         }
 
         public static readonly DependencyProperty ValueProperty =

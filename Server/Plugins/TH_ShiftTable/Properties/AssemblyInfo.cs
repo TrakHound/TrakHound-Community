@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TH_ShiftTable")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("TrakHound Server Plugin for tracking data by shift")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Feenux LLC")]
 [assembly: AssemblyProduct("TH_ShiftTable")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2015 Feenux LLC, All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.3")]
-[assembly: AssemblyFileVersion("1.0.0.3")]
+[assembly: AssemblyVersion("1.0.0.4")]
+[assembly: AssemblyFileVersion("1.0.0.4")]

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -65,10 +70,10 @@ namespace TH_ShiftTable
 
                 TH_MySQL.Tables.Variables.Update(config.SQL, "shift_date", shiftInfo.date, returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_begintime", shiftInfo.shift.beginTime.ToString(), returnData.header.creationTime);
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_endtime", shiftInfo.shift.endTime.ToString(), returnData.header.creationTime);
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime);
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", shiftInfo.currentTime.ToLongTimeString(), returnData.header.creationTime);
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime);
             }
         }
 

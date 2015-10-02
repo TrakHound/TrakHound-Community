@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TH_GeneratedData")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("TrakHound Server Plugin for generating user defined data")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Feenux LLC")]
 [assembly: AssemblyProduct("TH_GeneratedData")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCopyright("Copyright © 2015 Feenux LLC, All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

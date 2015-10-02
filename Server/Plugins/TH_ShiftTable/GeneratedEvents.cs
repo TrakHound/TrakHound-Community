@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -213,18 +218,6 @@ namespace TH_ShiftTable
                 // Calculate duration of GeneratedEventShiftItem
                 TimeSpan duration = gesi.end_timestamp - gesi.start_timestamp;
                 gesi.duration = duration;
-
-                // Add to Log
-                Tools.Log(gesi.eventValue + " :: " +
-                    item1.timestamp.ToString() + " :: " +
-                    item2.timestamp.ToString() + " :: " +
-                    gesi.start_timestamp.ToString() + " :: " +
-                    gesi.end_timestamp.ToString() + " :: " +
-                    gesi.segment.beginTime.ToString() + " :: " +
-                    gesi.segment.endTime.ToString() + " :: " +
-                    Tools.GetShiftId(gesi.shiftDate, gesi.segment) + " :: " +
-                    type.ToString() + " :: " +
-                    gesi.duration.ToString());
 
                 Result = gesi;
             }
