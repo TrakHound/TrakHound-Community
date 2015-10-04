@@ -248,7 +248,6 @@ namespace TrakHound_Client.Options.Pages.Updates
                                     ui.PluginImage = CP.Image;
 
                                     // Build Information
-                                    //System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
                                     Assembly assembly = Assembly.GetAssembly(CP.GetType());
                                     Version version = assembly.GetName().Version;
 
@@ -261,12 +260,48 @@ namespace TrakHound_Client.Options.Pages.Updates
                                     // Update Info
                                     ui.UpdateFileUrl = CP.UpdateFileURL;
 
-                                    //ui.CheckUpdateVersion();
-
                                     Plugin_STACK.Children.Add(ui);
                                 }
                             }
                             catch { }
+                        }
+                    }
+
+                    if (config.SubCategories != null)
+                    {
+                        foreach (PlugInConfigurationCategory subcat in config.SubCategories)
+                        {
+                            foreach (PlugInConfiguration subConfig in subcat.PlugInConfigurations)
+                            {
+                                Lazy<Control_PlugIn> sLCP = mw.PagePlugIns.Find(x => x.Value.Title.ToUpper() == subConfig.name.ToUpper());
+                                if (sLCP != null)
+                                {
+                                    try
+                                    {
+                                        Control_PlugIn sCP = sLCP.Value;
+
+                                        UpdateItem ui = new UpdateItem();
+                                        ui.PluginTitle = subConfig.name;
+                                        ui.PluginImage = sCP.Image;
+
+                                        // Build Information
+                                        Assembly assembly = Assembly.GetAssembly(sCP.GetType());
+                                        Version version = assembly.GetName().Version;
+
+                                        ui.PluginVersion = "v" + version.ToString();
+
+                                        // Author Info
+                                        ui.PluginAuthor = sCP.Author;
+                                        ui.PluginAuthorInfo = sCP.AuthorText;
+
+                                        // Update Info
+                                        ui.UpdateFileUrl = sCP.UpdateFileURL;
+
+                                        Plugin_STACK.Children.Add(ui);
+                                    }
+                                    catch { }
+                                }
+                            }
                         }
                     }
                 }

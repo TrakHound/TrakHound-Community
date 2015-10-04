@@ -16,9 +16,9 @@
              mc:Ignorable="d" 
              d:DesignWidth="200"
              
-             MinHeight="80"
+             MinHeight="75"
              
-             Margin="0,10"
+             Margin="0,5"
              >
 
     <Grid>

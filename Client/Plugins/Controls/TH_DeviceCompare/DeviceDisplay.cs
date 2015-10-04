@@ -77,12 +77,17 @@ namespace TH_DeviceCompare
 
             dd = new DataItem();
             dd.id = "OEEAverage";
-            dd.header = "OEE Shift Average";
+            dd.header = "Average Shift OEE";
             DataItems.Add(dd);
 
             dd = new DataItem();
             dd.id = "OEESegment";
-            dd.header = "OEE Shift Segment";
+            dd.header = "Shift Segment OEE";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "OEETimeLine";
+            dd.header = "OEE Timeline";
             DataItems.Add(dd);
 
             dd = new DataItem();
@@ -100,10 +105,7 @@ namespace TH_DeviceCompare
             dd.header = "Production Status Timeline";
             DataItems.Add(dd);
 
-            dd = new DataItem();
-            dd.id = "OEETimeLine";
-            dd.header = "OEE Timeline";
-            DataItems.Add(dd);
+
         }
 
         public Comparison_Group ComparisonGroup;

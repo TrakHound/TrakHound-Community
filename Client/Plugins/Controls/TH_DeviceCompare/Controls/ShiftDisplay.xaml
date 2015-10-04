@@ -97,9 +97,9 @@
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Shift_Name}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Shift_Name}" Value="">
                             <Setter Property="Visibility" Value="Visible"/>
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <!--<Setter Property="Visibility" Value="Collapsed"/>-->
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -123,9 +123,9 @@
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Shift_Name}" Value="{x:Null}">
+                        <DataTrigger Binding="{Binding Shift_Name}" Value="">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                            <Setter Property="Visibility" Value="Visible"/>
+                            <!--<Setter Property="Visibility" Value="Visible"/>-->
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

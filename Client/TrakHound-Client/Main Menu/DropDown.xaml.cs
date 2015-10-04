@@ -42,6 +42,7 @@ namespace TrakHound_Client.Main_Menu
 
             AddOptions_MenuItem();
             AddPlugins_MenuItem();
+            AddDeveloperConsole_MenuItem();
         }
 
         public TrakHound_Client.MainWindow mw;
@@ -123,6 +124,25 @@ namespace TrakHound_Client.Main_Menu
         {
             Shown = false;
             if (mw != null) mw.Plugins_Open();
+        }
+
+        #endregion
+
+        #region "Developer Console"
+
+        void AddDeveloperConsole_MenuItem()
+        {
+            MenuItem mi = new MenuItem();
+            mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Developer_01.png"));
+            mi.Text = "Developer Console";
+            mi.Clicked += DeveloperConsole_Clicked;
+            MenuItems.Add(mi);
+        }
+
+        void DeveloperConsole_Clicked()
+        {
+            if (mw != null) mw.developerConsole.Shown = !mw.developerConsole.Shown;
+
         }
 
         #endregion

@@ -95,6 +95,8 @@ namespace TH_History
 
         public void Closing() { }
 
+        public void Show() { if (ShowRequested != null) ShowRequested(); }
+
         #endregion
 
         #region "Events"
@@ -135,6 +137,8 @@ namespace TH_History
         }
 
         public event DataEvent_Handler DataEvent;
+
+        public event PlugInTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 

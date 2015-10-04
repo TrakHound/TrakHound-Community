@@ -565,6 +565,9 @@ namespace TrakHound_Client
             {
                 MainMenuBar_Show = !MainMenuBar_Show;
             }
+
+            // Toggle Developer Console with F12
+            if (key == Key.F12) developerConsole.Shown = !developerConsole.Shown;
         }
 
         private void Main_Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -916,15 +919,16 @@ namespace TrakHound_Client
 
         void AddAppToList(Control_PlugIn cp)
         {
+            if (cp.ShowInAppMenu)
+            {
+                Plugins.Launcher.PluginItem item = new Plugins.Launcher.PluginItem();
+                item.plugin = cp;
+                item.Text = cp.Title;
+                item.Image = cp.Image;
+                item.Clicked += item_Clicked;
 
-            Plugins.Launcher.PluginItem item = new Plugins.Launcher.PluginItem();
-            item.plugin = cp;
-            item.Text = cp.Title;
-            item.Image = cp.Image;
-            item.Clicked += item_Clicked;
-
-            if (!PluginLauncher.Plugins.Contains(item)) PluginLauncher.Plugins.Add(item);
-
+                if (!PluginLauncher.Plugins.Contains(item)) PluginLauncher.Plugins.Add(item);
+            }
         }
 
         void item_Clicked(Plugins.Launcher.PluginItem item)
@@ -1125,115 +1129,127 @@ namespace TrakHound_Client
 
         void PagePlugIns_Find_Recursive(string Path)
         {
-            PPLUGS = new PagePlugs();
-
-            var PageCatalog = new DirectoryCatalog(Path);
-            var PageContainer = new CompositionContainer(PageCatalog);
-            PageContainer.SatisfyImportsOnce(PPLUGS);
-
-            if (PPLUGS.PlugIns != null)
+            try
             {
+                PPLUGS = new PagePlugs();
 
-                List<PlugInConfiguration> configs;
+                var PageCatalog = new DirectoryCatalog(Path);
+                var PageContainer = new CompositionContainer(PageCatalog);
+                PageContainer.SatisfyImportsOnce(PPLUGS);
 
-                if (Properties.Settings.Default.PagePlugIn_Configurations != null)
+                if (PPLUGS.PlugIns != null)
                 {
-                    configs = Properties.Settings.Default.PagePlugIn_Configurations.ToList();
-                }
-                else
-                {
-                    configs = new List<PlugInConfiguration>();
-                }
 
-                foreach (Lazy<Control_PlugIn> LCP in PPLUGS.PlugIns.ToList())
-                {
-                    try
+                    List<PlugInConfiguration> configs;
+
+                    if (Properties.Settings.Default.PagePlugIn_Configurations != null)
                     {
-                        Control_PlugIn CP = LCP.Value;
-
-                        Console.WriteLine(CP.Title + " Found in '" + Path + "'");
-
-                        PlugInConfiguration config = configs.Find(x => x.name.ToUpper() == CP.Title.ToUpper());
-                        if (config == null)
-                        {
-                            Console.WriteLine("Page PlugIn Configuration created for " + CP.Title);
-                            config = new PlugInConfiguration();
-                            config.name = CP.Title;
-                            config.description = CP.Description;
-
-                            // Automatically enable basic Plugins by TrakHound
-                            if (DefaultEnablePlugins.Contains(config.name.ToLower()))
-                            {
-                                config.enabled = true;
-                                Console.WriteLine("Default TrakHound Plugin Initialized as 'Enabled'");
-                            }
-                            else config.enabled = false;
-
-                            config.parent = CP.DefaultParent;
-                            config.category = CP.DefaultParentCategory;
-
-                            config.SubCategories = CP.SubCategories;
-
-                            configs.Add(config);
-                        }
-                        else Console.WriteLine("Page PlugIn Configuration found for " + CP.Title);
-
-                        if (config.parent == null) config.EnabledChanged += PageConfig_EnabledChanged;
-
-                        PagePlugIns.Add(LCP);
-
+                        configs = Properties.Settings.Default.PagePlugIn_Configurations.ToList();
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        Message_Center.Message_Data mData = new Message_Center.Message_Data();
-                        mData.title = "PlugIn Error";
-                        mData.text = "Error during plugin intialization";
-                        mData.additionalInfo = ex.Message;
-
-                        messageCenter.AddError(mData);
+                        configs = new List<PlugInConfiguration>();
                     }
 
-                }
-
-
-                // Create a copy of configs since we are modifying it
-                List<PlugInConfiguration> tempConfigs = new List<PlugInConfiguration>();
-                tempConfigs.AddRange(configs);
-
-                foreach (PlugInConfiguration config in tempConfigs)
-                {
-                    if (configs.Contains(config))
+                    foreach (Lazy<Control_PlugIn> LCP in PPLUGS.PlugIns.ToList())
                     {
-                        if (config.parent != null)
+                        try
                         {
-                            if (config.category != null)
+                            Control_PlugIn CP = LCP.Value;
+
+                            Console.WriteLine(CP.Title + " Found in '" + Path + "'");
+
+                            PlugInConfiguration config = configs.Find(x => x.name.ToUpper() == CP.Title.ToUpper());
+                            if (config == null)
                             {
-                                PlugInConfiguration match1 = configs.Find(x => x.name.ToUpper() == config.parent.ToUpper());
-                                if (match1 != null)
+                                Console.WriteLine("Page PlugIn Configuration created for " + CP.Title);
+                                config = new PlugInConfiguration();
+                                config.name = CP.Title;
+                                config.description = CP.Description;
+
+                                // Automatically enable basic Plugins by TrakHound
+                                if (DefaultEnablePlugins.Contains(config.name.ToLower()))
                                 {
-                                    PlugInConfigurationCategory match2 = match1.SubCategories.Find(x => x.name.ToUpper() == config.category.ToUpper());
-                                    if (match2 != null)
-                                    {
-                                        configs.Remove(config);
-                                        if (match2.PlugInConfigurations.Find(x => x.name.ToUpper() == config.name.ToUpper()) == null)
-                                        {
-                                            match2.PlugInConfigurations.Add(config);
-                                        }
+                                    config.enabled = true;
+                                    Console.WriteLine("Default TrakHound Plugin Initialized as 'Enabled'");
+                                }
+                                else config.enabled = false;
 
+                                config.parent = CP.DefaultParent;
+                                config.category = CP.DefaultParentCategory;
+
+                                config.SubCategories = CP.SubCategories;
+
+                                configs.Add(config);
+                            }
+                            else Console.WriteLine("Page PlugIn Configuration found for " + CP.Title);
+
+                            if (config.parent == null) config.EnabledChanged += PageConfig_EnabledChanged;
+
+                            PagePlugIns.Add(LCP);
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Message_Center.Message_Data mData = new Message_Center.Message_Data();
+                            mData.title = "PlugIn Error";
+                            mData.text = "Error during plugin intialization";
+                            mData.additionalInfo = ex.Message;
+
+                            messageCenter.AddError(mData);
+                        }
+
+                    }
+
+
+                    // Create a copy of configs since we are modifying it
+                    List<PlugInConfiguration> tempConfigs = new List<PlugInConfiguration>();
+                    tempConfigs.AddRange(configs);
+
+                    foreach (PlugInConfiguration config in tempConfigs)
+                    {
+                        if (configs.Contains(config))
+                        {
+                            if (config.parent != null)
+                            {
+                                if (config.category != null)
+                                {
+                                    PlugInConfiguration match1 = configs.Find(x => x.name.ToUpper() == config.parent.ToUpper());
+                                    if (match1 != null)
+                                    {
+                                        PlugInConfigurationCategory match2 = match1.SubCategories.Find(x => x.name.ToUpper() == config.category.ToUpper());
+                                        if (match2 != null)
+                                        {
+                                            configs.Remove(config);
+                                            if (match2.PlugInConfigurations.Find(x => x.name.ToUpper() == config.name.ToUpper()) == null)
+                                            {
+                                                match2.PlugInConfigurations.Add(config);
+                                            }
+
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+
+                    Properties.Settings.Default.PagePlugIn_Configurations = configs;
+                    Properties.Settings.Default.Save();
                 }
 
-                Properties.Settings.Default.PagePlugIn_Configurations = configs;
-                Properties.Settings.Default.Save();
+                foreach (string directory in Directory.GetDirectories(Path, "*", SearchOption.AllDirectories))
+                {
+                    PagePlugIns_Find_Recursive(directory);
+                }
             }
-
-            foreach (string directory in Directory.GetDirectories(Path, "*", SearchOption.AllDirectories))
+            catch (Exception ex)
             {
-                PagePlugIns_Find_Recursive(directory);
+                Message_Center.Message_Data mData = new Message_Center.Message_Data();
+                mData.title = "Plugin Load Error";
+                mData.text = "Error loading Plugins from " + Path;
+                mData.additionalInfo = ex.Message;
+
+                messageCenter.AddError(mData);
             }
         }
 
@@ -1279,6 +1295,7 @@ namespace TrakHound_Client
 
                                     CP.Devices = Devices;
                                     CP.DataEvent += CP_DataEvent;
+                                    CP.ShowRequested += CP_ShowRequested;
                                     CP.SubCategories = config.SubCategories;
 
                                     CP.PlugIns = new List<Control_PlugIn>();
@@ -1352,6 +1369,26 @@ namespace TrakHound_Client
                     }
                 }
             }
+        }
+
+        void CP_ShowRequested(PluginShowInfo info)
+        {
+            Control_PlugIn plugin = null;
+
+            if (info.Page.GetType() == typeof(Control_PlugIn))
+            {
+                plugin = (Control_PlugIn)info.Page;
+            }
+
+            string title = info.PageTitle;
+            if (info.PageTitle == null && plugin != null) title = plugin.Title;
+
+            ImageSource image = info.PageImage;
+            if (info.PageImage == null && plugin != null) image = plugin.Image;
+
+            object page = info.Page;
+
+            AddPageAsTab(CreatePage(page), title, image);
         }
 
         void CP_DataEvent(DataEvent_Data de_d)

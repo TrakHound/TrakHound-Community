@@ -79,7 +79,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Author Image-->
-                        <Image MaxHeight="30" MaxWidth="30" Source="{Binding Author_Image}" Margin="0,0,10,0"/>
+                        <Image MaxHeight="50" MaxWidth="100" Source="{Binding Author_Image}" Margin="0,0,10,0"/>
                         
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>

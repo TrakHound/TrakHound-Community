@@ -68,6 +68,8 @@ namespace TH_Dashboard
 
         public bool OpenOnStartUp { get { return true; } }
 
+        public bool ShowInAppMenu { get { return true; } }
+
         public List<PlugInConfigurationCategory> SubCategories { get; set; }
 
         public List<Control_PlugIn> PlugIns { get; set; }
@@ -112,6 +114,16 @@ namespace TH_Dashboard
 
         public void Closing() { }
 
+        public void Show() 
+        {
+            if (ShowRequested != null)
+            {
+                PluginShowInfo info = new PluginShowInfo();
+                info.Page = this;
+                ShowRequested(info);
+            }
+        }
+
         #endregion
 
         #region "Events"
@@ -128,6 +140,8 @@ namespace TH_Dashboard
         }
 
         public event DataEvent_Handler DataEvent;
+
+        public event PlugInTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 

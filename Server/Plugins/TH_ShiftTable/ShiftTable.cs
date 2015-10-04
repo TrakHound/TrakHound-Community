@@ -75,6 +75,19 @@ namespace TH_ShiftTable
 
                 TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime);
             }
+            else
+            {
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_name", "", returnData.header.creationTime);
+
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_id", "", returnData.header.creationTime);
+
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_date", "", returnData.header.creationTime);
+
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_begintime", "", returnData.header.creationTime);
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_endtime", "", returnData.header.creationTime);
+
+                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", "", returnData.header.creationTime);
+            }
         }
 
         public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)

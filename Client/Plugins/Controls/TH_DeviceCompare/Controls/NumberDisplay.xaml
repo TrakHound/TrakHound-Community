@@ -45,7 +45,7 @@
         </Grid>
 
         <!--Number Value-->
-        <TextBlock Grid.Column="1" Text="{Binding Value}" FontSize="24"
+        <TextBlock Grid.Column="1" Text="{Binding ValueText}" FontSize="24"
                    Foreground="#aaffffff"
                    VerticalAlignment="Center" HorizontalAlignment="Right"
                    FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"

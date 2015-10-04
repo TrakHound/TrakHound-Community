@@ -101,6 +101,11 @@ namespace TH_PlugIns_Client_Control
         bool OpenOnStartUp { get; }
 
         /// <summary>
+        /// Used to toggle whether to show in App Launcher menu
+        /// </summary>
+        bool ShowInAppMenu { get; }
+
+        /// <summary>
         /// Contains the Subcategories for this plugin's "child" plugins
         /// (ex. Dashboard has "Pages" as a subcategory)
         /// </summary>
@@ -148,6 +153,11 @@ namespace TH_PlugIns_Client_Control
         /// </summary>
         event DataEvent_Handler DataEvent;
 
+        /// <summary>
+        /// Send Request to Add/Show this Page in the Client
+        /// </summary>
+        event PlugInTools.ShowRequested_Handler ShowRequested;
+
         #endregion
 
         #region "Device Properties"
@@ -191,10 +201,18 @@ namespace TH_PlugIns_Client_Control
 
     }
 
+    public class PluginShowInfo
+    {
+        public string PageTitle { get; set; }
+        public ImageSource PageImage { get; set; }
+        public object Page { get; set; }
+    }
+
     public static class PlugInTools
     {
 
         public delegate void SelectedDeviceChanged_Handler(int Index);
+        public delegate void ShowRequested_Handler(PluginShowInfo info);
 
     }
 

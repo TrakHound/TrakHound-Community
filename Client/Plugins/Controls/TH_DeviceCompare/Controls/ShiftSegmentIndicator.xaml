@@ -6,6 +6,8 @@
              mc:Ignorable="d" 
              
              Width="75"
+             Margin="0"
+             Padding="0"
              >
     <UserControl.ToolTip>
         <ToolTip>
@@ -30,7 +32,7 @@
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <!--Break Indicator-->
+        <!--Segment Id-->
         <TextBlock Grid.Column="0" Width="10" Text="{Binding SegmentId}" FontSize="8" VerticalAlignment="Center">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">

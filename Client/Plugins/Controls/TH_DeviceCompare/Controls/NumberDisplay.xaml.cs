@@ -33,8 +33,29 @@ namespace TH_DeviceCompare.Controls
 
         #region "Previous Values"
 
-        private string previousvalue;
-        public string PreviousValue
+        //private string previousvalue;
+        //public string PreviousValue
+        //{
+        //    get { return previousvalue; }
+        //    set
+        //    {
+        //        previousvalue = value;
+
+        //        PreviousValue3 = PreviousValue2;
+        //        PreviousValue2 = PreviousValue1;
+        //        PreviousValue1 = previousvalue;
+
+        //        //if (PreviousValue1 != PreviousValue)
+        //        //{
+        //        //    PreviousValue3 = PreviousValue2;
+        //        //    PreviousValue2 = PreviousValue1;
+        //        //    PreviousValue1 = PreviousValue;
+        //        //}        
+        //    }
+        //}
+
+        private double previousvalue;
+        public double PreviousValue
         {
             get { return previousvalue; }
             set
@@ -43,14 +64,7 @@ namespace TH_DeviceCompare.Controls
 
                 PreviousValue3 = PreviousValue2;
                 PreviousValue2 = PreviousValue1;
-                PreviousValue1 = previousvalue;
-
-                //if (PreviousValue1 != PreviousValue)
-                //{
-                //    PreviousValue3 = PreviousValue2;
-                //    PreviousValue2 = PreviousValue1;
-                //    PreviousValue1 = PreviousValue;
-                //}        
+                PreviousValue1 = previousvalue.ToString(Value_Format);
             }
         }
 
@@ -83,29 +97,85 @@ namespace TH_DeviceCompare.Controls
 
         #endregion
 
-        public string Value
+
+
+        public double Value
         {
-            get { return (string)GetValue(ValueProperty); }
+            get { return (double)GetValue(ValueProperty); }
             set 
             {
-                if (Value != value) PreviousValue = Value;
+                if (Value != value)
+                {
+                    if (value > Value)
+                    {
+                        ValueIncreasing = true;
+                        ValueDecreasing = false;
+                    }
+                    else if (value < Value)
+                    {
+                        ValueIncreasing = false;
+                        ValueDecreasing = true;
+                    }
 
-                SetValue(ValueProperty, value); 
+                    PreviousValue = Value;
+                }
+                SetValue(ValueProperty, value);
+
+                ValueText = value.ToString(Value_Format);
             }
         }
 
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+            DependencyProperty.Register("Value", typeof(double), typeof(NumberDisplay), new PropertyMetadata(0d));
+
+        
 
 
-        public string Value_Type
+        //public string Value
+        //{
+        //    get { return (string)GetValue(ValueProperty); }
+        //    set 
+        //    {
+        //        if (Value != value) PreviousValue = Value;
+
+        //        SetValue(ValueProperty, value); 
+        //    }
+        //}
+
+        //public static readonly DependencyProperty ValueProperty =
+        //    DependencyProperty.Register("Value", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+
+
+        public string ValueText
         {
-            get { return (string)GetValue(Value_TypeProperty); }
-            set { SetValue(Value_TypeProperty, value); }
+            get { return (string)GetValue(ValueTextProperty); }
+            set { SetValue(ValueTextProperty, value); }
         }
 
-        public static readonly DependencyProperty Value_TypeProperty =
-            DependencyProperty.Register("Value_Type", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+        public static readonly DependencyProperty ValueTextProperty =
+            DependencyProperty.Register("ValueText", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+
+
+
+        public string Value_Format
+        {
+            get { return (string)GetValue(Value_FormatProperty); }
+            set { SetValue(Value_FormatProperty, value); }
+        }
+
+        public static readonly DependencyProperty Value_FormatProperty =
+            DependencyProperty.Register("Value_Format", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
+
+        
+
+        //public string Value_Type
+        //{
+        //    get { return (string)GetValue(Value_TypeProperty); }
+        //    set { SetValue(Value_TypeProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty Value_TypeProperty =
+        //    DependencyProperty.Register("Value_Type", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
 
 
         public bool ValueIncreasing

@@ -85,6 +85,8 @@ namespace TH_DeviceCompare
 
         public bool OpenOnStartUp { get { return true; } }
 
+        public bool ShowInAppMenu { get { return true; } }
+
         public List<PlugInConfigurationCategory> SubCategories { get; set; }
 
         public List<Control_PlugIn> PlugIns { get; set; }
@@ -102,6 +104,16 @@ namespace TH_DeviceCompare
 
         public void Closing() { }
 
+        public void Show()
+        {
+            if (ShowRequested != null)
+            {
+                PluginShowInfo info = new PluginShowInfo();
+                info.Page = this;
+                ShowRequested(info);
+            }
+        }
+
         #endregion
 
         #region "Events"
@@ -112,6 +124,8 @@ namespace TH_DeviceCompare
         }
 
         public event DataEvent_Handler DataEvent;
+
+        public event PlugInTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 
@@ -308,10 +322,10 @@ namespace TH_DeviceCompare
                                     // Update Segment OEE display
                                     this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, oeedata });
 
-                                    if (shiftdata != null)
+                                    if (shiftdata != null && snapshotdata != null)
                                     {
                                         // Update OEE Timeline display
-                                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_OEE_Timeline), Priority_Context, new object[] { dd, oeedata, shiftdata });
+                                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object, object>(Update_OEE_Timeline), Priority_Context, new object[] { dd, oeedata, shiftdata, snapshotdata });
                                     }
                                 }
                             }
@@ -510,7 +524,11 @@ namespace TH_DeviceCompare
                             indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentProgress));
                         }
                     }
-                    else indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentDuration));
+                    else
+                    {
+                        indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentDuration));
+                        indicator.CurrentShift = false;
+                    }
 
                     indicator.SegmentId = (segment.segmentId + 1).ToString("00");
 
@@ -790,8 +808,6 @@ namespace TH_DeviceCompare
 
         #region "OEE"
 
-        double prev_oeeAvg = 0;
-
         void Update_OEE_Avg(DeviceDisplay dd, object oeedata)
         {
             if (oeedata.GetType() == typeof(List<Dictionary<string, string>>))
@@ -830,32 +846,12 @@ namespace TH_DeviceCompare
                         }
                         else oeeAverage = (Controls.NumberDisplay)ddData;
 
-                        oeeAverage.Value = average.ToString("P2");
-
-                        //if (average > prev_oeeAvg)
-                        //{
-                        //    oeeAverage.ValueIncreasing = true;
-                        //    oeeAverage.ValueDecreasing = false;
-                        //}
-                        //else if (average < prev_oeeAvg)
-                        //{
-                        //    oeeAverage.ValueIncreasing = false;
-                        //    oeeAverage.ValueDecreasing = true;
-                        //}
-                        //else
-                        //{
-                        //    oeeAverage.ValueIncreasing = false;
-                        //    oeeAverage.ValueDecreasing = false;
-                        //}
-
-                        //prev_oeeAvg = average;
+                        oeeAverage.Value_Format = "P2";
+                        oeeAverage.Value = average;
                     }
                 }
             }
         }
-
-
-        double prev_oeeSegment = 0;
 
         void Update_OEE_Segment(DeviceDisplay dd, object oeedata)
         {
@@ -889,25 +885,8 @@ namespace TH_DeviceCompare
                                 }
                                 else oeeSegment = (Controls.NumberDisplay)ddData;
 
-                                oeeSegment.Value = oee.ToString("P2");
-
-                                if (oee > prev_oeeSegment)
-                                {
-                                    oeeSegment.ValueIncreasing = true;
-                                    oeeSegment.ValueDecreasing = false;
-                                }
-                                else if (oee < prev_oeeSegment)
-                                {
-                                    oeeSegment.ValueIncreasing = false;
-                                    oeeSegment.ValueDecreasing = true;
-                                }
-                                else
-                                {
-                                    oeeSegment.ValueIncreasing = false;
-                                    oeeSegment.ValueDecreasing = false;
-                                }
-
-                                prev_oeeSegment = oee;
+                                oeeSegment.Value_Format = "P2";
+                                oeeSegment.Value = oee;
                             }
                         }
                     }
@@ -916,7 +895,17 @@ namespace TH_DeviceCompare
         }
 
 
-        void Update_OEE_Timeline(DeviceDisplay dd, object oeedata, object shiftdata)
+        class OEE_TimelineInfo
+        {
+            public string id { get; set; }
+            public double value { get; set; }
+            public string segmentTimes { get; set; }
+            public string valueText { get; set; }
+        }
+
+        string OEE_Timeline_ShiftName = null;
+
+        void Update_OEE_Timeline(DeviceDisplay dd, object oeedata, object shiftdata, object snapshotdata)
         {
             if (oeedata.GetType() == typeof(List<Dictionary<string, string>>) &&
                 shiftdata.GetType() == typeof(List<Dictionary<string, string>>))
@@ -924,7 +913,7 @@ namespace TH_DeviceCompare
                 List<Dictionary<string, string>> oee_data = (List<Dictionary<string, string>>)oeedata;
                 List<Dictionary<string, string>> shift_data = (List<Dictionary<string, string>>)shiftdata;
 
-                List<KeyValuePair<string, double>> oees = new List<KeyValuePair<string, double>>();
+                List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
 
                 foreach (Dictionary<string, string> row in oee_data)
                 {
@@ -937,39 +926,65 @@ namespace TH_DeviceCompare
                         double.TryParse(oeeVal, out oee);
                         if (oee >= 0)
                         {
-                            // Get Segment Times for Histogram X Axis Labels
+                            // Get Segment Time Info
                             string oee_shiftId = null;
                             row.TryGetValue("Shift_Id", out oee_shiftId);
                             if (oee_shiftId != null)
                             {
-                                string segment = GetSegmentName(oee_shiftId, shift_data);
-                                if (segment != null)
-                                {
-                                    KeyValuePair<string, double> kvp = new KeyValuePair<string, double>(segment, oee);
-                                    oees.Add(kvp);
-                                }
+                                OEE_TimelineInfo info = new OEE_TimelineInfo();
+                                info.id = oee_shiftId;
+
+                                info.value = oee;
+                                info.valueText = oee.ToString("P2");
+
+                                string segmentTimes = GetSegmentName(oee_shiftId, shift_data);
+                                if (segmentTimes != null) info.segmentTimes = segmentTimes;
+
+                                infos.Add(info);
                             }
                         }
                     }
                 }
 
-                if (oees.Count > 0)
+                int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
+                if (cellIndex >= 0)
                 {
-                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
-                    if (cellIndex >= 0)
+                    Controls.HistogramDisplay oeeTimeline;
+
+                    object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                    if (ddData == null)
                     {
-                        Controls.HistogramDisplay oeeTimeline;
+                        oeeTimeline = new Controls.HistogramDisplay();
+                        dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeTimeline;
+                    }
+                    else oeeTimeline = (Controls.HistogramDisplay)ddData;
 
-                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+                    // Get Shift Name to check if still in the same shift as last update
+                    string prev_shiftName = OEE_Timeline_ShiftName;
+                    OEE_Timeline_ShiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
+                    if (prev_shiftName != OEE_Timeline_ShiftName) oeeTimeline.DataBars.Clear();
 
-                        if (ddData == null)
+                    foreach (OEE_TimelineInfo info in infos)
+                    {
+                        Controls.DataBar db;
+
+                        int dbIndex = oeeTimeline.DataBars.ToList().FindIndex(x => x.Id == info.id);
+                        if (dbIndex < 0)
                         {
-                            oeeTimeline = new Controls.HistogramDisplay();
-                            dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeTimeline;
+                            db = new Controls.DataBar();
+                            db.Id = info.id;
+                            db.SegmentTimes = info.segmentTimes;
+                            oeeTimeline.DataBars.Add(db);
                         }
-                        else oeeTimeline = (Controls.HistogramDisplay)ddData;
+                        else db = oeeTimeline.DataBars[dbIndex];
 
-                        oeeTimeline.CreateData(oees);
+                        string currentShiftId = GetSnapShotValue("Current Shift Id", snapshotdata);
+                        if (currentShiftId == info.id) db.CurrentSegment = true;
+                        else db.CurrentSegment = false;
+
+                        db.Value = info.value * 100;
+                        db.ValueText = info.valueText;
                     }
                 }
             }
@@ -1071,8 +1086,8 @@ namespace TH_DeviceCompare
 
                 List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
                 colors.Add(new Tuple<Color, string>(Colors.Red, "Alert"));
-                colors.Add(new Tuple<Color, string>(Colors.Yellow, "Idle"));
-                colors.Add(new Tuple<Color, string>(Colors.Green, "Full Production"));
+                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#aaffffff"), "Idle"));
+                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#00ff00"), "Full Production"));
 
                 timeline.CreateData(data_forShift, colors);
 

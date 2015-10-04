@@ -683,7 +683,7 @@
                                         </Style>
                                     </StackPanel.Style>
 
-                                    <controls:TH_ToolBarItem Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console"/>
+                                    <controls:TH_ToolBarItem Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)"/>
 
                                 </StackPanel>
                                 

@@ -27,8 +27,6 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    
-
     <Border>
         
         <Grid>
@@ -43,39 +41,40 @@
             
             <Border Grid.Column="1" BorderBrush="{StaticResource DWBlue}" BorderThickness="1">
 
-                <Grid Grid.Column="1" Background="#eee" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" MinWidth="800"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <Grid Background="#eee" >
 
                     <Grid Margin="60,50">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid Margin="0,20">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="{Binding CurrentPageName, ElementName=manager}" Foreground="{StaticResource DarkText}" FontSize="30" Margin="0,10"/>
+                            <Grid Margin="0,20">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
 
-                            <Rectangle Grid.Row="1" Fill="{StaticResource LightText}" Height="0.5" Margin="0,5"/>
+                                <TextBlock Text="{Binding CurrentPageName, ElementName=manager}" Foreground="{StaticResource DarkText}" FontSize="30" Margin="0,10"/>
 
-                        </Grid>
+                                <Rectangle Grid.Row="1" Fill="{StaticResource LightText}" Height="0.5" Margin="0,5"/>
 
-                        <ScrollViewer Grid.Row="1" Margin="0,20,0,0" VerticalScrollBarVisibility="auto">
+                            </Grid>
 
-                            <Grid x:Name="Content_GRID"/>
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto" >
+
+                            <Grid x:Name="Content_GRID">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" MinWidth="800"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
 
                         </ScrollViewer>
 
                     </Grid>
 
-                </Grid>
+                    </Grid>
 
             </Border>
 

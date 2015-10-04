@@ -31,20 +31,40 @@ namespace TH_Styles
                 //Colors.Green,                                               //0
                 (Color)ColorConverter.ConvertFromString("#00ff00"),
 
-                (Color)ColorConverter.ConvertFromString("#40FF00"),         //1
-                (Color)ColorConverter.ConvertFromString("#7FFF00"),         //2
-                (Color)ColorConverter.ConvertFromString("#BFFF00"),         //3
+                (Color)ColorConverter.ConvertFromString("#ccffffff"),         //1
+                (Color)ColorConverter.ConvertFromString("#aaffffff"),         //2
+                (Color)ColorConverter.ConvertFromString("#88ffffff"),         //3
 
                 //Colors.Yellow,                                              //4
-                (Color)ColorConverter.ConvertFromString("#ffff00"),
+                (Color)ColorConverter.ConvertFromString("#66ffffff"),
 
-                (Color)ColorConverter.ConvertFromString("#FFBF00"),         //5
-                (Color)ColorConverter.ConvertFromString("#FF7F00"),         //6
-                (Color)ColorConverter.ConvertFromString("#FF4000"),         //7
+                (Color)ColorConverter.ConvertFromString("#44ffffff"),         //5
+                (Color)ColorConverter.ConvertFromString("#22ffffff"),         //6
+                (Color)ColorConverter.ConvertFromString("#11ffffff"),         //7
 
                 //Colors.Red                                                  //8         
                 (Color)ColorConverter.ConvertFromString("#ff0000")                    
                 };
+
+            //return new Color[]
+            //    {                                             
+            //    //Colors.Green,                                               //0
+            //    (Color)ColorConverter.ConvertFromString("#00ff00"),
+
+            //    (Color)ColorConverter.ConvertFromString("#40FF00"),         //1
+            //    (Color)ColorConverter.ConvertFromString("#7FFF00"),         //2
+            //    (Color)ColorConverter.ConvertFromString("#BFFF00"),         //3
+
+            //    //Colors.Yellow,                                              //4
+            //    (Color)ColorConverter.ConvertFromString("#ffff00"),
+
+            //    (Color)ColorConverter.ConvertFromString("#FFBF00"),         //5
+            //    (Color)ColorConverter.ConvertFromString("#FF7F00"),         //6
+            //    (Color)ColorConverter.ConvertFromString("#FF4000"),         //7
+
+            //    //Colors.Red                                                  //8         
+            //    (Color)ColorConverter.ConvertFromString("#ff0000")                    
+            //    };
         }
 
         static int[] GetIndicatorColorSequence(int IndicatorCount)

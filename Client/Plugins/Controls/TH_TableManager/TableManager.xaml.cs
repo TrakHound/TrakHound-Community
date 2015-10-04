@@ -84,6 +84,8 @@ namespace TH_TableManager
 
         public bool OpenOnStartUp { get { return false; } }
 
+        public bool ShowInAppMenu { get { return true; } }
+
         public List<PlugInConfigurationCategory> SubCategories { get; set; }
 
         public List<Control_PlugIn> PlugIns { get; set; }
@@ -98,6 +100,8 @@ namespace TH_TableManager
 
         public void Closing() {  }
 
+        //public void Show() { if (ShowRequested != null) ShowRequested(); }
+
         #endregion
 
         #region "Events"
@@ -108,6 +112,8 @@ namespace TH_TableManager
         }
 
         public event DataEvent_Handler DataEvent;
+
+        public event PlugInTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 

@@ -329,6 +329,7 @@
     <Resource Include="Resources\feenux_logo_05_30px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Developer_01.png" />
     <Resource Include="Resources\Refresh_01.png" />
     <Resource Include="Resources\Arrow_Down_01.png" />
     <Resource Include="Resources\Arrow_Up_01.png" />

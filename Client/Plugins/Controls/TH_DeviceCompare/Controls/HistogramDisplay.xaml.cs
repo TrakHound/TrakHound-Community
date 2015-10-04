@@ -17,10 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
+using System.Collections.ObjectModel;
 
 using TH_Configuration;
 
@@ -34,93 +31,74 @@ namespace TH_DeviceCompare.Controls
         public HistogramDisplay()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
-        public void CreateData(List<KeyValuePair<string, double>> data)
+        ObservableCollection<DataBar> databars;
+        public ObservableCollection<DataBar> DataBars
         {
-            PlotModel pm = new PlotModel();
-            pm.IsLegendVisible = false;
-            pm.PlotAreaBorderThickness = new OxyThickness(0);
-
-            pm.PlotMargins = new OxyThickness(10);
-            pm.Padding = new OxyThickness(20, 0, 20, 50);
-
-            pm.Axes.Add(Create_XAxis(data));
-            pm.Axes.Add(Create_YAxis());
-
-            int index = 0;
-
-            ColumnSeries series = new ColumnSeries();
-            series.FillColor = OxyColor.FromArgb(170, 255, 255, 255);
-            series.ColumnWidth = 10;
-
-            foreach (KeyValuePair<string, double> row in data)
+            get
             {
-                series.Items.Add(new ColumnItem(row.Value, index));
-                index += 1;
+                if (databars == null) databars = new ObservableCollection<DataBar>();
+                return databars;
             }
-
-            pm.Series.Add(series);
-
-            historgram_PV.Model = pm;
-        }
-
-        static CategoryAxis Create_XAxis(List<KeyValuePair<string, double>> data)
-        {
-            CategoryAxis Result = new CategoryAxis();
-            Result.Position = AxisPosition.Bottom;
-
-            int index = 1;
-
-            foreach (KeyValuePair<string, double> row in data)
+            set
             {
-                Result.Labels.Add(row.Key);
-                index += 1;
+                databars = value;
             }
-
-            Result.FontSize = 8;
-            Result.TextColor = OxyColor.FromArgb(51, 255, 255, 255);
-
-            Result.GapWidth = 2;
-            Result.AxisTickToLabelDistance = 0;
-            Result.Angle = 60;
-
-            Result.IsPanEnabled = false;
-            Result.IsZoomEnabled = false;
-
-            return Result;
         }
 
-        LinearAxis Create_YAxis()
+    }
+
+    public class DataBar : ProgressBar
+    {
+        public DataBar()
         {
-            LinearAxis Result = new LinearAxis();
-            Result.Position = AxisPosition.Left;
-
-            Result.IntervalLength = 0.2;
-            Result.MajorStep = 0.2;
-            Result.MinorStep = Result.MajorStep;
-            Result.FontSize = 8;
-            
-            Result.Minimum = 0;
-            Result.Maximum = 1;
-
-            Result.MajorTickSize = 3;
-
-            Result.MajorGridlineStyle = LineStyle.Solid;
-            Result.MajorGridlineThickness = 1;
-
-            Result.TextColor = OxyColor.FromArgb(51, 255, 255, 255);
-            Result.AxislineColor = OxyColor.FromArgb(102, 0, 0, 0);
-            Result.MajorGridlineColor = OxyColor.FromArgb(102, 0, 0, 0);
-            Result.TicklineColor = OxyColor.FromArgb(102, 0, 0, 0);
-
-            Result.LabelFormatter = x => x.ToString("P0");
-
-            Result.IsPanEnabled = false;
-            Result.IsZoomEnabled = false;
-
-            return Result;
+            this.DataContext = this;
         }
+
+        public string Id
+        {
+            get { return (string)GetValue(IdProperty); }
+            set { SetValue(IdProperty, value); }
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register("Id", typeof(string), typeof(DataBar), new PropertyMetadata(null));
+
+
+        public bool CurrentSegment
+        {
+            get { return (bool)GetValue(CurrentSegmentProperty); }
+            set { SetValue(CurrentSegmentProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentSegmentProperty =
+            DependencyProperty.Register("CurrentSegment", typeof(bool), typeof(DataBar), new PropertyMetadata(false));
+
+
+
+        public string SegmentTimes
+        {
+            get { return (string)GetValue(SegmentTimesProperty); }
+            set { SetValue(SegmentTimesProperty, value); }
+        }
+
+        public static readonly DependencyProperty SegmentTimesProperty =
+            DependencyProperty.Register("SegmentTimes", typeof(string), typeof(DataBar), new PropertyMetadata(null));
+
+
+
+        public string ValueText
+        {
+            get { return (string)GetValue(ValueTextProperty); }
+            set { SetValue(ValueTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ValueTextProperty =
+            DependencyProperty.Register("ValueText", typeof(string), typeof(DataBar), new PropertyMetadata(null));
+
+        
 
     }
 }
