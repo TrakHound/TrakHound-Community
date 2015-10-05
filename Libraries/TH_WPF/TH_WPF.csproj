@@ -61,6 +61,12 @@
     <Compile Include="ListButton.xaml.cs">
       <DependentUpon>ListButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoadingAnimation\Block.xaml.cs">
+      <DependentUpon>Block.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingAnimation\Wheel.xaml.cs">
+      <DependentUpon>Wheel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProductionIndicator.xaml.cs">
       <DependentUpon>ProductionIndicator.xaml</DependentUpon>
     </Compile>
@@ -98,6 +104,14 @@
     <Page Include="ListButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoadingAnimation\Block.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LoadingAnimation\Wheel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProductionIndicator.xaml">
       <SubType>Designer</SubType>

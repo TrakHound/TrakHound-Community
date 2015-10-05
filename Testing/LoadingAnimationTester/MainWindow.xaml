@@ -1,0 +1,20 @@
+﻿<Window x:Class="LoadingAnimationTester.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
+        
+        Title="MainWindow" Height="350" Width="525">
+    <WrapPanel>
+
+        <loadinganimation:Wheel Width="200" Height="200" Margin="20"/>
+
+        <loadinganimation:Wheel Width="100" Height="100" Margin="20"/>
+
+        <loadinganimation:Wheel Width="50" Height="50" Margin="20"/>
+
+        <loadinganimation:Wheel Width="25" Height="25" Margin="20"/>
+
+    </WrapPanel>
+    
+</Window>

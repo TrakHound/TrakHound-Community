@@ -1,0 +1,17 @@
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\bin\Debug\LoadingAnimationTester.exe.config
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\bin\Debug\LoadingAnimationTester.exe
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\bin\Debug\LoadingAnimationTester.pdb
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\bin\Debug\TH_Styles.dll
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\bin\Debug\TH_WPF.dll
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\bin\Debug\TH_Styles.pdb
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\bin\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\LoadingAnimationTester.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\MainWindow.baml
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\MainWindow.g.cs
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\App.g.cs
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\LoadingAnimationTester_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\LoadingAnimationTester.g.resources
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\LoadingAnimationTester.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\LoadingAnimationTester.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\LoadingAnimationTester.exe
+F:\feenux\TrakHound\TrakHound\Testing\LoadingAnimationTester\obj\Debug\LoadingAnimationTester.pdb

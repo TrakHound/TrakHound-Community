@@ -76,7 +76,9 @@ namespace TH_History
 
         public bool AcceptsPlugIns { get { return true; } }
 
-        public bool OpenOnStartUp { get { return true; } }
+        public bool OpenOnStartUp { get { return false; } }
+
+        public bool ShowInAppMenu { get { return true; } }
 
         public List<PlugInConfigurationCategory> SubCategories { get; set; }
 
@@ -94,8 +96,6 @@ namespace TH_History
         }
 
         public void Closing() { }
-
-        public void Show() { if (ShowRequested != null) ShowRequested(); }
 
         #endregion
 

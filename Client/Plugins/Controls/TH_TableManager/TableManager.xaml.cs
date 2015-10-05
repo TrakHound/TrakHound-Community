@@ -100,8 +100,6 @@ namespace TH_TableManager
 
         public void Closing() {  }
 
-        //public void Show() { if (ShowRequested != null) ShowRequested(); }
-
         #endregion
 
         #region "Events"
@@ -189,7 +187,35 @@ namespace TH_TableManager
             }
         }
 
+        List<ListButton> selectedtables;
+        List<ListButton> SelectedTables 
+        {
+            get 
+            {
+                if (selectedtables == null)
+                {
+                    selectedtables = new List<ListButton>();
+                }
+                    
+                return selectedtables;
+            }
 
+            set
+            {
+                selectedtables = value;
+            }
+        }
+
+        public bool TableIsSelected
+        {
+            get { return (bool)GetValue(TableIsSelectedProperty); }
+            set { SetValue(TableIsSelectedProperty, value); }
+        }
+
+        public static readonly DependencyProperty TableIsSelectedProperty =
+            DependencyProperty.Register("TableIsSelected", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+
+       
         public bool TableListShown
         {
             get { return (bool)GetValue(TableListShownProperty); }
@@ -199,13 +225,13 @@ namespace TH_TableManager
         public static readonly DependencyProperty TableListShownProperty =
             DependencyProperty.Register("TableListShown", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
 
-
         Thread TableList_WORKER;
 
         void LoadTableList(Configuration config)
         {
             TableListShown = false;
             TableDataView = null;
+            TableInfoShown = false;
 
             if (TableList_WORKER != null) TableList_WORKER.Abort();
 
@@ -231,11 +257,43 @@ namespace TH_TableManager
                 TH_WPF.ListButton lb = new TH_WPF.ListButton();
                 lb.Text = tableName;
                 lb.Selected += lb_Table_Selected;
+                lb.MultiSelected += TableList_MultiSelected;
+                lb.MultiUnselected += TableList_MultiUnselected;
                 this.Dispatcher.BeginInvoke(new Action<ListButton>(LoadTableList_AddItem), Priority, new object[] { lb });
             }
 
             if (tableNames.Length > 0) TableListShown = true;
-            else TableListShown = false;
+        }
+
+
+        void TableList_MultiSelected(ListButton LB)
+        {
+            SelectedTables.Add(LB);
+
+            ProcessSelectedTables();
+        }
+
+        void TableList_MultiUnselected(ListButton LB)
+        {
+            int index = SelectedTables.ToList().FindIndex(x => x.Text.ToLower() == LB.Text.ToLower());
+            if (index >= 0 && SelectedTables.Count > 1)
+            {
+                if (index == SelectedTables.Count - 2) SelectedTables.Remove(SelectedTables[index + 1]);
+            }
+                
+            ProcessSelectedTables();
+        }
+
+        void ProcessSelectedTables()
+        {
+            if (SelectedTables.Count > 0) TableIsSelected = true;
+            else TableIsSelected = false;
+
+            foreach (ListButton lb in TableList)
+            {
+                if (SelectedTables.FindIndex(x => x.Text == lb.Text) >= 0) lb.IsSelected = true;
+                else lb.IsSelected = false;
+            }
         }
 
         void LoadTableList_AddItem(ListButton lb)
@@ -245,11 +303,16 @@ namespace TH_TableManager
 
         void lb_Table_Selected(TH_WPF.ListButton LB)
         {
+            SelectedTables.Clear();
+            SelectedTables.Add(LB);
+            //ProcessSelectedTables();
+
             foreach (TH_WPF.ListButton olb in TableList.OfType<TH_WPF.ListButton>()) if (olb != LB) olb.IsSelected = false;
             LB.IsSelected = true;
 
             Int64 page = 0;
 
+            TableIsSelected = true;
             TableInfoShown = false;
             SelectedTableName = null;
             TableRowCount = null;
@@ -260,6 +323,8 @@ namespace TH_TableManager
 
         #endregion
 
+        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
+
         const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
         Device_Client selectedDevice = null;
@@ -268,15 +333,13 @@ namespace TH_TableManager
         {
             foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
             lb.IsSelected = true;
-
-            
+        
             Device_Client device = (Device_Client)lb.DataObject;
 
             selectedDevice = device;
 
             LoadTableList(device.configuration);
         }
-
 
         #region "Table View"
 
@@ -286,7 +349,6 @@ namespace TH_TableManager
             public Int64 page { get; set; }
             public Configuration config { get; set; }
         }
-
 
         #region "Table Info"
 
@@ -560,12 +622,44 @@ namespace TH_TableManager
 
         void LoadTable_Finished(DataTable dt)
         {
-            TableDataLoading = false;
-
             if (dt != null)
             {
-                TableDataView = dt.AsDataView();
+                DataTable table = new DataTable();
+                table.TableName = dt.TableName;
+
+                // Add Columns to DataView
+                foreach (DataColumn column in dt.Columns)
+                {
+                    DataColumn col = new DataColumn();
+                    col.ColumnName = column.ColumnName;
+                    col.DataType = column.DataType;
+                    table.Columns.Add(col);
+                }
+
+                TableDataView = table.AsDataView();
+
+                //Add Rows to Table
+                if (dt.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action<DataRow>(LoadTable_AddRow), Priority_Background, new object[] { row });
+                    }
+                }
+                else TableDataLoading = false;
             }
+            else TableDataLoading = false;
+
+        }
+
+        void LoadTable_AddRow(DataRow row)
+        {
+            DataRow newRow = TableDataView.Table.NewRow();
+            newRow.ItemArray = row.ItemArray;
+
+            TableDataView.Table.Rows.Add(newRow);
+
+            if (row.Table.Rows.IndexOf(row) == row.Table.Rows.Count - 1) TableDataLoading = false;
         }
 
         #endregion
@@ -573,11 +667,13 @@ namespace TH_TableManager
         private void DropTables_Button_Clicked(Controls.Button bt)
         {
 
-            if (MessageBox.Show("Delete ALL tables in " + selectedDevice.configuration.DataBaseName + "?", "Delete Tables", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Delete Selected Tables in " + selectedDevice.configuration.DataBaseName + "?", "Drop Tables", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                string[] tablenames = Global.Table_List(selectedDevice.configuration.SQL);
+                string[] tablenames = SelectedTables.Select(x => x.Text).Distinct().ToArray();
 
                 Global.Table_Drop(selectedDevice.configuration.SQL, tablenames);
+
+                LoadTableList(selectedDevice.configuration);
             }
 
         }
@@ -592,6 +688,7 @@ namespace TH_TableManager
             TableInfoShown = false;
             SelectedTableName = null;
             TableRowCount = null;
+            TableIsSelected = false;
 
             // Table Data
             TableDataView = null;

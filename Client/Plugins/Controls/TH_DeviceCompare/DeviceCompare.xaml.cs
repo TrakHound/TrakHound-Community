@@ -328,6 +328,8 @@ namespace TH_DeviceCompare
                                         this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object, object>(Update_OEE_Timeline), Priority_Context, new object[] { dd, oeedata, shiftdata, snapshotdata });
                                     }
                                 }
+
+                                dd.ComparisonGroup.column.Loading = false;
                             }
                         }
                     }

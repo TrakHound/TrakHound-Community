@@ -50,13 +50,18 @@ namespace TH_WPF
 
         public delegate void Selected_Handler(ListButton LB);
         public event Selected_Handler Selected;
+        public event Selected_Handler MultiSelected;
+        public event Selected_Handler MultiUnselected;
 
         private void Main_GRID_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (MultiSelected != null) MultiSelected(this);
 
-            Selected_Handler handler = Selected;
-            if (handler != null) Selected(this);
-
+                Selected_Handler handler = Selected;
+                if (handler != null) Selected(this);
+            }
         }
 
         public bool IsSelected
@@ -81,6 +86,18 @@ namespace TH_WPF
 
         private void Main_GRID_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                if (!IsSelected)
+                {
+                    if (MultiSelected != null) MultiSelected(this);
+                }
+                else
+                {
+                    if (MultiUnselected != null) MultiUnselected(this);
+                }
+            }
+                
             MouseOver = true;
         }
 

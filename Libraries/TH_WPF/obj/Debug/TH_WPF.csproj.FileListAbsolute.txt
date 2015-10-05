@@ -32,3 +32,8 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csproj.GenerateR
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Block.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Block.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel.baml

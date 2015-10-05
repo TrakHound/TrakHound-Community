@@ -42,20 +42,24 @@ namespace TH_DeviceCompare.Components
             get { return (bool)GetValue(ConnectedProperty); }
             set 
             { 
-                
                 SetValue(ConnectedProperty, value);
 
                 foreach (Cell cell in Cells) cell.Connected = value;
-            
             }
         }
 
         public static readonly DependencyProperty ConnectedProperty =
             DependencyProperty.Register("Connected", typeof(bool), typeof(Column), new PropertyMetadata(false));
 
-        
 
+        public bool Loading
+        {
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
+        }
 
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(Column), new PropertyMetadata(true));
 
         ObservableCollection<Cell> cells;
         public ObservableCollection<Cell> Cells

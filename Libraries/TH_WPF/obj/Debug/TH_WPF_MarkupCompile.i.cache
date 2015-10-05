@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-31075293423
+5501293303
 
-12-700517264
+14-1499499083
 131770423183
-Info_BT.xaml;ListButton.xaml;ProductionIndicator.xaml;
+Info_BT.xaml;ListButton.xaml;LoadingAnimation\Block.xaml;LoadingAnimation\Wheel.xaml;ProductionIndicator.xaml;
 
-False
+True
 

@@ -10,6 +10,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:local="clr-namespace:TH_DeviceCompare.Controls"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
              
@@ -179,7 +180,7 @@
 
             
         </Grid>
-
+        
     </Grid>
     
 </UserControl>

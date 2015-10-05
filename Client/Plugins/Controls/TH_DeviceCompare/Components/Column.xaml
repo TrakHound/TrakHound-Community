@@ -8,6 +8,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
              
              Width="200"
@@ -71,20 +74,67 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-            
-        <ItemsControl ItemsSource="{Binding Cells}">
-            <!--<ItemsControl.Style>
-                <Style TargetType="ItemsControl">
-                    <Setter Property="Visibility" Value="Hidden"/>
+        
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Opacity" Value="1.0"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Connected}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
+                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="1.0" To="0.3"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="0.3" To="1.0" BeginTime="00:00:00.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </ItemsControl.Style>-->
-        </ItemsControl>
+            </Grid.Style>
+            
+            <ItemsControl ItemsSource="{Binding Cells}"/>
 
+        </Grid>
+            
+        
+        <!--Loading Animation-->
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Opacity" Value="0.0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" BeginTime="00:00:00.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#aaffffff" />
+
+        </Grid>
+        
         <!--Separator-->
         <Rectangle Grid.Column="1" Width="1" Fill="#66ffffff" Margin="0" />
 
