@@ -12,5 +12,7 @@ namespace TH_Global
 
         public static string TrakHound = Environment.GetEnvironmentVariable("SystemDrive") + @"\TrakHound";
 
+        public static string Plugins = TrakHound + @"\Plugins";
+
     }
 }

@@ -68,46 +68,49 @@ namespace TH_History.Controls
                     // Get entire table (may need to be sorted using user input)
                     DataTable oeeTable = Global.Table_Get(configuration.SQL, "oee");
 
-                    foreach (Shift shift in sc.shifts)
+                    if (oeeTable != null)
                     {
-
-                        DataView dv = oeeTable.AsDataView();
-                        string filter = "Shift_Id LIKE '*_" + shift.id.ToString("00") + "_*'";
-                        //string filter = "Shift_Id LIKE '%00%'";
-                        dv.RowFilter = filter;
-                        oeeTable = dv.ToTable();
-
-                        double[] valsOEE = new double[oeeTable.Rows.Count];
-
-                        if (oeeTable.Rows.Count > 0)
+                        foreach (Shift shift in sc.shifts)
                         {
-                            for (int x = 0; x <= oeeTable.Rows.Count - 1; x++)
+
+                            DataView dv = oeeTable.AsDataView();
+                            string filter = "Shift_Id LIKE '*_" + shift.id.ToString("00") + "_*'";
+                            //string filter = "Shift_Id LIKE '%00%'";
+                            dv.RowFilter = filter;
+                            oeeTable = dv.ToTable();
+
+                            double[] valsOEE = new double[oeeTable.Rows.Count];
+
+                            if (oeeTable.Rows.Count > 0)
                             {
-                                object o = oeeTable.Rows[x]["OEE"];
-                                double.TryParse(o.ToString(), out valsOEE[x]);
+                                for (int x = 0; x <= oeeTable.Rows.Count - 1; x++)
+                                {
+                                    object o = oeeTable.Rows[x]["OEE"];
+                                    double.TryParse(o.ToString(), out valsOEE[x]);
+                                }
+
+                                string shiftName = shift.name;
+                                double averageOEE = 0;
+                                double medianOEE = 0;
+                                double maxOEE = 0;
+                                double minOEE = 0;
+
+                                averageOEE = valsOEE.Average();
+                                medianOEE = TH_Global.Functions.Math.GetMedian(valsOEE);
+                                maxOEE = valsOEE.Max();
+                                minOEE = valsOEE.Min();
+
+                                DataRow newRow = table.NewRow();
+                                newRow["Shift Name"] = shiftName;
+                                newRow["Average OEE"] = averageOEE.ToString("P2");
+                                newRow["Median OEE"] = medianOEE.ToString("P2");
+                                newRow["Max OEE"] = maxOEE.ToString("P2");
+                                newRow["Min OEE"] = minOEE.ToString("P2");
+
+                                table.Rows.Add(newRow);
                             }
 
-                            string shiftName = shift.name;
-                            double averageOEE = 0;
-                            double medianOEE = 0;
-                            double maxOEE = 0;
-                            double minOEE = 0;
-
-                            averageOEE = valsOEE.Average();
-                            medianOEE = TH_Global.Functions.Math.GetMedian(valsOEE);
-                            maxOEE = valsOEE.Max();
-                            minOEE = valsOEE.Min();
-
-                            DataRow newRow = table.NewRow();
-                            newRow["Shift Name"] = shiftName;
-                            newRow["Average OEE"] = averageOEE.ToString("P2");
-                            newRow["Median OEE"] = medianOEE.ToString("P2");
-                            newRow["Max OEE"] = maxOEE.ToString("P2");
-                            newRow["Min OEE"] = minOEE.ToString("P2");
-
-                            table.Rows.Add(newRow);
                         }
-                        
                     }
 
                     if (table != null)

@@ -21,11 +21,9 @@ namespace TH_Configuration
         public event SQLErrorHandler SQL_Error;
 
         public void SendError(string Message)
-        {
-            
+        {         
             SQLErrorHandler handler = SQL_Error;
             if (handler != null) SQL_Error(Message);
-
         }
 
         public SQL_Settings AdminSQL;

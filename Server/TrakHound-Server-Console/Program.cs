@@ -7,9 +7,6 @@ using System;
 using System.IO;
 using System.Xml;
 
-using TH_Configuration;
-using TH_Device_Server;
-using TH_Global;
 using TrakHound_Server_Core;
 
 namespace TrakHound_Server_Console

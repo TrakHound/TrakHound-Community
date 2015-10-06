@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 
 using TH_Configuration;
+using TH_Database;
 using TH_Global;
-using TH_MySQL;
 
 namespace TH_Device_Server.TableManagement
     {
@@ -21,13 +21,13 @@ namespace TH_Device_Server.TableManagement
         public static void Initialize(Configuration lSettings)
             {
 
-            Global.Table_Create(lSettings.SQL, TableName,
+            Table.Create(lSettings.Databases, TableName,
                 new object[] 
                     {
-                    "Agent_Instance_ID " + MySQL_Tools.BigInt,
-                    "First_TimeStamp " + MySQL_Tools.Datetime,
-                    "Last_TimeStamp " + MySQL_Tools.Datetime,
-                    "Seconds " + MySQL_Tools.BigInt
+                    "Agent_Instance_ID " + DataType.Long,
+                    "First_TimeStamp " + DataType.DateTime,
+                    "Last_TimeStamp " + DataType.DateTime,
+                    "Seconds " + DataType.Long
                     },
                 "Agent_Instance_ID"
                 );
@@ -39,7 +39,7 @@ namespace TH_Device_Server.TableManagement
 
             List<Tuple<string, object>> Changed = new List<Tuple<string, object>>();
 
-            DataRow PreviousRow = Global.Row_Get(lSettings.SQL, TableName, "Agent_Instance_ID", AgentInstanceID.ToString());
+            DataRow PreviousRow = Row.Get(lSettings.Databases, TableName, "Agent_Instance_ID", AgentInstanceID.ToString());
 
             DateTime PreviousFirst = DateTime.MinValue;
             DateTime PreviousLast = DateTime.MinValue;
@@ -50,13 +50,13 @@ namespace TH_Device_Server.TableManagement
                 if (PreviousRow["First_TimeStamp"] != null)
                     {
                     PreviousFirst = DateTime.Parse(PreviousRow["First_Timestamp"].ToString());
-                    if (FirstTimeStamp < PreviousFirst) Changed.Add(new Tuple<string, object>("First_Timestamp", MySQL_Tools.ConvertDateStringtoMySQL(FirstTimeStamp.ToString())));
+                    if (FirstTimeStamp < PreviousFirst) Changed.Add(new Tuple<string, object>("First_Timestamp", FirstTimeStamp.ToString()));
                     }
 
                 if (PreviousRow["Last_TimeStamp"] != null)
                     {
                     DateTime.TryParse(PreviousRow["Last_Timestamp"].ToString(), out PreviousLast);
-                    if (LastTimeStamp > PreviousLast) Changed.Add(new Tuple<string, object>("Last_Timestamp", MySQL_Tools.ConvertDateStringtoMySQL(LastTimeStamp.ToString())));
+                    if (LastTimeStamp > PreviousLast) Changed.Add(new Tuple<string, object>("Last_Timestamp", LastTimeStamp.ToString()));
                     }
                 if (PreviousFirst > DateTime.MinValue && PreviousLast > DateTime.MinValue)
                     {
@@ -65,8 +65,8 @@ namespace TH_Device_Server.TableManagement
                 }
             else
                 {
-                    Changed.Add(new Tuple<string, object>("First_Timestamp", MySQL_Tools.ConvertDateStringtoMySQL(FirstTimeStamp.ToString())));
-                    Changed.Add(new Tuple<string, object>("Last_Timestamp", MySQL_Tools.ConvertDateStringtoMySQL(LastTimeStamp.ToString())));
+                    Changed.Add(new Tuple<string, object>("First_Timestamp", FirstTimeStamp.ToString()));
+                    Changed.Add(new Tuple<string, object>("Last_Timestamp", LastTimeStamp.ToString()));
                 TS = LastTimeStamp - FirstTimeStamp;
                 }
 
@@ -90,8 +90,7 @@ namespace TH_Device_Server.TableManagement
             object[] Values = Vals.ToArray();
 
             if (Columns.Length > 1 && Values.Length > 1)
-                Global.Row_Insert(lSettings.SQL, TableName, Columns, Values);
-
+                Row.Insert(lSettings.Databases, TableName, Columns, Values, true);
 
             }
 

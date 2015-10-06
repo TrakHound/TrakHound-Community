@@ -674,55 +674,6 @@ namespace TH_MySQL
                 Command = new MySqlCommand();
                 Command.Connection = conn;
 
-                ////Create Columns string
-                //string cols = "";
-                //for (int x = 0; x <= Columns.Length - 1; x++)
-                //{
-                //    cols += Columns[x].ToString().ToUpper();
-                //    if (x < Columns.Length - 1) cols += ", ";
-                //}
-
-                ////Create Values string
-                //string vals = "";
-                //for (int x = 0; x <= Values.Length - 1; x++)
-                //{
-                //    // Dont put the ' characters if the value is null
-                //    if (Values[x] == null) vals += "null";
-                //    else
-                //    {
-                //        if (Values[x].ToString().ToLower() != "null") vals += "'" + MySQL_Tools.ConvertToSafe(Values[x].ToString()) + "'";
-                //        else vals += Values[x].ToString();
-                //    }
-
-
-                //    if (x < Values.Length - 1) vals += ", ";
-                //}
-
-                ////Create Update string
-                //string update = "";
-                //if (Update)
-                //{
-                //    update = " ON DUPLICATE KEY UPDATE ";
-                //    for (int x = 0; x <= Columns.Length - 1; x++)
-                //    {
-                //        if (Values[x] != null)
-                //        {
-
-                //            update += Columns[x].ToString().ToUpper();
-                //            update += "=";
-                //            update += "'" + MySQL_Tools.ConvertToSafe(Values[x].ToString()) + "'";
-
-                //            if (x < Columns.Length - 1) update += ", ";
-
-                //        }
-                //    }
-                //}
-
-
-                //Command.CommandText = "INSERT IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")" + update;
-
-                //Command.CommandText = TH_MySQL.Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
-
                 Command.CommandText = Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
 
                 Command.Prepare();
@@ -762,60 +713,6 @@ namespace TH_MySQL
                     MySqlCommand Command;
                     Command = new MySqlCommand();
                     Command.Connection = conn;
-
-                    ////Create Columns string
-                    //string cols = "";
-                    //for (int x = 0; x <= Columns.Length - 1; x++)
-                    //{
-                    //    cols += Columns[x].ToString().ToUpper();
-                    //    if (x < Columns.Length - 1) cols += ", ";
-                    //}
-
-                    ////Create Values string
-                    //string vals = "VALUES ";
-                    //for (int i = 0; i <= Values.Count - 1; i++)
-                    //{
-                    //    vals += "(";
-
-                    //    for (int x = 0; x <= Values[i].Count - 1; x++)
-                    //    {
-
-                    //        List<object> ValueSet = Values[i];
-
-                    //        // Dont put the ' characters if the value is null
-                    //        if (ValueSet[x] == null) vals += "null";
-                    //        else
-                    //        {
-                    //            if (ValueSet[x].ToString().ToLower() != "null") vals += "'" + ValueSet[x].ToString() + "'";
-                    //            else vals += ValueSet[x].ToString();
-                    //        }
-
-
-                    //        if (x < ValueSet.Count - 1) vals += ", ";
-                    //    }
-
-                    //    vals += ")";
-
-                    //    if (i < Values.Count - 1) vals += ",";
-
-                    //}
-
-                    ////Create Update string
-                    //string update = "";
-                    //if (Update)
-                    //{
-                    //    update = " ON DUPLICATE KEY UPDATE ";
-                    //    for (int x = 0; x <= Columns.Length - 1; x++)
-                    //    {
-                    //        update += Columns[x].ToString().ToUpper();
-                    //        update += "=";
-                    //        update += "VALUES(" + Columns[x].ToString().ToUpper() + ")";
-                    //        if (x < Columns.Length - 1) update += ", ";
-                    //    }
-                    //}
-
-
-                    //Command.CommandText = "INSERT IGNORE INTO " + TableName + " (" + cols + ") " + vals + update;
 
                     Command.CommandText = Global.Row_Insert_CreateQuery(TableName, Columns, Values, Update);
 

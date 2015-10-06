@@ -54,6 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Connector\Column.cs" />
+    <Compile Include="Connector\Database.cs" />
+    <Compile Include="Connector\etc.cs" />
+    <Compile Include="Connector\Row.cs" />
+    <Compile Include="Connector\Table.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="MySQL.cs" />
     <Compile Include="MySQL_Tools.cs" />

@@ -14,9 +14,15 @@ using System.IO;
 using System.Data;
 
 using TH_Configuration;
+
+using TH_Database;
+using TH_Database.Tables;
+
 using TH_Global;
-using TH_MySQL;
-using TH_MySQL.Tables;
+
+//using TH_MySQL;
+//using TH_MySQL.Tables;
+
 using TH_MTC_Data;
 using TH_MTC_Requests;
 using TH_Ping;
@@ -95,7 +101,7 @@ namespace TH_Device_Server
                 }
             }
 
-            Global.Database_Create(configuration.SQL, configuration.SQL.Database);
+            Database.Create(configuration.Databases);
 
             worker = new Thread(new ThreadStart(Worker_Start));
             worker.Start();
@@ -180,7 +186,8 @@ namespace TH_Device_Server
 
         void Connection_Check()
         {
-            if (MTC_PingResult && SQL_PingResult && PHP_PingResult)
+
+            if (MTC_PingResult)
             {
                 if (FirstAttempt) Log("Device Connected...");
 
@@ -207,13 +214,7 @@ namespace TH_Device_Server
             }
             else
             {
-                if (!MTC_PingResult && !SQL_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC, SQL, and PHP Not Reachable!");
-                else if (!MTC_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and SQL Not Reachable!");
-                else if (!MTC_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and PHP Not Reachable!");
-                else if (!PHP_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP and SQL Not Reachable!");
-                else if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
-                else if (!PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP Not Reachable!");
-                else Log("Device (" + configuration.Index.ToString() + ") SQL Not Reachable!");
+                if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
 
                 if (Status == ConnectionStatus.Started || FirstAttempt)
                 {
@@ -235,6 +236,63 @@ namespace TH_Device_Server
                     TryCount += 1;
                 }
             }
+
+
+            //if (MTC_PingResult && SQL_PingResult && PHP_PingResult)
+            //{
+            //    if (FirstAttempt) Log("Device Connected...");
+
+            //    if (TryCount > 1) Log("Connection Reestablished");
+
+            //    TryCount = 1;
+
+            //    Connection_Timer.Interval = 1000;
+
+            //    if (Status == ConnectionStatus.Stopped)
+            //    {
+            //        Status = ConnectionStatus.Started;
+
+            //        Initialize();
+
+            //        RunningTimeSTPW.Start();
+
+            //        Requests_Start();
+
+            //        Log("Device (" + configuration.Index.ToString() + ") Started...");
+            //    }
+
+            //    FirstAttempt = false;
+            //}
+            //else
+            //{
+            //    if (!MTC_PingResult && !SQL_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC, SQL, and PHP Not Reachable!");
+            //    else if (!MTC_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and SQL Not Reachable!");
+            //    else if (!MTC_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and PHP Not Reachable!");
+            //    else if (!PHP_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP and SQL Not Reachable!");
+            //    else if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
+            //    else if (!PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP Not Reachable!");
+            //    else Log("Device (" + configuration.Index.ToString() + ") SQL Not Reachable!");
+
+            //    if (Status == ConnectionStatus.Started || FirstAttempt)
+            //    {
+            //        FirstAttempt = false;
+
+            //        Connection_Timer.Interval = 5000;
+
+            //        Log("Attempting to Connect...(Attempt #" + TryCount.ToString() + ")");
+
+            //        if (TryCount >= ConnectionAttempts)
+            //        {
+            //            TryCount = 1;
+
+            //            Connection_Timer.Interval = 1000;
+
+            //            Stop();
+            //        }
+
+            //        TryCount += 1;
+            //    }
+            //}
         }
 
         #endregion
@@ -312,9 +370,11 @@ namespace TH_Device_Server
 
         #region "Console Output"
 
+        static bool DEBUG = false;
+
         public void Log(string line)
         {
-            Logger.Log(line);
+            if (DEBUG) Logger.Log(line);
         }
 
         #endregion
@@ -353,28 +413,28 @@ namespace TH_Device_Server
 
         void Ping_DB_Initialize(Configuration lSettings)
         {
-            if (lSettings.SQL.PHP_Server == null)
-            {
-                MySQLPing DB_Ping = new MySQLPing();
-                DB_Ping.Settings = lSettings.SQL;
-                DB_Ping.MySQLPingResult += Ping_DB_MySQLPingResult;
-                DB_Ping.Start();
-            }
-            else SQL_PingResult = true;
+            //if (lSettings.SQL.PHP_Server == null)
+            //{
+            //    MySQLPing DB_Ping = new MySQLPing();
+            //    DB_Ping.Settings = lSettings.SQL;
+            //    DB_Ping.MySQLPingResult += Ping_DB_MySQLPingResult;
+            //    DB_Ping.Start();
+            //}
+            //else SQL_PingResult = true;
         }
 
         void Ping_PHP_Initialize(Configuration lSettings)
         {
-            if (lSettings.SQL.PHP_Server != null)
-            {
-                PortPing PHP_Ping = new PortPing();
-                PHP_Ping.Address = lSettings.SQL.PHP_Server;
-                PHP_Ping.Port = 0;
-                PHP_Ping.Interval = 2000;
-                PHP_Ping.PingResult += Ping_PHP_PingResult;
-                PHP_Ping.Start();
-            }
-            else PHP_PingResult = true;
+            //if (lSettings.SQL.PHP_Server != null)
+            //{
+            //    PortPing PHP_Ping = new PortPing();
+            //    PHP_Ping.Address = lSettings.SQL.PHP_Server;
+            //    PHP_Ping.Port = 0;
+            //    PHP_Ping.Interval = 2000;
+            //    PHP_Ping.PingResult += Ping_PHP_PingResult;
+            //    PHP_Ping.Start();
+            //}
+            //else PHP_PingResult = true;
         }
 
         #endregion
@@ -848,7 +908,7 @@ namespace TH_Device_Server
         {
             Int64 Result = -1;
 
-            Variables.VariableData vd = Variables.Get(configuration.SQL, "last_sequence_sampled");
+            Variables.VariableData vd = Variables.Get(configuration.Databases, "last_sequence_sampled");
             if (vd != null)
             {
                 Int64.TryParse(vd.value, out Result);
@@ -861,7 +921,7 @@ namespace TH_Device_Server
         {
             Int64 Result = -1;
 
-            Variables.VariableData vd = Variables.Get(configuration.SQL, "agent_instanceid");
+            Variables.VariableData vd = Variables.Get(configuration.Databases, "agent_instanceid");
             if (vd != null)
             {
                 Int64.TryParse(vd.value, out Result);
@@ -886,7 +946,7 @@ namespace TH_Device_Server
                 // Check/Update Agent Instance Id -------------------
                 Int64 lastInstanceId = agentInstanceId;
                 agentInstanceId = header.instanceId;
-                Variables.Update(configuration.SQL, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime);
+                Variables.Update(configuration.Databases, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime);
                 // --------------------------------------------------
 
                 // Get Sequence Number to use -----------------------
@@ -925,7 +985,7 @@ namespace TH_Device_Server
                 // Update Last Sequence Sampled for the subsequent samples
                 // lastSequenceSampled_temp = Last;
                 lastSequenceSampled = Last;
-                Variables.Update(configuration.SQL, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
+                Variables.Update(configuration.Databases, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
 
 
                 //if (configuration.Agent.Simulation_Sample_Path != null)
@@ -949,10 +1009,6 @@ namespace TH_Device_Server
                     
             }
         }
-
-        // Simulation File Sample
-
-        
 
         void Sample_Start()
         {
@@ -1119,7 +1175,7 @@ namespace TH_Device_Server
 
         void InitializeTables()
         {
-            Variables.CreateTable(configuration.SQL);
+            Variables.CreateTable(configuration.Databases);
         }
 
         #endregion

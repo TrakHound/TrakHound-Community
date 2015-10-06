@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Agent_Settings.cs" />
+    <Compile Include="Data\Database_Settings.cs" />
     <Compile Include="Data\Description_Settings.cs" />
     <Compile Include="Data\FileLocation_Settings.cs" />
     <Compile Include="Data\Server_Settings.cs" />

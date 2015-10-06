@@ -97,53 +97,6 @@ namespace TrakHound_Server_Core
             return Result;
         }
 
-        //static List<Device_Server> ReadDevices()
-        //{
-        //    List<Device_Server> Result = new List<Device_Server>();
-
-        //    string configPath;
-
-        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "Configuration.Xml";
-        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
-
-        //    // systemPath takes priority (easier for user to navigate to)
-        //    if (File.Exists(systemPath)) configPath = systemPath;
-        //    else configPath = localPath;
-
-        //    Logger.Log(configPath);
-
-        //    if (System.IO.File.Exists(configPath))
-        //    {
-        //        XmlDocument doc = new XmlDocument();
-        //        doc.Load(configPath);
-
-        //        int index = 0;
-
-        //        if (doc.DocumentElement.Name.ToLower() == "configuration")
-        //        {
-        //            foreach (XmlNode node in doc.DocumentElement.ChildNodes)
-        //            {
-        //                if (node.NodeType == XmlNodeType.Element)
-        //                {
-        //                    if (node.Name.ToLower() == "device")
-        //                    {
-        //                        Device_Server device = ProcessDevice(index, node);
-        //                        if (device != null)
-        //                        {
-        //                            Result.Add(device);
-        //                            index += 1;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            Logger.Log("Devices File Successfully Read From : " + configPath);
-        //        }
-        //    }
-        //    else Logger.Log("Devices File Not Found : " + configPath);
-
-        //    return Result;
-        //}
-
         static Device_Server ProcessDevice(int index, XmlNode node)
         {
             Device_Server Result = null;

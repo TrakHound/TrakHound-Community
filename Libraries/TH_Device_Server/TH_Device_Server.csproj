@@ -56,6 +56,10 @@
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TH_Database\TH_Database.csproj">
+      <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
+      <Name>TH_Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
@@ -67,10 +71,6 @@
     <ProjectReference Include="..\TH_MTC_Requests\TH_MTC_Requests.csproj">
       <Project>{db59642f-24b7-4584-bcdf-288788040709}</Project>
       <Name>TH_MTC_Requests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TH_MySQL\TH_MySQL.csproj">
-      <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
-      <Name>TH_MySQL</Name>
     </ProjectReference>
     <ProjectReference Include="..\TH_Ping\TH_Ping.csproj">
       <Project>{d767cb7a-7c4e-4df9-8b4c-9aa6ec8d12ec}</Project>
