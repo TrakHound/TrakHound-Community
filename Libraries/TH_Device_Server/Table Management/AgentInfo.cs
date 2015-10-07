@@ -12,30 +12,40 @@ using TH_Database;
 using TH_Global;
 
 namespace TH_Device_Server.TableManagement
-    {
+{
     public static class AgentInfo
-        {
+    {
 
         public const string TableName = TableNames.AgentInfo;
 
         public static void Initialize(Configuration lSettings)
+        {
+
+            ColumnDefinition[] Columns = new ColumnDefinition[]
             {
+                new ColumnDefinition("Agent_Instance_ID", DataType.Long),
+                new ColumnDefinition("First_TimeStamp", DataType.DateTime),
+                new ColumnDefinition("First_TimeStamp", DataType.DateTime),
+                new ColumnDefinition("Seconds", DataType.Long)
+            };
 
-            Table.Create(lSettings.Databases, TableName,
-                new object[] 
-                    {
-                    "Agent_Instance_ID " + DataType.Long,
-                    "First_TimeStamp " + DataType.DateTime,
-                    "Last_TimeStamp " + DataType.DateTime,
-                    "Seconds " + DataType.Long
-                    },
-                "Agent_Instance_ID"
-                );
+            Table.Create(lSettings.Databases, TableName, Columns, "Agent_Instance_ID");
 
-            }
+            //Table.Create(lSettings.Databases, TableName,
+            //    new object[] 
+            //        {
+            //        "Agent_Instance_ID " + DataType.Long,
+            //        "First_TimeStamp " + DataType.DateTime,
+            //        "Last_TimeStamp " + DataType.DateTime,
+            //        "Seconds " + DataType.Long
+            //        },
+            //    "Agent_Instance_ID"
+            //    );
+
+        }
 
         public static void UpdateAgentInfoTable(Configuration lSettings, Int64 AgentInstanceID, DateTime FirstTimeStamp, DateTime LastTimeStamp)
-            {
+        {
 
             List<Tuple<string, object>> Changed = new List<Tuple<string, object>>();
 
@@ -46,29 +56,29 @@ namespace TH_Device_Server.TableManagement
             TimeSpan TS = TimeSpan.Zero;
 
             if (PreviousRow != null)
-                {
+            {
                 if (PreviousRow["First_TimeStamp"] != null)
-                    {
+                {
                     PreviousFirst = DateTime.Parse(PreviousRow["First_Timestamp"].ToString());
                     if (FirstTimeStamp < PreviousFirst) Changed.Add(new Tuple<string, object>("First_Timestamp", FirstTimeStamp.ToString()));
-                    }
+                }
 
                 if (PreviousRow["Last_TimeStamp"] != null)
-                    {
+                {
                     DateTime.TryParse(PreviousRow["Last_Timestamp"].ToString(), out PreviousLast);
                     if (LastTimeStamp > PreviousLast) Changed.Add(new Tuple<string, object>("Last_Timestamp", LastTimeStamp.ToString()));
-                    }
+                }
                 if (PreviousFirst > DateTime.MinValue && PreviousLast > DateTime.MinValue)
-                    {
-                    TS = PreviousLast - PreviousFirst;
-                    }
-                }
-            else
                 {
-                    Changed.Add(new Tuple<string, object>("First_Timestamp", FirstTimeStamp.ToString()));
-                    Changed.Add(new Tuple<string, object>("Last_Timestamp", LastTimeStamp.ToString()));
-                TS = LastTimeStamp - FirstTimeStamp;
+                    TS = PreviousLast - PreviousFirst;
                 }
+            }
+            else
+            {
+                Changed.Add(new Tuple<string, object>("First_Timestamp", FirstTimeStamp.ToString()));
+                Changed.Add(new Tuple<string, object>("Last_Timestamp", LastTimeStamp.ToString()));
+                TS = LastTimeStamp - FirstTimeStamp;
+            }
 
             if (TS > TimeSpan.Zero)
                 Changed.Add(new Tuple<string, object>("Seconds", TS.TotalSeconds));
@@ -81,10 +91,10 @@ namespace TH_Device_Server.TableManagement
             Vals.Add(AgentInstanceID);
 
             foreach (Tuple<string, object> ChangedItem in Changed)
-                {
+            {
                 Cols.Add(ChangedItem.Item1);
                 Vals.Add(ChangedItem.Item2);
-                }
+            }
 
             object[] Columns = Cols.ToArray();
             object[] Values = Vals.ToArray();
@@ -92,7 +102,7 @@ namespace TH_Device_Server.TableManagement
             if (Columns.Length > 1 && Values.Length > 1)
                 Row.Insert(lSettings.Databases, TableName, Columns, Values, true);
 
-            }
-
         }
+
     }
+}

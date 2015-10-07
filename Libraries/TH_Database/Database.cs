@@ -13,6 +13,30 @@ using TH_Global;
 
 namespace TH_Database
 {
+    public static class Global
+    {
+
+        public static List<Lazy<Database_Plugin>> Plugins;
+
+        public static void Initialize(Database_Settings settings)
+        {
+            foreach (Database_Configuration db in settings.Databases)
+            {
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins.ToList())
+                {
+                    Database_Plugin dp = ldp.Value;
+
+                    if (dp.Type.ToLower() == db.Type.ToLower())
+                    {
+                        dp.Initialize(db);
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+
     public static class Database
     {
 
@@ -36,22 +60,23 @@ namespace TH_Database
 
         public static void Create(Database_Settings settings)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        CreateWorkerInfo info = new CreateWorkerInfo();
-                        info.configuration = plugin.Configuration;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            CreateWorkerInfo info = new CreateWorkerInfo();
+                            info.configuration = db.Configuration;
+                            info.plugin = dp;
 
-                        info.plugin = plugin;
-
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                            break;
+                        }
                     }
                 }
             }
@@ -73,24 +98,26 @@ namespace TH_Database
 
         public static void Drop(Database_Settings settings, string databaseName)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        DropWorkerInfo info = new DropWorkerInfo();
-                        info.configuration = plugin.Configuration;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            DropWorkerInfo info = new DropWorkerInfo();
+                            info.configuration = db.Configuration;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker), info);
+                            break;
+                        }
                     }
                 }
-            }
+            }   
         }
 
         static void Drop_Worker(object o)
@@ -118,7 +145,7 @@ namespace TH_Database
         {
             public object configuration { get; set; }
             public string tablename { get; set; }
-            public object[] columnDefinitions { get; set; }
+            public ColumnDefinition[] columnDefinitions { get; set; }
             public string primaryKey { get; set; }
 
             public Database_Plugin plugin { get; set; }
@@ -150,29 +177,31 @@ namespace TH_Database
 
         #endregion
 
-        public static void Create(Database_Settings settings, string tablename, object[] columnDefinitions, string primaryKey)
+        public static void Create(Database_Settings settings, string tablename, ColumnDefinition[] columnDefinitions, string primaryKey)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        CreateWorkerInfo info = new CreateWorkerInfo();
-                        info.configuration = plugin.Configuration;
-                        info.tablename = tablename;
-                        info.columnDefinitions = columnDefinitions;
-                        info.primaryKey = primaryKey;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            CreateWorkerInfo info = new CreateWorkerInfo();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.columnDefinitions = columnDefinitions;
+                            info.primaryKey = primaryKey;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                            break;
+                        }
                     }
                 }
-            }
+            } 
         }
 
         static void Create_Worker(object o)
@@ -192,25 +221,27 @@ namespace TH_Database
 
         public static void Drop(Database_Settings settings, string tablename)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        DropWorkerInfo1 info = new DropWorkerInfo1();
-                        info.configuration = plugin.Configuration;
-                        info.tablename = tablename;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            DropWorkerInfo1 info = new DropWorkerInfo1();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker1), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker1), info);
+                            break;
+                        }   
                     }
                 }
-            }
+            } 
         }
 
         static void Drop_Worker1(object o)
@@ -230,25 +261,27 @@ namespace TH_Database
 
         public static void Drop(Database_Settings settings, string[] tablenames)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        DropWorkerInfo2 info = new DropWorkerInfo2();
-                        info.configuration = plugin.Configuration;
-                        info.tablenames = tablenames;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            DropWorkerInfo2 info = new DropWorkerInfo2();
+                            info.configuration = db.Configuration;
+                            info.tablenames = tablenames;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker2), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker2), info);
+                            break;
+                        }
                     }
                 }
-            }
+            } 
         }
 
         static void Drop_Worker2(object o)
@@ -268,25 +301,27 @@ namespace TH_Database
 
         public static void Truncate(Database_Settings settings, string tablename)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        TruncateWorkerInfo info = new TruncateWorkerInfo();
-                        info.configuration = plugin.Configuration;
-                        info.tablename = tablename;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            TruncateWorkerInfo info = new TruncateWorkerInfo();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(Truncate_Worker), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(Truncate_Worker), info);
+                            break;
+                        }
                     }
                 }
-            }
+            } 
         }
 
         static void Truncate_Worker(object o)
@@ -310,11 +345,20 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Table_Get(plugin.Configuration, tablename);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Table_Get(primary.Configuration, tablename);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -327,11 +371,20 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Table_Get(plugin.Configuration, tablename, filterExpression);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Table_Get(primary.Configuration, tablename, filterExpression);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -344,11 +397,20 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Table_Get(plugin.Configuration, tablename, filterExpression, columns);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Table_Get(primary.Configuration, tablename, filterExpression, columns);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -366,7 +428,7 @@ namespace TH_Database
         {
             public object configuration { get; set; }
             public string tablename { get; set; }
-            public string columnDefinition { get; set; }
+            public ColumnDefinition columnDefinition { get; set; }
 
             public Database_Plugin plugin { get; set; }
         }
@@ -379,39 +441,50 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Column_Get(plugin.Configuration, tablename);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Column_Get(primary.Configuration, tablename);
+                            break;
+                        }
+                    }
                 }
             }
 
             return result;
         }
 
-        public static void Add(Database_Settings settings, string tablename, string columnDefinition)
+        public static void Add(Database_Settings settings, string tablename, ColumnDefinition columnDefinition)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        AddWorkerInfo info = new AddWorkerInfo();
-                        info.configuration = plugin.Configuration;
-                        info.tablename = tablename;
-                        info.columnDefinition = columnDefinition;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            AddWorkerInfo info = new AddWorkerInfo();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.columnDefinition = columnDefinition;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(AddWorker), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(AddWorker), info);
+                            break;
+                        }
                     }
                 }
-            }
+            } 
         }
 
         static void AddWorker(object o)
@@ -480,25 +553,27 @@ namespace TH_Database
 
         public static void Insert(Database_Settings settings, string tablename, object[] columns, object[] values, bool update)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        InsertWorkerInfo1 info = new InsertWorkerInfo1();
-                        info.configuration = plugin.Configuration;
-                        info.tablename = tablename;
-                        info.columns = columns;
-                        info.values = values;
-                        info.update = update;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            InsertWorkerInfo1 info = new InsertWorkerInfo1();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.columns = columns;
+                            info.values = values;
+                            info.update = update;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker1), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker1), info);
+                            break;
+                        }
                     }
                 }
             }
@@ -521,25 +596,27 @@ namespace TH_Database
 
         public static void Insert(Database_Settings settings, string tablename, object[] columns, List<List<object>> values, bool update)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        InsertWorkerInfo2 info = new InsertWorkerInfo2();
-                        info.configuration = plugin.Configuration;
-                        info.tablename = tablename;
-                        info.columns = columns;
-                        info.values = values;
-                        info.update = update;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            InsertWorkerInfo2 info = new InsertWorkerInfo2();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.columns = columns;
+                            info.values = values;
+                            info.update = update;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker2), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker2), info);
+                            break;
+                        }
                     }
                 }
             }
@@ -562,25 +639,27 @@ namespace TH_Database
 
         public static void Insert(Database_Settings settings, string tablename, List<object[]> columnsList, List<object[]> valuesList, bool update)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        InsertWorkerInfo3 info = new InsertWorkerInfo3();
-                        info.configuration = plugin.Configuration;
-                        info.tablename = tablename;
-                        info.columnsList = columnsList;
-                        info.valuesList = valuesList;
-                        info.update = update;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            InsertWorkerInfo3 info = new InsertWorkerInfo3();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.columnsList = columnsList;
+                            info.valuesList = valuesList;
+                            info.update = update;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker3), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker3), info);
+                            break;
+                        }
                     }
                 }
             }
@@ -603,22 +682,24 @@ namespace TH_Database
 
         public static void Insert(Database_Settings settings, string query)
         {
-            foreach (object database in settings.Databases)
+            foreach (Database_Configuration db in settings.Databases)
             {
-                if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                 {
-                    Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                    if (lazyPlugin.IsValueCreated)
+                    if (ldp.IsValueCreated)
                     {
-                        Database_Plugin plugin = lazyPlugin.Value;
+                        Database_Plugin dp = ldp.Value;
 
-                        InsertWorkerInfo4 info = new InsertWorkerInfo4();
-                        info.configuration = plugin.Configuration;
-                        info.query = query;
-                        info.plugin = plugin;
+                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        {
+                            InsertWorkerInfo4 info = new InsertWorkerInfo4();
+                            info.configuration = db.Configuration;
+                            info.query = query;
+                            info.plugin = dp;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker4), info);
+                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker4), info);
+                            break;
+                        }
                     }
                 }
             }
@@ -645,11 +726,20 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Row_Get(plugin.Configuration, tablename, tableKey, rowKey);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Row_Get(primary.Configuration, tablename, tableKey, rowKey);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -662,11 +752,20 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Row_Get(plugin.Configuration, tablename, query);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Row_Get(primary.Configuration, tablename, query);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -681,11 +780,20 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Row_Exists(plugin.Configuration, tablename, filterString);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Row_Exists(primary.Configuration, tablename, filterString);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -718,25 +826,27 @@ namespace TH_Database
             {
                 for (int x = 0; x <= settings.Databases.Count - 1; x++)
                 {
-                    object database = settings.Databases[x];
+                    Database_Configuration db = settings.Databases[x];
 
-                    if (database.GetType() == typeof(Lazy<Database_Plugin>))
+                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
                     {
-                        Lazy<Database_Plugin> lazyPlugin = (Lazy<Database_Plugin>)database;
-
-                        if (lazyPlugin.IsValueCreated)
+                        if (ldp.IsValueCreated)
                         {
-                            Database_Plugin plugin = lazyPlugin.Value;
+                            Database_Plugin dp = ldp.Value;
 
-                            if (x == 0) result = plugin.CustomCommand(plugin.Configuration, commandText);
-                            else
+                            if (dp.Type.ToLower() == db.Type.ToLower())
                             {
-                                CustomCommandWorkerInfo info = new CustomCommandWorkerInfo();
-                                info.configuration = plugin.Configuration;
-                                info.commandText = commandText;
-                                info.plugin = plugin;
+                                if (x == 0) result = dp.CustomCommand(db.Configuration, commandText);
+                                else
+                                {
+                                    CustomCommandWorkerInfo info = new CustomCommandWorkerInfo();
+                                    info.configuration = db.Configuration;
+                                    info.commandText = commandText;
+                                    info.plugin = dp;
 
-                                ThreadPool.QueueUserWorkItem(new WaitCallback(CustomCommandWorker), info);
+                                    ThreadPool.QueueUserWorkItem(new WaitCallback(CustomCommandWorker), info);
+                                }
+                                break;
                             }
                         }
                     }
@@ -767,11 +877,20 @@ namespace TH_Database
 
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.GetValue(plugin.Configuration, tablename, column, filterExpression);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.GetValue(primary.Configuration, tablename, column, filterExpression);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -783,13 +902,23 @@ namespace TH_Database
         {
             DataTable result = null;
 
+
             if (settings.Databases.Count > 0)
             {
-                if (settings.Databases[0].GetType() == typeof(Database_Plugin))
-                {
-                    Database_Plugin plugin = (Database_Plugin)settings.Databases[0];
+                Database_Configuration primary = settings.Databases[0];
 
-                    result = plugin.Table_Get(plugin.Configuration, username);
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                {
+                    if (ldp.IsValueCreated)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Table_Get(primary.Configuration, username);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -798,8 +927,13 @@ namespace TH_Database
 
     }
 
-    public class PluginReader
+    public class DatabasePluginReader
     {
+
+        public DatabasePluginReader()
+        {
+            GetPlugins();
+        }
 
         public IEnumerable<Lazy<Database_Plugin>> databasePlugins { get; set; }
 
@@ -810,10 +944,10 @@ namespace TH_Database
         class DatabasePlugs
         {
             [ImportMany(typeof(Database_Plugin))]
-            public IEnumerable<Lazy<Database_Plugin>> plugins { get; set; }
+            public IEnumerable<Lazy<Database_Plugin>> PlugIns { get; set; }
         }
 
-        public List<Lazy<Database_Plugin>> GetPlugins()
+        public void GetPlugins()
         {
             string plugin_rootpath = FileLocations.Plugins;
 
@@ -825,16 +959,17 @@ namespace TH_Database
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\Plugins')
             pluginsPath = TH_Global.FileLocations.Plugins;
-            if (Directory.Exists(pluginsPath)) GetPlugins(pluginsPath);
+            if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            if (Directory.Exists(pluginsPath)) GetPlugins(pluginsPath);
+            if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
 
-            return plugins;
+            Global.Plugins = plugins;
+
         }
 
-        void GetPlugins(string Path)
+        void FindPlugins(string Path)
         {
             Logger.Log("Searching for Database Plugins in '" + Path + "'");
 
@@ -848,9 +983,9 @@ namespace TH_Database
                     var PageContainer = new CompositionContainer(PageCatalog);
                     PageContainer.SatisfyImportsOnce(DBPLUGS);
 
-                    databasePlugins = DBPLUGS.plugins;
+                    databasePlugins = DBPLUGS.PlugIns;
 
-                    foreach (Lazy<Database_Plugin> DBP in databasePlugins)
+                    foreach (Lazy<Database_Plugin> DBP in databasePlugins.ToList())
                     {
                         if (plugins.ToList().Find(x => x.Value.Name.ToLower() == DBP.Value.Name.ToLower()) == null)
                         {
@@ -862,13 +997,19 @@ namespace TH_Database
                             if (DBP.IsValueCreated) Logger.Log(DBP.Value.Name + " : PlugIn Already Found");
                         }
                     }
+
                 }
-                catch (Exception ex) { Logger.Log("GetPlugins() : Exception : " + ex.Message); }
+                catch (System.Reflection.ReflectionTypeLoadException rt) 
+                {
+                    foreach (var item in rt.LoaderExceptions)
+                        Logger.Log("DatabasePluginReader.GetPlugins() : LoaderException " + item.Message);
+                }
+                catch (Exception ex) { Logger.Log("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message); }
 
                 // Search Subdirectories
                 foreach (string directory in Directory.GetDirectories(Path))
                 {
-                    GetPlugins(directory);
+                    FindPlugins(directory);
                 }
             }
             else Logger.Log("Database PlugIns Directory Doesn't Exist (" + Path + ")");

@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using System.ComponentModel.Composition;
+
 using System.Data;
+
+using TH_Configuration;
 
 namespace TH_Database
 {
+    [InheritedExport(typeof(Database_Plugin))]
     public interface Database_Plugin
     {
-        string Name { get; set; }
+        string Name { get; }
 
-        object Configuration { get; set; }
+        string Type { get; }
 
-        string DatabaseName { get; set; }
+        //object Configuration { get; set; }
+
+        void Initialize(Database_Configuration config);
 
 
         // Database Functions -----------------------------------------------------------
@@ -25,7 +32,7 @@ namespace TH_Database
 
         // Table ------------------------------------------------------------------------
 
-        bool Table_Create(object settings, string tablename, object[] columnDefinitions, string primaryKey);
+        bool Table_Create(object settings, string tablename, ColumnDefinition[] columnDefinitions, string primaryKey);
 
         bool Table_Drop(object settings, string tablename);
 
@@ -46,7 +53,7 @@ namespace TH_Database
 
         List<string> Column_Get(object settings, string tablename);
 
-        bool Column_Add(object settings, string tablename, string columnDefinition);
+        bool Column_Add(object settings, string tablename, ColumnDefinition columnDefinition);
 
         // ------------------------------------------------------------------------------
 
@@ -99,6 +106,38 @@ namespace TH_Database
 
         // Date 200 - 300
         DateTime = 200
+    }
+
+    public class ColumnDefinition
+    {
+        public ColumnDefinition() { }
+
+        public ColumnDefinition(string columnName, DataType dataType)
+        {
+            ColumnName = columnName;
+            DataType = dataType;
+        }
+
+        public ColumnDefinition(string columnName, DataType dataType, bool primaryKey)
+        {
+            ColumnName = columnName;
+            DataType = dataType;
+            PrimaryKey = primaryKey;
+        }
+
+
+        public string ColumnName { get; set; }
+
+        public DataType DataType { get; set; }
+
+        public bool NotNull { get; set; }
+        public string Default { get; set; }
+
+        public bool RowId { get; set; }
+
+        public bool PrimaryKey { get; set; }
+        public bool Unique { get; set; }
+
     }
 
 

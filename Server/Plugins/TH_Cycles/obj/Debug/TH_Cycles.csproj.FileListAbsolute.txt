@@ -4,3 +4,6 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.cspro
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.dll
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.pdb
 C:\TrakHound\Server\Plugins\TH_Cycles\LICENSE.txt
+C:\TrakHound\Plugins\Server\Cycles\LICENSE.txt
+C:\TrakHound\Plugins\Server\Cycles\TH_Cycles.dll
+C:\TrakHound\Plugins\Server\Cycles\TH_Cycles.pdb

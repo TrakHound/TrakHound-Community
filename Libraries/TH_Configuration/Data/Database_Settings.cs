@@ -8,13 +8,22 @@ namespace TH_Configuration
     {
         public Database_Settings()
         {
-            Databases = new List<object>();
-            Nodes = new List<XmlNode>();
+            Databases = new List<Database_Configuration>();
         }
 
-        public List<object> Databases;
+        public List<Database_Configuration> Databases;
+    }
 
-        public List<XmlNode> Nodes;
+    public class Database_Configuration
+    {
+        public string Type { get; set; }
 
+        public bool Primary { get; set; }
+
+        public object Configuration { get; set; }
+
+        public XmlNode Node { get; set; }
+
+        public string DatabaseName { get; set; }
     }
 }

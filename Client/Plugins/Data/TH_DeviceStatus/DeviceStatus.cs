@@ -53,10 +53,7 @@ namespace TH_DeviceStatus
 
                 GetOEE();
             }
-
         }
-
-
 
         public void Update_DataEvent(DataEvent_Data de_d) { }
 

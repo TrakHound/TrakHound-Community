@@ -14,9 +14,9 @@ using System.Xml;
 using System.Reflection;
 
 using TH_Configuration;
+using TH_Database;
 using TH_GeneratedData;
 using TH_MTC_Data;
-using TH_MySQL;
 using TH_PlugIns_Server;
 
 namespace TH_ShiftTable
@@ -138,24 +138,45 @@ namespace TH_ShiftTable
 
         void CreateTable()
         {
-            List<string> columns = new List<string>();
-            //columns.Add("Row " + MySQL_Tools.BigInt + " NOT NULL AUTO_INCREMENT");
-            columns.Add("Id " + MySQL_Tools.VarChar + " UNIQUE NOT NULL");
-            columns.Add("Date " + MySQL_Tools.VarChar + " NOT NULL");
-            columns.Add("Shift " + MySQL_Tools.VarChar + " NOT NULL");
-            columns.Add("SegmentId " + MySQL_Tools.BigInt + " NOT NULL");
-            columns.Add("Start " + MySQL_Tools.VarChar + " NOT NULL");
-            columns.Add("End " + MySQL_Tools.VarChar + " NOT NULL");
-            columns.Add("Type " + MySQL_Tools.VarChar + " NOT NULL");
-            columns.Add("TotalTime " + MySQL_Tools.BigInt + " NOT NULL");
+            List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
-            //Global.Table_Create(config.SQL, TableName, columns.ToArray(), "Row, Id");
-            Global.Table_Create(config.SQL, TableName, columns.ToArray(), "Id");
+            columns.Add(new ColumnDefinition("ID", DataType.LargeText, true));
+            columns.Add(new ColumnDefinition("DATE", DataType.LargeText));
+            columns.Add(new ColumnDefinition("SHIFT", DataType.LargeText));
+            columns.Add(new ColumnDefinition("SEGMENTID", DataType.Long));
+            columns.Add(new ColumnDefinition("START", DataType.LargeText));
+            columns.Add(new ColumnDefinition("END", DataType.LargeText));
+            columns.Add(new ColumnDefinition("TYPE", DataType.LargeText));
+            columns.Add(new ColumnDefinition("TOTALTIME", DataType.Long));
+
+            ColumnDefinition[] ColArray = columns.ToArray();
+
+            Table.Create(config.Databases, TableName, ColArray, "ID");  
+
+
+
+
+
+            //List<string> columns = new List<string>();
+            ////columns.Add("Row " + MySQL_Tools.BigInt + " NOT NULL AUTO_INCREMENT");
+            //columns.Add("Id " + MySQL_Tools.VarChar + " UNIQUE NOT NULL");
+            //columns.Add("Date " + MySQL_Tools.VarChar + " NOT NULL");
+            //columns.Add("Shift " + MySQL_Tools.VarChar + " NOT NULL");
+            //columns.Add("SegmentId " + MySQL_Tools.BigInt + " NOT NULL");
+            //columns.Add("Start " + MySQL_Tools.VarChar + " NOT NULL");
+            //columns.Add("End " + MySQL_Tools.VarChar + " NOT NULL");
+            //columns.Add("Type " + MySQL_Tools.VarChar + " NOT NULL");
+            //columns.Add("TotalTime " + MySQL_Tools.BigInt + " NOT NULL");
+
+            ////Global.Table_Create(config.SQL, TableName, columns.ToArray(), "Row, Id");
+            //Global.Table_Create(config.SQL, TableName, columns.ToArray(), "Id");
         }
 
         void GetTableColumns()
         {
-            ShiftTableColumns = Global.Table_GetColumns(config.SQL, TableName);
+            ShiftTableColumns = Column.Get(config.Databases, TableName);
+
+            //ShiftTableColumns = Global.Table_GetColumns(config.SQL, TableName);
         }
 
         void AddGeneratedEventColumns()
@@ -180,8 +201,10 @@ namespace TH_ShiftTable
 
                                 if (!ShiftTableColumns.Contains(columnName))
                                 {
-                                    string columnDefinition = columnName + " " + MySQL_Tools.BigInt;
-                                    Global.Table_AddColumn(config.SQL, TableName, columnDefinition);
+                                    Column.Add(config.Databases, TableName, new ColumnDefinition(columnName, DataType.Long));
+
+                                    //string columnDefinition = columnName + " " + MySQL_Tools.BigInt;
+                                    //Global.Table_AddColumn(config.SQL, TableName, columnDefinition);
                                 }
 
                                 GenEventColumns.Add(columnName);
@@ -192,8 +215,10 @@ namespace TH_ShiftTable
 
                             if (!ShiftTableColumns.Contains(columnName))
                             {
-                                string columnDefinition = columnName + " " + MySQL_Tools.BigInt;
-                                Global.Table_AddColumn(config.SQL, TableName, columnDefinition);
+                                Column.Add(config.Databases, TableName, new ColumnDefinition(columnName, DataType.Long));
+
+                                //string columnDefinition = columnName + " " + MySQL_Tools.BigInt;
+                                //Global.Table_AddColumn(config.SQL, TableName, columnDefinition);
                             }
 
                             GenEventColumns.Add(columnName);
@@ -207,7 +232,9 @@ namespace TH_ShiftTable
         {
             List<ShiftRowInfo> Result = new List<ShiftRowInfo>();
 
-            DataTable dt = Global.Table_Get(config.SQL, TableName);
+            DataTable dt = Table.Get(config.Databases, TableName);
+
+            //DataTable dt = Global.Table_Get(config.SQL, TableName);
             if (dt != null)
             {
                 foreach (DataRow row in dt.Rows)
@@ -312,7 +339,9 @@ namespace TH_ShiftTable
 
             }
 
-            Global.Row_Insert(config.SQL, TableName, columns.ToArray(), rowValues);
+
+            Row.Insert(config.Databases, TableName, columns.ToArray(), rowValues, true);
+            //Global.Row_Insert(config.SQL, TableName, columns.ToArray(), rowValues);
         }
 
         #endregion

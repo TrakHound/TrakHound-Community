@@ -10,7 +10,7 @@ namespace TH_MySQL.Connector
     public static class Database
     {
 
-        public static bool Create(SQL_Settings sql, string databaseName)
+        public static bool Create(MySQL_Configuration config, string databaseName)
         {
 
             bool Result = false;
@@ -20,7 +20,7 @@ namespace TH_MySQL.Connector
                 MySqlConnection conn;
                 conn = new MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";";
                 conn.Open();
 
                 MySqlCommand Command;
@@ -52,7 +52,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static bool Drop(SQL_Settings sql, string databaseName)
+        public static bool Drop(MySQL_Configuration config, string databaseName)
         {
 
             bool Result = false;
@@ -62,7 +62,7 @@ namespace TH_MySQL.Connector
                 MySqlConnection conn;
                 conn = new MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";";
                 conn.Open();
 
                 MySqlCommand Command;

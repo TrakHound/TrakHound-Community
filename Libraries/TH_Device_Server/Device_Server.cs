@@ -457,7 +457,7 @@ namespace TH_Device_Server
         {
             UpdateProcessingStatus("Loading Plugins...");
 
-            string plugin_rootpath = FileLocations.TrakHound + @"\Server";
+            string plugin_rootpath = FileLocations.Plugins + @"\Server";
 
             if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
 
@@ -466,7 +466,7 @@ namespace TH_Device_Server
             string pluginsPath;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            pluginsPath = TH_Global.FileLocations.TrakHound + @"\Server\Plugins\";
+            pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
             if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
@@ -480,7 +480,7 @@ namespace TH_Device_Server
 
         void LoadTablePlugins(string Path)
         {
-            Log("Searching for Table Plugins in '" + Path + "'");
+            Logger.Log("Searching for Table Plugins in '" + Path + "'");
             if (Directory.Exists(Path))
             {
                 try
@@ -493,20 +493,22 @@ namespace TH_Device_Server
 
                     TablePlugIns = TPLUGS.PlugIns;
 
-                    foreach (Lazy<Table_PlugIn> TP in TablePlugIns)
+                    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns)
                     {
-                        if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == TP.Value.Name.ToLower()) == null)
+                        Table_PlugIn tp = ltp.Value;
+
+                        if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == tp.Name.ToLower()) == null)
                         {
-                            if (TP.IsValueCreated) Log(TP.Value.Name + " : PlugIn Found");
-                            Table_Plugins.Add(TP);
+                            Logger.Log(tp.Name + " : PlugIn Found");
+                            Table_Plugins.Add(ltp);
                         }
                         else
                         {
-                            if (TP.IsValueCreated) Log(TP.Value.Name + " : PlugIn Already Found");
+                            Logger.Log(tp.Name + " : PlugIn Already Found");
                         }
                     }
                 }
-                catch (Exception ex) { Log("LoadTablePlugins() : Exception : " + ex.Message); }              
+                catch (Exception ex) { Logger.Log("LoadTablePlugins() : Exception : " + ex.Message); }              
 
                 // Search Subdirectories
                 foreach (string directory in Directory.GetDirectories(Path))
@@ -514,7 +516,7 @@ namespace TH_Device_Server
                     LoadTablePlugins(directory);
                 }      
             }
-            else Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
+            else Logger.Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
         }
 
 
@@ -548,14 +550,14 @@ namespace TH_Device_Server
             {
                 foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    if (tp.IsValueCreated)
-                    {
+                    //if (tp.IsValueCreated)
+                    //{
                         InitializeWorkerInfo info = new InitializeWorkerInfo();
                         info.config = Config;
                         info.tablePlugin = tp.Value;
 
                         ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
-                    }
+                    //}
                 }
             }
         }

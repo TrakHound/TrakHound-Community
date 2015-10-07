@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\TrakHound\Server\Plugins\TH_InstanceTable\</OutputPath>
+    <OutputPath>C:\TrakHound\Plugins\Server\Instance Table\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,6 +51,10 @@
       <Name>TH_Configuration</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_Database\TH_Database.csproj">
+      <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
+      <Name>TH_Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Functions\TH_Functions.csproj">
       <Project>{79f4879c-44e9-4915-849a-b4c190db4aa8}</Project>
       <Name>TH_Functions</Name>
@@ -64,11 +68,6 @@
     <ProjectReference Include="..\..\..\Libraries\TH_MTC_Data\TH_MTC_Data.csproj">
       <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
       <Name>TH_MTC_Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
-      <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
-      <Name>TH_MySQL</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">

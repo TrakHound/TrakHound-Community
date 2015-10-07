@@ -12,7 +12,7 @@ namespace TH_MySQL.Connector
     public static class Table
     {
 
-        public static bool Create(SQL_Settings sql, string tableName, object[] columnDefinitions, string primaryKey)
+        public static bool Create(MySQL_Configuration config, string tableName, object[] columnDefinitions, string primaryKey)
         {
 
             bool Result = false;
@@ -21,7 +21,7 @@ namespace TH_MySQL.Connector
             {
                 MySqlConnection conn;
                 conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySqlCommand Command;
@@ -64,7 +64,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static bool Truncate(SQL_Settings sql, string tableName)
+        public static bool Truncate(MySQL_Configuration config, string tableName)
         {
 
             bool Result = false;
@@ -73,7 +73,7 @@ namespace TH_MySQL.Connector
             {
                 MySqlConnection conn;
                 conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySqlCommand Command;
@@ -104,7 +104,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static bool Drop(SQL_Settings sql, string tableName)
+        public static bool Drop(MySQL_Configuration config, string tableName)
         {
 
             bool Result = false;
@@ -113,7 +113,7 @@ namespace TH_MySQL.Connector
             {
                 MySqlConnection conn;
                 conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySqlCommand Command;
@@ -144,7 +144,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static bool Drop(SQL_Settings sql, string[] tableNames)
+        public static bool Drop(MySQL_Configuration config, string[] tableNames)
         {
 
             bool Result = false;
@@ -153,7 +153,7 @@ namespace TH_MySQL.Connector
             {
                 MySqlConnection conn;
                 conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySqlCommand Command;
@@ -192,7 +192,7 @@ namespace TH_MySQL.Connector
         }
 
 
-        public static string[] List(SQL_Settings sql)
+        public static string[] List(MySQL_Configuration config)
         {
 
             List<string> Tables = new List<string>();
@@ -201,7 +201,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn;
                 conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySql.Data.MySqlClient.MySqlCommand Command;
@@ -234,7 +234,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static Int64 RowCount(SQL_Settings sql, string tableName)
+        public static Int64 RowCount(MySQL_Configuration config, string tableName)
         {
 
             Int64 Result = -1;
@@ -243,7 +243,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 string query = "SELECT COUNT(*) FROM " + tableName;
@@ -276,7 +276,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static Int64 Size(SQL_Settings sql, string tableName)
+        public static Int64 Size(MySQL_Configuration config, string tableName)
         {
 
             Int64 Result = -1;
@@ -285,10 +285,10 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
-                string query = "SELECT data_length + index_length 'Total Size bytes' FROM information_schema.TABLES WHERE table_schema = '" + sql.Database + "' AND table_name = '" + tableName + "'";
+                string query = "SELECT data_length + index_length 'Total Size bytes' FROM information_schema.TABLES WHERE table_schema = '" + config.Database + "' AND table_name = '" + tableName + "'";
 
                 MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
 
@@ -320,7 +320,7 @@ namespace TH_MySQL.Connector
         }
 
 
-        public static DataTable Get(SQL_Settings sql, string tableName)
+        public static DataTable Get(MySQL_Configuration config, string tableName)
         {
 
             DataTable Result = null;
@@ -329,7 +329,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 string query = "SELECT * FROM " + tableName;
@@ -359,7 +359,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static DataTable Get(SQL_Settings sql, string tableName, string filterExpression)
+        public static DataTable Get(MySQL_Configuration config, string tableName, string filterExpression)
         {
 
             DataTable Result = null;
@@ -368,7 +368,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 string query = "SELECT * FROM " + tableName + " " + filterExpression;
@@ -399,7 +399,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static DataTable Get(SQL_Settings sql, string tableName, string filterExpression, string columns)
+        public static DataTable Get(MySQL_Configuration config, string tableName, string filterExpression, string columns)
         {
 
             DataTable Result = null;
@@ -408,7 +408,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 string query = "SELECT " + columns + " FROM " + tableName + " " + filterExpression;

@@ -12,7 +12,7 @@ namespace TH_MySQL.Connector
     public static class etc
     {
 
-        public static object[] CustomCommand(SQL_Settings sql, string commandText)
+        public static object[] CustomCommand(MySQL_Configuration config, string commandText)
         {
 
             object[] Result = null;
@@ -21,7 +21,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn;
                 conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySql.Data.MySqlClient.MySqlCommand Command;
@@ -56,7 +56,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static object GetValue(SQL_Settings sql, string tableName, string column, string filterExpression)
+        public static object GetValue(MySQL_Configuration config, string tableName, string column, string filterExpression)
         {
 
             object Result = null;
@@ -65,7 +65,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 string query = "SELECT " + column + " FROM " + tableName + " " + filterExpression;
@@ -95,7 +95,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static DataTable GetGrants(SQL_Settings sql, string username)
+        public static DataTable GetGrants(MySQL_Configuration config, string username)
         {
 
             DataTable Result = null;
@@ -104,7 +104,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
 
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 string query = "SHOW GRANTS FOR '" + username + "'@'%'";

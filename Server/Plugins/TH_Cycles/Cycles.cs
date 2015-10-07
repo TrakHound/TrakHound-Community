@@ -14,9 +14,9 @@ using System.Reflection;
 using System.Data;
 
 using TH_Configuration;
+using TH_Database;
 using TH_Global;
 using TH_MTC_Data;
-using TH_MySQL;
 using TH_PlugIns_Server;
 
 using TH_ShiftTable;
@@ -165,25 +165,49 @@ namespace TH_Cycles
 
         void CreateCycleTable()
         {
-            List<string> columns = new List<string>();
-            columns.Add("Shift_Id " + MySQL_Tools.VarChar + " NOT NULL");
+            List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
-            columns.Add("Cycle_Id " + MySQL_Tools.VarChar + " NOT NULL");
+            columns.Add(new ColumnDefinition("SHIFT_ID", DataType.LargeText, true));
+            columns.Add(new ColumnDefinition("CYCLE_ID", DataType.LargeText));
+            columns.Add(new ColumnDefinition("DATE", DataType.LargeText));
 
-            columns.Add("Date " + MySQL_Tools.VarChar);
+            columns.Add(new ColumnDefinition("CYCLES_TOTAL", DataType.Long));
+            columns.Add(new ColumnDefinition("CYCLES_INTERRUPTED", DataType.Long));
 
-            columns.Add("Cycles_Total " + MySQL_Tools.BigInt);
-            columns.Add("Cycles_Interrupted " + MySQL_Tools.BigInt);
+            columns.Add(new ColumnDefinition("IDEAL_CYCLE_TIME", DataType.Long));
+            columns.Add(new ColumnDefinition("AVG_CYCLE_TIME", DataType.Long));
 
-            columns.Add("Ideal_Cycle_Time " + MySQL_Tools.BigInt);
-            columns.Add("Avg_Cycle_Time " + MySQL_Tools.BigInt);
+            columns.Add(new ColumnDefinition("PARTS_PER_CYCLE", DataType.Long));
 
-            columns.Add("Parts_Per_Cycle " + MySQL_Tools.BigInt);
+            columns.Add(new ColumnDefinition("PARTS_TOTAL", DataType.Long));
+            columns.Add(new ColumnDefinition("PARTS_REJECTED", DataType.Long));
 
-            columns.Add("Parts_Total " + MySQL_Tools.BigInt);
-            columns.Add("Parts_Rejected " + MySQL_Tools.BigInt);
+            ColumnDefinition[] ColArray = columns.ToArray();
 
-            Global.Table_Create(config.SQL, TableNames.Cycles, columns.ToArray(), "Shift_Id, Cycle_Id");
+            Table.Create(config.Databases, TableNames.Cycles, ColArray, "Shift_Id, Cycle_Id");  
+
+
+
+
+            //List<string> columns = new List<string>();
+            //columns.Add("Shift_Id " + MySQL_Tools.VarChar + " NOT NULL");
+
+            //columns.Add("Cycle_Id " + MySQL_Tools.VarChar + " NOT NULL");
+
+            //columns.Add("Date " + MySQL_Tools.VarChar);
+
+            //columns.Add("Cycles_Total " + MySQL_Tools.BigInt);
+            //columns.Add("Cycles_Interrupted " + MySQL_Tools.BigInt);
+
+            //columns.Add("Ideal_Cycle_Time " + MySQL_Tools.BigInt);
+            //columns.Add("Avg_Cycle_Time " + MySQL_Tools.BigInt);
+
+            //columns.Add("Parts_Per_Cycle " + MySQL_Tools.BigInt);
+
+            //columns.Add("Parts_Total " + MySQL_Tools.BigInt);
+            //columns.Add("Parts_Rejected " + MySQL_Tools.BigInt);
+
+            //Global.Table_Create(config.SQL, TableNames.Cycles, columns.ToArray(), "Shift_Id, Cycle_Id");
         }
 
         void AddCycleRows(List<CycleRowInfo> infos)
@@ -221,19 +245,33 @@ namespace TH_Cycles
             }
 
 
-            Global.Row_Insert(config.SQL, TableNames.Cycles, columns.ToArray(), rowValues);
+            Row.Insert(config.Databases, TableNames.Cycles, columns.ToArray(), rowValues, true);
+
+            //Global.Row_Insert(config.SQL, TableNames.Cycles, columns.ToArray(), rowValues);
         }
 
 
 
         void CreateSetupTable()
         {
-            List<string> columns = new List<string>();
-            columns.Add("Cycle_Id " + MySQL_Tools.VarChar + " NOT NULL");
-            columns.Add("Ideal_Cycle_Time " + MySQL_Tools.BigInt);
-            columns.Add("Parts_Per_Cycle " + MySQL_Tools.BigInt);
 
-            Global.Table_Create(config.SQL, TableNames.Cycles_Setup, columns.ToArray(), "Cycle_Id");
+            List<ColumnDefinition> columns = new List<ColumnDefinition>();
+
+            columns.Add(new ColumnDefinition("CYCLE_ID", DataType.LargeText, true));
+            columns.Add(new ColumnDefinition("IDEAL_CYCLE_TIME", DataType.Long));
+            columns.Add(new ColumnDefinition("PARTS_PER_CYCLE", DataType.Long));
+
+            ColumnDefinition[] ColArray = columns.ToArray();
+
+            Table.Create(config.Databases, TableNames.Cycles_Setup, ColArray, "Cycle_Id");  
+
+
+            //List<string> columns = new List<string>();
+            //columns.Add("Cycle_Id " + MySQL_Tools.VarChar + " NOT NULL");
+            //columns.Add("Ideal_Cycle_Time " + MySQL_Tools.BigInt);
+            //columns.Add("Parts_Per_Cycle " + MySQL_Tools.BigInt);
+
+            //Global.Table_Create(config.SQL, TableNames.Cycles_Setup, columns.ToArray(), "Cycle_Id");
         }
 
         void DEBUG_AddSetupRows()
@@ -265,8 +303,9 @@ namespace TH_Cycles
             values.Add(1);
             rowValues.Add(values);
 
+            Row.Insert(config.Databases, TableNames.Cycles_Setup, columns.ToArray(), rowValues, true);
 
-            Global.Row_Insert(config.SQL, TableNames.Cycles_Setup, columns.ToArray(), rowValues);
+            //Global.Row_Insert(config.SQL, TableNames.Cycles_Setup, columns.ToArray(), rowValues);
         }
 
         #endregion
@@ -306,7 +345,7 @@ namespace TH_Cycles
         {
             // Get Setup Info
             List<CycleSetupRowInfo> SetupInfos = new List<CycleSetupRowInfo>();
-            DataTable cycle_setup = Global.Table_Get(config.SQL, TableNames.Cycles_Setup);
+            DataTable cycle_setup = Table.Get(config.Databases, TableNames.Cycles_Setup);
             if (cycle_setup != null)
             {
                 foreach (DataRow row in cycle_setup.Rows)

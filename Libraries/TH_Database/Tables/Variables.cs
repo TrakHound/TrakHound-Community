@@ -15,12 +15,12 @@ namespace TH_Database.Tables
 
         public static void CreateTable(Database_Settings config)
         {
-            object[] Columns = new object[] 
-                {
-                "Variable " +  DataType.LargeText,
-                "Value " +  DataType.LargeText,
-                "Timestamp " +  DataType.DateTime,          
-                };
+            ColumnDefinition[] Columns = new ColumnDefinition[]
+            {
+                new ColumnDefinition("Variable", DataType.LargeText),
+                new ColumnDefinition("Value", DataType.LargeText),
+                new ColumnDefinition("Timestamp", DataType.DateTime)
+            };
 
             Table.Create(config, TableNames.Variables, Columns, "Variable");
         }

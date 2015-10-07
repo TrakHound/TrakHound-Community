@@ -1,0 +1,17 @@
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\Example.dll
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\Example.pdb
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\TH_Database.dll
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\TH_Global.dll
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\TH_Configuration.pdb
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\TH_Database.pdb
+F:\feenux\TrakHound\TrakHound\Database\Example\bin\Debug\TH_Global.pdb
+F:\feenux\TrakHound\TrakHound\Database\Example\obj\Debug\Example.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Database\Example\obj\Debug\Example.dll
+F:\feenux\TrakHound\TrakHound\Database\Example\obj\Debug\Example.pdb
+C:\TrakHound\Plugins\Database Plugins\LICENSE.txt
+C:\TrakHound\Plugins\Database Plugins\Example.dll
+C:\TrakHound\Plugins\Database Plugins\Example.pdb
+C:\TrakHound\Plugins\Database\Example.dll
+C:\TrakHound\Plugins\Database\Example.pdb

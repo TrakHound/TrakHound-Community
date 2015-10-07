@@ -9,6 +9,7 @@ using System.Xml;
 using System.IO;
 
 using TH_Configuration;
+using TH_Database;
 using TH_Device_Server;
 using TH_Global;
 
@@ -21,6 +22,8 @@ namespace TrakHound_Server_Core
 
         public void Start()
         {
+
+            DatabasePluginReader dpr = new DatabasePluginReader();
 
             Devices = ReadConfigurationFile();
 
@@ -134,6 +137,9 @@ namespace TrakHound_Server_Core
                         Device_Server server = new Device_Server(config);
                         server.configurationPath = configPath;
                         server.updateConfigurationFile = false;
+
+                        // Initialize Database Configurations
+                        Global.Initialize(server.configuration.Databases);
 
                         Result = server;
                     }

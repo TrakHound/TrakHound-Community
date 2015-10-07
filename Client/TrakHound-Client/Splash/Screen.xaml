@@ -6,6 +6,8 @@
 <Window x:Class="TrakHound_Client.Splash.Screen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
                 
         Title="TrakHound"
               

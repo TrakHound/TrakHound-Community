@@ -11,7 +11,7 @@ namespace TH_MySQL.Connector
     public static class Column
     {
 
-        public static List<string> Get(SQL_Settings sql, string tableName)
+        public static List<string> Get(MySQL_Configuration config, string tableName)
         {
 
             List<string> Result = new List<string>();
@@ -20,7 +20,7 @@ namespace TH_MySQL.Connector
             {
                 MySql.Data.MySqlClient.MySqlConnection conn;
                 conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySql.Data.MySqlClient.MySqlCommand Command;
@@ -50,7 +50,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static bool Add(SQL_Settings sql, string tableName, string columnDefinition)
+        public static bool Add(MySQL_Configuration config, string tableName, string columnDefinition)
         {
 
             bool Result = false;
@@ -59,7 +59,7 @@ namespace TH_MySQL.Connector
             {
                 MySqlConnection conn;
                 conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + sql.Server + ";user=" + sql.Username + ";port=" + sql.Port + ";password=" + sql.Password + ";database=" + sql.Database + ";";
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
                 conn.Open();
 
                 MySqlCommand Command;

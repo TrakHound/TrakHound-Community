@@ -13,10 +13,10 @@ using System.Reflection;
 using System.Threading;
 
 using TH_Configuration;
+using TH_Database;
 using TH_Global;
 using TH_InstanceTable;
 using TH_MTC_Data;
-using TH_MySQL;
 using TH_PlugIns_Server;
 
 namespace TH_GeneratedData
@@ -56,8 +56,8 @@ namespace TH_GeneratedData
                 }  
             }
 
-            SQL_Queue = new Queue();
-            SQL_Queue.SQL = configuration.SQL;
+            //SQL_Queue = new Queue();
+            //SQL_Queue.SQL = configuration.SQL;
 
         }
 
@@ -707,7 +707,7 @@ namespace TH_GeneratedData
 
         #region "MySQL"
 
-        Queue SQL_Queue;
+        //Queue SQL_Queue;
 
         #region "Snapshot"
 
@@ -715,19 +715,17 @@ namespace TH_GeneratedData
 
         void CreateSnapShotTable()
         {
+            List<ColumnDefinition> columns = new List<ColumnDefinition>()
+            {
+                new ColumnDefinition("TIMESTAMP", DataType.DateTime),
+                new ColumnDefinition("NAME", DataType.LargeText),
+                new ColumnDefinition("VALUE", DataType.LargeText),
+                new ColumnDefinition("PREVIOUS_VALUE", DataType.LargeText)
+            };
 
-            List<string> Columns = new List<string>();
+            ColumnDefinition[] ColArray = columns.ToArray();
 
-            Columns.Add("TIMESTAMP " + MySQL_Tools.Datetime);
-
-            Columns.Add("Name " + MySQL_Tools.VarChar);
-            Columns.Add("Value " + MySQL_Tools.VarChar);
-            Columns.Add("Previous_Value " + MySQL_Tools.VarChar);
-
-            object[] ColArray = Columns.ToArray();
-
-            Global.Table_Create(config.SQL, SnapshotsTableName, ColArray, "Name"); 
-
+            Table.Create(config.Databases, SnapshotsTableName, ColArray, "NAME");
         }
 
         void IntializeRows()
@@ -754,7 +752,7 @@ namespace TH_GeneratedData
 
                 }
 
-                Global.Row_Insert(config.SQL, SnapshotsTableName, Columns.ToArray(), rowValues);
+                Row.Insert(config.Databases, SnapshotsTableName, Columns.ToArray(), rowValues, true);
 
             }
 
@@ -777,7 +775,7 @@ namespace TH_GeneratedData
                 List<object> values = new List<object>();
 
                 values.Add(ssi.name);
-                values.Add(MySQL_Tools.ConvertDateStringtoMySQL(ssi.timestamp.ToString()));
+                values.Add(ssi.timestamp);
                 values.Add(ssi.value);
                 values.Add(ssi.previous_value);
 
@@ -785,7 +783,7 @@ namespace TH_GeneratedData
                 if (ssi.value != ssi.previous_value) rowValues.Add(values);
             }
 
-            Global.Row_Insert(config.SQL, SnapshotsTableName, columns.ToArray(), rowValues);
+            Row.Insert(config.Databases, SnapshotsTableName, columns.ToArray(), rowValues, true);
 
         }
 
@@ -797,22 +795,18 @@ namespace TH_GeneratedData
 
         void CreateGeneratedEventTable(GeneratedEvents.Event e)
         {
+            List<ColumnDefinition> columns = new List<ColumnDefinition>()
+            {
+                new ColumnDefinition("TIMESTAMP", DataType.DateTime),
+                new ColumnDefinition("VALUE", DataType.LargeText),
+                new ColumnDefinition("NUMVAL", DataType.Long)
+            };
 
-            List<string> Columns = new List<string>();
+            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(new ColumnDefinition(item.id, DataType.LargeText));
 
-            Columns.Add("TIMESTAMP " + MySQL_Tools.Datetime);
+            ColumnDefinition[] ColArray = columns.ToArray();
 
-            Columns.Add("Value " + MySQL_Tools.VarChar);
-            Columns.Add("Numval " + MySQL_Tools.BigInt);
-            //Columns.Add("Previous_Value " + MySQL_Tools.VarChar);
-            //Columns.Add("Previous_Numval " + MySQL_Tools.BigInt);
-
-            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) Columns.Add(item.id + " " + MySQL_Tools.VarChar);
-
-            object[] ColArray = Columns.ToArray();
-
-            Global.Table_Create(config.SQL, TablePrefix + e.Name, ColArray, "Timestamp");
-
+            Table.Create(config.Databases, TablePrefix + e.Name, ColArray, "TIMESTAMP");
         }
 
         void InsertGeneratedEventItems(List<GeneratedEventItem> generatedEventItems)
@@ -827,8 +821,6 @@ namespace TH_GeneratedData
                 columns.Add("Timestamp");
                 columns.Add("Value");
                 columns.Add("Numval");
-                //columns.Add("Previous_Value");
-                //columns.Add("Previous_Numval");
 
                 // Add columns to update for CaptureItems
                 GenDataConfiguration gdc = GetConfiguration(config);
@@ -852,12 +844,10 @@ namespace TH_GeneratedData
                         {
                             List<object> values = new List<object>();
 
-                            values.Add(MySQL_Tools.ConvertDateStringtoMySQL(eventItem.timestamp.ToString()));
+                            values.Add(eventItem.timestamp);
                             values.Add(eventItem.value);
                             values.Add(eventItem.numval);
-                            //values.Add(eventItem.previous_value);
-                            //values.Add(eventItem.previous_numval);
-                            
+
                             foreach (GeneratedEvents.CaptureItem item in eventItem.CaptureItems) values.Add(FormatCaptureItemValue(item.value));
 
                             rowValues.Add(values);
@@ -865,38 +855,13 @@ namespace TH_GeneratedData
 
                     }
 
-                    //ThreadInfo threadInfo = new ThreadInfo();
-                    //threadInfo.tableName = TablePrefix + eventName;
-                    //threadInfo.columns = columns.ToArray();
-                    //threadInfo.values = rowValues;
-                    //threadInfo.update = false;
-
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
-
-                    Global.Row_Insert(config.SQL, TablePrefix + eventName, columns.ToArray(), rowValues);
+                    Row.Insert(config.Databases, TablePrefix + eventName, columns.ToArray(), rowValues, true);
 
                 }
 
             }
 
         }
-
-        //class ThreadInfo
-        //{
-        //    public string tableName { get; set; }
-        //    public object[] columns { get; set; }
-        //    public List<List<object>> values { get; set; }
-        //    public bool update { get; set; }
-        //}
-
-        //void AddItemToSQLQueue(object o)
-        //{
-        //    ThreadInfo threadInfo = (ThreadInfo)o;
-
-        //    string query = Global.Row_Insert_CreateQuery(threadInfo.tableName, threadInfo.columns, threadInfo.values, threadInfo.update);
-
-        //    SQL_Queue.Add(query);
-        //}
 
         string FormatCaptureItemValue(string val)
         {
@@ -1025,7 +990,7 @@ namespace TH_GeneratedData
                     // Get Variables Table from MySQL (if any snapshots are set to "Variable")
                     if (gdc.snapshots.Items.FindAll(x => x.type.ToLower() == "variable").Count > 0)
                     {
-                        variables_DT = Global.Table_Get(config.SQL, TableNames.Variables);
+                        variables_DT = Table.Get(config.Databases, TableNames.Variables);
                     }
 
 

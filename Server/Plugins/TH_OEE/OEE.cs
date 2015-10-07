@@ -14,9 +14,9 @@ using System.Reflection;
 using System.Data;
 
 using TH_Configuration;
+using TH_Database;
 using TH_Global;
 using TH_MTC_Data;
-using TH_MySQL;
 using TH_PlugIns_Server;
 
 using TH_ShiftTable;
@@ -251,24 +251,50 @@ namespace TH_OEE
 
         void CreateTable()
         {
-            List<string> columns = new List<string>();
-            columns.Add("Shift_Id " + MySQL_Tools.VarChar + " UNIQUE NOT NULL");
 
-            columns.Add("OEE " + MySQL_Tools.Double);
+            List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
-            columns.Add("Availability " + MySQL_Tools.Double);
-            columns.Add("Performance " + MySQL_Tools.Double);
-            columns.Add("Quality " + MySQL_Tools.Double);
+            columns.Add(new ColumnDefinition("SHIFT_ID", DataType.LargeText, true));
+
+            columns.Add(new ColumnDefinition("OEE", DataType.Double));
+
+            columns.Add(new ColumnDefinition("AVAILABILITY", DataType.Double));
+            columns.Add(new ColumnDefinition("PERFORMANCE", DataType.Double));
+            columns.Add(new ColumnDefinition("QUALITY", DataType.Double));
+
+            columns.Add(new ColumnDefinition("OPERATING_TIME", DataType.Long));
+            columns.Add(new ColumnDefinition("PLANNED_PRODUCTION_TIME", DataType.Long));
+
+
+            columns.Add(new ColumnDefinition("IDEAL_CYCLE_TIME", DataType.Long));
+            columns.Add(new ColumnDefinition("TOTAL_PIECES", DataType.Long));
+
+            columns.Add(new ColumnDefinition("GOOD_PIECES", DataType.Long));
+
+
+            ColumnDefinition[] ColArray = columns.ToArray();
+
+            Table.Create(config.Databases, TableNames.OEE, ColArray, "SHIFT_ID");  
+
+
+            //List<string> columns = new List<string>();
+            //columns.Add("Shift_Id " + MySQL_Tools.VarChar + " UNIQUE NOT NULL");
+
+            //columns.Add("OEE " + MySQL_Tools.Double);
+
+            //columns.Add("Availability " + MySQL_Tools.Double);
+            //columns.Add("Performance " + MySQL_Tools.Double);
+            //columns.Add("Quality " + MySQL_Tools.Double);
             
-            columns.Add("Operating_Time " + MySQL_Tools.BigInt);
-            columns.Add("Planned_Production_Time " + MySQL_Tools.BigInt);
+            //columns.Add("Operating_Time " + MySQL_Tools.BigInt);
+            //columns.Add("Planned_Production_Time " + MySQL_Tools.BigInt);
 
-            columns.Add("Ideal_Cycle_Time " + MySQL_Tools.BigInt);
-            columns.Add("Total_Pieces " + MySQL_Tools.BigInt);
+            //columns.Add("Ideal_Cycle_Time " + MySQL_Tools.BigInt);
+            //columns.Add("Total_Pieces " + MySQL_Tools.BigInt);
 
-            columns.Add("Good_Pieces " + MySQL_Tools.BigInt);
+            //columns.Add("Good_Pieces " + MySQL_Tools.BigInt);
 
-            Global.Table_Create(config.SQL, TableNames.OEE, columns.ToArray(), "Shift_Id");
+            //Global.Table_Create(config.SQL, TableNames.OEE, columns.ToArray(), "Shift_Id");
         }
 
         void UpdateRows(List<OeeRowInfo> infos)
@@ -314,7 +340,11 @@ namespace TH_OEE
                 rowValues.Add(values);
             }
 
-            Global.Row_Insert(config.SQL, TableNames.OEE, columns.ToArray(), rowValues);
+
+            Row.Insert(config.Databases, TableNames.OEE, columns.ToArray(), rowValues, true);
+
+
+            //Global.Row_Insert(config.SQL, TableNames.OEE, columns.ToArray(), rowValues);
         }
 
         #endregion
@@ -449,7 +479,7 @@ namespace TH_OEE
         {
             List<CycleInfo> Result = new List<CycleInfo>();
 
-            DataTable dt = Global.Table_Get(config.SQL, TableNames.Cycles, "WHERE Date='" + date.ToString() + "'");
+            DataTable dt = Table.Get(config.Databases, TableNames.Cycles, "WHERE Date='" + date.ToString() + "'");
 
             if (dt != null)
             {
