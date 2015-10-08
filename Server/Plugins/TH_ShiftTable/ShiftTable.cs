@@ -64,29 +64,29 @@ namespace TH_ShiftTable
             CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(config, returnData);
             if (shiftInfo != null)
             {
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_name", shiftInfo.name, returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_name", shiftInfo.name, returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_id", shiftInfo.id, returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_id", shiftInfo.id, returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_date", shiftInfo.date, returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_date", shiftInfo.date, returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime);
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime);
             }
             else
             {
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_name", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_name", "", returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_id", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_id", "", returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_date", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_date", "", returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_begintime", "", returnData.header.creationTime);
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_endtime", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime", "", returnData.header.creationTime);
 
-                TH_MySQL.Tables.Variables.Update(config.SQL, "shift_currenttime", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime", "", returnData.header.creationTime);
             }
         }
 

@@ -213,6 +213,7 @@ namespace TH_DeviceCompare
             Columns.Add(column);
 
             dd.ConnectedChanged += dd_ConnectedChanged;
+            dd.ConnectionStatusChanged += dd_ConnectionStatusChanged;
 
             DeviceDisplays.Add(dd);
         }
@@ -221,6 +222,11 @@ namespace TH_DeviceCompare
         {
             if (dd.ComparisonGroup.header != null) dd.ComparisonGroup.header.Connected = dd.Connected;
             if (dd.ComparisonGroup.column != null) dd.ComparisonGroup.column.Connected = dd.Connected;
+        }
+
+        void dd_ConnectionStatusChanged(DeviceDisplay dd)
+        {
+            if (dd.ComparisonGroup.column != null) dd.ComparisonGroup.column.ConnectionStatus = dd.ConnectionStatus;
         }
 
         void DeviceSelected(int index)
@@ -264,11 +270,20 @@ namespace TH_DeviceCompare
                                         {
                                             dd.connectionAttempts = 0;
                                             dd.Connected = connected;
+                                            dd.ConnectionStatus = "Connected";
                                         }
                                         else
                                         {
-                                            if (dd.connectionAttempts < DeviceDisplay.maxConnectionAttempts) dd.connectionAttempts += 1;
-                                            else dd.Connected = connected;
+                                            if (dd.connectionAttempts < DeviceDisplay.maxConnectionAttempts)
+                                            {
+                                                dd.connectionAttempts += 1;
+                                                dd.ConnectionStatus = "Connecting...";
+                                            }
+                                            else
+                                            {
+                                                dd.Connected = connected;
+                                                dd.ConnectionStatus = "Not Connected";
+                                            }
                                         }
                                     }
                                 }

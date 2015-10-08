@@ -39,6 +39,20 @@ namespace TH_DeviceCompare
         public delegate void ConnectedChanged_Handler(DeviceDisplay dd);
         public event ConnectedChanged_Handler ConnectedChanged;
 
+
+        private string connectionstatus;
+        public string ConnectionStatus
+        {
+            get { return connectionstatus; }
+            set
+            {
+                connectionstatus = value;
+                if (ConnectionStatus != null) ConnectionStatusChanged(this);
+            }
+        }
+        public event ConnectedChanged_Handler ConnectionStatusChanged;
+        
+
         public int connectionAttempts { get; set; }
         public const int maxConnectionAttempts = 5;
 

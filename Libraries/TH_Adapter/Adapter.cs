@@ -45,7 +45,7 @@ namespace TH_Adapter
         {
             string Result = null;
 
-            Result = DateTime.Now.ToUniversalTime().ToString()
+            Result = DateTime.Now.ToUniversalTime().ToString();
 
             return Result;
         }

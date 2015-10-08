@@ -371,6 +371,10 @@
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_Database\TH_Database.csproj">
+      <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
+      <Name>TH_Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
       <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
       <Name>TH_Device_Client</Name>

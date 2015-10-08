@@ -5,7 +5,7 @@
 
     <Device>
       
-      <Configuration_Path>Mazak1-1\Device_Configuration.xml</Configuration_Path>
+      <Configuration_Path>MTConnect\Device_Configuration.xml</Configuration_Path>
 
     </Device>
 

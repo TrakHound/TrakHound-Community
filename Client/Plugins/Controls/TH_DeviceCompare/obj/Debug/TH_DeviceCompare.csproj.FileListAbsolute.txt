@@ -107,9 +107,9 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Components\Header.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Components\Row_Header.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\CNC_Display.baml
-F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\HistogramDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\NumberDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\PieChartDisplay.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\ShiftSegmentIndicator.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\TextDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\TimeDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\DeviceCompare.baml
@@ -122,6 +122,7 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\NumberDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\PieChartDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\ShiftDisplay.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\ShiftSegmentIndicator.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\TextDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\TimeDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\TimeLineDisplay.g.cs
@@ -129,6 +130,7 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare_MarkupCompile.lref
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\HistogramDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\ShiftDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\TimeLineDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.g.resources
@@ -136,5 +138,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.pdb
-F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\ShiftSegmentIndicator.baml
-F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\ShiftSegmentIndicator.g.cs

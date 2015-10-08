@@ -12,7 +12,7 @@ namespace TH_MySQL
     /// </summary>
     public class Queue
     {
-        public TH_Configuration.SQL_Settings SQL;
+        public TH_Configuration.Database_Configuration config;
 
         public Queue()
         {
@@ -72,8 +72,21 @@ namespace TH_MySQL
             // Loop through queue and continue until finished or a query fails
             for (int x = 0; x <= queue_work.Count - 1; x++)
             {
-                bool success = Global.Row_Insert(SQL, queue_work[x]);
-                
+                bool success = false;
+
+                MySQL_Configuration mysql = MySQL_Configuration.Get(config);
+                if (mysql != null)
+                {
+                    if (mysql.PHP_Server != null)
+                    {
+                        success = PHP.Row.Insert(mysql, queue_work[x]);
+                    }
+                    else
+                    {
+                        success = Connector.Row.Insert(mysql, queue_work[x]);
+                    }
+                }
+
                 // Update count of successful queries
                 if (success) successfulCount += 1;
                 // exit loop if query is unsuccessful

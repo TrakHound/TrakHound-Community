@@ -62,19 +62,6 @@
             </Style>
         </Grid.Style>
         
-        <TextBlock Text="Not Connected" Foreground="#66ffffff" FontSize="16" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock.Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Connected}" Value="true">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBlock.Style>
-        </TextBlock>
-        
         <Grid>
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -105,35 +92,53 @@
         </Grid>
             
         
-        <!--Loading Animation-->
-        <Grid>
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Opacity" Value="0.0"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Loading}" Value="true">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" BeginTime="00:00:00.5"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#aaffffff" />
+            <!--Loading Animation-->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Opacity" Value="0.0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Loading}" Value="true">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" BeginTime="00:00:00.5"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
 
-        </Grid>
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#aaffffff" />
+
+            </Grid>
+
+            <!--Connection Status-->
+            <TextBlock Text="{Binding ConnectionStatus}" Foreground="#66ffffff" FontSize="16" TextWrapping="Wrap" Margin="0,10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Connected}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+        </StackPanel>
         
         <!--Separator-->
         <Rectangle Grid.Column="1" Width="1" Fill="#66ffffff" Margin="0" />

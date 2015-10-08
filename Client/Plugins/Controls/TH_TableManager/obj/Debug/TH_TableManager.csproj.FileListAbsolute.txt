@@ -1,3 +1,4 @@
+C:\TrakHound\Plugins\Pages\LICENSE.txt
 C:\TrakHound\Plugins\Pages\TH_TableManager.dll
 C:\TrakHound\Plugins\Pages\TH_TableManager.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.csprojResolveAssemblyReference.cache

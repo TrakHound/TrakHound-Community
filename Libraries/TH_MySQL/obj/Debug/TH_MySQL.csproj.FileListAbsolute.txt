@@ -25,9 +25,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\MySql.Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\TH_Configuration.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\TH_Database.pdb
 C:\TrakHound\Plugins\Database Plugins\LICENSE.txt
@@ -36,3 +33,6 @@ C:\TrakHound\Plugins\Database Plugins\TH_MySQL.pdb
 C:\TrakHound\Plugins\Database\LICENSE.txt
 C:\TrakHound\Plugins\Database\TH_MySQL.dll
 C:\TrakHound\Plugins\Database\TH_MySQL.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.pdb

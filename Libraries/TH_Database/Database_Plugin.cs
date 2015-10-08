@@ -20,6 +20,8 @@ namespace TH_Database
 
         void Initialize(Database_Configuration config);
 
+        bool Ping(Database_Configuration config);
+
 
         // Database Functions -----------------------------------------------------------
 
@@ -45,6 +47,12 @@ namespace TH_Database
         DataTable Table_Get(object settings, string tablename, string filterExpression);
 
         DataTable Table_Get(object settings, string tablename, string filterExpression, string columns);
+
+        string[] Table_List(object settings);
+
+        Int64 Table_GetRowCount(object settings, string tablename);
+
+        Int64 Table_GetSize(object settings, string tablename);
 
         // ------------------------------------------------------------------------------
 
@@ -123,6 +131,14 @@ namespace TH_Database
             ColumnName = columnName;
             DataType = dataType;
             PrimaryKey = primaryKey;
+        }
+
+        public ColumnDefinition(string columnName, DataType dataType, bool primaryKey, bool notNull)
+        {
+            ColumnName = columnName;
+            DataType = dataType;
+            PrimaryKey = primaryKey;
+            NotNull = notNull;
         }
 
 

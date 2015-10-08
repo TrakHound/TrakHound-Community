@@ -54,6 +54,7 @@
     <ProjectReference Include="..\..\..\Libraries\TH_Database\TH_Database.csproj">
       <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
       <Name>TH_Database</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Functions\TH_Functions.csproj">
       <Project>{79f4879c-44e9-4915-849a-b4c190db4aa8}</Project>

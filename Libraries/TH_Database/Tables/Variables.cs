@@ -35,7 +35,7 @@ namespace TH_Database.Tables
             List<object> values = new List<object>();
             values.Add(variable);
             values.Add(value);
-            values.Add(timestamp.ToString());
+            values.Add(timestamp);
 
             Row.Insert(config, TableNames.Variables, columns.ToArray(), values.ToArray(), true);
         }

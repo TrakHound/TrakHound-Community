@@ -24,9 +24,9 @@ using System.IO;
 using System.Data;
 
 using TH_Configuration;
+using TH_Database;
 using TH_Device_Client;
 using TH_Global;
-using TH_MySQL;
 using TH_PlugIns_Client_Control;
 using TH_WPF;
 
@@ -43,6 +43,8 @@ namespace TH_TableManager
         {
             InitializeComponent();
             DataContext = this;
+
+            DatabasePluginReader dpr = new DatabasePluginReader();
         }
 
         #region "PlugIn"
@@ -129,6 +131,10 @@ namespace TH_TableManager
 
                 foreach (Device_Client device in lDevices)
                 {
+
+                    // Initialize Database Configurations
+                    Global.Initialize(device.configuration.Databases);
+
                     ListButton lb = new ListButton();
                     lb.Text = device.configuration.Description.Description;
                     lb.Selected += lb_Device_Selected;
@@ -243,7 +249,8 @@ namespace TH_TableManager
         {
             Configuration config = (Configuration)o;
 
-            string[] tableNames = Global.Table_List(config.SQL);
+            string[] tableNames = TH_Database.Table.List(config.Databases);
+            //string[] tableNames = Global.Table_List(config.SQL);
 
             this.Dispatcher.BeginInvoke(new Action<string[]>(LoadTableList_Finished), Priority, new object[] { tableNames });
         }
@@ -412,9 +419,9 @@ namespace TH_TableManager
         {
             LoadTableParameters ltp = (LoadTableParameters)loadTableParameters;
 
-            Int64 rowCount = Global.Table_RowCount(ltp.config.SQL, ltp.tablename);
+            Int64 rowCount = TH_Database.Table.GetRowCount(ltp.config.Databases, ltp.tablename);
 
-            Int64 tablesize = Global.Table_Size(ltp.config.SQL, ltp.tablename);
+            Int64 tablesize = TH_Database.Table.GetSize(ltp.config.Databases, ltp.tablename);
 
             this.Dispatcher.BeginInvoke(new Action<Int64, Int64>(LoadInfo_Finished), Priority, new object[] { rowCount, tablesize });
         }
@@ -615,7 +622,7 @@ namespace TH_TableManager
             }
                 
             // Get MySQL table
-            DataTable dt = Global.Table_Get(ltp.config.SQL, ltp.tablename, "LIMIT " + limit.ToString() + offset);
+            DataTable dt = TH_Database.Table.Get(ltp.config.Databases, ltp.tablename, "LIMIT " + limit.ToString() + offset);
 
             this.Dispatcher.BeginInvoke(new Action<DataTable>(LoadTable_Finished), Priority, new object[] { dt });
         }
@@ -671,7 +678,7 @@ namespace TH_TableManager
             {
                 string[] tablenames = SelectedTables.Select(x => x.Text).Distinct().ToArray();
 
-                Global.Table_Drop(selectedDevice.configuration.SQL, tablenames);
+                TH_Database.Table.Drop(selectedDevice.configuration.Databases, tablenames);
 
                 LoadTableList(selectedDevice.configuration);
             }

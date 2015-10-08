@@ -226,6 +226,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             string[] Result;
             Result = Tables.ToArray();
@@ -271,6 +272,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             return Result;
 
@@ -314,6 +316,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             return Result;
 
@@ -354,6 +357,8 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
+
 
             return Result;
 
@@ -394,6 +399,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             return Result;
 
@@ -434,6 +440,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             return Result;
 

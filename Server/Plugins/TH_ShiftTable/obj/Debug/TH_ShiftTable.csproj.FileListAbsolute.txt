@@ -1,9 +1,9 @@
 C:\TrakHound\Server\Plugins\TH_ShiftTable\TH_ShiftTable.dll
 C:\TrakHound\Server\Plugins\TH_ShiftTable\TH_ShiftTable.pdb
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.dll
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.pdb
 C:\TrakHound\Server\Plugins\TH_ShiftTable\LICENSE.txt
 C:\TrakHound\Plugins\Server\Shifts Table\LICENSE.txt
 C:\TrakHound\Plugins\Server\Shifts Table\TH_ShiftTable.dll
 C:\TrakHound\Plugins\Server\Shifts Table\TH_ShiftTable.pdb
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.dll
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.pdb

@@ -37,6 +37,10 @@
 			<Name>TH_Cycles</Name>
 			<Project>{AD70962E-E836-494B-8DFF-444D7BC74C80}</Project>
 		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_Database\TH_Database.csproj">
+			<Name>TH_Database</Name>
+			<Project>{00E275C4-3494-4FCC-8781-FD815024117E}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Device_Server\TH_Device_Server.csproj">
 			<Name>TH_Device_Server</Name>
 			<Project>{DE797C18-8530-40B6-964F-3164E34420F9}</Project>

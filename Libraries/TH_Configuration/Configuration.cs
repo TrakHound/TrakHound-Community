@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Text;
 using System.Reflection;
 
 namespace TH_Configuration
@@ -78,11 +79,32 @@ namespace TH_Configuration
 
         #region "Methods"
 
+        static Random random = new Random();
+        public static string RandomString(int size)
+        {
+            StringBuilder builder = new StringBuilder();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+
+            return builder.ToString();
+        }
+
+        static string GetUniqueID()
+        {
+            return RandomString(80);
+        }
+
+        // OBSOLETE
         static string GetUniqueID(Configuration config)
         {
             return config.DataBaseName + ";" + config.SQL.Server + ";" + config.SQL.Port.ToString();
         }
 
+        // OBSOLETE
         public string GetDatabaseName(SQL_Settings sql)
         {
             string Result = "";
@@ -161,7 +183,7 @@ namespace TH_Configuration
                 //if (Result.SQL.AdminSQL != null) databaseNames += " :: " + Result.SQL.AdminSQL.Database;
                 //Console.WriteLine("Database Name = " + databaseNames);
 
-                //Result.UniqueId = GetUniqueID(Result);
+                Result.UniqueId = GetUniqueID();
 
                 Console.WriteLine("Settings Successfully Read From : " + ConfigFilePath);
 

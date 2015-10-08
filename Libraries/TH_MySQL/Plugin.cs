@@ -14,7 +14,8 @@ namespace TH_MySQL
 
         public string Type { get { return "MYSQL"; } }
 
-        //public object Configuration { get; set; }
+        string databasename;
+        public string DatabaseName { get { return databasename; } }
 
         public void Initialize(Database_Configuration config)
         {
@@ -27,7 +28,18 @@ namespace TH_MySQL
         }
 
 
+        public bool Ping(Database_Configuration config)
+        {
+            return true;
+        }
+
         // Database Functions -----------------------------------------------------------
+
+        static string GetDatabaseName(MySQL_Configuration config)
+        {
+            return config.Database;
+        }
+
 
         public bool Database_Create(object settings)
         {
@@ -38,7 +50,7 @@ namespace TH_MySQL
             {
                 if (config.PHP_Server != null)
                 {
-
+                    result = PHP.Database.Create(config, config.Database);
                 }
                 else
                 {
@@ -49,7 +61,25 @@ namespace TH_MySQL
             return result;
         }
 
-        public bool Database_Drop(object settings) { return true; }
+        public bool Database_Drop(object settings)
+        {
+            bool result = false;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Database.Drop(config, config.Database);
+                }
+                else
+                {
+                    result = Connector.Database.Drop(config, config.Database);
+                }
+            }
+
+            return result;
+        }
 
         // ------------------------------------------------------------------------------
 
@@ -67,7 +97,7 @@ namespace TH_MySQL
 
                 if (config.PHP_Server != null)
                 {
-
+                    result = PHP.Table.Create(config, tablename, coldefs, primaryKey);
                 }
                 else
                 {
@@ -78,24 +108,210 @@ namespace TH_MySQL
             return result; 
         }
 
-        public bool Table_Drop(object settings, string tablename) { return true; }
+        public bool Table_Drop(object settings, string tablename)
+        {
+            bool result = false;
 
-        public bool Table_Drop(object settings, string[] tablenames) { return true; }
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.Drop(config, tablename);
+                }
+                else
+                {
+                    result = Connector.Table.Drop(config, tablename);
+                }
+            }
 
-        public bool Table_Truncate(object settings, string tablename) { return true; }
+            return result;
+        }
 
-        public DataTable Table_Get(object settings, string tablename) { return null; }
+        public bool Table_Drop(object settings, string[] tablenames)
+        {
+            bool result = false;
 
-        public DataTable Table_Get(object settings, string tablename, string filterExpression) { return null; }
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.Drop(config, tablenames);
+                }
+                else
+                {
+                    result = Connector.Table.Drop(config, tablenames);
+                }
+            }
 
-        public DataTable Table_Get(object settings, string tablename, string filterExpression, string columns) { return null; }
+            return result;
+        }
+
+        public bool Table_Truncate(object settings, string tablename)
+        {
+            bool result = false;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.Truncate(config, tablename);
+                }
+                else
+                {
+                    result = Connector.Table.Truncate(config, tablename);
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable Table_Get(object settings, string tablename)
+        {
+            DataTable result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.Get(config, tablename);
+                }
+                else
+                {
+                    result = Connector.Table.Get(config, tablename);
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable Table_Get(object settings, string tablename, string filterExpression)
+        {
+            DataTable result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.Get(config, tablename, filterExpression);
+                }
+                else
+                {
+                    result = Connector.Table.Get(config, tablename, filterExpression);
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable Table_Get(object settings, string tablename, string filterExpression, string columns)
+        {
+            DataTable result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.Get(config, tablename, filterExpression, columns);
+                }
+                else
+                {
+                    result = Connector.Table.Get(config, tablename, filterExpression, columns);
+                }
+            }
+
+            return result;
+        }
+
+        public string[] Table_List(object settings)
+        {
+            string[] result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.List(config);
+                }
+                else
+                {
+                    result = Connector.Table.List(config);
+                }
+            }
+
+            return result;
+        }
+
+        public Int64 Table_GetRowCount(object settings, string tablename)
+        {
+            Int64 result = -1;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.GetRowCount(config, tablename);
+                }
+                else
+                {
+                    result = Connector.Table.RowCount(config, tablename);
+                }
+            }
+
+            return result;
+        }
+
+        public Int64 Table_GetSize(object settings, string tablename)
+        {
+            Int64 result = -1;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.GetSize(config, tablename);
+                }
+                else
+                {
+                    result = Connector.Table.Size(config, tablename);
+                }
+            }
+
+            return result;
+        }
 
         // ------------------------------------------------------------------------------
 
 
         // Column -----------------------------------------------------------------------
 
-        public List<string> Column_Get(object settings, string tablename) { return null; }
+        public List<string> Column_Get(object settings, string tablename)
+        {
+            List<string> result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Column.Get(config, tablename);
+                }
+                else
+                {
+                    result = Connector.Column.Get(config, tablename);
+                }
+            }
+
+            return result;
+        }
 
         public bool Column_Add(object settings, string tablename, ColumnDefinition columnDefinition)
         {
@@ -108,7 +324,7 @@ namespace TH_MySQL
 
                 if (config.PHP_Server != null)
                 {
-
+                    result = PHP.Column.Add(config, tablename, coldef);
                 }
                 else
                 {
@@ -133,7 +349,7 @@ namespace TH_MySQL
             {
                 if (config.PHP_Server != null)
                 {
-
+                    result = PHP.Row.Insert(config, tablename, columns, values, true);
                 }
                 else
                 {
@@ -153,7 +369,7 @@ namespace TH_MySQL
             {
                 if (config.PHP_Server != null)
                 {
-
+                    result = PHP.Row.Insert(config, tablename, columns, values, true);
                 }
                 else
                 {
@@ -173,7 +389,7 @@ namespace TH_MySQL
             {
                 if (config.PHP_Server != null)
                 {
-
+                    //result = PHP.Row.Insert(config, tablename, columnsList, valuesList, true);
                 }
                 else
                 {
@@ -193,7 +409,7 @@ namespace TH_MySQL
             {
                 if (config.PHP_Server != null)
                 {
-
+                    result = PHP.Row.Insert(config, query);
                 }
                 else
                 {
@@ -205,23 +421,131 @@ namespace TH_MySQL
         }
 
 
-        public DataRow Row_Get(object settings, string tablename, string tableKey, string rowKey) { return null; }
+        public DataRow Row_Get(object settings, string tablename, string tableKey, string rowKey)
+        {
+            DataRow result = null;
 
-        public DataRow Row_Get(object settings, string tablename, string query) { return null; }
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Row.Get(config, tablename, tableKey, rowKey);
+                }
+                else
+                {
+                    result = Connector.Row.Get(config, tablename, tableKey, rowKey);
+                }
+            }
+
+            return result;
+        }
+
+        public DataRow Row_Get(object settings, string tablename, string query)
+        {
+            DataRow result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Row.Get(config, tablename, query);
+                }
+                else
+                {
+                    result = Connector.Row.Get(config, tablename, query);
+                }
+            }
+
+            return result;
+        }
 
 
-        public bool Row_Exists(object settings, string tablename, string filterString) { return true; }
+        public bool Row_Exists(object settings, string tablename, string filterString)
+        {
+            bool result = false;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Row.Exists(config, tablename, filterString);
+                }
+                else
+                {
+                    result = Connector.Row.Exists(config, tablename, filterString);
+                }
+            }
+
+            return result;
+        }
 
         // ------------------------------------------------------------------------------
 
 
         // Etc --------------------------------------------------------------------------
 
-        public object[] CustomCommand(object settings, string commandText) { return null; }
+        public object[] CustomCommand(object settings, string commandText)
+        {
+            object[] result = null;
 
-        public object GetValue(object settings, string tablename, string column, string filterExpression) { return null; }
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.etc.CustomCommand(config, commandText);
+                }
+                else
+                {
+                    result = Connector.etc.CustomCommand(config, commandText);
+                }
+            }
 
-        public DataTable GetGrants(object settings, string username) { return null; }
+            return result;
+        }
+
+        public object GetValue(object settings, string tablename, string column, string filterExpression)
+        {
+            object result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.etc.GetValue(config, tablename, column, filterExpression);
+                }
+                else
+                {
+                    result = Connector.etc.GetValue(config, tablename, column, filterExpression);
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable GetGrants(object settings, string username)
+        {
+            DataTable result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.etc.GetGrants(config, username);
+                }
+                else
+                {
+                    result = Connector.etc.GetGrants(config, username);
+                }
+            }
+
+            return result;
+        }
 
         // ------------------------------------------------------------------------------
 

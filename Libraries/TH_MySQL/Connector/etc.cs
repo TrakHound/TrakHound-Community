@@ -50,6 +50,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             return Result;
 
@@ -90,6 +91,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             return Result;
 
@@ -129,6 +131,7 @@ namespace TH_MySQL.Connector
             {
                 Logger.Log(ex.Message);
             }
+            catch (Exception ex) { }
 
             return Result;
 

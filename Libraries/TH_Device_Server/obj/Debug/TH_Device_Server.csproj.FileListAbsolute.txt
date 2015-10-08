@@ -2,6 +2,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Device_Server.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Device_Server.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_MTC_Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_MTC_Requests.dll
@@ -9,6 +10,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Ping.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_PlugIns_Server.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\MySql.Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Configuration.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_MTC_Data.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_MTC_Requests.pdb
@@ -17,5 +19,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_PlugIns_Se
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\obj\Debug\TH_Device_Server.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\obj\Debug\TH_Device_Server.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\obj\Debug\TH_Device_Server.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Database.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_Database.pdb

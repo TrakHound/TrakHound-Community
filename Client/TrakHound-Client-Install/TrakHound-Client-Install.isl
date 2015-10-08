@@ -351,17 +351,20 @@
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{38801418-69A7-4237-8775-07D0D49D5C74}</td><td>CONFIGURATION_FILES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{48906871-06D4-4259-A9CA-1FFF01CEAC45}</td><td>MTCONNECT</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td>{3D981782-4D7D-44F1-8457-3D9108EA7E75}</td><td>IMAGES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MySql.Data.dll</td><td>{71E027BB-DCE4-4253-AD64-839339D1F7E8}</td><td>INSTALLDIR</td><td>2</td><td/><td>mysql.data.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Newtonsoft.Json.dll</td><td>{D6937F53-4DC5-45E6-9277-1888B8352098}</td><td>INSTALLDIR</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{35753FC2-3B3B-44DA-88BD-B3C4F9F42149}</td><td>DATABASE_DIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MySql.Data.dll1</td><td>{87E4DA8C-9EEF-40BC-AC04-FCB254E5B403}</td><td>INSTALLDIR</td><td>2</td><td/><td>mysql.data.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Newtonsoft.Json.dll1</td><td>{49646857-FE8E-489B-AB48-CB663171D561}</td><td>INSTALLDIR</td><td>2</td><td/><td>newtonsoft.json.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Configuration.Primary_output</td><td>{4C84BDBD-5CD6-4FF3-9842-615DD1705193}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_configuration.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Dashboard.Primary_output</td><td>{310E281F-00EA-44E7-86ED-6D5B13EE6F31}</td><td>PAGES</td><td>2</td><td/><td>th_dashboard.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TH_Database.Primary_output</td><td>{4791DD5E-9404-432A-97B8-A34309079659}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_database.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_DeviceCompare.Primary_output</td><td>{A21D1374-2B10-4411-AC64-B634A498A8C7}</td><td>PAGES</td><td>2</td><td/><td>th_devicecompare.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_DeviceStatus.Primary_output</td><td>{8225D855-FA4D-4672-BC70-52F4E339E2E0}</td><td>DATA</td><td>2</td><td/><td>th_devicestatus.primary_outp</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Device_Client.Primary_output</td><td>{C911D7B5-FED0-4F3B-B259-5385B48FE2EC}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_device_client.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Functions.Primary_output</td><td>{EE0DA49C-17DF-4C2D-923E-C44BB87E0698}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_functions.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Global.Primary_output</td><td>{CD80608F-91F9-4BF8-B15A-623585D5A61B}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_global.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_MTC_Data.Primary_output</td><td>{64C12433-653F-494E-9D3A-E6EE37899E55}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_mtc_data.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>TH_MySQL.Primary_output</td><td>{00311FDE-6B23-4A57-851A-ABA3410129C3}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_mysql.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TH_MySQL.Content_Files</td><td>{E92876F4-68C0-4F71-8641-404131B6A590}</td><td>DATABASE_DIR</td><td>2</td><td/><td>th_mysql.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TH_MySQL.Primary_output1</td><td>{2BAA0937-20A6-4A3E-B183-1282B8FA2F6E}</td><td>DATABASE_DIR</td><td>2</td><td/><td>th_mysql.primary_output1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Ping.Primary_output</td><td>{ADB24745-6947-4E99-8BD7-1FF6A72367D4}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_ping.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_PlugIns_Client_Control.Primary_output</td><td>{3AE72CF1-2044-48DE-B14A-D66BF96EBE99}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_plugins_client_control.pr</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_PlugIns_Client_Data.Primary_output</td><td>{E5F2B9EA-1B35-4B2B-B935-F1A66176B859}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_plugins_client_data.prima</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1084,6 +1087,7 @@
 		<col key="yes" def="s72">Component_</col>
 		<row><td>CONFIGURATION_FILES</td><td>ISX_DEFAULTCOMPONENT4</td></row>
 		<row><td>DATA</td><td>ISX_DEFAULTCOMPONENT3</td></row>
+		<row><td>DATABASE_DIR</td><td>ISX_DEFAULTCOMPONENT7</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>PAGES</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>PLUGINS</td><td>ISX_DEFAULTCOMPONENT1</td></row>
@@ -1175,6 +1179,7 @@
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
 		<row><td>DATA</td><td>PLUGINS</td><td>Data</td><td/><td>0</td><td/></row>
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>DATABASE_DIR</td><td>PLUGINS</td><td>Database</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FEENUX</td><td>ProgramFilesFolder</td><td>Feenux</td><td/><td>0</td><td/></row>
 		<row><td>FEENUX_LLC</td><td>ProgramFilesFolder</td><td>FEENUX~1|Feenux LLC</td><td/><td>0</td><td/></row>
@@ -1919,17 +1924,20 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT6</td></row>
-		<row><td>AlwaysInstall</td><td>MySql.Data.dll</td></row>
-		<row><td>AlwaysInstall</td><td>Newtonsoft.Json.dll</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT7</td></row>
+		<row><td>AlwaysInstall</td><td>MySql.Data.dll1</td></row>
+		<row><td>AlwaysInstall</td><td>Newtonsoft.Json.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Configuration.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Dashboard.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TH_Database.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_DeviceCompare.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_DeviceStatus.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Device_Client.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Functions.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Global.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_MTC_Data.Primary_output</td></row>
-		<row><td>AlwaysInstall</td><td>TH_MySQL.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TH_MySQL.Content_Files</td></row>
+		<row><td>AlwaysInstall</td><td>TH_MySQL.Primary_output1</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Ping.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_PlugIns_Client_Control.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_PlugIns_Client_Data.Primary_output</td></row>
@@ -1956,17 +1964,19 @@
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>device_configuration.xml</td><td>ISX_DEFAULTCOMPONENT5</td><td>DEVICE~1.XML|Device_Configuration.xml</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\Configuration Files\MTConnect\Device_Configuration.xml</td><td>1</td><td/></row>
 		<row><td>mtconnect_logo.png</td><td>ISX_DEFAULTCOMPONENT6</td><td>MTCONN~1.PNG|MTConnect-Logo.png</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\Configuration Files\MTConnect\Images\MTConnect-Logo.png</td><td>1</td><td/></row>
-		<row><td>mysql.data.dll</td><td>MySql.Data.dll</td><td>MYSQLD~1.DLL|MySql.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\MySql.Data.dll</td><td>1</td><td/></row>
-		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\Newtonsoft.Json.dll</td><td>1</td><td/></row>
+		<row><td>mysql.data.dll1</td><td>MySql.Data.dll1</td><td>MYSQLD~1.DLL|MySql.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\MySql.Data.dll</td><td>1</td><td/></row>
+		<row><td>newtonsoft.json.dll1</td><td>Newtonsoft.Json.dll1</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\Newtonsoft.Json.dll</td><td>1</td><td/></row>
 		<row><td>th_configuration.primary_out</td><td>TH_Configuration.Primary_output</td><td>TH_Configuration.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Configuration&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_dashboard.primary_output</td><td>TH_Dashboard.Primary_output</td><td>TH_Dashboard.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Dashboard&gt;|Built</td><td>3</td><td/></row>
+		<row><td>th_database.primary_output</td><td>TH_Database.Primary_output</td><td>TH_Database.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Database&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_device_client.primary_out</td><td>TH_Device_Client.Primary_output</td><td>TH_Device_Client.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Device_Client&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_devicecompare.primary_out</td><td>TH_DeviceCompare.Primary_output</td><td>TH_DeviceCompare.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_DeviceCompare&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_devicestatus.primary_outp</td><td>TH_DeviceStatus.Primary_output</td><td>TH_DeviceStatus.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_DeviceStatus&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_functions.primary_output</td><td>TH_Functions.Primary_output</td><td>TH_Functions.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Functions&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_global.primary_output</td><td>TH_Global.Primary_output</td><td>TH_Global.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Global&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_mtc_data.primary_output</td><td>TH_MTC_Data.Primary_output</td><td>TH_MTC_Data.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MTC_Data&gt;|Built</td><td>3</td><td/></row>
-		<row><td>th_mysql.primary_output</td><td>TH_MySQL.Primary_output</td><td>TH_MySQL.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MySQL&gt;|Built</td><td>3</td><td/></row>
+		<row><td>th_mysql.content_files</td><td>TH_MySQL.Content_Files</td><td>TH_MySQL.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MySQL&gt;|ContentFiles</td><td>3</td><td/></row>
+		<row><td>th_mysql.primary_output1</td><td>TH_MySQL.Primary_output1</td><td>TH_MySQL.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MySQL&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_ping.primary_output</td><td>TH_Ping.Primary_output</td><td>TH_Ping.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Ping&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_plugins_client_control.pr</td><td>TH_PlugIns_Client_Control.Primary_output</td><td>TH_PlugIns_Client_Control.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_PlugIns_Client_Control&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_plugins_client_data.prima</td><td>TH_PlugIns_Client_Data.Primary_output</td><td>TH_PlugIns_Client_Data.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_PlugIns_Client_Data&gt;|Built</td><td>3</td><td/></row>
@@ -2127,17 +2137,20 @@
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_86B71DA7_DA9D_47BC_9286_5A1639B8065E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_E1E4736E_B726_495F_B64F_D40A717E9916_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT6</td><td/><td/><td>_670C38E2_413A_4082_B0BF_70AE5773390D_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MySql.Data.dll</td><td/><td/><td>_519DB435_B3D4_4ADD_BA76_011C4EA2CA5F_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_C2C0BDF1_C1FF_4FBF_9A3A_BEB0A34482B9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_E0356873_E3C4_434D_86F2_4A6C2E7D3767_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MySql.Data.dll1</td><td/><td/><td>_8D4ECDD3_670C_4BCB_B3B4_622F0A55F9EE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Newtonsoft.Json.dll1</td><td/><td/><td>_FFBCA315_E9C1_4991_A0CB_18887062E93D_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Configuration.Primary_output</td><td/><td/><td>_022281C4_04D1_4DB3_B0A0_FE131D78719A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Dashboard.Primary_output</td><td/><td/><td>_8D115233_1A2E_4136_8FA9_3488433323DC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TH_Database.Primary_output</td><td/><td/><td>_4D20A057_3DFC_472B_AD2B_5D06F47393A9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_DeviceCompare.Primary_output</td><td/><td/><td>_06DF7242_4260_4A35_A426_3F3A1479E517_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_DeviceStatus.Primary_output</td><td/><td/><td>_98B53A8F_6AE3_4401_B8F5_4DF9BF78CAC1_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Device_Client.Primary_output</td><td/><td/><td>_39E921B5_72BB_41D7_84FD_9B21486AE573_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Functions.Primary_output</td><td/><td/><td>_4DB1FDD9_F009_4E2B_9BEA_59558A304BD4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Global.Primary_output</td><td/><td/><td>_3A398968_76A2_4950_9DAE_CFEAA55E238C_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_MTC_Data.Primary_output</td><td/><td/><td>_FE27E16E_23CC_4D22_AF72_55DBAF00A702_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>TH_MySQL.Primary_output</td><td/><td/><td>_AAAF2E52_8CAC_4864_8AC5_D5451CBE1E9E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TH_MySQL.Content_Files</td><td/><td/><td>_D68D90C1_85A3_4255_9636_769C77506EFE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TH_MySQL.Primary_output1</td><td/><td/><td>_919FA175_1722_43EE_8E04_14F435D4C44A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Ping.Primary_output</td><td/><td/><td>_0083A24F_A905_4D3E_86AB_11EB9366791C_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_PlugIns_Client_Control.Primary_output</td><td/><td/><td>_294C27F2_1D9F_43E6_B416_91D980E22596_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_PlugIns_Client_Data.Primary_output</td><td/><td/><td>_BBF8A9C7_16F6_4B4A_9D11_A0E13B309E53_FILTER</td><td/><td/><td/><td/></row>
@@ -2470,6 +2483,7 @@
 		<row><td>SystemFolder</td><td/><td/><td>1</td></row>
 		<row><td>TH_Configuration</td><td>Libraries\TH_Configuration\TH_Configuration.csproj</td><td/><td>2</td></row>
 		<row><td>TH_Dashboard</td><td>Client\Plugins\Controls\TH_Dashboard\TH_Dashboard.csproj</td><td/><td>2</td></row>
+		<row><td>TH_Database</td><td>Libraries\TH_Database\TH_Database.csproj</td><td/><td>2</td></row>
 		<row><td>TH_DeviceCompare</td><td>Client\Plugins\Controls\TH_DeviceCompare\TH_DeviceCompare.csproj</td><td/><td>2</td></row>
 		<row><td>TH_DeviceStatus</td><td>Client\Plugins\Data\TH_DeviceStatus\TH_DeviceStatus.csproj</td><td/><td>2</td></row>
 		<row><td>TH_Device_Client</td><td>Libraries\TH_Device_Client\TH_Device_Client.csproj</td><td/><td>2</td></row>
@@ -3897,7 +3911,7 @@
 		<row><td>IDS__TargetReq_DESC_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>1420001680</td></row>
-		<row><td>ID_STRING1</td><td>1033</td><td>http://www.TrakHound.com</td><td>0</td><td/><td>1419983415</td></row>
+		<row><td>ID_STRING1</td><td>1033</td><td>http://www.TrakHound.org</td><td>0</td><td/><td>1025731445</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>TrakHound</td><td>0</td><td/><td>1419983415</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>1420001808</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>Run TrakHound Client</td><td>0</td><td/><td>-1398569397</td></row>
@@ -4147,7 +4161,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{423FA3E0-8C17-4B12-86D4-8636A7CB190B}</td></row>
 		<row><td>ISUSSignature</td><td>{100DCA65-FA24-4D40-B85E-F1461B02504A}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppV,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewSupportFiles,viewRelease,viewAppFiles,viewFeatureFiles,viewDependencies,viewObjects,viewUpdateService,viewUpgradePaths,viewSetupDesign,viewDesignPatches,viewShortcuts</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppV,viewUI,viewBillboards,viewTextMessages,viewSystemSearch,viewSupportFiles,viewRelease,viewAppFiles,viewFeatureFiles,viewDependencies,viewObjects,viewUpdateService,viewUpgradePaths,viewSetupDesign,viewDesignPatches,viewShortcuts,viewProject</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4523,9 +4537,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKVROOTS</td><td>##IDS_PROGMSG_IIS_ROLLBACKVROOTS##</td><td/></row>
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]TrakHound-Client.Primary output</td><td/></row>
-		<row><td>ProductCode</td><td>{2466B2F1-6949-4E61-B1E6-CD0704D73CC5}</td><td/></row>
+		<row><td>ProductCode</td><td>{DA4ED85F-93E0-44C2-BA7D-2A1B6B4EC79B}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Client</td><td/></row>
-		<row><td>ProductVersion</td><td>1.00.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.00.1000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4541,7 +4555,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION45FULL</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
-		<row><td>UpgradeCode</td><td>{2D382220-1FFA-47A4-8E68-A8B768095A73}</td><td/></row>
+		<row><td>UpgradeCode</td><td>{E1942F84-8C4C-4996-B375-794DD9B44D65}</td><td/></row>
 		<row><td>_IsMaintenance</td><td>Change</td><td/></row>
 		<row><td>_IsSetupTypeMin</td><td>Typical</td><td/></row>
 	</table>

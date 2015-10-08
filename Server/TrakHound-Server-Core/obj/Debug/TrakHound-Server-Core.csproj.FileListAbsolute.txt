@@ -3,6 +3,7 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Configurati
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TrakHound-Server-Core.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Device_Server.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Functions.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Global.dll
@@ -12,6 +13,7 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Ping.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_PlugIns_Server.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\MySql.Data.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Configuration.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Device_Server.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Functions.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Global.pdb
@@ -22,5 +24,3 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_PlugIns_
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Database.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Database.pdb

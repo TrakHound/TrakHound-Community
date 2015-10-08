@@ -37,6 +37,10 @@
 			<Name>TH_Dashboard</Name>
 			<Project>{DCE32D98-8898-4AE4-B5F9-C617BDAE00E1}</Project>
 		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_Database\TH_Database.csproj">
+			<Name>TH_Database</Name>
+			<Project>{00E275C4-3494-4FCC-8781-FD815024117E}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\Plugins\Controls\TH_DeviceCompare\TH_DeviceCompare.csproj">
 			<Name>TH_DeviceCompare</Name>
 			<Project>{BEC8D2ED-3087-46FB-A552-619412472F6C}</Project>

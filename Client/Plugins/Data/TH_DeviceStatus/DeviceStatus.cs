@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 
 using TH_Configuration;
+using TH_Database;
 using TH_Global;
-using TH_MySQL;
 using TH_Ping;
 using TH_PlugIns_Client_Data;
 
@@ -27,6 +27,11 @@ namespace TH_DeviceStatus
         public void Initialize(Configuration config) 
         {
 
+            DatabasePluginReader dpr = new DatabasePluginReader();
+
+            // Initialize Database Configurations
+            Global.Initialize(config.Databases);
+
             configuration = config;
 
         }
@@ -37,9 +42,11 @@ namespace TH_DeviceStatus
         {
             bool connected = false;
 
-            if (configuration.SQL.PHP_Server != null)
-                connected = TH_Ping.PortPing.PingHost(configuration.SQL.PHP_Server);
-            else connected = TH_Ping.MySQLPing.Ping(configuration.SQL);
+
+            if (configuration.Databases.Databases.Count > 0)
+            {
+                connected = Global.Ping(configuration.Databases.Databases[0]);
+            }
 
             SendConnectionData(connected);
 
@@ -76,7 +83,7 @@ namespace TH_DeviceStatus
 
         void GetSnapShots()
         {
-            DataTable snapshots_DT = Global.Table_Get(configuration.SQL, TableNames.SnapShots);
+            DataTable snapshots_DT = Table.Get(configuration.Databases, TableNames.SnapShots);
             if (snapshots_DT != null)
             {
                 Dictionary<string, Tuple<DateTime, string, string>> data = new Dictionary<string, Tuple<DateTime, string, string>>();
@@ -127,7 +134,7 @@ namespace TH_DeviceStatus
         {
             if (shiftDate != null && shiftName != null)
             {
-                DataTable shifts_DT = Global.Table_Get(configuration.SQL, TableNames.Shifts, "WHERE Date='" + shiftDate + "' AND Shift='" + shiftName + "'");
+                DataTable shifts_DT = Table.Get(configuration.Databases, TableNames.Shifts, "WHERE Date='" + shiftDate + "' AND Shift='" + shiftName + "'");
                 if (shifts_DT != null)
                 {
                     List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
@@ -161,11 +168,12 @@ namespace TH_DeviceStatus
             DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
             DateTime end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
-            string filter = "WHERE Timestamp >= '" + MySQL_Tools.ConvertDateStringtoMySQL(start.ToString()) + "'";
+            string filter = "WHERE Timestamp >= '" + Global.ConvertDateStringtoSQL(start.ToString()) + "'";
 
             string tableName = TableNames.Gen_Events_TablePrefix + "Production_Status";
 
-            DataTable table = Global.Table_Get(configuration.SQL, tableName, filter);
+
+            DataTable table = Table.Get(configuration.Databases, tableName, filter);
             if (table != null)
             {
                 List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
@@ -201,7 +209,7 @@ namespace TH_DeviceStatus
                 {
                     string shiftQuery = shiftId.Substring(0, shiftId.LastIndexOf('_'));
 
-                    DataTable dt = Global.Table_Get(configuration.SQL, TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+                    DataTable dt = Table.Get(configuration.Databases, TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
                         List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();

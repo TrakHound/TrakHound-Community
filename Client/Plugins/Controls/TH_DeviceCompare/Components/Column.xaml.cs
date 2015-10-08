@@ -37,6 +37,7 @@ namespace TH_DeviceCompare.Components
 
         public int Index;
 
+
         public bool Connected
         {
             get { return (bool)GetValue(ConnectedProperty); }
@@ -52,6 +53,16 @@ namespace TH_DeviceCompare.Components
             DependencyProperty.Register("Connected", typeof(bool), typeof(Column), new PropertyMetadata(false));
 
 
+        public string ConnectionStatus
+        {
+            get { return (string)GetValue(ConnectionStatusProperty); }
+            set { SetValue(ConnectionStatusProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConnectionStatusProperty =
+            DependencyProperty.Register("ConnectionStatus", typeof(string), typeof(Column), new PropertyMetadata("Connecting..."));
+
+
         public bool Loading
         {
             get { return (bool)GetValue(LoadingProperty); }
@@ -60,6 +71,8 @@ namespace TH_DeviceCompare.Components
 
         public static readonly DependencyProperty LoadingProperty =
             DependencyProperty.Register("Loading", typeof(bool), typeof(Column), new PropertyMetadata(true));
+
+        
 
         ObservableCollection<Cell> cells;
         public ObservableCollection<Cell> Cells
