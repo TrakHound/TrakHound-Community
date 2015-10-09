@@ -20,7 +20,6 @@ using System.Data;
 using TH_Configuration;
 using TH_Device_Client;
 using TH_Global;
-using TH_MySQL;
 using TH_PlugIns_Client_Control;
 using TH_Styles;
 

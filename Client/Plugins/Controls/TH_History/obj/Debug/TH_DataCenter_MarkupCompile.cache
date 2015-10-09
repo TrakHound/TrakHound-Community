@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-71332130403
+81562156945
 
-1113807304
-24-790517288
-Controls\Calendar\Calendar.xaml;Controls\Calendar\Day.xaml;Controls\Calendar\DayOfWeekTitle.xaml;Controls\HistoryContainer.xaml;Controls\HistoryItem.xaml;Controls\ShiftComparison.xaml;History.xaml;
+121038443677
+24221810172
+Controls\Calendar\Calendar.xaml;Controls\Calendar\Day.xaml;Controls\Calendar\DayOfWeekTitle.xaml;Controls\HistogramDisplay.xaml;Controls\HistoryContainer.xaml;Controls\HistoryItem.xaml;Controls\ShiftComparison.xaml;History.xaml;
 
 False
 

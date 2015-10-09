@@ -945,7 +945,7 @@ namespace TH_DeviceCompare
                         {
                             // Get Segment Time Info
                             string oee_shiftId = null;
-                            row.TryGetValue("Shift_Id", out oee_shiftId);
+                            row.TryGetValue("SHIFT_ID", out oee_shiftId);
                             if (oee_shiftId != null)
                             {
                                 OEE_TimelineInfo info = new OEE_TimelineInfo();
@@ -1013,18 +1013,18 @@ namespace TH_DeviceCompare
             foreach (Dictionary<string, string> row in shiftData)
             {
                 string id = null;
-                row.TryGetValue("Id", out id);
+                row.TryGetValue("ID", out id);
                 if (id != null)
                 {
                     if (id.ToLower() == shiftId.ToLower())
                     {
                         // Get Segment start Time
                         string start = null;
-                        row.TryGetValue("Start", out start);
+                        row.TryGetValue("START", out start);
 
                         // Get Segment end Time
                         string end = null;
-                        row.TryGetValue("End", out end);
+                        row.TryGetValue("END", out end);
 
                         // Create Segment Times string
                         if (start != null && end != null)
@@ -1086,7 +1086,7 @@ namespace TH_DeviceCompare
                                 if (timestamp >= shift_begin && timestamp <= shift_end)
                                 {
                                     val = null;
-                                    row.TryGetValue("Value", out val);
+                                    row.TryGetValue("VALUE", out val);
 
                                     if (val != null)
                                     {

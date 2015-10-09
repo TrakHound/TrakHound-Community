@@ -155,10 +155,10 @@
                     </Grid.RowDefinitions>
 
                     <!--Title-->
-                    <TextBlock Text="{Binding PlugIn_Title, ElementName=listitem}" Foreground="{StaticResource DarkText}" FontSize="20" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding PlugIn_Title, ElementName=listitem}" Foreground="{StaticResource DarkText}" FontSize="18" VerticalAlignment="Center"/>
 
                     <!--Description-->
-                    <TextBlock Grid.Row="1" Text="{Binding PlugIn_Description, ElementName=listitem}" Foreground="{StaticResource LightText}" FontSize="12" MaxWidth="400" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Row="1" Text="{Binding PlugIn_Description, ElementName=listitem}" Foreground="{StaticResource LightText}" FontSize="10" MaxWidth="400" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
                 </Grid>     
 
@@ -171,7 +171,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <TextBlock Grid.Column="0" Text="Enabled" VerticalAlignment="Center" Margin="5,0" FontSize="16" Foreground="{StaticResource LightText}" />
+                <TextBlock Grid.Column="0" Text="Enabled" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource LightText}" />
 
                 <CheckBox Grid.Column="1" Style="{StaticResource Android_CheckBoxStyle}" IsChecked="{Binding PlugIn_Enabled, ElementName=listitem}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
 

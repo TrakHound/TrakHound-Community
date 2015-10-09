@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using System.Data;
 
 using TH_Configuration;
-using TH_MySQL;
+using TH_Database;
 using TH_ShiftTable;
 
 namespace TH_History.Controls
@@ -66,7 +66,7 @@ namespace TH_History.Controls
                     table.Columns.Add("Min OEE");
 
                     // Get entire table (may need to be sorted using user input)
-                    DataTable oeeTable = Global.Table_Get(configuration.SQL, "oee");
+                    DataTable oeeTable = TH_Database.Table.Get(configuration.Databases, "oee");
 
                     if (oeeTable != null)
                     {

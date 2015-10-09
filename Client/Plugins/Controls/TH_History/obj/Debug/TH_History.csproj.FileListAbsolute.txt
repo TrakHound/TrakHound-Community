@@ -1,6 +1,3 @@
-C:\TrakHound\Plugins\Pages\LICENSE.txt
-C:\TrakHound\Plugins\Pages\TH_DataCenter.dll
-C:\TrakHound\Plugins\Pages\TH_DataCenter.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_History.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Calendar.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Day.baml
@@ -12,11 +9,18 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Histo
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Calendar.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\Day.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\Calendar\DayOfWeekTitle.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\HistogramDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\HistoryContainer.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\HistoryItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\ShiftComparison.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\History.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_DataCenter_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_DataCenter_MarkupCompile.lref
+C:\TrakHound\Plugins\Pages\LICENSE.txt
+C:\TrakHound\Plugins\Pages\TH_DataCenter.dll
+C:\TrakHound\Plugins\Pages\TH_DataCenter.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\Controls\HistogramDisplay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_DataCenter.g.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_DataCenter.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_History\obj\Debug\TH_History.csproj.GenerateResource.Cache

@@ -137,10 +137,10 @@
                 <StackPanel HorizontalAlignment="Right">
 
                     <!--Month-->
-                    <TextBlock Text="{Binding Month}" FontSize="8pt" Foreground="#11ffffff" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Month}" FontSize="8pt" Foreground="#33ffffff" HorizontalAlignment="Right"/>
 
                     <!--Day-->
-                    <TextBlock Text="{Binding Day}" FontSize="24pt" Foreground="#11ffffff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    <TextBlock Text="{Binding Day}" FontSize="24pt" Foreground="#33ffffff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
                 </StackPanel>
                 

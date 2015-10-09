@@ -10,5 +10,6 @@ F:\feenux\TrakHound\TH_Libraries\TH_Configuration\obj\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\bin\Debug\TH_Configuration.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Debug\TH_Configuration.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Debug\TH_Configuration.pdb
