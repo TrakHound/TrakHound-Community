@@ -63,14 +63,6 @@
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TH_MySQL\TH_MySQL.csproj">
-      <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
-      <Name>TH_MySQL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TH_Ping\TH_Ping.csproj">
-      <Project>{d767cb7a-7c4e-4df9-8b4c-9aa6ec8d12ec}</Project>
-      <Name>TH_Ping</Name>
-    </ProjectReference>
     <ProjectReference Include="..\TH_PlugIns_Client_Data\TH_PlugIns_Client_Data.csproj">
       <Project>{62109ec3-e65a-493f-8120-2e4ea2ef30a1}</Project>
       <Name>TH_PlugIns_Client_Data</Name>
