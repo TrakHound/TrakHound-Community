@@ -2,7 +2,7 @@
 
 [TrakHound.org] (http://www.trakhound.org/)
 
-![ScreenShot] (http://feenux.com/misc/DeviceCompare_03.png)
+![ScreenShot] (http://feenux.com/misc/DeviceCompare_05.png)
 
 ##About
 TrakHound is an Open Source software package designed to use the MTConnect® communication protocol to retrieve and store data from CNC and other PLC driven equipment. Since TrakHound is based on a plugin architecture, you can think of it as more of a development platform than a stand alone monitoring application. Most of the work in developing a MTConnect® compatible application is already done and all that is needed is to develop a simple plugin for TrakHound!
