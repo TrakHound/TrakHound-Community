@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading;
 
 using TH_Configuration;
-using TH_Ping;
 using TH_PlugIns_Client_Data;
 using TH_Global;
 
@@ -28,8 +27,21 @@ namespace TH_Device_Client
 
             DataPlugIns_Initialize(config);
 
-            DBPing_Initialize();
+            Update_TIMER = new System.Timers.Timer();
+            Update_TIMER.Interval = Math.Max(1000, UpdateInterval);
+            Update_TIMER.Elapsed += Update_TIMER_Elapsed;
+            Update_TIMER.Enabled = true;
 
+        }
+
+        void Update_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Update_TIMER.Enabled = false;
+            Update_TIMER.Interval = Math.Max(1000, UpdateInterval);
+
+            Update();
+
+            Update_TIMER.Enabled = true;
         }
 
         #region "Properties"
@@ -51,45 +63,32 @@ namespace TH_Device_Client
 
         #endregion
 
-        #region "Ping"
-
-        MySQLPing DBPing;
-
-        void DBPing_Initialize()
-        {
-            // Start ping for MySQL database connection detection
-            DBPing = new MySQLPing();
-            DBPing.Settings = configuration.SQL;
-            DBPing.MySQLPingResult += DBPing_MySQLPingResult;
-            DBPing.Start();
-        }
-
-        void DBPing_MySQLPingResult(bool PingResult) 
-        { 
-            Update(PingResult);
-            DBPing.SuccessInterval = Math.Max(1000, UpdateInterval);
-        }
-
-        #endregion
-
         #region "Update"
+
+        System.Timers.Timer Update_TIMER;
 
         ReturnData returnData;
 
-        void Update(bool pingResult)
+        void Update()
         {
             if (Data_Plugins != null)
             {
                 foreach (Lazy<Data_PlugIn> ldp in Data_Plugins.ToList())
                 {
-                    Data_PlugIn dp = ldp.Value;
-                    dp.Run();
+                    try
+                    {
+                        Data_PlugIn dp = ldp.Value;
+                        dp.Run();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Update : Exception : " + ex.Message);
+                    }
                 }
             }
 
             ReturnData rd = returnData.Copy();
 
-            rd.connected = pingResult;
             rd.configuration = configuration;
 
             // Raise DataUpdated event and send ReturnData object as parameter
@@ -121,11 +120,12 @@ namespace TH_Device_Client
             string pluginsPath;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            pluginsPath = TH_Global.FileLocations.TrakHound + @"\Plugins\Data\";
+            pluginsPath = TH_Global.FileLocations.Plugins + @"\Data\";
+            //pluginsPath = TH_Global.FileLocations.TrakHound + @"\Plugins\Data\";
             if (Directory.Exists(pluginsPath)) LoadDataPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-            pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\Data\";
+            pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) LoadDataPlugins(pluginsPath);
         }
 
@@ -169,22 +169,19 @@ namespace TH_Device_Client
         {
             if (Data_Plugins != null)
             {
-                IEnumerable<int> priorities = Data_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                List<int> sortedPriorities = priorities.ToList();
-                sortedPriorities.Sort();
-
-                foreach (int priority in sortedPriorities)
+                foreach (Lazy<Data_PlugIn> ldp in Data_Plugins)
                 {
-                    List<Lazy<Data_PlugIn>> pluginsAtPriority = Data_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                    foreach (Lazy<Data_PlugIn> LDP in pluginsAtPriority)
+                    try
                     {
-                        Data_PlugIn DP = LDP.Value;
-                        DP.DataEvent -= DataPlugIns_Update;
-                        DP.DataEvent += DataPlugIns_Update;
-                        DP.Initialize(Config);
-                        Console.WriteLine(DP.Name + " Initialized!");
+                        Data_PlugIn dp = ldp.Value;
+                        dp.DataEvent -= DataPlugIns_Update;
+                        dp.DataEvent += DataPlugIns_Update;
+                        dp.Initialize(Config);
+                        Logger.Log(dp.Name + " Initialized!");
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("DataPlugIns_Initialize : Exception : " + ex.Message);
                     }
                 }
             }
@@ -196,46 +193,21 @@ namespace TH_Device_Client
             {
                 foreach (Lazy<Data_PlugIn> ldp in Data_Plugins)
                 {
-                    if (ldp.IsValueCreated)
+                    try
                     {
+                        Data_PlugIn dp = ldp.Value;
                         UpdateWorkerInfo info = new UpdateWorkerInfo();
-                        info.dataPlugin = ldp.Value;
+                        info.dataPlugin = dp;
                         info.de_d = de_d;
 
                         ThreadPool.QueueUserWorkItem(new WaitCallback(DataPlugin_Update_Worker), info);
                     }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("DataPlugIns_Initialize : Exception : " + ex.Message);
+                    }
                 }
-
-
-                //IEnumerable<int> priorities = Data_Plugins.Select(x => x.Value.Priority).Distinct();
-
-                //List<int> sortedPriorities = priorities.ToList();
-                //sortedPriorities.Sort();
-
-                //foreach (int priority in sortedPriorities)
-                //{
-                //    List<Lazy<Data_PlugIn>> pluginsAtPriority = Data_Plugins.FindAll(x => x.Value.Priority == priority);
-
-                //    foreach (Lazy<Data_PlugIn> LDP in pluginsAtPriority)
-                //    {
-                //        Data_PlugIn DP = LDP.Value;
-                //        DP.Update_DataEvent(de_d);
-                //    }
-                //}
             }
-
-            //lock (returnData)
-            //{
-            //    // Add or Update new data in ReturnData
-            //    if (returnData.data.ContainsKey(de_d.id))
-            //    {
-            //        returnData.data[de_d.id] = de_d.data;
-            //    }
-            //    else
-            //    {
-            //        returnData.data.Add(de_d.id, de_d.data);
-            //    }
-            //}  
         }
 
         class UpdateWorkerInfo

@@ -1569,21 +1569,20 @@ namespace TrakHound_Client
                     {
                         if (config.enabled && PagePlugIns != null)
                         {
-                            foreach (Lazy<Control_PlugIn> LCP in PagePlugIns.ToList())
+                            foreach (Lazy<Control_PlugIn> lcp in PagePlugIns.ToList())
                             {
-                                if (LCP != null)
+                                if (lcp != null)
                                 {
-                                    if (LCP.IsValueCreated)
-                                    {
-                                        if (LCP.Value.Title.ToLower() == config.name.ToLower())
-                                        {
-                                            UpdateWorkerInfo info = new UpdateWorkerInfo();
-                                            info.returnData = rd;
-                                            info.controlPlugin = LCP.Value;
-                                            info.config = config;
+                                    Control_PlugIn cp = lcp.Value;
 
-                                            ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), info);
-                                        }
+                                    if (cp.Title.ToLower() == config.name.ToLower())
+                                    {
+                                        UpdateWorkerInfo info = new UpdateWorkerInfo();
+                                        info.returnData = rd;
+                                        info.controlPlugin = cp;
+                                        info.config = config;
+
+                                        ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), info);
                                     }
                                 }
                             }

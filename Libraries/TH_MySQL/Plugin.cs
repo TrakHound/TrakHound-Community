@@ -14,8 +14,6 @@ namespace TH_MySQL
 
         public string Type { get { return "MYSQL"; } }
 
-        string databasename;
-        public string DatabaseName { get { return databasename; } }
 
         public void Initialize(Database_Configuration config)
         {
@@ -27,10 +25,24 @@ namespace TH_MySQL
             }
         }
 
-
-        public bool Ping(Database_Configuration config)
+        public bool Ping(object settings)
         {
-            return true;
+            bool result = false;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHPPing.PingHost(config.PHP_Server);
+                }
+                else
+                {
+                    result = MySQLPing.Ping(config);
+                }
+            }
+
+            return result;          
         }
 
         // Database Functions -----------------------------------------------------------

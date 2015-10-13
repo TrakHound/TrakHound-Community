@@ -66,6 +66,7 @@
     <Compile Include="PHP\etc.cs" />
     <Compile Include="PHP\Row.cs" />
     <Compile Include="PHP\Table.cs" />
+    <Compile Include="Ping.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queue.cs" />

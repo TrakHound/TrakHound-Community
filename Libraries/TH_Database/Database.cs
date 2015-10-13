@@ -26,13 +26,20 @@ namespace TH_Database
                 {
                     foreach (Lazy<Database_Plugin> ldp in Global.Plugins.ToList())
                     {
-                        Database_Plugin dp = ldp.Value;
-
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        try
                         {
-                            dp.Initialize(db);
-                            break;
+                            Database_Plugin dp = ldp.Value;
+
+                            if (dp.Type.ToLower() == db.Type.ToLower())
+                            {
+                                dp.Initialize(db);
+                                break;
+                            }
                         }
+                        catch (Exception ex)
+                        {
+                            Logger.Log("Initialize : Exception : " + ex.Message);
+                        }                       
                     }
                 }
             }
@@ -46,13 +53,20 @@ namespace TH_Database
             {
                 foreach (Lazy<Database_Plugin> ldp in Global.Plugins.ToList())
                 {
-                    Database_Plugin dp = ldp.Value;
-
-                    if (dp.Type.ToLower() == config.Type.ToLower())
+                    try
                     {
-                        result = dp.Ping(config);
-                        break;
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == config.Type.ToLower())
+                        {
+                            result = dp.Ping(config.Configuration);
+                            break;
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Ping : Exception : " + ex.Message);
+                    }     
                 }
             }
 

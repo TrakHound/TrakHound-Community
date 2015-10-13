@@ -20,7 +20,7 @@ namespace TH_Database
 
         void Initialize(Database_Configuration config);
 
-        bool Ping(Database_Configuration config);
+        bool Ping(object settings);
 
 
         // Database Functions -----------------------------------------------------------

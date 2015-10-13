@@ -10,7 +10,6 @@ using System.Data;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
-using TH_Ping;
 using TH_PlugIns_Client_Data;
 
 namespace TH_DeviceStatus
@@ -22,7 +21,7 @@ namespace TH_DeviceStatus
 
         public string Name { get { return "Device Status"; } }
 
-        public int Priority { get { return 1; } }
+        //public int Priority { get { return 1; } }
 
         public void Initialize(Configuration config) 
         {
@@ -41,7 +40,6 @@ namespace TH_DeviceStatus
         public void Run()
         {
             bool connected = false;
-
 
             if (configuration.Databases.Databases.Count > 0)
             {
