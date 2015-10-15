@@ -445,6 +445,8 @@ namespace TH_DeviceCompare
                 if (prevShiftName != sd.Shift_Name) shiftChanged = true;
 
 
+                string date = "";
+
                 string shiftdate = GetSnapShotValue("Current Shift Date", snapshotdata);
                 if (shiftdate != null)
                 {
@@ -455,6 +457,8 @@ namespace TH_DeviceCompare
                         sd.Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dt.Month);
                         sd.Day = dt.Day.ToString();
                     }
+
+                    date = shiftdate + " ";
                 }
 
 
@@ -490,7 +494,7 @@ namespace TH_DeviceCompare
 
                 // Get Shift Segment Indicators ---------------------------------------------------
 
-                List<SegmentInfo> shiftSegments = GetShiftSegments(shiftdata);
+                List<SegmentInfo> shiftSegments = GetShiftSegments(shiftdata, snapshotdata);
 
 
                 if (shiftChanged) sd.SegmentIndicators.Clear();
@@ -534,6 +538,7 @@ namespace TH_DeviceCompare
                         indicator.CurrentShift = true;
 
                         string sCurrentTime = GetSnapShotValue("Current Shift Time", snapshotdata);
+
                         DateTime currentTime = DateTime.MinValue;
                         if (DateTime.TryParse(sCurrentTime, out currentTime))
                         {
@@ -568,12 +573,16 @@ namespace TH_DeviceCompare
             public DateTime segmentEnd { get; set; }
         }
 
-        List<SegmentInfo> GetShiftSegments(object data)
+        List<SegmentInfo> GetShiftSegments(object data, object snapshotData)
         {
             List<SegmentInfo> Result = new List<SegmentInfo>();
 
             // Get data from returnData.data
             List<Dictionary<string, string>> shiftData = GetShiftData(data);
+
+            string date = "";
+            string shiftdate = GetSnapShotValue("Current Shift Date", snapshotData);
+            if (shiftdate != null) date = shiftdate + " ";
 
             if (shiftData != null)
             {
@@ -592,9 +601,9 @@ namespace TH_DeviceCompare
                     {
                         if (cell.Key.ToLower() == "id") id = cell.Value;
 
-                        else if (cell.Key.ToLower() == "start") DateTime.TryParse(cell.Value, out start);
+                        else if (cell.Key.ToLower() == "start") DateTime.TryParse(date + cell.Value, out start);
 
-                        else if (cell.Key.ToLower() == "end") DateTime.TryParse(cell.Value, out end);
+                        else if (cell.Key.ToLower() == "end") DateTime.TryParse(date + cell.Value, out end);
 
                         else if (cell.Key.ToLower() == "type") type = cell.Value;
 
@@ -920,8 +929,6 @@ namespace TH_DeviceCompare
             public string valueText { get; set; }
         }
 
-        string OEE_Timeline_ShiftName = null;
-
         void Update_OEE_Timeline(DeviceDisplay dd, object oeedata, object shiftdata, object snapshotdata)
         {
             if (oeedata.GetType() == typeof(List<Dictionary<string, string>>) &&
@@ -978,9 +985,9 @@ namespace TH_DeviceCompare
                     else oeeTimeline = (Controls.HistogramDisplay)ddData;
 
                     // Get Shift Name to check if still in the same shift as last update
-                    string prev_shiftName = OEE_Timeline_ShiftName;
-                    OEE_Timeline_ShiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
-                    if (prev_shiftName != OEE_Timeline_ShiftName) oeeTimeline.DataBars.Clear();
+                    string prev_shiftName = oeeTimeline.shiftName;
+                    oeeTimeline.shiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
+                    if (prev_shiftName != oeeTimeline.shiftName) oeeTimeline.DataBars.Clear();
 
                     foreach (OEE_TimelineInfo info in infos)
                     {
@@ -1059,58 +1066,84 @@ namespace TH_DeviceCompare
 
                 List<Tuple<DateTime, string>> data_forShift = new List<Tuple<DateTime, string>>();
 
-                string begin = GetSnapShotValue("Current Shift Begin", snapshotdata);
-                DateTime shift_begin = DateTime.MinValue;
-                DateTime.TryParse(begin, out shift_begin);
-
-                string end = GetSnapShotValue("Current Shift End", snapshotdata);
-                DateTime shift_end = DateTime.MinValue;
-                DateTime.TryParse(end, out shift_end);
-
-                if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
-
-                foreach (Dictionary<string, string> row in data)
+                int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
+                if (cellIndex >= 0)
                 {
-                    string val = null;
-                    row.TryGetValue("TIMESTAMP", out val);
 
-                    if (val != null)
+                    string begin = GetSnapShotValue("Current Shift Begin", snapshotdata);
+                    DateTime shift_begin = DateTime.MinValue;
+                    DateTime.TryParse(begin, out shift_begin);
+
+                    string end = GetSnapShotValue("Current Shift End", snapshotdata);
+                    DateTime shift_end = DateTime.MinValue;
+                    DateTime.TryParse(end, out shift_end);
+
+                    if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
+
+                    // Get / Create TimeLineDisplay
+                    Controls.TimeLineDisplay timeline;
+
+                    object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                    if (ddData == null)
                     {
-                        DateTime timestamp = DateTime.MinValue;
-                        DateTime.TryParse(val, out timestamp);
+                        timeline = new Controls.TimeLineDisplay(shift_begin, shift_end);
 
-                        if (timestamp > DateTime.MinValue)
+                        List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
+                        colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#ff0000"), "Alert"));
+                        colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#aaffffff"), "Idle"));
+                        colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#00ff00"), "Full Production"));
+
+                        timeline.colors = colors;
+
+                        dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
+                    }
+                    else timeline = (Controls.TimeLineDisplay)ddData;
+
+
+                    foreach (Dictionary<string, string> row in data)
+                    {
+                        string val = null;
+                        row.TryGetValue("TIMESTAMP", out val);
+
+                        if (val != null)
                         {
-                            if (shift_begin > DateTime.MinValue && shift_end > DateTime.MinValue)
-                            {
-                                if (timestamp >= shift_begin && timestamp <= shift_end)
-                                {
-                                    val = null;
-                                    row.TryGetValue("VALUE", out val);
+                            DateTime timestamp = DateTime.MinValue;
+                            DateTime.TryParse(val, out timestamp);
 
-                                    if (val != null)
+                            if (timestamp > DateTime.MinValue)
+                            {
+                                if (shift_begin > DateTime.MinValue && shift_end > DateTime.MinValue && timestamp > timeline.previousTimestamp)
+                                {
+                                    if (timestamp >= shift_begin && timestamp <= shift_end)
                                     {
-                                        data_forShift.Add(new Tuple<DateTime, string>(timestamp, val));
+                                        val = null;
+                                        row.TryGetValue("VALUE", out val);
+
+                                        if (val != null)
+                                        {
+                                            data_forShift.Add(new Tuple<DateTime, string>(timestamp, val));
+                                        }
+
+                                        timeline.previousTimestamp = timestamp;
                                     }
                                 }
                             }
                         }
                     }
+
+                    // Get Shift Name to check if still in the same shift as last update
+                    string prev_shiftName = timeline.shiftName;
+                    timeline.shiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
+                    if (prev_shiftName != timeline.shiftName)
+                    {
+                        timeline.CreateData(data_forShift);
+                    }
+                    else
+                    {
+                        timeline.UpdateData(data_forShift);
+                    }
                 }
-
-                // Production Status Timeline
-                Controls.TimeLineDisplay timeline = new Controls.TimeLineDisplay(shift_begin, shift_end);
-
-                List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
-                colors.Add(new Tuple<Color, string>(Colors.Red, "Alert"));
-                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#aaffffff"), "Idle"));
-                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#00ff00"), "Full Production"));
-
-                timeline.CreateData(data_forShift, colors);
-
-                int cellIndex = -1;
-                cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
-                if (cellIndex >= 0) dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
             }
         }
 

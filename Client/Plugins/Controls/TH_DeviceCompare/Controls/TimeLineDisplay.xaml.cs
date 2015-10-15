@@ -21,7 +21,6 @@ using System.Windows.Shapes;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-//using OxyPlot.Wpf.Series;
 
 namespace TH_DeviceCompare.Controls
 {
@@ -55,6 +54,18 @@ namespace TH_DeviceCompare.Controls
             shiftEnd = End.ToShortTimeString();
         }
 
+
+        public string shiftName
+        {
+            get { return (string)GetValue(shiftNameProperty); }
+            set { SetValue(shiftNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty shiftNameProperty =
+            DependencyProperty.Register("shiftName", typeof(string), typeof(TimeLineDisplay), new PropertyMetadata(null));
+
+        public DateTime previousTimestamp = DateTime.MinValue;
+        
         DateTime Start;
         DateTime End;
 
@@ -76,7 +87,13 @@ namespace TH_DeviceCompare.Controls
         public static readonly DependencyProperty shiftEndProperty =
             DependencyProperty.Register("shiftEnd", typeof(string), typeof(TimeLineDisplay), new PropertyMetadata(null));
 
-        public void CreateData(List<Tuple<DateTime, string>> data, List<Tuple<Color, string>> colors)
+
+
+        public List<Tuple<Color, string>> colors { get; set; }
+
+        Tuple<DateTime, string> prevItem = null;
+
+        public void CreateData(List<Tuple<DateTime, string>> data)
         {
             PlotModel pm = new PlotModel();
             pm.IsLegendVisible = false;
@@ -90,27 +107,43 @@ namespace TH_DeviceCompare.Controls
 
             Random rnd = new Random();
 
-            Tuple<DateTime, string> prevItem = null;
-
             foreach (Tuple<DateTime, string> item in data)
             {
                 if (prevItem != null)
                 {
                     // Get Color from "colors"
                     Color c = Colors.White;
-                    Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == item.Item2.ToLower());
+                    Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == prevItem.Item2.ToLower());
                     if (colorItem != null) c = colorItem.Item1;
 
-                    OxyColor oc = OxyColor.FromArgb(170, c.R, c.G, c.B);
+                    //OxyColor oc = OxyColor.FromArgb(170, c.R, c.G, c.B);
+                    OxyColor oc = OxyColor.FromRgb(c.R, c.G, c.B);
 
                     // Get Duration (value)
                     TimeSpan duration = item.Item1 - prevItem.Item1;
 
                     // Add Series to PlotModel
-                    BarSeries series = Times_Create_Series(item.Item2);
+                    BarSeries series = Times_Create_Series(prevItem.Item2);
                     series.FillColor = oc;
                     series.Items.Add(new BarItem(duration.TotalSeconds, -1));
                     pm.Series.Add(series);
+
+
+                    //// Get Color from "colors"
+                    //Color c = Colors.White;
+                    //Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == item.Item2.ToLower());
+                    //if (colorItem != null) c = colorItem.Item1;
+
+                    //OxyColor oc = OxyColor.FromArgb(170, c.R, c.G, c.B);
+
+                    //// Get Duration (value)
+                    //TimeSpan duration = item.Item1 - prevItem.Item1;
+
+                    //// Add Series to PlotModel
+                    //BarSeries series = Times_Create_Series(item.Item2);
+                    //series.FillColor = oc;
+                    //series.Items.Add(new BarItem(duration.TotalSeconds, -1));
+                    //pm.Series.Add(series);
                 }
 
                 prevItem = item;
@@ -118,6 +151,43 @@ namespace TH_DeviceCompare.Controls
             }
 
             timeline_PV.Model = pm;
+        }
+
+        public void UpdateData(List<Tuple<DateTime, string>> data)
+        {
+            PlotModel pm = timeline_PV.Model;
+            if (pm != null)
+            {
+                if (data.Count > 0)
+                {
+                    foreach (Tuple<DateTime, string> item in data)
+                    {
+                        if (prevItem != null)
+                        {
+                            // Get Color from "colors"
+                            Color c = Colors.White;
+                            Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == item.Item2.ToLower());
+                            if (colorItem != null) c = colorItem.Item1;
+
+                            OxyColor oc = OxyColor.FromArgb(170, c.R, c.G, c.B);
+
+                            // Get Duration (value)
+                            TimeSpan duration = item.Item1 - prevItem.Item1;
+
+                            // Add Series to PlotModel
+                            BarSeries series = Times_Create_Series(item.Item2);
+                            series.FillColor = oc;
+                            series.Items.Add(new BarItem(duration.TotalSeconds, -1));
+                            pm.Series.Add(series);
+                        }
+
+                        prevItem = item;
+
+                    }
+
+                    pm.InvalidatePlot(true);
+                }
+            }
         }
 
         LinearAxis Create_XAxis()

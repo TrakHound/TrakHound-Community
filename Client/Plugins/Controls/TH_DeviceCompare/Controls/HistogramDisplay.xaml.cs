@@ -48,6 +48,16 @@ namespace TH_DeviceCompare.Controls
             }
         }
 
+
+        public string shiftName
+        {
+            get { return (string)GetValue(shiftNameProperty); }
+            set { SetValue(shiftNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty shiftNameProperty =
+            DependencyProperty.Register("shiftName", typeof(string), typeof(HistogramDisplay), new PropertyMetadata(null));     
+
     }
 
     public class DataBar : ProgressBar
@@ -97,7 +107,6 @@ namespace TH_DeviceCompare.Controls
 
         public static readonly DependencyProperty ValueTextProperty =
             DependencyProperty.Register("ValueText", typeof(string), typeof(DataBar), new PropertyMetadata(null));
-
         
 
     }

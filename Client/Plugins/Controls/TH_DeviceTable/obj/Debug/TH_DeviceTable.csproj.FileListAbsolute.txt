@@ -1,0 +1,11 @@
+C:\TrakHound\Plugins\Pages\TH_DeviceTable.dll
+C:\TrakHound\Plugins\Pages\TH_DeviceTable.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\TH_DeviceTable.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\UserControl1.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\UserControl1.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\TH_DeviceTable_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\TH_DeviceTable.g.resources
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\TH_DeviceTable.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\TH_DeviceTable.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\TH_DeviceTable.dll
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceTable\obj\Debug\TH_DeviceTable.pdb

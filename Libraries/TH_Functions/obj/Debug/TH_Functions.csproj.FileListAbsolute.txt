@@ -12,5 +12,6 @@ F:\feenux\TrakHound\TH_Libraries\TH_Functions\obj\Debug\TH_Functions.dll
 F:\feenux\TrakHound\TH_Libraries\TH_Functions\obj\Debug\TH_Functions.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\bin\Debug\TH_Functions.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\bin\Debug\TH_Functions.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\obj\Debug\TH_Functions.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\obj\Debug\TH_Functions.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Functions\obj\Debug\TH_Functions.pdb

@@ -15,7 +15,7 @@
              
              >
     
-    <Grid Background="#00000000" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown">
+    <Grid MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -25,7 +25,8 @@
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="#10ffffff"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10ffffff"/>
@@ -38,10 +39,11 @@
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="#18ffffff"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#18ffffff"/>
@@ -54,7 +56,7 @@
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
