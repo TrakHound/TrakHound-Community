@@ -115,6 +115,28 @@ namespace TH_DeviceStatus
                 if (val != null) shiftId = val.Item2;
                 else shiftId = null;
 
+                // Local
+                val = null;
+                data.TryGetValue("Current Shift Begin", out val);
+                if (val != null) shiftStart = val.Item2;
+                else shiftStart = null;
+
+                val = null;
+                data.TryGetValue("Current Shift End", out val);
+                if (val != null) shiftEnd = val.Item2;
+                else shiftEnd = null;
+
+                // UTC
+                val = null;
+                data.TryGetValue("Current Shift Begin UTC", out val);
+                if (val != null) shiftStartUTC = val.Item2;
+                else shiftStartUTC = null;
+
+                val = null;
+                data.TryGetValue("Current Shift End UTC", out val);
+                if (val != null) shiftEndUTC = val.Item2;
+                else shiftEndUTC = null;
+
 
                 TH_PlugIns_Client_Data.DataEvent_Data de_d = new DataEvent_Data();
                 de_d.id = "DeviceStatus_Snapshots";
@@ -127,6 +149,10 @@ namespace TH_DeviceStatus
         string shiftDate = null;
         string shiftName = null;
         string shiftId = null;
+        string shiftStart = null;
+        string shiftEnd = null;
+        string shiftStartUTC = null;
+        string shiftEndUTC = null;
 
         void GetShifts()
         {
@@ -163,39 +189,50 @@ namespace TH_DeviceStatus
 
         void GetProductionStatusList()
         {
-            DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
-            DateTime end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
+            //DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+            //DateTime end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
-            string filter = "WHERE Timestamp >= '" + Global.ConvertDateStringtoSQL(start.ToString()) + "'";
+            DateTime start = DateTime.MinValue;
+            DateTime.TryParse(shiftStart, out start);
 
-            string tableName = TableNames.Gen_Events_TablePrefix + "Production_Status";
+            DateTime end = DateTime.MinValue;
+            DateTime.TryParse(shiftEnd, out end);
 
+            if (end < start) end = end.AddDays(1);
 
-            DataTable table = Table.Get(configuration.Databases, tableName, filter);
-            if (table != null)
+            if (start > DateTime.MinValue && end > DateTime.MinValue)
             {
-                List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
+                string filter = "WHERE TIMESTAMP BETWEEN '" + start.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + end.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                foreach (DataRow row in table.Rows)
+                string tableName = TableNames.Gen_Events_TablePrefix + "Production_Status";
+
+
+                DataTable table = Table.Get(configuration.Databases, tableName, filter);
+                if (table != null)
                 {
-                    Dictionary<string, string> rowdata = new Dictionary<string, string>();
+                    List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
 
-                    foreach (DataColumn column in row.Table.Columns)
+                    foreach (DataRow row in table.Rows)
                     {
-                        string key = column.ColumnName;
-                        string value = row[column].ToString();
+                        Dictionary<string, string> rowdata = new Dictionary<string, string>();
 
-                        rowdata.Add(key, value);
+                        foreach (DataColumn column in row.Table.Columns)
+                        {
+                            string key = column.ColumnName;
+                            string value = row[column].ToString();
+
+                            rowdata.Add(key, value);
+                        }
+
+                        data.Add(rowdata);
                     }
 
-                    data.Add(rowdata);
+                    TH_PlugIns_Client_Data.DataEvent_Data de_d = new DataEvent_Data();
+                    de_d.id = "DeviceStatus_ProductionStatus";
+                    de_d.data = data;
+
+                    if (DataEvent != null) DataEvent(de_d);
                 }
-
-                TH_PlugIns_Client_Data.DataEvent_Data de_d = new DataEvent_Data();
-                de_d.id = "DeviceStatus_ProductionStatus";
-                de_d.data = data;
-
-                if (DataEvent != null) DataEvent(de_d);
             }
         }
 

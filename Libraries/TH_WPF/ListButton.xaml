@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              
-             Height="40"
+             MinHeight="40"
              MinWidth="150"
              
              Background="#00000000"
@@ -112,7 +112,7 @@
             </Rectangle.Style>
         </Rectangle>
 
-        <!--Page Icon-->
+        <!--Icon-->
         <Rectangle Grid.Column="1" Height="20" Width="20" Margin="10,0" Fill="White">
             <Rectangle.Resources>
                 <ImageBrush x:Key="IMG" ImageSource="{Binding Image}" Stretch="Uniform" />
@@ -120,14 +120,23 @@
 
             <Rectangle.Style>
                 <Style TargetType="Rectangle">
+                    <Setter Property="Visibility" Value="Visible"/>
                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ShowImage}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </Rectangle.Style>
         </Rectangle>
 
-        <!--Page Name-->
-        <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="14" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
+        <!--Simple Text-->
+        <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="14" Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
         
+        <!--Custom Content-->
+        <ContentControl Grid.Column="2" Content="{Binding ButtonContent}" />
+           
     </Grid>
     
 </UserControl>

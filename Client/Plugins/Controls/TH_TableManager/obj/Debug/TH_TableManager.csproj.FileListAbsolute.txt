@@ -13,3 +13,5 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\Controls\DeviceButton.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\Controls\DeviceButton.g.cs

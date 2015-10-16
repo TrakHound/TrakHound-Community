@@ -1067,8 +1067,6 @@ namespace TH_GeneratedData
                                    ssi.value = returnValue.Value;
                                    ssi.timestamp = returnValue.TimeStamp;
 
-                                   //Result.Add(ssi.Copy());
-
                                    if (ssi.value != ssi.previous_value) Result.Add(ssi.Copy());
                                }
 

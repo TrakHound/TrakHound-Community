@@ -44,6 +44,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -140,6 +141,7 @@
     <Compile Include="Plugins\Pages\Installed\SubCategory.xaml.cs">
       <DependentUpon>SubCategory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SingleInstance.cs" />
     <Compile Include="Splash\PluginIcon.xaml.cs">
       <DependentUpon>PluginIcon.xaml</DependentUpon>
     </Compile>

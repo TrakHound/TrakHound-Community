@@ -135,17 +135,22 @@ namespace TH_TableManager
                     // Initialize Database Configurations
                     Global.Initialize(device.configuration.Databases);
 
+                    Controls.DeviceButton db = new DeviceButton();
+                    db.Description = device.configuration.Description.Description;
+                    db.Manufacturer = device.configuration.Description.Manufacturer;
+                    db.Model = device.configuration.Description.Model;
+                    db.Serial = device.configuration.Description.Serial;
+                    db.Id = device.configuration.Description.Machine_ID;
+
                     ListButton lb = new ListButton();
-                    lb.Text = device.configuration.Description.Description;
+                    lb.ButtonContent = db;
+                    lb.ShowImage = false;
                     lb.Selected += lb_Device_Selected;
                     lb.DataObject = device;
                     DeviceList.Add(lb);
                 }
             }
         }
-
-        private int lSelectedDeviceIndex;
-        public int SelectedDeviceIndex { get; set; }
 
         #endregion
 
@@ -700,7 +705,6 @@ namespace TH_TableManager
             // Table Data
             TableDataView = null;
         }
-
 
     }
 

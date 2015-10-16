@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Diagnostics;
 using System.IO;
+using System.Collections.Generic;
 using Microsoft.Win32;
 
 using TH_Global;

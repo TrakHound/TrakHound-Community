@@ -16,11 +16,15 @@ namespace TH_ShiftTable
         public string date { get; set; }
 
         public DateTime currentTime { get; set; }
+        public DateTime currentTimeUTC { get; set; }
 
         public Shift shift { get; set; }
 
         public DateTime shiftStart { get; set; }
         public DateTime shiftEnd { get; set; }
+
+        public DateTime shiftStartUTC { get; set; }
+        public DateTime shiftEndUTC { get; set; }
 
         public Segment segment { get; set; }
 
@@ -98,10 +102,15 @@ namespace TH_ShiftTable
                         {
                             Result = new CurrentShiftInfo();
                             Result.currentTime = Tools.GetDateTimeFromShiftTime(new ShiftTime(ts), date, segment.endDayOffset);
+                            Result.currentTimeUTC = Result.currentTime.ToUniversalTime();
+
                             Result.segment = segment;
 
                             Result.shiftStart = shiftStart;
                             Result.shiftEnd = shiftEnd;
+
+                            Result.shiftStartUTC = shiftStart.ToUniversalTime();
+                            Result.shiftEndUTC = shiftEnd.ToUniversalTime();
 
                             Result.name = shift.name;
                             Result.shift = shift;

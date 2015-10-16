@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Microsoft.Shell;
+
 using System.Threading;
 
 using System.Xml;
@@ -46,7 +48,7 @@ namespace TrakHound_Client
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, ISingleInstanceApp
     {
 
         public MainWindow()
@@ -619,6 +621,18 @@ namespace TrakHound_Client
             Properties.Settings.Default.Save();
 
         }
+
+        #region "Single Instance"
+
+        public bool SignalExternalCommandLineArgs(IList<string> args)
+        {
+            // handle command line arguments of second instance
+            // …
+
+            return true;
+        }
+
+        #endregion
 
         #endregion
 

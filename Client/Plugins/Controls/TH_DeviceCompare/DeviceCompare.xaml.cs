@@ -323,6 +323,7 @@ namespace TH_DeviceCompare
                                 {
                                     // Production Status Timeline
                                     this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd, productionstatusdata, snapshotdata });
+                                    //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd });
                                 }
 
 
@@ -1058,6 +1059,7 @@ namespace TH_DeviceCompare
 
         #region "Production Status Timeline"
 
+        // NEW TESTING
         void Update_ProductionStatusTimeline(DeviceDisplay dd, object productionstatusdata, object snapshotdata)
         {
             if (productionstatusdata.GetType() == typeof(List<Dictionary<string, string>>))
@@ -1081,13 +1083,13 @@ namespace TH_DeviceCompare
                     if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
 
                     // Get / Create TimeLineDisplay
-                    Controls.TimeLineDisplay timeline;
+                    TH_WPF.TimeLine.TimeLine timeline;
 
                     object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
                     if (ddData == null)
                     {
-                        timeline = new Controls.TimeLineDisplay(shift_begin, shift_end);
+                        timeline = new TH_WPF.TimeLine.TimeLine();
 
                         List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
                         colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#ff0000"), "Alert"));
@@ -1096,9 +1098,11 @@ namespace TH_DeviceCompare
 
                         timeline.colors = colors;
 
+                        timeline.shiftDuration = shift_end - shift_begin;
+
                         dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
                     }
-                    else timeline = (Controls.TimeLineDisplay)ddData;
+                    else timeline = (TH_WPF.TimeLine.TimeLine)ddData;
 
 
                     foreach (Dictionary<string, string> row in data)
@@ -1137,15 +1141,108 @@ namespace TH_DeviceCompare
                     timeline.shiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
                     if (prev_shiftName != timeline.shiftName)
                     {
-                        timeline.CreateData(data_forShift);
+                        timeline.shiftStart = shift_begin.ToShortTimeString();
+                        timeline.shiftEnd = shift_end.ToShortTimeString();
+
+                        timeline.Create(data_forShift);
                     }
                     else
                     {
-                        timeline.UpdateData(data_forShift);
+                        timeline.Update(data_forShift);
                     }
                 }
             }
+
         }
+
+        //void OLD_Update_ProductionStatusTimeline(DeviceDisplay dd, object productionstatusdata, object snapshotdata)
+        //{
+        //    if (productionstatusdata.GetType() == typeof(List<Dictionary<string, string>>))
+        //    {
+        //        List<Dictionary<string, string>> data = (List<Dictionary<string, string>>)productionstatusdata;
+
+        //        List<Tuple<DateTime, string>> data_forShift = new List<Tuple<DateTime, string>>();
+
+        //        int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
+        //        if (cellIndex >= 0)
+        //        {
+
+        //            string begin = GetSnapShotValue("Current Shift Begin", snapshotdata);
+        //            DateTime shift_begin = DateTime.MinValue;
+        //            DateTime.TryParse(begin, out shift_begin);
+
+        //            string end = GetSnapShotValue("Current Shift End", snapshotdata);
+        //            DateTime shift_end = DateTime.MinValue;
+        //            DateTime.TryParse(end, out shift_end);
+
+        //            if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
+
+        //            // Get / Create TimeLineDisplay
+        //            Controls.TimeLineDisplay timeline;
+
+        //            object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+        //            if (ddData == null)
+        //            {
+        //                timeline = new Controls.TimeLineDisplay(shift_begin, shift_end);
+
+        //                List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
+        //                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#ff0000"), "Alert"));
+        //                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#aaffffff"), "Idle"));
+        //                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#00ff00"), "Full Production"));
+
+        //                timeline.colors = colors;
+
+        //                dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
+        //            }
+        //            else timeline = (Controls.TimeLineDisplay)ddData;
+
+
+        //            foreach (Dictionary<string, string> row in data)
+        //            {
+        //                string val = null;
+        //                row.TryGetValue("TIMESTAMP", out val);
+
+        //                if (val != null)
+        //                {
+        //                    DateTime timestamp = DateTime.MinValue;
+        //                    DateTime.TryParse(val, out timestamp);
+
+        //                    if (timestamp > DateTime.MinValue)
+        //                    {
+        //                        if (shift_begin > DateTime.MinValue && shift_end > DateTime.MinValue && timestamp > timeline.previousTimestamp)
+        //                        {
+        //                            if (timestamp >= shift_begin && timestamp <= shift_end)
+        //                            {
+        //                                val = null;
+        //                                row.TryGetValue("VALUE", out val);
+
+        //                                if (val != null)
+        //                                {
+        //                                    data_forShift.Add(new Tuple<DateTime, string>(timestamp, val));
+        //                                }
+
+        //                                timeline.previousTimestamp = timestamp;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+
+        //            // Get Shift Name to check if still in the same shift as last update
+        //            string prev_shiftName = timeline.shiftName;
+        //            timeline.shiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
+        //            if (prev_shiftName != timeline.shiftName)
+        //            {
+        //                timeline.CreateData(data_forShift);
+        //            }
+        //            else
+        //            {
+        //                timeline.UpdateData(data_forShift);
+        //            }
+        //        }
+        //    }
+        //}
 
         #endregion
 

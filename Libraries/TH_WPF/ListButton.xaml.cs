@@ -48,6 +48,27 @@ namespace TH_WPF
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(ListButton), new PropertyMetadata(null));
 
 
+        public object ButtonContent
+        {
+            get { return (object)GetValue(ButtonContentProperty); }
+            set { SetValue(ButtonContentProperty, value); }
+        }
+
+        public static readonly DependencyProperty ButtonContentProperty =
+            DependencyProperty.Register("ButtonContent", typeof(object), typeof(ListButton), new PropertyMetadata(null));
+
+
+        public bool ShowImage
+        {
+            get { return (bool)GetValue(ShowImageProperty); }
+            set { SetValue(ShowImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowImageProperty =
+            DependencyProperty.Register("ShowImage", typeof(bool), typeof(ListButton), new PropertyMetadata(true));
+
+        
+
         public delegate void Selected_Handler(ListButton LB);
         public event Selected_Handler Selected;
         public event Selected_Handler MultiSelected;

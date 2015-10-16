@@ -81,8 +81,8 @@
                                 <Setter Property="ToolTip">
                                     <Setter.Value>
                                         <StackPanel>
-                                            <TextBlock Text="{Binding SegmentTimes}" FontWeight="Bold" FontSize="12"/>
-                                            <TextBlock Text="{Binding ValueText, StringFormat=OEE {0:0}}" FontSize="14"/>
+                                            <TextBlock Text="{Binding SegmentTimes}" FontWeight="Bold" FontSize="8pt"/>
+                                            <TextBlock Text="{Binding ValueText, StringFormat=OEE {0:0}}" FontSize="8pt"/>
                                         </StackPanel>
                                     </Setter.Value>
                                 </Setter>

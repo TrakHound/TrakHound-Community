@@ -83,6 +83,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="TimeLine\Segment.xaml.cs">
+      <DependentUpon>Segment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimeLine\TickMark.xaml.cs">
+      <DependentUpon>TickMark.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimeLine\TimeLine.xaml.cs">
+      <DependentUpon>TimeLine.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -114,6 +123,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProductionIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimeLine\Segment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimeLine\TickMark.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimeLine\TimeLine.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

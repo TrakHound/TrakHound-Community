@@ -70,10 +70,15 @@ namespace TH_ShiftTable
 
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_date", shiftInfo.date, returnData.header.creationTime);
 
+                // Local
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime);
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime);
-
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime);
+
+                // UTC
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime_utc", shiftInfo.shiftStartUTC.ToString(), returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime_utc", shiftInfo.shiftEndUTC.ToString(), returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime_utc", shiftInfo.currentTimeUTC.ToString(), returnData.header.creationTime);
             }
             else
             {
@@ -83,10 +88,15 @@ namespace TH_ShiftTable
 
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_date", "", returnData.header.creationTime);
 
+                // Local
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime", "", returnData.header.creationTime);
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime", "", returnData.header.creationTime);
-
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime", "", returnData.header.creationTime);
+
+                // UTC
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime_utc", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime_utc", "", returnData.header.creationTime);
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime_utc", "", returnData.header.creationTime);
             }
         }
 
