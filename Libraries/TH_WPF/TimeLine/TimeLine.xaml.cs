@@ -152,8 +152,8 @@ namespace TH_WPF.TimeLine
                         Segment segment = new Segment();
                         segment.Value = prevItem.Item2;
                         segment.Duration = duration.ToString();
-                        segment.StartTimeStamp = prevItem.Item1.ToShortTimeString();
-                        segment.EndTimeStamp = item.Item1.ToShortTimeString();
+                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToShortTimeString();
+                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToShortTimeString();
 
                         segment.Width = GetSegmentWidth(duration, shiftDuration);
                         segment.Color = new SolidColorBrush(color);
@@ -177,7 +177,7 @@ namespace TH_WPF.TimeLine
                     {
                         // Get Color from "colors"
                         Color c = Colors.White;
-                        Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == item.Item2.ToLower());
+                        Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == prevItem.Item2.ToLower());
                         if (colorItem != null) c = colorItem.Item1;
                         Color color = Color.FromRgb(c.R, c.G, c.B);
 
@@ -185,11 +185,10 @@ namespace TH_WPF.TimeLine
                         TimeSpan duration = item.Item1 - prevItem.Item1;
 
                         Segment segment = new Segment();
-
                         segment.Value = prevItem.Item2;
                         segment.Duration = duration.ToString();
-                        segment.StartTimeStamp = prevItem.Item1.ToShortTimeString();
-                        segment.EndTimeStamp = item.Item1.ToShortTimeString();
+                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToShortTimeString();
+                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToShortTimeString();
 
                         segment.Width = GetSegmentWidth(duration, shiftDuration);
                         segment.Color = new SolidColorBrush(color);
@@ -211,7 +210,9 @@ namespace TH_WPF.TimeLine
             {
                 double controlWidth = Convert.ToInt16(this.ActualWidth) - 20;
 
-                return (controlWidth * ts.TotalSeconds) / shiftDuration.TotalSeconds;
+                double width = (controlWidth * ts.TotalSeconds) / shiftDuration.TotalSeconds;
+
+                return Math.Max(width, 0);
             }
             else return 0;
         }

@@ -47,6 +47,9 @@
 
                                 <Ellipse Stroke="#33ffffff" Fill="{x:Null}" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
                                 <Ellipse Stroke="#33ffffff" Margin="10" Fill="{x:Null}" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+
+                                <local:Arc StrokeThickness="10" Stroke="#11ffffff" Margin="0" Grid.ColumnSpan="3" Grid.RowSpan="3" StartAngle="0" EndAngle="359.99999"/>
+
                                 <local:Arc StrokeThickness="10" Stroke="#aaffffff" Margin="0" Grid.ColumnSpan="3" Grid.RowSpan="3">
                                     <local:Arc.StartAngle>
                                         <MultiBinding Converter="{StaticResource ProgressConverter}">

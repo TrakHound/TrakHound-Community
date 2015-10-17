@@ -18,12 +18,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Threading;
+
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
 using TH_Configuration;
 using TH_Device_Client;
+using TH_Global;
 using TH_PlugIns_Client_Control;
 using TH_Functions;
 
@@ -323,7 +326,6 @@ namespace TH_DeviceCompare
                                 {
                                     // Production Status Timeline
                                     this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd, productionstatusdata, snapshotdata });
-                                    //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd });
                                 }
 
 
@@ -420,6 +422,188 @@ namespace TH_DeviceCompare
 
         #region "Shift Display"
 
+        //void UpdateShiftInfo_Worker(object o)
+        //{
+        //    UpdateShiftInfo_WorkerInfo info = (UpdateShiftInfo_WorkerInfo)o;
+
+        //    Controls.ShiftDisplay sd = info.sd;
+        //    object snapshotdata = info.snapshotdata;
+        //    object shiftdata = info.shiftdata;
+
+
+        //    string prevShiftName = sd.Shift_Name;
+        //    bool shiftChanged = false;
+
+        //    // Update Shift Name
+        //    string shiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
+
+        //    Thread t = new Thread(new ThreadStart(
+        //        delegate
+        //        {
+        //            Dispatcher.BeginInvoke(new Action<Controls.ShiftDisplay, string>(UpdateShiftInfo_ShiftName), Priority_Context, new object[] { info.sd, shiftName });
+        //        }
+        //    ));
+        //    t.Start();
+
+
+        //    //Dispatcher.BeginInvoke(new Action<Controls.ShiftDisplay, string>(UpdateShiftInfo_ShiftName), Priority_Context, new object[] { info.sd, shiftName });
+
+
+        //    //sd.Shift_Name = GetSnapShotValue("Current Shift Name", snapshotdata);
+
+        //    //if (prevShiftName != sd.Shift_Name) shiftChanged = true;
+
+
+        //    //string date = "";
+
+        //    //string shiftdate = GetSnapShotValue("Current Shift Date", snapshotdata);
+        //    //if (shiftdate != null)
+        //    //{
+        //    //    DateTime dt = DateTime.MinValue;
+        //    //    DateTime.TryParse(shiftdate, out dt);
+        //    //    if (dt > DateTime.MinValue)
+        //    //    {
+        //    //        sd.Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(dt.Month);
+        //    //        sd.Day = dt.Day.ToString();
+        //    //    }
+
+        //    //    date = shiftdate + " ";
+        //    //}
+
+
+        //    //// Get Shift Progress Bar Maximum -------------------------------------------------
+        //    //string shiftBegin = GetSnapShotValue("Current Shift Begin", snapshotdata);
+        //    //DateTime begin = DateTime.MinValue;
+        //    //DateTime.TryParse(shiftBegin, out begin);
+
+        //    //string shiftEnd = GetSnapShotValue("Current Shift End", snapshotdata);
+        //    //DateTime end = DateTime.MinValue;
+        //    //DateTime.TryParse(shiftEnd, out end);
+
+        //    //if (end < begin) end = end.AddDays(1);
+
+        //    //sd.Shift_Times = "(" + begin.ToShortTimeString() + " - " + end.ToShortTimeString() + ")";
+
+        //    //Int64 duration = Convert.ToInt64((end - begin).TotalSeconds);
+        //    //if (duration <= int.MaxValue && duration >= int.MinValue) sd.Bar_Maximum = Convert.ToInt32(duration);
+        //    //// --------------------------------------------------------------------------------
+
+        //    //// Get Shift Progress Bar Value ---------------------------------------------------
+        //    //string shiftProgress = GetSnapShotValue("Current Shift Time", snapshotdata);
+        //    //DateTime progress = DateTime.MinValue;
+        //    //DateTime.TryParse(shiftProgress, out progress);
+
+        //    //if (progress > DateTime.MinValue)
+        //    //{
+        //    //    duration = Convert.ToInt64((end - progress).TotalSeconds);
+        //    //    if (duration <= int.MaxValue && duration >= int.MinValue) sd.Bar_Value = Convert.ToInt32(duration);
+        //    //}
+        //    //// --------------------------------------------------------------------------------
+
+
+        //    //// Get Shift Segment Indicators ---------------------------------------------------
+
+        //    //List<SegmentInfo> shiftSegments = GetShiftSegments(shiftdata, snapshotdata);
+
+
+        //    //if (shiftChanged) sd.SegmentIndicators.Clear();
+
+        //    //double maxDuration = -1;
+
+        //    //foreach (SegmentInfo segment in shiftSegments)
+        //    //{
+        //    //    double d = (segment.segmentEnd - segment.segmentStart).TotalSeconds;
+        //    //    if (d > maxDuration) maxDuration = d;
+        //    //}
+
+        //    //foreach (SegmentInfo segment in shiftSegments)
+        //    //{
+        //    //    Controls.ShiftSegmentIndicator indicator;
+
+        //    //    int indicatorIndex = sd.SegmentIndicators.ToList().FindIndex(x => x.id == segment.segmentId);
+        //    //    if (indicatorIndex >= 0) indicator = sd.SegmentIndicators[indicatorIndex];
+        //    //    else
+        //    //    {
+        //    //        indicator = new Controls.ShiftSegmentIndicator();
+        //    //        sd.SegmentIndicators.Add(indicator);
+        //    //    }
+
+        //    //    indicator.id = segment.segmentId;
+
+        //    //    DateTime segmentEnd = segment.segmentEnd;
+        //    //    if (segment.segmentEnd < segment.segmentStart) segmentEnd = segmentEnd.AddDays(1);
+
+        //    //    double segmentDuration = (segment.segmentEnd - segment.segmentStart).TotalSeconds;
+        //    //    indicator.BarMaximum = Math.Max(0, Convert.ToInt32(segmentDuration));
+
+        //    //    indicator.ProgressWidth = (segmentDuration * 55) / maxDuration;
+
+        //    //    indicator.SegmentTimes = segment.segmentStart.ToShortTimeString() + " - " + segment.segmentEnd.ToShortTimeString();
+        //    //    indicator.SegmentDuration = (segment.segmentEnd - segment.segmentStart).ToString();
+
+        //    //    string CurrentShiftId = GetSnapShotValue("Current Shift Id", snapshotdata);
+        //    //    if (CurrentShiftId == segment.id)
+        //    //    {
+        //    //        indicator.CurrentShift = true;
+
+        //    //        string sCurrentTime = GetSnapShotValue("Current Shift Time", snapshotdata);
+
+        //    //        DateTime currentTime = DateTime.MinValue;
+        //    //        if (DateTime.TryParse(sCurrentTime, out currentTime))
+        //    //        {
+        //    //            double segmentProgress = (currentTime - segment.segmentStart).TotalSeconds;
+        //    //            indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentProgress));
+        //    //        }
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentDuration));
+        //    //        indicator.CurrentShift = false;
+        //    //    }
+
+        //    //    indicator.SegmentId = (segment.segmentId + 1).ToString("00");
+
+        //    //    if (segment.segmentType.ToLower() == "break") indicator.BreakType = true;
+
+        //    //    indicator.SegmentType = segment.segmentType;
+        //    //}
+        //}
+
+        //class UpdateShiftInfo_WorkerInfo
+        //{
+        //    public Controls.ShiftDisplay sd { get; set; }
+        //    public object snapshotdata { get; set; }
+        //    public object shiftdata { get; set; }
+        //}
+
+
+
+        //void UpdateShiftInfo_ShiftName(Controls.ShiftDisplay sd, string shiftName)
+        //{
+        //    sd.Shift_Name = shiftName;
+        //}
+
+        //void UpdateShiftInfo_Date(Controls.ShiftDisplay sd, string month, string day)
+        //{
+        //    sd.Month = month;
+        //    sd.Day = day;
+        //}
+
+        //void UpdateShiftInfo_ShiftTimes(Controls.ShiftDisplay sd, string shiftTimes)
+        //{
+        //    sd.Shift_Times = shiftTimes;
+        //}
+
+        //void UpdateShiftInfo_BarMaximum(Controls.ShiftDisplay sd, int barMax)
+        //{
+        //    sd.Bar_Maximum = barMax;
+        //}
+
+        //void UpdateShiftInfo_BarValue(Controls.ShiftDisplay sd, int barValue)
+        //{
+        //    sd.Bar_Value = barValue;
+        //}
+
         void UpdateShiftInfo(DeviceDisplay dd, object snapshotdata, object shiftdata)
         {
             int cellIndex = -1;
@@ -438,16 +622,13 @@ namespace TH_DeviceCompare
                     dd.ComparisonGroup.column.Cells[cellIndex].Data = sd;
                 }
 
+                // Update Shift Name
                 string prevShiftName = sd.Shift_Name;
                 bool shiftChanged = false;
-
                 sd.Shift_Name = GetSnapShotValue("Current Shift Name", snapshotdata);
-
                 if (prevShiftName != sd.Shift_Name) shiftChanged = true;
 
-
                 string date = "";
-
                 string shiftdate = GetSnapShotValue("Current Shift Date", snapshotdata);
                 if (shiftdate != null)
                 {
@@ -477,7 +658,10 @@ namespace TH_DeviceCompare
                 sd.Shift_Times = "(" + begin.ToShortTimeString() + " - " + end.ToShortTimeString() + ")";
 
                 Int64 duration = Convert.ToInt64((end - begin).TotalSeconds);
-                if (duration <= int.MaxValue && duration >= int.MinValue) sd.Bar_Maximum = Convert.ToInt32(duration);
+                if (duration <= int.MaxValue && duration >= int.MinValue)
+                {           
+                    sd.Bar_Maximum = Convert.ToInt32(duration);
+                }
                 // --------------------------------------------------------------------------------
 
                 // Get Shift Progress Bar Value ---------------------------------------------------
@@ -488,10 +672,12 @@ namespace TH_DeviceCompare
                 if (progress > DateTime.MinValue)
                 {
                     duration = Convert.ToInt64((end - progress).TotalSeconds);
-                    if (duration <= int.MaxValue && duration >= int.MinValue) sd.Bar_Value = Convert.ToInt32(duration);
+                    if (duration <= int.MaxValue && duration >= int.MinValue)
+                    {                
+                        sd.Bar_Value = Convert.ToInt32(duration);
+                    }                    
                 }
                 // --------------------------------------------------------------------------------
-
 
                 // Get Shift Segment Indicators ---------------------------------------------------
 
@@ -525,13 +711,14 @@ namespace TH_DeviceCompare
                     DateTime segmentEnd = segment.segmentEnd;
                     if (segment.segmentEnd < segment.segmentStart) segmentEnd = segmentEnd.AddDays(1);
 
-                    double segmentDuration = (segment.segmentEnd - segment.segmentStart).TotalSeconds;
+                    double segmentDuration = (segmentEnd - segment.segmentStart).TotalSeconds;
                     indicator.BarMaximum = Math.Max(0, Convert.ToInt32(segmentDuration));
 
                     indicator.ProgressWidth = (segmentDuration * 55) / maxDuration;
 
-                    indicator.SegmentTimes = segment.segmentStart.ToShortTimeString() + " - " + segment.segmentEnd.ToShortTimeString();
-                    indicator.SegmentDuration = (segment.segmentEnd - segment.segmentStart).ToString();
+                    indicator.SegmentTimes = segment.segmentStart.ToShortTimeString() + " - " + segmentEnd.ToShortTimeString();
+
+                    indicator.SegmentDuration = (segmentEnd - segment.segmentStart).ToString();
 
                     string CurrentShiftId = GetSnapShotValue("Current Shift Id", snapshotdata);
                     if (CurrentShiftId == segment.id)
@@ -1059,7 +1246,6 @@ namespace TH_DeviceCompare
 
         #region "Production Status Timeline"
 
-        // NEW TESTING
         void Update_ProductionStatusTimeline(DeviceDisplay dd, object productionstatusdata, object snapshotdata)
         {
             if (productionstatusdata.GetType() == typeof(List<Dictionary<string, string>>))
@@ -1071,7 +1257,7 @@ namespace TH_DeviceCompare
                 int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
                 if (cellIndex >= 0)
                 {
-
+                    // Local
                     string begin = GetSnapShotValue("Current Shift Begin", snapshotdata);
                     DateTime shift_begin = DateTime.MinValue;
                     DateTime.TryParse(begin, out shift_begin);
@@ -1080,7 +1266,16 @@ namespace TH_DeviceCompare
                     DateTime shift_end = DateTime.MinValue;
                     DateTime.TryParse(end, out shift_end);
 
-                    if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
+                    // UTC
+                    string beginUTC = GetSnapShotValue("Current Shift Begin UTC", snapshotdata);
+                    DateTime shift_beginUTC = DateTime.MinValue;
+                    DateTime.TryParse(beginUTC, out shift_beginUTC);
+
+                    string endUTC = GetSnapShotValue("Current Shift End UTC", snapshotdata);
+                    DateTime shift_endUTC = DateTime.MinValue;
+                    DateTime.TryParse(endUTC, out shift_endUTC);
+
+                    if (shift_endUTC < shift_beginUTC) shift_endUTC = shift_endUTC.AddDays(1);
 
                     // Get / Create TimeLineDisplay
                     TH_WPF.TimeLine.TimeLine timeline;
@@ -1098,12 +1293,11 @@ namespace TH_DeviceCompare
 
                         timeline.colors = colors;
 
-                        timeline.shiftDuration = shift_end - shift_begin;
+                        timeline.shiftDuration = shift_endUTC - shift_beginUTC;
 
                         dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
                     }
                     else timeline = (TH_WPF.TimeLine.TimeLine)ddData;
-
 
                     foreach (Dictionary<string, string> row in data)
                     {
@@ -1117,9 +1311,9 @@ namespace TH_DeviceCompare
 
                             if (timestamp > DateTime.MinValue)
                             {
-                                if (shift_begin > DateTime.MinValue && shift_end > DateTime.MinValue && timestamp > timeline.previousTimestamp)
+                                if (shift_beginUTC > DateTime.MinValue && shift_endUTC > DateTime.MinValue && timestamp > timeline.previousTimestamp)
                                 {
-                                    if (timestamp >= shift_begin && timestamp <= shift_end)
+                                    if (timestamp >= shift_beginUTC && timestamp <= shift_endUTC)
                                     {
                                         val = null;
                                         row.TryGetValue("VALUE", out val);
@@ -1152,97 +1346,7 @@ namespace TH_DeviceCompare
                     }
                 }
             }
-
         }
-
-        //void OLD_Update_ProductionStatusTimeline(DeviceDisplay dd, object productionstatusdata, object snapshotdata)
-        //{
-        //    if (productionstatusdata.GetType() == typeof(List<Dictionary<string, string>>))
-        //    {
-        //        List<Dictionary<string, string>> data = (List<Dictionary<string, string>>)productionstatusdata;
-
-        //        List<Tuple<DateTime, string>> data_forShift = new List<Tuple<DateTime, string>>();
-
-        //        int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
-        //        if (cellIndex >= 0)
-        //        {
-
-        //            string begin = GetSnapShotValue("Current Shift Begin", snapshotdata);
-        //            DateTime shift_begin = DateTime.MinValue;
-        //            DateTime.TryParse(begin, out shift_begin);
-
-        //            string end = GetSnapShotValue("Current Shift End", snapshotdata);
-        //            DateTime shift_end = DateTime.MinValue;
-        //            DateTime.TryParse(end, out shift_end);
-
-        //            if (shift_end < shift_begin) shift_end = shift_end.AddDays(1);
-
-        //            // Get / Create TimeLineDisplay
-        //            Controls.TimeLineDisplay timeline;
-
-        //            object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
-
-        //            if (ddData == null)
-        //            {
-        //                timeline = new Controls.TimeLineDisplay(shift_begin, shift_end);
-
-        //                List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
-        //                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#ff0000"), "Alert"));
-        //                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#aaffffff"), "Idle"));
-        //                colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#00ff00"), "Full Production"));
-
-        //                timeline.colors = colors;
-
-        //                dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
-        //            }
-        //            else timeline = (Controls.TimeLineDisplay)ddData;
-
-
-        //            foreach (Dictionary<string, string> row in data)
-        //            {
-        //                string val = null;
-        //                row.TryGetValue("TIMESTAMP", out val);
-
-        //                if (val != null)
-        //                {
-        //                    DateTime timestamp = DateTime.MinValue;
-        //                    DateTime.TryParse(val, out timestamp);
-
-        //                    if (timestamp > DateTime.MinValue)
-        //                    {
-        //                        if (shift_begin > DateTime.MinValue && shift_end > DateTime.MinValue && timestamp > timeline.previousTimestamp)
-        //                        {
-        //                            if (timestamp >= shift_begin && timestamp <= shift_end)
-        //                            {
-        //                                val = null;
-        //                                row.TryGetValue("VALUE", out val);
-
-        //                                if (val != null)
-        //                                {
-        //                                    data_forShift.Add(new Tuple<DateTime, string>(timestamp, val));
-        //                                }
-
-        //                                timeline.previousTimestamp = timestamp;
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            // Get Shift Name to check if still in the same shift as last update
-        //            string prev_shiftName = timeline.shiftName;
-        //            timeline.shiftName = GetSnapShotValue("Current Shift Name", snapshotdata);
-        //            if (prev_shiftName != timeline.shiftName)
-        //            {
-        //                timeline.CreateData(data_forShift);
-        //            }
-        //            else
-        //            {
-        //                timeline.UpdateData(data_forShift);
-        //            }
-        //        }
-        //    }
-        //}
 
         #endregion
 

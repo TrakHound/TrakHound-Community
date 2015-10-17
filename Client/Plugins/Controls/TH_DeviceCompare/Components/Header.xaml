@@ -38,12 +38,14 @@
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="#00000000"/>
                 <Setter Property="Height" Value="180"/>
+                <!--<Setter Property="Height" Value="300"/>-->
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Minimized}" Value="true">
+                        <!--<Setter Property="Height" Value="180"/>-->
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimation Duration="00:00:1" Storyboard.TargetProperty="Height" From="300" To="180">
+                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Height" From="300" To="180" Timeline.DesiredFrameRate="30">
                                         <DoubleAnimation.EasingFunction>
                                             <CubicEase EasingMode="EaseOut"/>
                                         </DoubleAnimation.EasingFunction>
@@ -54,7 +56,7 @@
                         <DataTrigger.ExitActions>
                             <BeginStoryboard>
                                 <Storyboard >
-                                    <DoubleAnimation Duration="00:00:1" Storyboard.TargetProperty="Height" From="180" To="300">
+                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Height" From="180" To="300" Timeline.DesiredFrameRate="30">
                                         <DoubleAnimation.EasingFunction>
                                             <CubicEase EasingMode="EaseOut"/>
                                         </DoubleAnimation.EasingFunction>

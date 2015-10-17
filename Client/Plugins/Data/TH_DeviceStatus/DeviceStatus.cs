@@ -193,10 +193,10 @@ namespace TH_DeviceStatus
             //DateTime end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
 
             DateTime start = DateTime.MinValue;
-            DateTime.TryParse(shiftStart, out start);
+            DateTime.TryParse(shiftStartUTC, out start);
 
             DateTime end = DateTime.MinValue;
-            DateTime.TryParse(shiftEnd, out end);
+            DateTime.TryParse(shiftEndUTC, out end);
 
             if (end < start) end = end.AddDays(1);
 
