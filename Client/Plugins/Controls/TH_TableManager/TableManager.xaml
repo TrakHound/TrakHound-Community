@@ -15,6 +15,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="700">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -49,7 +57,6 @@
 
             </Grid>
             
-
         </StackPanel>
 
         <!--Content-->
@@ -164,6 +171,7 @@
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="MaxHeight" Value="0"/>
+                            <!--<Setter Property="MaxHeight" Value="100"/>-->
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding TableInfoShown}" Value="true">
                                     <DataTrigger.EnterActions>
@@ -236,38 +244,26 @@
                     </Grid>
                     
                     <!--Display Options-->
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
                         
                         <TextBlock Text="Page" FontSize="8pt" Foreground="#33ffffff" Margin="10,0" VerticalAlignment="Center"/>
                         
                         <StackPanel x:Name="PageNumbers_STACK" Grid.Column="1" Orientation="Horizontal"/>
-                        
-                    </Grid>
+
+                        <TextBlock Text="Displaying" FontSize="8pt" Foreground="#33ffffff" Margin="10,0" VerticalAlignment="Center"/>
+
+                        <ComboBox x:Name="RowLimit_COMBO" MinWidth="60" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding RowLimits}" SelectionChanged="RowDisplayLimit_SelectionChanged" />
+
+                        <TextBlock Text="Rows" FontSize="8pt" Foreground="#33ffffff" Margin="5,0" VerticalAlignment="Center"/>
+
+                    </StackPanel>
                     
                     <!--Info Refresh Button-->
                     <controls:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Table Info"
                                      Height="30" Width="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
-                                     Clicked="TableInfoRefresh_Button_Clicked"/>
+                                     Clicked="TableInfoRefresh_Button_Clicked" />
 
                 </Grid>
-                
-                <!--Loading Data Display-->
-                <!--<TextBlock Text="Loading Data..." FontSize="26pt" Foreground="#66ffffff" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding TableDataLoading}" Value="true">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>-->
                 
                 <!--Loading Animation Wheel-->
                 <Grid Grid.Row="1">
@@ -295,8 +291,48 @@
                         </Style>
                     </Grid.Style>
 
-                    <loadinganimation:Wheel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="#aaffffff" />
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
+                        <loadinganimation:Wheel Grid.Row="1" Width="100" Height="100" Foreground="#aaffffff" />
+
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Opacity" Value="0.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding LoadingRowDisplay}" Value="true">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:00.3" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Duration="0">
+                                                            <DiscreteDoubleKeyFrame Value="0" />
+                                                        </DoubleAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <TextBlock FontSize="12pt" Margin="0,15,0,0" Foreground="#aaffffff" HorizontalAlignment="Center">
+                            <Run Text="Loading Row"/>
+                            <Run Text="{Binding LoadingRow}"/>
+                            <Run Text="of"/>
+                            <Run Text="{Binding RowDisplayLimit}"/>
+                            </TextBlock>
+
+                        </Grid>
+
+                    </StackPanel>
+        
                 </Grid>
                 
                 

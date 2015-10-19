@@ -152,8 +152,8 @@ namespace TH_WPF.TimeLine
                         Segment segment = new Segment();
                         segment.Value = prevItem.Item2;
                         segment.Duration = duration.ToString();
-                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToShortTimeString();
-                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToShortTimeString();
+                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToString();
+                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToString();
 
                         segment.Width = GetSegmentWidth(duration, shiftDuration);
                         segment.Color = new SolidColorBrush(color);
@@ -187,8 +187,8 @@ namespace TH_WPF.TimeLine
                         Segment segment = new Segment();
                         segment.Value = prevItem.Item2;
                         segment.Duration = duration.ToString();
-                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToShortTimeString();
-                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToShortTimeString();
+                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToString();
+                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToString();
 
                         segment.Width = GetSegmentWidth(duration, shiftDuration);
                         segment.Color = new SolidColorBrush(color);

@@ -401,8 +401,7 @@ namespace TH_TableManager
 
         public static readonly DependencyProperty TableSizeProperty =
             DependencyProperty.Register("TableSize", typeof(string), typeof(TableManager), new PropertyMetadata(null));
-
-        
+     
 
         Thread Info_WORKER;
 
@@ -438,6 +437,10 @@ namespace TH_TableManager
             RowCount = rowCount;
             TableRowCount = rowCount.ToString("n0");
             TableSize = Formatting.SizeSuffix(tablesize);
+
+            RowDisplayLimit = Math.Min(RowCount, rowLimits[rowLimitIndex]).ToString();
+
+            LoadingRowDisplay = true;
 
             CreatePageNumbers(rowCount, 1);
         }
@@ -591,19 +594,45 @@ namespace TH_TableManager
         public static readonly DependencyProperty TableDataLoadingProperty =
             DependencyProperty.Register("TableDataLoading", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
 
+        public bool LoadingRowDisplay
+        {
+            get { return (bool)GetValue(LoadingRowDisplayProperty); }
+            set { SetValue(LoadingRowDisplayProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingRowDisplayProperty =
+            DependencyProperty.Register("LoadingRowDisplay", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+
+        public string LoadingRow
+        {
+            get { return (string)GetValue(LoadingRowProperty); }
+            set { SetValue(LoadingRowProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingRowProperty =
+            DependencyProperty.Register("LoadingRow", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+
+
 
         Thread Table_WORKER;
+
+        LoadTableParameters selectedTableParameters;
 
         void LoadTable(string tableName, Int64 page, Configuration config)
         {
             TableDataView = null;
+            LoadingRowDisplay = false;
+            TableDataLoading = true;      
+            LoadingRow = "0";
 
-            TableDataLoading = true;
+            LoadTableRowLimit();
 
             LoadTableParameters ltp = new LoadTableParameters();
             ltp.tablename = tableName;
             ltp.page = page;
             ltp.config = config;
+
+            selectedTableParameters = ltp;
 
             if (Table_WORKER != null) Table_WORKER.Abort();
 
@@ -611,12 +640,32 @@ namespace TH_TableManager
             Table_WORKER.Start(ltp);
         }
 
+        void LoadTable()
+        {
+            if (selectedTableParameters != null)
+            {
+                TableDataView = null;
+                //LoadingRowDisplay = false;
+                TableDataLoading = true;
+                LoadingRow = "0";
+
+                RowDisplayLimit = Math.Min(RowCount, rowLimits[rowLimitIndex]).ToString();
+
+                LoadTableRowLimit();
+
+                if (Table_WORKER != null) Table_WORKER.Abort();
+
+                Table_WORKER = new Thread(new ParameterizedThreadStart(LoadTable_Worker));
+                Table_WORKER.Start(selectedTableParameters);
+            }
+        }
+
         void LoadTable_Worker(object loadTableParameters)
         {
             LoadTableParameters ltp = (LoadTableParameters)loadTableParameters;
 
             // Row Limit
-            int limit = 100;
+            int limit = GetTableRowLimit();
 
             // Calculate Offset based on selected page
             string offset = "";
@@ -666,12 +715,20 @@ namespace TH_TableManager
 
         void LoadTable_AddRow(DataRow row)
         {
-            DataRow newRow = TableDataView.Table.NewRow();
-            newRow.ItemArray = row.ItemArray;
+            if (TableDataView != null)
+            {
+                if (TableDataView.Table != null)
+                {
+                    DataRow newRow = TableDataView.Table.NewRow();
+                    newRow.ItemArray = row.ItemArray;
 
-            TableDataView.Table.Rows.Add(newRow);
+                    LoadingRow = (TableDataView.Table.Rows.Count + 1).ToString();
 
-            if (row.Table.Rows.IndexOf(row) == row.Table.Rows.Count - 1) TableDataLoading = false;
+                    TableDataView.Table.Rows.Add(newRow);
+
+                    if (row.Table.Rows.IndexOf(row) == row.Table.Rows.Count - 1) TableDataLoading = false;
+                }
+            } 
         }
 
         #endregion
@@ -688,6 +745,78 @@ namespace TH_TableManager
                 LoadTableList(selectedDevice.configuration);
             }
 
+        }
+
+        #endregion
+
+        #region "Table Row Limit"
+
+        ObservableCollection<string> rowlimits;
+        public ObservableCollection<string> RowLimits
+        {
+            get
+            {
+                if (rowlimits == null)
+                {
+                    rowlimits = new ObservableCollection<string>();
+                    foreach (int limit in rowLimits) rowlimits.Add(limit.ToString());
+                }
+                return rowlimits;
+            }
+
+            set
+            {
+                rowlimits = value;
+            }
+        }
+
+        int[] rowLimits = new int[] { 50, 100, 500, 1000, 5000 };
+
+        public string RowDisplayLimit
+        {
+            get { return (string)GetValue(RowDisplayLimitProperty); }
+            set { SetValue(RowDisplayLimitProperty, value); }
+        }
+
+        public static readonly DependencyProperty RowDisplayLimitProperty =
+            DependencyProperty.Register("RowDisplayLimit", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+
+        int rowLimitIndex = 0;
+
+        private void RowDisplayLimit_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender.GetType() == typeof(ComboBox))
+            {
+                ComboBox cb = (ComboBox)sender;
+                rowLimitIndex = cb.SelectedIndex;
+                SaveTableRowLimit(rowLimitIndex);
+
+                LoadTable();
+            } 
+        }
+
+        void LoadTableRowLimit()
+        {
+            int index = Properties.Settings.Default.RowDisplayIndex;
+            if (index < RowLimit_COMBO.Items.Count)
+            {
+                RowLimit_COMBO.SelectedItem = RowLimit_COMBO.Items[index];
+            }          
+        }
+
+        void SaveTableRowLimit(int limit)
+        {
+            Properties.Settings.Default.RowDisplayIndex = limit;
+            Properties.Settings.Default.Save();
+        }
+
+        int GetTableRowLimit()
+        {
+            if (Properties.Settings.Default.RowDisplayIndex == 1) return 100;
+            if (Properties.Settings.Default.RowDisplayIndex == 2) return 500;
+            if (Properties.Settings.Default.RowDisplayIndex == 3) return 1000;
+            if (Properties.Settings.Default.RowDisplayIndex == 4) return 5000;
+            else return 50;
         }
 
         #endregion
