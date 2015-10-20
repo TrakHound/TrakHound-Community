@@ -105,14 +105,14 @@ namespace TH_Configuration.Converter_Sub_Classes
             return parent;
         }
 
-        static void WriteDocument(XmlDocument doc, string LogFile)
+        public static void Save(XmlDocument doc, string path)
         {
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
 
             try
             {
-                using (XmlWriter writer = XmlWriter.Create(LogFile, settings))
+                using (XmlWriter writer = XmlWriter.Create(path, settings))
                 {
                     doc.Save(writer);
                 }

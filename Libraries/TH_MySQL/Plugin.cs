@@ -260,6 +260,26 @@ namespace TH_MySQL
             return result;
         }
 
+        public string[] Table_List(object settings, string filterExpression)
+        {
+            string[] result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.PHP_Server != null)
+                {
+                    result = PHP.Table.List(config, filterExpression);
+                }
+                else
+                {
+                    result = Connector.Table.List(config, filterExpression);
+                }
+            }
+
+            return result;
+        }
+
         public Int64 Table_GetRowCount(object settings, string tablename)
         {
             Int64 result = -1;

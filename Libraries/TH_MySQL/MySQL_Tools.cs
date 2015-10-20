@@ -65,9 +65,12 @@ namespace TH_MySQL
         public const string BigInt = "bigint";
         public const string Double = "double";
         public const string Datetime = "datetime";
+        public const string Bool = "boolean";
 
         public static string ConvertColumnDataType(DataType dataType)
         {
+            if (dataType == DataType.Boolean) return Bool;
+
             if (dataType == DataType.Short) return BigInt;
             if (dataType == DataType.Long) return BigInt;
             if (dataType == DataType.Double) return Double;

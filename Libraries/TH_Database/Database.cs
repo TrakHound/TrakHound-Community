@@ -501,6 +501,32 @@ namespace TH_Database
             return result;
         }
 
+        public static string[] List(Database_Settings settings, string filterExpression)
+        {
+            string[] result = null;
+
+            if (settings.Databases.Count > 0)
+            {
+                Database_Configuration primary = settings.Databases[0];
+
+                if (Global.Plugins != null)
+                {
+                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Table_List(primary.Configuration, filterExpression);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
 
         public static Int64 GetRowCount(Database_Settings settings, string tablename)
         {

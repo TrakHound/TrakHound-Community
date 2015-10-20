@@ -235,6 +235,49 @@ namespace TH_MySQL.Connector
 
         }
 
+        public static string[] List(MySQL_Configuration config, string filterExpression)
+        {
+
+            List<string> Tables = new List<string>();
+
+            try
+            {
+                MySql.Data.MySqlClient.MySqlConnection conn;
+                conn = new MySql.Data.MySqlClient.MySqlConnection();
+                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                conn.Open();
+
+                MySql.Data.MySqlClient.MySqlCommand Command;
+                Command = new MySql.Data.MySqlClient.MySqlCommand();
+                Command.Connection = conn;
+                Command.CommandText = "SHOW TABLES " + filterExpression;
+
+                MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
+                if (Reader.HasRows)
+                {
+                    while (Reader.Read()) Tables.Add(Reader[0].ToString());
+                }
+
+                Reader.Close();
+                conn.Close();
+
+                Reader.Dispose();
+                Command.Dispose();
+                conn.Dispose();
+            }
+            catch (MySql.Data.MySqlClient.MySqlException ex)
+            {
+                Logger.Log(ex.Message);
+            }
+            catch (Exception ex) { }
+
+            string[] Result;
+            Result = Tables.ToArray();
+
+            return Result;
+
+        }
+
         public static Int64 RowCount(MySQL_Configuration config, string tableName)
         {
 

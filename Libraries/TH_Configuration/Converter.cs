@@ -34,7 +34,21 @@ namespace TH_Configuration
         {
             XmlDocument result = null;
 
-            TableToXml.Create(table);
+            result = TableToXml.Create(table);
+
+            return result;
+        }
+
+        public static string TableToXML(DataTable table, string savePath)
+        {
+            string result = null;
+
+            XmlDocument xml = TableToXml.Create(table);
+            if (xml != null)
+            {
+                TableToXml.Save(xml, savePath);
+                result = savePath;
+            }
 
             return result;
         }

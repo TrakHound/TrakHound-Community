@@ -239,6 +239,56 @@ namespace TH_MySQL.PHP
 
         }
 
+        public static string[] List(MySQL_Configuration config, string filterExpression)
+        {
+
+            List<string> Result = new List<string>();
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+
+                    NameValueCollection values = new NameValueCollection();
+                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                    else values["server"] = config.Server;
+
+                    values["user"] = config.Username;
+                    values["password"] = config.Password;
+                    values["db"] = config.Database;
+
+                    values["query"] = "SHOW TABLES " + filterExpression;
+
+                    string PHP_Directory = "";
+                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+                    Console.WriteLine("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php");
+
+                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    try
+                    {
+
+                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
+
+                        if (DT != null)
+                        {
+                            foreach (DataRow Row in DT.Rows) Result.Add(Row[0].ToString());
+                        }
+
+                    }
+                    catch (Exception ex) { }
+
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return Result.ToArray();
+
+        }
+
         public static Int64 GetRowCount(MySQL_Configuration config, string tablename)
         {
 

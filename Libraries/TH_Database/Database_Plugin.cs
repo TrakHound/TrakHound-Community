@@ -50,6 +50,8 @@ namespace TH_Database
 
         string[] Table_List(object settings);
 
+        string[] Table_List(object settings, string filterExpression);
+
         Int64 Table_GetRowCount(object settings, string tablename);
 
         Int64 Table_GetSize(object settings, string tablename);
@@ -102,10 +104,13 @@ namespace TH_Database
 
     public enum DataType
     {
-        // Numeric 0 - 100
-        Short = 0,
-        Long = 10,
-        Double = 20,
+        // Boolean 0 - 10
+        Boolean = 0,
+
+        // Numeric 10 - 100
+        Short = 10,
+        Long = 20,
+        Double = 30,
 
         // Text 100 - 200
         SmallText = 100,
