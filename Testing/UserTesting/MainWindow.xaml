@@ -1,0 +1,25 @@
+﻿<Window x:Class="UserTesting.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    
+    <Grid>
+        
+        <StackPanel Width="150">
+
+            <TextBlock Text="Username"/>
+            <TextBox x:Name="username_TXT" />
+
+            <TextBlock Text="Password"/>
+            <TextBox x:Name="password_TXT" />
+
+            <TextBlock Text="Device"/>
+            <TextBox x:Name="device_TXT" />
+
+            <Button Click="Button_Click" Content="Create" Margin="10"/>
+            
+        </StackPanel>
+        
+    </Grid>
+    
+</Window>

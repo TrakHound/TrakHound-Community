@@ -17,7 +17,6 @@ namespace TH_Configuration
 
         public Configuration()
         {
-
             Agent = new Agent_Settings();
             FileLocations = new FileLocation_Settings();
             Description = new Description_Settings();
@@ -148,7 +147,6 @@ namespace TH_Configuration
             RootPath += @"\";
             Console.WriteLine("Settings Root Path = " + RootPath);
 
-
             if (System.IO.File.Exists(ConfigFilePath))
             {
 
@@ -166,10 +164,10 @@ namespace TH_Configuration
                     {
                         case "agent": Result.Agent = Process_Agent(node); break;
 
-
+                        // OBSOLETE 10-19-15
                         case "sql": Result.SQL = Process_SQL(node); break;
-                        case "databases": Result.Databases = Process_Databases(node); break;
 
+                        case "databases": Result.Databases = Process_Databases(node); break;
                         case "description": Result.Description = Process_Description(node); break;
                         case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
                         case "server": Result.Server = Process_Server(node); break;
@@ -196,7 +194,6 @@ namespace TH_Configuration
             return Result;
 
         }
-
 
         private static Agent_Settings Process_Agent(XmlNode Node)
         {

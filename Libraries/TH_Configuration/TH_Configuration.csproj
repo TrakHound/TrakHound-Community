@@ -36,12 +36,16 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter Sub Classes\TableToXml.cs" />
+    <Compile Include="Converter.cs" />
+    <Compile Include="Converter Sub Classes\XmlToTable.cs" />
     <Compile Include="Data\Agent_Settings.cs" />
     <Compile Include="Data\Database_Settings.cs" />
     <Compile Include="Data\Description_Settings.cs" />
@@ -50,6 +54,7 @@
     <Compile Include="Data\SQL_Settings.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Users.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt">

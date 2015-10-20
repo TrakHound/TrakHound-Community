@@ -23,8 +23,7 @@
         <Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="#00000000"/>
-                <Style.Triggers>
-                    
+                <Style.Triggers>           
                     <DataTrigger Binding="{Binding MouseOver}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
@@ -132,7 +131,32 @@
         </Rectangle>
 
         <!--Simple Text-->
-        <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="14" Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
+        <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="14" Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#aaffffff"/>
+                <Style.Triggers>           
+                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                        <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#ffffffff"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard FillBehavior="Stop">
+                                        <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#aaffffff"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+                    
+                </Style.Triggers>
+            </Style>
+        </TextBlock.Style>
+        </TextBlock>
         
         <!--Custom Content-->
         <ContentControl Grid.Column="2" Content="{Binding ButtonContent}" />
