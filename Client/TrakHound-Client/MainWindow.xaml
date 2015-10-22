@@ -14,6 +14,7 @@
         xmlns:notifications="clr-namespace:TrakHound_Client.Notifications"
         xmlns:main_menu="clr-namespace:TrakHound_Client.Main_Menu"
         xmlns:plugins="clr-namespace:TrakHound_Client.Plugins.Launcher"
+        xmlns:login="clr-namespace:TrakHound_Client.Login"
         
         Title="TrakHound - [Beta] - CNC Monitoring Software"
         
@@ -335,7 +336,7 @@
                                                     <Trigger.EnterActions>
                                                         <BeginStoryboard>
                                                             <Storyboard>
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#22000000"/>
+                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </Trigger.EnterActions>
@@ -462,7 +463,7 @@
                                                     <Trigger.EnterActions>
                                                         <BeginStoryboard>
                                                             <Storyboard>
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#22000000"/>
+                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
                                                             </Storyboard>
                                                         </BeginStoryboard>
                                                     </Trigger.EnterActions>
@@ -507,6 +508,216 @@
                                     </Grid>
 
                                 </Border>
+
+                                <!--Login-->
+                                <Grid x:Name="Login_GRID" DockPanel.Dock="Right" PreviewMouseDown="Login_GRID_PreviewMouseDown" Margin="5,0">
+                                    
+                                    <!--Logged In-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Opacity" Value="0.0"/>
+                                                <Setter Property="MaxWidth" Value="200"/>
+
+                                                <Setter Property="Background" Value="#0080ff" />
+                                                <Style.Triggers>
+
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00aaff"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard FillBehavior="Stop">
+                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#0080ff"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+
+                                                    <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="200" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="0" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+
+                                        <!--UserName-->
+                                        <TextBlock Text="{Binding CurrentUsername}" Foreground="#fff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
+
+                                        <!--Arrow-->
+                                        <Path 
+                                        Fill="#fff"
+                                        Margin="5"
+                                        Grid.Column="1"     
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+                                          />
+
+                                    </Grid>
+                                    
+                                    <!--Logged Out-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Opacity" Value="1.0"/>
+                                                <Setter Property="MaxWidth" Value="100"/>
+                                                <!--<Setter Property="Opacity" Value="0.0"/>-->
+
+                                                <Setter Property="Background" Value="#00000000" />
+                                                <Style.Triggers>
+
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard FillBehavior="Stop">
+                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+
+                                                    <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="0" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="100" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+
+                                        <!--Text-->
+                                        <TextBlock Text="Login" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#888"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
+                                                            <Setter Property="Foreground" Value="#0080ff"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <!--Arrow-->
+                                        <Path 
+                                        Margin="5"
+                                        Grid.Column="1"     
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+                                          >
+                                            <Path.Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Fill" Value="#888"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
+                                                            <Setter Property="Fill" Value="#0080ff"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
+
+                                    </Grid>
+
+                                    
+
+
+                                    
+
+                                </Grid>
 
                                 <!--TrakHound Icon-->
                                 <Image x:Name="Icon_IMG" DockPanel.Dock="Left" Width="23" Height="23" Margin="5,1,12,3" Source="Resources/TrakHound_Logo_Initials_10_30px.png"/>
@@ -835,6 +1046,11 @@
                 <main_menu:DropDown x:Name="MainMenu"
                                 Shown="False" ShownChanged="MainMenu_ShownChanged"
                                 />
+
+                <!--User Login Menu-->
+                <login:DropDown x:Name="LoginMenu" 
+                           Shown="False"
+                            />
 
                 <!--Message Center-->
                 <message:MessageCenter x:Name="messageCenter" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,25" Shown="False"/>

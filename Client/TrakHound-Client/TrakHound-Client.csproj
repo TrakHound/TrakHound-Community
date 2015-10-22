@@ -74,6 +74,9 @@
     <Compile Include="Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Login\DropDown.xaml.cs">
+      <DependentUpon>DropDown.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Options\Pages\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
@@ -165,6 +168,10 @@
     <Page Include="Developer Console\PopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Login\DropDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Options\Pages\Updates\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -331,6 +338,7 @@
     <Resource Include="Resources\feenux_logo_05_30px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\blank_profile_01.png" />
     <Resource Include="Resources\Developer_01.png" />
     <Resource Include="Resources\Refresh_01.png" />
     <Resource Include="Resources\Arrow_Down_01.png" />
@@ -380,6 +388,10 @@
     <ProjectReference Include="..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
       <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
       <Name>TH_Device_Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_FTP\TH_FTP.csproj">
+      <Project>{3a5989cc-8137-4cee-bdd3-0f6998bd3148}</Project>
+      <Name>TH_FTP</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Functions\TH_Functions.csproj">
       <Project>{79f4879c-44e9-4915-849a-b4c190db4aa8}</Project>

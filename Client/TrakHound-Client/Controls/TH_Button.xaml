@@ -25,7 +25,7 @@
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#18000000">
+                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#10000000">
                                     <ColorAnimation.EasingFunction>
                                         <CubicEase EasingMode="EaseOut"/>
                                     </ColorAnimation.EasingFunction>
@@ -308,39 +308,110 @@
 
     </UserControl.Resources>
 
-    <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Style="{Binding MainBorderStyle}">
-        
+    <Grid x:Name="BD">
+
+        <!--Normal Style-->
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AlternateStyle}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
-            <!--Image-->
-            <Grid Margin="5,0">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+            <Border CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Normal}">
 
-                <Rectangle Width="25" Style="{Binding ImageRectangleStyle}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
 
-            </Grid>
+                    <!--Image-->
+                    <Grid Margin="5,0">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
 
-            <!--Text Label-->
-            <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" Margin="10,0"
-                       Style="{Binding TextLabelStyle}"
+                        <Rectangle Width="25" Style="{StaticResource ImageRectangle_Normal}"/>
+
+                    </Grid>
+
+                    <!--Text Label-->
+                    <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" Margin="10,0"
+                       Style="{StaticResource TextLabel_Normal}"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
                        />
 
+                </Grid>
+
+            </Border>
+
         </Grid>
-            
-    </Border>
-    
+
+        <!--Alternate Style-->
+        <Grid>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding AlternateStyle}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <Border CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Alternate}">
+
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Image-->
+                    <Grid Margin="5,0">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Rectangle Width="25" Style="{StaticResource ImageRectangle_Alternate}"/>
+
+                    </Grid>
+
+                    <!--Text Label-->
+                    <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" Margin="10,0"
+                       Style="{StaticResource TextLabel_Alternate}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       />
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+
+    </Grid>
+
 </UserControl>

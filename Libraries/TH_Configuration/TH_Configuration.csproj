@@ -54,6 +54,7 @@
     <Compile Include="Data\SQL_Settings.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserConfiguration.cs" />
     <Compile Include="UserManagementSettings.cs" />
   </ItemGroup>
   <ItemGroup>

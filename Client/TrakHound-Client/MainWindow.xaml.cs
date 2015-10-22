@@ -36,6 +36,7 @@ using System.ComponentModel.Composition.Hosting;
 
 using TH_Configuration;
 using TH_Device_Client;
+using TH_Database;
 using TH_Global;
 using TH_PlugIns_Client_Control;
 using TH_WPF;
@@ -70,6 +71,14 @@ namespace TrakHound_Client
 
             // Set border thickness (maybe make this a static resource in XAML?)
             ResizeBorderThickness = 1;
+
+
+
+            // Read Users and Login
+            ReadUserManagementSettings();
+
+
+
 
             Splash_UpdateStatus("...Reading Configuration");
             ReadConfigurationFile();
@@ -578,6 +587,7 @@ namespace TrakHound_Client
 
             PluginLauncher.Hide();
             MainMenu.Hide();
+            LoginMenu.Hide();
         }
 
 
@@ -913,6 +923,84 @@ namespace TrakHound_Client
         }
 
         #endregion
+
+        #endregion
+
+        #region "User Login"
+
+        #region "Properties"
+
+        public string CurrentUsername
+        {
+            get { return (string)GetValue(CurrentUsernameProperty); }
+            set { SetValue(CurrentUsernameProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentUsernameProperty =
+            DependencyProperty.Register("CurrentUsername", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
+
+
+        public bool LoggedIn
+        {
+            get { return (bool)GetValue(LoggedInProperty); }
+            set { SetValue(LoggedInProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoggedInProperty =
+            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        #endregion
+
+        private void Login_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender.GetType() == typeof(Grid))
+            {
+                Grid grid = (Grid)sender;
+
+                Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+                LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
+
+                LoginMenu.Shown = true;
+            }
+        }
+
+        UserConfiguration currentuser;
+        public UserConfiguration CurrentUser
+        {
+            get { return currentuser; }
+            set
+            {
+                currentuser = value;
+
+                CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+
+                if (currentuser != null) LoggedIn = true;
+                else LoggedIn = false;
+            }
+        }
+
+        public Database_Settings userDatabaseSettings;
+
+        void ReadUserManagementSettings()
+        {
+            DatabasePluginReader dpr = new DatabasePluginReader();
+
+            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
+            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
+
+            string configPath;
+
+            // systemPath takes priority (easier for user to navigate to)
+            if (File.Exists(systemPath)) configPath = systemPath;
+            else configPath = localPath;
+
+            Logger.Log(configPath);
+
+            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
+
+            userDatabaseSettings = userSettings.Databases;
+            Global.Initialize(userDatabaseSettings);
+        }
 
         #endregion
 

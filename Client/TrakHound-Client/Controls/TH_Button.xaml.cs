@@ -30,7 +30,7 @@ namespace TrakHound_Client.Controls
             InitializeComponent();
             DataContext = this;
 
-            LoadStyle(AlternateStyle);
+            //LoadStyle(AlternateStyle);
         }
 
 
@@ -71,7 +71,7 @@ namespace TrakHound_Client.Controls
             { 
                 SetValue(AlternateStyleProperty, value);
 
-                LoadStyle(value);          
+                //LoadStyle(value);          
             }
         }
 
@@ -79,21 +79,21 @@ namespace TrakHound_Client.Controls
             DependencyProperty.Register("AlternateStyle", typeof(bool), typeof(TH_Button), new PropertyMetadata(false));
 
 
-        void LoadStyle(bool alternate)
-        {
-            if (alternate)
-            {
-                MainBorderStyle = (Style)TryFindResource("MainBorder_Alternate");
-                ImageRectangleStyle = (Style)TryFindResource("ImageRectangle_Alternate");
-                TextLabelStyle = (Style)TryFindResource("TextLabel_Alternate");
-            }
-            else
-            {
-                MainBorderStyle = (Style)TryFindResource("MainBorder_Normal");
-                ImageRectangleStyle = (Style)TryFindResource("ImageRectangle_Normal");
-                TextLabelStyle = (Style)TryFindResource("TextLabel_Normal");
-            }
-        }
+        //void LoadStyle(bool alternate)
+        //{
+        //    if (alternate)
+        //    {
+        //        MainBorderStyle = (Style)TryFindResource("MainBorder_Alternate");
+        //        ImageRectangleStyle = (Style)TryFindResource("ImageRectangle_Alternate");
+        //        TextLabelStyle = (Style)TryFindResource("TextLabel_Alternate");
+        //    }
+        //    else
+        //    {
+        //        MainBorderStyle = (Style)TryFindResource("MainBorder_Normal");
+        //        ImageRectangleStyle = (Style)TryFindResource("ImageRectangle_Normal");
+        //        TextLabelStyle = (Style)TryFindResource("TextLabel_Normal");
+        //    }
+        //}
 
 
         public Style MainBorderStyle
@@ -136,27 +136,27 @@ namespace TrakHound_Client.Controls
         }
     }
 
-    class StyleConverter : IMultiValueConverter
-    {
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            FrameworkElement targetElement = values[0] as FrameworkElement;
-            string styleName = values[1] as string;
+    //class StyleConverter : IMultiValueConverter
+    //{
+    //    public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        FrameworkElement targetElement = values[0] as FrameworkElement;
+    //        string styleName = values[1] as string;
 
-            if (styleName == null)
-                return null;
+    //        if (styleName == null)
+    //            return null;
 
-            Style newStyle = (Style)targetElement.TryFindResource(styleName);
+    //        Style newStyle = (Style)targetElement.TryFindResource(styleName);
 
-            if (newStyle == null)
-                newStyle = (Style)targetElement.TryFindResource("Normal");
+    //        if (newStyle == null)
+    //            newStyle = (Style)targetElement.TryFindResource("Normal");
 
-            return newStyle;
-        }
+    //        return newStyle;
+    //    }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    //    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+    //}
 }

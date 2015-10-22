@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,46 +57,46 @@ namespace TH_Database.Tables
 
         #region "User Management"
 
-        public class UserConfiguration
-        {
-            public string username { get; set; }
-            public string hash { get; set; }
-            public int salt { get; set; }
-            public string first_name { get; set; }
-            public string last_name { get; set; }
-            public string company { get; set; }
-            public string email { get; set; }
-            public string phone { get; set; }
-            public string address { get; set; }
-            public string city { get; set; }
-            public string state { get; set; }
-            public string country { get; set; }
-            public string zipcode { get; set; }
-            public string image_url { get; set; }
-            public DateTime last_login { get; set; }
+        //public class UserConfiguration
+        //{
+        //    public string username { get; set; }
+        //    public string hash { get; set; }
+        //    public int salt { get; set; }
+        //    public string first_name { get; set; }
+        //    public string last_name { get; set; }
+        //    public string company { get; set; }
+        //    public string email { get; set; }
+        //    public string phone { get; set; }
+        //    public string address { get; set; }
+        //    public string city { get; set; }
+        //    public string state { get; set; }
+        //    public string country { get; set; }
+        //    public string zipcode { get; set; }
+        //    public string image_url { get; set; }
+        //    public DateTime last_login { get; set; }
 
-            public static UserConfiguration GetFromDataRow(DataRow row)
-            {
-                UserConfiguration result = new UserConfiguration();
+        //    public static UserConfiguration GetFromDataRow(DataRow row)
+        //    {
+        //        UserConfiguration result = new UserConfiguration();
 
-                foreach (System.Reflection.PropertyInfo info in typeof(UserConfiguration).GetProperties())
-                {
-                    if (info.Name == "last_login") result.last_login = DateTime.UtcNow;
-                    else
-                    {
-                        if (row.Table.Columns.Contains(info.Name))
-                        {
-                            object value = row[info.Name];
+        //        foreach (System.Reflection.PropertyInfo info in typeof(UserConfiguration).GetProperties())
+        //        {
+        //            if (info.Name == "last_login") result.last_login = DateTime.UtcNow;
+        //            else
+        //            {
+        //                if (row.Table.Columns.Contains(info.Name))
+        //                {
+        //                    object value = row[info.Name];
 
-                            Type t = info.PropertyType;
-                            info.SetValue(result, Convert.ChangeType(value, t), null);
-                        }
-                    }
-                }
+        //                    Type t = info.PropertyType;
+        //                    info.SetValue(result, Convert.ChangeType(value, t), null);
+        //                }
+        //            }
+        //        }
 
-                return result;
-            }
-        }
+        //        return result;
+        //    }
+        //}
 
         public static void CreateUserTable(Database_Settings config)
         {
@@ -206,6 +211,21 @@ namespace TH_Database.Tables
             List<object> values = new List<object>();
             values.Add(userConfig.username.ToLower());
             values.Add(userConfig.last_login);
+
+            Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
+        }
+
+        public static void UpdateImageURL(string imageURL, UserConfiguration userConfig, Database_Settings db)
+        {
+            userConfig.image_url = imageURL;
+
+            List<string> columns = new List<string>();
+            columns.Add("username");
+            columns.Add("image_url");
+
+            List<object> values = new List<object>();
+            values.Add(userConfig.username.ToLower());
+            values.Add(imageURL);
 
             Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
         }
