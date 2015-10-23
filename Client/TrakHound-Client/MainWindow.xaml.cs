@@ -729,6 +729,24 @@ namespace TrakHound_Client
             return Result;
         }
 
+        public void ClosePage(string pageName)
+        {
+            TH_TabItem ti = Pages_TABCONTROL.Items.Cast<TH_TabItem>().ToList().Find(x => x.Title.ToString().ToLower() == pageName.ToLower());
+            if (ti != null)
+            {
+                ti.Close();
+
+                int index = 0;
+
+                if (Pages_TABCONTROL.SelectedIndex < Pages_TABCONTROL.Items.Count - 1)
+                    index = Math.Min(Pages_TABCONTROL.Items.Count, Pages_TABCONTROL.SelectedIndex + 1);
+                else
+                    index = Math.Max(0, Pages_TABCONTROL.SelectedIndex - 1);
+
+                Pages_TABCONTROL.SelectedItem = Pages_TABCONTROL.Items[index];
+            }  
+        }
+
         void header_Clicked(TH_TabHeader_Top header)
         {
             if (header.TabParent != null) Pages_TABCONTROL.SelectedItem = header.TabParent;
@@ -861,6 +879,7 @@ namespace TrakHound_Client
         void Pages_Initialize()
         {
             About_Initialize();
+            MyAccount_Initialize();
             Options_Initialize();
             Plugins_Initialize();
         }
@@ -880,6 +899,25 @@ namespace TrakHound_Client
         public void About_Open()
         {
             AddPageAsTab(aboutManager, "About", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/About_01.png")));
+        }
+
+        #endregion
+
+        #region "My Account"
+
+        public Account_Management.Manager accountManager;
+
+        void MyAccount_Initialize()
+        {
+            accountManager = new Account_Management.Manager();
+
+            accountManager.AddPage(new Account_Management.Pages.Create.Page());
+
+        }
+
+        public void MyAccount_Open()
+        {
+            AddPageAsTab(accountManager, "My Account", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
         }
 
         #endregion
@@ -951,6 +989,9 @@ namespace TrakHound_Client
 
         #endregion
 
+        public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
+        public event CurrentUserChanged_Handler CurrentUserChanged;
+
         private void Login_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender.GetType() == typeof(Grid))
@@ -972,10 +1013,18 @@ namespace TrakHound_Client
             {
                 currentuser = value;
 
-                CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+                if (currentuser != null)
+                {
+                    CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+                    LoggedIn = true;
+                }
+                else
+                {
+                    LoggedIn = false;
+                    CurrentUsername = null;
+                }
 
-                if (currentuser != null) LoggedIn = true;
-                else LoggedIn = false;
+                if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
         }
 

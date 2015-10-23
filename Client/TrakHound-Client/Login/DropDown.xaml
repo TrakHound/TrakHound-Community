@@ -18,6 +18,8 @@
              HorizontalAlignment="Right"
              VerticalAlignment="Top"
              
+             PreviewKeyDown="UserControl_PreviewKeyDown"
+             
              >
 
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
@@ -210,16 +212,6 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <!--<Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>-->
 
                         <StackPanel>
 
@@ -237,7 +229,7 @@
                             </Grid>
 
                             <!--Username-->
-                            <Border BorderThickness="1" CornerRadius="2" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -266,14 +258,14 @@
                                     </TextBlock>
 
                                     <!--User Input-->
-                                    <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                    <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black" TextChanged="username_TXT_TextChanged"/>
 
                                 </Grid>
 
                             </Border>
 
                             <!--Password-->
-                            <Border BorderThickness="1" CornerRadius="2" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -302,7 +294,7 @@
                                     </TextBlock>
 
                                     <!--User Input-->
-                                    <PasswordBox x:Name="password_TXT"  BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged"/>
+                                    <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged" GotFocus="password_TXT_GotFocus"/>
 
                                 </Grid>
 
@@ -492,13 +484,74 @@
                                     </Style.Triggers>
                                 </Style>
                             </Grid.Style>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
 
                             <!--Create Account-->
-                            <controls:TH_Button Text="Create Account" BorderBrush="#ccc" BorderThickness="1" Height="40" Margin="10,0" HorizontalAlignment="Left" />
+                            <controls:TH_Button Clicked="Create_Clicked" Text="Create Account" BorderBrush="#ccc" BorderThickness="1" Height="40" Margin="10,0" HorizontalAlignment="Left" />
 
+                            <!--Login Error -->
+                            <Grid Grid.Column="1">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LoginError}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <TextBlock Text="Incorrect Username and/or Password" FontSize="8pt" Foreground="Red" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
+
+                            </Grid>
 
                             <!--Login-->
-                            <controls:TH_Button Clicked="Login_Clicked" Text="Login" AlternateStyle="True" BorderBrush="#ccc" BorderThickness="1" Height="40" Margin="10,0" HorizontalAlignment="Right" />
+                            <Grid Grid.Column="2" Margin="10,0" Height="40">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="IsEnabled" Value="false"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding UsernameEntered}" Value="true"/>
+                                                    <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                                </MultiDataTrigger.Conditions>
+
+                                                <Setter Property="IsEnabled" Value="true"/>
+
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <controls:TH_Button Clicked="Login_Clicked" Text="Login" AlternateStyle="True" BorderBrush="#ccc" BorderThickness="1" Height="40" HorizontalAlignment="Right" />
+
+
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Background" Value="#88000000"/>
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding UsernameEntered}" Value="true"/>
+                                                        <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                                    </MultiDataTrigger.Conditions>
+
+                                                    <Setter Property="Background" Value="{x:Null}"/>
+
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
+                            </Grid>
 
                         </Grid>
 

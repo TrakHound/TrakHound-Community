@@ -9,7 +9,7 @@
 
         <ResourceDictionary Source="Styles/CheckBoxes.Xaml" />
 
-        <ResourceDictionary Source="Styles/ComboBox.Xaml" />
+        <ResourceDictionary Source="Styles/ComboBox1.Xaml" />
 
         <ResourceDictionary Source="Styles/RadioButtons.Xaml" />
 

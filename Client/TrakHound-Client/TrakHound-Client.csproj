@@ -71,6 +71,12 @@
     <Compile Include="About\Pages\License\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Account Management\Manager.xaml.cs">
+      <DependentUpon>Manager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Account Management\Pages\Create\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
     </Compile>
@@ -162,6 +168,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="About\Pages\License\Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Account Management\Manager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Account Management\Pages\Create\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -338,6 +352,8 @@
     <Resource Include="Resources\feenux_logo_05_30px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\AddUser_01.png" />
+    <Resource Include="Resources\blank_profile_01_sm.png" />
     <Resource Include="Resources\blank_profile_01.png" />
     <Resource Include="Resources\Developer_01.png" />
     <Resource Include="Resources\Refresh_01.png" />

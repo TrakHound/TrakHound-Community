@@ -86,6 +86,20 @@ namespace TrakHound_Client.Login
         public static readonly DependencyProperty LoggedInProperty =
             DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
 
+
+
+
+        public bool UsernameEntered
+        {
+            get { return (bool)GetValue(UsernameEnteredProperty); }
+            set { SetValue(UsernameEnteredProperty, value); }
+        }
+
+        public static readonly DependencyProperty UsernameEnteredProperty =
+            DependencyProperty.Register("UsernameEntered", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
+
+        
+
         public bool PasswordEntered
         {
             get { return (bool)GetValue(PasswordEnteredProperty); }
@@ -112,7 +126,20 @@ namespace TrakHound_Client.Login
         public static readonly DependencyProperty LoadingProperty =
             DependencyProperty.Register("Loading", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
 
+
+
+
+        public bool LoginError
+        {
+            get { return (bool)GetValue(LoginErrorProperty); }
+            set { SetValue(LoginErrorProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoginErrorProperty =
+            DependencyProperty.Register("LoginError", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
+
         
+
 
 
         public string Username
@@ -159,38 +186,18 @@ namespace TrakHound_Client.Login
 
         private void Login_Clicked(Controls.TH_Button bt)
         {
-            if (mw.userDatabaseSettings != null)
-            {
-                Loading = true;
-
-                UserConfiguration userConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
-                if (userConfig != null) 
-                {
-                    Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-                    EmailAddress = userConfig.email;
-
-                    LoadProfileImage(userConfig);
-                    LoggedIn = true; 
-                }
-                else
-                {
-                    LoggedIn = false;
-                    Username = null;
-                }
-
-                currentUser = userConfig;
-                mw.CurrentUser = currentUser;
-
-                Loading = false;
-            } 
+            Login();
         }
 
         private void SignOut_Clicked(Controls.TH_Button bt)
         {
-            LoggedIn = false;
+            SignOut();
+        }
 
-            Username = null;
-
+        private void Create_Clicked(Controls.TH_Button bt)
+        {
+            Shown = false;
+            CreateAccount();
         }
 
         private static System.Drawing.Image CropImage (System.Drawing.Image img, System.Drawing.Rectangle cropArea)
@@ -250,6 +257,8 @@ namespace TrakHound_Client.Login
                     //string localPath = imagePath;
 
                     System.Drawing.Image img = CropImageToCenter(System.Drawing.Image.FromFile(imagePath));
+
+                    img = TH_WPF.Image_Functions.SetImageSize(img, 120, 120);
 
                     string newPath = FileLocations.TrakHound + @"\temp";
                     if (!Directory.Exists(newPath)) Directory.CreateDirectory(newPath);
@@ -353,6 +362,91 @@ namespace TrakHound_Client.Login
             //    //    }
             //    //}
             //}
+        }
+
+        public bool Login()
+        {
+            bool result = false;
+
+            LoginError = false;
+
+            if (mw.userDatabaseSettings != null)
+            {
+                Loading = true;
+
+                UserConfiguration userConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
+                if (userConfig != null)
+                {
+                    Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+                    EmailAddress = userConfig.email;
+
+                    username_TXT.Clear();
+                    password_TXT.Clear();
+
+                    LoadProfileImage(userConfig);
+                    LoggedIn = true;
+                    result = true;
+                }
+                else
+                {
+                    LoginError = true;
+                    LoggedIn = false;
+                    Username = null;
+                }
+
+                currentUser = userConfig;
+                mw.CurrentUser = currentUser;
+
+                Loading = false;
+            }
+
+            return result;
+        }
+
+        void SignOut()
+        {
+            LoggedIn = false;
+            Username = null;
+            currentUser = null;
+            mw.CurrentUser = null;
+        }
+
+        void CreateAccount()
+        {
+            if (mw != null)
+            {
+                Account_Management.Pages.Create.Page page = new Account_Management.Pages.Create.Page();
+                page.CleanForm();
+                mw.AddPageAsTab(page, page.PageName, page.Image);
+
+            }
+        }
+
+        private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (username_TXT.IsFocused)
+                {
+                    password_TXT.Focus();
+                }
+
+                if (password_TXT.IsFocused)
+                {
+                    Login();
+                }
+            } 
+        }
+
+        private void username_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (username_TXT.Text != String.Empty) UsernameEntered = true;
+            else UsernameEntered = false;
+        }
+
+        private void password_TXT_GotFocus(object sender, RoutedEventArgs e)
+        {
+            password_TXT.Password = null;
         }
 
     }

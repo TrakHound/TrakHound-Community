@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Data;
@@ -228,6 +229,32 @@ namespace TH_Database.Tables
             values.Add(imageURL);
 
             Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
+        }
+
+        public static bool VerifyUsername(string username, Database_Settings db)
+        {
+            bool result = false;
+            
+            Regex r = new Regex("^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
+            if (r.IsMatch(username) && !username.ToLower().Contains("trakhound"))
+            {
+                DataRow dbrow = Row.Get(db, tablename, "WHERE username='" + username.ToLower() + "'");
+                if (dbrow == null) result = true;
+            }           
+
+            return result;
+        }
+
+        public static bool VerifyPasswordMinimum(System.Security.SecureString pwd)
+        {
+            if (pwd.Length > 7) return true;
+            else return false;
+        }
+
+        public static bool VerifyPasswordMaximum(System.Security.SecureString pwd)
+        {
+            if (pwd.Length < 101) return true;
+            else return false;
         }
 
         //public static void CreateUserTable(Database_Settings config)

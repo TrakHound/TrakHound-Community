@@ -35,7 +35,11 @@ namespace TrakHound_Client.Main_Menu
 
             mw = Application.Current.MainWindow as MainWindow;
 
-            if (mw != null) mw.ZoomLevelChanged += mw_ZoomLevelChanged;
+            if (mw != null)
+            {
+                mw.ZoomLevelChanged += mw_ZoomLevelChanged;
+                mw.CurrentUserChanged += mw_CurrentUserChanged;
+            }
 
             Root_GRID.Width = 0;
             Root_GRID.Height = 0;
@@ -143,6 +147,47 @@ namespace TrakHound_Client.Main_Menu
         {
             if (mw != null) mw.developerConsole.Shown = !mw.developerConsole.Shown;
 
+        }
+
+        #endregion
+
+        #region "My Account"
+
+        void AddMyAccount_MenuItem()
+        {
+            MenuItem mi = new MenuItem();
+            mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png"));
+            mi.Text = "My Account";
+            mi.Clicked += MyAccount_Clicked;
+            
+            if (MenuItems.ToList().Find(x => x.Text == mi.Text) == null) MenuItems.Add(mi);
+        }
+
+        void RemoveMyAccount_MenuItem()
+        {
+            int index = MenuItems.ToList().FindIndex(x => x.Text == "My Account");
+            if (index >= 0)
+            {
+                MenuItems.RemoveAt(index);
+            }
+        }
+
+        void MyAccount_Clicked()
+        {
+            Shown = false;
+            if (mw != null) mw.MyAccount_Open();
+        }
+
+        void mw_CurrentUserChanged(TH_Configuration.UserConfiguration userConfig)
+        {
+            if (userConfig != null)
+            {
+                AddMyAccount_MenuItem();
+            }
+            else
+            {
+                RemoveMyAccount_MenuItem();
+            }
         }
 
         #endregion

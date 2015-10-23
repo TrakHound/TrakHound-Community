@@ -145,7 +145,7 @@
     </Style>
 
     <!-- SimpleStyles: ComboBoxItem -->
-    <Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
+    <!--<Style x:Key="{x:Type ComboBoxItem}" TargetType="{x:Type ComboBoxItem}">
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="Foreground" Value="White"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -168,6 +168,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
 </ResourceDictionary>
