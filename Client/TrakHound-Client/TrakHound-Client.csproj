@@ -352,6 +352,7 @@
     <Resource Include="Resources\feenux_logo_05_30px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Camera_01.png" />
     <Resource Include="Resources\AddUser_01.png" />
     <Resource Include="Resources\blank_profile_01_sm.png" />
     <Resource Include="Resources\blank_profile_01.png" />

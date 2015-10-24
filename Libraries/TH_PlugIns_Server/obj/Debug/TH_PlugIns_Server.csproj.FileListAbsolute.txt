@@ -10,3 +10,4 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Server\bin\Debug\TH_Global.pd
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Server\obj\Debug\TH_PlugIns_Server.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Server\obj\Debug\TH_PlugIns_Server.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Server\obj\Debug\TH_PlugIns_Server.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Server\bin\Debug\Newtonsoft.Json.dll

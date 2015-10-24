@@ -191,48 +191,42 @@ namespace TrakHound_Client.Account_Management.Pages.Create
         {
             if (mw != null)
             {
-                if (mw.userDatabaseSettings != null)
+
+                // Create new UserConfiguration object with new data
+                UserConfiguration userConfig = new UserConfiguration();
+
+                userConfig.first_name = firstname_TXT.Text;
+                userConfig.last_name = lastname_TXT.Text;
+
+                userConfig.username = username_TXT.Text;
+
+                userConfig.company = company_TXT.Text;
+
+                userConfig.email = email_TXT.Text;
+                userConfig.phone = phone_TXT.Text;
+
+                userConfig.address = address1_TXT.Text;
+                userConfig.city = city_TXT.Text;
+
+                if (country_COMBO.SelectedItem != null) userConfig.country = country_COMBO.SelectedItem.ToString();
+                if (state_COMBO.SelectedItem != null) userConfig.state = state_COMBO.SelectedItem.ToString();
+
+                userConfig.zipcode = zipcode_TXT.Text;
+
+
+                // If no userconfiguration database configuration found then use default TrakHound User Database
+                if (mw.userDatabaseSettings == null)
+                {
+                    TH_Configuration.User.Management.CreateUser(userConfig, password_TXT.Password);
+                }
+                else
                 {
                     Users.CreateUserTable(mw.userDatabaseSettings);
-
-                    UserConfiguration userConfig = new UserConfiguration();
-
-                    userConfig.first_name = firstname_TXT.Text;
-                    userConfig.last_name = lastname_TXT.Text;
-
-                    userConfig.username = username_TXT.Text;
-
-                    userConfig.company = company_TXT.Text;
-
-                    userConfig.email = email_TXT.Text;
-                    userConfig.phone = phone_TXT.Text;
-
-                    userConfig.address = address1_TXT.Text;
-                    userConfig.city = city_TXT.Text;
-
-                    if (country_COMBO.SelectedItem != null) userConfig.country = country_COMBO.SelectedItem.ToString();
-                    if (state_COMBO.SelectedItem != null) userConfig.state = state_COMBO.SelectedItem.ToString();
-
-                    userConfig.zipcode = zipcode_TXT.Text;
-
                     Users.CreateUser(userConfig, password_TXT.Password, mw.userDatabaseSettings);
-
-                    ConfirmUserCreation();
-
-                    //UserConfiguration successConfig = Users.Login(userConfig.username, password_TXT.Password, mw.userDatabaseSettings);
-                    //if (successConfig != null)
-                    //{
-                    //    CleanForm();
-
-                    //    mw.ClosePage("Create Account");
-
-                    //    mw.LoginMenu.Shown = true;
-                    //}
-                    //else
-                    //{
-
-                    //}
                 }
+
+                ConfirmUserCreation();
+
             }     
         }
 
@@ -328,7 +322,12 @@ namespace TrakHound_Client.Account_Management.Pages.Create
         {
             if (mw != null)
             {
-                if (mw.userDatabaseSettings != null)
+                // If no userconfiguration database configuration found then use default TrakHound User Database
+                if (mw.userDatabaseSettings == null)
+                {
+                    UsernameVerified = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
+                }
+                else
                 {
                     UsernameVerified = Users.VerifyUsername(username_TXT.Text, mw.userDatabaseSettings);
                 }
@@ -391,8 +390,8 @@ namespace TrakHound_Client.Account_Management.Pages.Create
         {
             System.Security.SecureString pwd = password_TXT.SecurePassword;
 
-            if (!Users.VerifyPasswordMinimum(pwd)) PasswordShort = true;
-            else if (!Users.VerifyPasswordMaximum(pwd)) PasswordLong = true;
+            if (!TH_Configuration.User.Management.VerifyPasswordMinimum(pwd)) PasswordShort = true;
+            else if (!TH_Configuration.User.Management.VerifyPasswordMaximum(pwd)) PasswordLong = true;
         }
 
         System.Timers.Timer confirmpassword_TIMER;

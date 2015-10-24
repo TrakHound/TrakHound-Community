@@ -22,6 +22,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_Configurat
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_Functions.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_PlugIns_Client_Data.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_Functions.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_Global.pdb

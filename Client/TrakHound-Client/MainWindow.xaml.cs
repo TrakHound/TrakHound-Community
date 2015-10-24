@@ -1047,8 +1047,15 @@ namespace TrakHound_Client
 
             UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
 
-            userDatabaseSettings = userSettings.Databases;
-            Global.Initialize(userDatabaseSettings);
+            if (userSettings != null)
+            {
+                if (userSettings.Databases.Databases.Count > 0)
+                {
+                    userDatabaseSettings = userSettings.Databases;
+                    Global.Initialize(userDatabaseSettings);
+                }
+            }
+
         }
 
         #endregion

@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Data;
 
+using System.Collections.Specialized;
+using System.Net;
+
 using TH_Configuration;
 using TH_Global;
 
@@ -22,82 +25,7 @@ namespace TH_Database.Tables
 
         public const string tablename = "users";
 
-        public static void AddConfigurationToUser(UserConfiguration userConfig, Database_Settings db, Configuration configuration)
-        {
-            CreateUserTable(db);
-
-            //CreateUser(userConfig, db, configuration);
-
-            CreateConfigurationTable(userConfig, db, configuration);
-        }
-
-        public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings db)
-        {
-
-            List<Configuration> result = new List<Configuration>();
-
-            string[] tables = Table.List(db, "LIKE '" + userConfig.username + "%'");
-
-            foreach (string table in tables)
-            {
-                DataTable dt = Table.Get(db, table);
-                if (dt != null)
-                {
-                    string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + TH_Global.Functions.RandomString(20));
-
-                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
-                    if (config != null)
-                    {
-                        result.Add(config);
-                    }
-                }
-            }
-
-            return result;
-        }
-
         #region "User Management"
-
-        //public class UserConfiguration
-        //{
-        //    public string username { get; set; }
-        //    public string hash { get; set; }
-        //    public int salt { get; set; }
-        //    public string first_name { get; set; }
-        //    public string last_name { get; set; }
-        //    public string company { get; set; }
-        //    public string email { get; set; }
-        //    public string phone { get; set; }
-        //    public string address { get; set; }
-        //    public string city { get; set; }
-        //    public string state { get; set; }
-        //    public string country { get; set; }
-        //    public string zipcode { get; set; }
-        //    public string image_url { get; set; }
-        //    public DateTime last_login { get; set; }
-
-        //    public static UserConfiguration GetFromDataRow(DataRow row)
-        //    {
-        //        UserConfiguration result = new UserConfiguration();
-
-        //        foreach (System.Reflection.PropertyInfo info in typeof(UserConfiguration).GetProperties())
-        //        {
-        //            if (info.Name == "last_login") result.last_login = DateTime.UtcNow;
-        //            else
-        //            {
-        //                if (row.Table.Columns.Contains(info.Name))
-        //                {
-        //                    object value = row[info.Name];
-
-        //                    Type t = info.PropertyType;
-        //                    info.SetValue(result, Convert.ChangeType(value, t), null);
-        //                }
-        //            }
-        //        }
-
-        //        return result;
-        //    }
-        //}
 
         public static void CreateUserTable(Database_Settings config)
         {
@@ -149,7 +77,7 @@ namespace TH_Database.Tables
                                 result = UserConfiguration.GetFromDataRow(dbrow);
 
                                 UpdateLoginTime(result, db);
-                            } 
+                            }
                             else Console.WriteLine("Incorrect Password!");
                         }
                     }
@@ -177,8 +105,6 @@ namespace TH_Database.Tables
             columns.Add("state");
             columns.Add("country");
             columns.Add("zipcode");
-            //columns.Add("image_url");
-            //columns.Add("last_login");
 
             Security.Password pwd = new Security.Password(password);
 
@@ -196,8 +122,6 @@ namespace TH_Database.Tables
             values.Add(userConfig.state);
             values.Add(TH_Global.Formatting.UppercaseFirst(userConfig.country));
             values.Add(userConfig.zipcode);
-            //values.Add(userConfig.image_url);
-            //values.Add(userConfig.last_login);
 
             Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
         }
@@ -234,13 +158,13 @@ namespace TH_Database.Tables
         public static bool VerifyUsername(string username, Database_Settings db)
         {
             bool result = false;
-            
+
             Regex r = new Regex("^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
             if (r.IsMatch(username) && !username.ToLower().Contains("trakhound"))
             {
                 DataRow dbrow = Row.Get(db, tablename, "WHERE username='" + username.ToLower() + "'");
                 if (dbrow == null) result = true;
-            }           
+            }
 
             return result;
         }
@@ -257,34 +181,44 @@ namespace TH_Database.Tables
             else return false;
         }
 
-        //public static void CreateUserTable(Database_Settings config)
-        //{
-        //    ColumnDefinition[] Columns = new ColumnDefinition[]
-        //    {
-        //        new ColumnDefinition("tablename", DataType.LargeText),
-        //        new ColumnDefinition("username", DataType.LargeText),
-        //        new ColumnDefinition("password", DataType.LargeText)
-        //    };
-
-        //    Table.Create(config, tablename, Columns, "tablename");
-        //}
-
-        //public static void CreateUser(TH_Configuration.Users.User_Settings userConfig, Database_Settings db, Configuration configuration)
-        //{
-        //    List<string> columns = new List<string>();
-        //    columns.Add("tablename");
-        //    columns.Add("username");
-        //    columns.Add("password");
-
-        //    List<object> values = new List<object>();
-        //    values.Add(GetConfigurationTableName(userConfig, configuration));
-        //    values.Add(userConfig.username);
-        //    values.Add(userConfig.password);
-
-        //    Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
-        //}
-
         #endregion
+
+        #region "Configuration Management"
+
+        public static void AddConfigurationToUser(UserConfiguration userConfig, Database_Settings db, Configuration configuration)
+        {
+            CreateUserTable(db);
+
+            //CreateUser(userConfig, db, configuration);
+
+            CreateConfigurationTable(userConfig, db, configuration);
+        }
+
+        public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings db)
+        {
+
+            List<Configuration> result = new List<Configuration>();
+
+            string[] tables = Table.List(db, "LIKE '" + userConfig.username + "%'");
+
+            foreach (string table in tables)
+            {
+                DataTable dt = Table.Get(db, table);
+                if (dt != null)
+                {
+                    string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + TH_Global.Functions.RandomString(20));
+
+                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
+                    if (config != null)
+                    {
+                        result.Add(config);
+                    }
+                }
+            }
+
+            return result;
+        }
+
 
         public static void CreateConfigurationTable(UserConfiguration userConfig, Database_Settings db, Configuration configuration)
         {
@@ -337,6 +271,8 @@ namespace TH_Database.Tables
 
             return table;
         }
+
+        #endregion
 
     }
 }

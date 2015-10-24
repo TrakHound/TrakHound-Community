@@ -16,5 +16,5 @@ DEBUG;TRACE
 14355860482
 Info_BT.xaml;ListButton.xaml;LoadingAnimation\Block.xaml;LoadingAnimation\Wheel.xaml;ProductionIndicator.xaml;TimeLine\Segment.xaml;TimeLine\TickMark.xaml;TimeLine\TimeLine.xaml;
 
-True
+False
 

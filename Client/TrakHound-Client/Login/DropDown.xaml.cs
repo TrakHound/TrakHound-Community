@@ -138,9 +138,38 @@ namespace TrakHound_Client.Login
         public static readonly DependencyProperty LoginErrorProperty =
             DependencyProperty.Register("LoginError", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
 
+
+
+
+        public string Fullname
+        {
+            get { return (string)GetValue(FullnameProperty); }
+            set { SetValue(FullnameProperty, value); }
+        }
+
+        public static readonly DependencyProperty FullnameProperty =
+            DependencyProperty.Register("Fullname", typeof(string), typeof(DropDown), new PropertyMetadata(null));
+
+
+        public string Firstname
+        {
+            get { return (string)GetValue(FirstnameProperty); }
+            set { SetValue(FirstnameProperty, value); }
+        }
+
+        public static readonly DependencyProperty FirstnameProperty =
+            DependencyProperty.Register("Firstname", typeof(string), typeof(DropDown), new PropertyMetadata(null));
+
+        public string Lastname
+        {
+            get { return (string)GetValue(LastnameProperty); }
+            set { SetValue(LastnameProperty, value); }
+        }
+
+        public static readonly DependencyProperty LastnameProperty =
+            DependencyProperty.Register("Lastname", typeof(string), typeof(DropDown), new PropertyMetadata(null));
+
         
-
-
 
         public string Username
         {
@@ -172,13 +201,6 @@ namespace TrakHound_Client.Login
 
         public static readonly DependencyProperty ProfileImageProperty =
             DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(DropDown), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01.png"))));
-
-
-
-
-
-
-
 
 
 
@@ -235,7 +257,7 @@ namespace TrakHound_Client.Login
         private void ProfileImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
 
-            if (LoggedIn && mw.userDatabaseSettings != null && currentUser != null)
+            if (LoggedIn && currentUser != null)
             {
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
@@ -252,9 +274,8 @@ namespace TrakHound_Client.Login
 
                     string username = "usermanager@feenux.com";
                     string password = "6=TB0P?@Do#Z";
-                    string remoteFileName = "starwars.jpg";
+                    string remoteFileName = Functions.RandomString(20);
                     string remotePath = "ftp://ftp.feenux.com/" + remoteFileName;
-                    //string localPath = imagePath;
 
                     System.Drawing.Image img = CropImageToCenter(System.Drawing.Image.FromFile(imagePath));
 
@@ -269,10 +290,21 @@ namespace TrakHound_Client.Login
 
                     string localPath = newPath;
 
-
                     if (FTP.Upload(username, password, remotePath, localPath))
                     {
-                        Users.UpdateImageURL(remoteFileName, currentUser, mw.userDatabaseSettings);
+                        if (mw != null)
+                        {
+                            if (mw.userDatabaseSettings == null)
+                            {
+                                TH_Configuration.User.Management.UpdateImageURL(remoteFileName, currentUser);
+                            }
+                            else
+                            {
+                                Users.UpdateImageURL(remoteFileName, currentUser, mw.userDatabaseSettings);
+                            }
+                        }
+
+                        
 
                         LoadProfileImage(currentUser);
                     }
@@ -320,48 +352,6 @@ namespace TrakHound_Client.Login
                     }
                 }
             }
-
-
-
-
-
-
-            //if (userConfig.image_url != String.Empty)
-            //{
-            //    string username = "usermanager@feenux.com";
-            //    string password = "TX_A!b}!ivMB";
-
-
-            //    //string remoteFileName = userConfig.image_url;
-
-            //    string remoteFileName = "starwars.jpg";
-
-
-            //    string remotePath = "ftp://ftp.feenux.com/" + remoteFileName;
-
-            //    System.Drawing.Image img = FTP.DownloadImageTest(username, password, remotePath);
-            //    if (img != null)
-            //    {
-            //        Console.WriteLine("Image isn't null!");
-
-
-
-            //    }
-
-            //    //Stream stream = FTP.Download(username, password, remotePath);
-            //    //if (stream != null)
-            //    //{
-            //    //    using (stream)
-            //    //    {
-            //    //        var imageSource = new BitmapImage();
-            //    //        imageSource.BeginInit();
-            //    //        imageSource.StreamSource = stream;
-            //    //        imageSource.EndInit();
-
-            //    //        ProfileImage = imageSource;
-            //    //    }
-            //    //}
-            //}
         }
 
         public bool Login()
@@ -369,36 +359,56 @@ namespace TrakHound_Client.Login
             bool result = false;
 
             LoginError = false;
+            Loading = true;
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01.png"));
 
-            if (mw.userDatabaseSettings != null)
+
+            UserConfiguration userConfig = null;
+
+            // If no userconfiguration database configuration found then use default TrakHound User Database
+            if (mw.userDatabaseSettings == null)
             {
-                Loading = true;
-
-                UserConfiguration userConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
-                if (userConfig != null)
-                {
-                    Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-                    EmailAddress = userConfig.email;
-
-                    username_TXT.Clear();
-                    password_TXT.Clear();
-
-                    LoadProfileImage(userConfig);
-                    LoggedIn = true;
-                    result = true;
-                }
-                else
-                {
-                    LoginError = true;
-                    LoggedIn = false;
-                    Username = null;
-                }
-
-                currentUser = userConfig;
-                mw.CurrentUser = currentUser;
-
-                Loading = false;
+                userConfig = TH_Configuration.User.Management.Login(username_TXT.Text, password_TXT.Password);
             }
+            else
+            {
+                userConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
+            }
+
+            // If login was successful
+            if (userConfig != null)
+            {
+                Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+                Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
+                Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+
+                Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+                EmailAddress = userConfig.email;
+
+                username_TXT.Clear();
+                password_TXT.Clear();
+
+                LoadProfileImage(userConfig);
+                LoggedIn = true;
+                result = true;
+            }
+            else
+            {
+                LoginError = true;
+                LoggedIn = false;
+
+                Fullname = null;
+                Firstname = null;
+                Lastname = null;
+
+                Username = null;
+            }
+
+
+            currentUser = userConfig;
+            mw.CurrentUser = currentUser;
+
+            Loading = false;
 
             return result;
         }
@@ -406,8 +416,14 @@ namespace TrakHound_Client.Login
         void SignOut()
         {
             LoggedIn = false;
+
+            Fullname = null;
+            Firstname = null;
+            Lastname = null;
+
             Username = null;
             currentUser = null;
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01.png"));
             mw.CurrentUser = null;
         }
 

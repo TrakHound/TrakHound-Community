@@ -377,20 +377,103 @@
                         </Grid.Style>
 
                         <!--Profile Image-->
-                        <Border Margin="10" BorderThickness="1" BorderBrush="#ccc" CornerRadius="2" PreviewMouseDown="ProfileImage_PreviewMouseDown" Height="120" Width="120" VerticalAlignment="Top">
+                        <Border x:Name="profileimage_BD" Margin="10" BorderThickness="1" BorderBrush="#ccc" CornerRadius="2" Height="120" Width="120" VerticalAlignment="Top">
 
-                            <Image Source="{Binding ProfileImage}" />
+                            <Grid>
 
+                                <Image Source="{Binding ProfileImage}" />
+
+                                <Border Height="30" CornerRadius="2" Margin="10,0" PreviewMouseDown="ProfileImage_PreviewMouseDown">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Background" Value="#88ffffff"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter Property="Background" Value="#aaffffff"/>
+                                                    <Setter Property="Cursor" Value="Hand"/>
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=profileimage_BD}" Value="true">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid Margin="5,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Camera Icon-->
+                                        <Rectangle x:Name="uploadphoto_image" Height="30"  Width="30" >
+                                            <Rectangle.Resources>
+                                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Camera_01.png" />
+                                            </Rectangle.Resources>
+
+                                            <Rectangle.Style>
+                                                <Style TargetType="Rectangle">
+                                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Setter Property="Fill" Value="#333"/>
+                                                    <!--<Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                                                            <Setter Property="Fill" Value="#FF0080ff"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                            <Setter Property="Fill" Value="#fff"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>-->
+                                                </Style>
+                                            </Rectangle.Style>
+                                        </Rectangle>
+                                        
+                                        <!--Change Text-->
+                                        <TextBlock Grid.Column="1" Text="Change" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap"/>
+
+                                    </Grid>
+
+                                </Border>
+
+                            </Grid>
+                            
                         </Border>
 
                         <StackPanel Grid.Column="1" Margin="10">
 
+                            <!--Greeting-->
+                            <TextBlock Text="{Binding Fullname}"  FontSize="10pt" Foreground="#333">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Firstname}" Value="{x:Null}"/>
+                                                    <Condition Binding="{Binding Lastname}" Value="{x:Null}"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            
                             <!--Username-->
                             <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="#0080ff" FontWeight="Bold" Margin="0,5"/>
 
+                            <!--Email Address-->
                             <TextBlock Text="{Binding EmailAddress}" FontSize="10pt" Foreground="#888" Margin="0,5"/>
 
+                            <!--Manage Devices-->
+                            <controls:TH_Button Grid.Column="1" Height="40" Text="Manage Devices"  Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" AlternateStyle="True"/>
+
                         </StackPanel>
+
 
                     </Grid>
 
@@ -568,8 +651,16 @@
                                 </Style>
                             </Grid.Style>
 
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
                             <!--Sign Out-->
-                            <controls:TH_Button Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="#ccc" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" />
+                            <controls:TH_Button Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="#ccc" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" />
+
+                            <controls:TH_Button Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" AlternateStyle="True"/>
 
                         </Grid>
 

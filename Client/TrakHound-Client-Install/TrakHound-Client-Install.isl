@@ -4539,7 +4539,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]TrakHound-Client.Primary output</td><td/></row>
 		<row><td>ProductCode</td><td>{DA4ED85F-93E0-44C2-BA7D-2A1B6B4EC79B}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Client</td><td/></row>
-		<row><td>ProductVersion</td><td>1.0.0.9</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.0.10</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
