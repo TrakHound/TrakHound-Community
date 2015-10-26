@@ -23,10 +23,12 @@ using System.IO;
 using System.Net;
 
 using TH_Configuration;
+using TH_Configuration.User;
 using TH_Database.Tables;
 using TH_Database;
 using TH_FTP;
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TrakHound_Client.Login
 {
@@ -222,133 +224,66 @@ namespace TrakHound_Client.Login
             CreateAccount();
         }
 
-        private static System.Drawing.Image CropImage (System.Drawing.Image img, System.Drawing.Rectangle cropArea)
+        private void MyAccount_Clicked(Controls.TH_Button bt)
         {
-            System.Drawing.Bitmap bmpImage = new System.Drawing.Bitmap(img);
-            return bmpImage.Clone(cropArea, bmpImage.PixelFormat);
-        }
-
-        static System.Drawing.Image CropImageToCenter(System.Drawing.Image img)
-        {
-            int width = img.Width;
-            int height = img.Height;
-
-            if (width > height)
-            {
-                int sqWidth = height;
-                int widthOffset = (width - sqWidth) / 2;
-
-                System.Drawing.Rectangle widthCropRect = new System.Drawing.Rectangle(new System.Drawing.Point(widthOffset, 0), new System.Drawing.Size(height, height));
-
-                return CropImage(img, widthCropRect);
-            }
-            else if (height > width)
-            {
-                int sqHeight = width;
-                int heightOffset = (height - sqHeight) / 2;
-
-                System.Drawing.Rectangle heightCropRect = new System.Drawing.Rectangle(new System.Drawing.Point(0, heightOffset), new System.Drawing.Size(width, width));
-
-                return CropImage(img, heightCropRect);
-            }
-            else return img;
+            Shown = false;
+            if (mw != null) mw.MyAccount_Open();
         }
 
         private void ProfileImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-
-            if (LoggedIn && currentUser != null)
-            {
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-                dlg.InitialDirectory = FileLocations.TrakHound;
-                dlg.Multiselect = false;
-                dlg.Title = "Browse for Profile Image";
-                dlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-
-                dlg.ShowDialog();
-
-                try
-                {
-                    string imagePath = dlg.FileName;
-
-                    string username = "usermanager@feenux.com";
-                    string password = "6=TB0P?@Do#Z";
-                    string remoteFileName = Functions.RandomString(20);
-                    string remotePath = "ftp://ftp.feenux.com/" + remoteFileName;
-
-                    System.Drawing.Image img = CropImageToCenter(System.Drawing.Image.FromFile(imagePath));
-
-                    img = TH_WPF.Image_Functions.SetImageSize(img, 120, 120);
-
-                    string newPath = FileLocations.TrakHound + @"\temp";
-                    if (!Directory.Exists(newPath)) Directory.CreateDirectory(newPath);
-
-                    newPath += @"\" + remoteFileName;
-
-                    img.Save(newPath);
-
-                    string localPath = newPath;
-
-                    if (FTP.Upload(username, password, remotePath, localPath))
-                    {
-                        if (mw != null)
-                        {
-                            if (mw.userDatabaseSettings == null)
-                            {
-                                TH_Configuration.User.Management.UpdateImageURL(remoteFileName, currentUser);
-                            }
-                            else
-                            {
-                                Users.UpdateImageURL(remoteFileName, currentUser, mw.userDatabaseSettings);
-                            }
-                        }
-
-                        
-
-                        LoadProfileImage(currentUser);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Browse_Button_Click() : " + ex.Message);
-                }
-            }
-        }
-
-        static Stream TestConvertImage(Stream originalStream, System.Drawing.Imaging.ImageFormat format)
-        {
-            var image = System.Drawing.Image.FromStream(originalStream);
-
-            var stream = new MemoryStream();
-            image.Save(stream, format);
-            stream.Position = 0;
-            return stream;
+            ChangeProfileImage();
         }
 
         void LoadProfileImage(UserConfiguration userConfig)
         {
-            if (userConfig.image_url != String.Empty)
+            if (userConfig != null)
             {
-                using (WebClient webClient = new WebClient())
+                System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
+
+                if (img != null)
                 {
-                    byte[] data = webClient.DownloadData("http://www.feenux.com/trakhound/users/files/" + userConfig.image_url);
+                    System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 
-                    using (MemoryStream mem = new MemoryStream(data))
+                    IntPtr bmpPt = bmp.GetHbitmap();
+                    BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                    bmpSource.Freeze();
+
+                    ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+                    mw.ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 200, 200);
+                }
+            }
+        }
+
+        void ChangeProfileImage()
+        {
+            if (LoggedIn && currentUser != null)
+            {
+
+                // Show OpenFileDialog for selecting new Profile Image
+                string imagePath = ProfileImages.OpenImageBrowse();
+                if (imagePath != null)
+                {
+                    // Crop and Resize image
+                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath);
+                    if (img != null)
                     {
-                        using (var imageStream = TestConvertImage(mem, System.Drawing.Imaging.ImageFormat.Jpeg))
+                        string filename = String_Functions.RandomString(20);
+
+                        string tempdir = FileLocations.TrakHound + @"\temp";
+                        if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+
+                        string localPath = tempdir + @"\" + filename;
+
+                        img.Save(localPath);
+
+                        if (ProfileImages.UploadProfileImage(filename, localPath))
                         {
-                            using (var yourImage = System.Drawing.Image.FromStream(imageStream))
-                            {
-                                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(yourImage);
-                                IntPtr bmpPt = bmp.GetHbitmap();
-                                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                            Management.UpdateImageURL(filename, currentUser);
 
-                                bmpSource.Freeze();
-
-                                ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
-                            }
-                        } 
+                            LoadProfileImage(currentUser);
+                        }
                     }
                 }
             }
@@ -464,6 +399,8 @@ namespace TrakHound_Client.Login
         {
             password_TXT.Password = null;
         }
+
+
 
     }
 }

@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,12 +47,16 @@
     <Compile Include="Countries.cs" />
     <Compile Include="FileLocations.cs" />
     <Compile Include="Formatting.cs" />
-    <Compile Include="Functions.cs" />
+    <Compile Include="Functions\DateTime_Functions.cs" />
+    <Compile Include="Functions\Image_Functions.cs" />
+    <Compile Include="Functions\Math_Functions.cs" />
+    <Compile Include="Functions\String_Functions.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="States.cs" />
     <Compile Include="TableNames.cs" />
+    <Compile Include="Web.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt">

@@ -24,3 +24,4 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_PlugIns_
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Newtonsoft.Json.dll

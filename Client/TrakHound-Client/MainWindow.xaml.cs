@@ -911,12 +911,14 @@ namespace TrakHound_Client
         {
             accountManager = new Account_Management.Manager();
 
-            accountManager.AddPage(new Account_Management.Pages.Create.Page());
+            accountManager.AddPage(new Account_Management.Pages.MyAccount.Page());
 
         }
 
         public void MyAccount_Open()
         {
+            accountManager.currentUser = currentuser;
+
             AddPageAsTab(accountManager, "My Account", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
         }
 
@@ -978,6 +980,16 @@ namespace TrakHound_Client
             DependencyProperty.Register("CurrentUsername", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
 
 
+        public ImageSource ProfileImage
+        {
+            get { return (ImageSource)GetValue(ProfileImageProperty); }
+            set { SetValue(ProfileImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageProperty =
+            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(MainWindow), new PropertyMetadata(null));
+
+        
         public bool LoggedIn
         {
             get { return (bool)GetValue(LoggedInProperty); }

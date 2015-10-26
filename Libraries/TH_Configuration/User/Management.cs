@@ -11,6 +11,7 @@ using System.Collections.Specialized;
 using Newtonsoft.Json;
 
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TH_Configuration.User
 {
@@ -110,7 +111,8 @@ namespace TH_Configuration.User
                 "company",
                 "email",
                 "phone",
-                "address",
+                "address1",
+                "address2",
                 "city",
                 "state",
                 "country",
@@ -128,8 +130,9 @@ namespace TH_Configuration.User
                 TH_Global.Formatting.UppercaseFirst(userConfig.last_name),
                 TH_Global.Formatting.UppercaseFirst(userConfig.company),
                 userConfig.email,
-                userConfig.phone,
-                userConfig.address,
+                TH_Global.Formatting.ToPhoneNumber(userConfig.phone),
+                userConfig.address1,
+                userConfig.address2,
                 TH_Global.Formatting.UppercaseFirst(userConfig.city),
                 userConfig.state,
                 TH_Global.Formatting.UppercaseFirst(userConfig.country),
@@ -368,7 +371,7 @@ namespace TH_Configuration.User
                                 DataTable dt = GetConfigurationTable(tablename);
                                 if (dt != null)
                                 {
-                                    string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + TH_Global.Functions.RandomString(20));
+                                    string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + String_Functions.RandomString(20));
 
                                     Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
                                     if (config != null)

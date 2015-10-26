@@ -1,0 +1,10 @@
+﻿<Window x:Class="PhoneNumberTester.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+        <TextBox x:Name="input_TXT" Width="200"/>
+        <Button Content="Submit" Click="Button_Click"/>
+        <TextBlock x:Name="result_TXT"/>
+    </StackPanel>
+</Window>

@@ -13,6 +13,8 @@ using System.Globalization;
 using System.Xml;
 using System.Data;
 
+using TH_Global.Functions;
+
 namespace TH_MTC_Data
 {
 
@@ -54,7 +56,7 @@ namespace TH_MTC_Data
                     // Make sure DateTime gets set as UTC
                     if (t == typeof(DateTime))
                     {
-                        DateTime dt = TH_Global.Functions.ConvertStringToUTC(Value);
+                        DateTime dt = DateTime_Functions.ConvertStringToUTC(Value);
                         info.SetValue(obj, dt, null);
                     }
                     else

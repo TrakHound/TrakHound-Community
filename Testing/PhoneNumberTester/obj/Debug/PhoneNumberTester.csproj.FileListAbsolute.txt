@@ -1,0 +1,16 @@
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\PhoneNumberTester.exe.config
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\PhoneNumberTester.exe
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\PhoneNumberTester.pdb
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\TH_Global.dll
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\TH_Global.pdb
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\MainWindow.baml
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\MainWindow.g.cs
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\App.g.cs
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.g.resources
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.exe
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.pdb

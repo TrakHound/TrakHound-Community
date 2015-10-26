@@ -244,7 +244,7 @@
                                 <Grid Margin="10,0">
 
                                     <!--Instructions-->
-                                    <TextBlock Text="Enter your username" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock Text="Enter your username or email" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -660,7 +660,7 @@
                             <!--Sign Out-->
                             <controls:TH_Button Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="#ccc" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" />
 
-                            <controls:TH_Button Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" AlternateStyle="True"/>
+                            <controls:TH_Button Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" AlternateStyle="True" Clicked="MyAccount_Clicked"/>
 
                         </Grid>
 

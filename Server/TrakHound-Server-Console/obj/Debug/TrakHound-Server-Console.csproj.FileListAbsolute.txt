@@ -25,3 +25,4 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHoun
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Database.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Newtonsoft.Json.dll

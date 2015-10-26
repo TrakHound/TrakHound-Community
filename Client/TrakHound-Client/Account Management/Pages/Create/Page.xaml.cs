@@ -205,7 +205,8 @@ namespace TrakHound_Client.Account_Management.Pages.Create
                 userConfig.email = email_TXT.Text;
                 userConfig.phone = phone_TXT.Text;
 
-                userConfig.address = address1_TXT.Text;
+                userConfig.address1 = address1_TXT.Text;
+                userConfig.address2 = address2_TXT.Text;
                 userConfig.city = city_TXT.Text;
 
                 if (country_COMBO.SelectedItem != null) userConfig.country = country_COMBO.SelectedItem.ToString();

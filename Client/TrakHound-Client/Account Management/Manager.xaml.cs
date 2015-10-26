@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TH_Configuration;
+using TH_Configuration.User;
 using TH_PlugIns_Client_Control;
 using TH_WPF;
 
@@ -28,7 +30,12 @@ namespace TrakHound_Client.Account_Management
         public Manager()
         {
             InitializeComponent();
+            DataContext = this;
+
+            mw = Application.Current.MainWindow as MainWindow;
         }
+
+        public TrakHound_Client.MainWindow mw;
 
         public string CurrentPageName
         {
@@ -80,6 +87,13 @@ namespace TrakHound_Client.Account_Management
 
         private void manager_Loaded(object sender, RoutedEventArgs e)
         {
+
+            if (mw != null)
+            {
+                ProfileImage = mw.ProfileImage;
+            }
+
+
             if (Pages_STACK.Children.Count > 0)
             {
                 if (Pages_STACK.Children[0].GetType() == typeof(ListButton))
@@ -101,6 +115,57 @@ namespace TrakHound_Client.Account_Management
                 }
             }
         }
+
+        private void ScrollViewer_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType() == typeof(ScrollViewer))
+            {
+                ScrollViewer sv = (ScrollViewer)sender;
+
+                sv.Focus();
+            }
+        }
+
+
+        public UserConfiguration currentUser;
+
+        #region "Profile Side Panel"
+
+        #region "Profile Image"
+
+        public ImageSource ProfileImage
+        {
+            get { return (ImageSource)GetValue(ProfileImageProperty); }
+            set { SetValue(ProfileImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageProperty =
+            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(Manager), new PropertyMetadata(null));
+
+
+        void LoadProfileImage(UserConfiguration userConfig)
+        {
+            if (userConfig != null)
+            {
+                System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
+
+                if (img != null)
+                {
+                    System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+
+                    IntPtr bmpPt = bmp.GetHbitmap();
+                    BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                    bmpSource.Freeze();
+
+                    ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 200, 200);
+                }
+            }
+        }
+
+        #endregion
+
+        #endregion
 
     }
 }

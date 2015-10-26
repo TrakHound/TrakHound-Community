@@ -17,6 +17,7 @@ using System.Net;
 
 using TH_Configuration;
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TH_Database.Tables
 {
@@ -100,7 +101,8 @@ namespace TH_Database.Tables
             columns.Add("company");
             columns.Add("email");
             columns.Add("phone");
-            columns.Add("address");
+            columns.Add("address1");
+            columns.Add("address2");
             columns.Add("city");
             columns.Add("state");
             columns.Add("country");
@@ -117,7 +119,8 @@ namespace TH_Database.Tables
             values.Add(TH_Global.Formatting.UppercaseFirst(userConfig.company));
             values.Add(userConfig.email);
             values.Add(userConfig.phone);
-            values.Add(userConfig.address);
+            values.Add(userConfig.address1);
+            values.Add(userConfig.address2);
             values.Add(TH_Global.Formatting.UppercaseFirst(userConfig.city));
             values.Add(userConfig.state);
             values.Add(TH_Global.Formatting.UppercaseFirst(userConfig.country));
@@ -206,7 +209,7 @@ namespace TH_Database.Tables
                 DataTable dt = Table.Get(db, table);
                 if (dt != null)
                 {
-                    string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + TH_Global.Functions.RandomString(20));
+                    string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + String_Functions.RandomString(20));
 
                     Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
                     if (config != null)

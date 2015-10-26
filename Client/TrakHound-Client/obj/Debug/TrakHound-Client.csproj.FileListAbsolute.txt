@@ -293,3 +293,5 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Manageme
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Manager.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\Create\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Manager.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\MyAccount\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\MyAccount\Page.baml

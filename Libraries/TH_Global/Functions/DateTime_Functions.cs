@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TH_Global
+namespace TH_Global.Functions
 {
-    public static class Functions
+    public static class DateTime_Functions
     {
 
         /// <summary>
@@ -71,7 +67,7 @@ namespace TH_Global
         }
 
         public static DateTime ConvertDateTimeToUTC(DateTime dt)
-        {         
+        {
             int year = dt.Year;
             int month = dt.Month;
             int day = dt.Day;
@@ -84,51 +80,5 @@ namespace TH_Global
             return new DateTime(year, month, day, hour, minute, second, millisecond, DateTimeKind.Utc);
         }
 
-        static Random random = new Random();
-        public static string RandomString(int size)
-        {
-            StringBuilder builder = new StringBuilder();
-            char ch;
-            for (int i = 0; i < size; i++)
-            {
-                ch = Convert.ToChar(Convert.ToInt32(System.Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
-            }
-
-            return builder.ToString();
-        }
-
-        public static class Math
-        {
-            #region "GetMedian"
-
-            public static double GetMedian(double[] vals)
-            {
-                int size = vals.Length;
-                int index = size / 2;
-                double median = -1;
-
-                if (vals.Length > 1)
-                {
-                    if (IsOdd(index)) median = vals[index];
-                    else median = (double)(vals[index] + vals[index - 1]) / 2;
-                }
-                else median = vals[0];
-
-                return median;
-            }
-
-            #endregion
-
-
-
-            public static bool IsOdd(int val)
-            {
-                return val % 2 != 0;
-            }
-
-        }
-
     }
-
 }
