@@ -1,0 +1,25 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <Color x:Key="LightBlue_Color">#FF0080ff</Color>
+    <Color x:Key="DarkBlue_Color">#FF2b96ff</Color>
+
+    <!--Main Window Borders-->
+    <SolidColorBrush x:Key="ResizeBorder_Brush" Color="#FFEEEEEE"/>
+
+    <Color x:Key="WindowControl_Color">#FFCCCCCC</Color>
+    <SolidColorBrush x:Key="WindowControl_Brush" Color="{StaticResource WindowControl_Color}"/>
+
+    <!--Status Bar Gradient-->
+    <LinearGradientBrush x:Key="StatusBar" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="{StaticResource LightBlue_Color}" Offset="1"/>
+        <GradientStop Color="{StaticResource DarkBlue_Color}" Offset="0"/>
+    </LinearGradientBrush>
+
+</ResourceDictionary>
