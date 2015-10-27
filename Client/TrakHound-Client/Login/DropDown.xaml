@@ -13,7 +13,7 @@
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d"
-             d:DesignHeight="250" d:DesignWidth="315"
+             d:DesignHeight="275" d:DesignWidth="315"
              
              HorizontalAlignment="Right"
              VerticalAlignment="Top"
@@ -22,17 +22,24 @@
              
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID">
         <Grid.Style>
             <Style TargetType="Grid">
-                <Style.Triggers>
-                    
+                <Style.Triggers>                
                     <DataTrigger Binding="{Binding Shown}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="250" >
+                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="275" >
                                         <DoubleAnimation.EasingFunction>
                                             <CubicEase EasingMode="EaseOut"/>
                                         </DoubleAnimation.EasingFunction>
@@ -157,7 +164,7 @@
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="180" >
+                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="215" >
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseOut"/>
                                                         </DoubleAnimation.EasingFunction>
@@ -299,6 +306,20 @@
                                 </Grid>
 
                             </Border>
+                            
+                            <!--Remember Me-->
+                            <!--Enabled Text and Checkbox-->
+                            <Grid Margin="10,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="#888" />
+
+                                <CheckBox Grid.Column="1" Style="{StaticResource Android_CheckBoxStyle}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
+
+                            </Grid>
 
                         </StackPanel>
 

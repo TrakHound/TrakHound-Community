@@ -83,6 +83,48 @@ namespace TH_Global
                 return encoder.GetString(computedHash);
             }
 
+            public static string ComputeSaltedHash(string text, string salt)
+            {
+                // Create Byte array of password string
+                ASCIIEncoding encoder = new ASCIIEncoding();
+                Byte[] _secretBytes = encoder.GetBytes(text);
+
+                Byte[] _saltBytes = encoder.GetBytes(salt);
+
+                // append the two arrays
+                Byte[] toHash = new Byte[_secretBytes.Length + _saltBytes.Length];
+                Array.Copy(_secretBytes, 0, toHash, 0, _secretBytes.Length);
+                Array.Copy(_saltBytes, 0, toHash, _secretBytes.Length, _saltBytes.Length);
+
+                SHA1 sha1 = SHA1.Create();
+                Byte[] computedHash = sha1.ComputeHash(toHash);
+
+                return encoder.GetString(computedHash);
+            }
+
+            public static string ComputeHash(string text)
+            {
+                // Create Byte array of password string
+                UTF8Encoding encoder = new UTF8Encoding();
+                //ASCIIEncoding encoder = new ASCIIEncoding();
+                Byte[] _secretBytes = encoder.GetBytes(text);
+
+                //Byte[] _saltBytes = encoder.GetBytes(salt);
+
+                // append the two arrays
+                Byte[] toHash = new Byte[_secretBytes.Length];
+                Array.Copy(_secretBytes, 0, toHash, 0, _secretBytes.Length);
+
+                //Byte[] toHash = new Byte[_secretBytes.Length + _saltBytes.Length];
+                //Array.Copy(_secretBytes, 0, toHash, 0, _secretBytes.Length);
+                //Array.Copy(_saltBytes, 0, toHash, _secretBytes.Length, _saltBytes.Length);
+
+                SHA1 sha1 = SHA1.Create();
+                Byte[] computedHash = sha1.ComputeHash(toHash);
+
+                return encoder.GetString(computedHash);
+            }
+
         }
 
     }

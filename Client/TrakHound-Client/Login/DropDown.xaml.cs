@@ -47,6 +47,16 @@ namespace TrakHound_Client.Login
 
             Root_GRID.Width = 0;
             Root_GRID.Height = 0;
+
+            // Remember Me
+            UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
+            if (RememberUser != null)
+            {
+                Login(RememberUser);
+
+                currentUser = RememberUser;
+                mw.CurrentUser = currentUser;
+            }
         }
 
         public TrakHound_Client.MainWindow mw;
@@ -77,6 +87,7 @@ namespace TrakHound_Client.Login
 
 
 
+        
 
 
         public bool LoggedIn
@@ -313,19 +324,25 @@ namespace TrakHound_Client.Login
             // If login was successful
             if (userConfig != null)
             {
-                Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-                Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-                Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+                Login(userConfig);
 
-                Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-                EmailAddress = userConfig.email;
-
-                username_TXT.Clear();
-                password_TXT.Clear();
-
-                LoadProfileImage(userConfig);
-                LoggedIn = true;
                 result = true;
+
+                //if (RememberMe) Management.SetRememberMe(userConfig, Management.RememberMeType.Client);
+
+                //Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+                //Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
+                //Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+
+                //Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+                //EmailAddress = userConfig.email;
+
+                //username_TXT.Clear();
+                //password_TXT.Clear();
+
+                //LoadProfileImage(userConfig);
+                //LoggedIn = true;
+                //result = true;
             }
             else
             {
@@ -346,6 +363,24 @@ namespace TrakHound_Client.Login
             Loading = false;
 
             return result;
+        }
+
+        void Login(UserConfiguration userConfig)
+        {
+            if (RememberMe) Management.SetRememberMe(userConfig, Management.RememberMeType.Client);
+
+            Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+            Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
+            Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+
+            Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+            EmailAddress = userConfig.email;
+
+            username_TXT.Clear();
+            password_TXT.Clear();
+
+            LoadProfileImage(userConfig);
+            LoggedIn = true;
         }
 
         void SignOut()
@@ -400,6 +435,38 @@ namespace TrakHound_Client.Login
             password_TXT.Password = null;
         }
 
+
+
+        #region "Remember Me"
+
+        public bool RememberMe
+        {
+            get { return (bool)GetValue(RememberMeProperty); }
+            set { SetValue(RememberMeProperty, value); }
+        }
+
+        public static readonly DependencyProperty RememberMeProperty =
+            DependencyProperty.Register("RememberMe", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
+
+        void LoadRememberMe()
+        {
+
+
+
+
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            RememberMe = true;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            RememberMe = false;
+        }
+
+        #endregion
 
 
     }

@@ -40,8 +40,11 @@ namespace TH_Configuration
                     {
                         object value = row[info.Name];
 
-                        Type t = info.PropertyType;
-                        info.SetValue(result, Convert.ChangeType(value, t), null);
+                        if (value != DBNull.Value)
+                        {
+                            Type t = info.PropertyType;
+                            info.SetValue(result, Convert.ChangeType(value, t), null);
+                        }
                     }
                 }
             }

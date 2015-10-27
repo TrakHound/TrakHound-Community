@@ -8,6 +8,8 @@ using System.Data;
 using System.Net;
 using System.Collections.Specialized;
 
+using Microsoft.Win32;
+
 using Newtonsoft.Json;
 
 using TH_Global;
@@ -30,37 +32,46 @@ namespace TH_Configuration.User
             DataRow dbrow = GetLoginData(username, password);
             if (dbrow != null)
             {
-                if (dbrow.Table.Columns.Contains("salt"))
-                {
-                    string strSalt = dbrow["salt"].ToString();
-                    int salt = -1;
-                    if (int.TryParse(strSalt, out salt))
-                    {
-                        if (dbrow.Table.Columns.Contains("hash"))
-                        {
-                            string hash = dbrow["hash"].ToString();
+                Console.WriteLine(username + " Logged in Successfully!");
 
-                            Security.Password pwd = new Security.Password(password, salt);
+                result = LoginSuccess(dbrow);
 
-                            if (pwd.hash == hash)
-                            {
-                                Console.WriteLine(username + " Logged in Successfully!");
+                //result = UserConfiguration.GetFromDataRow(dbrow);
 
-                                result = UserConfiguration.GetFromDataRow(dbrow);
+                //UpdateLoginTime(result);
 
-                                UpdateLoginTime(result);
-                            }
-                            else Console.WriteLine("Incorrect Password!");
-                        }
-                    }
-                }
+
+                //if (dbrow.Table.Columns.Contains("salt"))
+                //{
+                //    string strSalt = dbrow["salt"].ToString();
+                //    int salt = -1;
+                //    if (int.TryParse(strSalt, out salt))
+                //    {
+                //        if (dbrow.Table.Columns.Contains("hash"))
+                //        {
+                //            string hash = dbrow["hash"].ToString();
+
+                //            Security.Password pwd = new Security.Password(password, salt);
+
+                //            if (pwd.hash == hash)
+                //            {
+                //                Console.WriteLine(username + " Logged in Successfully!");
+
+                //                result = UserConfiguration.GetFromDataRow(dbrow);
+
+                //                UpdateLoginTime(result);
+                //            }
+                //            else Console.WriteLine("Incorrect Password!");
+                //        }
+                //    }
+                //}
             }
             else Console.WriteLine("Username '" + username + "' Not Found in Database!");
 
             return result;
         }
 
-        static DataRow GetLoginData(string username, string password)
+        static DataRow GetLoginData(string id, string password)
         {
             DataRow Result = null;
 
@@ -70,7 +81,7 @@ namespace TH_Configuration.User
                 {
 
                     NameValueCollection values = new NameValueCollection();
-                    values["username"] = username;
+                    values["id"] = id;
                     values["password"] = password;
 
                     byte[] response = client.UploadValues("http://www.feenux.com/php/users/login.php", values);
@@ -96,6 +107,17 @@ namespace TH_Configuration.User
             return Result;
         }
 
+        static UserConfiguration LoginSuccess(DataRow dbrow)
+        {
+            UserConfiguration result = null;
+
+                result = UserConfiguration.GetFromDataRow(dbrow);
+
+                UpdateLoginTime(result);
+
+                return result;
+        }
+
 
         public static bool CreateUser(UserConfiguration userConfig, string password)
         {
@@ -104,8 +126,6 @@ namespace TH_Configuration.User
             string[] columns = new string[]
             {
                 "username",
-                "hash",
-                "salt",
                 "first_name",
                 "last_name",
                 "company",
@@ -119,13 +139,9 @@ namespace TH_Configuration.User
                 "zipcode"
             };
 
-            Security.Password pwd = new Security.Password(password);
-
             object[] rowValues = new object[] 
             {
                 userConfig.username.ToLower(),
-                pwd.hash,
-                pwd.salt,
                 TH_Global.Formatting.UppercaseFirst(userConfig.first_name),
                 TH_Global.Formatting.UppercaseFirst(userConfig.last_name),
                 TH_Global.Formatting.UppercaseFirst(userConfig.company),
@@ -195,6 +211,8 @@ namespace TH_Configuration.User
 
                     NameValueCollection values = new NameValueCollection();
 
+                    values["username"] = userConfig.username.ToLower();
+                    values["password"] = password;
                     values["query"] = query;
 
                     byte[] response = client.UploadValues("http://www.feenux.com/php/users/createuser.php", values);
@@ -212,45 +230,51 @@ namespace TH_Configuration.User
         }
 
 
-        public static bool VerifyUsername(string username)
+        public class VerifyUsernameReturn
         {
-            bool result = false;
+            public bool available { get; set; }
+            public string message { get; set; }
+        }
 
-            Regex r = new Regex("^(?=.{6,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$");
-            if (r.IsMatch(username) && !username.ToLower().Contains("trakhound"))
+        public static VerifyUsernameReturn VerifyUsername(string username)
+        {
+            VerifyUsernameReturn result = null;
+
+            try
             {
-
-                try
+                using (WebClient client = new WebClient())
                 {
-                    using (WebClient client = new WebClient())
+                    NameValueCollection values = new NameValueCollection();
+                    values["username"] = username;
+
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/users/verifyusername.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    string output = responseString.Trim();
+
+                    if (output != "")
                     {
+                        result = new VerifyUsernameReturn();
 
-                        NameValueCollection values = new NameValueCollection();
-                        values["username"] = username;
-
-                        byte[] response = client.UploadValues("http://www.feenux.com/php/users/verifyusername.php", values);
-
-                        string responseString = Encoding.Default.GetString(response);
-
-                        if (responseString.Trim() != "")
+                        if (output.Contains(';'))
                         {
-                            JsonSerializerSettings JSS = new JsonSerializerSettings();
-                            JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                            JSS.DateParseHandling = DateParseHandling.DateTime;
-                            JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                            int index = output.IndexOf(';');
 
-                            DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
+                            bool available = false;
+                            string avail = output.Substring(0, index);
+                            bool.TryParse(avail, out available);
 
-                            if (DT.Rows.Count == 0) result = true;
+                            string message = null;
+                            if (output.Length > index + 1) message = output.Substring(index + 1);
+
+                            result.available = available;
+                            result.message = message;
                         }
-                        else result = true;
-
-
                     }
                 }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-
             }
+            catch (Exception ex) { Logger.Log(ex.Message); }
 
             return result;
         }
@@ -329,6 +353,264 @@ namespace TH_Configuration.User
             if (r.Contains("'")) r = r.Replace("'", "\'");
             return r;
         }
+
+
+        #region "Remember Me"
+
+        public enum RememberMeType
+        {
+            Client = 0,
+            Server = 1
+        }
+
+        public static bool SetRememberMe(UserConfiguration userConfig, RememberMeType type)
+        {
+            bool result = false;
+
+            string id = userConfig.username;
+
+            string t = type.ToString().ToLower();
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    NameValueCollection values = new NameValueCollection();
+
+                    values["id"] = id;
+                    values["type"] = type.ToString();
+
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/users/setrememberme.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    if (responseString.Trim() != "")
+                    {
+                        string hash = responseString.Trim();
+
+                        // Set "id" registry key
+                        SetRegistryKey(t + "_id", userConfig.username);
+
+                        // Set Date of Last Login using Remember Me
+                        SetRegistryKey(t + "_last_login", DateTime.UtcNow.ToString());
+
+                        // Set "hash" registry key
+                        SetRegistryKey(t + "_hash", hash);
+
+                        result = true;
+                    }
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return result;
+        }
+
+        public static UserConfiguration GetRememberMe(RememberMeType type)
+        {
+            UserConfiguration result = null;
+
+            string t = type.ToString().ToLower();
+
+            string strLast_Login = GetRegistryKey(t + "_last_login");
+            DateTime last_login = DateTime.MinValue;
+            if (DateTime.TryParse(strLast_Login, out last_login))
+            {
+                TimeSpan sinceLastLogin = DateTime.UtcNow - last_login;
+                if (sinceLastLogin > TimeSpan.FromDays(14))
+                {
+                    ClearRememberMe(type);
+                }
+                else
+                {
+                    string id = GetRegistryKey(t + "_id");
+                    string hash = GetRegistryKey(t + "_hash");
+
+                    if (hash != null)
+                    {
+                        try
+                        {
+                            using (WebClient client = new WebClient())
+                            {
+                                NameValueCollection values = new NameValueCollection();
+
+                                values["id"] = id;
+                                values["hash"] = hash;
+                                values["type"] = type.ToString();
+                                
+                                byte[] response = client.UploadValues("http://www.feenux.com/php/users/getrememberme.php", values);
+
+                                string responseString = Encoding.Default.GetString(response);
+
+                                if (responseString.Trim() != "")
+                                {
+                                    JsonSerializerSettings JSS = new JsonSerializerSettings();
+                                    JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                                    JSS.DateParseHandling = DateParseHandling.DateTime;
+                                    JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+
+                                    DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
+
+                                    if (DT.Rows.Count > 0)
+                                    {
+                                        result = LoginSuccess(DT.Rows[0]);
+
+                                        Console.WriteLine(result.username + " Auto Logged in Successfully!");
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex) { Logger.Log(ex.Message); }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static bool ClearRememberMe(RememberMeType type)
+        {
+            bool result = false;
+
+            string t = type.ToString().ToLower();
+
+            // Set "id" registry key
+            string key = GetRegistryKey(t + "_id");
+            if (key != null)
+            {
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    {
+                        NameValueCollection values = new NameValueCollection();
+
+                        values["id"] = key;
+                        values["type"] = type.ToString();
+
+                        byte[] response = client.UploadValues("http://www.feenux.com/php/users/clearrememberme.php", values);
+
+                        string responseString = Encoding.Default.GetString(response);
+
+                        if (responseString.ToLower().Trim() == "true") result = true;
+                    }
+                }
+                catch (Exception ex) { Logger.Log(ex.Message); }
+            }
+
+            DeleteRegistryKey(t + "_id");
+            DeleteRegistryKey(t + "_last_login");
+            DeleteRegistryKey(t + "__hash");
+
+            return result;
+        }
+
+        #region "Registry Functions"
+
+        public static void SetRegistryKey(string keyName, object keyValue)
+        {
+            try
+            {
+                // Open CURRENT_USER/Software Key
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+                // Create/Open CURRENT_USER/Software/TrakHound Key
+                RegistryKey rootKey = key.CreateSubKey("TrakHound");
+
+                // Create/Open CURRENT_USER/Software/TrakHound/Updates Key
+                RegistryKey updatesKey = rootKey.CreateSubKey("RememberMe");
+
+                // Create/Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
+                RegistryKey updateKey = updatesKey.CreateSubKey(keyName);
+
+                // Update value for [keyName] to [keyValue]
+                updateKey.SetValue(keyName, keyValue);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UserManagement_RememberMe_SetRegistryKey() : " + ex.Message);
+            }
+        }
+
+        public static string GetRegistryKey(string keyName)
+        {
+            string Result = null;
+
+            try
+            {
+                // Open CURRENT_USER/Software Key
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+                // Open CURRENT_USER/Software/TrakHound Key
+                RegistryKey rootKey = key.OpenSubKey("TrakHound");
+
+                // Open CURRENT_USER/Software/TrakHound/Updates Key
+                RegistryKey updatesKey = rootKey.OpenSubKey("RememberMe");
+
+                // Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
+                RegistryKey updateKey = updatesKey.OpenSubKey(keyName);
+
+                // Read value for [keyName] to [keyValue]
+                Result = updateKey.GetValue(keyName).ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UserManagement_RememberMe_GetRegistryKey() : " + ex.Message);
+            }
+
+            return Result;
+        }
+
+        public static string[] GetRegistryKeyNames()
+        {
+            string[] Result = null;
+
+            try
+            {
+                // Open CURRENT_USER/Software Key
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+                // Open CURRENT_USER/Software/TrakHound Key
+                RegistryKey rootKey = key.OpenSubKey("TrakHound");
+
+                // Open CURRENT_USER/Software/TrakHound/Updates Key
+                RegistryKey updatesKey = rootKey.OpenSubKey("RememberMe");
+
+                Result = updatesKey.GetSubKeyNames();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UserManagement_RememberMe_GetRegistryKeys() : " + ex.Message);
+            }
+
+            return Result;
+        }
+
+        public static void DeleteRegistryKey(string keyName)
+        {
+            try
+            {
+                // Open CURRENT_USER/Software Key
+                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+                // Open CURRENT_USER/Software/TrakHound Key
+                RegistryKey rootKey = key.OpenSubKey("TrakHound", true);
+
+                // Open CURRENT_USER/Software/TrakHound/Updates Key
+                RegistryKey updatesKey = rootKey.OpenSubKey("RememberMe", true);
+
+                // Delete CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
+                updatesKey.DeleteSubKey(keyName, true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("UserManagement_RememberMe_DeleteRegistryKey() : " + ex.Message);
+            }
+        }
+
+        #endregion
+
+        #endregion
+
 
         #endregion
 

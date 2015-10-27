@@ -266,25 +266,7 @@ namespace TrakHound_Client.Account_Management.Pages.Create
             {
 
             }
-
-
-            //UserConfiguration successConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
-            //if (successConfig != null)
-            //{
-            //    mw.CurrentUser = successConfig;
-
-            //    CleanForm();
-
-            //    mw.ClosePage("Create Account");
-
-            //    mw.LoginMenu.Shown = true;
-            //}
-            //else
-            //{
-
-            //}
         }
-
 
 
         #region "Username"
@@ -298,7 +280,15 @@ namespace TrakHound_Client.Account_Management.Pages.Create
         public static readonly DependencyProperty UsernameVerifiedProperty =
             DependencyProperty.Register("UsernameVerified", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
-        
+        public string UsernameMessage
+        {
+            get { return (string)GetValue(UsernameMessageProperty); }
+            set { SetValue(UsernameMessageProperty, value); }
+        }
+
+        public static readonly DependencyProperty UsernameMessageProperty =
+            DependencyProperty.Register("UsernameMessage", typeof(string), typeof(Page), new PropertyMetadata(null));
+    
 
         System.Timers.Timer username_TIMER;
 
@@ -326,12 +316,20 @@ namespace TrakHound_Client.Account_Management.Pages.Create
                 // If no userconfiguration database configuration found then use default TrakHound User Database
                 if (mw.userDatabaseSettings == null)
                 {
-                    UsernameVerified = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
+                    //UsernameVerified = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
+                    TH_Configuration.User.Management.VerifyUsernameReturn usernameReturn = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
+                    if (usernameReturn != null)
+                    {
+                        UsernameVerified = usernameReturn.available;
+                        UsernameMessage = usernameReturn.message;
+                    }
+                    else
+                    {
+                        UsernameVerified = false;
+                        UsernameMessage = null;
+                    }
                 }
-                else
-                {
-                    UsernameVerified = Users.VerifyUsername(username_TXT.Text, mw.userDatabaseSettings);
-                }
+                else UsernameVerified = Users.VerifyUsername(username_TXT.Text, mw.userDatabaseSettings);
             }
         }
 

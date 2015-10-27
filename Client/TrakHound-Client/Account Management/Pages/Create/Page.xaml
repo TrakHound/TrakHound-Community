@@ -186,9 +186,24 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+
+                        <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                    <!--<Setter Property="Visibility" Value="Collapsed"/>-->
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
+                                            <Setter Property="Foreground" Value="Green"/>
+                                            <!--<Setter Property="Visibility" Value="Visible"/>-->
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        </TextBlock>
                         
                         <!--Available-->
-                        <TextBlock Text="Username is available" Foreground="Green" TextWrapping="Wrap">
+                        <!--<TextBlock Text="Username is available" Foreground="Green" TextWrapping="Wrap">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -202,7 +217,7 @@
                         </TextBlock>
 
 
-                        <!--Taken-->
+                        --><!--Taken--><!--
                         <TextBlock Text="That username is already taken. Try another?" Foreground="Red" TextWrapping="Wrap">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
@@ -214,7 +229,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
-                        </TextBlock>
+                        </TextBlock>-->
 
                     </Grid>
                     
