@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TrakHound_Client.Controls
+namespace TrakHound_Server_Control_Panel.Controls
 {
     /// <summary>
     /// Interaction logic for TH_ToolBarItem.xaml

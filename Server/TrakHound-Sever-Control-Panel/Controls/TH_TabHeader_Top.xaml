@@ -3,14 +3,14 @@
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
 
-<UserControl x:Class="TrakHound_Sever_Control_Panel.Controls.TH_TabHeader_Top"
+<UserControl x:Class="TrakHound_Server_Control_Panel.Controls.TH_TabHeader_Top"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              
-             xmlns:controls="clr-namespace:TrakHound_Client.Controls"
+             xmlns:controls="clr-namespace:TrakHound_Server_Control_Panel.Controls"
              >
 
     <UserControl.Style>

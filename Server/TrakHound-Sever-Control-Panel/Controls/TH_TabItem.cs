@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace TrakHound_Sever_Control_Panel.Controls
+namespace TrakHound_Server_Control_Panel.Controls
 {
 
     public class TH_TabItem : TabItem

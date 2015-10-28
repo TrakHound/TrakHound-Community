@@ -1,6 +1,10 @@
-﻿<Window x:Class="TrakHound_Sever_Control_Panel.MainWindow"
+﻿<Window x:Class="TrakHound_Server_Control_Panel.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:login="clr-namespace:TrakHound_Server_Control_Panel.Login"
+        xmlns:controls="clr-namespace:TrakHound_Server_Control_Panel.Controls"
+        xmlns:local="clr-namespace:TrakHound_Server_Control_Panel"
                 
         Title="TrakHound Server - Control Panel" 
         
@@ -21,6 +25,8 @@
         FontFamily="arial"
         
         Icon="Resources/TrakHound_Logo_Initials_10_30px.png"
+        
+        PreviewMouseDown="Main_Window_PreviewMouseDown"
         
         x:Name="Main_Window" 
         >
@@ -838,99 +844,7 @@
 
                             </Grid>
 
-                            <!--Status Bar-->
-                            <!--<Grid x:Name="StatusBar_GRID" DockPanel.Dock="Bottom" Height="25" Background="{StaticResource StatusBar}" >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="20" />
-                                </Grid.ColumnDefinitions>
-
-                                --><!--Developer Console Show Button--><!--
-                                <StackPanel HorizontalAlignment="Left">
-                                    <StackPanel.Style>
-                                        <Style TargetType="StackPanel">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DevConsole_Shown}" Value="true">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </StackPanel.Style>
-
-                                    <controls:TH_ToolBarItem Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)"/>
-
-                                </StackPanel>-->
-
-                                <!--Message Center-->
-                                <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,0,50,0">
-
-                                    <controls:TH_ToolBarItem Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center"/>
-
-                                    <Border CornerRadius="2" Margin="5,4">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Setter Property="Background" Value="#33000000"/>
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
-                                                        <Setter Property="Visibility" Value="Hidden"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-                                        <Border.ToolTip>
-                                            <TextBlock>
-                                                <Run Text="{Binding NotificationsCount}"/>
-                                                <Run Text="New Messages"/>
-                                            </TextBlock>
-                                        </Border.ToolTip>
-                                        <TextBlock Text="{Binding NotificationsCount}" FontSize="14" Foreground="White" Margin="5,0"/>
-                                    </Border>
-
-                                </StackPanel>-->
-
-                                <!--Resize Grip Lines--><!--
-                                <Grid Grid.Column="1">
-                                    <Rectangle Fill="{StaticResource DWBlue}" Margin="-3,-1,0,0" Height="25" Width="1" RenderTransformOrigin="0.5,0.5" >
-                                        <Rectangle.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform/>
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="45"/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Rectangle.RenderTransform>
-                                    </Rectangle>
-
-                                    <Rectangle Fill="{StaticResource DWBlue}" Margin="5,5,0,0" Height="17" Width="1" RenderTransformOrigin="0.5,0.5" >
-                                        <Rectangle.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform/>
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="45"/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Rectangle.RenderTransform>
-                                    </Rectangle>
-
-                                    <Rectangle Fill="{StaticResource DWBlue}" Margin="11,11,0,0" Height="10" Width="1" RenderTransformOrigin="0.5,0.5" >
-                                        <Rectangle.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform/>
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="45"/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Rectangle.RenderTransform>
-                                    </Rectangle>
-
-                                </Grid>
-
-                                <Rectangle x:Name="Corner_BottomRight_RECT" Grid.Column="1" Fill="#00000000" MouseEnter="Rectangle_BottomRight_MouseEnter"  MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-
-                            </Grid>-->
-
+                            <!--Bottom Panel-->
                             <Grid DockPanel.Dock="Bottom" Height="25">
                                 
                                 <Grid HorizontalAlignment="Right">
@@ -998,12 +912,15 @@
                                     <!--Side Bar-->
                                     <Border Background="#0080ff" BorderBrush="#0070ff" BorderThickness="0,0,1,0">
 
-                                        <ItemsControl ItemsSource="{Binding PageTabHeaders}" Margin="0,0,0,-2">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
+
+                                        <!--<ItemsControl ItemsSource="{Binding PageItems}"/>-->
+
+                                        <ItemsControl ItemsSource="{Binding PageItems}">
+                                            <ItemsControl.Resources>
+                                                <Style TargetType="local:PageItem">
+                                                    <Setter Property="Margin" Value="10"/>
+                                                </Style>
+                                            </ItemsControl.Resources>
                                         </ItemsControl>
 
                                     </Border>
@@ -1019,9 +936,9 @@
                 </DockPanel>
 
                 <!--User Login Menu-->
-                <!--<login:DropDown x:Name="LoginMenu" 
+                <login:DropDown x:Name="LoginMenu" 
                            Shown="False"
-                            />-->
+                            />
 
             </Grid>
 

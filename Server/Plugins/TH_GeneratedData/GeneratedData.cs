@@ -261,6 +261,28 @@ namespace TH_GeneratedData
                                     if (instanceValue.value.ToLower() != Trigger.Value.ToLower()) ConditionsMet = true;
                                     else ConditionsMet = false;
                                 }
+                                else if (Trigger.Modifier == TriggerModifier.GREATER_THAN)
+                                {
+                                    double trigger_val = double.MinValue;
+                                    double val = double.MinValue;
+                                    if (double.TryParse(instanceValue.value, out val) && double.TryParse(Trigger.Value, out trigger_val))
+                                    {
+                                        if (val > trigger_val) ConditionsMet = true;
+                                        else ConditionsMet = false;
+                                    }
+                                    else ConditionsMet = false;
+                                }
+                                else if (Trigger.Modifier == TriggerModifier.LESS_THAN)
+                                {
+                                    double trigger_val = double.MinValue;
+                                    double val = double.MinValue;
+                                    if (double.TryParse(instanceValue.value, out val) && double.TryParse(Trigger.Value, out trigger_val))
+                                    {
+                                        if (val < trigger_val) ConditionsMet = true;
+                                        else ConditionsMet = false;
+                                    }
+                                    else ConditionsMet = false;
+                                }
                                 else
                                 {
                                     if (instanceValue.value.ToLower() == Trigger.Value.ToLower()) ConditionsMet = true;
@@ -288,6 +310,28 @@ namespace TH_GeneratedData
                                         if (MultiTrigger_Trigger.Modifier == TriggerModifier.NOT)
                                         {
                                             if (instanceValue.value.ToLower() != MultiTrigger_Trigger.Value.ToLower()) ConditionsMet = true;
+                                            else ConditionsMet = false;
+                                        }
+                                        else if (MultiTrigger_Trigger.Modifier == TriggerModifier.GREATER_THAN)
+                                        {
+                                            double trigger_val = double.MinValue;
+                                            double val = double.MinValue;
+                                            if (double.TryParse(instanceValue.value, out val) && double.TryParse(MultiTrigger_Trigger.Value, out trigger_val))
+                                            {
+                                                if (val > trigger_val) ConditionsMet = true;
+                                                else ConditionsMet = false;
+                                            }
+                                            else ConditionsMet = false;
+                                        }
+                                        else if (MultiTrigger_Trigger.Modifier == TriggerModifier.LESS_THAN)
+                                        {
+                                            double trigger_val = double.MinValue;
+                                            double val = double.MinValue;
+                                            if (double.TryParse(instanceValue.value, out val) && double.TryParse(MultiTrigger_Trigger.Value, out trigger_val))
+                                            {
+                                                if (val < trigger_val) ConditionsMet = true;
+                                                else ConditionsMet = false;
+                                            }
                                             else ConditionsMet = false;
                                         }
                                         else
@@ -355,7 +399,9 @@ namespace TH_GeneratedData
             public enum TriggerModifier
             {
                 None = 0,
-                NOT = 1
+                NOT = 1,
+                GREATER_THAN = 2,
+                LESS_THAN = 3
             };
 
             public class Trigger

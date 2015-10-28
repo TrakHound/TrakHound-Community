@@ -148,7 +148,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_FTP", "Libraries\TH_FTP\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoneNumberTester", "Testing\PhoneNumberTester\PhoneNumberTester.csproj", "{84BE19D8-57BF-4B63-8815-1683A399DF80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Sever-Control-Panel", "Server\TrakHound-Sever-Control-Panel\TrakHound-Sever-Control-Panel.csproj", "{B2FE4410-125F-433F-8286-41B5968892C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Server-Control-Panel", "Server\TrakHound-Sever-Control-Panel\TrakHound-Server-Control-Panel.csproj", "{B2FE4410-125F-433F-8286-41B5968892C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

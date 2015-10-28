@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 //using TH_PlugIns_Client_Control;
 
-namespace TrakHound_Sever_Control_Panel.Controls
+namespace TrakHound_Server_Control_Panel.Controls
 {
     public class TH_MenuItem : MenuItem
     {

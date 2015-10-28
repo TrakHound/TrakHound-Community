@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TrakHound_Sever_Control_Panel.Controls
+namespace TrakHound_Server_Control_Panel.Controls
 {
     /// <summary>
     /// Interaction logic for TH_Button.xaml

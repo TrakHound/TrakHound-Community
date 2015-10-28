@@ -17,7 +17,14 @@ using WinInterop = System.Windows.Interop;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
-namespace TrakHound_Sever_Control_Panel
+using System.IO;
+using System.Collections.ObjectModel;
+
+using TH_Configuration;
+using TH_Database;
+using TH_Global;
+
+namespace TrakHound_Server_Control_Panel
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -35,6 +42,11 @@ namespace TrakHound_Sever_Control_Panel
 
             // Set border thickness (maybe make this a static resource in XAML?)
             ResizeBorderThickness = 2;
+
+            // Read Users and Login
+            ReadUserManagementSettings();
+
+            InitializePages();
         }
 
         #region "Main Window"
@@ -442,9 +454,31 @@ namespace TrakHound_Sever_Control_Panel
 
         #endregion
 
+        private void Main_Window_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            LoginMenu.Hide();
+        }
+
         #endregion
 
         #region "Pages"
+
+        ObservableCollection<PageItem> pageitems;
+        public ObservableCollection<PageItem> PageItems
+        {
+            get
+            {
+                if (pageitems == null)
+                    pageitems = new ObservableCollection<PageItem>();
+                return pageitems;
+            }
+
+            set
+            {
+                pageitems = value;
+            }
+        }
+
 
         private void Pages_TABCONTROL_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -468,23 +502,130 @@ namespace TrakHound_Sever_Control_Panel
             //}
         }
 
+        void InitializePages()
+        {
 
+            PageItem item = new PageItem();
+            item.Text = "Manage";
+            item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/options_gear_30px.png"));
+            PageItems.Add(item);
+
+            item = new PageItem();
+            item.Text = "Agent";
+            item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/Agent_02.png"));
+            PageItems.Add(item);
+
+            item = new PageItem();
+            item.Text = "Databases";
+            item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/DatabaseConfig_01.png"));
+            PageItems.Add(item);
+
+        }
 
         #endregion
 
         #region "User Login"
 
+        #region "Properties"
+
+        public string CurrentUsername
+        {
+            get { return (string)GetValue(CurrentUsernameProperty); }
+            set { SetValue(CurrentUsernameProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentUsernameProperty =
+            DependencyProperty.Register("CurrentUsername", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
+
+
+        public ImageSource ProfileImage
+        {
+            get { return (ImageSource)GetValue(ProfileImageProperty); }
+            set { SetValue(ProfileImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageProperty =
+            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(MainWindow), new PropertyMetadata(null));
+
+
+        public bool LoggedIn
+        {
+            get { return (bool)GetValue(LoggedInProperty); }
+            set { SetValue(LoggedInProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoggedInProperty =
+            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        #endregion
+
+        public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
+        public event CurrentUserChanged_Handler CurrentUserChanged;
+
         private void Login_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (sender.GetType() == typeof(Grid))
-            //{
-            //    Grid grid = (Grid)sender;
+            if (sender.GetType() == typeof(Grid))
+            {
+                Grid grid = (Grid)sender;
 
-            //    Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
-            //    LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
+                Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+                LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
 
-            //    LoginMenu.Shown = true;
-            //}
+                LoginMenu.Shown = true;
+            }
+        }
+
+        UserConfiguration currentuser;
+        public UserConfiguration CurrentUser
+        {
+            get { return currentuser; }
+            set
+            {
+                currentuser = value;
+
+                if (currentuser != null)
+                {
+                    CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+                    LoggedIn = true;
+                }
+                else
+                {
+                    LoggedIn = false;
+                    CurrentUsername = null;
+                }
+
+                if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
+            }
+        }
+
+        public Database_Settings userDatabaseSettings;
+
+        void ReadUserManagementSettings()
+        {
+            DatabasePluginReader dpr = new DatabasePluginReader();
+
+            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
+            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
+
+            string configPath;
+
+            // systemPath takes priority (easier for user to navigate to)
+            if (File.Exists(systemPath)) configPath = systemPath;
+            else configPath = localPath;
+
+            Logger.Log(configPath);
+
+            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
+
+            if (userSettings != null)
+            {
+                if (userSettings.Databases.Databases.Count > 0)
+                {
+                    userDatabaseSettings = userSettings.Databases;
+                    Global.Initialize(userDatabaseSettings);
+                }
+            }
+
         }
 
         #endregion

@@ -30,7 +30,7 @@ using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
 
-namespace TrakHound_Sever_Control_Panel.Login
+namespace TrakHound_Server_Control_Panel.Login
 {
     /// <summary>
     /// Interaction logic for DropDown.xaml
@@ -45,21 +45,21 @@ namespace TrakHound_Sever_Control_Panel.Login
 
             mw = Application.Current.MainWindow as MainWindow;
 
-            //Root_GRID.Width = 0;
-            //Root_GRID.Height = 0;
+            Root_GRID.Width = 0;
+            Root_GRID.Height = 0;
 
             // Remember Me
-            UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
-            if (RememberUser != null)
-            {
-                Login(RememberUser);
+            //UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
+            //if (RememberUser != null)
+            //{
+            //    Login(RememberUser);
 
-                currentUser = RememberUser;
-                //mw.CurrentUser = currentUser;
-            }
+            //    currentUser = RememberUser;
+            //    //mw.CurrentUser = currentUser;
+            //}
         }
 
-        public TrakHound_Sever_Control_Panel.MainWindow mw;
+        public TrakHound_Server_Control_Panel.MainWindow mw;
 
 
         public bool Shown
@@ -213,7 +213,7 @@ namespace TrakHound_Sever_Control_Panel.Login
         }
 
         public static readonly DependencyProperty ProfileImageProperty =
-            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(DropDown), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01.png"))));
+            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(DropDown), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"))));
 
 
 
@@ -306,20 +306,20 @@ namespace TrakHound_Sever_Control_Panel.Login
 
             LoginError = false;
             Loading = true;
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01.png"));
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
 
 
             UserConfiguration userConfig = null;
 
             // If no userconfiguration database configuration found then use default TrakHound User Database
-            //if (mw.userDatabaseSettings == null)
-            //{
-            //    userConfig = TH_Configuration.User.Management.Login(username_TXT.Text, password_TXT.Password);
-            //}
-            //else
-            //{
-            //    userConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
-            //}
+            if (mw.userDatabaseSettings == null)
+            {
+                userConfig = TH_Configuration.User.Management.Login(username_TXT.Text, password_TXT.Password);
+            }
+            else
+            {
+                userConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
+            }
 
             // If login was successful
             if (userConfig != null)
@@ -393,7 +393,7 @@ namespace TrakHound_Sever_Control_Panel.Login
 
             Username = null;
             currentUser = null;
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01.png"));
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
             //mw.CurrentUser = null;
         }
 
