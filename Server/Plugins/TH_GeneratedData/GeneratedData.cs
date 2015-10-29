@@ -11,6 +11,7 @@ using System.Data;
 using System.Xml;
 using System.Reflection;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 using TH_Configuration;
 using TH_Database;
@@ -142,6 +143,8 @@ namespace TH_GeneratedData
         {
 
         }
+
+        public ConfigurationPage ConfigPage { get { return null; } }
 
         #endregion
 
@@ -283,6 +286,26 @@ namespace TH_GeneratedData
                                     }
                                     else ConditionsMet = false;
                                 }
+                                else if (Trigger.Modifier == TriggerModifier.CONTAINS)
+                                {
+                                    if (Regex.IsMatch(instanceValue.value, "^(?=.*" + Trigger.Value + ").+$", RegexOptions.IgnoreCase)) ConditionsMet = true;
+                                    else ConditionsMet = false;
+                                }
+                                else if (Trigger.Modifier == TriggerModifier.CONTAINS_MATCH_CASE)
+                                {
+                                    if (Regex.IsMatch(instanceValue.value, "^(?=.*" + Trigger.Value + ").+$")) ConditionsMet = true;
+                                    else ConditionsMet = false;
+                                }
+                                else if (Trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD)
+                                {
+                                    if (Regex.IsMatch(instanceValue.value, Trigger.Value + "\\b", RegexOptions.IgnoreCase)) ConditionsMet = true;
+                                    else ConditionsMet = false;
+                                } 
+                                else if (Trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD_MATCH_CASE)
+                                {
+                                    if (Regex.IsMatch(instanceValue.value, Trigger.Value + "\\b")) ConditionsMet = true;
+                                    else ConditionsMet = false;
+                                }               
                                 else
                                 {
                                     if (instanceValue.value.ToLower() == Trigger.Value.ToLower()) ConditionsMet = true;
@@ -334,6 +357,26 @@ namespace TH_GeneratedData
                                             }
                                             else ConditionsMet = false;
                                         }
+                                        else if (MultiTrigger_Trigger.Modifier == TriggerModifier.CONTAINS)
+                                        {
+                                            if (Regex.IsMatch(instanceValue.value, "^(?=.*" + MultiTrigger_Trigger.Value + ").+$", RegexOptions.IgnoreCase)) ConditionsMet = true;
+                                            else ConditionsMet = false;
+                                        }
+                                        else if (MultiTrigger_Trigger.Modifier == TriggerModifier.CONTAINS_MATCH_CASE)
+                                        {
+                                            if (Regex.IsMatch(instanceValue.value, "^(?=.*" + MultiTrigger_Trigger.Value + ").+$")) ConditionsMet = true;
+                                            else ConditionsMet = false;
+                                        }
+                                        else if (MultiTrigger_Trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD)
+                                        {
+                                            if (Regex.IsMatch(instanceValue.value,  MultiTrigger_Trigger.Value + "\\b", RegexOptions.IgnoreCase)) ConditionsMet = true;
+                                            else ConditionsMet = false;
+                                        }
+                                        else if (MultiTrigger_Trigger.Modifier == TriggerModifier.CONTAINS_WHOLE_WORD_MATCH_CASE)
+                                        {
+                                            if (Regex.IsMatch(instanceValue.value, MultiTrigger_Trigger.Value + "\\b")) ConditionsMet = true;
+                                            else ConditionsMet = false;
+                                        }    
                                         else
                                         {
                                             if (instanceValue.value.ToLower() == MultiTrigger_Trigger.Value.ToLower()) ConditionsMet = true;
@@ -401,7 +444,11 @@ namespace TH_GeneratedData
                 None = 0,
                 NOT = 1,
                 GREATER_THAN = 2,
-                LESS_THAN = 3
+                LESS_THAN = 3,
+                CONTAINS = 4,
+                CONTAINS_MATCH_CASE = 5,
+                CONTAINS_WHOLE_WORD = 6,
+                CONTAINS_WHOLE_WORD_MATCH_CASE = 7
             };
 
             public class Trigger
@@ -731,6 +778,12 @@ namespace TH_GeneratedData
                     switch (Node.Attributes["modifier"].Value.ToString().ToLower())
                     {
                         case "not": Result.Modifier = GeneratedEvents.TriggerModifier.NOT; break;
+                        case "greater_than": Result.Modifier = GeneratedEvents.TriggerModifier.GREATER_THAN; break;
+                        case "less_than": Result.Modifier = GeneratedEvents.TriggerModifier.LESS_THAN; break;
+                        case "contains": Result.Modifier = GeneratedEvents.TriggerModifier.CONTAINS ; break;
+                        case "contains_match_case": Result.Modifier = GeneratedEvents.TriggerModifier.CONTAINS_MATCH_CASE; break;
+                        case "contains_whole_word": Result.Modifier = GeneratedEvents.TriggerModifier.CONTAINS_WHOLE_WORD; break;
+                        case "contains_whole_word_match_case": Result.Modifier = GeneratedEvents.TriggerModifier.CONTAINS_WHOLE_WORD_MATCH_CASE; break;
                     }
             }
 

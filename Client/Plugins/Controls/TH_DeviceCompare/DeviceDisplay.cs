@@ -119,7 +119,6 @@ namespace TH_DeviceCompare
             dd.header = "Production Status Timeline";
             DataItems.Add(dd);
 
-
         }
 
         public Comparison_Group ComparisonGroup;
@@ -127,6 +126,7 @@ namespace TH_DeviceCompare
         public ImageSource Logo { get; set; }
 
         public bool Alert { get; set; }
+        public bool Break { get; set; }
         public int Index { get; set; }
         public bool IsConnected { get; set; }
     }

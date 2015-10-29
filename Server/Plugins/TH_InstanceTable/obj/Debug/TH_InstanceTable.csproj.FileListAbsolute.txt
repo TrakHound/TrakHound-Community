@@ -7,3 +7,7 @@ C:\TrakHound\Plugins\Server\Instance Table\TH_InstanceTable.pdb
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.dll
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.pdb
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\ConfigurationPage.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\ConfigurationPage.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.g.resources

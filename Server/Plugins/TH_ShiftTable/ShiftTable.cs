@@ -65,9 +65,8 @@ namespace TH_ShiftTable
             if (shiftInfo != null)
             {
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_name", shiftInfo.name, returnData.header.creationTime);
-
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_id", shiftInfo.id, returnData.header.creationTime);
-
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_type", shiftInfo.type, returnData.header.creationTime);
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_date", shiftInfo.date, returnData.header.creationTime);
 
                 // Local
@@ -83,9 +82,8 @@ namespace TH_ShiftTable
             else
             {
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_name", "", returnData.header.creationTime);
-
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_id", "", returnData.header.creationTime);
-
+                TH_Database.Tables.Variables.Update(config.Databases, "shift_type", "", returnData.header.creationTime);
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_date", "", returnData.header.creationTime);
 
                 // Local
@@ -125,6 +123,8 @@ namespace TH_ShiftTable
         {
 
         }
+
+        public ConfigurationPage ConfigPage { get { return null; } }
 
         #endregion
 

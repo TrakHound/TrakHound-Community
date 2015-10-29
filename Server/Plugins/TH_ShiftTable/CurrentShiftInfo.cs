@@ -14,6 +14,7 @@ namespace TH_ShiftTable
         public string id { get; set; }
         public string name { get; set; }
         public string date { get; set; }
+        public string type { get; set; }
 
         public DateTime currentTime { get; set; }
         public DateTime currentTimeUTC { get; set; }
@@ -36,8 +37,6 @@ namespace TH_ShiftTable
             if (sc != null)
             {
                 // Create ShiftDate object for header timestamp
-                //ShiftDate date = new ShiftDate(rd.header.creationTime);
-
                 DateTime ts = rd.header.creationTime.ToLocalTime();
 
                 bool found = false;
@@ -61,7 +60,6 @@ namespace TH_ShiftTable
                         DateTime segmentStart = Tools.GetDateTimeFromShiftTime(segment.beginTime, date, segment.beginDayOffset);
                         DateTime segmentEnd = Tools.GetDateTimeFromShiftTime(segment.endTime, date, segment.endDayOffset);
 
-
                         // Account for cases such where start & end are not during the same day as segmentStart and segmentEnd
                         // Usually where dayOffset for segment is > 0 and segmentduringtype = 3;
                         // Example ----------------
@@ -76,27 +74,12 @@ namespace TH_ShiftTable
                             segmentEnd = segmentEnd.Subtract(new TimeSpan(24, 0, 0));
                         }
 
-                        // Account for cases such where End is the next day compared to Start
-                        // Example ----------------
-                        // segmentStart = 11:00 AM 9/28/2015
-                        // segmentEnd   = 12:00 AM 9/28/2015
-                        // ------------------------
-                        //if (segmentEnd < segmentStart) segmentEnd = segmentEnd.AddDays(1);
-
-
-                        //Console.WriteLine(segmentStart.ToString() + " :: " + shiftStart.ToString());
-                        //Console.WriteLine(segmentEnd.ToString() + " :: " + shiftEnd.ToString());
-
-
 
                         // Set Shift Times 
                         shiftStart = Tools.GetDateTimeFromShiftTime(shift.beginTime, date);
                         shiftEnd = Tools.GetDateTimeFromShiftTime(shift.endTime, date);
 
                         if (shiftEnd < shiftStart) shiftEnd = shiftEnd.AddDays(1);
-
-                        //if (segmentStart < shiftStart) shiftStart = segmentStart;
-                        //if (segmentEnd > shiftEnd) shiftEnd = segmentEnd;
 
                         if (ts >= segmentStart && ts < segmentEnd)
                         {
@@ -114,10 +97,9 @@ namespace TH_ShiftTable
 
                             Result.name = shift.name;
                             Result.shift = shift;
+                            Result.type = segment.type;
 
                             Result.date = date.ToString();
-
-                            //Result.date = new ShiftDate(rd.header.creationTime).ToString();
 
                             Result.id = Tools.GetShiftId(date, segment);
 

@@ -170,7 +170,16 @@ namespace TH_DeviceCompare.Components
             DependencyProperty.Register("Alert", typeof(bool), typeof(Header), new PropertyMetadata(true));
 
 
+        public bool Break
+        {
+            get { return (bool)GetValue(BreakProperty); }
+            set { SetValue(BreakProperty, value); }
+        }
 
+        public static readonly DependencyProperty BreakProperty =
+            DependencyProperty.Register("Break", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
+        
 
 
 

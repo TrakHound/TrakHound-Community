@@ -4562,7 +4562,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{48C262CF-7EDE-43DB-B4FF-4D3D30A754F3}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Server</td><td/></row>
-		<row><td>ProductVersion</td><td>1.0.0.6</td><td/></row>
+		<row><td>ProductVersion</td><td>1.0.0.7</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4577,7 +4577,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SecureCustomProperties</td><td>ISFOUNDNEWERPRODUCTVERSION;USERNAME;COMPANYNAME;ISX_SERIALNUM;SUPPORTDIR;DOTNETVERSION45FULL</td><td/></row>
 		<row><td>SelectedSetupType</td><td>##IDS__DisplayName_Typical##</td><td/></row>
 		<row><td>SetupType</td><td>Typical</td><td/></row>
-		<row><td>UpgradeCode</td><td>{E61D2ECD-37D7-43B5-B94B-C3C156556DE5}</td><td/></row>
+		<row><td>UpgradeCode</td><td>{D05EC234-9641-434F-86B5-162105C62930}</td><td/></row>
 		<row><td>_IsMaintenance</td><td>Change</td><td/></row>
 		<row><td>_IsSetupTypeMin</td><td>Typical</td><td/></row>
 	</table>

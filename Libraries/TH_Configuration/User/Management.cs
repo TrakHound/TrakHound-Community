@@ -634,37 +634,40 @@ namespace TH_Configuration.User
 
                     values["username"] = userConfig.username;
 
-                    byte[] response = client.UploadValues("http://www.feenux.com/php/users/getconfigurations.php", values);
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/getconfigurations.php", values);
 
                     string responseString = Encoding.Default.GetString(response);
 
-                    try
+                    if (responseString.Trim() != "")
                     {
-                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
-
-                        if (DT != null)
+                        try
                         {
-                            result = new List<Configuration>();
+                            DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
 
-                            foreach (DataRow Row in DT.Rows)
+                            if (DT != null)
                             {
-                                string tablename = Row[0].ToString();
+                                result = new List<Configuration>();
 
-                                DataTable dt = GetConfigurationTable(tablename);
-                                if (dt != null)
+                                foreach (DataRow Row in DT.Rows)
                                 {
-                                    string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + String_Functions.RandomString(20));
+                                    string tablename = Row[0].ToString();
 
-                                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
-                                    if (config != null)
+                                    DataTable dt = GetConfigurationTable(tablename);
+                                    if (dt != null)
                                     {
-                                        result.Add(config);
+                                        string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + String_Functions.RandomString(20));
+
+                                        Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
+                                        if (config != null)
+                                        {
+                                            result.Add(config);
+                                        }
                                     }
                                 }
                             }
                         }
+                        catch (Exception ex) { }
                     }
-                    catch (Exception ex) { }
                 }
             }
             catch (Exception ex) { Logger.Log(ex.Message); }
@@ -684,7 +687,7 @@ namespace TH_Configuration.User
                     NameValueCollection values = new NameValueCollection();
                     values["tablename"] = tablename;
 
-                    byte[] response = client.UploadValues("http://www.feenux.com/php/users/getconfigurationtable.php", values);
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/getconfigurationtable.php", values);
 
                     string responseString = Encoding.Default.GetString(response);
 
@@ -781,9 +784,9 @@ namespace TH_Configuration.User
                     if (x < columns.Length - 1) update += ", ";
                 }
 
-                string query = "INSERT IGNORE INTO " + tablename + " (" + cols + ") " + vals + update;
-
                 string table = GetConfigurationTableName(userConfig, configuration);
+
+                string query = "INSERT IGNORE INTO " + table + " (" + cols + ") " + vals + update;
 
                 try
                 {
@@ -794,7 +797,7 @@ namespace TH_Configuration.User
 
                         values["query"] = query;
 
-                        byte[] response = client.UploadValues("http://www.feenux.com/php/configuration/updateconfigurationtable.php", values);
+                        byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updateconfigurationtable.php", values);
 
                         string responseString = Encoding.Default.GetString(response);
 
@@ -845,9 +848,9 @@ namespace TH_Configuration.User
                     string Keydef = "";
                     if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
 
-                    values["query"] = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + Keydef + ")";
+                    values["query"] = "CREATE TABLE IF NOT EXISTS " + table + " (" + coldef + Keydef + ")";
 
-                    byte[] response = client.UploadValues("http://www.feenux.com/php/configuration/createconfigurationtable.php", values);
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/createconfigurationtable.php", values);
 
                     string responseString = Encoding.Default.GetString(response);
 

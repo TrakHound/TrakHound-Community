@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\App.xaml
-101622075955
+13635056795
 
-17-1411321281
-18-2079170021
-Controls\TH_Button.xaml;Controls\TH_Page.xaml;Controls\TH_TabHeader_Top.xaml;Controls\TH_ToolBarItem.xaml;Login\DropDown.xaml;MainWindow.xaml;PageItem.xaml;Styles\Menus.xaml;Styles\ToolBars.xaml;Styles\Window.xaml;
+20487530967
+20-622471020
+Controls\DeviceButton.xaml;Controls\TH_Button.xaml;Controls\TH_Page.xaml;Controls\TH_TabHeader_Top.xaml;Controls\TH_ToolBarItem.xaml;Login\DropDown.xaml;MainWindow.xaml;PageItem.xaml;Pages\AddDevice.xaml;Pages\AgentConfiguration.xaml;Styles\Menus.xaml;Styles\ToolBars.xaml;Styles\Window.xaml;
 
-False
+True
 

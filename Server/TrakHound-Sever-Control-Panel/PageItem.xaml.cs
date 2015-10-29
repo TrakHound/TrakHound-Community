@@ -26,6 +26,18 @@ namespace TrakHound_Server_Control_Panel
             DataContext = this;
         }
 
+
+        public bool AlternateStyle
+        {
+            get { return (bool)GetValue(AlternateStyleProperty); }
+            set { SetValue(AlternateStyleProperty, value); }
+        }
+
+        public static readonly DependencyProperty AlternateStyleProperty =
+            DependencyProperty.Register("AlternateStyle", typeof(bool), typeof(PageItem), new PropertyMetadata(false));
+
+       
+
         public ImageSource Image
         {
             get { return (ImageSource)GetValue(ImageProperty); }

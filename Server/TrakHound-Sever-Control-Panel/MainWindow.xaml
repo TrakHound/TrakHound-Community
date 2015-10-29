@@ -5,6 +5,7 @@
         xmlns:login="clr-namespace:TrakHound_Server_Control_Panel.Login"
         xmlns:controls="clr-namespace:TrakHound_Server_Control_Panel.Controls"
         xmlns:local="clr-namespace:TrakHound_Server_Control_Panel"
+        xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
                 
         Title="TrakHound Server - Control Panel" 
         
@@ -899,29 +900,307 @@
                                         <ColumnDefinition Width="auto" MinWidth="100"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-
-                                    <!--Pages TabControl
-                                    <TabControl x:Name="Pages_TABCONTROL" Grid.Column="1"
-                                            VerticalContentAlignment="Center" TabStripPlacement="Top"
-                                            BorderBrush="#00FFFFFF" BorderThickness="0"
-                                            Padding="0,0,0,0" 
-                                            Background="#eee"
-                                            SelectionChanged="Pages_TABCONTROL_SelectionChanged"   
-                                            />-->
+                                    
+                                    <!--Page Content-->
+                                    <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
 
                                     <!--Side Bar-->
                                     <Border Background="#0080ff" BorderBrush="#0070ff" BorderThickness="0,0,1,0">
+                                        
+                                        <StackPanel Orientation="Horizontal">
 
+                                            <!--Device List-->
+                                            <Grid Grid.Column="0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
 
-                                        <!--<ItemsControl ItemsSource="{Binding PageItems}"/>-->
+                                                <TextBlock Text="Devices" FontSize="12pt" Foreground="#33ffffff" HorizontalAlignment="Center" Margin="0,10,0,0"/>
 
-                                        <ItemsControl ItemsSource="{Binding PageItems}">
-                                            <ItemsControl.Resources>
-                                                <Style TargetType="local:PageItem">
-                                                    <Setter Property="Margin" Value="10"/>
-                                                </Style>
-                                            </ItemsControl.Resources>
-                                        </ItemsControl>
+                                                <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="#33000000"/>
+                                                
+                                                <Grid Grid.Row="2">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                        <RowDefinition Height="*" MinHeight="50"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <!--Devices-->
+                                                    <Grid Grid.Row="0">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="auto"/>
+                                                            <RowDefinition Height="*"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <Grid.Style>
+                                                            <Style TargetType="Grid">
+                                                                <Setter Property="MaxHeight" Value="0"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding DeviceListShown}" Value="true">
+                                                                        <DataTrigger.EnterActions>
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxHeight" From="0" To="1000">
+                                                                                        <DoubleAnimation.EasingFunction>
+                                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                                        </DoubleAnimation.EasingFunction>
+                                                                                    </DoubleAnimation>
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </DataTrigger.EnterActions>
+                                                                        <DataTrigger.ExitActions>
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxHeight" From="1000" To="0" >
+                                                                                        <DoubleAnimation.EasingFunction>
+                                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                                        </DoubleAnimation.EasingFunction>
+                                                                                    </DoubleAnimation>
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </DataTrigger.ExitActions>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Grid.Style>
+
+                                                        <ItemsControl Grid.Row="0" ItemsSource="{Binding DeviceList}" Margin="5,0"/>
+
+                                                        <Grid Grid.Row="1" Background="#00000000" PreviewMouseDown="TableList_MouseDown"/>
+
+                                                    </Grid>
+
+                                                    <!--Add Device Button-->
+                                                    <Grid x:Name="AddDevice_GRID" Grid.Row="1" Width="200" Margin="10" Height="60" VerticalAlignment="Top" PreviewMouseDown="AddDevice_GRID_PreviewMouseDown">
+                                                        <Grid.Style>
+                                                            <Style TargetType="Grid">
+                                                                <Setter Property="Background" Value="#00000000"/>
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                                        <Trigger.EnterActions>
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#33ffffff">
+                                                                                        <ColorAnimation.EasingFunction>
+                                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                                        </ColorAnimation.EasingFunction>
+                                                                                    </ColorAnimation>
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </Trigger.EnterActions>
+                                                                        <Trigger.ExitActions>
+                                                                            <BeginStoryboard>
+                                                                                <Storyboard>
+                                                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
+                                                                                        <ColorAnimation.EasingFunction>
+                                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                                        </ColorAnimation.EasingFunction>
+                                                                                    </ColorAnimation>
+                                                                                </Storyboard>
+                                                                            </BeginStoryboard>
+                                                                        </Trigger.ExitActions>
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Grid.Style>
+
+                                                        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <!--Image-->
+                                                            <Rectangle Width="30" Height="30" Margin="5">
+                                                                <Rectangle.Resources>
+                                                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Add_01.png" />
+                                                                </Rectangle.Resources>
+
+                                                                <Rectangle.Style>
+                                                                    <Style TargetType="Rectangle">
+                                                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                                                        <Setter Property="Fill" Value="#eeffffff"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=AddDevice_GRID}" Value="true">
+                                                                                <DataTrigger.EnterActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard>
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.EnterActions>
+                                                                                <DataTrigger.ExitActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard FillBehavior="Stop">
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#eeffffff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.ExitActions>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                                                <DataTrigger.EnterActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard>
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.EnterActions>
+                                                                                <DataTrigger.ExitActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard FillBehavior="Stop">
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#eeffffff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.ExitActions>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Rectangle.Style>
+                                                            </Rectangle>
+
+                                                            <!--Text-->
+                                                            <TextBlock Grid.Column="1" Margin="10,0" Text="Add Device" FontSize="10pt"  VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap">
+                                                                <TextBlock.Style>
+                                                                    <Style TargetType="TextBlock">
+                                                                        <Setter Property="Foreground" Value="#eeffffff"/>
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=AddDevice_GRID}" Value="true">
+                                                                                <DataTrigger.EnterActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard>
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#fff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.EnterActions>
+                                                                                <DataTrigger.ExitActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard FillBehavior="Stop">
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.ExitActions>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                                                <DataTrigger.EnterActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard>
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#fff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.EnterActions>
+                                                                                <DataTrigger.ExitActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard FillBehavior="Stop">
+                                                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
+                                                                                                <ColorAnimation.EasingFunction>
+                                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                                </ColorAnimation.EasingFunction>
+                                                                                            </ColorAnimation>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </DataTrigger.ExitActions>
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </TextBlock.Style>
+                                                            </TextBlock>
+
+                                                        </Grid>
+
+                                                    </Grid>
+
+                                                </Grid>
+                                                
+                                            </Grid>
+
+                                            <!--Page List-->
+                                            <Grid Grid.Column="2">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Grid.Style>
+                                                    <Style TargetType="Grid">
+                                                        <Setter Property="Width" Value="0"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding PageListShown}" Value="true">
+                                                                <DataTrigger.EnterActions>
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard>
+                                                                            <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Width" From="0" To="110">
+                                                                                <DoubleAnimation.EasingFunction>
+                                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                                </DoubleAnimation.EasingFunction>
+                                                                            </DoubleAnimation>
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </DataTrigger.EnterActions>
+                                                                <DataTrigger.ExitActions>
+                                                                    <BeginStoryboard>
+                                                                        <Storyboard>
+                                                                            <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Width" From="110" To="0" >
+                                                                                <DoubleAnimation.EasingFunction>
+                                                                                    <CubicEase EasingMode="EaseIn"/>
+                                                                                </DoubleAnimation.EasingFunction>
+                                                                            </DoubleAnimation>
+                                                                        </Storyboard>
+                                                                    </BeginStoryboard>
+                                                                </DataTrigger.ExitActions>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Grid.Style>
+
+                                                <!--Header-->
+                                                <StackPanel>
+
+                                                    <TextBlock Grid.Row="0" Text="Pages" FontSize="12pt" Foreground="#33ffffff" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                                    <!--Seperator-->
+                                                    <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="#33000000"/>
+
+                                                </StackPanel>
+
+                                                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+
+                                                    <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0"/>
+
+                                                </ScrollViewer>
+
+                                            </Grid>
+
+                                        </StackPanel>
 
                                     </Border>
 

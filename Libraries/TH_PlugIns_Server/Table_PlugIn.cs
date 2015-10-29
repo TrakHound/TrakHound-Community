@@ -68,6 +68,8 @@ namespace TH_PlugIns_Server
         /// </summary>
         event DataEvent_Handler DataEvent;
 
+        ConfigurationPage ConfigPage { get; }
+
     }
 
     public delegate void DataEvent_Handler(DataEvent_Data de_data);

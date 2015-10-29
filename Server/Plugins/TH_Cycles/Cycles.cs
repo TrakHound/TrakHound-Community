@@ -94,6 +94,8 @@ namespace TH_Cycles
 
         }
 
+        public ConfigurationPage ConfigPage { get { return null; } }
+
         #endregion
 
         #region "Properties"

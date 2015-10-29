@@ -17,12 +17,18 @@ using WinInterop = System.Windows.Interop;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Xml;
 
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
+using TH_PlugIns_Server;
+using TH_WPF;
 
 namespace TrakHound_Server_Control_Panel
 {
@@ -47,6 +53,10 @@ namespace TrakHound_Server_Control_Panel
             ReadUserManagementSettings();
 
             InitializePages();
+
+            LoadPlugins();
+
+            LoadConfigurations();
         }
 
         #region "Main Window"
@@ -461,46 +471,210 @@ namespace TrakHound_Server_Control_Panel
 
         #endregion
 
+
+        #region "Configuration Management"
+
+        public void LoadConfigurations()
+        {
+            DeviceListShown = false;
+            DeviceList.Clear();
+
+            if (currentuser != null)
+            {
+                if (userDatabaseSettings == null)
+                {
+                    Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
+                }
+                else
+                {
+                    Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                }
+            }
+            // If not logged in Read from File in 'C:\TrakHound\'
+            else
+            {
+                Configurations = ReadConfigurationFile();
+            }
+
+            if (Configurations != null)
+            {
+                // Create DevicesList based on Configurations
+                foreach (Configuration config in Configurations)
+                {
+                    CreateDeviceButton(config);
+                }
+
+                DeviceListShown = true;
+            }
+        }
+
+        #region "Configuration Files"
+
+        List<Configuration> Configurations;
+
+        static List<Configuration> ReadConfigurationFile()
+        {
+            List<Configuration> Result = new List<Configuration>();
+
+            string configPath;
+
+            string localPath = AppDomain.CurrentDomain.BaseDirectory + "Configuration.Xml";
+            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+
+            // systemPath takes priority (easier for user to navigate to)
+            if (File.Exists(systemPath)) configPath = systemPath;
+            else configPath = localPath;
+
+            Logger.Log(configPath);
+
+            if (System.IO.File.Exists(configPath))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(configPath);
+
+                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
+                {
+                    if (Node.NodeType == XmlNodeType.Element)
+                    {
+                        switch (Node.Name.ToLower())
+                        {
+                            case "devices":
+                                foreach (XmlNode ChildNode in Node.ChildNodes)
+                                {
+                                    if (ChildNode.NodeType == XmlNodeType.Element)
+                                    {
+                                        switch (ChildNode.Name.ToLower())
+                                        {
+                                            case "device":
+
+                                                Configuration device = ProcessDevice(ChildNode);
+                                                if (device != null)
+                                                {
+                                                    Result.Add(device);
+                                                }
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+
+                Logger.Log("Configuration File Successfully Read From : " + configPath);
+            }
+            else Logger.Log("Configuration File Not Found : " + configPath);
+
+            return Result;
+        }
+
+        static Configuration ProcessDevice(XmlNode node)
+        {
+            Configuration Result = null;
+
+            string configPath = null;
+
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.NodeType == XmlNodeType.Element)
+                {
+                    if (childNode.Name.ToLower() == "configuration_path")
+                    {
+                        configPath = childNode.InnerText;
+                    }
+                }
+            }
+
+            if (configPath != null)
+            {
+                configPath = GetConfigurationPath(configPath);
+
+                Logger.Log("Reading Device Configuration File @ '" + configPath + "'");
+
+                if (File.Exists(configPath))
+                {
+                    Configuration config = new Configuration();
+                    config = Configuration.ReadConfigFile(configPath);
+
+                    if (config != null)
+                    {
+                        Console.WriteLine("Device Congifuration Read Successfully!");
+
+                        // Initialize Database Configurations
+                        Global.Initialize(config.Databases);
+
+                        Result = config;
+                    }
+                    else Logger.Log("Error Occurred While Reading : " + configPath);
+                }
+                else Logger.Log("Can't find Device Configuration file @ " + configPath);
+            }
+            else Logger.Log("No Device Congifuration found");
+
+            return Result;
+
+        }
+
+        static string GetConfigurationPath(string path)
+        {
+            // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
+            if (!System.IO.Path.IsPathRooted(path))
+            {
+                // Remove initial Backslash if contained in "configuration_path"
+                if (path[0] == '\\' && path.Length > 1) path.Substring(1);
+
+                string original = path;
+
+                // Check System Path
+                path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
+                if (File.Exists(path)) return path;
+                else Logger.Log(path + " Not Found");
+
+
+                // Check local app Path
+                path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
+                if (File.Exists(path)) return path;
+                else Logger.Log(path + " Not Found");
+
+                // if no files exist return null
+                return null;
+            }
+            else return path;
+        }
+
+        #endregion
+
+        #endregion
+
+
         #region "Pages"
 
-        ObservableCollection<PageItem> pageitems;
-        public ObservableCollection<PageItem> PageItems
+        public object CurrentPage
+        {
+            get { return (object)GetValue(CurrentPageProperty); }
+            set { SetValue(CurrentPageProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentPageProperty =
+            DependencyProperty.Register("CurrentPage", typeof(object), typeof(MainWindow), new PropertyMetadata(null));
+ 
+
+        ObservableCollection<PageItem> pagelist;
+        public ObservableCollection<PageItem> PageList
         {
             get
             {
-                if (pageitems == null)
-                    pageitems = new ObservableCollection<PageItem>();
-                return pageitems;
+                if (pagelist == null)
+                    pagelist = new ObservableCollection<PageItem>();
+                return pagelist;
             }
 
             set
             {
-                pageitems = value;
+                pagelist = value;
             }
         }
 
-
-        private void Pages_TABCONTROL_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //if (sender.GetType() == typeof(TabControl))
-            //{
-            //    TabControl tc = (TabControl)sender;
-
-            //    for (int x = 0; x <= PageTabHeaders.Count - 1; x++)
-            //    {
-            //        if (x != tc.SelectedIndex)
-            //        {
-            //            PageTabHeaders[x].IsSelected = false;
-            //        }
-            //        else
-            //        {
-            //            PageTabHeaders[x].IsSelected = true;
-            //        }
-
-            //        ZoomLevel = 1;
-            //    }
-            //}
-        }
 
         void InitializePages()
         {
@@ -508,18 +682,43 @@ namespace TrakHound_Server_Control_Panel
             PageItem item = new PageItem();
             item.Text = "Manage";
             item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/options_gear_30px.png"));
-            PageItems.Add(item);
+            PageList.Add(item);
 
             item = new PageItem();
             item.Text = "Agent";
             item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/Agent_02.png"));
-            PageItems.Add(item);
+            item.Clicked += Agent_Clicked;
+            PageList.Add(item);
 
             item = new PageItem();
             item.Text = "Databases";
             item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/DatabaseConfig_01.png"));
-            PageItems.Add(item);
+            PageList.Add(item);
 
+        }
+
+        void Agent_Clicked()
+        {
+            if (CurrentPage != null)
+            {
+                if (CurrentPage.GetType() != typeof(Pages.AgentConfiguration))
+                {
+                    CurrentPage = new Pages.AgentConfiguration();
+                }
+            }
+            else CurrentPage = new Pages.AgentConfiguration();
+        }
+
+        void AddConfigurationPage(Table_PlugIn tp)
+        {
+            ConfigurationPage configPage = tp.ConfigPage;
+
+            if (configPage != null)
+            {
+                PageItem item = new PageItem();
+                item.Text = configPage.PageName;
+                PageList.Add(item);
+            }
         }
 
         #endregion
@@ -586,6 +785,9 @@ namespace TrakHound_Server_Control_Panel
                 if (currentuser != null)
                 {
                     CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+
+                    LoadConfigurations();
+
                     LoggedIn = true;
                 }
                 else
@@ -629,6 +831,224 @@ namespace TrakHound_Server_Control_Panel
         }
 
         #endregion
+
+        #region "PlugIns"
+
+        public IEnumerable<Lazy<Table_PlugIn>> TablePlugIns { get; set; }
+
+        public List<Lazy<Table_PlugIn>> Table_Plugins { get; set; }
+
+        TablePlugs TPLUGS;
+
+        class TablePlugs
+        {
+            [ImportMany(typeof(Table_PlugIn))]
+            public IEnumerable<Lazy<Table_PlugIn>> PlugIns { get; set; }
+        }
+
+        void LoadPlugins()
+        {
+            string plugin_rootpath = FileLocations.Plugins + @"\Server";
+
+            if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
+
+            Table_Plugins = new List<Lazy<Table_PlugIn>>();
+
+            string pluginsPath;
+
+            // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
+            pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
+            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
+
+            // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+            pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
+            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
+
+            TablePlugIns = Table_Plugins;
+        }
+
+        void LoadTablePlugins(string Path)
+        {
+            Logger.Log("Searching for Table Plugins in '" + Path + "'");
+            if (Directory.Exists(Path))
+            {
+                try
+                {
+                    TPLUGS = new TablePlugs();
+
+                    var PageCatalog = new DirectoryCatalog(Path);
+                    var PageContainer = new CompositionContainer(PageCatalog);
+                    PageContainer.SatisfyImportsOnce(TPLUGS);
+
+                    TablePlugIns = TPLUGS.PlugIns;
+
+                    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns)
+                    {
+                        Table_PlugIn tp = ltp.Value;
+
+                        if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == tp.Name.ToLower()) == null)
+                        {
+                            Logger.Log(tp.Name + " : PlugIn Found");
+                            Table_Plugins.Add(ltp);
+                        }
+                        else
+                        {
+                            Logger.Log(tp.Name + " : PlugIn Already Found");
+                        }
+                    }
+                }
+                catch (Exception ex) { Logger.Log("LoadTablePlugins() : Exception : " + ex.Message); }
+
+                // Search Subdirectories
+                foreach (string directory in Directory.GetDirectories(Path))
+                {
+                    LoadTablePlugins(directory);
+                }
+            }
+            else Logger.Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
+        }
+
+        void TablePlugIns_Initialize(Configuration config)
+        {
+            if (TablePlugIns != null && config != null)
+            {
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                {
+                    try
+                    {
+                        Table_PlugIn tp = ltp.Value;
+                        tp.Initialize(config);
+
+                        AddConfigurationPage(tp);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Plugin Exception! : " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        void TablePlugIns_Closing()
+        {
+            if (TablePlugIns != null)
+            {
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                {
+                    try
+                    {
+                        Table_PlugIn tp = ltp.Value;
+                        tp.Closing();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Plugin Exception! : " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+
+
+        public bool DeviceListShown
+        {
+            get { return (bool)GetValue(DeviceListShownProperty); }
+            set { SetValue(DeviceListShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceListShownProperty =
+            DependencyProperty.Register("DeviceListShown", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+
+        ObservableCollection<ListButton> devicelist;
+        public ObservableCollection<ListButton> DeviceList
+        {
+            get
+            {
+                if (devicelist == null)
+                    devicelist = new ObservableCollection<ListButton>();
+                return devicelist;
+            }
+
+            set
+            {
+                devicelist = value;
+            }
+        }
+
+
+        void CreateDeviceButton(Configuration config)
+        {
+            Controls.DeviceButton db = new Controls.DeviceButton();
+            db.Description = config.Description.Description;
+            db.Manufacturer = config.Description.Manufacturer;
+            db.Model = config.Description.Model;
+            db.Serial = config.Description.Serial;
+            db.Id = config.Description.Machine_ID;
+
+            ListButton lb = new ListButton();
+            lb.ButtonContent = db;
+            lb.ShowImage = false;
+            lb.Selected += lb_Device_Selected;
+            lb.DataObject = config;
+            DeviceList.Add(lb);
+        }
+
+        void lb_Device_Selected(TH_WPF.ListButton lb)
+        {
+            foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
+            lb.IsSelected = true;
+
+            Configuration config = (Configuration)lb.DataObject;
+
+            LoadPageList(config);
+        }
+
+        public bool PageListShown
+        {
+            get { return (bool)GetValue(PageListShownProperty); }
+            set { SetValue(PageListShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty PageListShownProperty =
+            DependencyProperty.Register("PageListShown", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+
+        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
+
+
+        void LoadPageList(Configuration config)
+        {
+            PageListShown = false;
+
+            PageList.Clear();
+
+            InitializePages();
+
+            TablePlugIns_Initialize(config);
+
+            PageListShown = true;
+        }
+
+        private void TableList_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            PageListShown = false;
+        }
+
+        private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (CurrentPage != null)
+            {
+                if (CurrentPage.GetType() != typeof(Pages.AddDevice))
+                {
+                    CurrentPage = new Pages.AddDevice(); 
+                }
+            }
+            else CurrentPage = new Pages.AddDevice();
+        }
+
 
     }
 

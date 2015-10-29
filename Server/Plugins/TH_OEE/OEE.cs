@@ -86,6 +86,8 @@ namespace TH_OEE
 
         }
 
+        public ConfigurationPage ConfigPage { get { return null; } }
+
         #endregion
 
         #region "Properties"

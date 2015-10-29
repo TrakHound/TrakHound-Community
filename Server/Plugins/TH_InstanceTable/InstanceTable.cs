@@ -119,6 +119,8 @@ namespace TH_InstanceTable
 
         }
 
+        public ConfigurationPage ConfigPage { get { return new Configuration_Page(); } }
+
         #endregion
 
         #region "Properties"

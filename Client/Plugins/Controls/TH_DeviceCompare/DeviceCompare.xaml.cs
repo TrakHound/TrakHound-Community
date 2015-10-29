@@ -297,9 +297,11 @@ namespace TH_DeviceCompare
 
                                 if (snapshotdata != null)
                                 {
-                                    // Update Header ----------------------------------------------------------
+                                    // Update Header
                                     this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority_Context, new object[] { dd, snapshotdata });
-                                    // ------------------------------------------------------------------------
+
+                                    // Update Header
+                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateBreak), Priority_Context, new object[] { dd, snapshotdata });
                                 }
 
                                 // Get data from Shifts Table
@@ -327,7 +329,6 @@ namespace TH_DeviceCompare
                                     // Production Status Timeline
                                     this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd, productionstatusdata, snapshotdata });
                                 }
-
 
                                 // Get data from OEE Info
                                 object oeedata = null;
@@ -419,6 +420,25 @@ namespace TH_DeviceCompare
         #endregion
 
         #region "Shifts"
+
+        #region "Shift Break"
+
+        void UpdateBreak(DeviceDisplay dd, object snapshotdata)
+        {
+            Header header = dd.ComparisonGroup.header;
+            if (header != null)
+            {
+                string value = GetSnapShotValue("Current Shift Type", snapshotdata);
+                if (value != null)
+                {
+                    if (value.ToLower() == "break") header.Break = true;
+                    else header.Break = false;
+                }
+                else header.Break = false;
+            }
+        }
+
+        #endregion
 
         #region "Shift Display"
 

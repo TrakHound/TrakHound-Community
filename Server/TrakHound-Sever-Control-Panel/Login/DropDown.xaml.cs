@@ -358,7 +358,7 @@ namespace TrakHound_Server_Control_Panel.Login
 
 
             currentUser = userConfig;
-            //mw.CurrentUser = currentUser;
+            mw.CurrentUser = currentUser;
 
             Loading = false;
 

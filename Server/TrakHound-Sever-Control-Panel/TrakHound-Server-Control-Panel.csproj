@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
@@ -54,6 +55,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\DeviceButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TH_Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -82,6 +87,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\DeviceButton.xaml.cs">
+      <DependentUpon>DeviceButton.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TH_Button.xaml.cs">
       <DependentUpon>TH_Button.xaml</DependentUpon>
     </Compile>
@@ -107,6 +115,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\AddDevice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AgentConfiguration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Menus.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -123,6 +139,12 @@
   <ItemGroup>
     <Compile Include="PageItem.xaml.cs">
       <DependentUpon>PageItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AddDevice.xaml.cs">
+      <DependentUpon>AddDevice.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AgentConfiguration.xaml.cs">
+      <DependentUpon>AgentConfiguration.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -166,6 +188,10 @@
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
+      <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
+      <Name>TH_PlugIns_Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>
@@ -192,6 +218,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\DatabaseConfig_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Add_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Information_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\List_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

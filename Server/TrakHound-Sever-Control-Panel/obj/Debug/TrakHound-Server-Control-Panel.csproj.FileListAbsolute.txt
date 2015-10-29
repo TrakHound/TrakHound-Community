@@ -40,3 +40,13 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\Tra
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\TrakHound-Server-Control-Panel.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\PageItem.baml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\PageItem.g.cs
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TH_PlugIns_Server.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TH_MTC_Data.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TH_PlugIns_Server.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TH_MTC_Data.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\Controls\DeviceButton.baml
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\Controls\DeviceButton.g.cs
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\Pages\AddDevice.baml
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\Pages\AddDevice.g.cs
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\Pages\AgentConfiguration.baml
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\obj\Debug\Pages\AgentConfiguration.g.cs
