@@ -89,7 +89,7 @@ namespace TrakHound_Server_Control_Panel.Pages
                         //Configurations = ReadConfigurationFile();
                     }
 
-                    mw.LoadConfigurations();
+                    //mw.LoadConfigurations();
                 }
             }
         }

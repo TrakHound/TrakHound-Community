@@ -27,6 +27,7 @@ namespace TH_MTC_Requests
         public event Connection_Handler Stopped;
 
         public event StreamResponse_Handler ResponseReceived;
+        public event Error_Handler ResponseError;
 
         #endregion
 
@@ -154,9 +155,13 @@ namespace TH_MTC_Requests
                 {
                     HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(uri);
                     Request.KeepAlive = false;
-                    Request.Timeout = Math.Max(30000, HttpTimeout);
-                    Request.ContinueTimeout = Math.Max(30000, HttpTimeout);
-                    Request.ReadWriteTimeout = Math.Max(30000, HttpTimeout);
+
+                    int timeout = 30000;
+                    if (HttpTimeout > 0) timeout = HttpTimeout;
+
+                    Request.Timeout = timeout;
+                    Request.ContinueTimeout = timeout;
+                    Request.ReadWriteTimeout = timeout;
 
                     using (WebResponse Response = Request.GetResponse())
                     {
@@ -170,7 +175,13 @@ namespace TH_MTC_Requests
                 catch (Exception e)
                 {
                     tryCount += 1;
-                    Logger.Log("TH_MTC_Requests.Streams.GetHttpRequest() : " + e.Message);
+
+                    Error error = new Error();
+                    error.message = e.Message;
+
+                    if (ResponseError != null) ResponseError(error);
+
+                    //Logger.Log("TH_MTC_Requests.Streams.GetHttpRequest() : " + e.Message);
                 }
             }
 

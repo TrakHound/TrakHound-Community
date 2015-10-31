@@ -55,6 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converter Sub Classes\ObjectToXml.cs" />
     <Compile Include="Converter Sub Classes\TableToXml.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Converter Sub Classes\XmlToTable.cs" />

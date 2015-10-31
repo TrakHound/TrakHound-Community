@@ -30,9 +30,12 @@ namespace TH_Global
             {
                 return string.Empty;
             }
-            char[] a = s.ToCharArray();
-            a[0] = char.ToUpper(a[0]);
-            return new string(a);
+
+            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
+
+            //char[] a = s.ToCharArray();
+            //a[0] = char.ToUpper(a[0]);
+            //return new string(a);
         }
 
 

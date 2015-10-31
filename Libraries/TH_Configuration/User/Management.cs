@@ -619,7 +619,12 @@ namespace TH_Configuration.User
         public static void AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration)
         {
             CreateConfigurationTable(userConfig, configuration);
-            UpdateConfigurationTable(userConfig, configuration);
+
+            string tableName = GetConfigurationTableName(userConfig, configuration);
+
+            DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
+
+            UpdateConfigurationTable(userConfig, tableName, dt);
         }
 
         public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig)
@@ -710,11 +715,12 @@ namespace TH_Configuration.User
         }
 
 
-        public static bool UpdateConfigurationTable(UserConfiguration userConfig, Configuration configuration)
+        //public static bool UpdateConfigurationTable(UserConfiguration userConfig, Configuration configuration)
+        public static bool UpdateConfigurationTable(UserConfiguration userConfig, string tableName, DataTable dt)
         {
             bool result = false;
 
-            DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
+            //DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
             if (dt != null)
             {
                 // Add Columns
@@ -784,9 +790,10 @@ namespace TH_Configuration.User
                     if (x < columns.Length - 1) update += ", ";
                 }
 
-                string table = GetConfigurationTableName(userConfig, configuration);
+                //string table = GetConfigurationTableName(userConfig, configuration);
 
-                string query = "INSERT IGNORE INTO " + table + " (" + cols + ") " + vals + update;
+
+                string query = "INSERT IGNORE INTO " + tableName + " (" + cols + ") " + vals + update;
 
                 try
                 {

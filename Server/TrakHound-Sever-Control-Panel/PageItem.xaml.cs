@@ -58,12 +58,15 @@ namespace TrakHound_Server_Control_Panel
             DependencyProperty.Register("Text", typeof(string), typeof(PageItem), new PropertyMetadata(null));
 
 
-        public delegate void Clicked_Handler();
+        public object Data { get; set; }
+
+
+        public delegate void Clicked_Handler(object data);
         public event Clicked_Handler Clicked;
 
         private void root_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Clicked != null) Clicked();
+            if (Clicked != null) Clicked(Data);
         }
 
     }

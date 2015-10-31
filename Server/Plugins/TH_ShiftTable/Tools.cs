@@ -48,12 +48,12 @@ namespace TH_ShiftTable
 
         public static string FormatColumnName(string eventName, int resultNumValue, string resultValue)
         {
-            return eventName + "__" + resultValue.Replace(' ', '_');
+            return eventName.ToUpper() + "__" + resultValue.Replace(' ', '_').ToUpper();
         }
 
         public static string FormatColumnName(GeneratedData.GeneratedEvents.Event genEvent, GeneratedData.GeneratedEvents.Value value)
         {
-            return genEvent.Name + "__" + value.Result.Value.Replace(' ', '_');
+            return genEvent.Name.ToUpper() + "__" + value.Result.Value.Replace(' ', '_').ToUpper();
         }
 
         #endregion

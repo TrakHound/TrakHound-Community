@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\TH_Libraries\Output\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
@@ -55,7 +59,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\DeviceButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MessageItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -87,8 +99,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\Button.xaml.cs">
+      <DependentUpon>Button.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DeviceButton.xaml.cs">
       <DependentUpon>DeviceButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MessageItem.xaml.cs">
+      <DependentUpon>MessageItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TH_Button.xaml.cs">
       <DependentUpon>TH_Button.xaml</DependentUpon>
@@ -123,6 +141,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\DescriptionConfiguration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Menus.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -145,6 +167,9 @@
     </Compile>
     <Compile Include="Pages\AgentConfiguration.xaml.cs">
       <DependentUpon>AgentConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DescriptionConfiguration.xaml.cs">
+      <DependentUpon>DescriptionConfiguration.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -188,6 +213,14 @@
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_MTC_Data\TH_MTC_Data.csproj">
+      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
+      <Name>TH_MTC_Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_MTC_Requests\TH_MTC_Requests.csproj">
+      <Project>{db59642f-24b7-4584-bcdf-288788040709}</Project>
+      <Name>TH_MTC_Requests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
       <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
       <Name>TH_PlugIns_Server</Name>
@@ -227,6 +260,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\List_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Refresh_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Disk_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\About_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

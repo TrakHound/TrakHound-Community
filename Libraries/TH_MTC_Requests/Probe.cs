@@ -7,6 +7,7 @@ using System;
 using System.Threading;
 using System.Xml;
 using System.Data;
+using System.Collections.Generic;
 
 using TH_Configuration;
 using TH_MTC_Data;
@@ -31,8 +32,19 @@ namespace TH_MTC_Requests
 
         public Configuration configuration { get; set; }
 
-        public delegate void ProbeFinishedDelly(TH_MTC_Data.Components.ReturnData returnData);
+        public string URL { get; set; }
+
+        public delegate void ProbeFinishedDelly(TH_MTC_Data.Components.ReturnData returnData, Probe sender);
         public event ProbeFinishedDelly ProbeFinished;
+
+        public class ErrorData
+        {
+            public Probe probe { get; set; }
+            public string message { get; set; }
+        }
+
+        public delegate void ProbeError_Handler(ErrorData errorData);
+        public event ProbeError_Handler ProbeError;
 
         public Probe()
         {
@@ -45,15 +57,11 @@ namespace TH_MTC_Requests
         {
             worker = new Thread(new ThreadStart(Stream_Start));
             worker.Start();
-
-            //Stream_Start();
         }
 
         public void Stop()
         {
             if (worker != null) worker.Abort();
-
-            //Stream_Stop();
         }
 
         #endregion
@@ -65,25 +73,47 @@ namespace TH_MTC_Requests
         private void ProbeRecieved(TH_MTC_Data.Components.ReturnData returnData)
         {
             ProbeFinishedDelly handler = ProbeFinished;
-            if (null != handler) handler(returnData);
+            if (null != handler) handler(returnData, this);
         }
 
         private void Stream_Start()
         {
             stream = new Stream();
 
-            string port;
-            if (configuration.Agent.Port > 0)
-                port = ":" + configuration.Agent.Port.ToString();
-            else
-                port = null;
+            if (configuration.Agent.IP_Address != String.Empty)
+            {
+                string url = "http://";
 
-            stream.uri = new Uri("http://" + configuration.Agent.IP_Address + port + "/" + configuration.Agent.Device_Name + "/probe");
+                // Add Ip Address
+                string ip = configuration.Agent.IP_Address;
+                url += ip;
 
-            stream.ResponseReceived += stream_ResponseReceived;
+                // Add Port
+                string port = null;
+                if (configuration.Agent.Port > 0) port = ":" + configuration.Agent.Port.ToString() + "/";
+                url += port;
 
-            Console.WriteLine("Connecting Probe @ : " + stream.uri);
-            stream.Start();
+                // Add Device Name
+                string deviceName = null;
+                if (configuration.Agent.Device_Name != String.Empty)
+                {
+                    if (port != null) deviceName = configuration.Agent.Device_Name;
+                    else deviceName = "/" + configuration.Agent.Device_Name;
+                    deviceName += "/";
+                }
+                url += deviceName;
+
+                if (url[url.Length - 1] != '/') url += "/";
+
+                stream.uri = new Uri(url + "probe");
+                stream.HttpTimeout = 3000;
+                stream.ResponseReceived += stream_ResponseReceived;
+                stream.ResponseError += stream_ResponseError;
+
+                URL = stream.uri.ToString();
+                Console.WriteLine("Connecting Probe @ : " + URL);
+                stream.Start();
+            }
         }
 
         private void Stream_Stop()
@@ -123,11 +153,14 @@ namespace TH_MTC_Requests
                     Header_Devices header = ProcessHeader(Root);
 
                     // Get Device object from RootNode
-                    Device device = ProcessDevice(Root);
+                    List<Device> devices = ProcessDevices(Root);
+
+                    //Device device = ProcessDevice(Root);
 
                     // Create ReturnData object to send as Event argument
                     TH_MTC_Data.Components.ReturnData returnData = new TH_MTC_Data.Components.ReturnData();
-                    returnData.device = device;
+                    returnData.devices = devices;
+                    //returnData.device = device;
                     //returnData.xmlDocument = Document;
                     returnData.header = header;
 
@@ -137,25 +170,71 @@ namespace TH_MTC_Requests
             }
         }
 
-        Device ProcessDevice(XmlElement Root)
+        void stream_ResponseError(Error error)
         {
-            Device Result = null;
+            ErrorData data = new ErrorData();
+            data.message = error.message;
+            data.probe = this;
+
+            if (ProbeError != null) ProbeError(data);
+        }
+
+        List<Device> ProcessDevices(XmlElement Root)
+        {
+            List<Device> Result = new List<Device>();
 
             XmlNodeList DeviceNodes = Root.GetElementsByTagName("Device");
 
             if (DeviceNodes != null)
             {
-                if (DeviceNodes.Count > 0)
+                foreach (XmlElement deviceNode in DeviceNodes)
                 {
-                    XmlNode DeviceNode = DeviceNodes[0];
-
-                    Device device = TH_MTC_Data.Components.Tools.GetDeviceFromXML(DeviceNode);
-
-                    DataItemCollection DIC = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(device);
-
-                    Result = device;
+                    Device device = ProcessDevice(deviceNode);
+                    if (device != null) Result.Add(device);
                 }
+
+
+                //if (DeviceNodes.Count > 0)
+                //{
+                //    XmlNode DeviceNode = DeviceNodes[0];
+
+                //    Device device = TH_MTC_Data.Components.Tools.GetDeviceFromXML(DeviceNode);
+
+                //    DataItemCollection DIC = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(device);
+
+                //    Result = device;
+                //}
             }
+            return Result;
+        }
+
+        Device ProcessDevice(XmlElement element)
+        {
+            Device Result = null;
+
+            //XmlNodeList DeviceNodes = Root.GetElementsByTagName("Device");
+
+            XmlNode DeviceNode = element;
+
+            Device device = TH_MTC_Data.Components.Tools.GetDeviceFromXML(DeviceNode);
+
+            DataItemCollection DIC = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(device);
+
+            Result = device;
+
+            //if (DeviceNodes != null)
+            //{
+            //    if (DeviceNodes.Count > 0)
+            //    {
+            //        XmlNode DeviceNode = DeviceNodes[0];
+
+            //        Device device = TH_MTC_Data.Components.Tools.GetDeviceFromXML(DeviceNode);
+
+            //        DataItemCollection DIC = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(device);
+
+            //        Result = device;
+            //    }
+            //}
             return Result;
         }
 

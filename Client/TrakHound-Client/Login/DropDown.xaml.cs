@@ -327,22 +327,6 @@ namespace TrakHound_Client.Login
                 Login(userConfig);
 
                 result = true;
-
-                //if (RememberMe) Management.SetRememberMe(userConfig, Management.RememberMeType.Client);
-
-                //Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-                //Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-                //Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-
-                //Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-                //EmailAddress = userConfig.email;
-
-                //username_TXT.Clear();
-                //password_TXT.Clear();
-
-                //LoadProfileImage(userConfig);
-                //LoggedIn = true;
-                //result = true;
             }
             else
             {
@@ -395,6 +379,8 @@ namespace TrakHound_Client.Login
             currentUser = null;
             ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01.png"));
             mw.CurrentUser = null;
+
+            Management.ClearRememberMe(Management.RememberMeType.Client);
         }
 
         void CreateAccount()

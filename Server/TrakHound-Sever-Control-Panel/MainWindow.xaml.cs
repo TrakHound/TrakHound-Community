@@ -23,6 +23,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Collections.ObjectModel;
 using System.Xml;
+using System.Data;
 
 using TH_Configuration;
 using TH_Database;
@@ -56,7 +57,7 @@ namespace TrakHound_Server_Control_Panel
 
             LoadPlugins();
 
-            LoadConfigurations();
+            LoadDevices();
         }
 
         #region "Main Window"
@@ -471,10 +472,44 @@ namespace TrakHound_Server_Control_Panel
 
         #endregion
 
-
         #region "Configuration Management"
 
-        public void LoadConfigurations()
+        //public delegate void SelectedDeviceChanged_Handler(Configuration config);
+        //public event SelectedDeviceChanged_Handler SelectedDeviceChanged;
+
+        //public delegate void ConfigurationTableChanged_Handler(DataTable dt);
+        //public event ConfigurationTableChanged_Handler ConfigurationTableChanged;
+
+        Configuration selecteddevice;
+        public Configuration SelectedDevice
+        {
+            get { return selecteddevice; }
+            set
+            {
+                selecteddevice = value;
+                //if (SelectedDeviceChanged != null) SelectedDeviceChanged(selecteddevice);
+            }
+        }
+
+        DataTable configurationtable;
+        public DataTable ConfigurationTable
+        {
+            get { return configurationtable; }
+            set 
+            {
+                configurationtable = value;
+
+                if (ConfigurationPages != null)
+                {
+                    foreach (ConfigurationPage page in ConfigurationPages)
+                    {
+                        page.LoadConfiguration(configurationtable);
+                    }
+                }
+            }
+        }
+
+        public void LoadDevices()
         {
             DeviceListShown = false;
             DeviceList.Clear();
@@ -644,8 +679,52 @@ namespace TrakHound_Server_Control_Panel
 
         #endregion
 
+        void LoadConfiguration()
+        {
+            if (ConfigurationPages != null)
+            {
+                foreach (ConfigurationPage page in ConfigurationPages)
+                {
+                    page.LoadConfiguration(configurationtable);
+                }
+            }
+        }
+
+        #region "Save"
+
+        public void SaveConfiguration()
+        {
+            DataTable dt = ConfigurationTable;
+
+            if (dt != null)
+            {
+                if (currentuser != null)
+                {
+                    if (SelectedDevice != null)
+                    {
+                        string tablename = TH_Configuration.User.Management.GetConfigurationTableName(currentuser, SelectedDevice);
+
+                        if (userDatabaseSettings == null)
+                        {
+                            TH_Configuration.User.Management.UpdateConfigurationTable(currentuser, tablename, dt);
+                        }
+                        else
+                        {
+                            //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
+                        }
+                    } 
+                }
+                // If not logged in Save to File in 'C:\TrakHound\'
+                else
+                {
+
+                }
+            }
+        }
+
         #endregion
 
+        #endregion
 
         #region "Pages"
 
@@ -675,26 +754,122 @@ namespace TrakHound_Server_Control_Panel
             }
         }
 
+        List<ConfigurationPage> ConfigurationPages;
 
         void InitializePages()
         {
+            PageListShown = false;
 
-            PageItem item = new PageItem();
-            item.Text = "Manage";
-            item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/options_gear_30px.png"));
-            PageList.Add(item);
+            PageList.Clear();
 
-            item = new PageItem();
-            item.Text = "Agent";
-            item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/Agent_02.png"));
-            item.Clicked += Agent_Clicked;
-            PageList.Add(item);
+            ConfigurationPages = new List<ConfigurationPage>();
 
-            item = new PageItem();
-            item.Text = "Databases";
-            item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/DatabaseConfig_01.png"));
-            PageList.Add(item);
+            ConfigurationPages.Add(new Pages.AgentConfiguration());
 
+
+            // Create PageItem and add to PageList
+            foreach (ConfigurationPage page in ConfigurationPages)
+            {
+                page.SettingChanged += page_SettingChanged;
+
+                PageItem item = new PageItem();
+                item.Text = page.PageName;
+                item.Image = page.Image;
+                item.Data = page;
+                item.Clicked += PageItem_Clicked;
+                PageList.Add(item);
+            }
+
+            //PageItem item = new PageItem();
+            //item.Text = "Description";
+            //item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/About_01.png"));
+            //item.Data = new Pages.DescriptionConfiguration();
+            //item.Clicked += PageItem_Clicked;
+            //PageList.Add(item);
+
+            //item = new PageItem();
+            //item.Text = "Agent";
+            //item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/Agent_02.png"));
+            //item.Data = new Pages.AgentConfiguration();
+            //item.Clicked += PageItem_Clicked;
+            //PageList.Add(item);
+
+            //item = new PageItem();
+            //item.Text = "Databases";
+            //item.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/DatabaseConfig_01.png"));
+            //PageList.Add(item);
+
+        }
+
+
+
+        public bool SaveNeeded
+        {
+            get { return (bool)GetValue(SaveNeededProperty); }
+            set { SetValue(SaveNeededProperty, value); }
+        }
+
+        public static readonly DependencyProperty SaveNeededProperty =
+            DependencyProperty.Register("SaveNeeded", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
+
+        
+
+        void page_SettingChanged(string name, string oldVal, string newVal)
+        {
+            SaveNeeded = true;
+        }
+
+        private void Restore_Clicked(Controls.Button bt)
+        {
+            LoadConfiguration();
+        }
+
+        private void Save_Clicked(Controls.Button bt)
+        {
+            if (ConfigurationTable != null)
+            {
+                if (ConfigurationPages != null)
+                {
+                    foreach (ConfigurationPage page in ConfigurationPages)
+                    {
+                        page.SaveConfiguration(configurationtable);
+                    }
+                }
+
+                SaveConfiguration();
+            }
+
+            SaveNeeded = false;
+        }
+
+
+
+
+        void PageItem_Clicked(object data)
+        {
+            if (data != null)
+            {
+                if (CurrentPage != null)
+                {
+                    if (CurrentPage.GetType() != data.GetType())
+                    {
+                        CurrentPage = data;
+                    }
+                }
+                else CurrentPage = data;
+            }
+        }
+
+        void Description_Clicked()
+        {
+            if (CurrentPage != null)
+            {
+                if (CurrentPage.GetType() != typeof(Pages.DescriptionConfiguration))
+                {
+                    CurrentPage = new Pages.DescriptionConfiguration();
+                }
+            }
+            else CurrentPage = new Pages.DescriptionConfiguration();
         }
 
         void Agent_Clicked()
@@ -786,7 +961,7 @@ namespace TrakHound_Server_Control_Panel
                 {
                     CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
 
-                    LoadConfigurations();
+                    LoadDevices();
 
                     LoggedIn = true;
                 }
@@ -951,7 +1126,6 @@ namespace TrakHound_Server_Control_Panel
         #endregion
 
 
-
         public bool DeviceListShown
         {
             get { return (bool)GetValue(DeviceListShownProperty); }
@@ -1003,7 +1177,16 @@ namespace TrakHound_Server_Control_Panel
 
             Configuration config = (Configuration)lb.DataObject;
 
-            LoadPageList(config);
+            if (config != null)
+            {
+                SelectedDevice = config;
+
+                ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
+
+                PageListShown = true;
+
+                //LoadPageList(config);
+            }
         }
 
         public bool PageListShown
@@ -1019,18 +1202,7 @@ namespace TrakHound_Server_Control_Panel
         const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
 
 
-        void LoadPageList(Configuration config)
-        {
-            PageListShown = false;
-
-            PageList.Clear();
-
-            InitializePages();
-
-            TablePlugIns_Initialize(config);
-
-            PageListShown = true;
-        }
+        
 
         private void TableList_MouseDown(object sender, MouseButtonEventArgs e)
         {

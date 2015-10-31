@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Classes.cs" />
+    <Compile Include="Error.cs" />
     <Compile Include="Components\ReturnData.cs" />
     <Compile Include="Components\Tools.cs" />
     <Compile Include="Header.cs" />

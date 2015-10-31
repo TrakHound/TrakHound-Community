@@ -204,7 +204,7 @@ namespace TH_DeviceStatus
             {
                 string filter = "WHERE TIMESTAMP BETWEEN '" + start.ToString("yyyy-MM-dd HH:mm:ss") + "' AND '" + end.ToString("yyyy-MM-dd HH:mm:ss") + "'";
 
-                string tableName = TableNames.Gen_Events_TablePrefix + "Production_Status";
+                string tableName = TableNames.Gen_Events_TablePrefix + "production_status";
 
 
                 DataTable table = Table.Get(configuration.Databases, tableName, filter);

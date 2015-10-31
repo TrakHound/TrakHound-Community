@@ -916,21 +916,21 @@ namespace TH_DeviceCompare
         {
             Controls.TimeDisplay td;
 
-            string text = updateData.variable.name.Replace("Production_Status__", "").Replace("_", " ");
+            string text = updateData.variable.name.Replace("PRODUCTION_STATUS__", "").Replace("_", " ");
 
             int index = -1;
             index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
             if (index < 0)
             {
                 td = new Controls.TimeDisplay();
-                td.Text = text;
+                td.Text = Formatting.UppercaseFirst(text);
                 td.BarBrush = new SolidColorBrush(Color.FromArgb(221, updateData.color.R, updateData.color.G, updateData.color.B));
                 updateData.stack.Children.Add(td);
                 index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
             }
 
             td = (Controls.TimeDisplay)updateData.stack.Children[index];
-            td.Text = text;
+            td.Text = Formatting.UppercaseFirst(text); ;
 
             //Highlight current status
             if (updateData.snapshotdata != null)
@@ -981,7 +981,7 @@ namespace TH_DeviceCompare
                             int.TryParse(cell.Value, out seconds);
                             totalSeconds += seconds;
                         }
-                        else if (cell.Key.Contains("Production_Status"))
+                        else if (cell.Key.Contains("PRODUCTION_STATUS"))
                         {
                             ProductionStatus_Variable variable;
                             int index = variables.FindIndex(x => x.name.ToLower() == cell.Key.ToLower());
@@ -1266,6 +1266,9 @@ namespace TH_DeviceCompare
 
         #region "Production Status Timeline"
 
+        List<int> productionStatusLevels = new List<int>();
+        int prev_productionStatusLevelCount = 0;
+
         void Update_ProductionStatusTimeline(DeviceDisplay dd, object productionstatusdata, object snapshotdata)
         {
             if (productionstatusdata.GetType() == typeof(List<Dictionary<string, string>>))
@@ -1302,14 +1305,25 @@ namespace TH_DeviceCompare
 
                     object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
-                    if (ddData == null)
+                    if (ddData == null || prev_productionStatusLevelCount != productionStatusLevels.Count)
                     {
+                        prev_productionStatusLevelCount = productionStatusLevels.Count;
+
                         timeline = new TH_WPF.TimeLine.TimeLine();
 
+                        List<Color> rawColors = TH_Styles.IndicatorColors.GetIndicatorColors(productionStatusLevels.Count);
+
                         List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
-                        colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#ff0000"), "Alert"));
-                        colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#aaffffff"), "Idle"));
-                        colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#00ff00"), "Full Production"));
+                        var levels = productionStatusLevels.OrderByDescending(i => i);
+                        for (int x = 0; x <= productionStatusLevels.Count - 1; x++)
+                        {
+                            colors.Add(new Tuple<Color, string>(rawColors[x], productionStatusLevels[x].ToString()));
+                        }
+
+
+                        //colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#ff0000"), "Alert"));
+                        //colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#aaffffff"), "Idle"));
+                        //colors.Add(new Tuple<Color, string>(Color_Functions.GetColorFromString("#00ff00"), "Full Production"));
 
                         timeline.colors = colors;
 
@@ -1336,10 +1350,20 @@ namespace TH_DeviceCompare
                                     if (timestamp >= shift_beginUTC && timestamp <= shift_endUTC)
                                     {
                                         val = null;
-                                        row.TryGetValue("VALUE", out val);
-
+                                        //row.TryGetValue("VALUE", out val);
+                                        row.TryGetValue("NUMVAL", out val);
                                         if (val != null)
                                         {
+                                            int numval;
+                                            if (int.TryParse(val, out numval))
+                                            {
+                                                if (!productionStatusLevels.Contains(numval))
+                                                {
+                                                    prev_productionStatusLevelCount = productionStatusLevels.Count;
+                                                    productionStatusLevels.Add(numval);
+                                                }
+                                            }
+
                                             data_forShift.Add(new Tuple<DateTime, string>(timestamp, val));
                                         }
 

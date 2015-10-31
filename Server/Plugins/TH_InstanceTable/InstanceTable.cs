@@ -468,7 +468,7 @@ namespace TH_InstanceTable
 
             List<string> Result = new List<string>();
 
-            TH_MTC_Data.Components.DataItemCollection dataItems = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(returnData.device);
+            TH_MTC_Data.Components.DataItemCollection dataItems = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(returnData.devices[0]);
 
             InstanceConfiguration ic = GetConfiguration(config);
             if (ic != null)

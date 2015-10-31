@@ -49,14 +49,14 @@ namespace TrakHound_Server_Control_Panel.Login
             Root_GRID.Height = 0;
 
             // Remember Me
-            //UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
-            //if (RememberUser != null)
-            //{
-            //    Login(RememberUser);
+            UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
+            if (RememberUser != null)
+            {
+                Login(RememberUser);
 
-            //    currentUser = RememberUser;
-            //    //mw.CurrentUser = currentUser;
-            //}
+                currentUser = RememberUser;
+                mw.CurrentUser = currentUser;
+            }
         }
 
         public TrakHound_Server_Control_Panel.MainWindow mw;

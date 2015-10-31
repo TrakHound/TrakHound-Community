@@ -19,6 +19,7 @@ namespace TH_MTC_Data
 {
 
     public delegate void StreamResponse_Handler(string responseString);
+    public delegate void Error_Handler(Error error);
 
     public delegate void Connection_Handler();
 

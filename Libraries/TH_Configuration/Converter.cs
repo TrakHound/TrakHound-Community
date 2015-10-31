@@ -23,9 +23,16 @@ namespace TH_Configuration
         {
             DataTable result = null;
 
-            List<XmlToTable.TableInfo> infos = XmlToTable.XMLToTable_CreateData(xml);
+            try
+            {
+                List<XmlToTable.TableInfo> infos = XmlToTable.XMLToTable_CreateData(xml);
 
-            result = XmlToTable.XMLToTable_CreateTable(infos);
+                result = XmlToTable.XMLToTable_CreateTable(infos);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("XMLToTable() :: Exception :: " + ex.Message);
+            }
 
             return result;
         }

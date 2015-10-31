@@ -140,6 +140,8 @@ namespace TH_Configuration.Converter_Sub_Classes
                 result.Columns.Add(col);
             }
 
+            if (result.Columns.Contains("address")) result.PrimaryKey = new DataColumn[] { result.Columns["address"] };
+
             // Add Rows
             foreach (TableInfo info in infos)
             {

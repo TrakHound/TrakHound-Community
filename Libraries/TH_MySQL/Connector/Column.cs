@@ -31,7 +31,11 @@ namespace TH_MySQL.Connector
                 MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
                 if (Reader.HasRows)
                 {
-                    while (Reader.Read()) Result.Add(Reader[0].ToString());
+                    while (Reader.Read())
+                    {
+                        string line = Reader[0].ToString();
+                        Result.Add(line);
+                    }
                 }
 
                 Reader.Close();

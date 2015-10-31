@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace TH_MTC_Data.Components
 {
@@ -13,7 +14,8 @@ namespace TH_MTC_Data.Components
         //public DataSet DS;
 
          //Device object with heirarchy of values and xml structure
-        public Device device;
+        //public Device device;
+        public List<Device> devices;
 
          //Raw XML document
         //public XmlDocument xmlDocument;
