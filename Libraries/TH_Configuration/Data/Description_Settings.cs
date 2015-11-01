@@ -11,18 +11,24 @@ namespace TH_Configuration
 
     public class Description_Settings
     {
-        public string Machine_Type { get; set; }
 
         public string Description { get; set; }
-
-        public string Customer_Name { get; set; }
-        public string Control_Type { get; set; }
         public string Manufacturer { get; set; }
+        public string Device_Type { get; set; }
+        public string Device_ID { get; set; }
         public string Model { get; set; }
         public string Serial { get; set; }
-        public string Machine_ID { get; set; }
-
+        public string Controller { get; set; }
+        public string Company { get; set; }
+        
+        // List of Custom Configurations for Plugins
         public List<Tuple<string, string>> Custom;
+
+        // OBSOLETE
+        public string Machine_Type { get; set; }
+        public string Machine_ID { get; set; }
+        public string Control_Type { get; set; }
+        public string Customer_Name { get; set; }
 
     }
 

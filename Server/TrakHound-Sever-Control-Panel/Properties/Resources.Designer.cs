@@ -143,6 +143,16 @@ namespace TrakHound_Server_Control_Panel.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Help_01 {
+            get {
+                object obj = ResourceManager.GetObject("Help_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Information_01 {
             get {
                 object obj = ResourceManager.GetObject("Information_01", resourceCulture);

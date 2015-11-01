@@ -706,6 +706,7 @@ namespace TrakHound_Server_Control_Panel
 
                         if (userDatabaseSettings == null)
                         {
+                            TH_Configuration.User.Management.CreateConfigurationTable(currentuser, SelectedDevice);
                             TH_Configuration.User.Management.UpdateConfigurationTable(currentuser, tablename, dt);
                         }
                         else
@@ -764,9 +765,9 @@ namespace TrakHound_Server_Control_Panel
 
             ConfigurationPages = new List<ConfigurationPage>();
 
+            ConfigurationPages.Add(new Pages.DescriptionConfiguration());
             ConfigurationPages.Add(new Pages.AgentConfiguration());
-
-
+            
             // Create PageItem and add to PageList
             foreach (ConfigurationPage page in ConfigurationPages)
             {

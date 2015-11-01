@@ -34,7 +34,7 @@ namespace TrakHound_Server_Control_Panel.Pages
             DataContext = this;
         }
 
-        #region "Page"
+        #region "Page Interface"
 
         public string PageName { get { return "Agent"; } }
 
@@ -94,6 +94,7 @@ namespace TrakHound_Server_Control_Panel.Pages
 
         #endregion
 
+
         string prefix = "/Agent/";
 
         DataTable configurationTable;
@@ -106,13 +107,6 @@ namespace TrakHound_Server_Control_Panel.Pages
 
         public static readonly DependencyProperty LoadingProperty =
             DependencyProperty.Register("Loading", typeof(bool), typeof(AgentConfiguration), new PropertyMetadata(false));
-
-        //private void Restore_Clicked(Controls.Button bt)
-        //{
-        //    //LoadConfiguration();
-        //}
-
-        //private void Save_Clicked(Controls.Button bt) { if (SaveRequest != null) SaveRequest(); }
 
 
         #region "Test Connection"

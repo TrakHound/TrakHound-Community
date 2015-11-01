@@ -10,211 +10,200 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
 
-    <Grid Grid.Column="1">
-        <!--<Grid.RowDefinitions>          
-            <RowDefinition Height="*"/>
+    <Grid>
+        <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>-->
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        
-        
-        <!--Page Content-->
-        <ScrollViewer>
+        <TextBlock Text="Agent Configuration" FontSize="20pt" Foreground="#333" Margin="10,20,10,10"/>
 
-            <Grid Grid.Row="0" Margin="40">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+        <TextBlock Grid.Row="1" Text="MTConnect® Agent Communication Settings" FontSize="14pt" Foreground="#888" Margin="10,10,10,20"/>
 
-                <TextBlock Text="Agent Configuration" FontSize="20pt" Foreground="#333" Margin="10,20,10,10"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="1" Text="MTConnect® Agent Communication Settings" FontSize="14pt" Foreground="#888" Margin="10,10,10,20"/>
+            <!--Configuration-->
+            <StackPanel HorizontalAlignment="Left" Width="300">
+                <StackPanel.Resources>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="0,5"/>
+                    </Style>
+                </StackPanel.Resources>
 
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <!--IP Address-->
+                <StackPanel>
 
-                    <!--Configuration-->
-                    <StackPanel HorizontalAlignment="Left" Width="300">
-                        <StackPanel.Resources>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Margin" Value="0,5"/>
-                            </Style>
-                        </StackPanel.Resources>
+                    <!--Title-->
+                    <TextBlock Text="IP Address" Foreground="#333" Margin="10,0" FontSize="12pt"/>
 
-                        <!--IP Address-->
-                        <StackPanel>
+                    <!--Input-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
 
-                            <!--Title-->
-                            <TextBlock Text="IP Address" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="#aaa"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=ipaddress_TXT}" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
 
-                            <!--Input-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
+                            <Grid Margin="10,0">
 
-                                <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="BorderBrush" Value="#aaa"/>
+                                <!--Instructions-->
+                                <TextBlock Text="Enter agent ip address" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsFocused, ElementName=ipaddress_TXT}" Value="true">
-                                                    <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <DataTrigger Binding="{Binding Text, ElementName=ipaddress_TXT}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Border.Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                                    <Grid Margin="10,0">
-
-                                        <!--Instructions-->
-                                        <TextBlock Text="Enter agent ip address" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=ipaddress_TXT}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!--User Input-->
-                                        <TextBox x:Name="ipaddress_TXT" TextChanged="ipaddress_TXT_TextChanged" LostFocus="ipaddress_TXT_LostFocus" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                                    </Grid>
-
-                                </Border>
+                                <!--User Input-->
+                                <TextBox x:Name="ipaddress_TXT" TextChanged="ipaddress_TXT_TextChanged" LostFocus="ipaddress_TXT_LostFocus" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
-                        </StackPanel>
+                        </Border>
 
-                        <!--Port-->
-                        <StackPanel>
+                    </Grid>
 
-                            <!--Title-->
-                            <TextBlock Text="Port" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                </StackPanel>
 
-                            <!--Input-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
+                <!--Port-->
+                <StackPanel>
 
-                                <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="BorderBrush" Value="#aaa"/>
+                    <!--Title-->
+                    <TextBlock Text="Port" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+
+                    <!--Input-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="#aaa"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=port_TXT}" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid Margin="10,0">
+
+                                <!--Instructions-->
+                                <TextBlock Text="Enter agent port" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsFocused, ElementName=port_TXT}" Value="true">
-                                                    <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <DataTrigger Binding="{Binding Text, ElementName=port_TXT}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Border.Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                                    <Grid Margin="10,0">
-
-                                        <!--Instructions-->
-                                        <TextBlock Text="Enter agent port" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=port_TXT}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!--User Input-->
-                                        <TextBox x:Name="port_TXT" TextChanged="port_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                                    </Grid>
-
-                                </Border>
+                                <!--User Input-->
+                                <TextBox x:Name="port_TXT" TextChanged="port_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
-                        </StackPanel>
+                        </Border>
 
-                        <!--Device Name-->
-                        <StackPanel>
+                    </Grid>
 
-                            <!--Title-->
-                            <TextBlock Text="Device Name" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                </StackPanel>
 
-                            <!--Input-->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="auto"/>
-                                </Grid.ColumnDefinitions>
+                <!--Device Name-->
+                <StackPanel>
 
-                                <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="BorderBrush" Value="#aaa"/>
+                    <!--Title-->
+                    <TextBlock Text="Device Name" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+
+                    <!--Input-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="#aaa"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=devicename_TXT}" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid Margin="10,0">
+
+                                <!--Instructions-->
+                                <TextBlock Text="Enter device name" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsFocused, ElementName=devicename_TXT}" Value="true">
-                                                    <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <DataTrigger Binding="{Binding Text, ElementName=devicename_TXT}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Border.Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                                    <Grid Margin="10,0">
-
-                                        <!--Instructions-->
-                                        <TextBlock Text="Enter device name" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=devicename_TXT}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!--User Input-->
-                                        <TextBox x:Name="devicename_TXT" TextChanged="devicename_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                                    </Grid>
-
-                                </Border>
+                                <!--User Input-->
+                                <TextBox x:Name="devicename_TXT" TextChanged="devicename_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
-                        </StackPanel>
+                        </Border>
 
-                        <!--Current Heartbeat-->
-                        <StackPanel>
+                    </Grid>
 
-                            <!--Title-->
-                            <TextBlock Text="Current Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                </StackPanel>
 
-                            <Grid Grid.Column="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                <!--Current Heartbeat-->
+                <StackPanel>
 
-                                <Slider Grid.Column="1" Value="{Binding CurrentHeartbeat}" Margin="10,10,10,0"
+                    <!--Title-->
+                    <TextBlock Text="Current Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Slider Grid.Column="1" Value="{Binding CurrentHeartbeat}" Margin="10,10,10,0"
                                 LargeChange="1000"
                                 Maximum="60000"
                                 Minimum="1000"
@@ -226,58 +215,58 @@
                                 VerticalAlignment="Center"
                                 />
 
-                                <Border  BorderThickness="1" CornerRadius="1" Margin="10,5">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="BorderBrush" Value="#aaa"/>
+                        <Border  BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="#aaa"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=currentHeartbeat_TXT}" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid Margin="10,0">
+
+                                <!--Instructions-->
+                                <TextBlock Text="{Binding CurrentHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsFocused, ElementName=currentHeartbeat_TXT}" Value="true">
-                                                    <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <DataTrigger Binding="{Binding Text, ElementName=currentHeartbeat_TXT}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Border.Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
-                                    <Grid Margin="10,0">
-
-                                        <!--Instructions-->
-                                        <TextBlock Text="{Binding CurrentHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=currentHeartbeat_TXT}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!--User Input-->
-                                        <TextBox x:Name="currentHeartbeat_TXT" LostFocus="currentHeartbeat_TXT_LostFocus" TextChanged="currentHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                                    </Grid>
-
-                                </Border>
+                                <!--User Input-->
+                                <TextBox x:Name="currentHeartbeat_TXT" LostFocus="currentHeartbeat_TXT_LostFocus" TextChanged="currentHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
-                        </StackPanel>
+                        </Border>
 
-                        <!--Sample Heartbeat-->
-                        <StackPanel>
+                    </Grid>
 
-                            <!--Title-->
-                            <TextBlock Text="Sample Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                </StackPanel>
 
-                            <Grid Grid.Column="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                <!--Sample Heartbeat-->
+                <StackPanel>
 
-                                <Slider Grid.Column="1" Value="{Binding SampleHeartbeat}" Margin="10,10,10,0"
+                    <!--Title-->
+                    <TextBlock Text="Sample Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Slider Grid.Column="1" Value="{Binding SampleHeartbeat}" Margin="10,10,10,0"
                                 LargeChange="1000"
                                 Maximum="60000"
                                 Minimum="1000"
@@ -289,146 +278,142 @@
                                 VerticalAlignment="Center"
                                 />
 
-                                <Border  BorderThickness="1" CornerRadius="1" Margin="10,5">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="BorderBrush" Value="#aaa"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsFocused, ElementName=sampleHeartbeat_TXT}" Value="true">
-                                                    <Setter Property="BorderBrush" Value="#0080ff"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-
-                                    <Grid Margin="10,0">
-
-                                        <!--Instructions-->
-                                        <TextBlock Text="{Binding SampleHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=sampleHeartbeat_TXT}" Value="">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!--User Input-->
-                                        <TextBox x:Name="sampleHeartbeat_TXT" LostFocus="sampleHeartbeat_TXT_LostFocus" TextChanged="sampleHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                                    </Grid>
-
-                                </Border>
-
-                            </Grid>
-
-                        </StackPanel>
-
-                    </StackPanel>
-
-                    <!--Connection Test-->
-                    <Grid Grid.Column="1" Width="400" HorizontalAlignment="Left">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <!--Buttton-->
-                        <controls:TH_Button Text="Test Connection" Clicked="TestConnection_Clicked" AlternateStyle="True" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-
-                        <StackPanel Grid.Row="1">
-
-                            <!--Device List-->
-                            <ItemsControl ItemsSource="{Binding MTCDeviceList}" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-
-                            <!--Message List-->
-                            <ItemsControl ItemsSource="{Binding MessageList}" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-
-                        </StackPanel>
-
-                        <!--Loading Animation-->
-                        <Grid Grid.RowSpan="2">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Opacity" Value="0.0"/>
-                                    <Setter Property="Width" Value="0"/>
-                                    <Setter Property="Height" Value="0"/>
+                        <Border  BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="#aaa"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ConnectionTestLoading}" Value="true">
-                                            <DataTrigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="180" >
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="305" >
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseIn"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.EnterActions>
-                                            <DataTrigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
-                                                            <DiscreteDoubleKeyFrame Value="0" />
-                                                        </DoubleAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
-                                                            <DiscreteDoubleKeyFrame Value="0" />
-                                                        </DoubleAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                            <DoubleAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseIn"/>
-                                                            </DoubleAnimation.EasingFunction>
-                                                        </DoubleAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </DataTrigger.ExitActions>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=sampleHeartbeat_TXT}" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Grid.Style>
+                            </Border.Style>
 
-                            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
+                            <Grid Margin="10,0">
 
-                        </Grid>
+                                <!--Instructions-->
+                                <TextBlock Text="{Binding SampleHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text, ElementName=sampleHeartbeat_TXT}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <!--User Input-->
+                                <TextBox x:Name="sampleHeartbeat_TXT" LostFocus="sampleHeartbeat_TXT_LostFocus" TextChanged="sampleHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+
+                            </Grid>
+
+                        </Border>
 
                     </Grid>
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <!--Connection Test-->
+            <Grid Grid.Column="1" Width="400" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Buttton-->
+                <controls:TH_Button Text="Test Connection" Clicked="TestConnection_Clicked" AlternateStyle="True" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                <StackPanel Grid.Row="1">
+
+                    <!--Device List-->
+                    <ItemsControl ItemsSource="{Binding MTCDeviceList}" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                    <!--Message List-->
+                    <ItemsControl ItemsSource="{Binding MessageList}" Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                </StackPanel>
+
+                <!--Loading Animation-->
+                <Grid Grid.RowSpan="2">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Opacity" Value="0.0"/>
+                            <Setter Property="Width" Value="0"/>
+                            <Setter Property="Height" Value="0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ConnectionTestLoading}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="180" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="305" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
+                                                    <DiscreteDoubleKeyFrame Value="0" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
+                                                    <DiscreteDoubleKeyFrame Value="0" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
 
                 </Grid>
 
             </Grid>
 
-        </ScrollViewer>
+        </Grid>
 
     </Grid>
 

@@ -706,11 +706,11 @@
 
                         <DockPanel x:Name="Root_DOCK">
 
-                            <Grid DockPanel.Dock="Top">
+                            <!--<Grid DockPanel.Dock="Top">
 
                                 <DockPanel>
 
-                                    <!--Main Menu-->
+                                    --><!--Main Menu--><!--
                                     <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" >
                                         <DockPanel.RenderTransform>
                                             <TranslateTransform />
@@ -777,7 +777,7 @@
 
                                         <Menu DockPanel.Dock="Top" Height="25" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" FontSize="14">
 
-                                            <!--File-->
+                                            --><!--File-->
                                             <!--<MenuItem Header="_File">
                                                 <MenuItem Header="_Exit" Click="MenuItem_Exit_Click">
                                                     <MenuItem.Icon>
@@ -795,10 +795,10 @@
                                                 </MenuItem>
                                             </MenuItem>-->
 
-                                            <!--View-->
+                                            <!--View--><!--
                                             <MenuItem x:Name="View_MenuItem" Header="_View"/>
 
-                                            <!--Tools-->
+                                            --><!--Tools-->
                                             <!--<MenuItem Header="_Tools">
                                                 <MenuItem Header="_Options" Click="MenuItem_Options_Click">
                                                     <MenuItem.Icon>
@@ -836,14 +836,14 @@
                                                         </Rectangle>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
-                                            </MenuItem>-->
+                                            </MenuItem>--><!--
 
                                         </Menu>
                                     </DockPanel>
 
                                 </DockPanel>
 
-                            </Grid>
+                            </Grid>-->
 
                             <!--Bottom Panel-->
                             <Grid DockPanel.Dock="Bottom" Height="25">
@@ -940,7 +940,11 @@
                                         </Grid.ColumnDefinitions>
 
                                         <!--Page Content-->
-                                        <ContentControl Grid.Column="1" Content="{Binding CurrentPage}"/>
+                                        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+
+                                            <ContentControl Margin="40" Content="{Binding CurrentPage}"/>
+
+                                        </ScrollViewer>
 
                                         <!--Side Bar-->
                                         <Border Background="#0080ff" BorderBrush="#0070ff" BorderThickness="0,0,1,0" Margin="0,0,0,-1">
