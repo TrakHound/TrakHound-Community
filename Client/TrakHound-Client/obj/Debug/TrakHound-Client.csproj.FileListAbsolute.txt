@@ -295,3 +295,11 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Manageme
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Manager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\MyAccount\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\MyAccount\Page.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_PlugIns_Server.dll
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_MTC_Data.dll
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_MTC_Requests.dll
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_PlugIns_Server.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_MTC_Data.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_MTC_Requests.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_DeviceManager.dll
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_DeviceManager.pdb

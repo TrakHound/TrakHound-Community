@@ -1,0 +1,599 @@
+﻿<UserControl x:Class="TH_MySQL.ConfigurationPage.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             >
+    
+    <Grid>
+        
+        <StackPanel Width="300" HorizontalAlignment="Left">
+
+            <!--Database Name-->
+            <StackPanel>
+
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Title-->
+                    <TextBlock Text="Database Name" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Database Name" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                            Used to record a general desciption of the device.
+                                            For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
+
+
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
+
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+
+                    </Rectangle>
+
+                </StackPanel>
+
+                <!--Input-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=databasename_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+
+                            <!--User Input-->
+                            <TextBox x:Name="databasename_TXT" TextChanged="databasename_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </StackPanel>
+
+            <!--Server Address-->
+            <StackPanel>
+
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Title-->
+                    <TextBlock Text="Server" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Server" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                            Used to record a general desciption of the device.
+                                            For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
+
+
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
+
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+
+                    </Rectangle>
+
+                </StackPanel>
+
+                <!--Input-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=server_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+
+                            <!--User Input-->
+                            <TextBox x:Name="server_TXT" TextChanged="server_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </StackPanel>
+
+            <!--Port-->
+            <StackPanel>
+
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Title-->
+                    <TextBlock Text="Port" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Port" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                            Used to record a general desciption of the device.
+                                            For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
+
+
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
+
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+
+                    </Rectangle>
+
+                </StackPanel>
+
+                <!--Input-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=port_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+
+                            <!--User Input-->
+                            <TextBox x:Name="port_TXT" TextChanged="port_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </StackPanel>
+
+            <!--Username-->
+            <StackPanel>
+
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Title-->
+                    <TextBlock Text="Username" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Username" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                            Used to record a general desciption of the device.
+                                            For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
+
+
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
+
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+
+                    </Rectangle>
+
+                </StackPanel>
+
+                <!--Input-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+
+                            <!--User Input-->
+                            <TextBox x:Name="username_TXT" TextChanged="username_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </StackPanel>
+
+            <!--Password-->
+            <StackPanel>
+
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Title-->
+                    <TextBlock Text="Password" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Password" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                            Used to record a general desciption of the device.
+                                            For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
+
+
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
+
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+
+                    </Rectangle>
+
+                </StackPanel>
+
+                <!--Input-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+
+                            <!--User Input-->
+                            <PasswordBox x:Name="password_TXT" PasswordChanged="password_TXT_PasswordChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </StackPanel>
+
+            <!--Confirm Password-->
+            <StackPanel>
+
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Title-->
+                    <TextBlock Text="Confirm Password" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Confirm Password" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                            Used to record a general desciption of the device.
+                                            For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
+
+
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
+
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+
+                    </Rectangle>
+
+                </StackPanel>
+
+                <!--Input-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=confirmpassword_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+
+                            <!--User Input-->
+                            <PasswordBox x:Name="confirmpassword_TXT" PasswordChanged="confirmpassword_TXT_PasswordChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+    
+</UserControl>

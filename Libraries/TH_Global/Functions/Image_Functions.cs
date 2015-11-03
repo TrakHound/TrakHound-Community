@@ -59,6 +59,19 @@ namespace TH_Global.Functions
         /// <returns></returns>
         public static Bitmap SetImageSize(Image image, int width, int height)
         {
+            // Make sure the image stays in proportion
+            if (image.Width != image.Height)
+            {
+                if (image.Width > image.Height)
+                {
+                    height = (width * image.Height) / image.Width;
+                }
+                else if (image.Height > image.Width)
+                {
+                    width = (height * image.Width) / image.Height;
+                }
+            }
+
             var destRect = new Rectangle(0, 0, width, height);
             var destImage = new Bitmap(width, height);
 
@@ -81,7 +94,6 @@ namespace TH_Global.Functions
 
             return destImage;
         }
-
 
     }
 }

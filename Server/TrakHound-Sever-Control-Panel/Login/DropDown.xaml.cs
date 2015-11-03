@@ -29,6 +29,7 @@ using TH_Database;
 //using TH_FTP;
 using TH_Global;
 using TH_Global.Functions;
+using TH_WPF;
 
 namespace TrakHound_Server_Control_Panel.Login
 {
@@ -49,6 +50,11 @@ namespace TrakHound_Server_Control_Panel.Login
             Root_GRID.Height = 0;
 
             // Remember Me
+
+        }
+
+        public void LoadRememberMeData()
+        {
             UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
             if (RememberUser != null)
             {
@@ -87,9 +93,6 @@ namespace TrakHound_Server_Control_Panel.Login
 
 
 
-        
-
-
         public bool LoggedIn
         {
             get { return (bool)GetValue(LoggedInProperty); }
@@ -98,8 +101,6 @@ namespace TrakHound_Server_Control_Panel.Login
 
         public static readonly DependencyProperty LoggedInProperty =
             DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
-
-
 
 
         public bool UsernameEntered
@@ -111,7 +112,6 @@ namespace TrakHound_Server_Control_Panel.Login
         public static readonly DependencyProperty UsernameEnteredProperty =
             DependencyProperty.Register("UsernameEntered", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
 
-        
 
         public bool PasswordEntered
         {
@@ -219,23 +219,23 @@ namespace TrakHound_Server_Control_Panel.Login
 
         UserConfiguration currentUser;
 
-        private void Login_Clicked(Controls.TH_Button bt)
+        private void Login_Clicked(Button_01 bt)
         {
             Login();
         }
 
-        private void SignOut_Clicked(Controls.TH_Button bt)
+        private void SignOut_Clicked(Button_01 bt)
         {
             SignOut();
         }
 
-        private void Create_Clicked(Controls.TH_Button bt)
+        private void Create_Clicked(Button_01 bt)
         {
             Shown = false;
             CreateAccount();
         }
 
-        private void MyAccount_Clicked(Controls.TH_Button bt)
+        private void MyAccount_Clicked(Button_01 bt)
         {
             Shown = false;
             //if (mw != null) mw.MyAccount_Open();
@@ -311,7 +311,7 @@ namespace TrakHound_Server_Control_Panel.Login
 
             UserConfiguration userConfig = null;
 
-            // If no userconfiguration database configuration found then use default TrakHound User Database
+             //If no userconfiguration database configuration found then use default TrakHound User Database
             if (mw.userDatabaseSettings == null)
             {
                 userConfig = TH_Configuration.User.Management.Login(username_TXT.Text, password_TXT.Password);
@@ -435,8 +435,6 @@ namespace TrakHound_Server_Control_Panel.Login
             password_TXT.Password = null;
         }
 
-
-
         #region "Remember Me"
 
         public bool RememberMe
@@ -467,6 +465,19 @@ namespace TrakHound_Server_Control_Panel.Login
         }
 
         #endregion
+
+        private void ManageDevices_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //if (mw.CurrentPage != null)
+            //{
+            //    if (mw.CurrentPage.GetType() != typeof(TrakHound_Server_Control_Panel.Pages.DeviceManagement.Page))
+            //    {
+            //        mw.CurrentPage = mw.devicemanagementpage;
+            //    }
+            //}
+            //else mw.CurrentPage = mw.devicemanagementpage;
+
+        }
 
 
     }

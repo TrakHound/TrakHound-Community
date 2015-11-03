@@ -36,3 +36,11 @@ C:\TrakHound\Plugins\Database\TH_MySQL.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\ConfigurationPage\Page.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\ConfigurationPage\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.g.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\ConfigurationPage\Button.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\ConfigurationPage\Button.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.csproj.GenerateResource.Cache

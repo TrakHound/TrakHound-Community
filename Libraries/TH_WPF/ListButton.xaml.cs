@@ -28,6 +28,18 @@ namespace TH_WPF
 
         public object DataObject;
 
+
+        public bool AlternateStyle
+        {
+            get { return (bool)GetValue(AlternateStyleProperty); }
+            set { SetValue(AlternateStyleProperty, value); }
+        }
+
+        public static readonly DependencyProperty AlternateStyleProperty =
+            DependencyProperty.Register("AlternateStyle", typeof(bool), typeof(ListButton), new PropertyMetadata(false));
+
+        
+
         public string Text
         {
             get { return (string)GetValue(TextProperty); }

@@ -12,7 +12,63 @@ namespace TH_MySQL
     {
         public string Name { get { return "MySQL Database Plugin"; } }
 
-        public string Type { get { return "MYSQL"; } }
+        public string Type { get { return "MySQL"; } }
+
+        DatabaseConfigurationPage configuration_page;
+        public DatabaseConfigurationPage Configuration_Page 
+        {
+            get 
+            {
+                if (configuration_page == null)
+                    configuration_page = new ConfigurationPage.Page();
+                return configuration_page;
+            }
+        }
+
+        public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+
+        object configuration_button;
+        public object Configuration_Button
+        {
+            get
+            {
+                if (configuration_button == null)
+                    configuration_button = new ConfigurationPage.Button();
+                return configuration_button;
+            }
+        }
+
+        public object CreateConfigurationButton(DataTable dt)
+        {
+            ConfigurationPage.Button result = new ConfigurationPage.Button();
+
+            //DataView dv = dt.AsDataView();
+            //    dv.RowFilter = "Address LIKE '/Databases/" + Type + "/*'";
+            //    dt = dv.ToTable();
+
+                if (dt.Rows.Count > 0)
+                {
+                    result.DatabaseName = GetTableValue("Database", dt);
+                    result.Server = GetTableValue("Server", dt);
+                    result.Port = GetTableValue("Port", dt);
+                    result.Username = GetTableValue("Username", dt);
+                }
+
+            return result;
+        }
+
+        string GetTableValue(string name, DataTable dt)
+        {
+            string result = null;
+
+            DataRow[] rows = dt.Select("Name = '" + name + "'");
+            if (rows.Length > 0)
+            {
+                result = rows[0]["Value"].ToString();
+            }
+
+            return result;
+        }
 
 
         public void Initialize(Database_Configuration config)

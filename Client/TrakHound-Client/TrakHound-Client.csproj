@@ -359,6 +359,7 @@
     <Resource Include="Resources\feenux_logo_05_30px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Root.png" />
     <Resource Include="Resources\Camera_01.png" />
     <Resource Include="Resources\AddUser_01.png" />
     <Resource Include="Resources\blank_profile_01_sm.png" />
@@ -404,6 +405,10 @@
     <ProjectReference Include="..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_ControlPanel\TH_DeviceManager.csproj">
+      <Project>{b5f883cc-0e97-468c-9ca4-84031f446edf}</Project>
+      <Name>TH_DeviceManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Database\TH_Database.csproj">
       <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>

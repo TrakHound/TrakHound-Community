@@ -9,7 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             xmlns:controls="clr-namespace:TrakHound_Server_Control_Panel.Controls"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d"
@@ -470,7 +470,7 @@
                             <TextBlock Text="{Binding EmailAddress}" FontSize="10pt" Foreground="#888" Margin="0,5"/>
 
                             <!--Manage Devices-->
-                            <controls:TH_Button Grid.Column="1" Height="40" Text="Manage Devices"  Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" AlternateStyle="True"/>
+                            <th_wpf:Button_01 Grid.Column="1" Height="40" Text="Manage Devices" PreviewMouseDown="ManageDevices_PreviewMouseDown" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" AlternateStyle="True"/>
 
                         </StackPanel>
 
@@ -574,7 +574,7 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Create Account-->
-                            <controls:TH_Button Clicked="Create_Clicked" Text="Create Account" BorderBrush="#ccc" BorderThickness="1" Height="40" Margin="10,0" HorizontalAlignment="Left" />
+                            <th_wpf:Button_01 Clicked="Create_Clicked" Text="Create Account" BorderBrush="#ccc" BorderThickness="1" Height="40" Margin="10,0" HorizontalAlignment="Left" />
 
                             <!--Login Error -->
                             <Grid Grid.Column="1">
@@ -612,7 +612,7 @@
                                     </Style>
                                 </Grid.Style>
 
-                                <controls:TH_Button Clicked="Login_Clicked" Text="Login" AlternateStyle="True" BorderBrush="#ccc" BorderThickness="1" Height="40" HorizontalAlignment="Right" />
+                                <th_wpf:Button_01 Clicked="Login_Clicked" Text="Login" AlternateStyle="True" BorderBrush="#ccc" BorderThickness="1" Height="40" HorizontalAlignment="Right" />
 
 
                                 <Grid>
@@ -658,9 +658,9 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Sign Out-->
-                            <controls:TH_Button Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="#ccc" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" />
+                            <th_wpf:Button_01 Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="#ccc" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" />
 
-                            <controls:TH_Button Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" AlternateStyle="True" Clicked="MyAccount_Clicked"/>
+                            <th_wpf:Button_01 Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" AlternateStyle="True" Clicked="MyAccount_Clicked"/>
 
                         </Grid>
 

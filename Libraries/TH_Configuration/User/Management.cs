@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using System.IO;
 using System.Data;
 using System.Net;
 using System.Collections.Specialized;
@@ -660,7 +661,14 @@ namespace TH_Configuration.User
                                     DataTable dt = GetConfigurationTable(tablename);
                                     if (dt != null)
                                     {
-                                        string path = TH_Configuration.Converter.TableToXML(dt, @"C:\Temp\" + String_Functions.RandomString(20));
+                                        string filename = String_Functions.RandomString(20);
+
+                                        string tempdir = FileLocations.TrakHound + @"\temp";
+                                        if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+
+                                        string tempPath = tempdir + @"\" + filename;
+
+                                        string path = TH_Configuration.Converter.TableToXML(dt, tempPath);
 
                                         Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
                                         if (config != null)

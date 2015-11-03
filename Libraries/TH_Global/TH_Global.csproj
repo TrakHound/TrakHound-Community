@@ -47,6 +47,7 @@
     <Compile Include="Countries.cs" />
     <Compile Include="FileLocations.cs" />
     <Compile Include="Formatting.cs" />
+    <Compile Include="Functions\DataTable_Functions.cs" />
     <Compile Include="Functions\DateTime_Functions.cs" />
     <Compile Include="Functions\Image_Functions.cs" />
     <Compile Include="Functions\Math_Functions.cs" />

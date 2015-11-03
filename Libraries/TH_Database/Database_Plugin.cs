@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 
 using System.ComponentModel.Composition;
 
@@ -15,6 +16,14 @@ namespace TH_Database
         string Name { get; }
 
         string Type { get; }
+
+        DatabaseConfigurationPage Configuration_Page { get; }
+
+        Type Config_Page { get; }
+
+        object Configuration_Button { get; }
+
+        object CreateConfigurationButton(DataTable dt);
 
         //object Configuration { get; set; }
 
@@ -161,5 +170,24 @@ namespace TH_Database
 
     }
 
+    [InheritedExport(typeof(DatabaseConfigurationPage))]
+    public interface DatabaseConfigurationPage
+    {
+
+        string PageName { get; }
+
+        ImageSource Image { get; }
+
+        event SettingChanged_Handler SettingChanged;
+
+        string prefix { get; set; }
+
+        void LoadConfiguration(DataTable dt);
+
+        void SaveConfiguration(DataTable dt);
+
+    }
+
+    public delegate void SettingChanged_Handler(string name, string oldVal, string newVal);
 
 }

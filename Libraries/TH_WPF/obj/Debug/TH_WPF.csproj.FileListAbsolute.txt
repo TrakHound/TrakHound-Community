@@ -19,10 +19,12 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_Styles.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_Styles.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_01.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ListButton.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Block.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ProductionIndicator.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TickMark.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_01.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Info_BT.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ListButton.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Block.g.cs

@@ -33,34 +33,34 @@ namespace TH_PlugIns_Server
     public static class Tools
     {
 
-        public static string GetTableValue(string address, DataTable dt)
-        {
-            string result = null;
+        //public static string GetTableValue(string key, DataTable dt)
+        //{
+        //    string result = null;
 
-            DataRow row = dt.Rows.Find(address);
-            if (row != null)
-            {
-                result = row["value"].ToString();
-            }
+        //    DataRow row = dt.Rows.Find(key);
+        //    if (row != null)
+        //    {
+        //        result = row["value"].ToString();
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static void UpdateTableValue(string value, string address, DataTable dt)
-        {
-            DataRow row = dt.Rows.Find(address);
-            if (row != null)
-            {
-                row["value"] = value;
-            }
-            else
-            {
-                row = dt.NewRow();
-                row["address"] = address;
-                row["value"] = value;
-                dt.Rows.Add(row);
-            }
-        }
+        //public static void UpdateTableValue(string value, string key, DataTable dt)
+        //{
+        //    DataRow row = dt.Rows.Find(key);
+        //    if (row != null)
+        //    {
+        //        row["value"] = value;
+        //    }
+        //    else
+        //    {
+        //        row = dt.NewRow();
+        //        row["address"] = key;
+        //        row["value"] = value;
+        //        dt.Rows.Add(row);
+        //    }
+        //}
 
     }
 

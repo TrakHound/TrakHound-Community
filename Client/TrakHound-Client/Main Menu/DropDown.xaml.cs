@@ -43,9 +43,10 @@ namespace TrakHound_Client.Main_Menu
 
             Root_GRID.Width = 0;
             Root_GRID.Height = 0;
-
+           
             AddOptions_MenuItem();
             AddPlugins_MenuItem();
+            AddDeviceManager_MenuItem();
             AddDeveloperConsole_MenuItem();
         }
 
@@ -93,6 +94,24 @@ namespace TrakHound_Client.Main_Menu
             }
         }
 
+        #region "Device Manager"
+
+        void AddDeviceManager_MenuItem()
+        {
+            MenuItem mi = new MenuItem();
+            mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png"));
+            mi.Text = "Device Manager";
+            mi.Clicked += DeviceManager_Clicked;
+            MenuItems.Add(mi);
+        }
+
+        void DeviceManager_Clicked()
+        {
+            Shown = false;
+            if (mw != null) mw.DeviceManager_Open();
+        }
+
+        #endregion
 
         #region "Options"
 

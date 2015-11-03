@@ -35,6 +35,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 
 using TH_Configuration;
+using TH_DeviceManager;
 using TH_Device_Client;
 using TH_Database;
 using TH_Global;
@@ -58,6 +59,8 @@ namespace TrakHound_Client
 
             Splash_Initialize();
 
+            devicemangager = new DeviceMangaer();
+
             InitializeComponent();
             DataContext = this;
 
@@ -76,7 +79,7 @@ namespace TrakHound_Client
 
             // Read Users and Login
             ReadUserManagementSettings();
-
+            devicemangager.userDatabaseSettings = userDatabaseSettings;
 
 
 
@@ -830,7 +833,6 @@ namespace TrakHound_Client
             }
         }
 
-
         #region "Zoom"
 
         public double ZoomLevel
@@ -879,6 +881,7 @@ namespace TrakHound_Client
         void Pages_Initialize()
         {
             About_Initialize();
+            DeviceManager_Initialize();
             MyAccount_Initialize();
             Options_Initialize();
             Plugins_Initialize();
@@ -902,6 +905,23 @@ namespace TrakHound_Client
         }
 
         #endregion
+
+        #region "Device Manager"
+
+        public DeviceMangaer devicemangager;
+
+        void DeviceManager_Initialize()
+        {
+
+        }
+
+        public void DeviceManager_Open()
+        {
+            AddPageAsTab(devicemangager, "Device Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
+        }
+
+        #endregion
+
 
         #region "My Account"
 
@@ -1024,6 +1044,8 @@ namespace TrakHound_Client
             set
             {
                 currentuser = value;
+
+                devicemangager.CurrentUser = currentuser;
 
                 if (currentuser != null)
                 {
@@ -1917,6 +1939,8 @@ namespace TrakHound_Client
         }
 
         #endregion
+
+
 
     }
 

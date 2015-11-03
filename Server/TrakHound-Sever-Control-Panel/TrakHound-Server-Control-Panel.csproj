@@ -59,34 +59,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\Button.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\DeviceButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\MessageItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TH_Button.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TH_Page.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TH_TabHeader_Top.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TH_ToolBarItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Login\DropDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -99,29 +71,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\Button.xaml.cs">
-      <DependentUpon>Button.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DeviceButton.xaml.cs">
-      <DependentUpon>DeviceButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\MessageItem.xaml.cs">
-      <DependentUpon>MessageItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TH_Button.xaml.cs">
-      <DependentUpon>TH_Button.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TH_MenuItem.cs" />
-    <Compile Include="Controls\TH_Page.xaml.cs">
-      <DependentUpon>TH_Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TH_TabHeader_Top.xaml.cs">
-      <DependentUpon>TH_TabHeader_Top.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TH_TabItem.cs" />
-    <Compile Include="Controls\TH_ToolBarItem.xaml.cs">
-      <DependentUpon>TH_ToolBarItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Login\DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
@@ -129,22 +78,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="PageItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\AddDevice.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\AgentConfiguration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\DescriptionConfiguration.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\Menus.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -159,18 +92,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PageItem.xaml.cs">
-      <DependentUpon>PageItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\AddDevice.xaml.cs">
-      <DependentUpon>AddDevice.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\AgentConfiguration.xaml.cs">
-      <DependentUpon>AgentConfiguration.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\DescriptionConfiguration.xaml.cs">
-      <DependentUpon>DescriptionConfiguration.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -204,6 +125,10 @@
     <ProjectReference Include="..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_ControlPanel\TH_DeviceManager.csproj">
+      <Project>{b5f883cc-0e97-468c-9ca4-84031f446edf}</Project>
+      <Name>TH_DeviceManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Database\TH_Database.csproj">
       <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
@@ -241,43 +166,7 @@
     <Resource Include="Resources\Camera_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\options_gear_30px.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Agent_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Agent_02.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\DatabaseConfig_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Add_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Information_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\List_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Refresh_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Disk_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\About_01.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Warning_01.png" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Help_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

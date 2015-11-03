@@ -42,19 +42,6 @@ namespace TH_Configuration.User
             return result;
         }
 
-        //public static System.Drawing.Image ProcessImage(string path)
-        //{
-        //    System.Drawing.Image result = null;
-
-        //    if (File.Exists(path))
-        //    {
-        //        result = System.Drawing.Image.FromFile(path);
-        //    }
-
-        //    return result;
-        //}
-
-
         /// <summary>
         /// Uploads an Image to the TrakHound Server
         /// </summary>
@@ -88,7 +75,6 @@ namespace TH_Configuration.User
             return result;
         }
 
-
         public static System.Drawing.Image GetImage(string filename)
         {
             System.Drawing.Image result = null;
@@ -114,8 +100,6 @@ namespace TH_Configuration.User
         }
 
     }
-
-
 
     public static class ProfileImages
     {

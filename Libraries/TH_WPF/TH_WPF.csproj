@@ -54,6 +54,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Button_01.xaml.cs">
+      <DependentUpon>Button_01.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Color_Functions.cs" />
     <Compile Include="Image_Functions.cs" />
     <Compile Include="Info_BT.xaml.cs">
@@ -107,6 +110,10 @@
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Button_01.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Info_BT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
