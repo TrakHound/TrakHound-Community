@@ -104,6 +104,10 @@
       <Name>TH_Global</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\TH_Styles\TH_Styles.csproj">
+      <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
+      <Name>TH_Styles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
@@ -118,6 +122,7 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\CheckMark_01.png" />
     <Resource Include="Resources\Help_01.png" />
     <Resource Include="Resources\MySQL_01.png" />
   </ItemGroup>

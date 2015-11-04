@@ -619,9 +619,10 @@ namespace TH_Configuration.User
 
         public static void AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration)
         {
-            CreateConfigurationTable(userConfig, configuration);
+            //string tableName = GetConfigurationTableName(userConfig, configuration);
+            string tableName = CreateConfigurationTableName(userConfig);
 
-            string tableName = GetConfigurationTableName(userConfig, configuration);
+            CreateConfigurationTable(userConfig, tableName);
 
             DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
 
@@ -673,13 +674,14 @@ namespace TH_Configuration.User
                                         Configuration config = TH_Configuration.Configuration.ReadConfigFile(path);
                                         if (config != null)
                                         {
+                                            config.TableName = tablename;
                                             result.Add(config);
                                         }
                                     }
                                 }
                             }
                         }
-                        catch (Exception ex) { }
+                        catch (Exception ex) { Logger.Log("GetConfigurationsForUser() :: Exception :: " + ex.Message); }
                     }
                 }
             }
@@ -827,6 +829,81 @@ namespace TH_Configuration.User
             return result;
         }
 
+        public static bool ClearConfigurationTable(UserConfiguration userConfig, string tableName)
+        {
+            bool result = false;
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+
+                    NameValueCollection values = new NameValueCollection();
+
+                    values["query"] = "TRUNCATE TABLE " + tableName;
+
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/createconfigurationtable.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    if (responseString.ToLower().Trim() == "true") result = true;
+
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return result;
+        }
+
+        public static bool CreateConfigurationTable(UserConfiguration userConfig, string tableName)
+        {
+            bool result = false;
+
+            object[] columns = new object[] 
+            {
+                "address varchar(90)",
+                "name varchar(90)",
+                "value varchar(90)",
+                "attributes varchar(90)"
+            };
+
+            string primaryKey = "address";
+
+            //string table = GetConfigurationTableName(userConfig, configuration);
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+
+                    NameValueCollection values = new NameValueCollection();
+
+                    string coldef = "";
+
+                    //Create Column Definition string
+                    for (int x = 0; x <= columns.Length - 1; x++)
+                    {
+                        coldef += columns[x].ToString();
+                        if (x < columns.Length - 1) coldef += ",";
+                    }
+
+                    string Keydef = "";
+                    if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+
+                    values["query"] = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
+
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/createconfigurationtable.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    if (responseString.ToLower().Trim() == "true") result = true;
+
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return result;
+        }
 
         public static bool CreateConfigurationTable(UserConfiguration userConfig, Configuration configuration)
         {
@@ -884,6 +961,14 @@ namespace TH_Configuration.User
             table = table.Replace(' ', '_');
 
             return table;
+        }
+
+        public static string CreateConfigurationTableName(UserConfiguration userConfig)
+        {
+            //string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Machine_Type + "_" + configuration.Description.Machine_ID + "_Configuration";
+            //table = table.Replace(' ', '_');
+
+            return userConfig.username + "_" + String_Functions.RandomString(20);
         }
 
         #endregion

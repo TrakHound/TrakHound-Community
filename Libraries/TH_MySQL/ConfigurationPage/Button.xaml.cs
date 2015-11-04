@@ -47,25 +47,5 @@ namespace TH_MySQL.ConfigurationPage
             DependencyProperty.Register("Server", typeof(string), typeof(Button), new PropertyMetadata(null));
 
 
-        public string Port
-        {
-            get { return (string)GetValue(PortProperty); }
-            set { SetValue(PortProperty, value); }
-        }
-
-        public static readonly DependencyProperty PortProperty =
-            DependencyProperty.Register("Port", typeof(string), typeof(Button), new PropertyMetadata(null));
-
-
-        public string Username
-        {
-            get { return (string)GetValue(UsernameProperty); }
-            set { SetValue(UsernameProperty, value); }
-        }
-
-        public static readonly DependencyProperty UsernameProperty =
-            DependencyProperty.Register("Username", typeof(string), typeof(Button), new PropertyMetadata(null));
-        
-
     }
 }

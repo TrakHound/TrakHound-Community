@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="TH_DeviceManager.Controls.DatabaseItemContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:local="clr-namespace:TH_DeviceManager.Controls"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Custom Content-->
+        <ContentControl Content="{Binding ItemContent}" VerticalAlignment="Center"/>
+        
+        <!--Remove-->
+        <local:Button Grid.Column="1" Image="/TH_DeviceManager;component/Resources/X_01.png" Clicked="Remove_Clicked"/>
+
+    </Grid>
+    
+</UserControl>

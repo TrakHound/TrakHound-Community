@@ -10,6 +10,7 @@ using System.Data;
 using System.Collections.Generic;
 
 using TH_Configuration;
+using TH_Global;
 using TH_MTC_Data;
 using TH_MTC_Data.Components;
 
@@ -86,11 +87,30 @@ namespace TH_MTC_Requests
 
                 // Add Ip Address
                 string ip = configuration.Agent.IP_Address;
-                url += ip;
-
+                
                 // Add Port
                 string port = null;
-                if (configuration.Agent.Port > 0) port = ":" + configuration.Agent.Port.ToString() + "/";
+                // If port is in ip address
+                if (ip.Contains(":"))
+                {
+                    int colonindex = ip.LastIndexOf(':');
+                    int slashindex = -1;
+
+                    // Get index of last forward slash
+                    if (ip.Contains("/")) slashindex = ip.IndexOf('/', colonindex);
+
+                    // Get port based on indexes
+                    if (slashindex > colonindex) port = ":" + ip.Substring(colonindex + 1, slashindex - colonindex - 1) + "/";
+                    else port = ":" + ip.Substring(colonindex + 1) + "/";
+                        
+                    ip = ip.Substring(0, colonindex);
+                }
+                else
+                {
+                    if (configuration.Agent.Port > 0) port = ":" + configuration.Agent.Port.ToString() + "/";
+                }
+
+                url += ip;
                 url += port;
 
                 // Add Device Name
@@ -141,32 +161,37 @@ namespace TH_MTC_Requests
         {
             if (responseString != null)
             {
-                XmlDocument Document = new XmlDocument();
-                Document.LoadXml(responseString);
-
-                if (Document.DocumentElement != null)
+                try
                 {
-                    // Get Root Element from Xml Document
-                    XmlElement Root = Document.DocumentElement;
+                    XmlDocument Document = new XmlDocument();
+                    Document.LoadXml(responseString);
 
-                    // Get Header_Devices object from XmlDocument
-                    Header_Devices header = ProcessHeader(Root);
+                    if (Document.DocumentElement != null)
+                    {
+                        // Get Root Element from Xml Document
+                        XmlElement Root = Document.DocumentElement;
 
-                    // Get Device object from RootNode
-                    List<Device> devices = ProcessDevices(Root);
+                        // Get Header_Devices object from XmlDocument
+                        Header_Devices header = ProcessHeader(Root);
 
-                    //Device device = ProcessDevice(Root);
+                        // Get Device object from RootNode
+                        List<Device> devices = ProcessDevices(Root);
 
-                    // Create ReturnData object to send as Event argument
-                    TH_MTC_Data.Components.ReturnData returnData = new TH_MTC_Data.Components.ReturnData();
-                    returnData.devices = devices;
-                    //returnData.device = device;
-                    //returnData.xmlDocument = Document;
-                    returnData.header = header;
+                        //Device device = ProcessDevice(Root);
 
-                    // Raise ProbeRecieved Event
-                    ProbeRecieved(returnData);
+                        // Create ReturnData object to send as Event argument
+                        TH_MTC_Data.Components.ReturnData returnData = new TH_MTC_Data.Components.ReturnData();
+                        returnData.devices = devices;
+                        //returnData.device = device;
+                        //returnData.xmlDocument = Document;
+                        returnData.header = header;
+
+                        // Raise ProbeRecieved Event
+                        ProbeRecieved(returnData);
+                    }
                 }
+                catch (Exception ex) { Logger.Log("stream_ResponseReceived() :: Exception :: " + ex.Message); }
+                
             }
         }
 

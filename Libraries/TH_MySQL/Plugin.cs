@@ -42,34 +42,17 @@ namespace TH_MySQL
         {
             ConfigurationPage.Button result = new ConfigurationPage.Button();
 
-            //DataView dv = dt.AsDataView();
-            //    dv.RowFilter = "Address LIKE '/Databases/" + Type + "/*'";
-            //    dt = dv.ToTable();
-
+            if (dt != null)
+            {
                 if (dt.Rows.Count > 0)
                 {
                     result.DatabaseName = GetTableValue("Database", dt);
                     result.Server = GetTableValue("Server", dt);
-                    result.Port = GetTableValue("Port", dt);
-                    result.Username = GetTableValue("Username", dt);
                 }
-
-            return result;
-        }
-
-        string GetTableValue(string name, DataTable dt)
-        {
-            string result = null;
-
-            DataRow[] rows = dt.Select("Name = '" + name + "'");
-            if (rows.Length > 0)
-            {
-                result = rows[0]["Value"].ToString();
             }
 
             return result;
         }
-
 
         public void Initialize(Database_Configuration config)
         {
@@ -88,7 +71,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHPPing.PingHost(config.PHP_Server);
                 }
@@ -99,6 +82,19 @@ namespace TH_MySQL
             }
 
             return result;          
+        }
+
+        string GetTableValue(string name, DataTable dt)
+        {
+            string result = null;
+
+            DataRow[] rows = dt.Select("Name = '" + name + "'");
+            if (rows.Length > 0)
+            {
+                result = rows[0]["Value"].ToString();
+            }
+
+            return result;
         }
 
         // Database Functions -----------------------------------------------------------
@@ -116,7 +112,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Database.Create(config, config.Database);
                 }
@@ -136,7 +132,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Database.Drop(config, config.Database);
                 }
@@ -163,7 +159,7 @@ namespace TH_MySQL
             {
                 object[] coldefs = MySQL_Tools.ConvertColumnDefinitions(columnDefinitions);
 
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.Create(config, tablename, coldefs, primaryKey);
                 }
@@ -183,7 +179,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.Drop(config, tablename);
                 }
@@ -203,7 +199,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.Drop(config, tablenames);
                 }
@@ -223,7 +219,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.Truncate(config, tablename);
                 }
@@ -243,7 +239,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.Get(config, tablename);
                 }
@@ -263,7 +259,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.Get(config, tablename, filterExpression);
                 }
@@ -283,7 +279,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.Get(config, tablename, filterExpression, columns);
                 }
@@ -303,7 +299,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.List(config);
                 }
@@ -323,7 +319,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.List(config, filterExpression);
                 }
@@ -343,7 +339,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.GetRowCount(config, tablename);
                 }
@@ -363,7 +359,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Table.GetSize(config, tablename);
                 }
@@ -388,7 +384,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Column.Get(config, tablename);
                 }
@@ -410,7 +406,7 @@ namespace TH_MySQL
             {
                 string coldef = MySQL_Tools.ConvertColumnDefinition(columnDefinition);
 
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Column.Add(config, tablename, coldef);
                 }
@@ -435,7 +431,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Row.Insert(config, tablename, columns, values, true);
                 }
@@ -455,7 +451,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Row.Insert(config, tablename, columns, values, true);
                 }
@@ -475,7 +471,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     //result = PHP.Row.Insert(config, tablename, columnsList, valuesList, true);
                 }
@@ -495,7 +491,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Row.Insert(config, query);
                 }
@@ -516,7 +512,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Row.Get(config, tablename, tableKey, rowKey);
                 }
@@ -536,7 +532,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Row.Get(config, tablename, query);
                 }
@@ -557,7 +553,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.Row.Exists(config, tablename, filterString);
                 }
@@ -582,7 +578,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.etc.CustomCommand(config, commandText);
                 }
@@ -602,7 +598,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.etc.GetValue(config, tablename, column, filterExpression);
                 }
@@ -622,7 +618,7 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                if (config.PHP_Server != null)
+                if (config.UsePHP)
                 {
                     result = PHP.etc.GetGrants(config, username);
                 }

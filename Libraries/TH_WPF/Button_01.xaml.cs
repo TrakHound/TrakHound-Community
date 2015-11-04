@@ -26,6 +26,7 @@ namespace TH_WPF
             DataContext = this;
         }
 
+        public object DataObject { get; set; }
 
         public bool IsSelected
         {

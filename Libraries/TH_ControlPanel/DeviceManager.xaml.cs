@@ -190,11 +190,14 @@ namespace TH_DeviceManager
             {
                 configurationtable = value;
 
-                if (ConfigurationPages != null)
+                if (configurationtable != null)
                 {
-                    foreach (ConfigurationPage page in ConfigurationPages)
+                    if (ConfigurationPages != null)
                     {
-                        this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), new object[] { configurationtable });
+                        foreach (ConfigurationPage page in ConfigurationPages)
+                        {
+                            this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), new object[] { configurationtable });
+                        }
                     }
                 }
             }
@@ -377,11 +380,16 @@ namespace TH_DeviceManager
 
         void LoadConfiguration()
         {
-            if (ConfigurationPages != null)
+            SaveNeeded = false;
+
+            if (ConfigurationTable != null)
             {
-                foreach (ConfigurationPage page in ConfigurationPages)
+                if (ConfigurationPages != null)
                 {
-                    page.LoadConfiguration(configurationtable);
+                    foreach (ConfigurationPage page in ConfigurationPages)
+                    {
+                        page.LoadConfiguration(ConfigurationTable);
+                    }
                 }
             }
         }
@@ -396,11 +404,13 @@ namespace TH_DeviceManager
                 {
                     if (SelectedDevice != null)
                     {
-                        string tablename = TH_Configuration.User.Management.GetConfigurationTableName(currentuser, SelectedDevice);
+                        //string tablename = TH_Configuration.User.Management.GetConfigurationTableName(currentuser, SelectedDevice);
+                        string tablename = dt.TableName;
 
                         if (userDatabaseSettings == null)
                         {
-                            TH_Configuration.User.Management.CreateConfigurationTable(currentuser, SelectedDevice);
+                            TH_Configuration.User.Management.ClearConfigurationTable(currentuser, tablename);
+                            //TH_Configuration.User.Management.CreateConfigurationTable(currentuser, SelectedDevice);
                             TH_Configuration.User.Management.UpdateConfigurationTable(currentuser, tablename, dt);
                         }
                         else
@@ -470,6 +480,7 @@ namespace TH_DeviceManager
                     SelectedDevice = config;
 
                     ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
+                    if (ConfigurationTable != null) ConfigurationTable.TableName = config.TableName;
 
                     PageListShown = true;
                 }
@@ -493,13 +504,13 @@ namespace TH_DeviceManager
             DependencyProperty.Register("CurrentPage", typeof(object), typeof(DeviceManager), new PropertyMetadata(null));
 
 
-        ObservableCollection<PageItem> pagelist;
-        public ObservableCollection<PageItem> PageList
+        ObservableCollection<object> pagelist;
+        public ObservableCollection<object> PageList
         {
             get
             {
                 if (pagelist == null)
-                    pagelist = new ObservableCollection<PageItem>();
+                    pagelist = new ObservableCollection<object>();
                 return pagelist;
             }
 
@@ -531,9 +542,41 @@ namespace TH_DeviceManager
                 PageItem item = new PageItem();
                 item.Text = page.PageName;
                 item.Image = page.Image;
-                item.Data = page;
-                item.Clicked += PageItem_Clicked;
-                PageList.Add(item);
+                //item.Data = page;
+                //item.Clicked += PageItem_Clicked;
+
+                ListButton bt = new ListButton();
+                bt.ButtonContent = item;
+                bt.ShowImage = false;
+                bt.Selected += Page_Selected;
+                bt.DataObject = page;
+                bt.Height = 100;
+                bt.Width = 100;
+                bt.MinWidth = 100;
+
+                PageList.Add(bt);
+
+
+
+                //PageList.Add(item);
+            }
+        }
+
+        void Page_Selected(ListButton LB)
+        {
+            foreach (ListButton olb in PageList) if (olb != LB) olb.IsSelected = false;
+            LB.IsSelected = true;
+
+            if (LB.DataObject != null)
+            {
+                if (CurrentPage != null)
+                {
+                    if (CurrentPage.GetType() != LB.DataObject.GetType())
+                    {
+                        CurrentPage = LB.DataObject;
+                    }
+                }
+                else CurrentPage = LB.DataObject;
             }
         }
 

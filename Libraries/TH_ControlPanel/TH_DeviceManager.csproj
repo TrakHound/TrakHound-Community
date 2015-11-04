@@ -53,6 +53,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\DatabaseItemContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\DeviceButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,6 +84,9 @@
     <Compile Include="Controls\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DatabaseItemContainer.xaml.cs">
+      <DependentUpon>DatabaseItemContainer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DeviceButton.xaml.cs">
       <DependentUpon>DeviceButton.xaml</DependentUpon>
     </Compile>
@@ -99,6 +106,10 @@
       <DependentUpon>DeviceManager.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Pages\Databases\Controls\Item.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Databases\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,6 +120,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\Databases\Controls\Item.xaml.cs">
+      <DependentUpon>Item.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Databases\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
@@ -207,6 +221,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\X_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Collapse_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Expand_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

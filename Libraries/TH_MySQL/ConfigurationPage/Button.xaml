@@ -9,13 +9,206 @@
              mc:Ignorable="d" 
              MinWidth="200">
     
-    <Grid Margin="10">
+    <Grid>
+        
+        <StackPanel Orientation="Horizontal">
+
+            <!--Database Type-->
+            <TextBlock Text="MySQL" FontSize="14pt" Margin="0,0,10,0">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#eeffffff"/>
+                        <!--<Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1}}" Value="true">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#fff">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
+                                                <ColorAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ColorAnimation.EasingFunction>
+                                            </ColorAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>-->
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <!--Database Name-->
+            <StackPanel Orientation="Horizontal" Margin="10,0">
+
+                <!--Label-->
+                <TextBlock Text="Database Name" VerticalAlignment="Center" FontSize="8pt">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#66ffffff"/>
+                            <!--<Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#88ffffff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#66ffffff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>-->
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!--Value-->
+                <TextBlock Text="{Binding DatabaseName}" FontSize="12pt" Margin="10,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#eeffffff"/>
+                            <!--<Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#fff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>-->
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </StackPanel>
+
+            <!--Server-->
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="10,0">
+
+                <!--Label-->
+                <TextBlock Text="Server" VerticalAlignment="Center" FontSize="8pt">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#66ffffff"/>
+                            <!--<Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#88ffffff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#66ffffff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>-->
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+                <!--Value-->
+                <TextBlock Text="{Binding Server}" FontSize="12pt" Margin="10,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#eeffffff"/>
+                            <!--<Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#fff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>-->
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+
+            </StackPanel>
+
+        </StackPanel>
+        
+    </Grid>
+    
+    <!--<Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!--Image-->
+        --><!--Image--><!--
         <Rectangle Width="70" Margin="0,0,20,10">
             <Rectangle.Resources>
                 <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/MySQL_01.png"  />
@@ -58,10 +251,10 @@
 
         <StackPanel Grid.Column="1">
             
-            <!--Database Name-->
+            --><!--Database Name--><!--
             <StackPanel Orientation="Horizontal">
 
-                <!--Label-->
+                --><!--Label--><!--
                 <TextBlock Text="Database Name" FontSize="8pt" Margin="0,0,10,5" VerticalAlignment="Center">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -120,7 +313,7 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <!--Value-->
+                --><!--Value--><!--
                 <TextBlock Text="{Binding DatabaseName}" FontSize="12pt" Margin="0,0,0,5">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -181,10 +374,10 @@
 
             </StackPanel>
 
-            <!--Server-->
+            --><!--Server--><!--
             <StackPanel Orientation="Horizontal">
 
-                <!--Label-->
+                --><!--Label--><!--
                 <TextBlock Text="Server" FontSize="8pt" Margin="0,0,10,5" VerticalAlignment="Center">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -243,7 +436,7 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-                <!--Value-->
+                --><!--Value--><!--
                 <TextBlock Text="{Binding Server}" FontSize="12pt" Margin="0,0,0,5">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -306,6 +499,6 @@
 
         </StackPanel>
 
-    </Grid>
+    </Grid>-->
     
 </UserControl>

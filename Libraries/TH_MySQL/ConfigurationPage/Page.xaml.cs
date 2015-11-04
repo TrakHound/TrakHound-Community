@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Data;
 
 using TH_Database;
+using TH_Global;
 using TH_Global.Functions;
 
 namespace TH_MySQL.ConfigurationPage
@@ -28,6 +29,7 @@ namespace TH_MySQL.ConfigurationPage
         public Page()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
         public string PageName { get { return "MySQL"; } }
@@ -56,6 +58,22 @@ namespace TH_MySQL.ConfigurationPage
             // Load Username
             username_TXT.Text = DataTable_Functions.GetTableValue(prefix + "Username", dt);
 
+            // Load UsePHP
+            bool usePHP = false;
+            string strUsePHP = DataTable_Functions.GetTableValue(prefix + "UsePHP", dt);
+            if (strUsePHP != null)
+            {
+                bool.TryParse(strUsePHP, out usePHP);
+                usephp_CHK.IsChecked = usePHP;
+                //UsePHPServer = usePHP;
+            }
+
+            // Load PHP Server
+            phpserver_TXT.Text = DataTable_Functions.GetTableValue(prefix + "PHP_Server", dt);
+
+            // Load PHP Directory
+            phpdirectory_TXT.Text = DataTable_Functions.GetTableValue(prefix + "PHP_Directory", dt);
+
             Loading = false;
         }
 
@@ -72,7 +90,24 @@ namespace TH_MySQL.ConfigurationPage
 
             // Save Username
             DataTable_Functions.UpdateTableValue(username_TXT.Text, prefix + "Username", dt);
+
+            // Save Password
+            if (PasswordVerified)
+            {
+                DataTable_Functions.UpdateTableValue(password_TXT.Password, prefix + "Password", dt);
+            }
+
+            // Save UsePHP
+            DataTable_Functions.UpdateTableValue(UsePHPServer.ToString(), prefix + "UsePHP", dt);
+
+            // Save PHP Server
+            DataTable_Functions.UpdateTableValue(phpserver_TXT.Text, prefix + "PHP_Server", dt);
+
+            // Save PHP Directory
+            DataTable_Functions.UpdateTableValue(phpdirectory_TXT.Text, prefix + "PHP_Directory", dt);
+            
         }
+
 
         private void databasename_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -93,8 +128,6 @@ namespace TH_MySQL.ConfigurationPage
         {
             ChangeSetting(prefix + "Username", ((TextBox)sender).Text);
         }
-
-        
 
         void ChangeSetting(string name, string val)
         {
@@ -175,16 +208,182 @@ namespace TH_MySQL.ConfigurationPage
             }
         }
 
+        
+        #region "Password"
+
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            if (!Loading)
+            {
+                if (password_TXT.Password != "") PasswordEntered = true;
+                else PasswordEntered = false;
 
+                PasswordShort = false;
+                PasswordLong = false;
+
+                VerifyPassword();
+                ConfirmPassword(); 
+            }
         }
 
         private void confirmpassword_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            if (!Loading)
+            {
+                if (confirmpassword_TXT.Password != "") ConfirmPasswordEntered = true;
+                else ConfirmPasswordEntered = false;
 
+                ConfirmPassword();
+            }
         }
 
+
+        public bool PasswordEntered
+        {
+            get { return (bool)GetValue(PasswordEnteredProperty); }
+            set { SetValue(PasswordEnteredProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordEnteredProperty =
+            DependencyProperty.Register("PasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        public bool ConfirmPasswordEntered
+        {
+            get { return (bool)GetValue(ConfirmPasswordEnteredProperty); }
+            set { SetValue(ConfirmPasswordEnteredProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConfirmPasswordEnteredProperty =
+            DependencyProperty.Register("ConfirmPasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        public bool PasswordVerified
+        {
+            get { return (bool)GetValue(PasswordVerifiedProperty); }
+            set { SetValue(PasswordVerifiedProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordVerifiedProperty =
+            DependencyProperty.Register("PasswordVerified", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        public bool PasswordShort
+        {
+            get { return (bool)GetValue(PasswordShortProperty); }
+            set { SetValue(PasswordShortProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordShortProperty =
+            DependencyProperty.Register("PasswordShort", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        public bool PasswordLong
+        {
+            get { return (bool)GetValue(PasswordLongProperty); }
+            set { SetValue(PasswordLongProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordLongProperty =
+            DependencyProperty.Register("PasswordLong", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        System.Timers.Timer password_TIMER;
+
+        void VerifyPassword()
+        {
+            if (password_TIMER != null) password_TIMER.Enabled = false;
+
+            password_TIMER = new System.Timers.Timer();
+            password_TIMER.Interval = 500;
+            password_TIMER.Elapsed += password_TIMER_Elapsed;
+            password_TIMER.Enabled = true;
+        }
+
+        void password_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            password_TIMER.Enabled = false;
+
+            this.Dispatcher.BeginInvoke(new Action(VerifyPassword_GUI));
+        }
+
+        void VerifyPassword_GUI()
+        {
+            System.Security.SecureString pwd = password_TXT.SecurePassword;
+
+            if (!TH_Configuration.User.Management.VerifyPasswordMinimum(pwd)) PasswordShort = true;
+            else if (!TH_Configuration.User.Management.VerifyPasswordMaximum(pwd)) PasswordLong = true;
+        }
+
+        System.Timers.Timer confirmpassword_TIMER;
+
+        void ConfirmPassword()
+        {
+            if (confirmpassword_TIMER != null) confirmpassword_TIMER.Enabled = false;
+
+            confirmpassword_TIMER = new System.Timers.Timer();
+            confirmpassword_TIMER.Interval = 500;
+            confirmpassword_TIMER.Elapsed += confirmpassword_TIMER_Elapsed;
+            confirmpassword_TIMER.Enabled = true;
+        }
+
+        void confirmpassword_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            confirmpassword_TIMER.Enabled = false;
+
+            this.Dispatcher.BeginInvoke(new Action(ConfirmPassword_GUI));
+        }
+
+        void ConfirmPassword_GUI()
+        {
+            if (PasswordEntered && ConfirmPasswordEntered)
+            {
+                if (password_TXT.Password == confirmpassword_TXT.Password) PasswordVerified = true;
+                else PasswordVerified = false;
+
+                if (PasswordVerified) ChangeSetting(prefix + "Password", password_TXT.Password);
+            }
+        }
+
+        #endregion
+
+        #region "PHP"
+
+        public bool UsePHPServer
+        {
+            get { return (bool)GetValue(UsePHPServerProperty); }
+            set 
+            { 
+                SetValue(UsePHPServerProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty UsePHPServerProperty =
+            DependencyProperty.Register("UsePHPServer", typeof(bool), typeof(Page), new PropertyMetadata(false));
+  
+
+        private void phpserver_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ChangeSetting(prefix + "PHP_Server", ((TextBox)sender).Text);
+        }
+
+        private void phpdirectory_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ChangeSetting(prefix + "PHP_Directory", ((TextBox)sender).Text);
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UsePHPServer = true;
+            ChangeSetting(prefix + "UsePHP", UsePHPServer.ToString());
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            UsePHPServer = false;
+            ChangeSetting(prefix + "UsePHP", UsePHPServer.ToString());
+        }
+
+        #endregion
 
     }
 }

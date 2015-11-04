@@ -103,6 +103,16 @@ namespace TH_DeviceManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Collapse_01 {
+            get {
+                object obj = ResourceManager.GetObject("Collapse_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DatabaseConfig_01 {
             get {
                 object obj = ResourceManager.GetObject("DatabaseConfig_01", resourceCulture);
@@ -116,6 +126,16 @@ namespace TH_DeviceManager.Properties {
         internal static System.Drawing.Bitmap Disk_01 {
             get {
                 object obj = ResourceManager.GetObject("Disk_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Expand_01 {
+            get {
+                object obj = ResourceManager.GetObject("Expand_01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

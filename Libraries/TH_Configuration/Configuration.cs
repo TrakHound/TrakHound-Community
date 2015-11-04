@@ -74,6 +74,8 @@ namespace TH_Configuration
             get { return GetDatabaseName(SQL); }
         }
 
+        public string TableName;
+
         #endregion
 
         #region "Methods"

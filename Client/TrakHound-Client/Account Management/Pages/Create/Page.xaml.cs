@@ -98,7 +98,6 @@ namespace TrakHound_Client.Account_Management.Pages.Create
 
         
 
-
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (password_TXT.Password != "") PasswordEntered = true;
@@ -118,7 +117,6 @@ namespace TrakHound_Client.Account_Management.Pages.Create
 
             ConfirmPassword();
         }
-
 
 
         ObservableCollection<string> countrylist;
@@ -161,8 +159,6 @@ namespace TrakHound_Client.Account_Management.Pages.Create
 
         public static readonly DependencyProperty ShowStatesProperty =
             DependencyProperty.Register("ShowStates", typeof(bool), typeof(Page), new PropertyMetadata(false));
-
-        
 
 
         private void country_COMBO_SelectionChanged(object sender, SelectionChangedEventArgs e)

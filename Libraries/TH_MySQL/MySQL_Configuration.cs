@@ -17,6 +17,7 @@ namespace TH_MySQL
         public string Password { get; set; }
 
         // PHP Settings
+        public bool UsePHP { get; set; }
         public string PHP_Server { get; set; }
         public string PHP_Directory { get; set; }
 

@@ -137,7 +137,10 @@ namespace TH_DeviceManager.Pages.Agent
 
             // Get IP Address or URL
             ip = ipaddress_TXT.Text;
-            if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
+            if (ip.Length > 7)
+            {
+                if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
+            }
 
             // Get Port
             if (port_TXT.Text != null)
@@ -487,6 +490,7 @@ namespace TH_DeviceManager.Pages.Agent
             }
             return result;
         }
+
 
     }
 }

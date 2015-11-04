@@ -59,7 +59,7 @@ namespace TrakHound_Client
 
             Splash_Initialize();
 
-            devicemangager = new DeviceMangaer();
+            devicemangager = new DeviceManager();
 
             InitializeComponent();
             DataContext = this;
@@ -908,7 +908,7 @@ namespace TrakHound_Client
 
         #region "Device Manager"
 
-        public DeviceMangaer devicemangager;
+        public DeviceManager devicemangager;
 
         void DeviceManager_Initialize()
         {
