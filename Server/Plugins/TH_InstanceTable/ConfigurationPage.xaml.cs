@@ -46,10 +46,36 @@ namespace TH_InstanceTable
             configurationTable = dt;
 
             LoadAgentSettings(dt);
+        }
+
+        public void SaveConfiguration(DataTable dt)
+        {
+
+
+            string prefix = "/InstanceTable/DataItems/";
+
+            // Save Conditions
+            Table_Functions.UpdateTableValue(conditions_CHK.IsChecked.ToString(), prefix + "Conditions", dt);
+
+            // Save Events
+            Table_Functions.UpdateTableValue(events_CHK.IsChecked.ToString(), prefix + "Events", dt);
+
+            // Save Samples
+            Table_Functions.UpdateTableValue(samples_CHK.IsChecked.ToString(), prefix + "Samples", dt);
+
+
+            prefix = "/InstanceTable/DataItems/Omit/";
+
+            foreach (CheckBox chk in ConditionItems)
+            {
+                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + "chk", dt);
+            }
+
+
+
 
         }
 
-        public void SaveConfiguration(DataTable dt) { }
 
         DataTable configurationTable;
 
@@ -231,10 +257,13 @@ namespace TH_InstanceTable
                 {
                     DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
 
+                    // Conditions
                     foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), new object[] { dataItem });
 
+                    // Events
                     foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), new object[] { dataItem });
 
+                    // Samples
                     foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), new object[] { dataItem });
                 } 
             }

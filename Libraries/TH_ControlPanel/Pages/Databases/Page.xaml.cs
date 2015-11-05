@@ -213,6 +213,9 @@ namespace TH_DeviceManager.Pages.Databases
                     cbt.ButtonContent = item;
                     cbt.PageContent = page;
 
+                    foreach (CollapseButton ocbt in DatabaseList.OfType<CollapseButton>().ToList()) ocbt.IsExpanded = false;
+                    cbt.IsExpanded = true;
+
                     DatabaseList.Add(cbt);
                 }
             }
@@ -227,6 +230,8 @@ namespace TH_DeviceManager.Pages.Databases
         void CreateDatabaseButtons(DataTable dt)
         {
             databaseConfigurationPages = new List<TH_Database.DatabaseConfigurationPage>();
+
+            bool openfirst = true;
 
             foreach (TH_Database.Database_Plugin plugin in plugins)
             {
@@ -264,6 +269,9 @@ namespace TH_DeviceManager.Pages.Databases
                         item.collapseButton = bt;
                         bt.ButtonContent = item;
                         bt.PageContent = page;
+
+                        if (openfirst) bt.IsExpanded = true;
+                        openfirst = false;
 
                         DatabaseList.Add(bt);
                     }

@@ -59,15 +59,18 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Collapse/Expande Image-->
-                    <Rectangle Width="30" Height="30" Margin="10,5" VerticalAlignment="Top">
+                    <Rectangle Width="30" Height="30" Margin="10,5" VerticalAlignment="Top" RenderTransformOrigin="0.5, 0.5">
                         <Rectangle.Resources>
-                            <ImageBrush x:Key="Expand_IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Expand_01.png" />
                             <ImageBrush x:Key="Collapse_IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Collapse_01.png" />
                         </Rectangle.Resources>
 
+                        <Rectangle.RenderTransform>
+                            <RotateTransform/>
+                        </Rectangle.RenderTransform>
+
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource Expand_IMG}" />
+                                <Setter Property="OpacityMask" Value="{StaticResource Collapse_IMG}" />
                                 <Setter Property="Fill" Value="#eeffffff"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
@@ -95,11 +98,26 @@
                                         </DataTrigger.ExitActions>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding IsExpanded}" Value="true">
-                                        <Setter Property="OpacityMask" Value="{StaticResource Collapse_IMG}" />
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="180" To="0" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="0" To="180" Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                        
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Rectangle.Style>
+                                      
                     </Rectangle>
 
                     <!--Button Content-->
@@ -116,6 +134,37 @@
         <Grid Grid.Row="1">
             <Grid.Style>
                 <Style TargetType="Grid">
+                    <Setter Property="MaxHeight" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsExpanded}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="MaxHeight" From="0" To="500">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxHeight" From="500" To="0" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <!--<Grid.Style>
+                <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsExpanded}" Value="false">
@@ -123,7 +172,7 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Grid.Style>
+            </Grid.Style>-->
 
             <!--Page Content-->
             <ContentControl Content="{Binding PageContent}" Margin="20"/>

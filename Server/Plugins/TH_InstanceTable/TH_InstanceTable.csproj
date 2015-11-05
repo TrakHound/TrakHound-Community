@@ -47,8 +47,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationPage.xaml.cs">
+    <None Include="ConfigurationPage.xaml.cs">
       <DependentUpon>ConfigurationPage.xaml</DependentUpon>
+    </None>
+    <Compile Include="ConfigurationPage\Controls\CheckBox.cs" />
+    <Compile Include="ConfigurationPage\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="InstanceTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,7 +113,11 @@
     <Resource Include="Resources\Help_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ConfigurationPage.xaml">
+    <None Include="ConfigurationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <Page Include="ConfigurationPage\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -121,7 +121,7 @@ namespace TH_InstanceTable
 
         }
 
-        public Type Config_Page { get { return typeof(Configuration_Page); } }
+        public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
         //public ConfigurationPage ConfigPage { get { return new Configuration_Page(); } }
 
