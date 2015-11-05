@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 using TH_WPF;
 
-namespace TH_DeviceManager.Controls
+namespace TH_DeviceManager.Pages.Databases.Controls
 {
     /// <summary>
     /// Interaction logic for DatabaseItemContainer.xaml
@@ -45,7 +45,7 @@ namespace TH_DeviceManager.Controls
         public static readonly DependencyProperty ItemContentProperty =
             DependencyProperty.Register("ItemContent", typeof(object), typeof(DatabaseItemContainer), new PropertyMetadata(null));
 
-        private void Remove_Clicked(Button bt)
+        private void Remove_Clicked(TH_DeviceManager.Controls.Button bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
         }

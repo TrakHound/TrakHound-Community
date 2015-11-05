@@ -128,7 +128,7 @@
 
         <Style x:Key="ImageRectangle_Alternate" TargetType="Rectangle">
             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-            <Setter Property="Fill" Value="#ccffffff"/>
+            <Setter Property="Fill" Value="#eeffffff"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
                     <DataTrigger.EnterActions>
@@ -145,7 +145,7 @@
                     <DataTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard FillBehavior="Stop">
-                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#ccffffff">
+                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#eeffffff">
                                     <ColorAnimation.EasingFunction>
                                         <CubicEase EasingMode="EaseOut"/>
                                     </ColorAnimation.EasingFunction>
@@ -169,7 +169,7 @@
                     <DataTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard FillBehavior="Stop">
-                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#ccffffff">
+                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#eeffffff">
                                     <ColorAnimation.EasingFunction>
                                         <CubicEase EasingMode="EaseOut"/>
                                     </ColorAnimation.EasingFunction>
@@ -240,7 +240,7 @@
         </Style>
 
         <Style x:Key="TextLabel_Alternate"  TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#ccffffff"/>
+            <Setter Property="Foreground" Value="#eeffffff"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -260,7 +260,7 @@
                     <DataTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard FillBehavior="Stop">
-                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#ccffffff">
+                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
                                     <ColorAnimation.EasingFunction>
                                         <CubicEase EasingMode="EaseOut"/>
                                     </ColorAnimation.EasingFunction>
@@ -284,7 +284,7 @@
                     <DataTrigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard FillBehavior="Stop">
-                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#ccffffff">
+                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
                                     <ColorAnimation.EasingFunction>
                                         <CubicEase EasingMode="EaseOut"/>
                                     </ColorAnimation.EasingFunction>
@@ -298,7 +298,7 @@
 
     </UserControl.Resources>
 
-    <Grid x:Name="BD">
+    <Grid x:Name="BD" Cursor="Hand">
 
         <!--Normal Style-->
         <Grid>
@@ -313,7 +313,7 @@
                 </Style>
             </Grid.Style>
 
-            <Border CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Normal}">
+            <Border CornerRadius="1" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Normal}">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -363,8 +363,7 @@
                 </Style>
             </Grid.Style>
 
-            <Border CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Alternate}">
-
+            <Border CornerRadius="1" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Alternate}">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -373,7 +372,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Image-->
-                    <Grid Margin="5,0">
+                    <Grid Margin="10,0,5,0">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -402,5 +401,5 @@
         </Grid>
 
     </Grid>
-    
+
 </UserControl>

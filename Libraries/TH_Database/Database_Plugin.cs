@@ -17,15 +17,9 @@ namespace TH_Database
 
         string Type { get; }
 
-        DatabaseConfigurationPage Configuration_Page { get; }
-
         Type Config_Page { get; }
 
-        object Configuration_Button { get; }
-
         object CreateConfigurationButton(DataTable dt);
-
-        //object Configuration { get; set; }
 
         void Initialize(Database_Configuration config);
 

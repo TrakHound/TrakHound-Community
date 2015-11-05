@@ -11,3 +11,5 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\Configur
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\ConfigurationPage.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.g.resources
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.csproj.GenerateResource.Cache

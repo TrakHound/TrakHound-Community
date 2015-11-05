@@ -17,6 +17,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 
 using TH_Configuration;
+using TH_Configuration.User;
 using TH_Global.Functions;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
@@ -54,21 +55,21 @@ namespace TH_DeviceManager.Pages.Agent
             configurationTable = dt;
 
             // Load IP Address
-            ipaddress_TXT.Text = DataTable_Functions.GetTableValue(prefix + "IP_Address", dt);
+            ipaddress_TXT.Text = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
 
             // Load Port
-            port_TXT.Text = DataTable_Functions.GetTableValue(prefix + "Port", dt);
+            port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
 
             // Load Device Name
-            devicename_TXT.Text = DataTable_Functions.GetTableValue(prefix + "Device_Name", dt);
+            devicename_TXT.Text = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
             // Load Current Heartbeat
             int currentHeartbeat;
-            if (int.TryParse(DataTable_Functions.GetTableValue(prefix + "Current_Heartbeat", dt), out currentHeartbeat)) CurrentHeartbeat = currentHeartbeat;
+            if (int.TryParse(Table_Functions.GetTableValue(prefix + "Current_Heartbeat", dt), out currentHeartbeat)) CurrentHeartbeat = currentHeartbeat;
 
             // Load Sample Heartbeat
             int sampleHeartbeat;
-            if (int.TryParse(DataTable_Functions.GetTableValue(prefix + "Sample_Heartbeat", dt), out sampleHeartbeat)) SampleHeartbeat = sampleHeartbeat;
+            if (int.TryParse(Table_Functions.GetTableValue(prefix + "Sample_Heartbeat", dt), out sampleHeartbeat)) SampleHeartbeat = sampleHeartbeat;
 
             MTCDeviceList.Clear();
 
@@ -78,19 +79,19 @@ namespace TH_DeviceManager.Pages.Agent
         public void SaveConfiguration(DataTable dt)
         {
             // Save IP Address
-            DataTable_Functions.UpdateTableValue(ipaddress_TXT.Text, prefix + "IP_Address", dt);
+            Table_Functions.UpdateTableValue(ipaddress_TXT.Text, prefix + "IP_Address", dt);
 
             // Save Port
-            DataTable_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
+            Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
 
             // Save Device Name
-            DataTable_Functions.UpdateTableValue(devicename_TXT.Text, prefix + "Device_Name", dt);
+            Table_Functions.UpdateTableValue(devicename_TXT.Text, prefix + "Device_Name", dt);
 
             // Save Current Heartbeat
-            DataTable_Functions.UpdateTableValue(CurrentHeartbeat.ToString(), prefix + "Current_Heartbeat", dt);
+            Table_Functions.UpdateTableValue(CurrentHeartbeat.ToString(), prefix + "Current_Heartbeat", dt);
 
             // Save Sample Heartbeat
-            DataTable_Functions.UpdateTableValue(SampleHeartbeat.ToString(), prefix + "Sample_Heartbeat", dt);
+            Table_Functions.UpdateTableValue(SampleHeartbeat.ToString(), prefix + "Sample_Heartbeat", dt);
         }
 
         #endregion
@@ -350,7 +351,7 @@ namespace TH_DeviceManager.Pages.Agent
 
                 if (configurationTable != null)
                 {
-                    oldVal = DataTable_Functions.GetTableValue(prefix + name, configurationTable);
+                    oldVal = Table_Functions.GetTableValue(prefix + name, configurationTable);
                 }
 
                 if (SettingChanged != null) SettingChanged(name, oldVal, newVal);

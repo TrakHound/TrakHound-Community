@@ -3,6 +3,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System;
 using System.ComponentModel.Composition;
 
 using TH_Configuration;
@@ -68,7 +69,7 @@ namespace TH_PlugIns_Server
         /// </summary>
         event DataEvent_Handler DataEvent;
 
-        ConfigurationPage ConfigPage { get; }
+        Type Config_Page { get; }
 
     }
 

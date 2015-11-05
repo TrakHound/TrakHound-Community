@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 using System.Data;
 
+using TH_Configuration.User;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
@@ -47,20 +48,20 @@ namespace TH_MySQL.ConfigurationPage
             configurationTable = dt;
 
             // Load Database Name
-            databasename_TXT.Text = DataTable_Functions.GetTableValue(prefix + "Database", dt);
+            databasename_TXT.Text = Table_Functions.GetTableValue(prefix + "Database", dt);
 
             // Load Server
-            server_TXT.Text = DataTable_Functions.GetTableValue(prefix + "Server", dt);
+            server_TXT.Text = Table_Functions.GetTableValue(prefix + "Server", dt);
 
             // Load Port
-            port_TXT.Text = DataTable_Functions.GetTableValue(prefix + "Port", dt);
+            port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
 
             // Load Username
-            username_TXT.Text = DataTable_Functions.GetTableValue(prefix + "Username", dt);
+            username_TXT.Text = Table_Functions.GetTableValue(prefix + "Username", dt);
 
             // Load UsePHP
             bool usePHP = false;
-            string strUsePHP = DataTable_Functions.GetTableValue(prefix + "UsePHP", dt);
+            string strUsePHP = Table_Functions.GetTableValue(prefix + "UsePHP", dt);
             if (strUsePHP != null)
             {
                 bool.TryParse(strUsePHP, out usePHP);
@@ -69,10 +70,10 @@ namespace TH_MySQL.ConfigurationPage
             }
 
             // Load PHP Server
-            phpserver_TXT.Text = DataTable_Functions.GetTableValue(prefix + "PHP_Server", dt);
+            phpserver_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Server", dt);
 
             // Load PHP Directory
-            phpdirectory_TXT.Text = DataTable_Functions.GetTableValue(prefix + "PHP_Directory", dt);
+            phpdirectory_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Directory", dt);
 
             Loading = false;
         }
@@ -80,31 +81,31 @@ namespace TH_MySQL.ConfigurationPage
         public void SaveConfiguration(DataTable dt)
         {
             // Save Database Name
-            DataTable_Functions.UpdateTableValue(databasename_TXT.Text, prefix + "Database", dt);
+            Table_Functions.UpdateTableValue(databasename_TXT.Text, prefix + "Database", dt);
 
             // Save Server
-            DataTable_Functions.UpdateTableValue(server_TXT.Text, prefix + "Server", dt);
+            Table_Functions.UpdateTableValue(server_TXT.Text, prefix + "Server", dt);
 
             // Save Port
-            DataTable_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
+            Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
 
             // Save Username
-            DataTable_Functions.UpdateTableValue(username_TXT.Text, prefix + "Username", dt);
+            Table_Functions.UpdateTableValue(username_TXT.Text, prefix + "Username", dt);
 
             // Save Password
             if (PasswordVerified)
             {
-                DataTable_Functions.UpdateTableValue(password_TXT.Password, prefix + "Password", dt);
+                Table_Functions.UpdateTableValue(password_TXT.Password, prefix + "Password", dt);
             }
 
             // Save UsePHP
-            DataTable_Functions.UpdateTableValue(UsePHPServer.ToString(), prefix + "UsePHP", dt);
+            Table_Functions.UpdateTableValue(UsePHPServer.ToString(), prefix + "UsePHP", dt);
 
             // Save PHP Server
-            DataTable_Functions.UpdateTableValue(phpserver_TXT.Text, prefix + "PHP_Server", dt);
+            Table_Functions.UpdateTableValue(phpserver_TXT.Text, prefix + "PHP_Server", dt);
 
             // Save PHP Directory
-            DataTable_Functions.UpdateTableValue(phpdirectory_TXT.Text, prefix + "PHP_Directory", dt);
+            Table_Functions.UpdateTableValue(phpdirectory_TXT.Text, prefix + "PHP_Directory", dt);
             
         }
 
@@ -138,7 +139,7 @@ namespace TH_MySQL.ConfigurationPage
 
                 if (configurationTable != null)
                 {
-                    oldVal = DataTable_Functions.GetTableValue(name, configurationTable);
+                    oldVal = Table_Functions.GetTableValue(name, configurationTable);
                 }
 
                 if (SettingChanged != null) SettingChanged(name, oldVal, newVal);

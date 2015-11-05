@@ -56,6 +56,8 @@ namespace TH_InstanceTable
 
         }
 
+        //public Type Config_Page { get { return typeof(Configuration_Page); } }
+
 
         public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
         {
@@ -119,7 +121,9 @@ namespace TH_InstanceTable
 
         }
 
-        public ConfigurationPage ConfigPage { get { return new Configuration_Page(); } }
+        public Type Config_Page { get { return typeof(Configuration_Page); } }
+
+        //public ConfigurationPage ConfigPage { get { return new Configuration_Page(); } }
 
         #endregion
 

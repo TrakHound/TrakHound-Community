@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-11-2012571219
+10-1567090900
 
-14-1886500608
+131247561325
 22-2078637810
-Controls\Button.xaml;Controls\DatabaseItemContainer.xaml;Controls\DeviceButton.xaml;Controls\PageItem.xaml;Pages\AddDevice\Page.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;DeviceManager.xaml;Pages\Databases\Controls\Item.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;
+Controls\Button.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\DeviceButton.xaml;Controls\PageItem.xaml;Pages\AddDevice\Page.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;DeviceManager.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;
 
 False
 

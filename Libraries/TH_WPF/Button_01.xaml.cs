@@ -106,8 +106,7 @@ namespace TH_WPF
         private void Border_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Clicked != null) Clicked(this);
-        }
-    
+        }   
 
     }
 }

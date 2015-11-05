@@ -43,6 +43,8 @@ namespace TH_DeviceManager
             InitializeComponent();
             DataContext = this;
 
+            LoadPlugins();
+
             InitializePages();
         }
 
@@ -189,17 +191,6 @@ namespace TH_DeviceManager
             set
             {
                 configurationtable = value;
-
-                if (configurationtable != null)
-                {
-                    if (ConfigurationPages != null)
-                    {
-                        foreach (ConfigurationPage page in ConfigurationPages)
-                        {
-                            this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), new object[] { configurationtable });
-                        }
-                    }
-                }
             }
         }
 
@@ -480,8 +471,19 @@ namespace TH_DeviceManager
                     SelectedDevice = config;
 
                     ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
-                    if (ConfigurationTable != null) ConfigurationTable.TableName = config.TableName;
+                    if (ConfigurationTable != null)
+                    {
+                        ConfigurationTable.TableName = config.TableName;
 
+                        if (ConfigurationPages != null)
+                        {
+                            foreach (ConfigurationPage page in ConfigurationPages)
+                            {
+                                this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), new object[] { ConfigurationTable });
+                            }
+                        }
+                    }
+                        
                     PageListShown = true;
                 }
             }
@@ -534,6 +536,9 @@ namespace TH_DeviceManager
             ConfigurationPages.Add(new Pages.Agent.Page());
             ConfigurationPages.Add(new Pages.Databases.Page());
 
+            // Load configuration pages from plugins
+            ConfigurationPages.AddRange(AddConfigurationPageButtons(Table_Plugins));
+
             // Create PageItem and add to PageList
             foreach (ConfigurationPage page in ConfigurationPages)
             {
@@ -541,9 +546,9 @@ namespace TH_DeviceManager
 
                 PageItem item = new PageItem();
                 item.Text = page.PageName;
-                item.Image = page.Image;
-                //item.Data = page;
-                //item.Clicked += PageItem_Clicked;
+
+                if (page.Image != null) item.Image = page.Image;
+                else item.Image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Plug_01.png"));
 
                 ListButton bt = new ListButton();
                 bt.ButtonContent = item;
@@ -555,10 +560,6 @@ namespace TH_DeviceManager
                 bt.MinWidth = 100;
 
                 PageList.Add(bt);
-
-
-
-                //PageList.Add(item);
             }
         }
 
@@ -659,14 +660,38 @@ namespace TH_DeviceManager
         //    else CurrentPage = new Pages.AgentConfiguration();
         //}
 
-        void AddConfigurationPage(Table_PlugIn tp)
-        {
-            ConfigurationPage configPage = tp.ConfigPage;
 
-            if (configPage != null)
+
+        List<ConfigurationPage> AddConfigurationPageButtons(List<Table_PlugIn> plugins)
+        {
+            List<ConfigurationPage> result = new List<ConfigurationPage>();
+
+            foreach (Table_PlugIn plugin in plugins)
             {
+                Type config_type = plugin.Config_Page;
+                object o = Activator.CreateInstance(config_type);
+                ConfigurationPage page = (ConfigurationPage)o;
+
+                result.Add(page);
+            }
+
+            return result;
+        }
+
+        void AddConfigurationPageButton(Table_PlugIn tp)
+        {
+            if (tp != null)
+            {
+                Type config_type = tp.Config_Page;
+                object o = Activator.CreateInstance(config_type);
+                ConfigurationPage page = (ConfigurationPage)o;
+
                 PageItem item = new PageItem();
-                item.Text = configPage.PageName;
+                item.Text = page.PageName;
+
+                if (page.Image != null) item.Image = page.Image;
+                else item.Image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Plug_01.png"));
+
                 PageList.Add(item);
             }
         }
@@ -677,7 +702,7 @@ namespace TH_DeviceManager
 
         public IEnumerable<Lazy<Table_PlugIn>> TablePlugIns { get; set; }
 
-        public List<Lazy<Table_PlugIn>> Table_Plugins { get; set; }
+        public List<Table_PlugIn> Table_Plugins { get; set; }
 
         TablePlugs TPLUGS;
 
@@ -693,7 +718,7 @@ namespace TH_DeviceManager
 
             if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
 
-            Table_Plugins = new List<Lazy<Table_PlugIn>>();
+            Table_Plugins = new List<Table_PlugIn>();
 
             string pluginsPath;
 
@@ -705,7 +730,7 @@ namespace TH_DeviceManager
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
 
-            TablePlugIns = Table_Plugins;
+            //TablePlugIns = Table_Plugins;
         }
 
         void LoadTablePlugins(string Path)
@@ -727,10 +752,10 @@ namespace TH_DeviceManager
                     {
                         Table_PlugIn tp = ltp.Value;
 
-                        if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == tp.Name.ToLower()) == null)
+                        if (Table_Plugins.ToList().Find(x => x.Name.ToLower() == tp.Name.ToLower()) == null)
                         {
                             Logger.Log(tp.Name + " : PlugIn Found");
-                            Table_Plugins.Add(ltp);
+                            Table_Plugins.Add(tp);
                         }
                         else
                         {
@@ -749,26 +774,61 @@ namespace TH_DeviceManager
             else Logger.Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
         }
 
-        void TablePlugIns_Initialize(Configuration config)
+
+        List<ConfigurationPage> PluginConfigurationPages;
+
+        void ProcessTablePlugins(DataTable dt)
         {
-            if (TablePlugIns != null && config != null)
+            if (TablePlugIns != null && dt != null)
             {
                 foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
                 {
                     try
                     {
-                        Table_PlugIn tp = ltp.Value;
-                        tp.Initialize(config);
 
-                        AddConfigurationPage(tp);
+                        Table_PlugIn tp = ltp.Value;
+
+                        Type config_type = tp.Config_Page;
+
+                        object o = Activator.CreateInstance(config_type);
+
+                        ConfigurationPage page = (ConfigurationPage)o;
+                        //page.SettingChanged += page_SettingChanged;
+                        
+
+                        //configurationPages.Add(page);
+
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Plugin Exception! : " + ex.Message);
-                    }
+                    catch (Exception ex) { Logger.Log("Plugin Exception! : " + ex.Message); }
                 }
             }
         }
+
+
+        //void TablePlugIns_Initialize(Configuration config)
+        //{
+        //    if (TablePlugIns != null && config != null)
+        //    {
+        //        foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+        //        {
+        //            try
+        //            {
+        //                Table_PlugIn tp = ltp.Value;
+
+
+
+
+        //                //tp.Initialize(config);
+
+        //                //AddConfigurationPage(tp);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine("Plugin Exception! : " + ex.Message);
+        //            }
+        //        }
+        //    }
+        //}
 
         void TablePlugIns_Closing()
         {

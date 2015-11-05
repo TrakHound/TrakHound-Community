@@ -57,35 +57,35 @@ namespace TH_DeviceManager.Pages.Description
             configurationTable = dt;
 
             // Load Description
-            devicedescription_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Description", dt);
+            devicedescription_TXT.Text = Table_Functions.GetTableValue(dprefix + "Description", dt);
 
             // Load Type
-            devicetype_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Device_Type", dt);
+            devicetype_TXT.Text = Table_Functions.GetTableValue(dprefix + "Device_Type", dt);
 
             // Load Manufacturer
-            manufacturer_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Manufacturer", dt);
+            manufacturer_TXT.Text = Table_Functions.GetTableValue(dprefix + "Manufacturer", dt);
 
             // Load Id
-            deviceid_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Device_ID", dt);
+            deviceid_TXT.Text = Table_Functions.GetTableValue(dprefix + "Device_ID", dt);
 
             // Load Model
-            model_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Model", dt);
+            model_TXT.Text = Table_Functions.GetTableValue(dprefix + "Model", dt);
 
             // Load Serial
-            serial_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Serial", dt);
+            serial_TXT.Text = Table_Functions.GetTableValue(dprefix + "Serial", dt);
 
             // Load Controller
-            controller_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Controller", dt);
+            controller_TXT.Text = Table_Functions.GetTableValue(dprefix + "Controller", dt);
 
             // Load Company
-            company_TXT.Text = DataTable_Functions.GetTableValue(dprefix + "Company", dt);
+            company_TXT.Text = Table_Functions.GetTableValue(dprefix + "Company", dt);
 
             // Load Manufacturer Logo
-            manufacturerLogoFileName = DataTable_Functions.GetTableValue(fprefix + "Manufacturer_Logo_Path", dt);
+            manufacturerLogoFileName = Table_Functions.GetTableValue(fprefix + "Manufacturer_Logo_Path", dt);
             LoadManufacturerLogo(manufacturerLogoFileName);
 
             // Load Device Image
-            deviceImageFileName = DataTable_Functions.GetTableValue(fprefix + "Image_Path", dt);
+            deviceImageFileName = Table_Functions.GetTableValue(fprefix + "Image_Path", dt);
             LoadDeviceImage(deviceImageFileName);
 
             Loading = false;
@@ -94,34 +94,34 @@ namespace TH_DeviceManager.Pages.Description
         public void SaveConfiguration(DataTable dt)
         {
             // Save Descritpion
-            DataTable_Functions.UpdateTableValue(devicedescription_TXT.Text, dprefix + "Description", dt);
+            Table_Functions.UpdateTableValue(devicedescription_TXT.Text, dprefix + "Description", dt);
 
             // Save Type
-            DataTable_Functions.UpdateTableValue(devicetype_TXT.Text, dprefix + "Device_Type", dt);
+            Table_Functions.UpdateTableValue(devicetype_TXT.Text, dprefix + "Device_Type", dt);
 
             // Save Manufacturer
-            DataTable_Functions.UpdateTableValue(manufacturer_TXT.Text, dprefix + "Manufacturer", dt);
+            Table_Functions.UpdateTableValue(manufacturer_TXT.Text, dprefix + "Manufacturer", dt);
 
             // Save Id
-            DataTable_Functions.UpdateTableValue(deviceid_TXT.Text, dprefix + "Device_ID", dt);
+            Table_Functions.UpdateTableValue(deviceid_TXT.Text, dprefix + "Device_ID", dt);
 
             // Save Model
-            DataTable_Functions.UpdateTableValue(model_TXT.Text, dprefix + "Model", dt);
+            Table_Functions.UpdateTableValue(model_TXT.Text, dprefix + "Model", dt);
 
             // Save Serial
-            DataTable_Functions.UpdateTableValue(serial_TXT.Text, dprefix + "Serial", dt);
+            Table_Functions.UpdateTableValue(serial_TXT.Text, dprefix + "Serial", dt);
 
             // Save Controller
-            DataTable_Functions.UpdateTableValue(controller_TXT.Text, dprefix + "Controller", dt);
+            Table_Functions.UpdateTableValue(controller_TXT.Text, dprefix + "Controller", dt);
 
             // Save Company
-            DataTable_Functions.UpdateTableValue(company_TXT.Text, dprefix + "Company", dt);
+            Table_Functions.UpdateTableValue(company_TXT.Text, dprefix + "Company", dt);
 
             // Save Manufacturer Logo
-            DataTable_Functions.UpdateTableValue(manufacturerLogoFileName, fprefix + "Manufacturer_Logo_Path", dt);
+            Table_Functions.UpdateTableValue(manufacturerLogoFileName, fprefix + "Manufacturer_Logo_Path", dt);
 
             // Save Device Image
-            DataTable_Functions.UpdateTableValue(deviceImageFileName, fprefix + "Image_Path", dt);
+            Table_Functions.UpdateTableValue(deviceImageFileName, fprefix + "Image_Path", dt);
         }
 
         #endregion
@@ -152,7 +152,7 @@ namespace TH_DeviceManager.Pages.Description
 
                 if (configurationTable != null)
                 {
-                    oldVal = DataTable_Functions.GetTableValue(name, configurationTable);
+                    oldVal = Table_Functions.GetTableValue(name, configurationTable);
                 }
 
                 if (SettingChanged != null) SettingChanged(name, oldVal, newVal);

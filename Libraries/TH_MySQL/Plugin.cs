@@ -14,29 +14,7 @@ namespace TH_MySQL
 
         public string Type { get { return "MySQL"; } }
 
-        DatabaseConfigurationPage configuration_page;
-        public DatabaseConfigurationPage Configuration_Page 
-        {
-            get 
-            {
-                if (configuration_page == null)
-                    configuration_page = new ConfigurationPage.Page();
-                return configuration_page;
-            }
-        }
-
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
-
-        object configuration_button;
-        public object Configuration_Button
-        {
-            get
-            {
-                if (configuration_button == null)
-                    configuration_button = new ConfigurationPage.Button();
-                return configuration_button;
-            }
-        }
 
         public object CreateConfigurationButton(DataTable dt)
         {
