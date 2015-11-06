@@ -20,7 +20,7 @@
         <ContentControl Content="{Binding ItemContent}" VerticalAlignment="Center"/>
         
         <!--Remove-->
-        <local:Button Grid.Column="1" Image="/TH_DeviceManager;component/Resources/X_01.png" Clicked="Remove_Clicked"/>
+        <th_wpf:Button_02 Grid.Column="1" Image="/TH_DeviceManager;component/Resources/X_01.png" Clicked="Remove_Clicked"/>
 
     </Grid>
     

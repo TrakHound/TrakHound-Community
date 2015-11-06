@@ -110,6 +110,8 @@ namespace TH_DeviceManager.Pages.Agent
         public static readonly DependencyProperty LoadingProperty =
             DependencyProperty.Register("Loading", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
 
         #region "Test Connection"
 
@@ -185,9 +187,9 @@ namespace TH_DeviceManager.Pages.Agent
                 this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { sender.configuration.Agent.Port });
             }
 
-            this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), new object[] { returnData });
+            this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
 
-            this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), new object[] { false });
+            this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
         }
 
         void UpdateConnectionTestLoading(bool loading)
@@ -212,11 +214,11 @@ namespace TH_DeviceManager.Pages.Agent
                     RunProbe(errorData.probe.configuration.Agent.IP_Address, tryPorts[tryPortIndex], errorData.probe.configuration.Agent.Device_Name);
                     tryPortIndex += 1;
                 }
-                else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), new object[] { false });
+                else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
 
                 errorData.probe.Stop();
             }
-            else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), new object[] { false });
+            else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
         }
 
         #endregion

@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             xmlns:controls="clr-namespace:TH_DeviceManager.Controls"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
@@ -22,7 +23,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
                 <!--Restore-->
-                <controls:Button Text="Restore" Clicked="Restore_Clicked" Image="/TH_DeviceManager;component/Resources/Refresh_01.png"/>
+                <th_wpf:Button_02 Text="Restore" Clicked="Restore_Clicked" Image="/TH_DeviceManager;component/Resources/Refresh_01.png"/>
 
                 <!--Save-->
                 <Grid>
@@ -39,7 +40,7 @@
                         </Style>
                     </Grid.Style>
 
-                    <controls:Button Text="Save" Clicked="Save_Clicked" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
+                    <th_wpf:Button_02 Text="Save" Clicked="Save_Clicked" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
 
                 </Grid>
 
@@ -387,7 +388,7 @@
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Width" From="0" To="110">
+                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Width" From="0" To="110" BeginTime="00:00:0.3">
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseOut"/>
                                                         </DoubleAnimation.EasingFunction>

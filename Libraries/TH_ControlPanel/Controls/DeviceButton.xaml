@@ -331,7 +331,7 @@
 
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal">
             
-            <local:Button Image="/TH_DeviceManager;component/Resources/X_01.png" />
+            <th_wpf:Button_02 Image="/TH_DeviceManager;component/Resources/X_01.png" />
 
             <CheckBox Style="{StaticResource Android_CheckBoxStyle2}"/>
 

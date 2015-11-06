@@ -49,10 +49,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Button.xaml">
+    <None Include="Controls\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Pages\Databases\Controls\DatabaseItemContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -81,9 +81,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Controls\Button.xaml.cs">
+    <None Include="Controls\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Pages\Databases\Controls\DatabaseItemContainer.xaml.cs">
       <DependentUpon>DatabaseItemContainer.xaml</DependentUpon>
     </Compile>

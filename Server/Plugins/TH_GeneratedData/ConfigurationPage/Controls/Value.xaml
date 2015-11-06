@@ -1,0 +1,144 @@
+﻿<UserControl x:Class="TH_GeneratedData.ConfigurationPage.Controls.Value"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:controls="clr-namespace:TH_GeneratedData.ConfigurationPage.Controls"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!--Value Header-->
+        <Border Grid.Row="1" CornerRadius="1" Background="#0080ff" Width="200">
+            
+            <Grid>
+
+                <StackPanel Margin="10" VerticalAlignment="Center">
+
+                    <!--Name-->
+                    <StackPanel Margin="20,5">
+
+                        <TextBlock Text="Name" Foreground="#66ffffff" FontSize="10pt" />
+
+                        <TextBlock Text="{Binding Text}" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center"/>
+
+                    </StackPanel>
+
+                    <!--Default-->
+                    <StackPanel Margin="10,5" Orientation="Horizontal">
+
+                        <!--CheckBox-->
+                        <CheckBox x:Name="default_CHK" Width="30" Height="30" Style="{StaticResource Android_CheckBoxStyle2}" Cursor="Hand" Checked="CHK_Checked" Unchecked="CHK_Unchecked"/>
+
+                        <!--Title and Help-->
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--Title-->
+                            <TextBlock Text="Default" Foreground="White" Margin="10,0" FontSize="10pt" VerticalAlignment="Center"/>
+
+                            <!--Help-->
+                            <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                                <Rectangle.ToolTip>
+                                    <ToolTip MaxWidth="400">
+                                        <StackPanel>
+                                            <TextBlock Text="Default" FontWeight="Bold"/>
+                                            <TextBlock TextWrapping="Wrap">
+                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Rectangle.ToolTip>
+
+
+                                <Rectangle.Resources>
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_GeneratedData;component/Resources/Help_01.png" />
+                                </Rectangle.Resources>
+
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Fill" Value="#0080ff"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Trigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                                <ColorAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </ColorAnimation.EasingFunction>
+                                                            </ColorAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.EnterActions>
+                                                <Trigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard FillBehavior="Stop">
+                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                                <ColorAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </ColorAnimation.EasingFunction>
+                                                            </ColorAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </Trigger.ExitActions>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+
+                            </Rectangle>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </StackPanel>
+                
+                <!--Remove Button-->
+                <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/X_01.png" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand"/>
+
+            </Grid>
+                    
+        </Border>
+        
+        <TextBlock Grid.Column="1" Text="Triggers" FontSize="8pt" Foreground="#888" Margin="20,5"/>
+        
+        <!--Values-->
+        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Triggers}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
+            <ItemsControl.Resources>
+                <Style TargetType="controls:Trigger">
+                    <Setter Property="Margin" Value="10,0,0,0"/>
+                </Style>
+            </ItemsControl.Resources>
+        </ItemsControl>
+            
+    </Grid>
+    
+</UserControl>

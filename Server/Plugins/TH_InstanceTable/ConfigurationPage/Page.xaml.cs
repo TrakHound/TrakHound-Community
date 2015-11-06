@@ -157,6 +157,8 @@ namespace TH_InstanceTable.ConfigurationPage
 
         bool Loading;
 
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
         void ChangeSetting(string address, string name, string val)
         {
             if (!Loading)
@@ -398,18 +400,18 @@ namespace TH_InstanceTable.ConfigurationPage
                     DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
 
                     // Conditions
-                    foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), new object[] { dataItem });
+                    foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { dataItem });
 
                     // Events
-                    foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), new object[] { dataItem });
+                    foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { dataItem });
 
                     // Samples
-                    foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), new object[] { dataItem });
+                    foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { dataItem });
                 }
             }
 
             // Set 'Loading' to false
-            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished));
+            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
         }
 
         void OmitProbeFinished()
@@ -422,7 +424,7 @@ namespace TH_InstanceTable.ConfigurationPage
         {
 
             // Set 'Loading' to false
-            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished));
+            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
 
         }
 

@@ -598,12 +598,12 @@ namespace TH_DeviceManager
             SaveNeeded = true;
         }
 
-        private void Restore_Clicked(Controls.Button bt)
+        private void Restore_Clicked(Button_02 bt)
         {
             LoadConfiguration();
         }
 
-        private void Save_Clicked(Controls.Button bt)
+        private void Save_Clicked(Button_02 bt)
         {
             if (ConfigurationTable != null)
             {
@@ -668,11 +668,16 @@ namespace TH_DeviceManager
 
             foreach (Table_PlugIn plugin in plugins)
             {
-                Type config_type = plugin.Config_Page;
-                object o = Activator.CreateInstance(config_type);
-                ConfigurationPage page = (ConfigurationPage)o;
+                try
+                {
+                    Type config_type = plugin.Config_Page;
+                    object o = Activator.CreateInstance(config_type);
 
-                result.Add(page);
+                    ConfigurationPage page = (ConfigurationPage)o;
+
+                    result.Add(page);
+                }
+                catch (Exception ex) { Logger.Log("AddConfigurationPageButtons() :: Exception :: " + ex.Message); }
             }
 
             return result;

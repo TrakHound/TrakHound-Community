@@ -29,8 +29,6 @@ namespace TH_GeneratedData
 
         public string Name { get { return "TH_GeneratedData"; } }
 
-        //public int Priority { get { return 1; } }
-
         public void Initialize(Configuration configuration)
         {
 
@@ -144,7 +142,7 @@ namespace TH_GeneratedData
 
         }
 
-        public ConfigurationPage ConfigPage { get { return null; } }
+        public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
         #endregion
 

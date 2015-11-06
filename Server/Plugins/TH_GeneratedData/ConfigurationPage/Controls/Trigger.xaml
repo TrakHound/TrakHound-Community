@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="TH_GeneratedData.ConfigurationPage.Controls.Trigger"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             >
+
+    <Border CornerRadius="2" BorderBrush="#33000000" BorderThickness="1" Width="150">
+        
+        <StackPanel Margin="5">
+            
+            <!--Remove Button-->
+            <th_wpf:Button_03 Image="/TH_GeneratedData;component/Resources/X_01.png" HorizontalAlignment="Right" Cursor="Hand" ToolTip="Remove this Trigger"/>
+            
+            <StackPanel Margin="5,0,5,5">
+
+                <!--Link-->
+                <ComboBox ItemsSource="{Binding DataItems}" Text="{Binding SelectedLink}" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+
+                <!--Modifier-->
+                <ComboBox Margin="0,5" ItemsSource="{Binding Modifiers}" SelectedItem="{Binding SelectedModifier}" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+                <!--Value-->
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border BorderThickness="1" CornerRadius="1" Margin="0,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused, ElementName=value_TXT}" Value="true">
+                                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="10,0">
+
+                            <!--User Input-->
+                            <TextBox x:Name="value_TXT" Text="{Binding Value}" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </StackPanel>
+
+        </StackPanel>
+
+    </Border>
+
+</UserControl>

@@ -864,7 +864,7 @@ namespace TH_Configuration.User
                 "address varchar(90)",
                 "name varchar(90)",
                 "value varchar(90)",
-                "attributes varchar(90)"
+                "attributes mediumtext"
             };
 
             string primaryKey = "address";

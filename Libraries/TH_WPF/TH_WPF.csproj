@@ -57,6 +57,12 @@
     <Compile Include="Button_01.xaml.cs">
       <DependentUpon>Button_01.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Button_03.xaml.cs">
+      <DependentUpon>Button_03.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Button_02.xaml.cs">
+      <DependentUpon>Button_02.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CollapseButton.xaml.cs">
       <DependentUpon>CollapseButton.xaml</DependentUpon>
     </Compile>
@@ -114,6 +120,14 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Button_01.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Button_03.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Button_02.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

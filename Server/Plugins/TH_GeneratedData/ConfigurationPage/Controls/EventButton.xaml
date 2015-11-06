@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="TH_GeneratedData.ConfigurationPage.Controls.EventButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="300">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+            <!--Event Name-->
+            <TextBlock Text="{Binding EventName}" FontSize="12pt" Foreground="White"/>
+
+            <!--Event Values--><!--
+            <TextBlock Text="{Binding EventValues}" FontSize="12pt" Foreground="White"/>-->
+
+        </StackPanel>
+        
+
+        <!--Remove-->
+        <th_wpf:Button_02 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Clicked="Remove_Clicked"/>
+
+    </Grid>
+    
+</UserControl>
