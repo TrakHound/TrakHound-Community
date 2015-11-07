@@ -40,11 +40,13 @@
                     <StackPanel>
 
                         <TextBlock Text="Snapshot Data" FontSize="12pt" Foreground="#888" Margin="10"/>
+                        
+                        <th_wpf:Button_01 Text="Add Item" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="10" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked"/>
 
                         <ItemsControl ItemsSource="{Binding SnapshotItems}">
                             <ItemsControl.Resources>
                                 <Style TargetType="controls:Snapshot_Item">
-                                    <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="Margin" Value="10,5"/>
                                 </Style>
                             </ItemsControl.Resources>
                         </ItemsControl>

@@ -26,11 +26,18 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DataContext = this;
         }
 
+        public TH_GeneratedData.ConfigurationPage.Page.Event ParentEvent;
+
+        public delegate void SettingChanged_Handler();
+        public event SettingChanged_Handler SettingChanged;
 
         public string EventName
         {
             get { return (string)GetValue(EventNameProperty); }
-            set { SetValue(EventNameProperty, value); }
+            set 
+            { 
+                SetValue(EventNameProperty, value);
+            }
         }
 
         public static readonly DependencyProperty EventNameProperty =
@@ -46,11 +53,19 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public static readonly DependencyProperty EventValuesProperty =
             DependencyProperty.Register("EventValues", typeof(string), typeof(EventButton), new PropertyMetadata(null));
 
+
+        public delegate void Clicked_Handler(EventButton bt);
+        public event Clicked_Handler RemoveClicked;
+
         private void Remove_Clicked(TH_WPF.Button_02 bt)
         {
-
+            if (RemoveClicked != null) RemoveClicked(this);
         }
 
-        
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ParentEvent != null) ParentEvent.name = ((TextBox)sender).Text;
+        }
+  
     }
 }

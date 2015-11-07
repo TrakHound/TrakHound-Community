@@ -1038,6 +1038,7 @@ namespace TH_Configuration.User
             if (row != null)
             {
                 row["value"] = value;
+                row["attributes"] = attributes;
             }
             else
             {

@@ -18,14 +18,10 @@
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
             <!--Event Name-->
-            <TextBlock Text="{Binding EventName}" FontSize="12pt" Foreground="White"/>
-
-            <!--Event Values--><!--
-            <TextBlock Text="{Binding EventValues}" FontSize="12pt" Foreground="White"/>-->
+            <TextBox Text="{Binding EventName}" TextChanged="TextBox_TextChanged" FontSize="12pt" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
         </StackPanel>
         
-
         <!--Remove-->
         <th_wpf:Button_02 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Clicked="Remove_Clicked"/>
 

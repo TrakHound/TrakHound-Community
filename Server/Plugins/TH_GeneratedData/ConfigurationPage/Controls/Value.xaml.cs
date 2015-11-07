@@ -28,6 +28,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DataContext = this;
         }
 
+        public TH_GeneratedData.ConfigurationPage.Page.Result ParentResult;
+
         ObservableCollection<Trigger> triggers;
         public ObservableCollection<Trigger> Triggers
         {
@@ -45,14 +47,14 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         }
 
 
-        public string Text
+        public string ValueName
         {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
+            get { return (string)GetValue(ValueNameProperty); }
+            set { SetValue(ValueNameProperty, value); }
         }
 
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(Value), new PropertyMetadata(null));
+        public static readonly DependencyProperty ValueNameProperty =
+            DependencyProperty.Register("ValueName", typeof(string), typeof(Value), new PropertyMetadata(null));
 
 
         public string TriggerCount
@@ -130,6 +132,25 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         }
 
+        public delegate void Clicked_Handler(Value val);
+        public event Clicked_Handler AddTriggerClicked;
+        public event Clicked_Handler RemoveClicked;
+
+
+        private void AddTrigger_Clicked(TH_WPF.Button_01 bt)
+        {
+            if (AddTriggerClicked != null) AddTriggerClicked(this);
+        }
+
+        private void Remove_Clicked(TH_WPF.Button_02 bt)
+        {
+            if (RemoveClicked != null) RemoveClicked(this);
+        }
+
+        private void ValueName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ParentResult != null) ParentResult.value = ((TextBox)sender).Text;
+        }
 
 
     }

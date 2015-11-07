@@ -28,6 +28,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DataContext = this;
         }
 
+        public TH_GeneratedData.ConfigurationPage.Page.Event ParentEvent;
+
         ObservableCollection<Value> values;
         public ObservableCollection<Value> Values
         {
@@ -45,7 +47,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         }
 
 
-
         public string Description
         {
             get { return (string)GetValue(DescriptionProperty); }
@@ -55,7 +56,18 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public static readonly DependencyProperty DescriptionProperty =
             DependencyProperty.Register("Description", typeof(string), typeof(Event), new PropertyMetadata(null));
 
-        
+        public delegate void Clicked_Handler(Event e);
+        public event Clicked_Handler AddValueClicked;
+
+        private void AddValue_Clicked(TH_WPF.Button_01 bt)
+        {
+            if (AddValueClicked != null) AddValueClicked(this);
+        }
+
+        private void Description_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ParentEvent != null) ParentEvent.description = ((TextBox)sender).Text;
+        }
 
     }
 }

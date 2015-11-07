@@ -52,7 +52,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid PreviewMouseDown="Grid_PreviewMouseDown" Background="#00000000">
+                <Grid MouseDown="Grid_PreviewMouseDown" Background="#00000000">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>

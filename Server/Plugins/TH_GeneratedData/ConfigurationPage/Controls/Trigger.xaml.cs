@@ -38,6 +38,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             
         }
 
+        public TH_GeneratedData.ConfigurationPage.Page.Trigger ParentTrigger;
+
         ObservableCollection<object> dataitems;
         public ObservableCollection<object> DataItems
         {
@@ -99,6 +101,29 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register("Value", typeof(string), typeof(Trigger), new PropertyMetadata(null));
+
+        public delegate void RemoveClicked_Handler(Trigger t);
+        public event RemoveClicked_Handler RemoveClicked;
+
+        private void Remove_Clicked(TH_WPF.Button_03 bt)
+        {
+            if (RemoveClicked != null) RemoveClicked(this);
+        }
+
+        private void Link_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ParentTrigger != null) ParentTrigger.link = ((ComboBox)sender).SelectedItem.ToString();
+        }
+
+        private void Modifier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ParentTrigger != null) ParentTrigger.modifier = ((ComboBox)sender).SelectedItem.ToString();
+        }
+
+        private void value_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ParentTrigger != null) ParentTrigger.value = ((TextBox)sender).Text;
+        }
 
   
     }

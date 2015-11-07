@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              xmlns:controls="clr-namespace:TH_GeneratedData.ConfigurationPage.Controls"
              
              mc:Ignorable="d" 
@@ -20,19 +21,26 @@
 
             <TextBlock Text="Event Description" FontSize="8pt" Foreground="#aaa" Margin="0,5"/>
 
-            <TextBlock Text="{Binding Description}" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+            <TextBox Text="{Binding Description}" TextChanged="Description_TextChanged" FontSize="10pt" Foreground="#888" Margin="0,5" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
         </StackPanel>
              
-        
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding Values}">
-            <ItemsControl.Resources>
-                <Style TargetType="controls:Value">
-                    <Setter Property="Margin" Value="10"/>
-                </Style>
-            </ItemsControl.Resources>
-        </ItemsControl>
+        <StackPanel Grid.Row="1">
+
+            <!--Values-->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding Values}">
+                <ItemsControl.Resources>
+                    <Style TargetType="controls:Value">
+                        <Setter Property="Margin" Value="10"/>
+                    </Style>
+                </ItemsControl.Resources>
+            </ItemsControl>
             
+            <!--Add Value Button-->
+            <th_wpf:Button_01 Height="30" Width="30" Image="/TH_GeneratedData;component/Resources/Add_01.png" Margin="5" Clicked="AddValue_Clicked"/>
+
+        </StackPanel>
+     
     </Grid>
     
 </UserControl>

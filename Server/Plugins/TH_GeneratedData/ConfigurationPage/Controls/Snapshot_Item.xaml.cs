@@ -28,12 +28,22 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DataContext = this;
         }
 
+        public delegate void SettingChanged_Handler();
+        public event SettingChanged_Handler SettingChanged;
+
+        public delegate void Clicked_Handler(Snapshot_Item item);
+
+        string prefix = "/GeneratedData/SnapShotData/";
+
         #region "Name"
 
         public string NameText
         {
             get { return (string)GetValue(NameTextProperty); }
-            set { SetValue(NameTextProperty, value); }
+            set 
+            {
+                SetValue(NameTextProperty, value);
+            }
         }
 
         public static readonly DependencyProperty NameTextProperty =
@@ -49,6 +59,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             set 
             { 
                 SetValue(SelectedTypeProperty, value);
+
                 if (TypeChanged != null) TypeChanged(value, this);
             }
         }
@@ -84,6 +95,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             SelectedType = combo.SelectedItem.ToString().ToLower();
 
             if (TypeChanged != null) TypeChanged(combo.SelectedItem.ToString(), this);
+
+            if (SettingChanged != null) SettingChanged();
         }
 
         #endregion
@@ -93,7 +106,10 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public string SelectedLink
         {
             get { return (string)GetValue(SelectedLinkProperty); }
-            set { SetValue(SelectedLinkProperty, value); }
+            set
+            { 
+                SetValue(SelectedLinkProperty, value);             
+            }
         }
 
         public static readonly DependencyProperty SelectedLinkProperty =
@@ -118,10 +134,29 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         private void Link_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (SettingChanged != null) SettingChanged();
         }
 
         #endregion
+
+        #region "Remove"
  
+        public event Clicked_Handler RemoveClicked;
+
+        private void Removed_Clicked(TH_WPF.Button_01 bt)
+        {
+            if (RemoveClicked != null) RemoveClicked(this);
+            if (SettingChanged != null) SettingChanged();
+        }
+
+        #endregion
+
+        public event Clicked_Handler RefreshClicked;
+
+        private void Refresh_Clicked(TH_WPF.Button_01 bt)
+        {
+            if (RefreshClicked != null) RefreshClicked(this);
+        }
+
     }
 }

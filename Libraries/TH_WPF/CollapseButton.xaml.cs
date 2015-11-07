@@ -60,5 +60,6 @@ namespace TH_WPF
         {
             IsExpanded = !IsExpanded;
         }
+
     }
 }

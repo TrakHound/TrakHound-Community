@@ -35,12 +35,12 @@
 
                 <StackPanel Margin="10" VerticalAlignment="Center">
 
-                    <!--Name-->
+                    <!--Value Name-->
                     <StackPanel Margin="20,5">
 
                         <TextBlock Text="Name" Foreground="#66ffffff" FontSize="10pt" />
 
-                        <TextBlock Text="{Binding Text}" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
                     </StackPanel>
 
@@ -77,13 +77,13 @@
                                 <Rectangle.Style>
                                     <Style TargetType="Rectangle">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Fill" Value="#0080ff"/>
+                                        <Setter Property="Fill" Value="#aaffffff"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="true">
                                                 <Trigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff">
                                                                 <ColorAnimation.EasingFunction>
                                                                     <CubicEase EasingMode="EaseOut"/>
                                                                 </ColorAnimation.EasingFunction>
@@ -94,7 +94,7 @@
                                                 <Trigger.ExitActions>
                                                     <BeginStoryboard>
                                                         <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#aaffffff">
                                                                 <ColorAnimation.EasingFunction>
                                                                     <CubicEase EasingMode="EaseOut"/>
                                                                 </ColorAnimation.EasingFunction>
@@ -116,7 +116,7 @@
                 </StackPanel>
                 
                 <!--Remove Button-->
-                <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/X_01.png" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand"/>
+                <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/X_01.png" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked"/>
 
             </Grid>
                     
@@ -124,20 +124,30 @@
         
         <TextBlock Grid.Column="1" Text="Triggers" FontSize="8pt" Foreground="#888" Margin="20,5"/>
         
-        <!--Values-->
-        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Triggers}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <WrapPanel Grid.Row="1" Grid.Column="1">
+
+            <!--Values-->
+            <ItemsControl ItemsSource="{Binding Triggers}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.Resources>
+                    <Style TargetType="controls:Trigger">
+                        <Setter Property="Margin" Value="10,0,0,0"/>
+                    </Style>
+                </ItemsControl.Resources>
+            </ItemsControl>
             
-            <ItemsControl.Resources>
-                <Style TargetType="controls:Trigger">
-                    <Setter Property="Margin" Value="10,0,0,0"/>
-                </Style>
-            </ItemsControl.Resources>
-        </ItemsControl>
+            <!--Add Button-->
+            <th_wpf:Button_01 Height="30" Width="35" Image="/TH_GeneratedData;component/Resources/Add_01.png" Margin="5" Clicked="AddTrigger_Clicked" />
+
+
+        </WrapPanel>
+        
+       
             
     </Grid>
     

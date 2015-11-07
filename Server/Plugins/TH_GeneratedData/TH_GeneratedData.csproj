@@ -122,6 +122,8 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Refresh_01.png" />
+    <Resource Include="Resources\Add_01.png" />
     <Resource Include="Resources\Help_01.png" />
     <Resource Include="Resources\X_01.png" />
   </ItemGroup>

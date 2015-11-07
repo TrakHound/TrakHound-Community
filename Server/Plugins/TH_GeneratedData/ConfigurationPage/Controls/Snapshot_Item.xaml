@@ -80,7 +80,7 @@
 
                     <TextBlock Text="Type" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
-                    <ComboBox Width="150" ItemsSource="{Binding TypeItems}" SelectedItem="{Binding SelectedType}" SelectionChanged="Type_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+                    <ComboBox Width="150" ItemsSource="{Binding TypeItems}" SelectedItem="{Binding SelectedType}" SelectionChanged="Type_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
                 </StackPanel>
 
@@ -130,9 +130,8 @@
 
                     </Grid>
 
-
-                    <!--Other-->
-                    <ComboBox Width="150" ItemsSource="{Binding LinkItems}" SelectedItem="{Binding SelectedLink}" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14">
+                    <!--Collected or Generated Event-->
+                    <ComboBox Width="150" ItemsSource="{Binding LinkItems}" SelectedItem="{Binding SelectedLink}" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand">
                         <ComboBox.Style>
                             <Style TargetType="ComboBox">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -144,13 +143,15 @@
                             </Style>
                         </ComboBox.Style>
                     </ComboBox>
+                    
+                    <th_wpf:Button_01 Margin="5" Cursor="Hand" ToolTip="Refresh Data Link List" Image="/TH_GeneratedData;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" />
 
                 </StackPanel>
 
             </StackPanel>
 
             <!--Remove Button-->
-            <th_wpf:Button_01 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0"/>
+            <th_wpf:Button_01 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0" Clicked="Removed_Clicked"/>
 
         </Grid>
 

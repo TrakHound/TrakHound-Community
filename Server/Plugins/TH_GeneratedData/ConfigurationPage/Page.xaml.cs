@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 
 using TH_Configuration;
 using TH_Configuration.User;
+using TH_Global.Functions;
 using TH_PlugIns_Server;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
@@ -45,64 +46,55 @@ namespace TH_GeneratedData.ConfigurationPage
 
         public void LoadConfiguration(DataTable dt)
         {
-            configurationTable = dt;
+            if (!Loading)
+            {
+                Loading = true;
 
-            GeneratedEvents = GetGeneratedEvents(dt);
+                configurationTable = dt;
 
-            LoadAgentSettings(dt);
+                GeneratedEvents = GetGeneratedEvents(dt);
+
+                LoadAgentSettings(dt);
+            }
+        }
+
+        public void SaveConfiguration(DataTable dt)
+        {
+
+            SaveSnapshotData(dt);
+
+            SaveGeneratedEvents(dt);
 
         }
+
+        bool Loading;
+
+        void ChangeSetting(string address, string name, string val)
+        {
+            if (!Loading)
+            {
+                string newVal = val;
+                string oldVal = null;
+
+                if (configurationTable != null)
+                {
+                    oldVal = Table_Functions.GetTableValue(address, configurationTable);
+                }
+
+                if (SettingChanged != null) SettingChanged(name, oldVal, newVal);
+            }
+        }
+
+
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
 
         DataTable configurationTable;
 
-        void LoadSnapshotItems(DataTable dt)
-        {
-            string address = "/GeneratedData/SnapShotData/";
+        
 
-            string filter = "address LIKE '" + address + "*'";
-            DataView dv = dt.AsDataView();
-            dv.RowFilter = filter;
-            DataTable temp_dt = dv.ToTable();
-            temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
-
-            foreach (DataRow row in temp_dt.Rows)
-            {
-                string type = GetSnapShotType(row);
-
-                string name = GetAttribute("name", row);
-                string link = GetAttribute("link", row);
-
-                Controls.Snapshot_Item item = new Controls.Snapshot_Item();
-                item.NameText = name;
-
-                item.TypeChanged += item_TypeChanged;
-
-                item.TypeItems = GenerateTypeList();           
-                item.SelectedType = type;
-
-                item.SelectedLink = link;
-
-                this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(AddSnapShotItem), priority, new object[] { item });
-            }
-        }
-
-        void AddSnapShotItem(Controls.Snapshot_Item item)
-        {
-            SnapshotItems.Add(item);
-        }
-
-        string GetSnapShotType(DataRow row)
-        {
-            string adr = row["address"].ToString();
-
-            int slashIndex = adr.LastIndexOf('/');
-            int idIndex = adr.IndexOf("||");
-
-            return adr.Substring(slashIndex + 1, idIndex - slashIndex - 1);
-        }
+        
 
 
         string GetAttribute(string name, DataRow row)
@@ -142,10 +134,6 @@ namespace TH_GeneratedData.ConfigurationPage
             item.LinkItems = GenerateLinkList(type);
         }
 
-        public void SaveConfiguration(DataTable dt)
-        {
-
-        }
 
         ObservableCollection<string> GenerateTypeList()
         {
@@ -191,25 +179,7 @@ namespace TH_GeneratedData.ConfigurationPage
         }
 
 
-
-        ObservableCollection<Controls.Snapshot_Item> snapshotitems;
-        public ObservableCollection<Controls.Snapshot_Item> SnapshotItems
-        {
-            get
-            {
-                if (snapshotitems == null)
-                    snapshotitems = new ObservableCollection<Controls.Snapshot_Item>();
-                return snapshotitems;
-            }
-
-            set
-            {
-                snapshotitems = value;
-            }
-        }
-
-
-        #region "Collected Data Items"  
+        #region "MTC Data Items"  
      
         List<CollectedItem> CollectedItems = new List<CollectedItem>();
 
@@ -231,6 +201,8 @@ namespace TH_GeneratedData.ConfigurationPage
 
             int port;
             int.TryParse(p, out port);
+
+            CollectedItems.Clear();
 
             RunProbe(ip, port, devicename);
         }
@@ -295,6 +267,8 @@ namespace TH_GeneratedData.ConfigurationPage
             LoadSnapshotItems(configurationTable);
 
             LoadGeneratedEvents(GeneratedEvents);
+
+            Loading = false;
         }
 
 
@@ -308,6 +282,164 @@ namespace TH_GeneratedData.ConfigurationPage
 
         #endregion
 
+        #region "Snapshot Data"
+
+        ObservableCollection<Controls.Snapshot_Item> snapshotitems;
+        public ObservableCollection<Controls.Snapshot_Item> SnapshotItems
+        {
+            get
+            {
+                if (snapshotitems == null)
+                    snapshotitems = new ObservableCollection<Controls.Snapshot_Item>();
+                return snapshotitems;
+            }
+
+            set
+            {
+                snapshotitems = value;
+            }
+        }
+
+
+        void SaveSnapshotData(DataTable dt)
+        {
+            string prefix = "/GeneratedData/SnapShotData/";
+
+            // Clear all snapshot rows first (so that Ids can be sequentially assigned)
+            string filter = "address LIKE '" + prefix + "*'";
+            DataView dv = dt.AsDataView();
+            dv.RowFilter = filter;
+            DataTable temp_dt = dv.ToTable();
+            foreach (DataRow row in temp_dt.Rows)
+            {
+                DataRow dbRow = dt.Rows.Find(row["address"]);
+                if (dbRow != null) dt.Rows.Remove(dbRow);
+            }
+
+            // Loop through SnapshotItems and add each item back to table with sequential id's
+            foreach (Controls.Snapshot_Item item in SnapshotItems)
+            {
+                if (item.NameText != null && item.SelectedLink != null)
+                {
+                    int id = 0;
+                    string adr = "/GeneratedData/SnapShotData/" + TH_Global.Formatting.UppercaseFirst(item.SelectedType) + "||";
+                    string test = adr + id.ToString("00");
+
+                    // Reassign Id (to keep everything in sequence)
+                    if (configurationTable != null)
+                    {
+                        while (Table_Functions.GetTableValue(test, dt) != null)
+                        {
+                            id += 1;
+                            test = adr + id.ToString("00");
+                        }
+                    }
+
+                    adr = test;
+
+                    string attr = "";
+                    attr += "id||" + id.ToString("00") + ";";
+                    attr += "name||" + item.NameText + ";";
+                    attr += "link||" + item.SelectedLink.Replace(' ', '_') + ";";
+
+                    Table_Functions.UpdateTableValue(null, attr, adr, dt);
+                }
+            }
+        }
+
+        void LoadSnapshotItems(DataTable dt)
+        {
+            string address = "/GeneratedData/SnapShotData/";
+
+            string filter = "address LIKE '" + address + "*'";
+            DataView dv = dt.AsDataView();
+            dv.RowFilter = filter;
+            DataTable temp_dt = dv.ToTable();
+            temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+
+            SnapshotItems.Clear();
+
+            foreach (DataRow row in temp_dt.Rows)
+            {
+                string type = GetSnapShotType(row);
+
+                string name = GetAttribute("name", row);
+                string link = GetAttribute("link", row);
+
+                Controls.Snapshot_Item item = new Controls.Snapshot_Item();
+                item.NameText = name;
+
+                item.TypeChanged += item_TypeChanged;
+
+                item.TypeItems = GenerateTypeList();
+                item.SelectedType = type;
+                item.SelectedLink = link;
+
+                item.SettingChanged += item_SettingChanged;
+                item.RemoveClicked += item_RemoveClicked;
+                item.RefreshClicked += item_RefreshClicked;
+
+                SnapshotItems.Add(item);
+            }
+        }
+
+        void item_RefreshClicked(Controls.Snapshot_Item item)
+        {
+            if (configurationTable != null)
+            {
+                GeneratedEvents = GetGeneratedEvents(configurationTable);
+            }
+        }
+
+        void item_SettingChanged()
+        {
+            if (!Loading) if (SettingChanged != null) SettingChanged(null, null, null);
+        }
+
+        void item_RemoveClicked(Controls.Snapshot_Item item)
+        {
+            this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(RemoveSnapshotItem), priority, new object[] { item });
+        }
+
+        List<Controls.Snapshot_Item> Snapshot_RemoveList = new List<Controls.Snapshot_Item>();
+
+        void RemoveSnapshotItem(Controls.Snapshot_Item item)
+        {
+            SnapshotItems.Remove(item);
+        }
+
+        private void AddValue_Clicked(TH_WPF.Button_01 bt)
+        {
+            Controls.Snapshot_Item item = new Controls.Snapshot_Item();
+            
+            item.TypeChanged += item_TypeChanged;
+
+            item.TypeItems = GenerateTypeList();
+            item.SelectedType = item.TypeItems[0];
+
+            item.SettingChanged += item_SettingChanged;
+            item.RemoveClicked += item_RemoveClicked;
+            item.RefreshClicked += item_RefreshClicked;
+
+            SnapshotItems.Insert(0, item);
+        }
+
+        //void AddSnapShotItem(Controls.Snapshot_Item item)
+        //{
+        //    SnapshotItems.Add(item);
+        //}
+
+        string GetSnapShotType(DataRow row)
+        {
+            string adr = row["address"].ToString();
+
+            int slashIndex = adr.LastIndexOf('/');
+            int idIndex = adr.IndexOf("||");
+
+            return adr.Substring(slashIndex + 1, idIndex - slashIndex - 1);
+        }
+
+        #endregion
 
         #region "Generated Events"
 
@@ -327,6 +459,76 @@ namespace TH_GeneratedData.ConfigurationPage
             }
         }
 
+        void SaveGeneratedEvents(DataTable dt)
+        {
+            foreach (Event e in GeneratedEvents)
+            {
+                SaveEvent(e, dt);
+            }
+        }
+
+        void SaveEvent(Event e, DataTable dt)
+        {
+            string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+
+            string attr = "";
+            attr += "id||" + e.id.ToString("00") + ";";
+            attr += "name||" + e.name + ";";
+            attr += "description||" + e.description + ";";
+
+            Table_Functions.UpdateTableValue(null, attr, prefix, dt);
+
+            foreach (Value v in e.values) SaveValue(v, e, dt);
+
+            if (e.Default != null)
+            {
+                string addr = prefix + "/Default";
+                attr = "";
+                attr += "numval||" + e.Default.numval.ToString() + ";";
+                string val = e.Default.value;
+                Table_Functions.UpdateTableValue(val, attr, addr, dt);
+            }
+        }
+
+        void SaveValue(Value v, Event e, DataTable dt)
+        {
+            string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+            prefix += "/Value||" + v.id.ToString("00");
+
+            // Save Root
+            string attr = "";
+            attr += "id||" + v.id.ToString("00") + ";";
+            Table_Functions.UpdateTableValue(null, attr, prefix, dt);
+
+            foreach (Trigger t in v.triggers) SaveTrigger(t, v, e, dt);
+
+            // Save Result
+            if (v.result != null)
+            {
+                string addr = prefix + "/Result";
+                attr = "";
+                attr += "numval||" + v.result.numval.ToString() + ";";
+                string val = v.result.value;
+                Table_Functions.UpdateTableValue(val, attr, addr, dt);
+            }
+        }
+
+        void SaveTrigger(Trigger t, Value v, Event e, DataTable dt)
+        {
+            string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+            prefix += "/Value||" + v.id.ToString("00");
+            prefix += "/Triggers";
+            prefix += "/Trigger||" + t.id.ToString("00");
+
+            // Save Root
+            string attr = "";
+            attr += "id||" + t.id.ToString("00") + ";";
+            attr += "link||" + t.link + ";";
+            attr += "value||" + t.value + ";";
+            Table_Functions.UpdateTableValue(null, attr, prefix, dt);
+        }
+
+
         void LoadGeneratedEvents(List<Event> genEvents)
         {
             Events.Clear();
@@ -339,6 +541,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 Controls.EventButton event_bt = new Controls.EventButton();
                 event_bt.EventName = e.name.Replace('_', ' ');
+                event_bt.ParentEvent = e;
 
                 TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
                 bt.ButtonContent = event_bt;
@@ -361,6 +564,7 @@ namespace TH_GeneratedData.ConfigurationPage
         Controls.Event CreateEvent(Event e)
         {
             Controls.Event result = new Controls.Event();
+            result.ParentEvent = e;
 
             result.Description = e.description;
 
@@ -371,7 +575,9 @@ namespace TH_GeneratedData.ConfigurationPage
             }
 
             Controls.Value def = new Controls.Value();
-            def.Text = e.Default.value;
+            def.ParentResult = e.Default;
+
+            def.ValueName = e.Default.value;
             def.default_CHK.IsChecked = true;
             result.Values.Add(def);
 
@@ -382,9 +588,11 @@ namespace TH_GeneratedData.ConfigurationPage
         {
             Controls.Value result = new Controls.Value();
 
+            result.ParentResult = v.result;
+
             if (v.result != null)
             {
-                result.Text = v.result.value.Replace('_',' ');
+                result.ValueName = v.result.value.Replace('_',' ');
             }
 
             foreach (Trigger t in v.triggers)
@@ -401,6 +609,8 @@ namespace TH_GeneratedData.ConfigurationPage
         Controls.Trigger CreateTrigger(Trigger t)
         {
             Controls.Trigger result = new Controls.Trigger();
+
+            result.ParentTrigger = t;
 
             foreach (CollectedItem item in CollectedItems)
             {
@@ -674,7 +884,7 @@ namespace TH_GeneratedData.ConfigurationPage
         }
 
 
-        class Event
+        public class Event
         {
             public Event() { values = new List<Value>(); }
 
@@ -688,7 +898,7 @@ namespace TH_GeneratedData.ConfigurationPage
             public string description { get; set; }
         }
 
-        class Value
+        public class Value
         {
             public Value() { triggers = new List<Trigger>(); }
 
@@ -699,7 +909,7 @@ namespace TH_GeneratedData.ConfigurationPage
             public Result result { get; set; }
         }
 
-        class Trigger
+        public class Trigger
         {
             public int id { get; set; }
             public int numval { get; set; }
@@ -709,14 +919,13 @@ namespace TH_GeneratedData.ConfigurationPage
             public string modifier { get; set; }
         }
 
-        class Result
+        public class Result
         {
             public int numval { get; set; }
             public string value { get; set; }         
         }
 
         #endregion
-
 
     }
 }
