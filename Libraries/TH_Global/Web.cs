@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Net;
+using System.Net.Mail;
 using System.IO;
 
 namespace TH_Global
@@ -82,7 +83,6 @@ namespace TH_Global
 
             return result;
         }
-
 
     }
 }

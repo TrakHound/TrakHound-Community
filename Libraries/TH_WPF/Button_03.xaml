@@ -8,9 +8,9 @@
              MinHeight="15"
              >
 
-    <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown">
+    <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Background="#00000000">
 
-        <Border.Style>
+        <!--<Border.Style>
             <Style TargetType="Border">
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
@@ -65,16 +65,16 @@
 
                 </Style.Triggers>
             </Style>
-        </Border.Style>
+        </Border.Style>-->
 
         <Grid>
-            <Grid.ColumnDefinitions>
+            <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>-->
 
             <!--Image-->
-            <Grid Margin="2,0">
+            <Grid Margin="2,0" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -94,13 +94,13 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="#aaa"/>
+                            <Setter Property="Fill" Value="#888"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888">
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -111,7 +111,7 @@
                                     <DataTrigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard FillBehavior="Stop">
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#aaa">
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -124,7 +124,7 @@
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888">
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -135,7 +135,7 @@
                                     <DataTrigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard FillBehavior="Stop">
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#aaa">
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -151,7 +151,7 @@
 
             </Grid>
 
-            <!--Text Label-->
+            <!--Text Label--><!--
             <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="10" Margin="5,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
@@ -211,7 +211,7 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
-            </TextBlock>
+            </TextBlock>-->
 
         </Grid>
 

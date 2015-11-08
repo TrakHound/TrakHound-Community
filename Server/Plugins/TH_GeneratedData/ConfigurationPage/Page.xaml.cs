@@ -156,7 +156,8 @@ namespace TH_GeneratedData.ConfigurationPage
 
                     CollectedItems.Sort((x, y) => string.Compare(x.id, y.id));
 
-                    foreach (CollectedItem ci in CollectedItems) result.Add(ci.id);
+                    //foreach (CollectedItem ci in CollectedItems) result.Add(ci.id);
+                    foreach (CollectedItem ci in CollectedItems) result.Add(ci.display);
 
                     break;
 
@@ -164,7 +165,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
                     foreach (Event e in GeneratedEvents)
                     {
-                        result.Add(e.name.ToLower());
+                        result.Add(TH_Global.Formatting.UppercaseFirst(e.name));
                     }
 
                     break;
@@ -177,6 +178,16 @@ namespace TH_GeneratedData.ConfigurationPage
 
             return result;
         }
+
+        //string GetDataItemId(string s)
+        //{
+        //    if (s.Contains(':'))
+        //    {
+        //        int index = s.IndexOf(':');
+        //        return s.Substring(0, index).Trim();
+        //    }
+        //    return s;
+        //}
 
 
         #region "MTC Data Items"  
@@ -340,7 +351,19 @@ namespace TH_GeneratedData.ConfigurationPage
                     string attr = "";
                     attr += "id||" + id.ToString("00") + ";";
                     attr += "name||" + item.NameText + ";";
-                    attr += "link||" + item.SelectedLink.Replace(' ', '_') + ";";
+
+                    string link = item.SelectedLink;
+                    if (item.SelectedType.ToLower() == "collected")
+                    {
+                        CollectedItem ci = CollectedItems.Find(x => x.display == link);
+                        if (ci != null) link = ci.id;
+                    }
+                    else if (item.SelectedType.ToLower() == "generated")
+                    {
+                        link = link.Replace(' ', '_').ToLower();
+                    }
+
+                    attr += "link||" + link + ";";
 
                     Table_Functions.UpdateTableValue(null, attr, adr, dt);
                 }
@@ -373,6 +396,20 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 item.TypeItems = GenerateTypeList();
                 item.SelectedType = type;
+
+                if (link != null)
+                {
+                    if (type.ToLower() == "collected")
+                    {
+                        CollectedItem ci = CollectedItems.Find(x => x.id == link);
+                        if (ci != null) link = ci.display;
+                    }
+                    else if (type.ToLower() == "generated")
+                    {
+                        link = TH_Global.Formatting.UppercaseFirst(link.Replace('_', ' '));
+                    }
+                }
+                
                 item.SelectedLink = link;
 
                 item.SettingChanged += item_SettingChanged;
@@ -443,24 +480,40 @@ namespace TH_GeneratedData.ConfigurationPage
 
         #region "Generated Events"
 
-        ObservableCollection<object> events;
-        public ObservableCollection<object> Events
+        ObservableCollection<TH_WPF.CollapseButton> eventbuttons;
+        public ObservableCollection<TH_WPF.CollapseButton> EventButtons
         {
             get
             {
-                if (events == null)
-                    events = new ObservableCollection<object>();
-                return events;
+                if (eventbuttons == null)
+                    eventbuttons = new ObservableCollection<TH_WPF.CollapseButton>();
+                return eventbuttons;
             }
 
             set
             {
-                events = value;
+                eventbuttons = value;
             }
         }
 
+        public List<Controls.Event> events;
+
         void SaveGeneratedEvents(DataTable dt)
         {
+            string prefix = "/GeneratedData/GeneratedEvents/";
+
+            // Clear all generated event rows first (so that Ids can be sequentially assigned)
+            string filter = "address LIKE '" + prefix + "*'";
+            DataView dv = dt.AsDataView();
+            dv.RowFilter = filter;
+            DataTable temp_dt = dv.ToTable();
+            foreach (DataRow row in temp_dt.Rows)
+            {
+                DataRow dbRow = dt.Rows.Find(row["address"]);
+                if (dbRow != null) dt.Rows.Remove(dbRow);
+            }
+
+
             foreach (Event e in GeneratedEvents)
             {
                 SaveEvent(e, dt);
@@ -469,20 +522,39 @@ namespace TH_GeneratedData.ConfigurationPage
 
         void SaveEvent(Event e, DataTable dt)
         {
-            string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+
+            int id = 0;
+            string adr = "/GeneratedData/GeneratedEvents/Event||";
+            string test = adr + id.ToString("00");
+
+            // Reassign Id (to keep everything in sequence)
+            if (configurationTable != null)
+            {
+                while (Table_Functions.GetTableValue(test, dt) != null)
+                {
+                    id += 1;
+                    test = adr + id.ToString("00");
+                }
+            }
+
+            adr = test;
+
+            e.id = id;
 
             string attr = "";
             attr += "id||" + e.id.ToString("00") + ";";
             attr += "name||" + e.name + ";";
             attr += "description||" + e.description + ";";
 
-            Table_Functions.UpdateTableValue(null, attr, prefix, dt);
+            
+
+            Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
             foreach (Value v in e.values) SaveValue(v, e, dt);
 
             if (e.Default != null)
             {
-                string addr = prefix + "/Default";
+                string addr = adr + "/Default";
                 attr = "";
                 attr += "numval||" + e.Default.numval.ToString() + ";";
                 string val = e.Default.value;
@@ -492,20 +564,42 @@ namespace TH_GeneratedData.ConfigurationPage
 
         void SaveValue(Value v, Event e, DataTable dt)
         {
-            string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
-            prefix += "/Value||" + v.id.ToString("00");
+            int id = 0;
+            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Value||";
+            string test = adr + id.ToString("00");
+            
+
+            // Reassign Id (to keep everything in sequence)
+            if (configurationTable != null)
+            {
+                while (Table_Functions.GetTableValue(test, dt) != null)
+                {
+                    id += 1;
+                    test = adr + id.ToString("00");
+                }
+            }
+
+            adr = test;
+
+            v.id = id;
+
+
+            //string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+            //prefix += "/Value||" + v.id.ToString("00");
 
             // Save Root
             string attr = "";
             attr += "id||" + v.id.ToString("00") + ";";
-            Table_Functions.UpdateTableValue(null, attr, prefix, dt);
+            Table_Functions.UpdateTableValue(null, attr, adr, dt);
+
+            
 
             foreach (Trigger t in v.triggers) SaveTrigger(t, v, e, dt);
 
             // Save Result
             if (v.result != null)
             {
-                string addr = prefix + "/Result";
+                string addr = adr + "/Result";
                 attr = "";
                 attr += "numval||" + v.result.numval.ToString() + ";";
                 string val = v.result.value;
@@ -515,23 +609,52 @@ namespace TH_GeneratedData.ConfigurationPage
 
         void SaveTrigger(Trigger t, Value v, Event e, DataTable dt)
         {
-            string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
-            prefix += "/Value||" + v.id.ToString("00");
-            prefix += "/Triggers";
-            prefix += "/Trigger||" + t.id.ToString("00");
+            if (t.link != null && t.modifier != null && t.value != null)
+            {
+                int id = 0;
+                string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+                adr += "/Value||" + v.id.ToString("00") + "/Triggers";
+                adr += "/Trigger||";
+                string test = adr + id.ToString("00");
 
-            // Save Root
-            string attr = "";
-            attr += "id||" + t.id.ToString("00") + ";";
-            attr += "link||" + t.link + ";";
-            attr += "value||" + t.value + ";";
-            Table_Functions.UpdateTableValue(null, attr, prefix, dt);
+
+                // Reassign Id (to keep everything in sequence)
+                if (configurationTable != null)
+                {
+                    while (Table_Functions.GetTableValue(test, dt) != null)
+                    {
+                        id += 1;
+                        test = adr + id.ToString("00");
+                    }
+                }
+
+                adr = test;
+
+                t.id = id;
+
+                //string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
+                //prefix += "/Value||" + v.id.ToString("00");
+                //prefix += "/Triggers";
+                //prefix += "/Trigger||" + t.id.ToString("00");
+
+                // Save Root
+                string attr = "";
+                attr += "id||" + t.id.ToString("00") + ";";
+                attr += "link||" + t.link + ";";
+                attr += "value||" + t.value + ";";
+
+
+
+                Table_Functions.UpdateTableValue(null, attr, adr, dt);
+            }        
         }
 
 
         void LoadGeneratedEvents(List<Event> genEvents)
         {
-            Events.Clear();
+            EventButtons.Clear();
+
+            events = new List<Controls.Event>();
 
             bool first = true;
 
@@ -551,14 +674,16 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 bt.PageContent = ev;
 
-                this.Dispatcher.BeginInvoke(new Action<TH_WPF.CollapseButton>(AddEventButton), priority, new object[] { bt });
+                events.Add(ev);
 
+                this.Dispatcher.BeginInvoke(new Action<TH_WPF.CollapseButton>(AddEventButton), priority, new object[] { bt });
             }
         }
 
+
         void AddEventButton(TH_WPF.CollapseButton bt)
         {
-            Events.Add(bt);
+            EventButtons.Add(bt);
         }
 
         Controls.Event CreateEvent(Event e)
@@ -570,25 +695,27 @@ namespace TH_GeneratedData.ConfigurationPage
 
             foreach (Value v in e.values)
             {
-                Controls.Value val = CreateValue(v);
+                Controls.Value val = CreateValue(v, e);
                 result.Values.Add(val);
             }
 
-            Controls.Value def = new Controls.Value();
+            // Default
+            Controls.Default def = new Controls.Default();
             def.ParentResult = e.Default;
-
             def.ValueName = e.Default.value;
-            def.default_CHK.IsChecked = true;
-            result.Values.Add(def);
+            result.DefaultValue = def;
 
             return result;
         }
 
-        Controls.Value CreateValue(Value v)
+        Controls.Value CreateValue(Value v, Event e)
         {
             Controls.Value result = new Controls.Value();
 
-            result.ParentResult = v.result;
+            result.ParentEvent = e;
+            result.ParentValue = v;
+            result.RemoveClicked += Value_RemoveClicked;
+            result.AddTriggerClicked += Value_AddTriggerClicked;
 
             if (v.result != null)
             {
@@ -597,7 +724,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
             foreach (Trigger t in v.triggers)
             {
-                Controls.Trigger tr = CreateTrigger(t);
+                Controls.Trigger tr = CreateTrigger(t, v, e);
                 result.Triggers.Add(tr);
             }
 
@@ -606,11 +733,68 @@ namespace TH_GeneratedData.ConfigurationPage
             return result;
         }
 
-        Controls.Trigger CreateTrigger(Trigger t)
+        void Value_AddTriggerClicked(Controls.Value val)
+        {
+            if (val.ParentValue != null && val.ParentEvent != null)
+            {
+                if (val.ParentEvent.values.Contains(val.ParentValue))
+                {
+                    Controls.Event e = events.Find(x => x.ParentEvent == val.ParentEvent);
+                    if (e != null)
+                    {
+                        int index = e.Values.ToList().FindIndex(x => x.ParentValue == val.ParentValue);
+                        if (index >= 0)
+                        {
+                            Controls.Value v = e.Values[index];
+                            if (v != null)
+                            {
+                                Trigger t = new Trigger();
+                                val.ParentValue.triggers.Add(t);
+
+                                Controls.Trigger tr = CreateTrigger(t, val.ParentValue, val.ParentEvent);
+                                val.Triggers.Add(tr);
+                            }
+                        }
+                        
+                        //Controls.Value v = e.Values.ToList().Find(x => x.ParentValue == val.ParentValue);
+                        //if (v != null)
+                        //{
+                        //    Trigger t = new Trigger();
+                        //    val.ParentValue.triggers.Add(t);
+
+                        //    Controls.Trigger tr = CreateTrigger(t, val.ParentValue, val.ParentEvent);
+                        //    val.Triggers.Add(tr);
+                        //}
+                    }
+                }
+            }
+        }
+
+        void Value_RemoveClicked(Controls.Value val)
+        {
+            if (val.ParentValue != null && val.ParentEvent != null)
+            {
+                if (val.ParentEvent.values.Contains(val.ParentValue))
+                {
+                    val.ParentEvent.values.Remove(val.ParentValue);
+
+                    Controls.Event e = events.Find(x => x.ParentEvent == val.ParentEvent);
+                    if (e != null)
+                    {
+                        if (e.Values.Contains(val)) e.Values.Remove(val);
+                    }
+                }
+            }
+        }
+
+        Controls.Trigger CreateTrigger(Trigger t, Value v, Event e)
         {
             Controls.Trigger result = new Controls.Trigger();
 
+            result.ParentEvent = e;
+            result.ParentValue = v;
             result.ParentTrigger = t;
+            result.RemoveClicked += trigger_RemoveClicked;
 
             foreach (CollectedItem item in CollectedItems)
             {
@@ -623,6 +807,27 @@ namespace TH_GeneratedData.ConfigurationPage
             result.Value = t.value;
 
             return result;
+        }
+
+        void trigger_RemoveClicked(Controls.Trigger t)
+        {
+            if (t.ParentTrigger != null && t.ParentValue != null && t.ParentEvent != null)
+            {
+                t.ParentValue.triggers.Remove(t.ParentTrigger);
+
+                if (t.ParentEvent.values.Contains(t.ParentValue))
+                {
+                    Controls.Event e = events.Find(x => x.ParentEvent == t.ParentEvent);
+                    if (e != null)
+                    {
+                        Controls.Value v = e.Values.ToList().Find(x => x.ParentValue == t.ParentValue);
+                        if (v != null)
+                        {
+                            if (v.Triggers.Contains(t)) v.Triggers.Remove(t);
+                        } 
+                    }
+                }
+            }
         }
 
 

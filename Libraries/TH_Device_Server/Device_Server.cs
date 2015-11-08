@@ -793,7 +793,7 @@ namespace TH_Device_Server
             if (probe != null) probe.Stop();
         }
 
-        void probe_ProbeFinished(TH_MTC_Data.Components.ReturnData returnData)
+        void probe_ProbeFinished(TH_MTC_Data.Components.ReturnData returnData, Probe probe)
         {
             UpdateProcessingStatus("Probe Received");
 

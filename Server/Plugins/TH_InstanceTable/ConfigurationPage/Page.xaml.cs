@@ -53,6 +53,25 @@ namespace TH_InstanceTable.ConfigurationPage
 
             configurationTable = dt;
 
+            string prefix = "/InstanceTable/DataItems/";
+            string s;
+            bool val;
+
+            // Load Conditions
+            s = Table_Functions.GetTableValue(prefix + "Conditions", dt);
+            val = false;
+            if (bool.TryParse(s, out val)) conditions_CHK.IsChecked = val;
+
+            // Load Events
+            s = Table_Functions.GetTableValue(prefix + "Events", dt);
+            val = false;
+            if (bool.TryParse(s, out val)) events_CHK.IsChecked = val;
+
+            // Load Samples
+            s = Table_Functions.GetTableValue(prefix + "Samples", dt);
+            val = false;
+            if (bool.TryParse(s, out val)) samples_CHK.IsChecked = val;
+
             LoadAgentSettings(dt);
 
             configurationTable = dt;

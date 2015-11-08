@@ -96,6 +96,11 @@ namespace TH_ShiftTable
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime_utc", "", returnData.header.creationTime);
                 TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime_utc", "", returnData.header.creationTime);
             }
+
+            DataEvent_Data de_dge = new DataEvent_Data();
+            de_dge.id = "ShiftTable_CurrentShiftInfo";
+            de_dge.data = shiftInfo;
+            if (DataEvent != null) DataEvent(de_dge);
         }
 
         public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
@@ -124,7 +129,7 @@ namespace TH_ShiftTable
 
         }
 
-        public ConfigurationPage ConfigPage { get { return null; } }
+        public Type Config_Page { get { return null; } }
 
         #endregion
 

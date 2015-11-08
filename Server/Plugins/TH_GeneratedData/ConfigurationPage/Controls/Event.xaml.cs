@@ -59,7 +59,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public delegate void Clicked_Handler(Event e);
         public event Clicked_Handler AddValueClicked;
 
-        private void AddValue_Clicked(TH_WPF.Button_01 bt)
+        private void AddValue_Clicked(TH_WPF.Button_04 bt)
         {
             if (AddValueClicked != null) AddValueClicked(this);
         }
@@ -68,6 +68,16 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         {
             if (ParentEvent != null) ParentEvent.description = ((TextBox)sender).Text;
         }
+
+
+        public object DefaultValue
+        {
+            get { return (object)GetValue(DefaultValueProperty); }
+            set { SetValue(DefaultValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty DefaultValueProperty =
+            DependencyProperty.Register("DefaultValue", typeof(object), typeof(Event), new PropertyMetadata(null));
 
     }
 }

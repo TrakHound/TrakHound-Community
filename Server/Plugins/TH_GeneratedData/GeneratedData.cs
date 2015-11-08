@@ -100,10 +100,7 @@ namespace TH_GeneratedData
                             if (gdc.generatedEvents.UploadToMySQL) InsertGeneratedEventItems(geis);
 
                             // Send List of GeneratedEventItems to other Plugins--------
-                            DataEvent_Data de_dge = new DataEvent_Data();
-                            de_dge.id = "GeneratedEventItems";
-                            de_dge.data = geis;
-                            if (DataEvent != null) DataEvent(de_dge);
+                            SendGeneratedEventItems(geis);
                             // ----------------------------------------------------
 
                             break;
@@ -121,10 +118,7 @@ namespace TH_GeneratedData
                             previousSSI = snapShots;
 
                             // Send List of SnapShotItems to other Plugins--------
-                            DataEvent_Data de_dss = new DataEvent_Data();
-                            de_dss.id = "SnapShotItems";
-                            de_dss.data = snapShots;
-                            if (DataEvent != null) DataEvent(de_dss);
+                            SendSnapShotItems(snapShots);
                             // ----------------------------------------------------
 
                             break;
@@ -1052,7 +1046,7 @@ namespace TH_GeneratedData
 
         }
 
-        class SnapShotItem
+        public class SnapShotItem
         {
             public DateTime timestamp { get; set; }
             public string name { get; set; }
@@ -1199,6 +1193,23 @@ namespace TH_GeneratedData
             return Result;
 
         }
+
+        void SendGeneratedEventItems(List<GeneratedEventItem> items)
+        {
+            DataEvent_Data data = new DataEvent_Data();
+            data.id = "GeneratedEventItems";
+            data.data = items;
+            if (DataEvent != null) DataEvent(data);
+        }
+
+        void SendSnapShotItems(List<SnapShotItem> items)
+        {
+            DataEvent_Data data = new DataEvent_Data();
+            data.id = "SnapShotItems";
+            data.data = items;
+            if (DataEvent != null) DataEvent(data);
+        }
+
 
         #endregion
 

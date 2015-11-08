@@ -38,6 +38,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             
         }
 
+        public TH_GeneratedData.ConfigurationPage.Page.Event ParentEvent;
+        public TH_GeneratedData.ConfigurationPage.Page.Value ParentValue;
         public TH_GeneratedData.ConfigurationPage.Page.Trigger ParentTrigger;
 
         ObservableCollection<object> dataitems;

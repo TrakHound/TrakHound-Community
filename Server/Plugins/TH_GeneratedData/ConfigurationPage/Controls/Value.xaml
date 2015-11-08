@@ -29,7 +29,7 @@
         </Grid.ColumnDefinitions>
         
         <!--Value Header-->
-        <Border Grid.Row="1" CornerRadius="1" Background="#0080ff" Width="200">
+        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" Width="200">
             
             <Grid>
 
@@ -44,19 +44,19 @@
 
                     </StackPanel>
 
-                    <!--Default-->
+                    <!--Default--><!--
                     <StackPanel Margin="10,5" Orientation="Horizontal">
 
-                        <!--CheckBox-->
+                        --><!--CheckBox--><!--
                         <CheckBox x:Name="default_CHK" Width="30" Height="30" Style="{StaticResource Android_CheckBoxStyle2}" Cursor="Hand" Checked="CHK_Checked" Unchecked="CHK_Unchecked"/>
 
-                        <!--Title and Help-->
+                        --><!--Title and Help--><!--
                         <StackPanel Orientation="Horizontal">
 
-                            <!--Title-->
+                            --><!--Title--><!--
                             <TextBlock Text="Default" Foreground="White" Margin="10,0" FontSize="10pt" VerticalAlignment="Center"/>
 
-                            <!--Help-->
+                            --><!--Help--><!--
                             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
                                 <Rectangle.ToolTip>
                                     <ToolTip MaxWidth="400">
@@ -111,7 +111,7 @@
 
                         </StackPanel>
 
-                    </StackPanel>
+                    </StackPanel>-->
 
                 </StackPanel>
                 
@@ -121,10 +121,12 @@
             </Grid>
                     
         </Border>
-        
-        <TextBlock Grid.Column="1" Text="Triggers" FontSize="8pt" Foreground="#888" Margin="20,5"/>
-        
-        <WrapPanel Grid.Row="1" Grid.Column="1">
+
+        <TextBlock Grid.Column="0" Text="Value" FontSize="8pt" Foreground="#aaa" Margin="10,5"/>
+
+        <TextBlock Grid.Column="1" Text="Triggers" FontSize="8pt" Foreground="#aaa" Margin="20,5"/>
+
+        <WrapPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
 
             <!--Values-->
             <ItemsControl ItemsSource="{Binding Triggers}">
@@ -142,7 +144,7 @@
             </ItemsControl>
             
             <!--Add Button-->
-            <th_wpf:Button_01 Height="30" Width="35" Image="/TH_GeneratedData;component/Resources/Add_01.png" Margin="5" Clicked="AddTrigger_Clicked" />
+            <th_wpf:Button_04 Image="/TH_GeneratedData;component/Resources/Add_01.png" VerticalAlignment="Center" Height="40" Margin="20,5" Clicked="AddTrigger_Clicked"/>
 
 
         </WrapPanel>

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-62137276576
+71896227784
 1436831558
-13-794894585
+14-1621678677
 23-1356785415
-ConfigurationPage\Controls\Event.xaml;ConfigurationPage\Controls\EventButton.xaml;ConfigurationPage\Controls\Snapshot_Item.xaml;ConfigurationPage\Controls\Trigger.xaml;ConfigurationPage\Controls\Value.xaml;ConfigurationPage\Page.xaml;
+ConfigurationPage\Controls\Default.xaml;ConfigurationPage\Controls\Event.xaml;ConfigurationPage\Controls\EventButton.xaml;ConfigurationPage\Controls\Snapshot_Item.xaml;ConfigurationPage\Controls\Trigger.xaml;ConfigurationPage\Controls\Value.xaml;ConfigurationPage\Page.xaml;
 
 False
 

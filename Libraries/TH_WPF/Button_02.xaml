@@ -8,7 +8,7 @@
              MinHeight="30"
              >
 
-    <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown">
+    <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Cursor="Hand">
 
         <Border.Style>
             <Style TargetType="Border">

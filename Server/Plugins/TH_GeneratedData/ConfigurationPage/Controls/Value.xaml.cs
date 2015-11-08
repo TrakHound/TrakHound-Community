@@ -28,7 +28,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DataContext = this;
         }
 
-        public TH_GeneratedData.ConfigurationPage.Page.Result ParentResult;
+        public TH_GeneratedData.ConfigurationPage.Page.Event ParentEvent;
+        public TH_GeneratedData.ConfigurationPage.Page.Value ParentValue;
 
         ObservableCollection<Trigger> triggers;
         public ObservableCollection<Trigger> Triggers
@@ -136,10 +137,19 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public event Clicked_Handler AddTriggerClicked;
         public event Clicked_Handler RemoveClicked;
 
-
-        private void AddTrigger_Clicked(TH_WPF.Button_01 bt)
+        private void AddTrigger_Clicked(TH_WPF.Button_04 bt)
         {
             if (AddTriggerClicked != null) AddTriggerClicked(this);
+
+            //if (ParentValue != null)
+            //{
+            //    Page.Trigger t = new Page.Trigger();
+            //    ParentValue.triggers.Add(t);
+
+            //    Trigger trigger = new Trigger();
+            //    trigger.ParentTrigger = t;
+            //    Triggers.Add(trigger);
+            //}
         }
 
         private void Remove_Clicked(TH_WPF.Button_02 bt)
@@ -149,9 +159,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         private void ValueName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (ParentResult != null) ParentResult.value = ((TextBox)sender).Text;
+            if (ParentValue != null) if (ParentValue.result != null) ParentValue.result.value = ((TextBox)sender).Text;
         }
-
 
     }
 }

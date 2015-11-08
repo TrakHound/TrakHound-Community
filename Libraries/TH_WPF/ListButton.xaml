@@ -251,7 +251,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" MouseDown="Main_GRID_MouseDown" Margin="1,0,0,0">
+    <Grid MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" MouseDown="Main_GRID_MouseDown" Margin="1,0,0,0" Cursor="Hand">
         
         <!--Normal Style-->
         <Grid>

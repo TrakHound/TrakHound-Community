@@ -143,7 +143,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
  
         public event Clicked_Handler RemoveClicked;
 
-        private void Removed_Clicked(TH_WPF.Button_01 bt)
+        private void Removed_Clicked(TH_WPF.Button_04 bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
             if (SettingChanged != null) SettingChanged();
@@ -153,10 +153,16 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public event Clicked_Handler RefreshClicked;
 
-        private void Refresh_Clicked(TH_WPF.Button_01 bt)
+        private void Refresh_Clicked(TH_WPF.Button_04 bt)
         {
             if (RefreshClicked != null) RefreshClicked(this);
         }
+
+        private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SelectedLink = ((ComboBox)sender).Text;
+        }
+
 
     }
 }

@@ -57,6 +57,12 @@
     <Compile Include="Button_01.xaml.cs">
       <DependentUpon>Button_01.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Button_05.xaml.cs">
+      <DependentUpon>Button_05.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Button_04.xaml.cs">
+      <DependentUpon>Button_04.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Button_03.xaml.cs">
       <DependentUpon>Button_03.xaml</DependentUpon>
     </Compile>
@@ -122,6 +128,14 @@
     <Page Include="Button_01.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Button_05.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Button_04.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Button_03.xaml">
       <Generator>MSBuild:Compile</Generator>

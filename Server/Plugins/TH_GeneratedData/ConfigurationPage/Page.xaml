@@ -58,7 +58,7 @@
                 <!--Generated Events-->
                 <TabItem Header="Generated Events" Background="{x:Null}" Height="30" Padding="20,0">
                     
-                    <ItemsControl ItemsSource="{Binding Events}" Margin="20">
+                    <ItemsControl ItemsSource="{Binding EventButtons}" Margin="20">
                         <ItemsControl.Resources>
                             <Style TargetType="th_wpf:CollapseButton">
                                 <Setter Property="Margin" Value="0,10"/>

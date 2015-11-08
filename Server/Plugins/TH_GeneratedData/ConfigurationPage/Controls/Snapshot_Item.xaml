@@ -90,7 +90,7 @@
                     <TextBlock Text="Data Link" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
                     <!--Variable-->
-                    <Grid Margin="0" Width="150">
+                    <Grid Margin="0" Width="250">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
@@ -107,7 +107,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <Border BorderThickness="1" CornerRadius="1" Margin="0,5">
+                        <Border BorderThickness="1" CornerRadius="1" Margin="0,5" Background="White">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="#aaa"/>
@@ -131,7 +131,7 @@
                     </Grid>
 
                     <!--Collected or Generated Event-->
-                    <ComboBox Width="150" ItemsSource="{Binding LinkItems}" SelectedItem="{Binding SelectedLink}" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand">
+                    <ComboBox Width="250" ItemsSource="{Binding LinkItems}" Text="{Binding SelectedLink}" TextBoxBase.TextChanged="ComboBox_TextChanged" IsEditable="True" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand">
                         <ComboBox.Style>
                             <Style TargetType="ComboBox">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -144,14 +144,14 @@
                         </ComboBox.Style>
                     </ComboBox>
                     
-                    <th_wpf:Button_01 Margin="5" Cursor="Hand" ToolTip="Refresh Data Link List" Image="/TH_GeneratedData;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" />
+                    <th_wpf:Button_04 Margin="5" Cursor="Hand" ToolTip="Refresh Data Link List" Image="/TH_GeneratedData;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" />
 
                 </StackPanel>
 
             </StackPanel>
 
             <!--Remove Button-->
-            <th_wpf:Button_01 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0" Clicked="Removed_Clicked"/>
+            <th_wpf:Button_04 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0" Clicked="Removed_Clicked"/>
 
         </Grid>
 
