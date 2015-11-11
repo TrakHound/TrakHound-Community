@@ -265,7 +265,7 @@ namespace TH_Configuration
                 } 
             }
 
-            Result.UniqueId = GetUniqueID();
+            //Result.UniqueId = GetUniqueID();
 
             Console.WriteLine("Configuration Successfully Read");
 

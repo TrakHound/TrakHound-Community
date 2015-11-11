@@ -27,6 +27,7 @@ using TH_Configuration;
 using TH_Configuration.User;
 using TH_Database;
 using TH_Global;
+using TH_Global.Functions;
 using TH_PlugIns_Server;
 using TH_WPF;
 
@@ -408,6 +409,9 @@ namespace TH_DeviceManager
 
                         // Save Enabled
                         Table_Functions.UpdateTableValue(SelectedDevice.Enabled.ToString(), "/Enabled", dt);
+
+                        // Reset Unique ID
+                        Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UniqueId", dt);
 
                         if (userDatabaseSettings == null)
                         {

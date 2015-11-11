@@ -280,7 +280,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid MouseDown="Main_GRID_MouseDown">
+                <Grid PreviewMouseDown="Main_GRID_MouseDown" Background="#00000000">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2"/>
                         <ColumnDefinition Width="auto"/>
@@ -326,7 +326,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid MouseDown="Main_GRID_MouseDown">
+                <Grid PreviewMouseDown="Main_GRID_MouseDown" Background="#00000000">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2"/>
                         <ColumnDefinition Width="auto"/>

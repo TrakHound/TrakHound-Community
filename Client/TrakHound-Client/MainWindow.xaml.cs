@@ -76,11 +76,9 @@ namespace TrakHound_Client
             ResizeBorderThickness = 1;
 
 
-
             // Read Users and Login
             ReadUserManagementSettings();
             devicemangager.userDatabaseSettings = userDatabaseSettings;
-
 
 
             Splash_UpdateStatus("...Reading Configuration");
@@ -1670,7 +1668,6 @@ namespace TrakHound_Client
 
         }
 
-
         #endregion
 
         #endregion
@@ -1688,12 +1685,22 @@ namespace TrakHound_Client
 
         void ReadConfigurations()
         {
+            bool remote = false;
+
+            if (monitors != null)
+            {
+                foreach (ConfigurationMonitor monitor in monitors)
+                {
+                    monitor.Stop();
+                }
+            }
 
             if (currentuser != null)
             {
                 if (userDatabaseSettings == null)
                 {
                     Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
+                    remote = true;
                 }
                 else
                 {
@@ -1713,29 +1720,47 @@ namespace TrakHound_Client
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in Configurations)
                 {
+                    config.Index = index;
+
                     if (config.Enabled)
                     {
+                        if (remote)
+                        {
+                            StartMonitor(config);
+                        }
+
                         Device_Client device = new Device_Client(config);
                         device.Index = index;
                         device.DataUpdated += Device_DataUpdated;
-                        Devices.Add(device);
-                        index += 1;
+                        Devices.Add(device);  
                     }
 
-
-                    //CreateDeviceButton(config);
+                    index += 1;
                 }
 
-
-                // Update Device Management Page
-                //if (devicemanagementpage == null) devicemanagementpage = new Pages.DeviceManagement.Page();
-                //devicemanagementpage.LoadDevices(Configurations);
-
-                //DeviceListShown = true;
             }
 
+        }
 
+        List<ConfigurationMonitor> monitors = new List<ConfigurationMonitor>();
 
+        void StartMonitor(Configuration config)
+        {
+            ConfigurationMonitor monitor = new ConfigurationMonitor();
+            monitor.CurrentConfiguration = config;
+            monitor.Interval = 5000;
+            monitor.TableName = config.TableName;
+            monitor.ConfigurationChanged += monitor_ConfigurationChanged;
+
+            monitors.Add(monitor);
+
+            monitor.Start();
+        }
+
+        void monitor_ConfigurationChanged(Configuration config)
+        {
+            Logger.Log("New Configuration Found : Reading New Configurations");
+            ReadConfigurations();
         }
 
         List<Configuration> ReadConfigurationFile()

@@ -66,6 +66,7 @@
     <Compile Include="Data\Server_Settings.cs" />
     <Compile Include="Data\SQL_Settings.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="Monitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\Images.cs" />
     <Compile Include="User\UserConfiguration.cs" />
