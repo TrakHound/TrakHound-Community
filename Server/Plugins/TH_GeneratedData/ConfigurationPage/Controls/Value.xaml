@@ -17,140 +17,72 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <!--Value Header-->
-        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" Width="200">
-            
-            <Grid>
 
-                <StackPanel Margin="10" VerticalAlignment="Center">
+    <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1">
 
-                    <!--Value Name-->
-                    <StackPanel Margin="20,5">
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="Name" Foreground="#66ffffff" FontSize="10pt" />
+            <!--Value Header-->
+            <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" Width="200">
 
-                        <TextBox Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                <Grid>
 
-                    </StackPanel>
+                    <StackPanel Margin="10" VerticalAlignment="Center">
 
-                    <!--Default--><!--
-                    <StackPanel Margin="10,5" Orientation="Horizontal">
+                        <!--Value Name-->
+                        <StackPanel Margin="20,5">
 
-                        --><!--CheckBox--><!--
-                        <CheckBox x:Name="default_CHK" Width="30" Height="30" Style="{StaticResource Android_CheckBoxStyle2}" Cursor="Hand" Checked="CHK_Checked" Unchecked="CHK_Unchecked"/>
+                            <TextBlock Text="Name" Foreground="#66ffffff" FontSize="10pt" />
 
-                        --><!--Title and Help--><!--
-                        <StackPanel Orientation="Horizontal">
-
-                            --><!--Title--><!--
-                            <TextBlock Text="Default" Foreground="White" Margin="10,0" FontSize="10pt" VerticalAlignment="Center"/>
-
-                            --><!--Help--><!--
-                            <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                                <Rectangle.ToolTip>
-                                    <ToolTip MaxWidth="400">
-                                        <StackPanel>
-                                            <TextBlock Text="Default" FontWeight="Bold"/>
-                                            <TextBlock TextWrapping="Wrap">
-                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Rectangle.ToolTip>
-
-
-                                <Rectangle.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_GeneratedData;component/Resources/Help_01.png" />
-                                </Rectangle.Resources>
-
-                                <Rectangle.Style>
-                                    <Style TargetType="Rectangle">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Fill" Value="#aaffffff"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="true">
-                                                <Trigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.EnterActions>
-                                                <Trigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#aaffffff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.ExitActions>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Rectangle.Style>
-
-                            </Rectangle>
+                            <TextBox Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
                         </StackPanel>
 
-                    </StackPanel>-->
+                    </StackPanel>
 
-                </StackPanel>
-                
-                <!--Remove Button-->
-                <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/X_01.png" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked"/>
+                    <!--Remove Button-->
+                    <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/X_01.png" HorizontalAlignment="Right" VerticalAlignment="Top" Cursor="Hand" Clicked="Remove_Clicked"/>
 
-            </Grid>
-                    
-        </Border>
+                </Grid>
 
-        <TextBlock Grid.Column="0" Text="Value" FontSize="8pt" Foreground="#aaa" Margin="10,5"/>
+            </Border>
 
-        <TextBlock Grid.Column="1" Text="Triggers" FontSize="8pt" Foreground="#aaa" Margin="20,5"/>
+            <TextBlock Grid.Column="0" Text="Value" FontSize="8pt" Foreground="#aaa" Margin="10,5"/>
 
-        <WrapPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+            <TextBlock Grid.Column="1" Text="Triggers" FontSize="8pt" Foreground="#aaa" Margin="20,5"/>
 
-            <!--Values-->
-            <ItemsControl ItemsSource="{Binding Triggers}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+            <WrapPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
 
-                <ItemsControl.Resources>
-                    <Style TargetType="controls:Trigger">
-                        <Setter Property="Margin" Value="10,0,0,0"/>
-                    </Style>
-                </ItemsControl.Resources>
-            </ItemsControl>
-            
-            <!--Add Button-->
-            <th_wpf:Button_04 Image="/TH_GeneratedData;component/Resources/Add_01.png" VerticalAlignment="Center" Height="40" Margin="20,5" Clicked="AddTrigger_Clicked"/>
+                <!--Values-->
+                <ItemsControl ItemsSource="{Binding Triggers}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
+                    <ItemsControl.Resources>
+                        <Style TargetType="controls:Trigger">
+                            <Setter Property="Margin" Value="10,0,0,0"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
 
-        </WrapPanel>
-        
+                <!--Add Button-->
+                <th_wpf:Button_04 Image="/TH_GeneratedData;component/Resources/Add_01.png" VerticalAlignment="Center" Height="40" Margin="20,5" Clicked="AddTrigger_Clicked"/>
+
+            </WrapPanel>
+
+        </Grid>
+
+    </Border>
        
-            
-    </Grid>
-    
 </UserControl>

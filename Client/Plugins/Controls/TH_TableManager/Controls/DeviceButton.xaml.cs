@@ -26,6 +26,8 @@ namespace TH_TableManager.Controls
             DataContext = this;
         }
 
+        public object Parent;
+
 
         public string Description
         {
@@ -76,7 +78,14 @@ namespace TH_TableManager.Controls
         public static readonly DependencyProperty IdProperty =
             DependencyProperty.Register("Id", typeof(string), typeof(DeviceButton), new PropertyMetadata(null));
 
-        
+
+        public delegate void Clicked_Handler(DeviceButton bt);
+        public event Clicked_Handler Clicked;
+
+        private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Clicked != null) Clicked(this);
+        }
         
     }
 }

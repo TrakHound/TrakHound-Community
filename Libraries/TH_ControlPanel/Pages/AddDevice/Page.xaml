@@ -4,24 +4,233 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              xmlns:controls="clr-namespace:TH_DeviceManager.Controls"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <StackPanel.Resources>
-            <Style TargetType="controls:PageItem">
-                <Setter Property="Margin" Value="10"/>
-            </Style>
-        </StackPanel.Resources>
+             d:DesignHeight="600" d:DesignWidth="800">
 
-        <!--From File-->
-        <controls:PageItem Clicked="DeviceFromFile_Clicked" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="800"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <!--New-->
-        <controls:PageItem Clicked="NewDevice_Clicked" AlternateStyle="true" Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-    </StackPanel>
-    
+            <TextBlock Text="Add a New Device" FontSize="20pt" Foreground="#333" Margin="10,20,10,10"/>
+
+            <TextBlock Grid.Row="1" FontSize="10pt" TextWrapping="Wrap" Foreground="#888" Margin="10,10,10,30">
+                Add a new device using the catalog or load from a local file.
+            </TextBlock>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Catalog-->
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Configuration Catalog" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                    <!--Search-->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Search Bar-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border BorderThickness="1" CornerRadius="1" Margin="0,5,10,5">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="#aaa"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsFocused, ElementName=search_TXT}" Value="true">
+                                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+
+                                <Grid Margin="10,0">
+
+                                    <!--Instructions-->
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <!--Image-->
+                                        <Rectangle Height="20"  Width="20" Margin="0,0,5,0">
+                                            <Rectangle.Resources>
+                                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Search_01.png" />
+                                            </Rectangle.Resources>
+
+                                            <Rectangle.Style>
+                                                <Style TargetType="Rectangle">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                                    <Setter Property="Fill" Value="#aaa"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Text, ElementName=search_TXT}" Value="">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Rectangle.Style>
+                                        </Rectangle>
+
+                                        <!--Text-->
+                                        <TextBlock Text="Search" FontStyle="Italic" FontSize="12pt" Foreground="#aaa" VerticalAlignment="Center" Margin="2,0" >
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Text, ElementName=search_TXT}" Value="">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                    </StackPanel>                                 
+
+                                    <!--User Input-->
+                                    <TextBox x:Name="search_TXT" TextChanged="search_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+
+                                </Grid>
+
+                            </Border>
+
+                        </Grid>
+
+                        <th_wpf:Button_04 Grid.Column="1"  Image="/TH_DeviceManager;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked"/>
+
+                    </Grid>
+
+                    <!--List-->
+                    <Border Grid.Row="2" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="300" VerticalAlignment="Stretch">
+
+                        <Grid>
+
+                            <ItemsControl ItemsSource="{Binding SharedList}"/>
+
+                            <!--Loading Animation-->
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Opacity" Value="0.0"/>
+                                        <Setter Property="Width" Value="0"/>
+                                        <Setter Property="Height" Value="0"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CatalogLoading}" Value="true">
+                                                <DataTrigger.EnterActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="180" >
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="305" >
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseOut"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseIn"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.EnterActions>
+                                                <DataTrigger.ExitActions>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
+                                                                <DiscreteDoubleKeyFrame Value="0" />
+                                                            </DoubleAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
+                                                                <DiscreteDoubleKeyFrame Value="0" />
+                                                            </DoubleAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                <DoubleAnimation.EasingFunction>
+                                                                    <CubicEase EasingMode="EaseIn"/>
+                                                                </DoubleAnimation.EasingFunction>
+                                                            </DoubleAnimation>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </DataTrigger.ExitActions>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
+
+                            </Grid>
+
+                        </Grid>
+                        
+                    </Border>
+
+                </Grid>
+
+                <!--Buttons-->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                    <StackPanel.Resources>
+                        <Style TargetType="controls:PageItem">
+                            <Setter Property="Margin" Value="10"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <!--From File-->
+                    <controls:PageItem Clicked="DeviceFromFile_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
+
+                    <!--New-->
+                    <controls:PageItem Clicked="NewDevice_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" />
+
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+
+    </Grid>
+
 </UserControl>

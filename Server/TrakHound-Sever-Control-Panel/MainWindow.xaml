@@ -480,7 +480,7 @@
                                 </Border>
 
                                 <!--Login-->
-                                <Grid x:Name="Login_GRID" DockPanel.Dock="Right" PreviewMouseDown="Login_GRID_PreviewMouseDown" Margin="5,0">
+                                <Grid x:Name="Login_GRID" DockPanel.Dock="Right" PreviewMouseDown="Login_GRID_PreviewMouseDown" Margin="5,0" Cursor="Hand">
 
                                     <!--Logged In-->
                                     <Grid>

@@ -44,6 +44,8 @@ namespace TH_Configuration
 
         #region "Properties"
 
+        public bool Enabled { get; set; }
+
         /// <summary>
         /// Used as a UniqueId between any number of devices
         /// Composed of Database name, IP address, and Port (so it should always be unique)
@@ -99,6 +101,15 @@ namespace TH_Configuration
             return RandomString(80);
         }
 
+        //public string GetDatabaseName(Database_Settings db)
+        //{
+        //    string Result = "";
+
+
+
+        //    return Result;
+        //}
+
         // OBSOLETE
         static string GetUniqueID(Configuration config)
         {
@@ -110,25 +121,30 @@ namespace TH_Configuration
         {
             string Result = "";
 
+
+
+
+
+
             // Generate Database name if NOT specified in Device_Configuration file
-            if (sql.Database == null)
-            {
-                List<string> Items = new List<string>();
+            //if (sql.Database == null)
+            //{
+            //    List<string> Items = new List<string>();
 
-                if (sql.Database_Prefix != null) Items.Add(sql.Database_Prefix.ToLower());
-                if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
-                if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
-                if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
-                if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
-                if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
+            //    if (sql.Database_Prefix != null) Items.Add(sql.Database_Prefix.ToLower());
+            //    if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
+            //    if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
+            //    if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
+            //    if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
+            //    if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
 
-                for (int x = 0; x <= Items.Count - 1; x++)
-                {
-                    if (x > 0) Result += "_";
-                    Result += Items[x];
-                }
-            }
-            else Result = sql.Database;
+            //    for (int x = 0; x <= Items.Count - 1; x++)
+            //    {
+            //        if (x > 0) Result += "_";
+            //        Result += Items[x];
+            //    }
+            //}
+            //else Result = sql.Database;
 
             return Result;
         }
@@ -162,26 +178,36 @@ namespace TH_Configuration
 
                 foreach (XmlNode node in doc.DocumentElement.ChildNodes)
                 {
-                    switch (node.Name.ToLower())
+                    if (node.NodeType == XmlNodeType.Element)
                     {
-                        case "agent": Result.Agent = Process_Agent(node); break;
+                        if (node.InnerText != "")
+                        {
+                            Type Settings = typeof(Configuration);
+                            PropertyInfo info = Settings.GetProperty(node.Name);
 
-                        // OBSOLETE 10-19-15
-                        case "sql": Result.SQL = Process_SQL(node); break;
+                            if (info != null)
+                            {
+                                Type t = info.PropertyType;
+                                info.SetValue(Result, Convert.ChangeType(node.InnerText, t), null);
+                            }
+                            else
+                            {
+                                switch (node.Name.ToLower())
+                                {
+                                    case "agent": Result.Agent = Process_Agent(node); break;
 
-                        case "databases": Result.Databases = Process_Databases(node); break;
-                        case "description": Result.Description = Process_Description(node); break;
-                        case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
-                        case "server": Result.Server = Process_Server(node); break;
+                                    // OBSOLETE 10-19-15
+                                    case "sql": Result.SQL = Process_SQL(node); break;
+
+                                    case "databases": Result.Databases = Process_Databases(node); break;
+                                    case "description": Result.Description = Process_Description(node); break;
+                                    case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
+                                    case "server": Result.Server = Process_Server(node); break;
+                                }
+                            }
+                        }
                     }
                 }
-
-                //if (Result.SQL != null) Result.SQL.Database = Result.GetDatabaseName(Result.SQL);
-                //if (Result.SQL.AdminSQL != null) Result.SQL.AdminSQL.Database = Result.GetDatabaseName(Result.SQL.AdminSQL);
-
-                //string databaseNames = Result.SQL.Database;
-                //if (Result.SQL.AdminSQL != null) databaseNames += " :: " + Result.SQL.AdminSQL.Database;
-                //Console.WriteLine("Database Name = " + databaseNames);
 
                 Result.UniqueId = GetUniqueID();
 
@@ -192,6 +218,56 @@ namespace TH_Configuration
             {
                 Console.WriteLine("Settings File Not Found : " + ConfigFilePath);
             }
+
+            return Result;
+
+        }
+
+        public static Configuration ReadConfigFile(XmlDocument xml)
+        {
+
+            Configuration Result = null;
+
+            Result = new Configuration();
+
+            Result.ConfigurationXML = xml;
+
+            foreach (XmlNode node in xml.DocumentElement.ChildNodes)
+            {
+                if (node.NodeType == XmlNodeType.Element)
+                {
+                    if (node.InnerText != "")
+                    {
+                        Type Settings = typeof(Configuration);
+                        PropertyInfo info = Settings.GetProperty(node.Name);
+
+                        if (info != null)
+                        {
+                            Type t = info.PropertyType;
+                            info.SetValue(Result, Convert.ChangeType(node.InnerText, t), null);
+                        }
+                        else
+                        {
+                            switch (node.Name.ToLower())
+                            {
+                                case "agent": Result.Agent = Process_Agent(node); break;
+
+                                // OBSOLETE 10-19-15
+                                case "sql": Result.SQL = Process_SQL(node); break;
+
+                                case "databases": Result.Databases = Process_Databases(node); break;
+                                case "description": Result.Description = Process_Description(node); break;
+                                case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
+                                case "server": Result.Server = Process_Server(node); break;
+                            }
+                        }
+                    }
+                } 
+            }
+
+            Result.UniqueId = GetUniqueID();
+
+            Console.WriteLine("Configuration Successfully Read");
 
             return Result;
 
@@ -211,7 +287,6 @@ namespace TH_Configuration
                 {
                     if (Child.InnerText != "")
                     {
-
                         Type Settings = typeof(Agent_Settings);
                         PropertyInfo info = Settings.GetProperty(Child.Name);
 
@@ -505,7 +580,6 @@ namespace TH_Configuration
             return Result;
 
         }
-
 
         #endregion
 

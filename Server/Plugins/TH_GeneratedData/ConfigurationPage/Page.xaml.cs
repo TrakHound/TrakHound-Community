@@ -86,16 +86,11 @@ namespace TH_GeneratedData.ConfigurationPage
         }
 
 
-
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
 
         DataTable configurationTable;
-
-        
-
-        
-
+       
 
         string GetAttribute(string name, DataRow row)
         {
@@ -543,7 +538,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
             string attr = "";
             attr += "id||" + e.id.ToString("00") + ";";
-            attr += "name||" + e.name + ";";
+            attr += "name||" + e.name.Replace(' ','_').ToLower() + ";";
             attr += "description||" + e.description + ";";
 
             
@@ -663,7 +658,7 @@ namespace TH_GeneratedData.ConfigurationPage
                 Controls.Event ev = CreateEvent(e);
 
                 Controls.EventButton event_bt = new Controls.EventButton();
-                event_bt.EventName = e.name.Replace('_', ' ');
+                event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
                 event_bt.ParentEvent = e;
 
                 TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();

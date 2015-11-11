@@ -155,7 +155,7 @@
                         </Grid.ColumnDefinitions>
                         
                         <!--Zoom Out Button-->
-                        <Grid Grid.Column="0" x:Name="ZoomOut_GRID" PreviewMouseDown="Zoom_Out_Click" ToolTip="Zoom Out">
+                        <Grid Grid.Column="0" x:Name="ZoomOut_GRID" PreviewMouseDown="Zoom_Out_Click" ToolTip="Zoom Out" Cursor="Hand">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Background" Value="#00000000"/>
@@ -164,7 +164,7 @@
                                             <Trigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#10000000">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
                                                             <ColorAnimation.EasingFunction>
                                                                 <CubicEase EasingMode="EaseOut"/>
                                                             </ColorAnimation.EasingFunction>
@@ -234,7 +234,7 @@
                         <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#22000000"/>
                         
                         <!--Zoom In Button-->
-                        <Grid Grid.Column="4" x:Name="ZoomIn_GRID" PreviewMouseDown="Zoom_In_Click" ToolTip="Zoom In">
+                        <Grid Grid.Column="4" x:Name="ZoomIn_GRID" PreviewMouseDown="Zoom_In_Click" ToolTip="Zoom In" Cursor="Hand">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Background" Value="#00000000"/>
@@ -243,7 +243,7 @@
                                             <Trigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#10000000">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
                                                             <ColorAnimation.EasingFunction>
                                                                 <CubicEase EasingMode="EaseOut"/>
                                                             </ColorAnimation.EasingFunction>
@@ -332,7 +332,7 @@
                         <controls:TH_Button Height="40" Width="40" Clicked="About_Clicked" Image="/TrakHound-Client;component/Resources/About_01.png" ToolTip="About TrakHound Client"/>
 
                         <!--Exit Button-->
-                        <local:Exit_BT Clicked="Exit_BT_Clicked" ToolTip="Exit TrakHound Client"/>
+                        <local:Exit_BT Clicked="Exit_BT_Clicked" ToolTip="Exit TrakHound Client" Cursor="Hand"/>
 
                     </StackPanel>
 

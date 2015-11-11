@@ -15,7 +15,7 @@
              d:DesignWidth="300">
 
 
-    <Border x:Name="BD" CornerRadius="2" PreviewMouseDown="Border_PreviewMouseDown">
+    <Border x:Name="BD" CornerRadius="2" PreviewMouseDown="Border_PreviewMouseDown" Cursor="Hand">
         <Border.Style>
             <Style TargetType="Border">
                 <Setter Property="Background" Value="#00000000"/>
@@ -24,7 +24,7 @@
                         <Trigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#10000000">
+                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
                                         <ColorAnimation.EasingFunction>
                                             <CubicEase EasingMode="EaseOut"/>
                                         </ColorAnimation.EasingFunction>

@@ -39,213 +39,221 @@
             <StackPanel Grid.Column="0">
 
                 <TextBlock Text="Upload to Database" FontSize="12pt" Foreground="#888" Margin="10"/>
+                
+                <Border CornerRadius="2" BorderThickness="1" BorderBrush="#aaa">
+                    
+                    <StackPanel Margin="20">
 
-                <!--Events-->
-                <StackPanel Orientation="Horizontal">
+                        <!--Events-->
+                        <StackPanel Orientation="Horizontal">
 
-                    <!--CheckBox-->
-                    <CheckBox x:Name="events_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="events_CHK_Checked" Unchecked="events_CHK_Unchecked"/>
+                            <!--CheckBox-->
+                            <CheckBox x:Name="events_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="events_CHK_Checked" Unchecked="events_CHK_Unchecked"/>
 
-                    <!--Title and Help-->
-                    <StackPanel Orientation="Horizontal">
+                            <!--Title and Help-->
+                            <StackPanel Orientation="Horizontal">
 
-                        <!--Title-->
-                        <TextBlock Text="Events" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                                <!--Title-->
+                                <TextBlock Text="Events" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
-                        <!--Help-->
-                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                            <Rectangle.ToolTip>
-                                <ToolTip MaxWidth="400">
-                                    <StackPanel>
-                                        <TextBlock Text="Events" FontWeight="Bold"/>
-                                        <TextBlock TextWrapping="Wrap">
+                                <!--Help-->
+                                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                                    <Rectangle.ToolTip>
+                                        <ToolTip MaxWidth="400">
+                                            <StackPanel>
+                                                <TextBlock Text="Events" FontWeight="Bold"/>
+                                                <TextBlock TextWrapping="Wrap">
                                             Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </Rectangle.ToolTip>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ToolTip>
+                                    </Rectangle.ToolTip>
 
 
-                            <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_InstanceTable;component/Resources/Help_01.png" />
-                            </Rectangle.Resources>
+                                    <Rectangle.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_InstanceTable;component/Resources/Help_01.png" />
+                                    </Rectangle.Resources>
 
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Fill" Value="#0080ff"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard FillBehavior="Stop">
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
 
-                        </Rectangle>
+                                </Rectangle>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!--Samples-->
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--CheckBox-->
+                            <CheckBox x:Name="samples_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="samples_CHK_Checked" Unchecked="samples_CHK_Unchecked"/>
+
+                            <!--Title and Help-->
+                            <StackPanel Orientation="Horizontal">
+
+                                <!--Title-->
+                                <TextBlock Text="Samples" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                                <!--Help-->
+                                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                                    <Rectangle.ToolTip>
+                                        <ToolTip MaxWidth="400">
+                                            <StackPanel>
+                                                <TextBlock Text="Samples" FontWeight="Bold"/>
+                                                <TextBlock TextWrapping="Wrap">
+                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ToolTip>
+                                    </Rectangle.ToolTip>
+
+
+                                    <Rectangle.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_InstanceTable;component/Resources/Help_01.png" />
+                                    </Rectangle.Resources>
+
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Fill" Value="#0080ff"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard FillBehavior="Stop">
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+
+                                </Rectangle>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!--Conditions-->
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--CheckBox-->
+                            <CheckBox x:Name="conditions_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="conditions_CHK_Checked" Unchecked="conditions_CHK_Unchecked"/>
+
+                            <!--Title and Help-->
+                            <StackPanel Orientation="Horizontal">
+
+                                <!--Title-->
+                                <TextBlock Text="Conditions" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                                <!--Help-->
+                                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                                    <Rectangle.ToolTip>
+                                        <ToolTip MaxWidth="400">
+                                            <StackPanel>
+                                                <TextBlock Text="Conditions" FontWeight="Bold"/>
+                                                <TextBlock TextWrapping="Wrap">
+                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ToolTip>
+                                    </Rectangle.ToolTip>
+
+
+                                    <Rectangle.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_InstanceTable;component/Resources/Help_01.png" />
+                                    </Rectangle.Resources>
+
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Fill" Value="#0080ff"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard FillBehavior="Stop">
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+
+                                </Rectangle>
+
+                            </StackPanel>
+
+                        </StackPanel>
 
                     </StackPanel>
-
-                </StackPanel>
-
-                <!--Samples-->
-                <StackPanel Orientation="Horizontal">
-
-                    <!--CheckBox-->
-                    <CheckBox x:Name="samples_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="samples_CHK_Checked" Unchecked="samples_CHK_Unchecked"/>
-
-                    <!--Title and Help-->
-                    <StackPanel Orientation="Horizontal">
-
-                        <!--Title-->
-                        <TextBlock Text="Samples" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                        <!--Help-->
-                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                            <Rectangle.ToolTip>
-                                <ToolTip MaxWidth="400">
-                                    <StackPanel>
-                                        <TextBlock Text="Samples" FontWeight="Bold"/>
-                                        <TextBlock TextWrapping="Wrap">
-                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </Rectangle.ToolTip>
-
-
-                            <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_InstanceTable;component/Resources/Help_01.png" />
-                            </Rectangle.Resources>
-
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
-
-                        </Rectangle>
-
-                    </StackPanel>
-
-                </StackPanel>
-
-                <!--Conditions-->
-                <StackPanel Orientation="Horizontal">
-
-                    <!--CheckBox-->
-                    <CheckBox x:Name="conditions_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="conditions_CHK_Checked" Unchecked="conditions_CHK_Unchecked"/>
-
-                    <!--Title and Help-->
-                    <StackPanel Orientation="Horizontal">
-
-                        <!--Title-->
-                        <TextBlock Text="Conditions" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                        <!--Help-->
-                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                            <Rectangle.ToolTip>
-                                <ToolTip MaxWidth="400">
-                                    <StackPanel>
-                                        <TextBlock Text="Conditions" FontWeight="Bold"/>
-                                        <TextBlock TextWrapping="Wrap">
-                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </Rectangle.ToolTip>
-
-
-                            <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_InstanceTable;component/Resources/Help_01.png" />
-                            </Rectangle.Resources>
-
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
-
-                        </Rectangle>
-
-                    </StackPanel>
-
-                </StackPanel>
+                    
+                </Border>
 
             </StackPanel>
 
@@ -256,114 +264,184 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Data Items to Initiate New Row" FontSize="12pt" Foreground="#888" Margin="20,10"/>
+                <StackPanel Orientation="Horizontal">
 
-                <Grid Grid.Row="1">
-
+                    <!--Title and Help-->
                     <StackPanel Orientation="Horizontal">
 
-                        <!--Events-->
-                        <StackPanel Margin="40,0">
+                        <!--Title-->
+                        <TextBlock Text="Data Items to Initiate New Row" FontSize="12pt" Foreground="#888" Margin="10,10"/>
 
-                            <TextBlock Text="Events" FontSize="10pt" Foreground="#888" Margin="10"/>
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Data Items to Initiate New Row" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Use the check boxes below to enable/disable which data items initiate a new row in the Instance Table.
+                                            A new row is initiated/created when a dataitem's value is different than it's previous value.
+                                            Typically a 'Sample' data item always has a different value so if this is not an item that needs to be
+                                            specifically captured then many times it can simplify the database(s) by leaving those data items unchecked.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
 
-                            <ItemsControl Grid.Column="1" ItemsSource="{Binding EventItems}"/>
 
-                        </StackPanel>
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_InstanceTable;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
 
-                        <!--Samples-->
-                        <StackPanel Margin="40,0">
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
 
-                            <TextBlock Text="Samples" FontSize="10pt" Foreground="#888" Margin="10"/>
-
-                            <ItemsControl Grid.Column="1" ItemsSource="{Binding SampleItems}"/>
-
-                        </StackPanel>
-
-                        <!--Conditions-->
-                        <StackPanel Margin="40,0">
-
-                            <TextBlock Text="Conditions" FontSize="10pt" Foreground="#888" Margin="10"/>
-
-                            <ItemsControl Grid.Column="1" ItemsSource="{Binding ConditionItems}"/>
-
-                        </StackPanel>
+                        </Rectangle>
 
                     </StackPanel>
 
-                    <!--Loading Animation-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Opacity" Value="0.0"/>
-                                <Setter Property="Width" Value="0"/>
-                                <Setter Property="Height" Value="0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding OmitItemsLoading}" Value="true">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="180" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="305" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseIn"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
-                                                        <DiscreteDoubleKeyFrame Value="0" />
-                                                    </DoubleAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
-                                                        <DiscreteDoubleKeyFrame Value="0" />
-                                                    </DoubleAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseIn"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
+                </StackPanel>
+                
+                <Border Grid.Row="1" CornerRadius="2" BorderThickness="1" BorderBrush="#aaa">
 
-                        <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="#0080ff" />
+                    <Grid Margin="20">
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--Events-->
+                            <StackPanel Margin="40,0">
+
+                                <TextBlock Text="Events" FontSize="10pt" Foreground="#888" Margin="10"/>
+
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding EventItems}"/>
+
+                            </StackPanel>
+
+                            <!--Samples-->
+                            <StackPanel Margin="40,0">
+
+                                <TextBlock Text="Samples" FontSize="10pt" Foreground="#888" Margin="10"/>
+
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding SampleItems}"/>
+
+                            </StackPanel>
+
+                            <!--Conditions-->
+                            <StackPanel Margin="40,0">
+
+                                <TextBlock Text="Conditions" FontSize="10pt" Foreground="#888" Margin="10"/>
+
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding ConditionItems}"/>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <!--Loading Animation-->
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Opacity" Value="0.0"/>
+                                    <Setter Property="Width" Value="0"/>
+                                    <Setter Property="Height" Value="0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OmitItemsLoading}" Value="true">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="180" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="305" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
+                                                            <DiscreteDoubleKeyFrame Value="0" />
+                                                        </DoubleAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
+                                                            <DiscreteDoubleKeyFrame Value="0" />
+                                                        </DoubleAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="#0080ff" />
+
+                        </Grid>
 
                     </Grid>
 
-                </Grid>
+                </Border>
 
             </Grid>
 

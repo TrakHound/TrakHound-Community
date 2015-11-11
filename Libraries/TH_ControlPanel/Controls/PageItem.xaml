@@ -7,7 +7,7 @@
                 
              >
 
-    <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown">
+    <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Background="#00000000">
 
         <!--Normal Style-->
         <Grid>
@@ -168,7 +168,7 @@
                 </Style>
             </Grid.Style>
 
-            <Grid>
+            <Grid Cursor="Hand">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Background" Value="#00000000"/>
@@ -177,7 +177,7 @@
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000">
+                                            <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#100080ff">
                                                 <ColorAnimation.EasingFunction>
                                                     <CubicEase EasingMode="EaseOut"/>
                                                 </ColorAnimation.EasingFunction>

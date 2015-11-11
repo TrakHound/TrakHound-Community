@@ -142,12 +142,30 @@ namespace TH_TableManager
                     db.Serial = device.configuration.Description.Serial;
                     db.Id = device.configuration.Description.Machine_ID;
 
+                    db.Clicked += db_Clicked;
+
                     ListButton lb = new ListButton();
                     lb.ButtonContent = db;
                     lb.ShowImage = false;
                     lb.Selected += lb_Device_Selected;
                     lb.DataObject = device;
+
+                    db.Parent = lb;
+
                     DeviceList.Add(lb);
+                }
+            }
+        }
+
+        void db_Clicked(DeviceButton bt)
+        {
+            if (bt.Parent != null)
+            {
+                if (bt.Parent.GetType() == typeof(ListButton))
+                {
+                    ListButton lb = (ListButton)bt.Parent;
+
+                    lb_Device_Selected(lb);
                 }
             }
         }
@@ -255,7 +273,6 @@ namespace TH_TableManager
             Configuration config = (Configuration)o;
 
             string[] tableNames = TH_Database.Table.List(config.Databases);
-            //string[] tableNames = Global.Table_List(config.SQL);
 
             this.Dispatcher.BeginInvoke(new Action<string[]>(LoadTableList_Finished), Priority, new object[] { tableNames });
         }
@@ -736,7 +753,7 @@ namespace TH_TableManager
         private void DropTables_Button_Clicked(Controls.Button bt)
         {
 
-            if (MessageBox.Show("Delete Selected Tables in " + selectedDevice.configuration.DataBaseName + "?", "Drop Tables", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Delete Selected Tables?", "Drop Tables", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 string[] tablenames = SelectedTables.Select(x => x.Text).Distinct().ToArray();
 

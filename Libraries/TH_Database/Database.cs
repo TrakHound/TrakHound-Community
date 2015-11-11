@@ -1134,7 +1134,7 @@ namespace TH_Database
 
         void FindPlugins(string Path)
         {
-            Logger.Log("Searching for Database Plugins in '" + Path + "'");
+            //Logger.Log("Searching for Database Plugins in '" + Path + "'");
 
             if (Directory.Exists(Path))
             {
@@ -1152,20 +1152,20 @@ namespace TH_Database
                     {
                         if (plugins.ToList().Find(x => x.Value.Name.ToLower() == DBP.Value.Name.ToLower()) == null)
                         {
-                            if (DBP.IsValueCreated) Logger.Log(DBP.Value.Name + " : PlugIn Found");
+                            //if (DBP.IsValueCreated) Logger.Log(DBP.Value.Name + " : PlugIn Found");
                             plugins.Add(DBP);
                         }
                         else
                         {
-                            if (DBP.IsValueCreated) Logger.Log(DBP.Value.Name + " : PlugIn Already Found");
+                            //if (DBP.IsValueCreated) Logger.Log(DBP.Value.Name + " : PlugIn Already Found");
                         }
                     }
 
                 }
                 catch (System.Reflection.ReflectionTypeLoadException rt)
                 {
-                    foreach (var item in rt.LoaderExceptions)
-                        Logger.Log("DatabasePluginReader.GetPlugins() : LoaderException " + item.Message);
+                    //foreach (var item in rt.LoaderExceptions)
+                    //    Logger.Log("DatabasePluginReader.GetPlugins() : LoaderException " + item.Message);
                 }
                 catch (Exception ex) { Logger.Log("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message); }
 
@@ -1175,7 +1175,7 @@ namespace TH_Database
                     FindPlugins(directory);
                 }
             }
-            else Logger.Log("Database PlugIns Directory Doesn't Exist (" + Path + ")");
+            //else Logger.Log("Database PlugIns Directory Doesn't Exist (" + Path + ")");
         }
 
     }

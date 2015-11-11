@@ -138,7 +138,7 @@
             </Path>
 
             <!--Content-->
-            <Border Grid.Column="1" CornerRadius="2,2,0,0">
+            <Border Grid.Column="1" CornerRadius="2,2,0,0" Cursor="Hand">
 
                 <Border.Style>
                     <Style TargetType="Border">
@@ -149,7 +149,7 @@
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#10000000">
+                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
                                                 <ColorAnimation.EasingFunction>
                                                     <CubicEase EasingMode="EaseOut"/>
                                                 </ColorAnimation.EasingFunction>
@@ -259,34 +259,13 @@
                     </Grid>
 
                     <!--Close Button-->
-                    <Border Grid.Column="1" Margin="0,0,0,1" DockPanel.Dock="Right" Width="30" CornerRadius="1" MouseDown="TabItemClose_MouseDown" ToolTip="Close" >
+                    <Border x:Name="close_BD" Grid.Column="1" Margin="0,0,0,1" DockPanel.Dock="Right" Width="30" CornerRadius="1" MouseDown="TabItemClose_MouseDown" ToolTip="Close" >
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="Background" Value="#00000000" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#22000000">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
+                                        <Setter Property="Background" Value="#aa0060ff"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -308,58 +287,19 @@
                                         <Setter Property="Fill" Value="#00000000"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#FF0080ff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00000000">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
+                                                <Setter Property="Fill" Value="#0080ff"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
+                                                <Setter Property="Fill" Value="#fff"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#aaffffff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00000000">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
+                                                <Setter Property="Fill" Value="#fff"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Rectangle.Style>
                             </Rectangle>
-
+                        
                             <Rectangle Width="12" Height="1.5" RenderTransformOrigin="0.5,0.5">
                                 <Rectangle.RenderTransform>
                                     <TransformGroup>
@@ -374,52 +314,13 @@
                                         <Setter Property="Fill" Value="#00000000"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#FF0080ff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00000000">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
+                                                <Setter Property="Fill" Value="#0080ff"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
+                                                <Setter Property="Fill" Value="#fff"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#aaffffff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00000000">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
+                                                <Setter Property="Fill" Value="#fff"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

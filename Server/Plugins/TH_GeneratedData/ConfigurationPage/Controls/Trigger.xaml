@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              >
 
-    <Border CornerRadius="2" BorderBrush="#33000000" BorderThickness="1" Width="150">
+    <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1" Width="150">
         
         <StackPanel Margin="5">
             

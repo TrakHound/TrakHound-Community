@@ -26,6 +26,18 @@ namespace TH_DeviceManager.Controls
             DataContext = this;
         }
 
+        public object Parent { get; set; }
+
+
+        public bool DeviceEnabled
+        {
+            get { return (bool)GetValue(DeviceEnabledProperty); }
+            set { SetValue(DeviceEnabledProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceEnabledProperty =
+            DependencyProperty.Register("DeviceEnabled", typeof(bool), typeof(DeviceButton), new PropertyMetadata(false));
+
 
         public string Description
         {
@@ -75,6 +87,42 @@ namespace TH_DeviceManager.Controls
 
         public static readonly DependencyProperty IdProperty =
             DependencyProperty.Register("Id", typeof(string), typeof(DeviceButton), new PropertyMetadata(null));
+
+        public delegate void Clicked_Handler(DeviceButton bt);
+        public event Clicked_Handler ShareClicked;
+
+        private void Share_Clicked(TH_WPF.Button_02 bt)
+        {
+            if (ShareClicked != null) ShareClicked(this);
+        }
+
+        public event Clicked_Handler Clicked;
+
+        private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Clicked != null) Clicked(this);
+        }
+
+        public event Clicked_Handler RemoveClicked;
+
+        private void Remove_Clicked(TH_WPF.Button_05 bt)
+        {
+            if (RemoveClicked != null) RemoveClicked(this);
+        }
+
+        public event Clicked_Handler Enabled;
+        public event Clicked_Handler Disabled;
+
+        private void enabled_CHK_Checked(object sender, RoutedEventArgs e)
+        {
+            if (Enabled != null) Enabled(this);
+        }
+
+        private void enabled_CHK_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (Disabled != null) Disabled(this);
+        }
+
 
 
 

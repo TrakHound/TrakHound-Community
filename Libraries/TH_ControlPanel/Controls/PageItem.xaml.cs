@@ -26,6 +26,8 @@ namespace TH_DeviceManager.Controls
             DataContext = this;
         }
 
+        public object Parent { get; set; }
+
 
         public bool AlternateStyle
         {
@@ -61,12 +63,12 @@ namespace TH_DeviceManager.Controls
         public object Data { get; set; }
 
 
-        public delegate void Clicked_Handler(object data);
+        public delegate void Clicked_Handler(PageItem item);
         public event Clicked_Handler Clicked;
 
         private void root_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Clicked != null) Clicked(Data);
+            if (Clicked != null) Clicked(this);
         }
 
     }

@@ -84,7 +84,10 @@ namespace TrakHound_Client
 
 
             Splash_UpdateStatus("...Reading Configuration");
-            ReadConfigurationFile();
+
+            ReadConfigurations();
+
+            //ReadConfigurationFile();
 
             Splash_UpdateStatus("...Loading Plugins");
             LoadPlugIns();
@@ -1089,7 +1092,6 @@ namespace TrakHound_Client
                     Global.Initialize(userDatabaseSettings);
                 }
             }
-
         }
 
         #endregion
@@ -1682,8 +1684,63 @@ namespace TrakHound_Client
 
         List<ReturnData> DeviceData = new List<ReturnData>();
 
-        private void ReadConfigurationFile()
+        List<Configuration> Configurations;
+
+        void ReadConfigurations()
         {
+
+            if (currentuser != null)
+            {
+                if (userDatabaseSettings == null)
+                {
+                    Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
+                }
+                else
+                {
+                    //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                }
+            }
+            // If not logged in Read from File in 'C:\TrakHound\'
+            else
+            {
+                Configurations = ReadConfigurationFile();
+            }
+
+            if (Configurations != null)
+            {
+                int index = 0;
+
+                // Create DevicesList based on Configurations
+                foreach (Configuration config in Configurations)
+                {
+                    if (config.Enabled)
+                    {
+                        Device_Client device = new Device_Client(config);
+                        device.Index = index;
+                        device.DataUpdated += Device_DataUpdated;
+                        Devices.Add(device);
+                        index += 1;
+                    }
+
+
+                    //CreateDeviceButton(config);
+                }
+
+
+                // Update Device Management Page
+                //if (devicemanagementpage == null) devicemanagementpage = new Pages.DeviceManagement.Page();
+                //devicemanagementpage.LoadDevices(Configurations);
+
+                //DeviceListShown = true;
+            }
+
+
+
+        }
+
+        List<Configuration> ReadConfigurationFile()
+        {
+            List<Configuration> result = new List<Configuration>();
 
             UpdateExceptionsThrown = new List<string>();
 
@@ -1701,7 +1758,7 @@ namespace TrakHound_Client
                 XmlDocument doc = new XmlDocument();
                 doc.Load(configPath);
 
-                int index = 0;
+                //int index = 0;
 
                 foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
                 {
@@ -1719,24 +1776,82 @@ namespace TrakHound_Client
                                             case "device":
 
                                                 Configuration config = GetSettingsFromNode(ChildNode);
-                                                if (config != null)
-                                                {
-                                                    Device_Client device = new Device_Client(config);
-                                                    device.Index = index;
-                                                    device.DataUpdated += Device_DataUpdated;
-                                                    Devices.Add(device);
-                                                    index += 1;
-                                                }
+                                                if (config != null) result.Add(config);
+                                                //{
+                                                    //Device_Client device = new Device_Client(config);
+                                                    //device.Index = index;
+                                                    //device.DataUpdated += Device_DataUpdated;
+                                                    //Devices.Add(device);
+                                                    //index += 1;
+                                                //}
                                                 break;
                                         }
                                     }
                                 }
                                 break;
                         }
-                    }             
+                    }
                 }
             }
+
+            return result;
         }
+
+        //private void ReadConfigurationFile()
+        //{
+
+        //    UpdateExceptionsThrown = new List<string>();
+
+        //    string configPath;
+
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
+
+        //    if (System.IO.File.Exists(configPath))
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(configPath);
+
+        //        //int index = 0;
+
+        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
+        //        {
+        //            if (Node.NodeType == XmlNodeType.Element)
+        //            {
+        //                switch (Node.Name.ToLower())
+        //                {
+        //                    case "devices":
+        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
+        //                        {
+        //                            if (ChildNode.NodeType == XmlNodeType.Element)
+        //                            {
+        //                                switch (ChildNode.Name.ToLower())
+        //                                {
+        //                                    case "device":
+
+        //                                        Configuration config = GetSettingsFromNode(ChildNode);
+        //                                        if (config != null)
+        //                                        {
+        //                                            //Device_Client device = new Device_Client(config);
+        //                                            //device.Index = index;
+        //                                            //device.DataUpdated += Device_DataUpdated;
+        //                                            //Devices.Add(device);
+        //                                            //index += 1;
+        //                                        }
+        //                                        break;
+        //                                }
+        //                            }
+        //                        }
+        //                        break;
+        //                }
+        //            }             
+        //        }
+        //    }
+        //}
 
         List<string> UpdateExceptionsThrown;
 

@@ -18,7 +18,38 @@
         </Grid.RowDefinitions>
 
         <!--Tool Bar-->
-        <Border Grid.Row="1" Background="#0080ff" Height="40" BorderBrush="#0070ff" BorderThickness="0,1,0,0">
+        <Border Grid.Row="1" Background="#0080ff" BorderBrush="#0070ff" BorderThickness="0,1,0,0">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Height" Value="0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding PageListShown}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Height" From="0" To="40" BeginTime="00:00:0.3">
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Height" From="40" To="0" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
@@ -29,12 +60,29 @@
                 <Grid>
                     <Grid.Style>
                         <Style TargetType="Grid">
+                            <Setter Property="Background" Value="#00000000"/>
                             <Setter Property="Opacity" Value="0.3"/>
                             <Setter Property="IsEnabled" Value="false"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding SaveNeeded}" Value="true">
                                     <Setter Property="Opacity" Value="1.0"/>
                                     <Setter Property="IsEnabled" Value="true"/>
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="Background.Color">
+                                                    <ColorAnimationUsingKeyFrames.KeyFrames>
+                                                        <DiscreteColorKeyFrame KeyTime="0:0:0" Value="#66ffffff"/>
+                                                        <DiscreteColorKeyFrame KeyTime="0:0:0.5" Value="#00000000"/>
+                                                        <DiscreteColorKeyFrame KeyTime="0:0:1" Value="#66ffffff"/>
+                                                        <DiscreteColorKeyFrame KeyTime="0:0:1.5" Value="#00000000"/>
+                                                        <DiscreteColorKeyFrame KeyTime="0:0:2" Value="#66ffffff"/>
+                                                        <DiscreteColorKeyFrame KeyTime="0:0:2.5" Value="#00000000"/>
+                                                    </ColorAnimationUsingKeyFrames.KeyFrames>
+                                                </ColorAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -140,7 +188,7 @@
                 <StackPanel Orientation="Horizontal">
 
                     <!--Device List-->
-                    <Grid Grid.Column="0" MinWidth="200">
+                    <Grid Grid.Column="0" MinWidth="250">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -203,7 +251,7 @@
                             </Grid>
 
                             <!--Add Device Button-->
-                            <Grid x:Name="AddDevice_GRID" Grid.Row="1" Margin="5,0" Width="200" Height="100" VerticalAlignment="Top" PreviewMouseDown="AddDevice_GRID_PreviewMouseDown">
+                            <Grid x:Name="AddDevice_GRID" Grid.Row="1" Margin="5,0" MinWidth="250" Height="100" VerticalAlignment="Top" PreviewMouseDown="AddDevice_GRID_PreviewMouseDown" Cursor="Hand">
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="Background" Value="#00000000"/>
@@ -382,13 +430,13 @@
 
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="Width" Value="0"/>
+                                <Setter Property="MaxWidth" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding PageListShown}" Value="true">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Width" From="0" To="110" BeginTime="00:00:0.3">
+                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxWidth" From="0" To="130" BeginTime="00:00:0.3">
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseOut"/>
                                                         </DoubleAnimation.EasingFunction>
@@ -399,7 +447,7 @@
                                         <DataTrigger.ExitActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Width" From="110" To="0" >
+                                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxWidth" From="130" To="0" >
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseIn"/>
                                                         </DoubleAnimation.EasingFunction>

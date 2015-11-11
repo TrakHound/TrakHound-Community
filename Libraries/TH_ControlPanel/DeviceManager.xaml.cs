@@ -24,6 +24,7 @@ using System.Xml;
 using System.Data;
 
 using TH_Configuration;
+using TH_Configuration.User;
 using TH_Database;
 using TH_Global;
 using TH_PlugIns_Server;
@@ -172,6 +173,9 @@ namespace TH_DeviceManager
 
         #endregion
 
+        const System.Windows.Threading.DispatcherPriority background = System.Windows.Threading.DispatcherPriority.Background;
+        const System.Windows.Threading.DispatcherPriority contextidle = System.Windows.Threading.DispatcherPriority.ContextIdle;
+
         #region "Device Management"
 
         Configuration selecteddevice;
@@ -181,6 +185,16 @@ namespace TH_DeviceManager
             set
             {
                 selecteddevice = value;
+            }
+        }
+
+        DeviceButton selecteddevicebutton;
+        public DeviceButton SelectedDeviceButton
+        {
+            get { return selecteddevicebutton; }
+            set
+            {
+                selecteddevicebutton = value;
             }
         }
 
@@ -223,11 +237,6 @@ namespace TH_DeviceManager
                 {
                     CreateDeviceButton(config);
                 }
-
-
-                // Update Device Management Page
-                //if (devicemanagementpage == null) devicemanagementpage = new Pages.DeviceManagement.Page();
-                //devicemanagementpage.LoadDevices(Configurations);
 
                 DeviceListShown = true;
             }
@@ -395,14 +404,16 @@ namespace TH_DeviceManager
                 {
                     if (SelectedDevice != null)
                     {
-                        //string tablename = TH_Configuration.User.Management.GetConfigurationTableName(currentuser, SelectedDevice);
                         string tablename = dt.TableName;
+
+                        // Save Enabled
+                        Table_Functions.UpdateTableValue(SelectedDevice.Enabled.ToString(), "/Enabled", dt);
 
                         if (userDatabaseSettings == null)
                         {
-                            TH_Configuration.User.Management.ClearConfigurationTable(currentuser, tablename);
-                            //TH_Configuration.User.Management.CreateConfigurationTable(currentuser, SelectedDevice);
-                            TH_Configuration.User.Management.UpdateConfigurationTable(currentuser, tablename, dt);
+                            TH_Configuration.User.Management.ClearConfigurationTable(tablename);
+                            
+                            TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
                         }
                         else
                         {
@@ -414,8 +425,10 @@ namespace TH_DeviceManager
                 else
                 {
 
-                }
+                } 
             }
+
+            LoadDevices();
         }
 
         public bool DeviceListShown
@@ -446,19 +459,174 @@ namespace TH_DeviceManager
         void CreateDeviceButton(Configuration config)
         {
             Controls.DeviceButton db = new Controls.DeviceButton();
+            db.DeviceEnabled = config.Enabled;
+            db.enabled_CHK.IsChecked = config.Enabled;
+
+
             db.Description = config.Description.Description;
             db.Manufacturer = config.Description.Manufacturer;
             db.Model = config.Description.Model;
             db.Serial = config.Description.Serial;
             db.Id = config.Description.Machine_ID;
 
+            db.Enabled += db_Enabled;
+            db.Disabled += db_Disabled;
+            db.RemoveClicked += db_RemoveClicked;
+            db.ShareClicked += db_ShareClicked;
+            db.Clicked += db_Clicked;
+
             ListButton lb = new ListButton();
             lb.ButtonContent = db;
             lb.ShowImage = false;
             lb.Selected += lb_Device_Selected;
             lb.DataObject = config;
+
+            db.Parent = lb;
+
             DeviceList.Add(lb);
         }
+
+
+        void db_Enabled(DeviceButton bt)
+        {
+            if (bt.Parent != null)
+            {
+                if (bt.Parent.GetType() == typeof(ListButton))
+                {
+                    ListButton lb = (ListButton)bt.Parent;
+
+                    if (lb.DataObject != null)
+                    {
+                        if (lb.DataObject.GetType() == typeof(Configuration))
+                        {
+                            Configuration config = (Configuration)lb.DataObject;
+
+                            config.Enabled = true;
+                            bt.DeviceEnabled = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        void db_Disabled(DeviceButton bt)
+        {
+            if (bt.Parent != null)
+            {
+                if (bt.Parent.GetType() == typeof(ListButton))
+                {
+                    ListButton lb = (ListButton)bt.Parent;
+
+                    if (lb.DataObject != null)
+                    {
+                        if (lb.DataObject.GetType() == typeof(Configuration))
+                        {
+                            Configuration config = (Configuration)lb.DataObject;
+
+                            config.Enabled = false;
+                            bt.DeviceEnabled = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        void db_RemoveClicked(DeviceButton bt)
+        {
+            if (bt.Parent != null)
+            {
+                if (bt.Parent.GetType() == typeof(ListButton))
+                {
+                    ListButton lb = (ListButton)bt.Parent;
+
+                    if (lb.DataObject != null)
+                    {
+                        if (lb.DataObject.GetType() == typeof(Configuration))
+                        {
+                            Configuration config = (Configuration)lb.DataObject;
+
+                            config.Enabled = false;
+                            bt.DeviceEnabled = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        void UpdateDeviceButton(Configuration config)
+        {
+            if (SelectedDeviceButton != null)
+            {
+                DeviceButton db = SelectedDeviceButton;
+
+                db.Description = config.Description.Description;
+                db.Manufacturer = config.Description.Manufacturer;
+                db.Model = config.Description.Model;
+                db.Serial = config.Description.Serial;
+                db.Id = config.Description.Machine_ID;
+            }
+        }
+
+        void db_Clicked(DeviceButton bt)
+        {
+            if (bt.Parent != null)
+            {
+                if (bt.Parent.GetType() == typeof(ListButton))
+                {
+                    ListButton lb = (ListButton)bt.Parent;
+
+                    SelectedDeviceButton = bt;
+
+                    lb_Device_Selected(lb);                  
+                }
+            }
+        }
+
+        void db_ShareClicked(DeviceButton bt)
+        {
+            PageListShown = false;
+
+            if (CurrentPage != null)
+            {
+                if (CurrentPage.GetType() != typeof(Pages.AddShare.Page))
+                {
+                    LoadAddSharePage(bt);
+                }
+            }
+            else
+            {
+                LoadAddSharePage(bt);
+            }
+
+            ToolbarShown = false;
+        }
+
+        void LoadAddSharePage(DeviceButton bt)
+        {
+            if (bt.Parent != null)
+            {
+                if (bt.Parent.GetType() == typeof(ListButton))
+                {
+                    ListButton lb = (ListButton)bt.Parent;
+
+                    if (lb.DataObject != null)
+                    {
+                        if (lb.DataObject.GetType() == typeof(Configuration))
+                        {
+                            Configuration config = (Configuration)lb.DataObject;
+
+                            Pages.AddShare.Page page = new Pages.AddShare.Page();
+                            page.currentuser = CurrentUser;
+                            page.LoadConfiguration(config);
+                            page.configurationtable = ConfigurationTable;
+                            CurrentPage = page;
+                        }
+                    }
+                }
+            }
+        }
+
+        Thread selectDevice_THREAD;
 
         void lb_Device_Selected(TH_WPF.ListButton lb)
         {
@@ -470,26 +638,47 @@ namespace TH_DeviceManager
                 {
                     SelectedDevice = config;
 
-                    ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
-                    if (ConfigurationTable != null)
-                    {
-                        ConfigurationTable.TableName = config.TableName;
+                    if (selectDevice_THREAD != null) selectDevice_THREAD.Abort();
 
-                        if (ConfigurationPages != null)
-                        {
-                            foreach (ConfigurationPage page in ConfigurationPages)
-                            {
-                                this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), new object[] { ConfigurationTable });
-                            }
-                        }
-                    }
-                        
-                    PageListShown = true;
+                    selectDevice_THREAD = new Thread(new ParameterizedThreadStart(SelectDevice_Worker));
+                    selectDevice_THREAD.Start(config);
+
                 }
+
+                if (PageList.Count > 0) Page_Selected((ListButton)PageList[0]);
+
+                PageListShown = true;
             }
 
             foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
             lb.IsSelected = true;
+
+        }
+
+        void SelectDevice_Worker(object o)
+        {
+            Configuration config = (Configuration)o;
+
+            DataTable dt = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
+            dt.TableName = config.TableName;
+
+            this.Dispatcher.BeginInvoke(new Action<DataTable>(SelectDevice_GUI), background, new object[] { dt });
+        }
+
+        void SelectDevice_GUI(DataTable dt)
+        {
+            ConfigurationTable = dt;
+
+            if (ConfigurationTable != null)
+            {
+                if (ConfigurationPages != null)
+                {
+                    foreach (ConfigurationPage page in ConfigurationPages)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { ConfigurationTable });
+                    }
+                }
+            }
         }
 
         #endregion
@@ -546,6 +735,7 @@ namespace TH_DeviceManager
 
                 PageItem item = new PageItem();
                 item.Text = page.PageName;
+                item.Clicked += item_Clicked;
 
                 if (page.Image != null) item.Image = page.Image;
                 else item.Image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Plug_01.png"));
@@ -559,7 +749,21 @@ namespace TH_DeviceManager
                 bt.Width = 100;
                 bt.MinWidth = 100;
 
+                item.Parent = bt;
+
                 PageList.Add(bt);
+            }
+        }
+
+        void item_Clicked(PageItem item)
+        {
+            if (item.Parent != null)
+            {
+                if (item.Parent.GetType() == typeof(ListButton))
+                {
+                    ListButton lb = (ListButton)item.Parent;
+                    Page_Selected(lb);
+                }
             }
         }
 
@@ -633,6 +837,8 @@ namespace TH_DeviceManager
                     }
                 }
                 else CurrentPage = data;
+
+                ToolbarShown = true;
             }
         }
 
@@ -867,7 +1073,14 @@ namespace TH_DeviceManager
             DependencyProperty.Register("PageListShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
 
-        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
+        public bool ToolbarShown
+        {
+            get { return (bool)GetValue(ToolbarShownProperty); }
+            set { SetValue(ToolbarShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty ToolbarShownProperty =
+            DependencyProperty.Register("ToolbarShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
 
         private void TableList_MouseDown(object sender, MouseButtonEventArgs e)
@@ -875,26 +1088,54 @@ namespace TH_DeviceManager
             PageListShown = false;
         }
 
+
+        #region "Add Device"
+
         private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            AddDevice();
+        }
+
+        void AddDevice()
+        {
+            PageListShown = false;
+            ToolbarShown = false;
+
             if (CurrentPage != null)
             {
                 if (CurrentPage.GetType() != typeof(Pages.AddDevice.Page))
                 {
-                    Pages.AddDevice.Page page = new Pages.AddDevice.Page();
-                    page.deviceManager = this;
-
-                    CurrentPage = page;
+                    AddDevice_Page();
                 }
             }
-            else
-            {
-                Pages.AddDevice.Page page = new Pages.AddDevice.Page();
-                page.deviceManager = this;
-
-                CurrentPage = page;
-            }
+            else AddDevice_Page();
         }
+
+        void AddDevice_Page()
+        {
+            Pages.AddDevice.Page page = new Pages.AddDevice.Page();
+            page.deviceManager = this;
+            page.DeviceAdded += page_DeviceAdded;
+            page.currentuser = CurrentUser;
+            page.LoadCatalog();
+
+            CurrentPage = page;
+        }
+
+        void page_DeviceAdded()
+        {
+
+            LoadDevices();
+
+
+        }
+
+
+        #endregion
+
+
+
+       
 
     }
 }

@@ -80,7 +80,6 @@ namespace TH_WPF
             DependencyProperty.Register("ShowImage", typeof(bool), typeof(ListButton), new PropertyMetadata(true));
 
         
-
         public delegate void Selected_Handler(ListButton LB);
         public event Selected_Handler Selected;
         public event Selected_Handler MultiSelected;

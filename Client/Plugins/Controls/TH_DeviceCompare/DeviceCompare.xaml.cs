@@ -1426,6 +1426,8 @@ namespace TH_DeviceCompare
 
             Result.Clicked += ColumnHeader_Clicked;
 
+            
+
             BitmapImage device_image = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Image_Path);
             BitmapImage device_logo = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Manufacturer_Logo_Path);
 

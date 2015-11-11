@@ -25,7 +25,7 @@
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#10000000">
+                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
                                     <ColorAnimation.EasingFunction>
                                         <CubicEase EasingMode="EaseOut"/>
                                     </ColorAnimation.EasingFunction>
@@ -308,7 +308,7 @@
 
     </UserControl.Resources>
 
-    <Grid x:Name="BD">
+    <Grid x:Name="BD" Cursor="Hand">
 
         <!--Normal Style-->
         <Grid>

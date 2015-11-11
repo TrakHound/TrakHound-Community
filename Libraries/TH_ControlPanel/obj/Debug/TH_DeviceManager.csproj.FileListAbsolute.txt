@@ -45,3 +45,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\DeviceManager.
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.g.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\AddDevice\Controls\SharedItem.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\AddDevice\Controls\SharedItem.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\AddShare\Page.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\AddShare\Page.g.cs

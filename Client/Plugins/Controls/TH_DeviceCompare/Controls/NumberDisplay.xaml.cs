@@ -33,27 +33,6 @@ namespace TH_DeviceCompare.Controls
 
         #region "Previous Values"
 
-        //private string previousvalue;
-        //public string PreviousValue
-        //{
-        //    get { return previousvalue; }
-        //    set
-        //    {
-        //        previousvalue = value;
-
-        //        PreviousValue3 = PreviousValue2;
-        //        PreviousValue2 = PreviousValue1;
-        //        PreviousValue1 = previousvalue;
-
-        //        //if (PreviousValue1 != PreviousValue)
-        //        //{
-        //        //    PreviousValue3 = PreviousValue2;
-        //        //    PreviousValue2 = PreviousValue1;
-        //        //    PreviousValue1 = PreviousValue;
-        //        //}        
-        //    }
-        //}
-
         private double previousvalue;
         public double PreviousValue
         {
@@ -98,7 +77,6 @@ namespace TH_DeviceCompare.Controls
         #endregion
 
 
-
         public double Value
         {
             get { return (double)GetValue(ValueProperty); }
@@ -128,23 +106,6 @@ namespace TH_DeviceCompare.Controls
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register("Value", typeof(double), typeof(NumberDisplay), new PropertyMetadata(0d));
 
-        
-
-
-        //public string Value
-        //{
-        //    get { return (string)GetValue(ValueProperty); }
-        //    set 
-        //    {
-        //        if (Value != value) PreviousValue = Value;
-
-        //        SetValue(ValueProperty, value); 
-        //    }
-        //}
-
-        //public static readonly DependencyProperty ValueProperty =
-        //    DependencyProperty.Register("Value", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
-
 
         public string ValueText
         {
@@ -165,17 +126,6 @@ namespace TH_DeviceCompare.Controls
 
         public static readonly DependencyProperty Value_FormatProperty =
             DependencyProperty.Register("Value_Format", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
-
-        
-
-        //public string Value_Type
-        //{
-        //    get { return (string)GetValue(Value_TypeProperty); }
-        //    set { SetValue(Value_TypeProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty Value_TypeProperty =
-        //    DependencyProperty.Register("Value_Type", typeof(string), typeof(NumberDisplay), new PropertyMetadata(null));
 
 
         public bool ValueIncreasing

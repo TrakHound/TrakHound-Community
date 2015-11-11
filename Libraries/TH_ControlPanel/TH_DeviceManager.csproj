@@ -53,6 +53,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="Pages\AddDevice\Controls\SharedItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\AddShare\Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Databases\Controls\DatabaseItemContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -84,6 +92,12 @@
     <None Include="Controls\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </None>
+    <Compile Include="Pages\AddDevice\Controls\SharedItem.xaml.cs">
+      <DependentUpon>SharedItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\AddShare\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Databases\Controls\DatabaseItemContainer.xaml.cs">
       <DependentUpon>DatabaseItemContainer.xaml</DependentUpon>
     </Compile>
@@ -223,6 +237,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Plug_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Share_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Search_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

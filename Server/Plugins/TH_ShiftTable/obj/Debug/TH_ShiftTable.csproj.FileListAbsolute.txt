@@ -7,3 +7,7 @@ C:\TrakHound\Plugins\Server\Shifts Table\TH_ShiftTable.pdb
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.dll
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.pdb
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\ConfigurationPage\Page.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\ConfigurationPage\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.g.resources
