@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -342,6 +347,57 @@ namespace TH_DeviceManager.Pages.Agent
         private void devicename_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
             ChangeSetting("Device_Name", ((TextBox)sender).Text);
+        }
+
+        private void Help_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void Help_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void Help_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = false;
+                    }
+                }
+            }
         }
 
         void ChangeSetting(string name, string val)

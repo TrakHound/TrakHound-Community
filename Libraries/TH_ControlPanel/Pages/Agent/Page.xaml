@@ -12,16 +12,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
     
-    <Grid>
+    <Grid Background="#eee">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Agent Configuration" FontSize="20pt" Foreground="#333" Margin="10,20,10,10"/>
+        <TextBlock Text="Agent Configuration" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
 
-        <TextBlock Grid.Row="1" Text="MTConnect® Agent Communication Settings" FontSize="14pt" Foreground="#888" Margin="10,10,10,20"/>
+        <TextBlock Grid.Row="1" Text="Configure the MTConnect® Agent Communication." FontSize="10pt" Foreground="#888" Margin="10,10,10,20"/>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Configuration-->
-            <StackPanel HorizontalAlignment="Left" Width="300">
+            <StackPanel HorizontalAlignment="Left" Width="400">
                 <StackPanel.Resources>
                     <Style TargetType="StackPanel">
                         <Setter Property="Margin" Value="0,5"/>
@@ -40,8 +40,66 @@
                 <!--IP Address-->
                 <StackPanel>
 
-                    <!--Title-->
-                    <TextBlock Text="IP Address" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Title-->
+                        <TextBlock Text="IP Address" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="IP Address" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Enter the IP address or URL of the MTConnect Agent.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
 
                     <!--Input-->
                     <Grid>
@@ -92,8 +150,68 @@
                 <!--Port-->
                 <StackPanel>
 
-                    <!--Title-->
-                    <TextBlock Text="Port" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Title-->
+                        <TextBlock Text="Port" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Port" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Enter the Port of the MTConnect Agent. If the Agent is a URL (ex. www.agent.mtconnect.org) the Port will be 80.
+                                            If the Port value is left blank the Port will default to 80. 
+                                            If the Port is not known, click the 'Test Connection' button and the standard MTConnect ports will be tested and found.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
 
                     <!--Input-->
                     <Grid>
@@ -144,8 +262,67 @@
                 <!--Device Name-->
                 <StackPanel>
 
-                    <!--Title-->
-                    <TextBlock Text="Device Name" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Title-->
+                        <TextBlock Text="Device Name" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Device Name" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
+                                            If the Device Name is not known, click the 'Test Connection' button and select it from the list.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
 
                     <!--Input-->
                     <Grid>
@@ -196,9 +373,67 @@
                 <!--Current Heartbeat-->
                 <StackPanel>
 
-                    <!--Title-->
-                    <TextBlock Text="Current Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
 
+                        <!--Title-->
+                        <TextBlock Text="Current Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Current Heartbeat Interval" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Select the interval to run a Current request from the Agent at. Use the default value unless there are issues with network traffic.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
+                                   
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
@@ -232,7 +467,7 @@
                             <Grid Margin="10,0">
 
                                 <!--Instructions-->
-                                <TextBlock Text="{Binding CurrentHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                <TextBlock Text="{Binding CurrentHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#333" VerticalAlignment="Center" Margin="2,0" >
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -259,8 +494,69 @@
                 <!--Sample Heartbeat-->
                 <StackPanel>
 
-                    <!--Title-->
-                    <TextBlock Text="Sample Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Title-->
+                        <TextBlock Text="Sample Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Sample Heartbeat Interval" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Select the interval to run a Sample request from the Agent at. 
+                                            Use the default value unless there are issues with network traffic. 
+                                            If there are too many samples to process within the interval, the interval can be lowered.
+                                            Typically an average of 1500 samples per 5 seconds is accectable.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
 
                     <Grid Grid.Column="1">
                         <Grid.ColumnDefinitions>
@@ -295,7 +591,7 @@
                             <Grid Margin="10,0">
 
                                 <!--Instructions-->
-                                <TextBlock Text="{Binding SampleHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                <TextBlock Text="{Binding SampleHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#333" VerticalAlignment="Center" Margin="2,0" >
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Collapsed"/>

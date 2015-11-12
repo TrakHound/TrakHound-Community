@@ -35,6 +35,8 @@ namespace TH_InstanceTable.ConfigurationPage
         {
             InitializeComponent();
             DataContext = this;
+
+            CreateExampleTable();
         }
 
         public string PageName { get { return "Instance Table"; } }
@@ -115,6 +117,77 @@ namespace TH_InstanceTable.ConfigurationPage
             }
 
         }
+
+
+
+
+        ObservableCollection<object> exampletableitems;
+        public ObservableCollection<object> ExampleTableItems
+        {
+            get
+            {
+                if (exampletableitems == null)
+                    exampletableitems = new ObservableCollection<object>();
+                return exampletableitems;
+            }
+
+            set
+            {
+                exampletableitems = value;
+            }
+        }
+
+        void CreateExampleTable()
+        {
+
+            ExampleTableItems.Clear();
+
+            ExampleTableItem item;
+
+            item = new ExampleTableItem();
+            item.Timestamp = "2015-11-09 11:41:53";
+            item.Sequence = "4918141249";
+            item.AgentInstanceId = "1425445166";
+            item.Avail = "AVAILABLE";
+            item.Msg = "UNAVAILABLE";
+            item.Estop = "ARMED";
+            item.Cn2 = "X-0.085416 Y-1.094673";
+            item.Cn3 = "AUTOMATIC";
+            item.Cn4 = "458";
+            item.Cn5 = "FLANGE_CAM.NGC";
+            item.Cn6 = "ACTIVE";
+            ExampleTableItems.Add(item);
+
+            item = new ExampleTableItem();
+            item.Timestamp = "2015-11-09 11:41:53";
+            item.Sequence = "4918141343";
+            item.AgentInstanceId = "1425445166";
+            item.Avail = "AVAILABLE";
+            item.Msg = "UNAVAILABLE";
+            item.Estop = "ARMED";
+            item.Cn2 = "X-0.193921 Y-1.078708";
+            item.Cn3 = "AUTOMATIC";
+            item.Cn4 = "459";
+            item.Cn5 = "FLANGE_CAM.NGC";
+            item.Cn6 = "ACTIVE";
+            ExampleTableItems.Add(item);
+
+            item = new ExampleTableItem();
+            item.Timestamp = "2015-11-09 11:41:53";
+            item.Sequence = "4918141436";
+            item.AgentInstanceId = "1425445166";
+            item.Avail = "AVAILABLE";
+            item.Msg = "UNAVAILABLE";
+            item.Estop = "ARMED";
+            item.Cn2 = "X-0.300094 Y-1.052036";
+            item.Cn3 = "AUTOMATIC";
+            item.Cn4 = "460";
+            item.Cn5 = "FLANGE_CAM.NGC";
+            item.Cn6 = "ACTIVE";
+            ExampleTableItems.Add(item);
+
+        }
+
 
 
         DataTable configurationTable;
@@ -450,4 +523,21 @@ namespace TH_InstanceTable.ConfigurationPage
         #endregion
 
     }
+
+    public class ExampleTableItem
+    {
+        public string Timestamp { get; set; }
+        public string Sequence { get; set; }
+        public string AgentInstanceId { get; set; }
+        public string Avail { get; set; }
+        public string Msg { get; set; }
+        public string Estop { get; set; }
+        public string Cn2 { get; set; }
+        public string Cn3 { get; set; }
+        public string Cn4 { get; set; }
+        public string Cn5 { get; set; }
+        public string Cn6 { get; set; }
+
+    }
+
 }

@@ -18,7 +18,7 @@
 
         <TextBlock Text="Databases" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
 
-        <TextBlock Grid.Row="1" Text="Configure the Databases that this device writes data to reads from" FontSize="14pt" Foreground="#888" Margin="10,10,10,20"/>
+        <TextBlock Grid.Row="1" Text="Configure the Databases that this device writes data to reads from" FontSize="10pt" Foreground="#888" Margin="10,10,10,20"/>
 
 
         <StackPanel Grid.Row="2" Margin="10">

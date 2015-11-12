@@ -19,13 +19,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#00000000">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Margin="10" PreviewMouseDown="Grid_PreviewMouseDown">
+        <Grid Margin="10" PreviewMouseDown="Grid_PreviewMouseDown" Background="#00000000">
             <Grid.Resources>
 
                 <Style TargetType="TextBlock">

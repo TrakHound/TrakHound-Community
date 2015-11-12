@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +13,7 @@ using System.Data;
 using System.Xml;
 
 using TH_Configuration.User;
+using TH_Global;
 
 namespace TH_Configuration
 {
@@ -73,25 +79,31 @@ namespace TH_Configuration
 
         void Run_Worker()
         {
-            DataTable dt = Management.GetConfigurationTable(TableName);
-            if (dt != null)
+            try
             {
-                XmlDocument xml = Converter.TableToXML(dt);
-                if (xml != null)
+                DataTable dt = Management.GetConfigurationTable(TableName);
+                if (dt != null)
                 {
-                    Configuration config = Configuration.ReadConfigFile(xml);
-                    if (config != null)
+                    XmlDocument xml = Converter.TableToXML(dt);
+                    if (xml != null)
                     {
-                        if (config.UniqueId != CurrentConfiguration.UniqueId)
+                        Configuration config = Configuration.ReadConfigFile(xml);
+                        if (config != null)
                         {
-                            config.Index = CurrentConfiguration.Index;
-                            CurrentConfiguration = config;
+                            if (config.UniqueId != CurrentConfiguration.UniqueId)
+                            {
+                                monitor_TIMER.Enabled = false;
 
-                            if (ConfigurationChanged != null) ConfigurationChanged(config);
+                                config.Index = CurrentConfiguration.Index;
+                                //CurrentConfiguration = config;
+
+                                if (ConfigurationChanged != null) ConfigurationChanged(config);
+                            }
                         }
                     }
                 }
             }
+            catch (Exception ex) { Logger.Log("Run_Worker() :: Exception :: " + ex.Message); }
         }
 
     }

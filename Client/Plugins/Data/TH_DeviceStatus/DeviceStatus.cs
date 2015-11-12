@@ -21,8 +21,6 @@ namespace TH_DeviceStatus
 
         public string Name { get { return "Device Status"; } }
 
-        //public int Priority { get { return 1; } }
-
         public void Initialize(Configuration config) 
         {
 
@@ -189,9 +187,6 @@ namespace TH_DeviceStatus
 
         void GetProductionStatusList()
         {
-            //DateTime start = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
-            //DateTime end = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);
-
             DateTime start = DateTime.MinValue;
             DateTime.TryParse(shiftStartUTC, out start);
 

@@ -102,7 +102,7 @@
             </ToolTip>
         </Border.ToolTip>
         
-        <Border.ContextMenu>
+        <!--<Border.ContextMenu>
             <ContextMenu FontSize="14">
                 <MenuItem Header="About" Click="MenuItem_About_Click">
                     <MenuItem.Icon>
@@ -120,7 +120,7 @@
                     </MenuItem.Icon>
                 </MenuItem>
             </ContextMenu>
-        </Border.ContextMenu>
+        </Border.ContextMenu>-->
 
         <Grid MinHeight="50" MinWidth="300">
             <Grid.ColumnDefinitions>
@@ -173,7 +173,7 @@
                 
                 <TextBlock Grid.Column="0" Text="Enabled" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource LightText}" />
 
-                <CheckBox Grid.Column="1" Style="{StaticResource Android_CheckBoxStyle}" IsChecked="{Binding PlugIn_Enabled, ElementName=listitem}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
+                <CheckBox Grid.Column="1" Style="{StaticResource Android_CheckBoxStyle}" IsChecked="{Binding PlugIn_Enabled, ElementName=listitem}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40" Cursor="Hand"/>
 
             </Grid>
 

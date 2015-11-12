@@ -24,7 +24,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Add a New Device" FontSize="20pt" Foreground="#333" Margin="10,20,10,10"/>
+            <TextBlock Text="Add a New Device" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
 
             <TextBlock Grid.Row="1" FontSize="10pt" TextWrapping="Wrap" Foreground="#888" Margin="10,10,10,30">
                 Add a new device using the catalog or load from a local file.

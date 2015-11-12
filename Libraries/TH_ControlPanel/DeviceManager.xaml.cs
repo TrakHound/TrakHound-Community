@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -209,39 +214,18 @@ namespace TH_DeviceManager
             }
         }
 
-        public void LoadDevices()
+
+        #region "Load Devices"
+
+        public bool DevicesLoading
         {
-            DeviceListShown = false;
-            DeviceList.Clear();
-
-            if (currentuser != null)
-            {
-                if (userDatabaseSettings == null)
-                {
-                    Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
-                }
-                else
-                {
-                    //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-                }
-            }
-            // If not logged in Read from File in 'C:\TrakHound\'
-            else
-            {
-                //Configurations = ReadConfigurationFile();
-            }
-
-            if (Configurations != null)
-            {
-                // Create DevicesList based on Configurations
-                foreach (Configuration config in Configurations)
-                {
-                    CreateDeviceButton(config);
-                }
-
-                DeviceListShown = true;
-            }
+            get { return (bool)GetValue(DevicesLoadingProperty); }
+            set { SetValue(DevicesLoadingProperty, value); }
         }
+
+        public static readonly DependencyProperty DevicesLoadingProperty =
+            DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+
 
         #region "Configuration Files"
 
@@ -379,6 +363,73 @@ namespace TH_DeviceManager
 
         #endregion
 
+
+        Thread loaddevices_THREAD;
+
+        public void LoadDevices()
+        {
+            DevicesLoading = true;
+            DeviceListShown = false;
+            DeviceList.Clear();
+
+            if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
+
+            loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
+            loaddevices_THREAD.Start();      
+        }
+
+        void LoadDevices_Worker()
+        {
+            List<Configuration> configs = new List<Configuration>();
+
+            if (currentuser != null)
+            {
+                if (userDatabaseSettings == null)
+                {
+                    configs = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
+                }
+                else
+                {
+                    //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                }
+            }
+            // If not logged in Read from File in 'C:\TrakHound\'
+            else
+            {
+                //Configurations = ReadConfigurationFile();
+            }
+
+            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), background, new object[] { configs });
+
+
+        }
+
+        void LoadDevices_GUI(List<Configuration> configs)
+        {
+            Configurations = configs;
+
+            if (configs != null)
+            {
+                // Create DevicesList based on Configurations
+                foreach (Configuration config in configs)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<Configuration>(CreateDeviceButton), background, new object[] { config });
+                }
+            }
+
+            this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), background, null);
+        }
+
+        void LoadDevices_Finished()
+        {
+            DeviceListShown = true;
+            DevicesLoading = false;
+        }
+
+        #endregion
+
+        #region "Load Configuration"
+
         void LoadConfiguration()
         {
             SaveNeeded = false;
@@ -394,6 +445,13 @@ namespace TH_DeviceManager
                 }
             }
         }
+
+        #endregion
+
+
+        
+
+        
 
         public void SaveConfiguration()
         {
@@ -431,9 +489,10 @@ namespace TH_DeviceManager
 
                 } 
             }
-
-            LoadDevices();
         }
+
+
+        #region "Device Buttons"
 
         public bool DeviceListShown
         {
@@ -443,6 +502,7 @@ namespace TH_DeviceManager
 
         public static readonly DependencyProperty DeviceListShownProperty =
             DependencyProperty.Register("DeviceListShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+
 
         ObservableCollection<ListButton> devicelist;
         public ObservableCollection<ListButton> DeviceList
@@ -459,6 +519,7 @@ namespace TH_DeviceManager
                 devicelist = value;
             }
         }
+
 
         void CreateDeviceButton(Configuration config)
         {
@@ -489,7 +550,6 @@ namespace TH_DeviceManager
 
             DeviceList.Add(lb);
         }
-
 
         void db_Enabled(DeviceButton bt)
         {
@@ -557,18 +617,25 @@ namespace TH_DeviceManager
             }
         }
 
-        void UpdateDeviceButton(Configuration config)
+        void db_ShareClicked(DeviceButton bt)
         {
-            if (SelectedDeviceButton != null)
-            {
-                DeviceButton db = SelectedDeviceButton;
+            PageListShown = false;
 
-                db.Description = config.Description.Description;
-                db.Manufacturer = config.Description.Manufacturer;
-                db.Model = config.Description.Model;
-                db.Serial = config.Description.Serial;
-                db.Id = config.Description.Machine_ID;
-            }
+            //if (CurrentPage != null)
+            //{
+            //    if (CurrentPage.GetType() != typeof(Pages.AddShare.Page))
+            //    {
+            //        LoadAddSharePage(bt);
+            //    }
+            //}
+            //else
+            //{
+            //    LoadAddSharePage(bt);
+            //}
+
+            LoadAddSharePage(bt);
+
+            ToolbarShown = false;
         }
 
         void db_Clicked(DeviceButton bt)
@@ -581,37 +648,114 @@ namespace TH_DeviceManager
 
                     SelectedDeviceButton = bt;
 
-                    lb_Device_Selected(lb);                  
+                    lb_Device_Selected(lb);
                 }
             }
         }
 
-        void db_ShareClicked(DeviceButton bt)
+        #endregion
+
+        #region "Select Device"
+
+        public bool DeviceLoading
         {
-            PageListShown = false;
+            get { return (bool)GetValue(DeviceLoadingProperty); }
+            set { SetValue(DeviceLoadingProperty, value); }
+        }
 
-            if (CurrentPage != null)
+        public static readonly DependencyProperty DeviceLoadingProperty =
+            DependencyProperty.Register("DeviceLoading", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+
+        
+        Thread selectDevice_THREAD;
+
+        void lb_Device_Selected(TH_WPF.ListButton lb)
+        {
+            Configuration config = (Configuration)lb.DataObject;
+
+            if (config != null)
             {
-                if (CurrentPage.GetType() != typeof(Pages.AddShare.Page))
+                if (SelectedDevice != config)
                 {
-                    LoadAddSharePage(bt);
+                    SelectedDevice = config;
+
+                    SelectDevice(config);
                 }
             }
-            else
+
+            foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
+            lb.IsSelected = true;
+        }
+
+        void SelectDevice(Configuration config)
+        {
+            if (config != null)
             {
-                LoadAddSharePage(bt);
+                DeviceLoading = true;
+
+                if (selectDevice_THREAD != null) selectDevice_THREAD.Abort();
+
+                selectDevice_THREAD = new Thread(new ParameterizedThreadStart(SelectDevice_Worker));
+                selectDevice_THREAD.Start(config);
+            }
+        }
+
+        void SelectDevice_Worker(object o)
+        {
+            Configuration config = (Configuration)o;
+
+            DataTable dt = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
+            dt.TableName = config.TableName;
+
+            if (dt != null)
+            {
+                if (ConfigurationPages != null)
+                {
+                    foreach (ConfigurationPage page in ConfigurationPages)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action<DataTable, ConfigurationPage>(SelectDevice_GUI), background, new object[] { dt, page });
+                    }
+                }
             }
 
-            ToolbarShown = false;
+            this.Dispatcher.BeginInvoke(new Action<DataTable>(SelectDevice_Finished), background, new object[] { dt });
         }
+
+        void SelectDevice_GUI(DataTable dt, ConfigurationPage page)
+        {
+            this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { dt });
+        }
+
+        void SelectDevice_Finished(DataTable dt)
+        {
+            ConfigurationTable = dt;
+
+            if (PageList.Count > 0) Page_Selected((ListButton)PageList[0]);
+
+            DeviceLoading = false;
+            PageListShown = true;
+        }
+
+        #endregion
+
+
+
+
 
         void LoadAddSharePage(DeviceButton bt)
         {
+            //foreach (TH_WPF.ListButton lb in DeviceList.OfType<TH_WPF.ListButton>()) lb.IsSelected = false;
+
+            //SelectedDevice = null;
+
             if (bt.Parent != null)
             {
                 if (bt.Parent.GetType() == typeof(ListButton))
                 {
                     ListButton lb = (ListButton)bt.Parent;
+
+                    foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
+                    lb.IsSelected = true;
 
                     if (lb.DataObject != null)
                     {
@@ -630,60 +774,7 @@ namespace TH_DeviceManager
             }
         }
 
-        Thread selectDevice_THREAD;
-
-        void lb_Device_Selected(TH_WPF.ListButton lb)
-        {
-            Configuration config = (Configuration)lb.DataObject;
-
-            if (config != null)
-            {
-                if (SelectedDevice != config)
-                {
-                    SelectedDevice = config;
-
-                    if (selectDevice_THREAD != null) selectDevice_THREAD.Abort();
-
-                    selectDevice_THREAD = new Thread(new ParameterizedThreadStart(SelectDevice_Worker));
-                    selectDevice_THREAD.Start(config);
-
-                }
-
-                if (PageList.Count > 0) Page_Selected((ListButton)PageList[0]);
-
-                PageListShown = true;
-            }
-
-            foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
-            lb.IsSelected = true;
-
-        }
-
-        void SelectDevice_Worker(object o)
-        {
-            Configuration config = (Configuration)o;
-
-            DataTable dt = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
-            dt.TableName = config.TableName;
-
-            this.Dispatcher.BeginInvoke(new Action<DataTable>(SelectDevice_GUI), background, new object[] { dt });
-        }
-
-        void SelectDevice_GUI(DataTable dt)
-        {
-            ConfigurationTable = dt;
-
-            if (ConfigurationTable != null)
-            {
-                if (ConfigurationPages != null)
-                {
-                    foreach (ConfigurationPage page in ConfigurationPages)
-                    {
-                        this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { ConfigurationTable });
-                    }
-                }
-            }
-        }
+        
 
         #endregion
 
@@ -808,10 +899,23 @@ namespace TH_DeviceManager
 
         private void Restore_Clicked(Button_02 bt)
         {
-            LoadConfiguration();
+            SelectDevice(SelectedDevice);
         }
 
+
+        Thread save_THREAD;
+
         private void Save_Clicked(Button_02 bt)
+        {
+            Saving = true;
+
+            if (save_THREAD != null) save_THREAD.Abort();
+
+            save_THREAD = new Thread(new ThreadStart(Save_Worker));
+            save_THREAD.Start();      
+        }
+
+        void Save_Worker()
         {
             if (ConfigurationTable != null)
             {
@@ -819,14 +923,27 @@ namespace TH_DeviceManager
                 {
                     foreach (ConfigurationPage page in ConfigurationPages)
                     {
-                        page.SaveConfiguration(configurationtable);
+                        this.Dispatcher.Invoke(new Action<ConfigurationPage>(Save_GUI), new object[] { page });
                     }
                 }
 
                 SaveConfiguration();
             }
 
+            this.Dispatcher.BeginInvoke(new Action(Save_Finished), background, null);
+        }
+
+        void Save_GUI(ConfigurationPage page)
+        {
+            page.SaveConfiguration(configurationtable);
+        }
+
+        void Save_Finished()
+        {
             SaveNeeded = false;
+            Saving = false;
+
+            LoadDevices();
         }
 
         void PageItem_Clicked(object data)
@@ -1067,6 +1184,16 @@ namespace TH_DeviceManager
         #endregion
 
 
+        public bool Saving
+        {
+            get { return (bool)GetValue(SavingProperty); }
+            set { SetValue(SavingProperty, value); }
+        }
+
+        public static readonly DependencyProperty SavingProperty =
+            DependencyProperty.Register("Saving", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+
+
         public bool PageListShown
         {
             get { return (bool)GetValue(PageListShownProperty); }
@@ -1097,6 +1224,10 @@ namespace TH_DeviceManager
 
         private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            foreach (TH_WPF.ListButton lb in DeviceList.OfType<TH_WPF.ListButton>()) lb.IsSelected = false;
+
+            SelectedDevice = null;
+
             AddDevice();
         }
 

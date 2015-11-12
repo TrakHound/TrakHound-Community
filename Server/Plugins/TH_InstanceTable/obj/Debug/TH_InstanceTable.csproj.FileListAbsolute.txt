@@ -13,3 +13,5 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_Insta
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\ConfigurationPage\Page.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\ConfigurationPage\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable_MarkupCompile.lref

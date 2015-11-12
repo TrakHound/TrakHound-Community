@@ -52,9 +52,9 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 configurationTable = dt;
 
-                GeneratedEvents = GetGeneratedEvents(dt);
+                //GeneratedEvents = GetGeneratedEvents(dt);
 
-                LoadAgentSettings(dt);
+                //LoadAgentSettings(dt);
             }
         }
 
@@ -508,10 +508,12 @@ namespace TH_GeneratedData.ConfigurationPage
                 if (dbRow != null) dt.Rows.Remove(dbRow);
             }
 
-
-            foreach (Event e in GeneratedEvents)
+            if (GeneratedEvents != null)
             {
-                SaveEvent(e, dt);
+                foreach (Event e in GeneratedEvents)
+                {
+                    SaveEvent(e, dt);
+                }
             }
         }
 

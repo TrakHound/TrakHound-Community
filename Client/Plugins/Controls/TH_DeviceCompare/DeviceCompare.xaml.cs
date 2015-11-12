@@ -146,6 +146,8 @@ namespace TH_DeviceCompare
                 lDevices = value;
 
                 DeviceDisplays = new List<DeviceDisplay>();
+                ColumnHeaders.Clear();
+                Columns.Clear();
 
                 foreach (Device_Client device in Devices) CreateDeviceDisplay(device);
             }

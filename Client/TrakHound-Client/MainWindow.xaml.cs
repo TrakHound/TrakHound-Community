@@ -77,18 +77,21 @@ namespace TrakHound_Client
 
 
             // Read Users and Login
+            Splash_UpdateStatus("...Logging in User");
             ReadUserManagementSettings();
             devicemangager.userDatabaseSettings = userDatabaseSettings;
 
 
-            Splash_UpdateStatus("...Reading Configuration");
+            Splash_UpdateStatus("...Loading Plugins");
+            LoadPlugIns();
 
+            Splash_UpdateStatus("...Reading Configuration");
             ReadConfigurations();
 
             //ReadConfigurationFile();
 
-            Splash_UpdateStatus("...Loading Plugins");
-            LoadPlugIns();
+            //Splash_UpdateStatus("...Loading Plugins");
+            //LoadPlugIns();
 
 
 
@@ -1485,7 +1488,7 @@ namespace TrakHound_Client
                                     Splash_UpdateStatus("...Loading Page Plugin : " + CP.Title);
                                     Splash_AddPagePlugin(CP);
 
-                                    CP.Devices = Devices;
+                                    //CP.Devices = Devices;
                                     CP.DataEvent += CP_DataEvent;
                                     CP.ShowRequested += CP_ShowRequested;
                                     CP.SubCategories = config.SubCategories;
@@ -1668,6 +1671,25 @@ namespace TrakHound_Client
 
         }
 
+
+        void UpdatePlugInDevices()
+        {
+            if (PagePlugIns != null)
+            {
+                foreach (Lazy<Control_PlugIn> lcp in PagePlugIns.ToList())
+                {
+                    Control_PlugIn cp = lcp.Value;
+
+                    this.Dispatcher.BeginInvoke(new Action<Control_PlugIn>(UpdatePluginDevices), Priority, new object[] { cp });
+                }
+            }       
+        }
+
+        void UpdatePluginDevices(Control_PlugIn cp)
+        {
+            cp.Devices = Devices;
+        }
+
         #endregion
 
         #endregion
@@ -1686,14 +1708,6 @@ namespace TrakHound_Client
         void ReadConfigurations()
         {
             bool remote = false;
-
-            if (monitors != null)
-            {
-                foreach (ConfigurationMonitor monitor in monitors)
-                {
-                    monitor.Stop();
-                }
-            }
 
             if (currentuser != null)
             {
@@ -1717,6 +1731,8 @@ namespace TrakHound_Client
             {
                 int index = 0;
 
+                Devices.Clear();
+
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in Configurations)
                 {
@@ -1739,6 +1755,8 @@ namespace TrakHound_Client
                 }
 
             }
+
+            UpdatePlugInDevices();
 
         }
 
@@ -1885,7 +1903,7 @@ namespace TrakHound_Client
             if (rd != null)
             {
                 // Set Update Interval if changed
-                if (rd.index >= 0) 
+                if (rd.index >= 0 && rd.index < Devices.Count - 1) 
                 {
                     Device_Client client = Devices[rd.index];
                     if (client.UpdateInterval != clientUpdateInterval)
@@ -2079,8 +2097,6 @@ namespace TrakHound_Client
         }
 
         #endregion
-
-
 
     }
 
