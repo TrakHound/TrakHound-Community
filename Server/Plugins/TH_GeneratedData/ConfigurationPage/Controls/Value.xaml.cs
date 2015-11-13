@@ -162,5 +162,10 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             if (ParentValue != null) if (ParentValue.result != null) ParentValue.result.value = ((TextBox)sender).Text;
         }
 
+        private void EditValue_Clicked(TH_WPF.Button_02 bt)
+        {
+
+        }
+
     }
 }

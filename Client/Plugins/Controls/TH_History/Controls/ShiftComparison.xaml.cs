@@ -96,7 +96,7 @@ namespace TH_History.Controls
                                 double minOEE = 0;
 
                                 averageOEE = valsOEE.Average();
-                                medianOEE = TH_Global.Functions.Math.GetMedian(valsOEE);
+                                medianOEE = TH_Global.Functions.Math_Functions.GetMedian(valsOEE);
                                 maxOEE = valsOEE.Max();
                                 minOEE = valsOEE.Min();
 

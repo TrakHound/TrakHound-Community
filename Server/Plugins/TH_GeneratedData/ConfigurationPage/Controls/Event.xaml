@@ -17,14 +17,14 @@
         </Grid.RowDefinitions>
         
         <!--Description-->
-        <StackPanel Margin="10">
+        <StackPanel Margin="0,10">
 
             <TextBlock Text="Event Description" FontSize="8pt" Foreground="#aaa" Margin="10,5"/>
 
             <Border BorderThickness="1" CornerRadius="1" Margin="0,5">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="#aaa"/>
+                        <Setter Property="BorderBrush" Value="#ccc"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=description_TXT}" Value="true">
                                 <Setter Property="BorderBrush" Value="#0080ff"/>
@@ -39,7 +39,7 @@
 
         </StackPanel>
              
-        <StackPanel Grid.Row="1" Margin="10">
+        <StackPanel Grid.Row="1" Margin="0,0,0,10">
 
             <!--Values-->
             <ItemsControl Grid.Row="1" ItemsSource="{Binding Values}">
@@ -51,7 +51,7 @@
             </ItemsControl>
             
             <!--Add Value Button-->
-            <th_wpf:Button_04 Height="30" Width="30" Image="/TH_GeneratedData;component/Resources/Add_01.png" ToolTip="Add Value" Margin="10,20" Clicked="AddValue_Clicked" HorizontalAlignment="Left"/>
+            <th_wpf:Button_04 Height="30" Width="30" Image="/TH_GeneratedData;component/Resources/Add_01.png" ToolTip="Add Value" Margin="0,20" Clicked="AddValue_Clicked" HorizontalAlignment="Left"/>
             
             <!--Default Value-->
             <ContentControl Content="{Binding DefaultValue}" HorizontalAlignment="Left" Margin="0,5"/>

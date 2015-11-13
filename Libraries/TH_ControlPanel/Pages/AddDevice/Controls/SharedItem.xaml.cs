@@ -33,6 +33,8 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
 
         public TH_Configuration.User.Management.SharedListItem listitem;
 
+        public ImageSource FullSizeImage { get; set; }
+
 
         public ImageSource Image
         {
@@ -102,6 +104,13 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
         private void Add_Clicked(TH_WPF.Button_01 bt)
         {
             if (AddClicked != null) AddClicked(this);
+        }
+
+        public event Clicked_Handler Clicked;
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Clicked != null) Clicked(this);
         }
 
 

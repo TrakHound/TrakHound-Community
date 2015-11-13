@@ -18,9 +18,9 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1">
+    <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="0,0,0,1">
 
-        <Grid Margin="10">
+        <Grid Margin="0,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
@@ -35,14 +35,22 @@
 
                 <Grid>
 
-                    <StackPanel Margin="10" VerticalAlignment="Center">
+                    <StackPanel Margin="20,10" VerticalAlignment="Center">
 
                         <!--Value Name-->
-                        <StackPanel Margin="20,5">
+                        <StackPanel>
 
-                            <TextBlock Text="Name" Foreground="#66ffffff" FontSize="10pt" />
+                            <TextBlock Text="Value" Foreground="#66ffffff" FontSize="10pt" />
 
-                            <TextBox Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                            <StackPanel Orientation="Horizontal">
+
+                                <!--Value-->
+                                <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"/>
+
+                                <!--Edit Button-->
+                                <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/Edit_02.png" ToolTip="Edit" Margin="5,0" Clicked="EditValue_Clicked"/>
+
+                            </StackPanel>
 
                         </StackPanel>
 

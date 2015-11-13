@@ -218,6 +218,8 @@ namespace TH_DeviceManager.Pages.AddDevice
 
                 bmpSource.Freeze();
 
+                item.FullSizeImage = bmpSource;
+
                 if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                 {
                     bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, 60);
@@ -229,6 +231,7 @@ namespace TH_DeviceManager.Pages.AddDevice
             }
 
             item.Image = bitmap;
+            
 
             item.Description = listitem.description;
             item.Manufacturer = listitem.manufacturer;
@@ -239,8 +242,47 @@ namespace TH_DeviceManager.Pages.AddDevice
             item.listitem = listitem;
 
             item.AddClicked += item_AddClicked;
+            item.Clicked += item_Clicked;
 
             SharedList.Add(item);
+        }
+
+        void item_Clicked(Controls.SharedItem item)
+        {
+            if (item.listitem != null)
+            {
+                Management.SharedListItem i = item.listitem;
+
+                // Image
+                ImageSource img = item.FullSizeImage;
+
+                if (img.Width > img.Height)
+                {
+                    int width = Convert.ToInt32(img.Width);
+                    Details_Image = TH_WPF.Image_Functions.SetImageSize(img, Math.Min(width, 200));
+                }
+                else
+                {
+                    int height = Convert.ToInt32(img.Height);
+                    Details_Image = TH_WPF.Image_Functions.SetImageSize(img, 0, Math.Min(height, 50));
+                }
+
+                // Author
+                Details_Author = i.author;
+                Details_LastUpdated = i.upload_date.ToString();
+
+                Details_Description = i.description;
+
+                Details_Manufacturer = i.manufacturer;
+                Details_DeviceType = i.device_type;
+                Details_Model = i.model;
+                Details_Controller = i.controller;
+
+                Details_Dependencies = i.dependencies;
+                Details_Tags = i.tags;
+                
+
+            }
         }
 
         void item_AddClicked(Controls.SharedItem item)
@@ -281,6 +323,122 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             CatalogLoading = false;
         }
+
+        #endregion
+
+        #region "Details"
+
+        public ImageSource Details_Image
+        {
+            get { return (ImageSource)GetValue(Details_ImageProperty); }
+            set { SetValue(Details_ImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_ImageProperty =
+            DependencyProperty.Register("Details_Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Details_Author
+        {
+            get { return (string)GetValue(Details_AuthorProperty); }
+            set { SetValue(Details_AuthorProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_AuthorProperty =
+            DependencyProperty.Register("Details_Author", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Details_LastUpdated
+        {
+            get { return (string)GetValue(Details_LastUpdatedProperty); }
+            set { SetValue(Details_LastUpdatedProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_LastUpdatedProperty =
+            DependencyProperty.Register("Details_LastUpdated", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+        
+
+
+
+
+        public string Details_Description
+        {
+            get { return (string)GetValue(Details_DescriptionProperty); }
+            set { SetValue(Details_DescriptionProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_DescriptionProperty =
+            DependencyProperty.Register("Details_Description", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+        public string Details_Manufacturer
+        {
+            get { return (string)GetValue(Details_ManufacturerProperty); }
+            set { SetValue(Details_ManufacturerProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_ManufacturerProperty =
+            DependencyProperty.Register("Details_Manufacturer", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Details_DeviceType
+        {
+            get { return (string)GetValue(Details_DeviceTypeProperty); }
+            set { SetValue(Details_DeviceTypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_DeviceTypeProperty =
+            DependencyProperty.Register("Details_DeviceType", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Details_Model
+        {
+            get { return (string)GetValue(Details_ModelProperty); }
+            set { SetValue(Details_ModelProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_ModelProperty =
+            DependencyProperty.Register("Details_Model", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Details_Controller
+        {
+            get { return (string)GetValue(Details_ControllerProperty); }
+            set { SetValue(Details_ControllerProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_ControllerProperty =
+            DependencyProperty.Register("Details_Controller", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+        public string Details_Dependencies
+        {
+            get { return (string)GetValue(Details_DependenciesProperty); }
+            set { SetValue(Details_DependenciesProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_DependenciesProperty =
+            DependencyProperty.Register("Details_Dependencies", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+        public string Details_Tags
+        {
+            get { return (string)GetValue(Details_TagsProperty); }
+            set { SetValue(Details_TagsProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_TagsProperty =
+            DependencyProperty.Register("Details_Tags", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+        
+
+
+
+
 
         #endregion
 

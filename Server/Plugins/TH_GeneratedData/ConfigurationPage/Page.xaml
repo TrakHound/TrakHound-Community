@@ -28,25 +28,118 @@
 
         <TextBlock Text="Generated Data" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
 
-        <TextBlock Grid.Row="1" Text="Configure the Generated Data Server Plugin" FontSize="10pt" Foreground="#888" Margin="10,10,10,20"/>
+        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="10,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+            Generated Data takes the raw data collected from the MTConnect Agent (and/or other source) and processes it into data that is ready to display, report, graph, etc.
+            The objective is to store the processed data so that any client that reads from the database displays the same data.
+        </TextBlock>
 
         <Grid Grid.Row="2" Margin="10">
             
-            <TabControl Background="{x:Null}">
+            <TabControl Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="TabControl_SelectionChanged" >
+                <TabControl.Resources>
+
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="FontSize" Value="12pt"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Grid>
+                                        <Border Name="bd" Margin="0,0,0,-5" Background="#00000000" CornerRadius="1,1,0,0">
+                                            <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  ContentSource="Header" Margin="25,0"
+                                                  RecognizesAccessKey="True">
+                                            </ContentPresenter>
+                                        </Border>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>                                       
+                                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
+                                            <Setter Property="Panel.ZIndex" Value="100" />
+                                            <Setter TargetName="bd" Property="Background" Value="#180080ff" />
+                                            <Setter Property="Foreground" Value="#0080ff"/>
+                                        </DataTrigger>                                    
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Panel.ZIndex" Value="100" />
+                                            <Setter TargetName="bd" Property="Background" Value="#0080ff" />
+                                            <Setter Property="Foreground" Value="#fff"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                </TabControl.Resources>
 
                 <!--Snapshot Data-->
-                <TabItem Header="Snapshot Data" Background="{x:Null}" Height="30" Padding="20,0">
+                <TabItem Header="Snapshot Data" Background="{x:Null}" BorderBrush="{x:Null}">
 
                     <StackPanel>
 
-                        <TextBlock Text="Snapshot Data" FontSize="12pt" Foreground="#888" Margin="10"/>
-                        
-                        <th_wpf:Button_01 Text="Add Item" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="10" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked"/>
+                        <Rectangle Height="3" Fill="#0080ff" />
+
+                        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,15,10,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+                            Snapshot data is a central table for current device data. 
+                            Three types of data are avaiable:
+                        </TextBlock>
+
+                        <!--Collected-->
+                        <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Collected" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
+                                Any MTConnect data item (Conditions, Events, and Samples). 
+                                This essentially allows for a more user friendly name to be applied to the data item.
+                            </TextBlock>
+
+                        </Grid>
+
+                        <!--Generated-->
+                        <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Generated" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
+                                Stores the current value of a Generated Event for display in a client application.
+                            </TextBlock>
+
+                        </Grid>
+
+                        <!--Variable-->
+                        <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="Variable" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
+                                Generic variable storage. Read from the 'variables' table in the device's database and can be written to from any plugin or program.
+                                This is also used to read data from an outside source such as an ERP system.
+                            </TextBlock>
+
+                        </Grid>
+
+
+                        <th_wpf:Button_01 Text="Add Item" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked"/>
 
                         <ItemsControl ItemsSource="{Binding SnapshotItems}">
                             <ItemsControl.Resources>
                                 <Style TargetType="controls:Snapshot_Item">
-                                    <Setter Property="Margin" Value="10,5"/>
+                                    <Setter Property="Margin" Value="0,5"/>
                                 </Style>
                             </ItemsControl.Resources>
                         </ItemsControl>
@@ -56,16 +149,33 @@
                 </TabItem>
                 
                 <!--Generated Events-->
-                <TabItem Header="Generated Events" Background="{x:Null}" Height="30" Padding="20,0">
+                <TabItem Header="Generated Events" BorderBrush="{x:Null}" >
                     
-                    <ItemsControl ItemsSource="{Binding EventButtons}" Margin="20">
-                        <ItemsControl.Resources>
-                            <Style TargetType="th_wpf:CollapseButton">
-                                <Setter Property="Margin" Value="0,10"/>
-                            </Style>
-                        </ItemsControl.Resources>
-                    </ItemsControl>
-                    
+                    <StackPanel>
+                        
+                        <Rectangle Height="3" Fill="#0080ff" />
+
+                        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,15,10,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+                            Generated Events are used to process raw MTConnect data items. 
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,15,10,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+                            Events made up of Values and then the Default Value.
+                            Values have logical Triggers that define the conditions needed to be met for the Value to be 'True'.
+                        </TextBlock>
+
+                        <th_wpf:Button_01 Text="Add Event" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddEvent_Clicked"/>
+
+                        <ItemsControl ItemsSource="{Binding EventButtons}" Margin="0,20">
+                            <ItemsControl.Resources>
+                                <Style TargetType="th_wpf:CollapseButton">
+                                    <Setter Property="Margin" Value="0,10"/>
+                                </Style>
+                            </ItemsControl.Resources>
+                        </ItemsControl>
+
+                    </StackPanel>
+
                 </TabItem>
                 
             </TabControl>

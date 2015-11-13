@@ -33,7 +33,6 @@
                         <!--Value-->
                         <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="TextBox_TextChanged" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
-
                         <!--Edit Button-->
                         <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/Edit_02.png" ToolTip="Edit" Margin="5,0" Clicked="Edit_Clicked"/>
                         

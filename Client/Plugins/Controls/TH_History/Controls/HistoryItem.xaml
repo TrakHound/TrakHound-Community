@@ -24,7 +24,7 @@
             <StackPanel Grid.Column="0" Margin="10">
 
                 <!--Title-->
-                <TextBlock Text="{Binding GraphTitle}" FontSize="18" Foreground="#aaffffff" Margin="0,20,0,0" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding GraphTitle}" FontSize="18" Foreground="#333" Margin="0,20,0,0" HorizontalAlignment="Center"/>
 
                 <!--Seperator-->
                 <Rectangle Fill="#33000000" Height="1" Margin="0,5" />

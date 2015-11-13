@@ -14,16 +14,16 @@
         <StackPanel Orientation="Horizontal" Margin="0,10">
 
             <!--Month Name-->
-            <TextBlock Text="{Binding MonthName}" FontSize="20pt" Foreground="#aaffffff" Margin="0" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding MonthName}" FontSize="20pt" Foreground="#333" Margin="0" VerticalAlignment="Center"/>
 
             <!--Year-->
-            <TextBlock Text="{Binding Year}" FontSize="16pt" Foreground="#33ffffff" Margin="20,0" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Year}" FontSize="16pt" Foreground="#666666" Margin="20,0" VerticalAlignment="Center"/>
 
         </StackPanel>
 
         <UniformGrid x:Name="DayOfWeek_UGRID" Columns="7" />
 
-        <UniformGrid x:Name="Days_UGRID" Columns="7" />
+        <UniformGrid x:Name="Days_UGRID" Columns="7" Background="#aa0080ff"/>
         
     </StackPanel>
     

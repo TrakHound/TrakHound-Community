@@ -49,7 +49,7 @@
                 </Rectangle.Style>
             </Rectangle>
 
-            <TextBlock Text="{Binding DayNumber}" FontSize="20pt" FontWeight="Bold" Foreground="#66ffffff" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <TextBlock Text="{Binding DayNumber}" FontSize="20pt" FontWeight="Bold" Foreground="#aaffffff" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
             <!--<StackPanel>
 

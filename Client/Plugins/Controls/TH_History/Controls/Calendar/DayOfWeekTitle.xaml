@@ -8,7 +8,7 @@
     
     <Viewbox>
 
-        <TextBlock Text="{Binding DayOfWeekName}" Foreground="#66ffffff" Margin="20,5" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding DayOfWeekName}" Foreground="#888" Margin="20,5" HorizontalAlignment="Center"/>
 
     </Viewbox>
     

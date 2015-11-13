@@ -281,17 +281,21 @@ namespace TH_TableManager
         {
             TableList.Clear();
 
-            foreach (string tableName in tableNames)
+            if (tableNames != null)
             {
-                TH_WPF.ListButton lb = new TH_WPF.ListButton();
-                lb.Text = tableName;
-                lb.Selected += lb_Table_Selected;
-                lb.MultiSelected += TableList_MultiSelected;
-                lb.MultiUnselected += TableList_MultiUnselected;
-                this.Dispatcher.BeginInvoke(new Action<ListButton>(LoadTableList_AddItem), Priority, new object[] { lb });
+                foreach (string tableName in tableNames)
+                {
+                    TH_WPF.ListButton lb = new TH_WPF.ListButton();
+                    lb.Text = tableName;
+                    lb.Selected += lb_Table_Selected;
+                    lb.MultiSelected += TableList_MultiSelected;
+                    lb.MultiUnselected += TableList_MultiUnselected;
+                    this.Dispatcher.BeginInvoke(new Action<ListButton>(LoadTableList_AddItem), Priority, new object[] { lb });
+                }
+
+                if (tableNames.Length > 0) TableListShown = true;
             }
 
-            if (tableNames.Length > 0) TableListShown = true;
         }
 
 

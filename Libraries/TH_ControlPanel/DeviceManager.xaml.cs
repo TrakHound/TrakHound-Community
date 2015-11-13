@@ -432,7 +432,7 @@ namespace TH_DeviceManager
 
         void LoadConfiguration()
         {
-            SaveNeeded = false;
+            //SaveNeeded = false;
 
             if (ConfigurationTable != null)
             {
@@ -448,10 +448,56 @@ namespace TH_DeviceManager
 
         #endregion
 
-
         
 
-        
+        #region "Save Configuration"
+
+        Thread save_THREAD;
+
+        private void Save_Clicked(Button_02 bt)
+        {
+            Saving = true;
+
+            if (save_THREAD != null) save_THREAD.Abort();
+
+            save_THREAD = new Thread(new ThreadStart(Save_Worker));
+            save_THREAD.Start();
+        }
+
+        void Save_Worker()
+        {
+            if (ConfigurationTable != null)
+            {
+                if (ConfigurationPages != null)
+                {
+                    foreach (ConfigurationPage page in ConfigurationPages)
+                    {
+                        this.Dispatcher.Invoke(new Action<ConfigurationPage>(Save_GUI), new object[] { page });
+                    }
+                }
+
+                SaveConfiguration();
+
+                
+            }
+
+            this.Dispatcher.BeginInvoke(new Action(Save_Finished), background, null);
+        }
+
+        void Save_GUI(ConfigurationPage page)
+        {
+            page.SaveConfiguration(configurationtable);
+        }
+
+        void Save_Finished()
+        {
+            if (SelectedDevice != null) SelectDevice(SelectedDevice);
+
+            SaveNeeded = false;
+            Saving = false;
+
+            //LoadDevices();
+        }
 
         public void SaveConfiguration()
         {
@@ -474,7 +520,7 @@ namespace TH_DeviceManager
                         if (userDatabaseSettings == null)
                         {
                             TH_Configuration.User.Management.ClearConfigurationTable(tablename);
-                            
+
                             TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
                         }
                         else
@@ -487,10 +533,19 @@ namespace TH_DeviceManager
                 else
                 {
 
-                } 
+                }
+            }
+
+            ConfigurationTable = dt;
+
+            XmlDocument xml = Converter.TableToXML(ConfigurationTable);
+            if (xml != null)
+            {
+                SelectedDevice = Configuration.ReadConfigFile(xml);
             }
         }
 
+        #endregion
 
         #region "Device Buttons"
 
@@ -726,28 +781,28 @@ namespace TH_DeviceManager
             this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { dt });
         }
 
+        
+
         void SelectDevice_Finished(DataTable dt)
         {
             ConfigurationTable = dt;
 
-            if (PageList.Count > 0) Page_Selected((ListButton)PageList[0]);
+            if (PageList.Count > 0)
+            {
+                if (PageList.Count > selectedPageIndex) Page_Selected((ListButton)PageList[selectedPageIndex]);
+                else Page_Selected((ListButton)PageList[0]);
+            }
+            
 
             DeviceLoading = false;
             PageListShown = true;
+            SaveNeeded = false;
         }
 
         #endregion
 
-
-
-
-
         void LoadAddSharePage(DeviceButton bt)
         {
-            //foreach (TH_WPF.ListButton lb in DeviceList.OfType<TH_WPF.ListButton>()) lb.IsSelected = false;
-
-            //SelectedDevice = null;
-
             if (bt.Parent != null)
             {
                 if (bt.Parent.GetType() == typeof(ListButton))
@@ -756,6 +811,9 @@ namespace TH_DeviceManager
 
                     foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
                     lb.IsSelected = true;
+
+                    SelectedDevice = null;
+                    selectedPageIndex = 0;
 
                     if (lb.DataObject != null)
                     {
@@ -773,8 +831,6 @@ namespace TH_DeviceManager
                 }
             }
         }
-
-        
 
         #endregion
 
@@ -807,6 +863,8 @@ namespace TH_DeviceManager
         }
 
         List<ConfigurationPage> ConfigurationPages;
+
+        int selectedPageIndex = 0;
 
         void InitializePages()
         {
@@ -862,21 +920,23 @@ namespace TH_DeviceManager
             }
         }
 
-        void Page_Selected(ListButton LB)
+        void Page_Selected(ListButton lb)
         {
-            foreach (ListButton olb in PageList) if (olb != LB) olb.IsSelected = false;
-            LB.IsSelected = true;
+            foreach (ListButton olb in PageList) if (olb != lb) olb.IsSelected = false;
+            lb.IsSelected = true;
 
-            if (LB.DataObject != null)
+            selectedPageIndex = PageList.IndexOf(lb);
+
+            if (lb.DataObject != null)
             {
                 if (CurrentPage != null)
                 {
-                    if (CurrentPage.GetType() != LB.DataObject.GetType())
+                    if (CurrentPage.GetType() != lb.DataObject.GetType())
                     {
-                        CurrentPage = LB.DataObject;
+                        CurrentPage = lb.DataObject;
                     }
                 }
-                else CurrentPage = LB.DataObject;
+                else CurrentPage = lb.DataObject;
             }
         }
 
@@ -903,48 +963,7 @@ namespace TH_DeviceManager
         }
 
 
-        Thread save_THREAD;
-
-        private void Save_Clicked(Button_02 bt)
-        {
-            Saving = true;
-
-            if (save_THREAD != null) save_THREAD.Abort();
-
-            save_THREAD = new Thread(new ThreadStart(Save_Worker));
-            save_THREAD.Start();      
-        }
-
-        void Save_Worker()
-        {
-            if (ConfigurationTable != null)
-            {
-                if (ConfigurationPages != null)
-                {
-                    foreach (ConfigurationPage page in ConfigurationPages)
-                    {
-                        this.Dispatcher.Invoke(new Action<ConfigurationPage>(Save_GUI), new object[] { page });
-                    }
-                }
-
-                SaveConfiguration();
-            }
-
-            this.Dispatcher.BeginInvoke(new Action(Save_Finished), background, null);
-        }
-
-        void Save_GUI(ConfigurationPage page)
-        {
-            page.SaveConfiguration(configurationtable);
-        }
-
-        void Save_Finished()
-        {
-            SaveNeeded = false;
-            Saving = false;
-
-            LoadDevices();
-        }
+        
 
         void PageItem_Clicked(object data)
         {
@@ -1227,6 +1246,7 @@ namespace TH_DeviceManager
             foreach (TH_WPF.ListButton lb in DeviceList.OfType<TH_WPF.ListButton>()) lb.IsSelected = false;
 
             SelectedDevice = null;
+            selectedPageIndex = 0;
 
             AddDevice();
         }
@@ -1264,7 +1284,6 @@ namespace TH_DeviceManager
 
 
         }
-
 
         #endregion
 

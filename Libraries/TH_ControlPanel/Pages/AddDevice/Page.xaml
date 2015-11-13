@@ -210,23 +210,226 @@
                     </Border>
 
                 </Grid>
+                
+                <Grid Grid.Column="1" Margin="10,0,0,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <!--Buttons-->
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
-                    <StackPanel.Resources>
-                        <Style TargetType="controls:PageItem">
-                            <Setter Property="Margin" Value="10"/>
-                        </Style>
-                    </StackPanel.Resources>
+                    <!--Buttons-->
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="controls:PageItem">
+                                <Setter Property="Margin" Value="10"/>
+                            </Style>
+                        </StackPanel.Resources>
 
-                    <!--From File-->
-                    <controls:PageItem Clicked="DeviceFromFile_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
+                        <!--From File-->
+                        <controls:PageItem Clicked="DeviceFromFile_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
 
-                    <!--New-->
-                    <controls:PageItem Clicked="NewDevice_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" />
+                        <!--New-->
+                        <controls:PageItem Clicked="NewDevice_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" />
 
-                </StackPanel>
+                    </StackPanel>
 
+                    <!--Details-->
+                    <Border Grid.Row="1" BorderBrush="#ccc" BorderThickness="0,1,0,0">
+
+                        <Grid Margin="0,10,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Details" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                            <Border Grid.Row="1" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="450" VerticalAlignment="Stretch">
+
+                                <StackPanel Margin="10">
+                                    
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Image-->
+                                        <Grid>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Details_Image}" Value="{x:Null}">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+
+                                            <Image Source="{Binding Details_Image}" HorizontalAlignment="Left" VerticalAlignment="Center" MaxWidth="200" Margin="0,0,40,0"/>
+
+                                        </Grid>
+
+                                        <!--Author-->
+                                        <StackPanel Grid.Column="1">
+
+                                            <TextBlock Text="Author" FontSize="8pt" Foreground="#888" Margin="0,2"/>
+
+                                            <TextBlock Text="{Binding Details_Author}" FontSize="10pt" FontWeight="Bold" Foreground="#0080ff" Margin="0,2"/>
+
+                                            <TextBlock Text="Upload Date" FontSize="8pt" Foreground="#888" Margin="0,2"/>
+
+                                            <TextBlock Text="{Binding Details_LastUpdated}" FontSize="8pt" Foreground="#333" Margin="0,2"/>
+
+                                        </StackPanel>
+
+                                    </Grid>
+                                    
+                                    
+                                    <!--Description-->
+                                    <StackPanel Margin="0,10,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Details_Description}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock Text="Description" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                                        <TextBlock Text="{Binding Details_Description}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+
+                                    </StackPanel>
+
+                                    <!--Manufacturer-->
+                                    <StackPanel Margin="0,10,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Details_Manufacturer}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock Text="Manufacturer" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                                        <TextBlock Text="{Binding Details_Manufacturer}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+
+                                    </StackPanel>
+
+                                    <!--Device Type-->
+                                    <StackPanel Margin="0,10,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Details_DeviceType}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock Text="Device Type" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                                        <TextBlock Text="{Binding Details_DeviceType}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+
+                                    </StackPanel>
+
+                                    <!--Model-->
+                                    <StackPanel Margin="0,10,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Details_Model}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock Text="Model" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                                        <TextBlock Text="{Binding Details_Model}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+
+                                    </StackPanel>
+
+                                    <!--Controller-->
+                                    <StackPanel Margin="0,10,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Details_Controller}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock Text="Controller" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                                        <TextBlock Text="{Binding Details_Controller}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+
+                                    </StackPanel>
+
+                                    <!--Dependencies-->
+                                    <StackPanel Margin="0,10,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Details_Dependencies}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock Text="Dependencies" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                                        <TextBlock Text="{Binding Details_Dependencies}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+
+                                    </StackPanel>
+
+                                    <!--Search Tags-->
+                                    <StackPanel Margin="0,10,0,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Details_Tags}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+
+                                        <TextBlock Text="Search Tags" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+
+                                        <TextBlock Text="{Binding Details_Tags}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+
+                                    </StackPanel>
+
+                                </StackPanel>
+
+                            </Border>
+
+                        </Grid>
+
+                    </Border>
+                    
+                </Grid>
+ 
             </Grid>
 
         </Grid>

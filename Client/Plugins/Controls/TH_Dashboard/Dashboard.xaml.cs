@@ -190,7 +190,7 @@ namespace TH_Dashboard
                     {
                         try
                         {
-                            CP.Devices = Devices;
+                            //CP.Devices = Devices;
                             CP.SubCategories = config.SubCategories;
                             CP.DataEvent += CP_DataEvent;
 

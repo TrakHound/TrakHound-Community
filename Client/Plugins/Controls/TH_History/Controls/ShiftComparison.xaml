@@ -6,10 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="1000">
     
-    <Grid>
+    <Grid Background="#eee">
         <Grid.Resources>
             <Style TargetType="TextBlock">
-                <Setter Property="Foreground" Value="#aaffffff"/>
+                <Setter Property="Foreground" Value="#333"/>
             </Style>
         </Grid.Resources>
         

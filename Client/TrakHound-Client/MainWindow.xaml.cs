@@ -1599,11 +1599,8 @@ namespace TrakHound_Client
                         Lazy<Control_PlugIn> LCP = PagePlugIns.ToList().Find(x => x.Value.Title == config.name);
                         if (LCP != null)
                         {
-                            if (LCP.IsValueCreated)
-                            {
-                                Control_PlugIn CP = LCP.Value;
-                                CP.Update_DataEvent(de_d);
-                            }
+                            Control_PlugIn CP = LCP.Value;
+                            CP.Update_DataEvent(de_d);
                         }
                     }
                 }
@@ -1921,19 +1918,16 @@ namespace TrakHound_Client
                         {
                             foreach (Lazy<Control_PlugIn> lcp in PagePlugIns.ToList())
                             {
-                                if (lcp != null)
+                                Control_PlugIn cp = lcp.Value;
+
+                                if (cp.Title.ToLower() == config.name.ToLower())
                                 {
-                                    Control_PlugIn cp = lcp.Value;
+                                    UpdateWorkerInfo info = new UpdateWorkerInfo();
+                                    info.returnData = rd;
+                                    info.controlPlugin = cp;
+                                    info.config = config;
 
-                                    if (cp.Title.ToLower() == config.name.ToLower())
-                                    {
-                                        UpdateWorkerInfo info = new UpdateWorkerInfo();
-                                        info.returnData = rd;
-                                        info.controlPlugin = cp;
-                                        info.config = config;
-
-                                        ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), info);
-                                    }
+                                    ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), info);
                                 }
                             }
                         }

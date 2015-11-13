@@ -1000,8 +1000,12 @@ namespace TH_Configuration.User
 
         public static string GetRowValue(string name, DataRow row)
         {
-            if (row.Table.Columns.Contains(name)) return row[name].ToString();
-            else return null;
+            if (row.Table.Columns.Contains(name))
+            {
+                if (row[name] != String.Empty) return row[name].ToString();
+            }
+            
+            return null;
         }
 
         public static List<SharedListItem> GetSharedList()

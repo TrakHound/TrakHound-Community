@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 using System.Data;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Configuration.User;
@@ -52,9 +53,9 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 configurationTable = dt;
 
-                //GeneratedEvents = GetGeneratedEvents(dt);
+                GeneratedEvents = GetGeneratedEvents(dt);
 
-                //LoadAgentSettings(dt);
+                LoadAgentSettings(dt);
             }
         }
 
@@ -453,7 +454,8 @@ namespace TH_GeneratedData.ConfigurationPage
             item.RemoveClicked += item_RemoveClicked;
             item.RefreshClicked += item_RefreshClicked;
 
-            SnapshotItems.Insert(0, item);
+            SnapshotItems.Add(item);
+            item.BringIntoView();
         }
 
         //void AddSnapShotItem(Controls.Snapshot_Item item)
@@ -647,40 +649,114 @@ namespace TH_GeneratedData.ConfigurationPage
         }
 
 
+        //void LoadGeneratedEvents(List<Event> genEvents)
+        //{
+        //    EventButtons.Clear();
+
+        //    events = new List<Controls.Event>();
+
+        //    bool first = true;
+
+        //    foreach (Event e in genEvents)
+        //    {
+        //        Controls.Event ev = CreateEvent(e);
+
+        //        Controls.EventButton event_bt = new Controls.EventButton();
+        //        event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
+        //        event_bt.ParentEvent = e;
+
+        //        TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
+        //        bt.ButtonContent = event_bt;
+
+        //        if (first) bt.IsExpanded = true;
+        //        first = false;
+
+        //        bt.PageContent = ev;
+
+        //        events.Add(ev);
+
+        //        this.Dispatcher.BeginInvoke(new Action<TH_WPF.CollapseButton>(AddEventButton), priority, new object[] { bt });
+        //    }
+        //}
+
+
+
+        #region "Load Generated Events"
+
+        Thread loadgeneratedevents_THREAD;
+
         void LoadGeneratedEvents(List<Event> genEvents)
         {
             EventButtons.Clear();
 
+            if (loadgeneratedevents_THREAD != null) loadgeneratedevents_THREAD.Abort();
+
+            loadgeneratedevents_THREAD = new Thread(new ParameterizedThreadStart(LoadGeneratedEvents_Worker));
+            loadgeneratedevents_THREAD.Start(genEvents);
+        }
+
+        void LoadGeneratedEvents_Worker(object o)
+        {
+            List<Event> genEvents = (List<Event>)o;
+
             events = new List<Controls.Event>();
 
-            bool first = true;
+            first = true;
 
             foreach (Event e in genEvents)
             {
-                Controls.Event ev = CreateEvent(e);
-
-                Controls.EventButton event_bt = new Controls.EventButton();
-                event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
-                event_bt.ParentEvent = e;
-
-                TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
-                bt.ButtonContent = event_bt;
-
-                if (first) bt.IsExpanded = true;
-                first = false;
-
-                bt.PageContent = ev;
-
-                events.Add(ev);
-
-                this.Dispatcher.BeginInvoke(new Action<TH_WPF.CollapseButton>(AddEventButton), priority, new object[] { bt });
+                this.Dispatcher.BeginInvoke(new Action<Event>(LoadGeneratedEvents_GUI), priority, new object[] { e });
             }
         }
 
+        bool first = true;
 
-        void AddEventButton(TH_WPF.CollapseButton bt)
+        void LoadGeneratedEvents_GUI(Event e)
         {
+            Controls.Event ev = CreateEvent(e);
+
+            Controls.EventButton event_bt = new Controls.EventButton();
+            event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
+            event_bt.ParentEvent = e;
+
+            TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
+            bt.ButtonContent = event_bt;
+
+
+            if (first) bt.IsExpanded = true;
+            first = false;
+
+            bt.PageContent = ev;
+
+            events.Add(ev);
+
             EventButtons.Add(bt);
+        }
+
+        #endregion
+
+        private void AddEvent_Clicked(TH_WPF.Button_01 bt)
+        {
+            Event e = new Event();
+            e.name = "[EVENT NAME]";
+
+            e.Default = new Result();
+            e.Default.value = "[VALUE]";
+
+            GeneratedEvents.Add(e);
+
+            LoadGeneratedEvents_GUI(e);
+
+            if (EventButtons.Count > 0)
+            {
+                TH_WPF.CollapseButton cbt = EventButtons[EventButtons.Count - 1];
+
+                foreach (TH_WPF.CollapseButton ocbt in EventButtons.OfType<TH_WPF.CollapseButton>().ToList()) if (ocbt != cbt) ocbt.IsExpanded = false;
+                cbt.IsExpanded = true;
+
+                cbt.BringIntoView();
+            }
+
         }
 
         Controls.Event CreateEvent(Event e)
@@ -689,6 +765,8 @@ namespace TH_GeneratedData.ConfigurationPage
             result.ParentEvent = e;
 
             result.Description = e.description;
+
+            result.AddValueClicked += Value_AddValueClicked;
 
             foreach (Value v in e.values)
             {
@@ -703,6 +781,19 @@ namespace TH_GeneratedData.ConfigurationPage
             result.DefaultValue = def;
 
             return result;
+        }
+
+        void Value_AddValueClicked(Controls.Event e)
+        {
+            if (e.ParentEvent != null)
+            {
+                Value val = new Value();
+
+                e.ParentEvent.values.Add(val);
+
+                e.Values.Add(CreateValue(val, e.ParentEvent));
+            }
+
         }
 
         Controls.Value CreateValue(Value v, Event e)
@@ -1128,6 +1219,12 @@ namespace TH_GeneratedData.ConfigurationPage
         }
 
         #endregion
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
 
     }
 }
