@@ -42,6 +42,22 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public TH_GeneratedData.ConfigurationPage.Page.Value ParentValue;
         public TH_GeneratedData.ConfigurationPage.Page.Trigger ParentTrigger;
 
+
+
+        public TH_GeneratedData.ConfigurationPage.Page ParentPage
+        {
+            get { return (TH_GeneratedData.ConfigurationPage.Page)GetValue(ParentPageProperty); }
+            set { SetValue(ParentPageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ParentPageProperty =
+            DependencyProperty.Register("ParentPage", typeof(TH_GeneratedData.ConfigurationPage.Page), typeof(Trigger), new PropertyMetadata(null));
+
+        
+
+
+
+
         ObservableCollection<object> dataitems;
         public ObservableCollection<object> DataItems
         {
@@ -125,6 +141,11 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         private void value_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (ParentTrigger != null) ParentTrigger.value = ((TextBox)sender).Text;
+        }
+
+        private void Link_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ParentTrigger != null) ParentTrigger.link = ((ComboBox)sender).Text;
         }
 
   

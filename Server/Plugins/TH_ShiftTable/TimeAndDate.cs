@@ -7,7 +7,7 @@ using System;
 
 namespace TH_ShiftTable
 {
-    public class ShiftTime
+    public class ShiftTime : IComparable
     {
         public ShiftTime() { }
         public ShiftTime(DateTime dt)
@@ -89,23 +89,66 @@ namespace TH_ShiftTable
 
         public int dayOffset { get; set; }
 
-        public override string ToString()
+        public string To24HourString()
         {
-            return hour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00");
+            ShiftTime result = new ShiftTime();
+            result.hour = hour;
+            result.minute = minute;
+            result.second = second;
+
+            if (result.hour >= 24) result.hour -= 24;
+
+            string h = result.hour.ToString("00");
+            string m = result.minute.ToString("00");
+            string s = result.second.ToString("00");
+
+            return h + ":" + m + ":" + s;
         }
 
-        public string ToString(bool Hour12)
+        public override string ToString()
         {
             int adjHour = hour;
 
             string meridian = "AM";
-            if (hour > 12)
+            if (hour == 0)
+            {
+                adjHour = 12;
+            }
+            else if (hour == 12)
+            {
+                meridian = "PM";
+            }
+            else if (hour > 12)
             {
                 meridian = "PM";
                 adjHour -= 12;
             }
 
-            return adjHour.ToString("00") + ":" + minute.ToString("00") + ":" + second.ToString("00") + " " + meridian;
+            return adjHour.ToString() + ":" + minute.ToString("00") + ":" + second.ToString("00") + " " + meridian;
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            ShiftTime s = obj as ShiftTime;
+            if (s != null)
+            {
+                if (s > this) return -1;
+                else if (s < this) return 1;
+                else return 0;
+            }
+            else return 1;
+        }
+
+        public ShiftTime Copy()
+        {
+            ShiftTime result = new ShiftTime();
+            result.hour = hour;
+            result.minute = minute;
+            result.second = second;
+
+            return result;
         }
 
         #region "Operator Overrides"
@@ -129,11 +172,19 @@ namespace TH_ShiftTable
 
         static bool EqualTo(ShiftTime c1, ShiftTime c2)
         {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
             return c1.hour == c2.hour && c1.minute == c2.minute && c1.second == c2.second;
         }
 
         static bool NotEqualTo(ShiftTime c1, ShiftTime c2)
         {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
             return c1.hour != c2.hour || c1.minute != c2.minute || c1.second != c2.second;
         }
 
@@ -215,6 +266,25 @@ namespace TH_ShiftTable
         }
 
         #endregion
+
+        public ShiftTime AddShiftTime(ShiftTime time)
+        {
+            ShiftTime result = new ShiftTime();
+
+            int h = hour + time.hour;
+
+            int m = minute + time.minute;
+            if (m > 59) { h += 1; m = m - 60; }
+
+            int s = second + time.second;
+            if (s > 59) { m += 1; s = s - 60; }
+
+            result.hour = h;
+            result.minute = m;
+            result.second = s;
+
+            return result;
+        }
     }
 
     public class ShiftDate

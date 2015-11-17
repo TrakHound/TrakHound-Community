@@ -1,0 +1,207 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+using System.Collections.ObjectModel;
+
+namespace TH_ShiftTable.ConfigurationPage.Controls
+{
+    /// <summary>
+    /// Interaction logic for ShiftListItem.xaml
+    /// </summary>
+    public partial class ShiftListItem : UserControl
+    {
+        public ShiftListItem()
+        {
+            InitializeComponent();
+            DataContext = this;
+        }
+
+
+        //public TH_ShiftTable.ConfigurationPage.Page ParentPage
+        //{
+        //    get { return (TH_ShiftTable.ConfigurationPage.Page)GetValue(ParentPageProperty); }
+        //    set { SetValue(ParentPageProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty ParentPageProperty =
+        //    DependencyProperty.Register("ParentPage", typeof(TH_ShiftTable.ConfigurationPage.Page), typeof(ShiftListItem), new PropertyMetadata(null));
+
+        public Page ParentPage;
+        public Page.Shift ParentShift;
+
+
+        public string ShiftName
+        {
+            get { return (string)GetValue(ShiftNameProperty); }
+            set { SetValue(ShiftNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShiftNameProperty =
+            DependencyProperty.Register("ShiftName", typeof(string), typeof(ShiftListItem), new PropertyMetadata(null));
+
+
+        public ShiftTime BeginTime
+        {
+            get { return (ShiftTime)GetValue(BeginTimeProperty); }
+            set { SetValue(BeginTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty BeginTimeProperty =
+            DependencyProperty.Register("BeginTime", typeof(ShiftTime), typeof(ShiftListItem), new PropertyMetadata(null));
+
+
+        public ShiftTime EndTime
+        {
+            get { return (ShiftTime)GetValue(EndTimeProperty); }
+            set { SetValue(EndTimeProperty, value); }
+        }
+
+        public static readonly DependencyProperty EndTimeProperty =
+            DependencyProperty.Register("EndTime", typeof(ShiftTime), typeof(ShiftListItem), new PropertyMetadata(null));
+
+
+        // Use seperate collections since it was producing weird behavior, one of the comboboxes would be selected sometimes and other not other times
+        ObservableCollection<ShiftTime> beginhouritems;
+        public ObservableCollection<ShiftTime> BeginHourItems
+        {
+            get
+            {
+                if (beginhouritems == null)
+                    beginhouritems = new ObservableCollection<ShiftTime>();
+                return beginhouritems;
+            }
+
+            set
+            {
+                beginhouritems = value;
+            }
+        }
+
+        ObservableCollection<ShiftTime> endhouritems;
+        public ObservableCollection<ShiftTime> EndHourItems
+        {
+            get
+            {
+                if (endhouritems == null)
+                    endhouritems = new ObservableCollection<ShiftTime>();
+                return endhouritems;
+            }
+
+            set
+            {
+                endhouritems = value;
+            }
+        }
+
+
+        private void shiftname_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ParentShift != null) ParentShift.name = ((TextBox)sender).Text;
+        }
+
+        private void BeginTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
+            if (combo.SelectedItem != null)
+            {
+                ShiftTime selectedTime = (ShiftTime)combo.SelectedItem;
+                if (ParentShift != null) ParentShift.begintime = selectedTime;
+            }          
+        }
+
+        private void EndTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
+            if (combo.SelectedItem != null)
+            {
+                ShiftTime selectedTime = (ShiftTime)combo.SelectedItem;
+                if (ParentShift != null) ParentShift.endtime = selectedTime;
+            }     
+        }
+
+        public delegate void Clicked_Handler(ShiftListItem item);
+        public event Clicked_Handler RemoveClicked;
+
+        private void RemoveShift_Clicked(TH_WPF.Button_04 bt)
+        {
+            if (RemoveClicked != null) RemoveClicked(this);
+        }
+
+        private void EditShiftName_Clicked(TH_WPF.Button_04 bt)
+        {
+
+        }
+
+
+        #region "Break Times"
+
+        ObservableCollection<Controls.BreakListItem> breakitems;
+        public ObservableCollection<Controls.BreakListItem> BreakItems
+        {
+            get
+            {
+                if (breakitems == null)
+                    breakitems = new ObservableCollection<Controls.BreakListItem>();
+                return breakitems;
+            }
+
+            set
+            {
+                breakitems = value;
+            }
+        }
+
+        void AddBreakTime()
+        {
+            if (ParentShift != null)
+            {
+                Page.Segment b = new Page.Segment();
+
+                ParentShift.Breaks.Add(b);
+
+                BreakListItem bli = new BreakListItem();
+                bli.ParentPage = ParentPage;
+                bli.ParentShift = ParentShift;
+                bli.ParentSegment = b;
+
+                bli.BeginHourItems = new ObservableCollection<ShiftTime>();
+                foreach (ShiftTime time in BeginHourItems) bli.BeginHourItems.Add(time.Copy());
+
+                bli.EndHourItems = new ObservableCollection<ShiftTime>();
+                foreach (ShiftTime time in EndHourItems) bli.EndHourItems.Add(time.Copy());
+
+                bli.RemoveClicked += bli_RemoveClicked;
+
+                BreakItems.Add(bli);
+            }
+        }
+
+        public delegate void BreakClicked_Handler(BreakListItem item);
+        public event BreakClicked_Handler BreakRemoveClicked;
+
+        void bli_RemoveClicked(BreakListItem item)
+        {
+            if (BreakRemoveClicked != null) BreakRemoveClicked(item);
+        }
+
+        private void AddBreak_Clicked(TH_WPF.Button_04 bt)
+        {
+            AddBreakTime();
+        }
+
+        #endregion
+
+    }
+}

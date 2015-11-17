@@ -232,6 +232,10 @@ namespace TH_DeviceManager.Pages.AddDevice
 
             item.Image = bitmap;
             
+            if (currentuser != null)
+            {
+                if (currentuser.username.ToLower() == listitem.author.ToLower()) item.Owner = true;
+            }
 
             item.Description = listitem.description;
             item.Manufacturer = listitem.manufacturer;
@@ -249,40 +253,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         void item_Clicked(Controls.SharedItem item)
         {
-            if (item.listitem != null)
-            {
-                Management.SharedListItem i = item.listitem;
-
-                // Image
-                ImageSource img = item.FullSizeImage;
-
-                if (img.Width > img.Height)
-                {
-                    int width = Convert.ToInt32(img.Width);
-                    Details_Image = TH_WPF.Image_Functions.SetImageSize(img, Math.Min(width, 200));
-                }
-                else
-                {
-                    int height = Convert.ToInt32(img.Height);
-                    Details_Image = TH_WPF.Image_Functions.SetImageSize(img, 0, Math.Min(height, 50));
-                }
-
-                // Author
-                Details_Author = i.author;
-                Details_LastUpdated = i.upload_date.ToString();
-
-                Details_Description = i.description;
-
-                Details_Manufacturer = i.manufacturer;
-                Details_DeviceType = i.device_type;
-                Details_Model = i.model;
-                Details_Controller = i.controller;
-
-                Details_Dependencies = i.dependencies;
-                Details_Tags = i.tags;
-                
-
-            }
+            LoadDetails(item);
         }
 
         void item_AddClicked(Controls.SharedItem item)
@@ -328,6 +299,21 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         #region "Details"
 
+        Management.SharedListItem selectedItem = null;
+
+        #region "Properties"
+
+        public bool DetailsShown
+        {
+            get { return (bool)GetValue(DetailsShownProperty); }
+            set { SetValue(DetailsShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty DetailsShownProperty =
+            DependencyProperty.Register("DetailsShown", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+
         public ImageSource Details_Image
         {
             get { return (ImageSource)GetValue(Details_ImageProperty); }
@@ -336,6 +322,16 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         public static readonly DependencyProperty Details_ImageProperty =
             DependencyProperty.Register("Details_Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
+
+
+        public bool Details_Owner
+        {
+            get { return (bool)GetValue(Details_OwnerProperty); }
+            set { SetValue(Details_OwnerProperty, value); }
+        }
+
+        public static readonly DependencyProperty Details_OwnerProperty =
+            DependencyProperty.Register("Details_Owner", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
 
         public string Details_Author
@@ -356,8 +352,6 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         public static readonly DependencyProperty Details_LastUpdatedProperty =
             DependencyProperty.Register("Details_LastUpdated", typeof(string), typeof(Page), new PropertyMetadata(null));
-
-        
 
 
 
@@ -434,10 +428,79 @@ namespace TH_DeviceManager.Pages.AddDevice
         public static readonly DependencyProperty Details_TagsProperty =
             DependencyProperty.Register("Details_Tags", typeof(string), typeof(Page), new PropertyMetadata(null));
 
-        
+
+        #endregion
 
 
+        void LoadDetails(Controls.SharedItem item)
+        {
+            if (item.listitem != null)
+            {
+                Management.SharedListItem i = item.listitem;
 
+                selectedItem = i;
+
+                // Image
+                ImageSource img = item.FullSizeImage;
+
+                if (img != null)
+                {
+                    if (img.Width > img.Height)
+                    {
+                        int width = Convert.ToInt32(img.Width);
+                        Details_Image = TH_WPF.Image_Functions.SetImageSize(img, Math.Min(width, 200));
+                    }
+                    else
+                    {
+                        int height = Convert.ToInt32(img.Height);
+                        Details_Image = TH_WPF.Image_Functions.SetImageSize(img, 0, Math.Min(height, 75));
+                    }
+                }
+                
+
+                Details_Owner = item.Owner;
+
+                // Author
+                Details_Author = i.author;
+                Details_LastUpdated = i.upload_date.ToString();
+
+                Details_Description = i.description;
+
+                Details_Manufacturer = i.manufacturer;
+                Details_DeviceType = i.device_type;
+                Details_Model = i.model;
+                Details_Controller = i.controller;
+
+                Details_Dependencies = i.dependencies;
+                Details_Tags = i.tags;
+
+                DetailsShown = true;
+            }
+        }
+
+
+        private void Remove_Clicked(TH_WPF.Button_04 bt)
+        {
+            if (selectedItem != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Remove this Configuration from the Shared Catalog?", "Remove Configuration", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                if (result == MessageBoxResult.Yes)
+                {
+                    this.Cursor = Cursors.Wait;
+
+                    if (Management.RemoveSharedConfiguration_FromList(selectedItem))
+                    {
+                        Management.RemoveConfigurationTable(selectedItem.tablename);
+                    }
+
+                    DetailsShown = false;
+
+                    LoadCatalog();
+
+                    this.Cursor = Cursors.Arrow;
+                }
+            }
+        }
 
 
         #endregion
@@ -446,9 +509,6 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             LoadCatalog();
         }
-
-
-
 
 
         System.Timers.Timer search_TIMER;
@@ -494,7 +554,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
                     foreach (Management.SharedListItem item in list)
                     {
-                        if (results.Find(x => x.uniqueId == item.uniqueId) == null) results.Add(item);
+                        if (results.Find(x => x.list_id == item.list_id) == null) results.Add(item);
                     }
                 }
 
@@ -507,6 +567,8 @@ namespace TH_DeviceManager.Pages.AddDevice
             }
 
         }
+
+
 
     }
 }

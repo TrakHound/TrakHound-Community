@@ -140,16 +140,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         private void AddTrigger_Clicked(TH_WPF.Button_04 bt)
         {
             if (AddTriggerClicked != null) AddTriggerClicked(this);
-
-            //if (ParentValue != null)
-            //{
-            //    Page.Trigger t = new Page.Trigger();
-            //    ParentValue.triggers.Add(t);
-
-            //    Trigger trigger = new Trigger();
-            //    trigger.ParentTrigger = t;
-            //    Triggers.Add(trigger);
-            //}
         }
 
         private void Remove_Clicked(TH_WPF.Button_02 bt)
@@ -159,7 +149,18 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         private void ValueName_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (ParentValue != null) if (ParentValue.result != null) ParentValue.result.value = ((TextBox)sender).Text;
+            if (ParentValue != null)
+            {
+                Page.Result result = ParentValue.result;
+
+                if (result == null)
+                {
+                    result = new Page.Result();
+                    ParentValue.result = result;
+                }
+
+                result.value = ((TextBox)sender).Text;
+            }
         }
 
         private void EditValue_Clicked(TH_WPF.Button_02 bt)

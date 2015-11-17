@@ -78,13 +78,28 @@
             </TextBlock>
 
         </Grid>
-        
-        <!--Select Grid-->
-        <Grid Background="#00000000" Grid.ColumnSpan="2" MouseDown="Grid_MouseDown">
-            
-            
-            
+
+        <!--Owner (if the current user is the owner)-->
+        <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Hidden"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Owner}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock Text="Owner" Foreground="#aaa" FontSize="8pt" Margin="5" ToolTip="You are the owner of this shared configuration"/>
+
         </Grid>
+
+        
+        <!--Select Grid (mask to capture mouse over without capturing mouse over for Add Button)-->
+        <Grid Background="#00000000" Grid.ColumnSpan="2" MouseDown="Grid_MouseDown"/>
+
         
         <!--Add Button-->
         <Grid Grid.Column="1">

@@ -90,14 +90,13 @@ namespace TH_Configuration
                         Configuration config = Configuration.ReadConfigFile(xml);
                         if (config != null)
                         {
-                            if (config.UniqueId != CurrentConfiguration.UniqueId)
+                            if (config.UpdateId != CurrentConfiguration.UpdateId)
                             {
+                                config.Index = CurrentConfiguration.Index;
+
                                 monitor_TIMER.Enabled = false;
 
-                                config.Index = CurrentConfiguration.Index;
-                                //CurrentConfiguration = config;
-
-                                if (ConfigurationChanged != null) ConfigurationChanged(config);
+                                if (ConfigurationChanged != null) ConfigurationChanged(config);                               
                             }
                         }
                     }

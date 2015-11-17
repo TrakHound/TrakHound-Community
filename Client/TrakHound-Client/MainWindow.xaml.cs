@@ -619,20 +619,22 @@ namespace TrakHound_Client
                             {
                                 if (LCP != null)
                                 {
-                                    if (LCP.IsValueCreated)
+                                    try
                                     {
-                                        try
-                                        {
-                                            Control_PlugIn CP = LCP.Value;
-                                            CP.Closing();
-                                        }
-                                        catch (Exception ex) { }
+                                        Control_PlugIn CP = LCP.Value;
+                                        CP.Closing();
                                     }
+                                    catch (Exception ex) { }
                                 }
                             }
                         }
                     }
                 }
+            }
+
+            if (monitors != null)
+            {
+                foreach (ConfigurationMonitor monitor in monitors) monitor.Stop();
             }
 
             Properties.Settings.Default.Save();
@@ -1730,18 +1732,24 @@ namespace TrakHound_Client
 
                 Devices.Clear();
 
+                if (monitors != null)
+                {
+                    //foreach (ConfigurationMonitor monitor in monitors) monitor.Stop();
+                    monitors.Clear();
+                }
+
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in Configurations)
                 {
                     config.Index = index;
 
+                    if (remote)
+                    {
+                        StartMonitor(config);
+                    }
+
                     if (config.Enabled)
                     {
-                        if (remote)
-                        {
-                            StartMonitor(config);
-                        }
-
                         Device_Client device = new Device_Client(config);
                         device.Index = index;
                         device.DataUpdated += Device_DataUpdated;

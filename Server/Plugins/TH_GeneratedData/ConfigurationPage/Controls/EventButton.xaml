@@ -17,8 +17,49 @@
 
         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-            <!--Event Name-->
-            <TextBox Text="{Binding EventName}" TextChanged="TextBox_TextChanged" FontSize="12pt" Foreground="White" Background="{x:Null}" BorderBrush="{x:Null}"/>
+            <StackPanel Orientation="Horizontal">
+
+                <!--Event Name-->
+                <Border BorderThickness="1" CornerRadius="1" Margin="5,5,0,5" MinWidth="120">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="#33ffffff"/>
+                            <Setter Property="Background" Value="#00000000"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsFocused, ElementName=eventname_TXT}" Value="true">
+                                    <Setter Property="BorderBrush" Value="#0060ff"/>
+                                    <Setter Property="Background" Value="White"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <Grid Margin="10,0">
+
+                        <!--User Input-->
+                        <TextBox x:Name="eventname_TXT" Text="{Binding EventName}" TextChanged="TextBox_TextChanged" IsMouseCapturedChanged="eventname_TXT_Select" IsKeyboardFocusedChanged="eventname_TXT_Select" BorderThickness="0" Background="#00000000"  FontSize="12pt" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Foreground" Value="#fff"/>
+                                    <Setter Property="TextAlignment" Value="Left"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=eventname_TXT}" Value="true">
+                                            <Setter Property="Foreground" Value="#333"/>
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+
+                    </Grid>
+
+                </Border>
+
+                <!--Edit Button-->
+                <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/Edit_02.png" ToolTip="Edit" Margin="5,0" VerticalAlignment="Center" Clicked="Edit_Clicked"/>
+
+            </StackPanel>
 
         </StackPanel>
         

@@ -66,6 +66,22 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         {
             if (ParentEvent != null) ParentEvent.name = ((TextBox)sender).Text;
         }
+
+        private void Edit_Clicked(TH_WPF.Button_02 bt)
+        {
+
+            FocusManager.SetFocusedElement(eventname_TXT, eventname_TXT);
+
+            //Keyboard.Focus(eventname_TXT);
+
+            ////eventname_TXT.Focus();
+            //eventname_TXT.SelectAll();
+        }
+
+        private void eventname_TXT_Select(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            eventname_TXT.SelectAll();
+        }
   
     }
 }

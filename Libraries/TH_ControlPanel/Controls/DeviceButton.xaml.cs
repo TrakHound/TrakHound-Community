@@ -93,6 +93,19 @@ namespace TH_DeviceManager.Controls
         public static readonly DependencyProperty IdProperty =
             DependencyProperty.Register("Id", typeof(string), typeof(DeviceButton), new PropertyMetadata(null));
 
+
+        public bool Shared
+        {
+            get { return (bool)GetValue(SharedProperty); }
+            set { SetValue(SharedProperty, value); }
+        }
+
+        public static readonly DependencyProperty SharedProperty =
+            DependencyProperty.Register("Shared", typeof(bool), typeof(DeviceButton), new PropertyMetadata(false));
+
+        
+
+
         public delegate void Clicked_Handler(DeviceButton bt);
         public event Clicked_Handler ShareClicked;
 

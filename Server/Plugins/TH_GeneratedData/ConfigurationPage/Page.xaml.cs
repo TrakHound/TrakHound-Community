@@ -55,6 +55,8 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 GeneratedEvents = GetGeneratedEvents(dt);
 
+                LoadGeneratedEvents(GeneratedEvents);
+
                 LoadAgentSettings(dt);
             }
         }
@@ -150,10 +152,11 @@ namespace TH_GeneratedData.ConfigurationPage
             {
                 case "collected":
 
-                    CollectedItems.Sort((x, y) => string.Compare(x.id, y.id));
+                    List<CollectedItem> items = CollectedItems.ToList();
 
-                    //foreach (CollectedItem ci in CollectedItems) result.Add(ci.id);
-                    foreach (CollectedItem ci in CollectedItems) result.Add(ci.display);
+                    items.Sort((x, y) => string.Compare(x.id, y.id));
+
+                    foreach (CollectedItem ci in items) result.Add(ci.display);
 
                     break;
 
@@ -188,14 +191,36 @@ namespace TH_GeneratedData.ConfigurationPage
 
         #region "MTC Data Items"  
      
-        List<CollectedItem> CollectedItems = new List<CollectedItem>();
+        //List<CollectedItem> CollectedItems = new List<CollectedItem>();
 
-        class CollectedItem
+        ObservableCollection<CollectedItem> collecteditems;
+        public ObservableCollection<CollectedItem> CollectedItems
+        {
+            get
+            {
+                if (collecteditems == null)
+                    collecteditems = new ObservableCollection<CollectedItem>();
+                return collecteditems;
+            }
+
+            set
+            {
+                collecteditems = value;
+            }
+        }
+
+
+        public class CollectedItem
         {
             public string id { get; set; }
             public string name { get; set; }
 
             public string display { get; set; }
+
+            public override string ToString()
+            {
+                return display;
+            }
         }
 
         void LoadAgentSettings(DataTable dt)
@@ -242,14 +267,27 @@ namespace TH_GeneratedData.ConfigurationPage
                 {
                     DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
 
+                    List<DataItem> items = new List<DataItem>();
+
                     // Conditions
-                    foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
+                    foreach (DataItem dataItem in dataItems.Conditions) items.Add(dataItem);
 
                     // Events
-                    foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
+                    foreach (DataItem dataItem in dataItems.Events) items.Add(dataItem);
 
                     // Samples
-                    foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
+                    foreach (DataItem dataItem in dataItems.Samples) items.Add(dataItem);
+
+                    this.Dispatcher.BeginInvoke(new Action<List<DataItem>>(AddDataItems), priority, new object[] { items });
+
+                    //// Conditions
+                    //foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
+
+                    //// Events
+                    //foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
+
+                    //// Samples
+                    //foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
                 }
             }
 
@@ -257,23 +295,46 @@ namespace TH_GeneratedData.ConfigurationPage
             this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
         }
 
-        void AddDataItem(DataItem item)
+        void AddDataItems(List<DataItem> items)
         {
-            CollectedItem ci = new CollectedItem();
-            ci.id = item.id;
-            ci.name = item.name;
+            List<CollectedItem> list = new List<CollectedItem>();
 
-            if (ci.name != null) ci.display = ci.id + " : " + ci.name;
-            else ci.display = ci.id;
+            foreach (DataItem item in items)
+            {
+                CollectedItem ci = new CollectedItem();
+                ci.id = item.id;
+                ci.name = item.name;
 
-            CollectedItems.Add(ci);
+                if (ci.name != null) ci.display = ci.id + " : " + ci.name;
+                else ci.display = ci.id;
+
+                list.Add(ci);
+            }
+
+            list.Sort((x, y) => string.Compare(x.id, y.id));
+
+            foreach (CollectedItem item in list) CollectedItems.Add(item);
+
+            //CollectedItems = new ObservableCollection<CollectedItem>(list);
         }
+
+        //void AddDataItem(DataItem item)
+        //{
+        //    CollectedItem ci = new CollectedItem();
+        //    ci.id = item.id;
+        //    ci.name = item.name;
+
+        //    if (ci.name != null) ci.display = ci.id + " : " + ci.name;
+        //    else ci.display = ci.id;
+
+        //    CollectedItems.Add(ci);
+        //}
 
         void OmitProbeFinished()
         {
             LoadSnapshotItems(configurationTable);
 
-            LoadGeneratedEvents(GeneratedEvents);
+            //LoadGeneratedEvents(GeneratedEvents);
 
             Loading = false;
         }
@@ -323,6 +384,8 @@ namespace TH_GeneratedData.ConfigurationPage
                 if (dbRow != null) dt.Rows.Remove(dbRow);
             }
 
+            List<CollectedItem> linkitems = CollectedItems.ToList();
+
             // Loop through SnapshotItems and add each item back to table with sequential id's
             foreach (Controls.Snapshot_Item item in SnapshotItems)
             {
@@ -351,7 +414,7 @@ namespace TH_GeneratedData.ConfigurationPage
                     string link = item.SelectedLink;
                     if (item.SelectedType.ToLower() == "collected")
                     {
-                        CollectedItem ci = CollectedItems.Find(x => x.display == link);
+                        CollectedItem ci = linkitems.Find(x => x.display == link);
                         if (ci != null) link = ci.id;
                     }
                     else if (item.SelectedType.ToLower() == "generated")
@@ -378,6 +441,8 @@ namespace TH_GeneratedData.ConfigurationPage
 
             SnapshotItems.Clear();
 
+            List<CollectedItem> linkitems = CollectedItems.ToList();
+
             foreach (DataRow row in temp_dt.Rows)
             {
                 string type = GetSnapShotType(row);
@@ -397,7 +462,7 @@ namespace TH_GeneratedData.ConfigurationPage
                 {
                     if (type.ToLower() == "collected")
                     {
-                        CollectedItem ci = CollectedItems.Find(x => x.id == link);
+                        CollectedItem ci = linkitems.Find(x => x.id == link);
                         if (ci != null) link = ci.display;
                     }
                     else if (type.ToLower() == "generated")
@@ -583,16 +648,12 @@ namespace TH_GeneratedData.ConfigurationPage
             v.id = id;
 
 
-            //string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
-            //prefix += "/Value||" + v.id.ToString("00");
-
             // Save Root
             string attr = "";
             attr += "id||" + v.id.ToString("00") + ";";
             Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
-            
-
+            // Save Triggers
             foreach (Trigger t in v.triggers) SaveTrigger(t, v, e, dt);
 
             // Save Result
@@ -722,7 +783,6 @@ namespace TH_GeneratedData.ConfigurationPage
             TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
             bt.ButtonContent = event_bt;
 
-
             if (first) bt.IsExpanded = true;
             first = false;
 
@@ -843,16 +903,6 @@ namespace TH_GeneratedData.ConfigurationPage
                                 val.Triggers.Add(tr);
                             }
                         }
-                        
-                        //Controls.Value v = e.Values.ToList().Find(x => x.ParentValue == val.ParentValue);
-                        //if (v != null)
-                        //{
-                        //    Trigger t = new Trigger();
-                        //    val.ParentValue.triggers.Add(t);
-
-                        //    Controls.Trigger tr = CreateTrigger(t, val.ParentValue, val.ParentEvent);
-                        //    val.Triggers.Add(tr);
-                        //}
                     }
                 }
             }
@@ -879,6 +929,7 @@ namespace TH_GeneratedData.ConfigurationPage
         {
             Controls.Trigger result = new Controls.Trigger();
 
+            result.ParentPage = this;
             result.ParentEvent = e;
             result.ParentValue = v;
             result.ParentTrigger = t;
@@ -941,9 +992,9 @@ namespace TH_GeneratedData.ConfigurationPage
             // Get Values
             foreach (Event e in result)
             {
-                string eventfilter = filter = "address LIKE '" + address + "Event||" + e.id.ToString("00") + "/";
+                string eventfilter = "address LIKE '" + address + "Event||" + e.id.ToString("00") + "/";
                 dv = dt.AsDataView();
-                dv.RowFilter = filter + "*'";
+                dv.RowFilter = eventfilter + "*'";
                 temp_dt = dv.ToTable();
                 temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
 

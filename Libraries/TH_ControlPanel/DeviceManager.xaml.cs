@@ -214,7 +214,6 @@ namespace TH_DeviceManager
             }
         }
 
-
         #region "Load Devices"
 
         public bool DevicesLoading
@@ -448,8 +447,6 @@ namespace TH_DeviceManager
 
         #endregion
 
-        
-
         #region "Save Configuration"
 
         Thread save_THREAD;
@@ -478,7 +475,43 @@ namespace TH_DeviceManager
 
                 SaveConfiguration();
 
-                
+                if (SelectedDevice.Shared && SelectedDevice.SharedTableName != null && ConfigurationTable != null)
+                {
+                    MessageBoxResult result = MessageBox.Show("This configuration is Shared. Do you want to Update the Shared Configuration as well?", "Update Shared Configuration", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        if (Management.UpdateConfigurationTable(SelectedDevice.TableName, ConfigurationTable))
+                        {
+                            Management.SharedListItem item = new Management.SharedListItem();
+
+                            item.upload_date = DateTime.Now;
+
+                            if (SelectedDevice.Version != null)
+                            {
+                                Version version;
+                                if (Version.TryParse(SelectedDevice.Version, out version))
+                                {
+                                    int major = version.Major;
+                                    int minor = version.Minor;
+                                    int build = version.Build;
+                                    int revision = version.Revision;
+
+                                    if (minor < 10) minor += 1;
+                                    else
+                                    {
+                                        major += 1;
+                                        minor = 0;
+                                    }
+
+                                    item.version = major.ToString() + "." + minor.ToString() + "." + build.ToString() + "." + revision.ToString();
+                                }
+                            }
+
+                            Management.UpdateSharedConfiguration_ToList(CurrentUser, item);
+                            Management.UpdateConfigurationTable(SelectedDevice.SharedTableName, ConfigurationTable);
+                        }
+                    }
+                }
             }
 
             this.Dispatcher.BeginInvoke(new Action(Save_Finished), background, null);
@@ -491,7 +524,49 @@ namespace TH_DeviceManager
 
         void Save_Finished()
         {
-            if (SelectedDevice != null) SelectDevice(SelectedDevice);
+            if (SelectedDevice != null)
+            {
+                //if (SelectedDevice.Shared && SelectedDevice.SharedTableName != null && ConfigurationTable != null)
+                //{
+                //    MessageBoxResult result = MessageBox.Show("This configuration is Shared. Do you want to Update the Shared Configuration as well?", "Update Shared Configuration", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                //    if (result == MessageBoxResult.Yes)
+                //    {
+                //        if (Management.UpdateConfigurationTable(SelectedDevice.TableName, ConfigurationTable))
+                //        {
+                //            Management.SharedListItem item = new Management.SharedListItem();
+
+                //            item.upload_date = DateTime.Now;
+
+                //            if (SelectedDevice.Version != null)
+                //            {
+                //                Version version;
+                //                if (Version.TryParse(SelectedDevice.Version, out version))
+                //                {
+                //                    int major = version.Major;
+                //                    int minor = version.Minor;
+                //                    int build = version.Build;
+                //                    int revision = version.Revision;
+
+                //                    if (minor < 10) minor += 1;
+                //                    else
+                //                    {
+                //                        major += 1;
+                //                        minor = 0;
+                //                    }
+
+                //                    item.version = major.ToString() + "." + minor.ToString() + "." + build.ToString() + "." + revision.ToString();
+                //                }
+                //            }
+
+                //            Management.UpdateSharedConfiguration_ToList(CurrentUser, item);
+                //            Management.UpdateConfigurationTable(SelectedDevice.SharedTableName, ConfigurationTable);
+                //        }
+                //    }
+                //}
+
+                SelectDevice(SelectedDevice);
+            }
+
 
             SaveNeeded = false;
             Saving = false;
@@ -507,27 +582,47 @@ namespace TH_DeviceManager
             {
                 if (currentuser != null)
                 {
-                    if (SelectedDevice != null)
+
+                    string tablename = dt.TableName;
+
+                    //// Save Enabled
+                    //Table_Functions.UpdateTableValue(SelectedDevice.Enabled.ToString(), "/Enabled", dt);
+
+                    // Reset Update ID
+                    Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
+
+                    if (userDatabaseSettings == null)
                     {
-                        string tablename = dt.TableName;
+                        TH_Configuration.User.Management.ClearConfigurationTable(tablename);
 
-                        // Save Enabled
-                        Table_Functions.UpdateTableValue(SelectedDevice.Enabled.ToString(), "/Enabled", dt);
-
-                        // Reset Unique ID
-                        Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UniqueId", dt);
-
-                        if (userDatabaseSettings == null)
-                        {
-                            TH_Configuration.User.Management.ClearConfigurationTable(tablename);
-
-                            TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
-                        }
-                        else
-                        {
-                            //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
-                        }
+                        TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
                     }
+                    else
+                    {
+                        //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
+                    }
+
+                    //if (SelectedDevice != null)
+                    //{
+                    //    string tablename = dt.TableName;
+
+                    //    //// Save Enabled
+                    //    //Table_Functions.UpdateTableValue(SelectedDevice.Enabled.ToString(), "/Enabled", dt);
+
+                    //    // Reset Update ID
+                    //    Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
+
+                    //    if (userDatabaseSettings == null)
+                    //    {
+                    //        TH_Configuration.User.Management.ClearConfigurationTable(tablename);
+
+                    //        TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
+                    //    }
+                    //    else
+                    //    {
+                    //        //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
+                    //    }
+                    //}
                 }
                 // If not logged in Save to File in 'C:\TrakHound\'
                 else
@@ -543,6 +638,27 @@ namespace TH_DeviceManager
             {
                 SelectedDevice = Configuration.ReadConfigFile(xml);
             }
+        }
+
+        #endregion
+
+        #region "Remove Device"
+
+        bool RemoveDevice(Configuration config)
+        {
+            bool result = false;
+
+            if (config != null)
+            {
+                if (config.TableName != null)
+                {
+                    this.Cursor = Cursors.Wait;
+                    if (Management.RemoveConfigurationTable(config.TableName)) result = true;
+                    this.Cursor = Cursors.Arrow;
+                }
+            }
+
+            return result;
         }
 
         #endregion
@@ -582,6 +698,7 @@ namespace TH_DeviceManager
             db.DeviceEnabled = config.Enabled;
             db.enabled_CHK.IsChecked = config.Enabled;
 
+            db.Shared = config.Shared;
 
             db.Description = config.Description.Description;
             db.Manufacturer = config.Description.Manufacturer;
@@ -620,6 +737,8 @@ namespace TH_DeviceManager
                         {
                             Configuration config = (Configuration)lb.DataObject;
 
+                            if (config.TableName != null) EnableDevice(config.TableName);
+
                             config.Enabled = true;
                             bt.DeviceEnabled = true;
                         }
@@ -641,6 +760,8 @@ namespace TH_DeviceManager
                         if (lb.DataObject.GetType() == typeof(Configuration))
                         {
                             Configuration config = (Configuration)lb.DataObject;
+
+                            if (config.TableName != null) DisableDevice(config.TableName);
 
                             config.Enabled = false;
                             bt.DeviceEnabled = false;
@@ -664,8 +785,14 @@ namespace TH_DeviceManager
                         {
                             Configuration config = (Configuration)lb.DataObject;
 
-                            config.Enabled = false;
-                            bt.DeviceEnabled = false;
+                            MessageBoxResult result = MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+                            if (result == MessageBoxResult.Yes)
+                            {
+                                if (RemoveDevice(config))
+                                {
+                                    if (DeviceList.Contains(lb)) DeviceList.Remove(lb);
+                                }
+                            }
                         }
                     }
                 }
@@ -707,6 +834,60 @@ namespace TH_DeviceManager
                 }
             }
         }
+
+
+        #region "Enable Device"
+
+        Thread enable_THREAD;
+
+        void EnableDevice(string tableName)
+        {
+            if (enable_THREAD != null) enable_THREAD.Abort();
+
+            enable_THREAD = new Thread(new ParameterizedThreadStart(EnableDevice_Worker));
+            enable_THREAD.Start(tableName);
+        }
+
+        void EnableDevice_Worker(object o)
+        {
+            if (o != null)
+            {
+                string tableName = o.ToString();
+
+                Management.UpdateConfigurationTable("/Enabled", "True", tableName);
+
+                Management.UpdateConfigurationTable("/UpdateId", String_Functions.RandomString(20), tableName);
+            }
+        }
+
+        #endregion
+
+        #region "Disable Device"
+
+        Thread disable_THREAD;
+
+        void DisableDevice(string tableName)
+        {
+            if (disable_THREAD != null) disable_THREAD.Abort();
+
+            disable_THREAD = new Thread(new ParameterizedThreadStart(DisableDevice_Worker));
+            disable_THREAD.Start(tableName);
+        }
+
+        void DisableDevice_Worker(object o)
+        {
+            if (o != null)
+            {
+                string tableName = o.ToString();
+
+                Management.UpdateConfigurationTable("/Enabled", "False", tableName);
+
+                Management.UpdateConfigurationTable("/UpdateId", String_Functions.RandomString(20), tableName);
+            }
+        }
+
+        #endregion
+
 
         #endregion
 
@@ -760,10 +941,10 @@ namespace TH_DeviceManager
             Configuration config = (Configuration)o;
 
             DataTable dt = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
-            dt.TableName = config.TableName;
-
             if (dt != null)
             {
+                dt.TableName = config.TableName;
+
                 if (ConfigurationPages != null)
                 {
                     foreach (ConfigurationPage page in ConfigurationPages)
@@ -822,6 +1003,7 @@ namespace TH_DeviceManager
                             Configuration config = (Configuration)lb.DataObject;
 
                             Pages.AddShare.Page page = new Pages.AddShare.Page();
+                            page.devicemanager = this;
                             page.currentuser = CurrentUser;
                             page.LoadConfiguration(config);
                             page.configurationtable = ConfigurationTable;
@@ -951,7 +1133,6 @@ namespace TH_DeviceManager
             DependencyProperty.Register("SaveNeeded", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
 
-
         void page_SettingChanged(string name, string oldVal, string newVal)
         {
             SaveNeeded = true;
@@ -962,8 +1143,6 @@ namespace TH_DeviceManager
             SelectDevice(SelectedDevice);
         }
 
-
-        
 
         void PageItem_Clicked(object data)
         {
@@ -1286,6 +1465,11 @@ namespace TH_DeviceManager
         }
 
         #endregion
+
+        private void RefreshDevices_Clicked(Button_02 bt)
+        {
+            LoadDevices();
+        }
 
 
 

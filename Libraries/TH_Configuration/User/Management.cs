@@ -832,6 +832,84 @@ namespace TH_Configuration.User
             return result;
         }
 
+        public static bool UpdateConfigurationTable(string address, string value, string tableName)
+        {
+            bool result = false;
+
+            if (address != null && value != null)
+            {
+
+                string columns = " (address, value) ";
+
+                string set = " VALUES ('" + address + "', '" + value + "')";
+
+                string update = " ON DUPLICATE KEY UPDATE address='" + address + "', value='" + value + "'";
+
+                string query = "INSERT IGNORE INTO " + tableName + columns + set + update;
+
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    {
+
+                        NameValueCollection values = new NameValueCollection();
+
+                        values["query"] = query;
+
+                        byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updateconfigurationtable.php", values);
+
+                        string responseString = Encoding.Default.GetString(response);
+
+                        if (responseString.ToLower().Trim() == "true") result = true;
+
+                    }
+                }
+                catch (Exception ex) { Logger.Log(ex.Message); }
+
+            }
+
+            return result;
+        }
+
+        public static bool UpdateConfigurationTable(string address, string value, string attributes, string tableName)
+        {
+            bool result = false;
+
+            if (address != null && value != null && attributes != null)
+            {
+
+                string columns = " (address, value, attributes) ";
+
+                string set = " VALUES ('" + address + "', '" + value + "', '" + attributes + "')";
+
+                string update = " ON DUPLICATE KEY UPDATE address='" + address + "', value='" + value + "', attributes='" + attributes + "'";
+
+                string query = "INSERT IGNORE INTO " + tableName + columns + set + update;
+
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    {
+
+                        NameValueCollection values = new NameValueCollection();
+
+                        values["query"] = query;
+
+                        byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updateconfigurationtable.php", values);
+
+                        string responseString = Encoding.Default.GetString(response);
+
+                        if (responseString.ToLower().Trim() == "true") result = true;
+
+                    }
+                }
+                catch (Exception ex) { Logger.Log(ex.Message); }
+
+            }
+
+            return result;
+        }
+
         public static bool ClearConfigurationTable(string tableName)
         {
             bool result = false;
@@ -972,10 +1050,39 @@ namespace TH_Configuration.User
             return userConfig.username + "_" + String_Functions.RandomString(20);
         }
 
+        public static bool RemoveConfigurationTable(string tableName)
+        {
+            bool result = false;
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+
+                    NameValueCollection values = new NameValueCollection();
+
+                    values["tablename"] = tableName;
+
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/removeconfigurationtable.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    if (responseString.ToLower().Trim() == "true") result = true;
+
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return result;
+        }
+
+
         #region "Shared"
 
         public class SharedListItem
         {
+            public string id { get; set; }
+
             public string description { get; set; }
             public string manufacturer { get; set; }
             public string device_type { get; set; }
@@ -995,7 +1102,7 @@ namespace TH_Configuration.User
             public string tags { get; set; }
             public string dependencies { get; set; }
 
-            public string uniqueId { get; set; }
+            public string list_id { get; set; }
         }
 
         public static string GetRowValue(string name, DataRow row)
@@ -1033,6 +1140,9 @@ namespace TH_Configuration.User
                                 foreach (DataRow row in dt.Rows)
                                 {
                                     SharedListItem item = new SharedListItem();
+
+                                    item.id = GetRowValue("id", row);
+
                                     item.description = GetRowValue("description", row);
                                     item.manufacturer = GetRowValue("manufacturer", row);
                                     item.device_type = GetRowValue("device_type", row);
@@ -1069,7 +1179,7 @@ namespace TH_Configuration.User
                                     item.tags = GetRowValue("tags", row);
                                     item.dependencies = GetRowValue("dependencies", row);
 
-                                    item.uniqueId = String_Functions.RandomString(20);
+                                    item.list_id = String_Functions.RandomString(20);
 
                                     result.Add(item);
                                 }
@@ -1084,11 +1194,11 @@ namespace TH_Configuration.User
             return result;
         }
 
-        public static bool UpdateSharedConfiguration(UserConfiguration userConfig, Configuration config, SharedListItem item)
+        public static bool CreateSharedConfiguration(UserConfiguration userConfig, string tablename, DataTable dt, SharedListItem item)
         {
             bool result = false;
 
-            string tablename = "shared_" + String_Functions.RandomString(20);
+            //string tablename = "shared_" + String_Functions.RandomString(20);
 
             item.tablename = tablename;
 
@@ -1096,21 +1206,26 @@ namespace TH_Configuration.User
             {
                 if (CreateConfigurationTable(tablename))
                 {
-                    if (config.ConfigurationXML != null)
+                    if (dt != null)
                     {
-                        DataTable dt = Converter.XMLToTable(config.ConfigurationXML);
-                        if (dt != null)
-                        {
-                            if (UpdateConfigurationTable(tablename, dt)) return true;
-                        }
+                        if (UpdateConfigurationTable(tablename, dt)) return true;
                     }
+
+                    //if (config.ConfigurationXML != null)
+                    //{
+                    //    DataTable dt = Converter.XMLToTable(config.ConfigurationXML);
+                    //    if (dt != null)
+                    //    {
+                    //        if (UpdateConfigurationTable(tablename, dt)) return true;
+                    //    }
+                    //}
                 }
             }
 
             return result;
         }
 
-        static bool UpdateSharedConfiguration_ToList(UserConfiguration userConfig, SharedListItem item)
+        public static bool UpdateSharedConfiguration_ToList(UserConfiguration userConfig, SharedListItem item)
         {
             bool result = false;
 
@@ -1122,7 +1237,7 @@ namespace TH_Configuration.User
 
                     // Add Columns
                     List<string> columnsList = new List<string>();
-
+                    columnsList.Add("id");
                     columnsList.Add("description");
                     columnsList.Add("manufacturer");
                     columnsList.Add("device_type");
@@ -1142,6 +1257,7 @@ namespace TH_Configuration.User
                     object[] columns = columnsList.ToArray();
 
                     List<object> rowValues = new List<object>();
+                    rowValues.Add(item.id);
                     rowValues.Add(item.description);
                     rowValues.Add(item.manufacturer);
                     rowValues.Add(item.device_type);
@@ -1218,6 +1334,57 @@ namespace TH_Configuration.User
             return result;
         }
 
+        public static bool UpdateSharedConfiguration_ToList(SharedListItem item)
+        {
+            bool result = false;
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    NameValueCollection values = new NameValueCollection();
+
+                    string query = "UPDATE shared SET upload_date='" + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "' WHERE id='" + item.id + "'";
+
+                    values["query"] = query;
+
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updatesharedlistitem.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    if (responseString.ToLower().Trim() == "true") result = true;
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return result;
+        }
+
+        public static bool RemoveSharedConfiguration_FromList(SharedListItem item)
+        {
+            bool result = false;
+
+            try
+            {
+                using (WebClient client = new WebClient())
+                {
+                    NameValueCollection values = new NameValueCollection();
+
+                    string query = "DELETE FROM shared WHERE id='" + item.id + "'";
+
+                    values["query"] = query;
+
+                    byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updatesharedlistitem.php", values);
+
+                    string responseString = Encoding.Default.GetString(response);
+
+                    if (responseString.ToLower().Trim() == "true") result = true;
+                }
+            }
+            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return result;
+        }
 
         #endregion
 

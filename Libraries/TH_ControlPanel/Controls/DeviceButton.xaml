@@ -82,8 +82,44 @@
             </Grid>
 
             <!--Share Button-->
-            <th_wpf:Button_02 Grid.Row="1" Text="Share" ToolTip="Share this Device configuration with other TrakHound users" Image="/TH_DeviceManager;component/Resources/Share_01.png" HorizontalAlignment="Right" VerticalAlignment="Bottom" Clicked="Share_Clicked"/>
+            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" >
+                
+                <!--Not Shared-->
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shared}" Value="true">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>            
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
+                    <th_wpf:Button_02 Grid.Row="1" Text="Share" ToolTip="Share this Device configuration with other TrakHound users" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked"/>
+
+                </Grid>
+
+                <!--Shared-->
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shared}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <TextBlock Text="Shared" Foreground="#aaffffff" FontSize="10pt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    
+                </Grid>
+
+            </Grid>
+                    
         </Grid>
 
     </Grid>

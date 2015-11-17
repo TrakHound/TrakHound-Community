@@ -3,22 +3,144 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:controls="clr-namespace:TH_ShiftTable.ConfigurationPage.Controls"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Shifts" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
+        <TextBlock Text="Shifts" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
 
-        <TextBlock Grid.Row="1" Text="Configure the Shift Table Server Plugin" FontSize="14pt" Foreground="#888" Margin="10,10,10,20"/>
+        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+            Use this page to configure the different shifts this device is run during. 
+            Add "Break Time" to each shift to designate times when data such as OEE is not calculated.
+        </TextBlock>
 
-        <Grid Grid.Row="2" Margin="10">
+        <StackPanel Grid.Row="2" Margin="0">
+
+            <StackPanel Orientation="Horizontal">
+
+                <th_wpf:Button_01 Text="Add Shift" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,10" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddShift_Clicked"/>
+
+
+                <Rectangle Fill="#0080ff" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,20">
+                    <Rectangle.RenderTransform>
+                        <TranslateTransform X="0"/> 
+                    </Rectangle.RenderTransform>
+
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="Arrow_IMG" Stretch="Uniform" ImageSource="/TH_ShiftTable;component/Resources/Carrot_Arrow_Up_01.png" />
+                    </Rectangle.Resources>
+                    <Rectangle.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-90"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Rectangle.LayoutTransform>
+
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource Arrow_IMG}" />
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="Rectangle.Loaded">
+                                    <BeginStoryboard>
+                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+
+                                            <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="-30" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+
+                                <DataTrigger Binding="{Binding DisplayShifts}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+
+            </StackPanel>
             
-        </Grid>
+            <Rectangle Height="1" Fill="#ccc" Margin="0,20,0,0"/>
+            
+        </StackPanel>
+
+        <Grid Grid.Row="3">
+
+            <ItemsControl ItemsSource="{Binding ShiftItems}" Margin="0,20">
+                <ItemsControl.Resources>
+                    <Style TargetType="controls:ShiftListItem">
+                        <Setter Property="Margin" Value="0,10"/>
+                    </Style>
+                </ItemsControl.Resources>
+            </ItemsControl>
+
+            <TextBlock FontSize="18pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DisplayShifts}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+                
+                No shifts are configured <LineBreak/>
+                Click the 'Add Shift' button above
+            </TextBlock>
+            
+            <!--<Rectangle Fill="#0080ff" Height="50" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="35,20">
+                <Rectangle.RenderTransform>
+                    <TranslateTransform Y="0"/>
+                </Rectangle.RenderTransform>
+
+                <Rectangle.Resources>
+                    <ImageBrush x:Key="Arrow_IMG" Stretch="Uniform" ImageSource="/TH_ShiftTable;component/Resources/Carrot_Arrow_Up_01.png" />
+                </Rectangle.Resources>
+
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="OpacityMask" Value="{StaticResource Arrow_IMG}" />
+                        <Style.Triggers>
+                            <EventTrigger RoutedEvent="Rectangle.Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                                        
+                                        --><!--<DoubleAnimation Storyboard.TargetProperty="(Canvas.Left)" From="0"  To="180" Duration="0:0:1"/>--><!--
+
+                                        <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="0" To="30" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>-->
+
+            </Grid>
         
     </Grid>
     

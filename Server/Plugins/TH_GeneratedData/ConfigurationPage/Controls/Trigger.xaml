@@ -19,7 +19,7 @@
             <StackPanel Margin="5,0,5,5">
 
                 <!--Link-->
-                <ComboBox ItemsSource="{Binding DataItems}" Text="{Binding SelectedLink}" SelectionChanged="Link_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+                <ComboBox DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" Text="{Binding SelectedLink}" TextBoxBase.TextChanged="Link_TextChanged" SelectionChanged="Link_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
 
                 <!--Modifier-->
                 <ComboBox Margin="0,5" ItemsSource="{Binding Modifiers}" SelectedItem="{Binding SelectedModifier}" SelectionChanged="Modifier_SelectionChanged" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>

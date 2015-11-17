@@ -11,3 +11,11 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\Configurati
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\ConfigurationPage\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.g.resources
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\ConfigurationPage\Controls\ShiftListItem.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\ConfigurationPage\Controls\ShiftListItem.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable_MarkupCompile.lref
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\ConfigurationPage\Controls\BreakListItem.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\ConfigurationPage\Controls\BreakListItem.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_ShiftTable\obj\Debug\TH_ShiftTable.csproj.GenerateResource.Cache

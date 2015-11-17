@@ -46,6 +46,8 @@ namespace TH_DeviceManager.Pages.AddShare
 
         public UserConfiguration currentuser;
 
+        public DeviceManager devicemanager;
+
         public void LoadConfiguration(Configuration config)
         {
             configuration = config;
@@ -182,15 +184,27 @@ namespace TH_DeviceManager.Pages.AddShare
 
             item.upload_date = DateTime.Now;
 
+            item.version = "1.0.0.0";
+
             item.image_url = imageFileName;
 
             item.version = version_TXT.Text;
             item.tags = tags_TXT.Text;
             item.dependencies = dependencies_TXT.Text;
             
-            if (currentuser != null && configuration != null)
+            if (currentuser != null && configuration != null && configurationtable != null)
             {
-                if (Management.UpdateSharedConfiguration(currentuser, configuration, item))
+                item.id = configuration.UniqueId;
+
+                string tablename = "shared_" + String_Functions.RandomString(20);
+
+                // Save Shared
+                Table_Functions.UpdateTableValue("True", "/Shared", configurationtable);
+
+                // Save Shared Tablename
+                Table_Functions.UpdateTableValue(tablename, "/SharedTableName", configurationtable);
+
+                if (Management.CreateSharedConfiguration(currentuser, tablename, configurationtable, item))
                 {
 
                 }
@@ -198,6 +212,16 @@ namespace TH_DeviceManager.Pages.AddShare
                 {
 
                 }
+
+                if (devicemanager != null)
+                {
+                    devicemanager.ConfigurationTable = configurationtable;
+
+                    devicemanager.SaveConfiguration();
+                }
+                    
+                    
+                    
             }
 
         }

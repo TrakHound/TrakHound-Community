@@ -39,13 +39,12 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            if (ParentResult != null) ParentResult.value = ((TextBox)sender).Text;
         }
 
         private void Edit_Clicked(TH_WPF.Button_02 bt)
         {
-            valuename_TXT.Focus();
-            //valuename_TXT.SelectAll();
+
         }
 
     }

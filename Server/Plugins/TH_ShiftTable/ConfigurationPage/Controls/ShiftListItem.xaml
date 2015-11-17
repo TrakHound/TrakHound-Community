@@ -1,0 +1,152 @@
+﻿<UserControl x:Class="TH_ShiftTable.ConfigurationPage.Controls.ShiftListItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:page="clr-namespace:TH_ShiftTable.ConfigurationPage"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:controls="clr-namespace:TH_ShiftTable.ConfigurationPage.Controls"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border CornerRadius="2" BorderThickness="1" Background="#00000000">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="#ccc"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
+                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+
+        <StackPanel>
+
+            <Grid Margin="0,0,0,10">
+
+                <!--Shift Info-->
+                <StackPanel Margin="10">
+
+                    <TextBlock Text="Shift Name" Foreground="#888" FontSize="8pt" Margin="15,0"/>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Shift Name-->
+                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5,0,5" MinWidth="150">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="BorderBrush" Value="#ccc"/>
+                                    <Setter Property="Background" Value="#00000000"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused, ElementName=shiftname_TXT}" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                            <Setter Property="Background" Value="White"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+
+                            <Grid Margin="10,0">
+
+                                <!--User Input-->
+                                <TextBox x:Name="shiftname_TXT" Text="{Binding ShiftName}" TextChanged="shiftname_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="14pt" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Foreground" Value="#333"/>
+                                            <Setter Property="TextAlignment" Value="Left"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsFocused, ElementName=shiftname_TXT}" Value="true">
+                                                    <Setter Property="Foreground" Value="#333"/>
+                                                    <Setter Property="TextAlignment" Value="Center"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+
+                            </Grid>
+
+                        </Border>
+
+
+                        <!--Shift Times-->
+                        <Grid Margin="30,0" VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Orientation="Horizontal" >
+
+                                <!--Begin Time-->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+
+                                    <TextBlock Text="Begin Time" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+
+                                    <ComboBox Width="150" ItemsSource="{Binding BeginHourItems}" SelectedItem="{Binding BeginTime}" SelectionChanged="BeginTime_SelectionChanged" IsSynchronizedWithCurrentItem="True" IsEditable="True" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+                                </StackPanel>
+
+                                <!--End Time-->
+                                <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+
+                                    <TextBlock Text="End Time" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
+
+                                    <ComboBox Width="150" ItemsSource="{Binding EndHourItems}" SelectedItem="{Binding EndTime}" SelectionChanged="EndTime_SelectionChanged" IsSynchronizedWithCurrentItem="True" IsEditable="True" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+                                </StackPanel>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                        <!--Edit Button-->
+                        <!--<th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/Edit_02.png" ToolTip="Edit" Margin="5,0" VerticalAlignment="Center" Clicked="EditShiftName_Clicked"/>-->
+
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!--Remove Button-->
+                <th_wpf:Button_04 Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0" Clicked="RemoveShift_Clicked" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Remove this Shift"/>
+
+            </Grid>
+
+            
+
+            <!--Break Times-->
+            <StackPanel Margin="10">
+
+                <TextBlock Text="Break Times" FontSize="8pt" Foreground="#888" Margin="15,0,0,5" VerticalAlignment="Center"/>
+
+                <ItemsControl ItemsSource="{Binding BreakItems}" Margin="10,0">
+                    <ItemsControl.Resources>
+                        <Style TargetType="controls:BreakListItem">
+                            <Setter Property="Margin" Value="0,5"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+
+                <th_wpf:Button_04 Image="/TH_ShiftTable;component/Resources/Add_01.png" Clicked="AddBreak_Clicked" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Add Break Time"/>
+
+            </StackPanel>
+            
+        </StackPanel>
+
+    </Border>
+
+</UserControl>

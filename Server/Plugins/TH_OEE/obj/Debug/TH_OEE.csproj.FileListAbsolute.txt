@@ -7,3 +7,7 @@ C:\TrakHound\Server\Plugins\TH_OEE\LICENSE.txt
 C:\TrakHound\Plugins\Server\OEE\LICENSE.txt
 C:\TrakHound\Plugins\Server\OEE\TH_OEE.dll
 C:\TrakHound\Plugins\Server\OEE\TH_OEE.pdb
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\ConfigurationPage\Page.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\ConfigurationPage\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.g.resources

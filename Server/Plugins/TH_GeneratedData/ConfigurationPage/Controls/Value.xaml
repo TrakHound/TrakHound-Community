@@ -44,13 +44,60 @@
 
                             <StackPanel Orientation="Horizontal">
 
-                                <!--Value-->
+                                <Border BorderThickness="1" CornerRadius="1" Margin="0,5,0,5" MinWidth="100">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="#33ffffff"/>
+                                        <Setter Property="Background" Value="#00000000"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
+                                                <Setter Property="BorderBrush" Value="#0060ff"/>
+                                                <Setter Property="Background" Value="White"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+
+                                <Grid Margin="10,0">
+
+                                    <!--User Input-->
+                                    <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="14pt" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                                        <TextBox.Style>
+                                            <Style TargetType="TextBox">
+                                                <Setter Property="Foreground" Value="#fff"/>
+                                                    <Setter Property="TextAlignment" Value="Left"/>
+                                                    <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsFocused, ElementName=valuename_TXT}" Value="true">
+                                                        <Setter Property="Foreground" Value="#333"/>
+                                                            <Setter Property="TextAlignment" Value="Center"/>
+                                                        </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+
+                                </Grid>
+
+                            </Border>
+
+                            <!--Edit Button-->
+                                <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/Edit_02.png" ToolTip="Edit" Margin="5,0" VerticalAlignment="Center" Clicked="EditValue_Clicked"/>
+
+                        </StackPanel>
+                        
+                        
+                        
+
+
+                        <!--<StackPanel Orientation="Horizontal">
+
+                                --><!--Value--><!--
                                 <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="ValueName_TextChanged" Margin="0,5" Foreground="White" FontSize="14pt" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}"/>
 
-                                <!--Edit Button-->
+                                --><!--Edit Button--><!--
                                 <th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/Edit_02.png" ToolTip="Edit" Margin="5,0" Clicked="EditValue_Clicked"/>
 
-                            </StackPanel>
+                            </StackPanel>-->
 
                         </StackPanel>
 

@@ -86,7 +86,7 @@ namespace TH_OEE
 
         }
 
-        public Type Config_Page { get { return null; } }
+        public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
         #endregion
 

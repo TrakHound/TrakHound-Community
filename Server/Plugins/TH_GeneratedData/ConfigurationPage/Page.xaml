@@ -136,6 +136,8 @@
 
                         <th_wpf:Button_01 Text="Add Item" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked"/>
 
+                        <Rectangle Height="1" Fill="#ccc" Margin="0,0,0,10"/>
+                        
                         <ItemsControl ItemsSource="{Binding SnapshotItems}">
                             <ItemsControl.Resources>
                                 <Style TargetType="controls:Snapshot_Item">

@@ -52,7 +52,7 @@
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Grid MouseDown="Grid_PreviewMouseDown" Background="#00000000">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
@@ -119,6 +119,8 @@
                         </Rectangle.Style>
                                       
                     </Rectangle>
+                    
+                    <Grid Grid.ColumnSpan="2" MouseDown="Grid_PreviewMouseDown" Background="#00000000"/>
 
                     <!--Button Content-->
                     <ContentControl Grid.Column="1" Content="{Binding ButtonContent}" Margin="10,0" VerticalAlignment="Center"/>

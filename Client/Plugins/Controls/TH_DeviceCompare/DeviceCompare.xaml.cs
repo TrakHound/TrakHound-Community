@@ -150,6 +150,8 @@ namespace TH_DeviceCompare
                 Columns.Clear();
 
                 foreach (Device_Client device in Devices) CreateDeviceDisplay(device);
+
+                CheckHeaderHeight();
             }
         }
 
@@ -254,7 +256,7 @@ namespace TH_DeviceCompare
                         {
                             int index = Devices.IndexOf(device);
 
-                            if (index >= 0)
+                            if (index >= 0 && index < DeviceDisplays.Count)
                             {
                                 DeviceDisplay dd = DeviceDisplays[index];
                                 Header hdr = dd.ComparisonGroup.header;

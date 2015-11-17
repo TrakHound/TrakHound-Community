@@ -98,6 +98,17 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
             DependencyProperty.Register("Controller", typeof(string), typeof(SharedItem), new PropertyMetadata(null));
 
 
+        public bool Owner
+        {
+            get { return (bool)GetValue(OwnerProperty); }
+            set { SetValue(OwnerProperty, value); }
+        }
+
+        public static readonly DependencyProperty OwnerProperty =
+            DependencyProperty.Register("Owner", typeof(bool), typeof(SharedItem), new PropertyMetadata(false));
+
+        
+   
         public delegate void Clicked_Handler(SharedItem item);
         public event Clicked_Handler AddClicked;
 

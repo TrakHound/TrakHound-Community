@@ -46,6 +46,20 @@ namespace TH_Configuration
 
         public bool Enabled { get; set; }
 
+        #region "Remote Configurations"
+
+        public bool Shared { get; set; }
+
+        public string UpdateId { get; set; }
+
+        public string TableName { get; set; }
+
+        public string SharedTableName { get; set; }
+
+        public string Version { get; set; }
+
+        #endregion
+
         /// <summary>
         /// Used as a UniqueId between any number of devices
         /// Composed of Database name, IP address, and Port (so it should always be unique)
@@ -76,7 +90,7 @@ namespace TH_Configuration
             get { return GetDatabaseName(SQL); }
         }
 
-        public string TableName;
+        
 
         #endregion
 
