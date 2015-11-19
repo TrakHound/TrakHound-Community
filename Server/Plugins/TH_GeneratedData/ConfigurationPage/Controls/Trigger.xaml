@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              >
 
-    <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1" Width="150">
+    <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1" MinWidth="150">
         
         <StackPanel Margin="5">
             
@@ -17,12 +17,35 @@
             <th_wpf:Button_03 Image="/TH_GeneratedData;component/Resources/X_01.png" HorizontalAlignment="Right" Cursor="Hand" ToolTip="Remove this Trigger" Clicked="Remove_Clicked"/>
             
             <StackPanel Margin="5,0,5,5">
-
+                
                 <!--Link-->
-                <ComboBox DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" Text="{Binding SelectedLink}" TextBoxBase.TextChanged="Link_TextChanged" SelectionChanged="Link_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+                <Grid>
 
+                    <ComboBox x:Name="link_COMBO" Padding="10,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" TextBoxBase.TextChanged="Link_TextChanged" SelectionChanged="Link_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+
+                    <!--Instructions-->
+                    <TextBlock Text="Data Link" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" TextAlignment="Center" Margin="10,0" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=link_COMBO}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text, ElementName=link_COMBO}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                </Grid>
+                
+                
                 <!--Modifier-->
-                <ComboBox Margin="0,5" ItemsSource="{Binding Modifiers}" SelectedItem="{Binding SelectedModifier}" SelectionChanged="Modifier_SelectionChanged" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <ComboBox x:Name="modifier_COMBO" Margin="0,5" ItemsSource="{Binding Modifiers}" SelectedItem="{Binding SelectedModifier}" SelectionChanged="Modifier_SelectionChanged" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
 
                 <!--Value-->
                 <Grid Margin="0">
@@ -31,7 +54,7 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border BorderThickness="1" CornerRadius="1" Margin="0,5">
+                    <Border BorderThickness="1" CornerRadius="1" Margin="0,5" Background="#fff">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="BorderBrush" Value="#aaa"/>
@@ -45,8 +68,25 @@
 
                         <Grid Margin="10,0">
 
+                            <!--Instructions-->
+                            <TextBlock Text="Value" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" TextAlignment="Center" Margin="10,0" >
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=value_TXT}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsFocused, ElementName=value_TXT}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
                             <!--User Input-->
-                            <TextBox x:Name="value_TXT" Text="{Binding Value}" TextChanged="value_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                            <TextBox x:Name="value_TXT" Text="{Binding Value}" TextChanged="value_TXT_TextChanged" GotFocus="TXT_GotFocus" LostKeyboardFocus="TXT_LostKeyboardFocus" GotMouseCapture="TXT_GotMouseCapture" GotKeyboardFocus="TXT_GotKeyboardFocus" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                         </Grid>
 

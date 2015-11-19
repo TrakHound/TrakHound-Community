@@ -28,6 +28,20 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DataContext = this;
         }
 
+        public Page ParentPage
+        {
+            get { return (Page)GetValue(ParentPageProperty); }
+            set { SetValue(ParentPageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ParentPageProperty =
+            DependencyProperty.Register("ParentPage", typeof(Page), typeof(Snapshot_Item), new PropertyMetadata(null));
+
+        public Page.Snapshot ParentSnapshot;
+
+        public bool Loading { get; set; }
+
+        
         public delegate void SettingChanged_Handler();
         public event SettingChanged_Handler SettingChanged;
 
@@ -49,6 +63,15 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public static readonly DependencyProperty NameTextProperty =
             DependencyProperty.Register("NameText", typeof(string), typeof(Snapshot_Item), new PropertyMetadata(null));
 
+        private void name_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox txt = (TextBox)sender;
+
+            if (ParentSnapshot != null) ParentSnapshot.name = txt.Text;
+
+            if (txt.IsKeyboardFocusWithin) if (SettingChanged != null) SettingChanged();
+        }
+
         #endregion
 
         #region "Type"
@@ -59,14 +82,11 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             set 
             { 
                 SetValue(SelectedTypeProperty, value);
-
-                if (TypeChanged != null) TypeChanged(value, this);
             }
         }
 
         public static readonly DependencyProperty SelectedTypeProperty =
             DependencyProperty.Register("SelectedType", typeof(string), typeof(Snapshot_Item), new PropertyMetadata(null));
-
 
         ObservableCollection<string> typeitems;
         public ObservableCollection<string> TypeItems
@@ -85,18 +105,18 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         }
 
 
-        public delegate void TypeChanged_Handler(string type, Snapshot_Item item);
-        public event TypeChanged_Handler TypeChanged;
-
         private void Type_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ComboBox combo = (ComboBox)sender;
 
-            SelectedType = combo.SelectedItem.ToString().ToLower();
+            if (combo.SelectedItem != null)
+            {
+                SelectedType = combo.SelectedItem.ToString().ToLower();
 
-            if (TypeChanged != null) TypeChanged(combo.SelectedItem.ToString(), this);
+                if (ParentSnapshot != null) ParentSnapshot.type = SelectedType;
+            }
 
-            if (SettingChanged != null) SettingChanged();
+            if (combo.IsKeyboardFocusWithin) if (SettingChanged != null) SettingChanged();
         }
 
         #endregion
@@ -114,6 +134,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public static readonly DependencyProperty SelectedLinkProperty =
             DependencyProperty.Register("SelectedLink", typeof(string), typeof(Snapshot_Item), new PropertyMetadata(null));
+
 
         ObservableCollection<object> linkitems;
         public ObservableCollection<object> LinkItems
@@ -134,7 +155,31 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         private void Link_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SettingChanged != null) SettingChanged();
+            ComboBox combo = (ComboBox)sender;
+
+            if (combo.SelectedItem != null)
+            {
+                Console.WriteLine("Link = " + combo.SelectedItem.ToString());
+
+                if (ParentSnapshot != null) ParentSnapshot.link = combo.SelectedItem.ToString();
+            }
+
+            if (combo.IsKeyboardFocusWithin)
+            {
+                if (SettingChanged != null) SettingChanged();
+            }
+        }
+
+        private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
+
+            if (ParentSnapshot != null) ParentSnapshot.link = combo.Text;
+
+            if (combo.IsKeyboardFocusWithin)
+            {
+                if (SettingChanged != null) SettingChanged();
+            }
         }
 
         #endregion
@@ -157,12 +202,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         {
             if (RefreshClicked != null) RefreshClicked(this);
         }
-
-        private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            SelectedLink = ((ComboBox)sender).Text;
-        }
-
 
     }
 }

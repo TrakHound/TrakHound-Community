@@ -65,7 +65,7 @@
                             <Grid Margin="10,0">
 
                                 <!--User Input-->
-                                <TextBox x:Name="name_TXT" Text="{Binding NameText}" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                <TextBox x:Name="name_TXT" Text="{Binding NameText}" TextChanged="name_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
@@ -90,7 +90,7 @@
                     <TextBlock Text="Data Link" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
                     <!--Variable-->
-                    <Grid Margin="0" Width="250">
+                    <Grid Margin="0" Width="200">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
@@ -130,20 +130,40 @@
 
                     </Grid>
 
-                    <!--Collected or Generated Event-->
-                    <ComboBox Width="250" ItemsSource="{Binding LinkItems}" Text="{Binding SelectedLink}" TextBoxBase.TextChanged="ComboBox_TextChanged" IsEditable="True" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand">
-                        <ComboBox.Style>
-                            <Style TargetType="ComboBox">
-                                <Setter Property="Visibility" Value="Visible"/>
+                    <!--Collected-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SelectedType}" Value="variable">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    <DataTrigger Binding="{Binding SelectedType}" Value="collected">
+                                        <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </ComboBox.Style>
-                    </ComboBox>
-                    
+                        </Grid.Style>
+
+                        <ComboBox x:Name="collectedlink_COMBO" MinWidth="200" Padding="20,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" IsSynchronizedWithCurrentItem="False" TextBoxBase.TextChanged="ComboBox_TextChanged" IsEditable="True" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand"/>
+
+                    </Grid>
+
+                    <!--Generated-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedType}" Value="generated">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <ComboBox x:Name="generatedlink_COMBO" MinWidth="200" Padding="20,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding GeneratedEvents}" TextBoxBase.TextChanged="ComboBox_TextChanged" IsEditable="True" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand"/>
+
+                    </Grid>
+
                     <th_wpf:Button_04 Margin="5" Cursor="Hand" ToolTip="Refresh Data Link List" Image="/TH_GeneratedData;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" />
 
                 </StackPanel>

@@ -1466,5 +1466,69 @@ namespace TH_Configuration.User
                 dt.Rows.Add(row);
             }
         }
+
+        /// <summary>
+        /// Get the last node in the Address column. Returns just the name and omits any Id's.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public static string GetLastNode(DataRow row)
+        {
+            string result = null;
+
+            string adr = row["address"].ToString();
+
+            if (adr.Contains('/'))
+            {
+                string s = adr;
+
+                // Remove Last forward slash
+                if (s[s.Length - 1] == '/') s = s.Substring(0, s.Length - 1);
+
+                // Get index of last forward slash
+                int slashIndex = s.LastIndexOf('/') + 1;
+                if (slashIndex < s.Length) s = s.Substring(slashIndex);
+
+                // Remove Id
+                if (s.Contains("||"))
+                {
+                    int separatorIndex = s.LastIndexOf("||");
+                    s = s.Substring(0, separatorIndex);
+                }
+
+                result = s;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get value from the attributes column
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        public static string GetAttribute(string name, DataRow row)
+        {
+            string line = row["attributes"].ToString();
+
+            if (line.Contains(name))
+            {
+                int a = line.IndexOf(name);
+                if (a >= 0)
+                {
+                    int b = line.IndexOf("||", a) + 2;
+                    int c = line.IndexOf(";", a);
+
+                    if (b >= 0 && (c - b) > 0)
+                    {
+                        return line.Substring(b, c - b);
+                    }
+                }
+            }
+
+            return null;
+        }
+
     }
 }

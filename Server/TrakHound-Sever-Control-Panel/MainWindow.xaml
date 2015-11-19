@@ -29,7 +29,7 @@
         
         PreviewMouseDown="Main_Window_PreviewMouseDown"
         
-        x:Name="Main_Window" 
+        x:Name="Main_Window" WindowState="Maximized" 
         >
     
     <Window.Resources>

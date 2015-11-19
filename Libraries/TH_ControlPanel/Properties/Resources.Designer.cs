@@ -103,6 +103,16 @@ namespace TH_DeviceManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Carrot_Arrow_Up_01 {
+            get {
+                object obj = ResourceManager.GetObject("Carrot_Arrow_Up_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Collapse_01 {
             get {
                 object obj = ResourceManager.GetObject("Collapse_01", resourceCulture);

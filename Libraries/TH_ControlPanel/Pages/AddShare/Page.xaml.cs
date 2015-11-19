@@ -217,7 +217,7 @@ namespace TH_DeviceManager.Pages.AddShare
                 {
                     devicemanager.ConfigurationTable = configurationtable;
 
-                    devicemanager.SaveConfiguration();
+                    devicemanager.SaveConfiguration(configurationtable);
                 }
                     
                     

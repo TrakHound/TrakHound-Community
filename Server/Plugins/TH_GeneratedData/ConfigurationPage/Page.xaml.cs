@@ -43,22 +43,26 @@ namespace TH_GeneratedData.ConfigurationPage
 
         public event SettingChanged_Handler SettingChanged;
 
-        List<Event> GeneratedEvents;
-
         public void LoadConfiguration(DataTable dt)
         {
-            if (!Loading)
-            {
-                Loading = true;
+            loading = true;
 
-                configurationTable = dt;
+            configurationTable = dt;
 
-                GeneratedEvents = GetGeneratedEvents(dt);
+            LoadSnapshotItems(configurationTable);
 
-                LoadGeneratedEvents(GeneratedEvents);
+            List<Event> genEvents;
 
-                LoadAgentSettings(dt);
-            }
+            genEvents = GetGeneratedEvents(dt);
+
+            CreateGeneratedEvents(genEvents);
+
+            GeneratedEvents.Clear();
+            foreach (Event e in genEvents) GeneratedEvents.Add(e);
+
+            LoadAgentSettings(dt);
+
+            loading = false;
         }
 
         public void SaveConfiguration(DataTable dt)
@@ -70,129 +74,29 @@ namespace TH_GeneratedData.ConfigurationPage
 
         }
 
-        bool Loading;
+        bool loading = false;
 
         void ChangeSetting(string address, string name, string val)
         {
-            if (!Loading)
+            string newVal = val;
+            string oldVal = null;
+
+            if (configurationTable != null)
             {
-                string newVal = val;
-                string oldVal = null;
-
-                if (configurationTable != null)
-                {
-                    oldVal = Table_Functions.GetTableValue(address, configurationTable);
-                }
-
-                if (SettingChanged != null) SettingChanged(name, oldVal, newVal);
+                oldVal = Table_Functions.GetTableValue(address, configurationTable);
             }
+
+            if (!loading) if (SettingChanged != null) SettingChanged(name, oldVal, newVal);
         }
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
-
         DataTable configurationTable;
        
 
-        string GetAttribute(string name, DataRow row)
-        {
-            string line = row["attributes"].ToString();
-
-            if (line.Contains(name))
-            {
-                int a = line.IndexOf(name);
-                if (a >= 0)
-                {
-                    int b = line.IndexOf("||", a) + 2;
-                    int c = line.IndexOf(";", a);
-
-                    if (b >= 0 && (c - b) > 0)
-                    {
-                        return line.Substring(b, c - b);
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        void item_TypeChanged(string type, Controls.Snapshot_Item item)
-        {
-            item.LinkItems.Clear();
-
-            foreach (string link in GenerateLinkList(type))
-            {
-                item.LinkItems.Add(link);
-            }
-        }
-
-        void AssignLinkItems(string type, Controls.Snapshot_Item item)
-        {
-            item.LinkItems = GenerateLinkList(type);
-        }
-
-
-        ObservableCollection<string> GenerateTypeList()
-        {
-            ObservableCollection<string> result = new ObservableCollection<string>();
-
-            result.Add("Collected");
-            result.Add("Generated");
-            result.Add("Variable");
-
-            return result;
-        }
-
-        ObservableCollection<object> GenerateLinkList(string type)
-        {
-            ObservableCollection<object> result = new ObservableCollection<object>();
-
-            switch (type.ToLower())
-            {
-                case "collected":
-
-                    List<CollectedItem> items = CollectedItems.ToList();
-
-                    items.Sort((x, y) => string.Compare(x.id, y.id));
-
-                    foreach (CollectedItem ci in items) result.Add(ci.display);
-
-                    break;
-
-                case "generated":
-
-                    foreach (Event e in GeneratedEvents)
-                    {
-                        result.Add(TH_Global.Formatting.UppercaseFirst(e.name));
-                    }
-
-                    break;
-
-                case "variable":
-
-
-                    break;
-            }
-
-            return result;
-        }
-
-        //string GetDataItemId(string s)
-        //{
-        //    if (s.Contains(':'))
-        //    {
-        //        int index = s.IndexOf(':');
-        //        return s.Substring(0, index).Trim();
-        //    }
-        //    return s;
-        //}
-
-
         #region "MTC Data Items"  
      
-        //List<CollectedItem> CollectedItems = new List<CollectedItem>();
-
         ObservableCollection<CollectedItem> collecteditems;
         public ObservableCollection<CollectedItem> CollectedItems
         {
@@ -208,7 +112,6 @@ namespace TH_GeneratedData.ConfigurationPage
                 collecteditems = value;
             }
         }
-
 
         public class CollectedItem
         {
@@ -279,20 +182,11 @@ namespace TH_GeneratedData.ConfigurationPage
                     foreach (DataItem dataItem in dataItems.Samples) items.Add(dataItem);
 
                     this.Dispatcher.BeginInvoke(new Action<List<DataItem>>(AddDataItems), priority, new object[] { items });
-
-                    //// Conditions
-                    //foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
-
-                    //// Events
-                    //foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
-
-                    //// Samples
-                    //foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddDataItem), priority, new object[] { dataItem });
                 }
             }
 
             // Set 'Loading' to false
-            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
+            this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
         }
 
         void AddDataItems(List<DataItem> items)
@@ -315,42 +209,44 @@ namespace TH_GeneratedData.ConfigurationPage
 
             foreach (CollectedItem item in list) CollectedItems.Add(item);
 
-            //CollectedItems = new ObservableCollection<CollectedItem>(list);
         }
 
-        //void AddDataItem(DataItem item)
-        //{
-        //    CollectedItem ci = new CollectedItem();
-        //    ci.id = item.id;
-        //    ci.name = item.name;
-
-        //    if (ci.name != null) ci.display = ci.id + " : " + ci.name;
-        //    else ci.display = ci.id;
-
-        //    CollectedItems.Add(ci);
-        //}
-
-        void OmitProbeFinished()
+        void ProbeFinished()
         {
-            LoadSnapshotItems(configurationTable);
-
-            //LoadGeneratedEvents(GeneratedEvents);
-
-            Loading = false;
+            foreach (Controls.Snapshot_Item item in SnapshotItems)
+            {
+                this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(SnapshotItem_UpdateCollectedLink), priority, new object[] { item });
+            }
         }
-
 
         void probe_ProbeError(Probe.ErrorData errorData)
         {
 
             // Set 'Loading' to false
-            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
+            this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
 
         }
 
         #endregion
 
         #region "Snapshot Data"
+
+        public class Snapshot
+        {
+            public string name { get; set; }
+            public string type { get; set; }
+            public string link { get; set; }
+        }
+
+        public bool DisplaySnapshots
+        {
+            get { return (bool)GetValue(DisplaySnapshotsProperty); }
+            set { SetValue(DisplaySnapshotsProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplaySnapshotsProperty =
+            DependencyProperty.Register("DisplaySnapshots", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
 
         ObservableCollection<Controls.Snapshot_Item> snapshotitems;
         public ObservableCollection<Controls.Snapshot_Item> SnapshotItems
@@ -389,48 +285,56 @@ namespace TH_GeneratedData.ConfigurationPage
             // Loop through SnapshotItems and add each item back to table with sequential id's
             foreach (Controls.Snapshot_Item item in SnapshotItems)
             {
-                if (item.NameText != null && item.SelectedLink != null)
+                if (item.ParentSnapshot != null)
                 {
-                    int id = 0;
-                    string adr = "/GeneratedData/SnapShotData/" + TH_Global.Formatting.UppercaseFirst(item.SelectedType) + "||";
-                    string test = adr + id.ToString("00");
+                    Snapshot snapshot = item.ParentSnapshot;
 
-                    // Reassign Id (to keep everything in sequence)
-                    if (configurationTable != null)
+                    if (snapshot.name != null && snapshot.link != null)
                     {
-                        while (Table_Functions.GetTableValue(test, dt) != null)
+                        int id = 0;
+                        string adr = "/GeneratedData/SnapShotData/" + TH_Global.Formatting.UppercaseFirst(snapshot.type) + "||";
+                        string test = adr + id.ToString("00");
+
+                        // Reassign Id (to keep everything in sequence)
+                        if (configurationTable != null)
                         {
-                            id += 1;
-                            test = adr + id.ToString("00");
+                            while (Table_Functions.GetTableValue(test, dt) != null)
+                            {
+                                id += 1;
+                                test = adr + id.ToString("00");
+                            }
                         }
+
+                        adr = test;
+
+                        string attr = "";
+                        attr += "id||" + id.ToString("00") + ";";
+                        attr += "name||" + snapshot.name + ";";
+
+                        string link = snapshot.link;
+                        if (item.SelectedType.ToLower() == "collected")
+                        {
+                            CollectedItem ci = linkitems.Find(x => x.display == link);
+                            if (ci != null) link = ci.id;
+                        }
+                        else if (item.SelectedType.ToLower() == "generated")
+                        {
+                            link = link.Replace(' ', '_').ToLower();
+                        }
+
+                        attr += "link||" + link + ";";
+
+                        Table_Functions.UpdateTableValue(null, attr, adr, dt);
+
                     }
-
-                    adr = test;
-
-                    string attr = "";
-                    attr += "id||" + id.ToString("00") + ";";
-                    attr += "name||" + item.NameText + ";";
-
-                    string link = item.SelectedLink;
-                    if (item.SelectedType.ToLower() == "collected")
-                    {
-                        CollectedItem ci = linkitems.Find(x => x.display == link);
-                        if (ci != null) link = ci.id;
-                    }
-                    else if (item.SelectedType.ToLower() == "generated")
-                    {
-                        link = link.Replace(' ', '_').ToLower();
-                    }
-
-                    attr += "link||" + link + ";";
-
-                    Table_Functions.UpdateTableValue(null, attr, adr, dt);
                 }
             }
         }
 
         void LoadSnapshotItems(DataTable dt)
         {
+            Console.WriteLine("Loading Snapshots");
+
             string address = "/GeneratedData/SnapShotData/";
 
             string filter = "address LIKE '" + address + "*'";
@@ -441,107 +345,149 @@ namespace TH_GeneratedData.ConfigurationPage
 
             SnapshotItems.Clear();
 
-            List<CollectedItem> linkitems = CollectedItems.ToList();
-
             foreach (DataRow row in temp_dt.Rows)
             {
-                string type = GetSnapShotType(row);
+                Snapshot snapshot = new Snapshot();
+                snapshot.name = Table_Functions.GetAttribute("name", row);
+                snapshot.type = Table_Functions.GetLastNode(row);
+                snapshot.link = Table_Functions.GetAttribute("link", row);
 
-                string name = GetAttribute("name", row);
-                string link = GetAttribute("link", row);
-
-                Controls.Snapshot_Item item = new Controls.Snapshot_Item();
-                item.NameText = name;
-
-                item.TypeChanged += item_TypeChanged;
-
-                item.TypeItems = GenerateTypeList();
-                item.SelectedType = type;
-
-                if (link != null)
-                {
-                    if (type.ToLower() == "collected")
-                    {
-                        CollectedItem ci = linkitems.Find(x => x.id == link);
-                        if (ci != null) link = ci.display;
-                    }
-                    else if (type.ToLower() == "generated")
-                    {
-                        link = TH_Global.Formatting.UppercaseFirst(link.Replace('_', ' '));
-                    }
-                }
-                
-                item.SelectedLink = link;
-
-                item.SettingChanged += item_SettingChanged;
-                item.RemoveClicked += item_RemoveClicked;
-                item.RefreshClicked += item_RefreshClicked;
-
-                SnapshotItems.Add(item);
+                SnapshotItem_Add(snapshot);
             }
+
+            if (SnapshotItems.Count > 0) DisplaySnapshots = true;
+            else DisplaySnapshots = false;
         }
 
-        void item_RefreshClicked(Controls.Snapshot_Item item)
+        #region "SnapshotItem"
+
+        void SnapshotItem_Add(Snapshot snapshot)
         {
-            if (configurationTable != null)
+            Controls.Snapshot_Item item = new Controls.Snapshot_Item();
+            item.Loading = true;
+
+            item.ParentPage = this;
+            item.ParentSnapshot = snapshot;
+
+            item.TypeItems = GenerateTypeList();
+
+            item.NameText = snapshot.name;
+
+            item.SelectedType = snapshot.type;
+            switch (item.SelectedType.ToLower())
             {
-                GeneratedEvents = GetGeneratedEvents(configurationTable);
+                case "collected": 
+                    //CollectedItem ci = CollectedItems.ToList().Find(x => x.id == snapshot.link);
+                    //if (ci != null) item.collectedlink_COMBO.Text = ci.display;
+                    item.collectedlink_COMBO.Text = snapshot.link;
+                    break;
+
+                case "generated":
+                    item.generatedlink_COMBO.Text = TH_Global.Formatting.UppercaseFirst(snapshot.link.Replace('_', ' ')); 
+                    break;
+
+                case "variable": item.variable_TXT.Text = snapshot.link; break;
             }
+
+            item.SettingChanged += SnapshotItem_SettingChanged;
+            item.RemoveClicked += SnapshotItem_RemoveClicked;
+            item.RefreshClicked += SnapshotItem_RefreshClicked;
+
+            item.Loading = false;
+
+            SnapshotItems.Add(item);
         }
 
-        void item_SettingChanged()
+        ObservableCollection<string> GenerateTypeList()
         {
-            if (!Loading) if (SettingChanged != null) SettingChanged(null, null, null);
+            ObservableCollection<string> result = new ObservableCollection<string>();
+
+            result.Add("Collected");
+            result.Add("Generated");
+            result.Add("Variable");
+
+            return result;
         }
 
-        void item_RemoveClicked(Controls.Snapshot_Item item)
+        void SnapshotItem_RemoveClicked(Controls.Snapshot_Item item)
         {
-            this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(RemoveSnapshotItem), priority, new object[] { item });
+            this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(SnapshotItem_Remove), priority, new object[] { item });
         }
 
-        List<Controls.Snapshot_Item> Snapshot_RemoveList = new List<Controls.Snapshot_Item>();
-
-        void RemoveSnapshotItem(Controls.Snapshot_Item item)
+        void SnapshotItem_Remove(Controls.Snapshot_Item item)
         {
             SnapshotItems.Remove(item);
         }
 
-        private void AddValue_Clicked(TH_WPF.Button_01 bt)
+        void SnapshotItem_RefreshClicked(Controls.Snapshot_Item item)
         {
-            Controls.Snapshot_Item item = new Controls.Snapshot_Item();
-            
-            item.TypeChanged += item_TypeChanged;
+            if (configurationTable != null)
+            {
+                List<Event> genEvents;
 
-            item.TypeItems = GenerateTypeList();
-            item.SelectedType = item.TypeItems[0];
+                genEvents = GetGeneratedEvents(configurationTable);
 
-            item.SettingChanged += item_SettingChanged;
-            item.RemoveClicked += item_RemoveClicked;
-            item.RefreshClicked += item_RefreshClicked;
+                GeneratedEvents.Clear();
+                foreach (Event e in genEvents) GeneratedEvents.Add(e);
 
-            SnapshotItems.Add(item);
-            item.BringIntoView();
+                //GeneratedEvents = GetGeneratedEvents(configurationTable);
+            }
         }
 
-        //void AddSnapShotItem(Controls.Snapshot_Item item)
-        //{
-        //    SnapshotItems.Add(item);
-        //}
-
-        string GetSnapShotType(DataRow row)
+        void SnapshotItem_SettingChanged()
         {
-            string adr = row["address"].ToString();
+            if (!loading) if (SettingChanged != null) SettingChanged(null, null, null);
+        }
 
-            int slashIndex = adr.LastIndexOf('/');
-            int idIndex = adr.IndexOf("||");
+        void SnapshotItem_UpdateCollectedLink(Controls.Snapshot_Item item)
+        {
+            Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.id == item.collectedlink_COMBO.Text);
+            if (ci != null) item.collectedlink_COMBO.Text = ci.display;
+        }
 
-            return adr.Substring(slashIndex + 1, idIndex - slashIndex - 1);
+        #endregion
+
+        List<Controls.Snapshot_Item> Snapshot_RemoveList = new List<Controls.Snapshot_Item>();
+    
+        private void AddValue_Clicked(TH_WPF.Button_01 bt)
+        {
+            Snapshot snapshot = new Snapshot();
+            snapshot.type = "Collected";
+
+            SnapshotItem_Add(snapshot);
         }
 
         #endregion
 
         #region "Generated Events"
 
+        ObservableCollection<Event> generatedevents;
+        public ObservableCollection<Event> GeneratedEvents
+        {
+            get
+            {
+                if (generatedevents == null)
+                    generatedevents = new ObservableCollection<Event>();
+                return generatedevents;
+            }
+
+            set
+            {
+                generatedevents = value;
+            }
+        }
+
+
+        public bool DisplayEvents
+        {
+            get { return (bool)GetValue(DisplayEventsProperty); }
+            set { SetValue(DisplayEventsProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayEventsProperty =
+            DependencyProperty.Register("DisplayEvents", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        
         ObservableCollection<TH_WPF.CollapseButton> eventbuttons;
         public ObservableCollection<TH_WPF.CollapseButton> EventButtons
         {
@@ -559,6 +505,8 @@ namespace TH_GeneratedData.ConfigurationPage
         }
 
         public List<Controls.Event> events;
+
+        #region "Save"
 
         void SaveGeneratedEvents(DataTable dt)
         {
@@ -607,10 +555,10 @@ namespace TH_GeneratedData.ConfigurationPage
 
             string attr = "";
             attr += "id||" + e.id.ToString("00") + ";";
-            attr += "name||" + e.name.Replace(' ','_').ToLower() + ";";
+            attr += "name||" + e.name.Replace(' ', '_').ToLower() + ";";
             attr += "description||" + e.description + ";";
 
-            
+
 
             Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
@@ -631,7 +579,7 @@ namespace TH_GeneratedData.ConfigurationPage
             int id = 0;
             string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Value||";
             string test = adr + id.ToString("00");
-            
+
 
             // Reassign Id (to keep everything in sequence)
             if (configurationTable != null)
@@ -706,269 +654,12 @@ namespace TH_GeneratedData.ConfigurationPage
 
 
                 Table_Functions.UpdateTableValue(null, attr, adr, dt);
-            }        
-        }
-
-
-        //void LoadGeneratedEvents(List<Event> genEvents)
-        //{
-        //    EventButtons.Clear();
-
-        //    events = new List<Controls.Event>();
-
-        //    bool first = true;
-
-        //    foreach (Event e in genEvents)
-        //    {
-        //        Controls.Event ev = CreateEvent(e);
-
-        //        Controls.EventButton event_bt = new Controls.EventButton();
-        //        event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
-        //        event_bt.ParentEvent = e;
-
-        //        TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
-        //        bt.ButtonContent = event_bt;
-
-        //        if (first) bt.IsExpanded = true;
-        //        first = false;
-
-        //        bt.PageContent = ev;
-
-        //        events.Add(ev);
-
-        //        this.Dispatcher.BeginInvoke(new Action<TH_WPF.CollapseButton>(AddEventButton), priority, new object[] { bt });
-        //    }
-        //}
-
-
-
-        #region "Load Generated Events"
-
-        Thread loadgeneratedevents_THREAD;
-
-        void LoadGeneratedEvents(List<Event> genEvents)
-        {
-            EventButtons.Clear();
-
-            if (loadgeneratedevents_THREAD != null) loadgeneratedevents_THREAD.Abort();
-
-            loadgeneratedevents_THREAD = new Thread(new ParameterizedThreadStart(LoadGeneratedEvents_Worker));
-            loadgeneratedevents_THREAD.Start(genEvents);
-        }
-
-        void LoadGeneratedEvents_Worker(object o)
-        {
-            List<Event> genEvents = (List<Event>)o;
-
-            events = new List<Controls.Event>();
-
-            first = true;
-
-            foreach (Event e in genEvents)
-            {
-                this.Dispatcher.BeginInvoke(new Action<Event>(LoadGeneratedEvents_GUI), priority, new object[] { e });
             }
-        }
-
-        bool first = true;
-
-        void LoadGeneratedEvents_GUI(Event e)
-        {
-            Controls.Event ev = CreateEvent(e);
-
-            Controls.EventButton event_bt = new Controls.EventButton();
-            event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
-            event_bt.ParentEvent = e;
-
-            TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
-            bt.ButtonContent = event_bt;
-
-            if (first) bt.IsExpanded = true;
-            first = false;
-
-            bt.PageContent = ev;
-
-            events.Add(ev);
-
-            EventButtons.Add(bt);
         }
 
         #endregion
 
-        private void AddEvent_Clicked(TH_WPF.Button_01 bt)
-        {
-            Event e = new Event();
-            e.name = "[EVENT NAME]";
-
-            e.Default = new Result();
-            e.Default.value = "[VALUE]";
-
-            GeneratedEvents.Add(e);
-
-            LoadGeneratedEvents_GUI(e);
-
-            if (EventButtons.Count > 0)
-            {
-                TH_WPF.CollapseButton cbt = EventButtons[EventButtons.Count - 1];
-
-                foreach (TH_WPF.CollapseButton ocbt in EventButtons.OfType<TH_WPF.CollapseButton>().ToList()) if (ocbt != cbt) ocbt.IsExpanded = false;
-                cbt.IsExpanded = true;
-
-                cbt.BringIntoView();
-            }
-
-        }
-
-        Controls.Event CreateEvent(Event e)
-        {
-            Controls.Event result = new Controls.Event();
-            result.ParentEvent = e;
-
-            result.Description = e.description;
-
-            result.AddValueClicked += Value_AddValueClicked;
-
-            foreach (Value v in e.values)
-            {
-                Controls.Value val = CreateValue(v, e);
-                result.Values.Add(val);
-            }
-
-            // Default
-            Controls.Default def = new Controls.Default();
-            def.ParentResult = e.Default;
-            def.ValueName = e.Default.value;
-            result.DefaultValue = def;
-
-            return result;
-        }
-
-        void Value_AddValueClicked(Controls.Event e)
-        {
-            if (e.ParentEvent != null)
-            {
-                Value val = new Value();
-
-                e.ParentEvent.values.Add(val);
-
-                e.Values.Add(CreateValue(val, e.ParentEvent));
-            }
-
-        }
-
-        Controls.Value CreateValue(Value v, Event e)
-        {
-            Controls.Value result = new Controls.Value();
-
-            result.ParentEvent = e;
-            result.ParentValue = v;
-            result.RemoveClicked += Value_RemoveClicked;
-            result.AddTriggerClicked += Value_AddTriggerClicked;
-
-            if (v.result != null)
-            {
-                result.ValueName = v.result.value.Replace('_',' ');
-            }
-
-            foreach (Trigger t in v.triggers)
-            {
-                Controls.Trigger tr = CreateTrigger(t, v, e);
-                result.Triggers.Add(tr);
-            }
-
-            result.TriggerCount = v.triggers.Count.ToString();
-
-            return result;
-        }
-
-        void Value_AddTriggerClicked(Controls.Value val)
-        {
-            if (val.ParentValue != null && val.ParentEvent != null)
-            {
-                if (val.ParentEvent.values.Contains(val.ParentValue))
-                {
-                    Controls.Event e = events.Find(x => x.ParentEvent == val.ParentEvent);
-                    if (e != null)
-                    {
-                        int index = e.Values.ToList().FindIndex(x => x.ParentValue == val.ParentValue);
-                        if (index >= 0)
-                        {
-                            Controls.Value v = e.Values[index];
-                            if (v != null)
-                            {
-                                Trigger t = new Trigger();
-                                val.ParentValue.triggers.Add(t);
-
-                                Controls.Trigger tr = CreateTrigger(t, val.ParentValue, val.ParentEvent);
-                                val.Triggers.Add(tr);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        void Value_RemoveClicked(Controls.Value val)
-        {
-            if (val.ParentValue != null && val.ParentEvent != null)
-            {
-                if (val.ParentEvent.values.Contains(val.ParentValue))
-                {
-                    val.ParentEvent.values.Remove(val.ParentValue);
-
-                    Controls.Event e = events.Find(x => x.ParentEvent == val.ParentEvent);
-                    if (e != null)
-                    {
-                        if (e.Values.Contains(val)) e.Values.Remove(val);
-                    }
-                }
-            }
-        }
-
-        Controls.Trigger CreateTrigger(Trigger t, Value v, Event e)
-        {
-            Controls.Trigger result = new Controls.Trigger();
-
-            result.ParentPage = this;
-            result.ParentEvent = e;
-            result.ParentValue = v;
-            result.ParentTrigger = t;
-            result.RemoveClicked += trigger_RemoveClicked;
-
-            foreach (CollectedItem item in CollectedItems)
-            {
-                result.DataItems.Add(item.id);      
-            }
-
-            result.SelectedLink = t.link;
-            result.SelectedModifier = t.modifier;
-
-            result.Value = t.value;
-
-            return result;
-        }
-
-        void trigger_RemoveClicked(Controls.Trigger t)
-        {
-            if (t.ParentTrigger != null && t.ParentValue != null && t.ParentEvent != null)
-            {
-                t.ParentValue.triggers.Remove(t.ParentTrigger);
-
-                if (t.ParentEvent.values.Contains(t.ParentValue))
-                {
-                    Controls.Event e = events.Find(x => x.ParentEvent == t.ParentEvent);
-                    if (e != null)
-                    {
-                        Controls.Value v = e.Values.ToList().Find(x => x.ParentValue == t.ParentValue);
-                        if (v != null)
-                        {
-                            if (v.Triggers.Contains(t)) v.Triggers.Remove(t);
-                        } 
-                    }
-                }
-            }
-        }
-
+        #region "Load"
 
         List<Event> GetGeneratedEvents(DataTable dt)
         {
@@ -1024,40 +715,11 @@ namespace TH_GeneratedData.ConfigurationPage
                 }
             }
 
-            return result;
-        }
-
-
-        string GetLastNode(DataRow row)
-        {
-            string result = null;
-
-            string adr = row["address"].ToString();
-
-            if (adr.Contains('/'))
-            {
-                string s = adr;
-
-                // Remove Last forward slash
-                if (s[s.Length - 1] == '/') s = s.Substring(0, s.Length - 1);
-
-                // Get index of last forward slash
-                int slashIndex = s.LastIndexOf('/') + 1;
-                if (slashIndex < s.Length) s = s.Substring(slashIndex);
-
-                // Remove Id
-                if (s.Contains("||"))
-                {
-                    int separatorIndex = s.LastIndexOf("||");
-                    s = s.Substring(0, separatorIndex);  
-                }
-
-                result = s;
-            }
+            if (result.Count > 0) DisplayEvents = true;
+            else DisplayEvents = false;
 
             return result;
         }
-
 
         Event GetEventFromRow(List<Event> genEvents, DataRow row)
         {
@@ -1065,7 +727,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
             string adr = row["address"].ToString();
 
-            string lastNode = GetLastNode(row);
+            string lastNode = Table_Functions.GetLastNode(row);
 
             if (lastNode != null)
             {
@@ -1077,7 +739,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
                     if (separatorIndex > slashIndex)
                     {
-                        string name = GetAttribute("name", row);
+                        string name = Table_Functions.GetAttribute("name", row);
                         string strId = adr.Substring(separatorIndex + 2, 2);
 
                         int id;
@@ -1089,7 +751,7 @@ namespace TH_GeneratedData.ConfigurationPage
                                 result = new Event();
                                 result.id = id;
                                 result.name = name;
-                                result.description = GetAttribute("description", row);
+                                result.description = Table_Functions.GetAttribute("description", row);
                             }
                         }
                     }
@@ -1105,13 +767,13 @@ namespace TH_GeneratedData.ConfigurationPage
 
             string adr = row["address"].ToString();
 
-            string lastNode = GetLastNode(row);
+            string lastNode = Table_Functions.GetLastNode(row);
 
             if (lastNode != null)
             {
                 if (lastNode.ToLower() == "value")
                 {
-                    string strId = GetAttribute("id", row);
+                    string strId = Table_Functions.GetAttribute("id", row);
                     if (strId != null)
                     {
                         int id = -1;
@@ -1122,7 +784,7 @@ namespace TH_GeneratedData.ConfigurationPage
                             {
                                 result = new Value();
                                 result.id = id;
-                        }
+                            }
                         }
                     }
                 }
@@ -1138,14 +800,14 @@ namespace TH_GeneratedData.ConfigurationPage
 
             if (adr.Contains("Default"))
             {
-                string n = GetAttribute("numval", row);
+                string n = Table_Functions.GetAttribute("numval", row);
                 if (n != null)
                 {
                     int numval;
                     if (int.TryParse(n, out numval))
                     {
                         Result r = new Result();
-                        r.value = row["value"].ToString().Replace('_',' ');;
+                        r.value = row["value"].ToString().Replace('_', ' '); ;
                         r.numval = numval;
                         e.Default = r;
                     }
@@ -1159,7 +821,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
             if (adr.Contains("Result"))
             {
-                string n = GetAttribute("numval", row);
+                string n = Table_Functions.GetAttribute("numval", row);
                 if (n != null)
                 {
                     int numval;
@@ -1199,14 +861,14 @@ namespace TH_GeneratedData.ConfigurationPage
                         {
                             result = new Trigger();
                             result.id = id;
-                            result.link = GetAttribute("link", row);
-                            result.value = GetAttribute("value", row);
+                            result.link = Table_Functions.GetAttribute("link", row);
+                            result.value = Table_Functions.GetAttribute("value", row);
 
                             string modifier = "Equal To";
-                            string mod = GetAttribute("modifier", row);
+                            string mod = Table_Functions.GetAttribute("modifier", row);
                             if (mod != null)
                             {
-                                switch(mod.ToLower())
+                                switch (mod.ToLower())
                                 {
                                     case "not": modifier = "Not Equal To"; break;
                                     case "greater_than": modifier = "Greater Than"; break;
@@ -1227,6 +889,297 @@ namespace TH_GeneratedData.ConfigurationPage
             return result;
         }
 
+        #region "Controls"
+
+        void CreateGeneratedEvents(List<Event> genEvents)
+        {
+            EventButtons.Clear();
+            events = new List<Controls.Event>();
+
+            first = true;
+
+            foreach (Event e in genEvents)
+            {
+                this.Dispatcher.BeginInvoke(new Action<Event>(AddEvent), priority, new object[] { e });
+            }
+        }
+
+        bool first = true;
+
+        void AddEvent(Event e)
+        {
+            Controls.Event ev = CreateEvent(e);
+
+            Controls.EventButton event_bt = new Controls.EventButton();
+            event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
+            event_bt.SettingChanged += event_bt_SettingChanged;
+            event_bt.RemoveClicked += Event_RemoveClicked;
+            event_bt.ParentEvent = e;
+
+            TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
+            bt.ButtonContent = event_bt;
+
+            if (first) bt.IsExpanded = true;
+            first = false;
+
+            bt.PageContent = ev;
+
+            events.Add(ev);
+
+            EventButtons.Add(bt);
+        }
+
+        void event_bt_SettingChanged()
+        {
+            if (!loading) if (SettingChanged != null) SettingChanged(null, null, null);
+        }
+
+        #region "Event"
+
+        Controls.Event CreateEvent(Event e)
+        {
+            Controls.Event result = new Controls.Event();
+            result.ParentEvent = e;
+
+            result.Description = e.description;
+
+            result.SettingChanged += Event_SettingChanged;
+            result.AddValueClicked += Event_AddValueClicked;
+
+            foreach (Value v in e.values)
+            {
+                Controls.Value val = CreateValue(v, e);
+                result.Values.Add(val);
+            }
+
+            // Default
+            Controls.Default def = new Controls.Default();
+            def.ParentResult = e.Default;
+            def.ValueName = e.Default.value;
+            def.SettingChanged += def_SettingChanged;
+            result.DefaultValue = def;
+
+            return result;
+        }
+
+        void def_SettingChanged()
+        {
+            ChangeSetting(null, null, null);
+        }
+
+        void Event_SettingChanged()
+        {
+            ChangeSetting(null, null, null);
+        }
+
+        void Event_AddValueClicked(Controls.Event e)
+        {
+            if (e.ParentEvent != null)
+            {
+                Value val = new Value();
+
+                e.ParentEvent.values.Add(val);
+
+                e.Values.Add(CreateValue(val, e.ParentEvent));
+            }
+
+            ChangeSetting(null, null, null);
+        }
+
+        #endregion
+
+        #region "Value"
+
+        Controls.Value CreateValue(Value v, Event e)
+        {
+            Controls.Value result = new Controls.Value();
+
+            result.ParentEvent = e;
+            result.ParentValue = v;
+
+            result.SettingChanged += result_SettingChanged;
+            result.RemoveClicked += Value_RemoveClicked;
+            result.AddTriggerClicked += Value_AddTriggerClicked;
+
+            if (v.result != null)
+            {
+                result.ValueName = v.result.value.Replace('_', ' ');
+            }
+
+            foreach (Trigger t in v.triggers)
+            {
+                Controls.Trigger tr = CreateTrigger(t, v, e);
+                result.Triggers.Add(tr);
+            }
+
+            return result;
+        }
+
+        void result_SettingChanged()
+        {
+            ChangeSetting(null, null, null);
+        }
+
+        void Value_AddTriggerClicked(Controls.Value val)
+        {
+            if (val.ParentValue != null && val.ParentEvent != null)
+            {
+                if (val.ParentEvent.values.Contains(val.ParentValue))
+                {
+                    Controls.Event e = events.Find(x => x.ParentEvent == val.ParentEvent);
+                    if (e != null)
+                    {
+                        int index = e.Values.ToList().FindIndex(x => x.ParentValue == val.ParentValue);
+                        if (index >= 0)
+                        {
+                            Controls.Value v = e.Values[index];
+                            if (v != null)
+                            {
+                                Trigger t = new Trigger();
+                                val.ParentValue.triggers.Add(t);
+
+                                Controls.Trigger tr = CreateTrigger(t, val.ParentValue, val.ParentEvent);
+                                tr.SelectedModifier = "Equal To";
+                                val.Triggers.Add(tr);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        void Value_RemoveClicked(Controls.Value val)
+        {
+            if (val.ParentValue != null && val.ParentEvent != null)
+            {
+                if (val.ParentEvent.values.Contains(val.ParentValue))
+                {
+                    val.ParentEvent.values.Remove(val.ParentValue);
+
+                    Controls.Event e = events.Find(x => x.ParentEvent == val.ParentEvent);
+                    if (e != null)
+                    {
+                        if (e.Values.Contains(val)) e.Values.Remove(val);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region "Trigger"
+
+        Controls.Trigger CreateTrigger(Trigger t, Value v, Event e)
+        {
+            Controls.Trigger result = new Controls.Trigger();
+
+            result.ParentPage = this;
+            result.ParentEvent = e;
+            result.ParentValue = v;
+            result.ParentTrigger = t;
+
+            result.SettingChanged += Trigger_SettingChanged;
+            result.RemoveClicked += Trigger_RemoveClicked;
+
+            foreach (CollectedItem item in CollectedItems)
+            {
+                result.DataItems.Add(item.id);
+            }
+
+            result.link_COMBO.Text = t.link;
+
+            //result.SelectedLink = t.link;
+            result.SelectedModifier = t.modifier;
+
+            result.Value = t.value;
+
+            return result;
+        }
+
+        void Trigger_SettingChanged()
+        {
+            ChangeSetting(null, null, null);
+        }
+
+        void Trigger_RemoveClicked(Controls.Trigger t)
+        {
+            if (t.ParentTrigger != null && t.ParentValue != null && t.ParentEvent != null)
+            {
+                t.ParentValue.triggers.Remove(t.ParentTrigger);
+
+                if (t.ParentEvent.values.Contains(t.ParentValue))
+                {
+                    Controls.Event e = events.Find(x => x.ParentEvent == t.ParentEvent);
+                    if (e != null)
+                    {
+                        Controls.Value v = e.Values.ToList().Find(x => x.ParentValue == t.ParentValue);
+                        if (v != null)
+                        {
+                            if (v.Triggers.Contains(t)) v.Triggers.Remove(t);
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        private void AddEvent_Clicked(TH_WPF.Button_01 bt)
+        {
+            Event e = new Event();
+            e.name = "EVENT";
+
+            e.Default = new Result();
+            e.Default.value = "DEFAULT";
+
+            GeneratedEvents.Add(e);
+
+            AddEvent(e);
+            //LoadGeneratedEvents_GUI(e);
+
+            if (EventButtons.Count > 0)
+            {
+                TH_WPF.CollapseButton cbt = EventButtons[EventButtons.Count - 1];
+
+                foreach (TH_WPF.CollapseButton ocbt in EventButtons.OfType<TH_WPF.CollapseButton>().ToList()) if (ocbt != cbt) ocbt.IsExpanded = false;
+                cbt.IsExpanded = true;
+
+                cbt.BringIntoView();
+            }
+
+            DisplayEvents = true;
+
+            ChangeSetting(null, null, null);
+        }
+
+        void Event_RemoveClicked(Controls.EventButton bt)
+        {
+            if (bt.ParentEvent != null)
+            {
+                int index = GeneratedEvents.ToList().FindIndex(x => x == bt.ParentEvent);
+                if (index >= 0)
+                {
+                    Event e = GeneratedEvents[index];
+
+                    GeneratedEvents.Remove(e);
+
+                    index = EventButtons.ToList().FindIndex(x => x.ButtonContent == bt);
+                    if (index >= 0)
+                    {
+                        EventButtons.RemoveAt(index);
+                    }
+                }
+            }
+
+            if (EventButtons.Count > 0) DisplayEvents = true;
+            else DisplayEvents = false;
+
+            ChangeSetting(null, null, null);
+        }
+
+        #endregion
 
         public class Event
         {
@@ -1240,6 +1193,11 @@ namespace TH_GeneratedData.ConfigurationPage
             public Result Default { get; set; }
 
             public string description { get; set; }
+
+            public override string ToString()
+            {
+                return TH_Global.Formatting.UppercaseFirst(name.Replace('_',' '));
+            }
         }
 
         public class Value
@@ -1275,7 +1233,6 @@ namespace TH_GeneratedData.ConfigurationPage
         {
 
         }
-
 
     }
 }

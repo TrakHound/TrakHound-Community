@@ -32,8 +32,23 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
-                
-                <TextBox x:Name="description_TXT" Text="{Binding Description}" TextChanged="Description_TextChanged" FontSize="10pt" Foreground="#888" Margin="10" Background="{x:Null}" BorderBrush="{x:Null}"/>
+
+                <TextBox x:Name="description_TXT" Text="{Binding Description}" TextChanged="Description_TextChanged" GotFocus="TXT_GotFocus" LostFocus="TXT_LostFocus" GotMouseCapture="TXT_GotMouseCapture" GotKeyboardFocus="TXT_GotKeyboardFocus" Foreground="#333" Margin="10" BorderBrush="{x:Null}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="FontSize" Value="10pt"/>
+                            <Setter Property="Background" Value="#00000000"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsFocused, RelativeSource={RelativeSource Self}}" Value="true">
+                                    <Setter Property="FontSize" Value="12pt"/>
+                                    <Setter Property="Background" Value="#fff"/>
+                                    <Setter Property="Padding" Value="20"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
 
             </Border>
 

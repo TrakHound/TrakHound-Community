@@ -69,6 +69,9 @@ namespace TH_DeviceManager.Pages.Databases
 
                 configurationTable = dt;
             }
+
+            if (DatabaseList.Count > 0) DisplayDatabases = true;
+            else DisplayDatabases = false;
         }
 
         public void SaveConfiguration(DataTable dt)
@@ -154,6 +157,18 @@ namespace TH_DeviceManager.Pages.Databases
         }
 
 
+
+        public bool DisplayDatabases
+        {
+            get { return (bool)GetValue(DisplayDatabasesProperty); }
+            set { SetValue(DisplayDatabasesProperty, value); }
+        }
+
+        public static readonly DependencyProperty DisplayDatabasesProperty =
+            DependencyProperty.Register("DisplayDatabases", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        
+
         #region "Add Database"
 
         void CreateAddDatabaseButtons(TH_Database.DatabasePluginReader dpr)
@@ -224,6 +239,8 @@ namespace TH_DeviceManager.Pages.Databases
                     DatabaseList.Add(cbt);
                 }
             }
+
+            DisplayDatabases = true;
         }
 
         #endregion
@@ -360,6 +377,9 @@ namespace TH_DeviceManager.Pages.Databases
                 // Remove Collapse Button From List
                 DatabaseList.Remove(item.collapseButton);
             }
+
+            if (DatabaseList.Count > 0) DisplayDatabases = true;
+            else DisplayDatabases = false;
         }
 
         #endregion

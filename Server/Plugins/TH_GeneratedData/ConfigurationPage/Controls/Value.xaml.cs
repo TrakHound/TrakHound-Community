@@ -31,42 +31,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public TH_GeneratedData.ConfigurationPage.Page.Event ParentEvent;
         public TH_GeneratedData.ConfigurationPage.Page.Value ParentValue;
 
-        ObservableCollection<Trigger> triggers;
-        public ObservableCollection<Trigger> Triggers
-        {
-            get
-            {
-                if (triggers == null)
-                    triggers = new ObservableCollection<Trigger>();
-                return triggers;
-            }
-
-            set
-            {
-                triggers = value;
-            }
-        }
-
-
-        public string ValueName
-        {
-            get { return (string)GetValue(ValueNameProperty); }
-            set { SetValue(ValueNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty ValueNameProperty =
-            DependencyProperty.Register("ValueName", typeof(string), typeof(Value), new PropertyMetadata(null));
-
-
-        public string TriggerCount
-        {
-            get { return (string)GetValue(TriggerCountProperty); }
-            set { SetValue(TriggerCountProperty, value); }
-        }
-
-        public static readonly DependencyProperty TriggerCountProperty =
-            DependencyProperty.Register("TriggerCount", typeof(string), typeof(Value), new PropertyMetadata(null));
-
         #region "Help"
 
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
@@ -123,32 +87,26 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         #endregion
 
-        private void CHK_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CHK_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         public delegate void Clicked_Handler(Value val);
-        public event Clicked_Handler AddTriggerClicked;
-        public event Clicked_Handler RemoveClicked;
 
-        private void AddTrigger_Clicked(TH_WPF.Button_04 bt)
+        public delegate void SettingChanged_Handler();
+        public event SettingChanged_Handler SettingChanged;
+        
+        #region "Name"
+
+        public string ValueName
         {
-            if (AddTriggerClicked != null) AddTriggerClicked(this);
+            get { return (string)GetValue(ValueNameProperty); }
+            set { SetValue(ValueNameProperty, value); }
         }
 
-        private void Remove_Clicked(TH_WPF.Button_02 bt)
-        {
-            if (RemoveClicked != null) RemoveClicked(this);
-        }
+        public static readonly DependencyProperty ValueNameProperty =
+            DependencyProperty.Register("ValueName", typeof(string), typeof(Value), new PropertyMetadata(null));
 
         private void ValueName_TextChanged(object sender, TextChangedEventArgs e)
         {
+            TextBox txt = (TextBox)sender;
+
             if (ParentValue != null)
             {
                 Page.Result result = ParentValue.result;
@@ -159,14 +117,66 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
                     ParentValue.result = result;
                 }
 
-                result.value = ((TextBox)sender).Text;
+                result.value = txt.Text;
+            }
+
+            if (txt.IsKeyboardFocused) if (SettingChanged != null) SettingChanged();
+        }
+
+        #endregion
+
+        #region "Triggers"
+
+        ObservableCollection<Trigger> triggers;
+        public ObservableCollection<Trigger> Triggers
+        {
+            get
+            {
+                if (triggers == null)
+                    triggers = new ObservableCollection<Trigger>();
+                return triggers;
+            }
+
+            set
+            {
+                triggers = value;
             }
         }
 
-        private void EditValue_Clicked(TH_WPF.Button_02 bt)
-        {
+        public event Clicked_Handler AddTriggerClicked;
 
+        private void AddTrigger_Clicked(TH_WPF.Button_04 bt)
+        {
+            if (AddTriggerClicked != null) AddTriggerClicked(this);
+
+            if (SettingChanged != null) SettingChanged();
         }
+
+        #endregion
+
+        #region "Remove"
+
+        public event Clicked_Handler RemoveClicked;
+
+        private void Remove_Clicked(TH_WPF.Button_02 bt)
+        {
+            if (RemoveClicked != null) RemoveClicked(this);
+
+            if (SettingChanged != null) SettingChanged();
+        }
+
+        #endregion
+
+        object oldFocus = null;
+
+        private void TXT_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
+
+        private void TXT_GotFocus(object sender, RoutedEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
+
+        private void TXT_GotMouseCapture(object sender, MouseEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
+
+        private void TXT_LostFocus(object sender, RoutedEventArgs e) { oldFocus = null; }
+
 
     }
 }

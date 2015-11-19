@@ -26,14 +26,14 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Generated Data" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
+        <TextBlock Text="Generated Data" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
 
-        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="10,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
             Generated Data takes the raw data collected from the MTConnect Agent (and/or other source) and processes it into data that is ready to display, report, graph, etc.
             The objective is to store the processed data so that any client that reads from the database displays the same data.
         </TextBlock>
 
-        <Grid Grid.Row="2" Margin="10">
+        <Grid Grid.Row="2" Margin="0,10">
             
             <TabControl Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="TabControl_SelectionChanged" >
                 <TabControl.Resources>
@@ -47,7 +47,7 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TabItem}">
                                     <Grid>
-                                        <Border Name="bd" Margin="0,0,0,-5" Background="#00000000" CornerRadius="1,1,0,0">
+                                        <Border Name="bd" Margin="0,0,0,-6" Background="#00000000" CornerRadius="1,1,0,0">
                                             <ContentPresenter x:Name="ContentSite" VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   ContentSource="Header" Margin="25,0"
@@ -77,7 +77,15 @@
                 <!--Snapshot Data-->
                 <TabItem Header="Snapshot Data" Background="{x:Null}" BorderBrush="{x:Null}">
 
-                    <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
                         <Rectangle Height="3" Fill="#0080ff" />
 
@@ -86,74 +94,158 @@
                             Three types of data are avaiable:
                         </TextBlock>
 
-                        <!--Collected-->
-                        <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Row="2">
 
-                            <TextBlock Text="Collected" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <!--Collected-->
+                            <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
+                                <TextBlock Text="Collected" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                                <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
                                 Any MTConnect data item (Conditions, Events, and Samples). 
                                 This essentially allows for a more user friendly name to be applied to the data item.
-                            </TextBlock>
+                                </TextBlock>
 
-                        </Grid>
+                            </Grid>
 
-                        <!--Generated-->
-                        <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <!--Generated-->
+                            <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Generated" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Generated" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
+                                <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
                                 Stores the current value of a Generated Event for display in a client application.
-                            </TextBlock>
+                                </TextBlock>
 
-                        </Grid>
+                            </Grid>
 
-                        <!--Variable-->
-                        <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <!--Variable-->
+                            <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Text="Variable" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Variable" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
+                                <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
                                 Generic variable storage. Read from the 'variables' table in the device's database and can be written to from any plugin or program.
                                 This is also used to read data from an outside source such as an ERP system.
+                                </TextBlock>
+
+                            </Grid>
+
+                        </StackPanel>
+                        
+                        <!--Add Item-->
+                        <StackPanel Grid.Row="3" Orientation="Horizontal">
+
+                            <!--Add Button-->
+                            <th_wpf:Button_01 Text="Add Item" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked"/>
+
+                            <!--Add Arrow-->
+                            <Rectangle Fill="#0080ff" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Rectangle.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Rectangle.RenderTransform>
+
+                                <Rectangle.Resources>
+                                    <ImageBrush x:Key="Arrow_IMG" Stretch="Uniform" ImageSource="/TH_GeneratedData;component/Resources/Carrot_Arrow_Up_01.png" />
+                                </Rectangle.Resources>
+                                <Rectangle.LayoutTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-90"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.LayoutTransform>
+
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Arrow_IMG}" />
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <EventTrigger RoutedEvent="Rectangle.Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+
+                                                        <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="30" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+
+                                            <DataTrigger Binding="{Binding DisplaySnapshots}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+
+                        </StackPanel>
+                                                
+                        <Rectangle Grid.Row="4" Height="1" Fill="#ccc" Margin="0,15,0,20"/>
+                        
+                        <Grid Grid.Row="5">
+
+                            <!--Items List-->
+                            <ItemsControl ItemsSource="{Binding SnapshotItems}">
+                                <ItemsControl.Resources>
+                                    <Style TargetType="controls:Snapshot_Item">
+                                        <Setter Property="Margin" Value="0,5"/>
+                                    </Style>
+                                </ItemsControl.Resources>
+                            </ItemsControl>
+
+
+                            <!--No Items Text-->
+                            <TextBlock FontSize="18pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DisplaySnapshots}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>             
+                                No Snapshot Items are configured <LineBreak/>
+                                Click the 'Add Item' button above
                             </TextBlock>
 
                         </Grid>
-
-
-                        <th_wpf:Button_01 Text="Add Item" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked"/>
-
-                        <Rectangle Height="1" Fill="#ccc" Margin="0,0,0,10"/>
-                        
-                        <ItemsControl ItemsSource="{Binding SnapshotItems}">
-                            <ItemsControl.Resources>
-                                <Style TargetType="controls:Snapshot_Item">
-                                    <Setter Property="Margin" Value="0,5"/>
-                                </Style>
-                            </ItemsControl.Resources>
-                        </ItemsControl>
-
-                    </StackPanel>
+                                          
+                    </Grid>
 
                 </TabItem>
                 
                 <!--Generated Events-->
                 <TabItem Header="Generated Events" BorderBrush="{x:Null}" >
                     
-                    <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
                         
                         <Rectangle Height="3" Fill="#0080ff" />
 
@@ -161,22 +253,96 @@
                             Generated Events are used to process raw MTConnect data items. 
                         </TextBlock>
 
-                        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,15,10,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
-                            Events made up of Values and then the Default Value.
+                        <TextBlock Grid.Row="2" FontSize="10pt" Foreground="#888" Margin="0,15,10,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+                            Events are made up of Values and then the Default Value.
                             Values have logical Triggers that define the conditions needed to be met for the Value to be 'True'.
                         </TextBlock>
+                        
+                        <!--Add Item-->
+                        <StackPanel Grid.Row="3" Orientation="Horizontal">
+                            
+                            <!--Add Button-->
+                            <th_wpf:Button_01 Text="Add Event" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddEvent_Clicked"/>
 
-                        <th_wpf:Button_01 Text="Add Event" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddEvent_Clicked"/>
+                            <!--Add Arrow-->
+                            <Rectangle Fill="#0080ff" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <Rectangle.RenderTransform>
+                                    <TranslateTransform X="0"/>
+                                </Rectangle.RenderTransform>
 
-                        <ItemsControl ItemsSource="{Binding EventButtons}" Margin="0,20">
-                            <ItemsControl.Resources>
-                                <Style TargetType="th_wpf:CollapseButton">
-                                    <Setter Property="Margin" Value="0,10"/>
-                                </Style>
-                            </ItemsControl.Resources>
-                        </ItemsControl>
+                                <Rectangle.Resources>
+                                    <ImageBrush x:Key="Arrow_IMG" Stretch="Uniform" ImageSource="/TH_GeneratedData;component/Resources/Carrot_Arrow_Up_01.png" />
+                                </Rectangle.Resources>
+                                <Rectangle.LayoutTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-90"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Rectangle.LayoutTransform>
 
-                    </StackPanel>
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Arrow_IMG}" />
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <EventTrigger RoutedEvent="Rectangle.Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+
+                                                        <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="30" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
+
+                                            <DataTrigger Binding="{Binding DisplayEvents}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+
+                        </StackPanel>
+
+                        <Rectangle Grid.Row="4" Height="1" Fill="#ccc" Margin="0,15,0,0"/>
+                        
+                        <Grid Grid.Row="5">
+
+                            <!--Events List-->
+                            <ItemsControl ItemsSource="{Binding EventButtons}" Margin="0,20">
+                                <ItemsControl.Resources>
+                                    <Style TargetType="th_wpf:CollapseButton">
+                                        <Setter Property="Margin" Value="0,10"/>
+                                    </Style>
+                                </ItemsControl.Resources>
+                            </ItemsControl>
+
+                            <!--No Events Text-->
+                            <TextBlock FontSize="18pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding DisplayEvents}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>             
+                                No Generated Events are configured <LineBreak/>
+                                Click the 'Add Event' button above
+                            </TextBlock>
+
+                        </Grid>
+
+                    </Grid>
 
                 </TabItem>
                 

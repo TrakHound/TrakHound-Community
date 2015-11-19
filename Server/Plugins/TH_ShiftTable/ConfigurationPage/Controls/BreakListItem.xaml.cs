@@ -29,8 +29,10 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
         }
 
         public Page ParentPage;
-        public Page.Shift ParentShift;
-        public Page.Segment ParentSegment;
+        public Shift ParentShift;
+        public Segment ParentSegment;
+
+        #region "Properties"
 
         // Use seperate collections since it was producing weird behavior, one of the comboboxes would be selected sometimes and other not other times
         ObservableCollection<ShiftTime> beginhouritems;
@@ -85,7 +87,14 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
         public static readonly DependencyProperty EndTimeProperty =
             DependencyProperty.Register("EndTime", typeof(ShiftTime), typeof(BreakListItem), new PropertyMetadata(null));
 
+        #endregion
 
+        public delegate void SettingChanged_Handler(string name);
+        public event SettingChanged_Handler SettingChanged;
+
+        #region "Begin Time"
+
+        bool begintimechanged = false;
 
         private void BeginTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -94,8 +103,17 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             {
                 ShiftTime selectedTime = (ShiftTime)combo.SelectedItem;
                 if (ParentSegment != null) ParentSegment.begintime = selectedTime.Copy();
-            } 
+            }
+
+            if (begintimechanged) if (SettingChanged != null) SettingChanged("Break Begin Time");
+            begintimechanged = true;
         }
+
+        #endregion
+
+        #region "End Time"
+
+        bool endtimechanged = false;
 
         private void EndTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -104,8 +122,15 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             {
                 ShiftTime selectedTime = (ShiftTime)combo.SelectedItem;
                 if (ParentSegment != null) ParentSegment.endtime = selectedTime.Copy();
-            } 
+            }
+
+            if (endtimechanged) if (SettingChanged != null) SettingChanged("Break End Time");
+            endtimechanged = true;
         }
+
+        #endregion
+
+        #region "Remove"
 
         public delegate void Clicked_Handler(BreakListItem item);
         public event Clicked_Handler RemoveClicked;
@@ -114,6 +139,8 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
         {
             if (RemoveClicked != null) RemoveClicked(this);
         }
+
+        #endregion
 
     }
 }

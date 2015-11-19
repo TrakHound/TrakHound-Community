@@ -96,7 +96,7 @@
 
                                     <TextBlock Text="Begin Time" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
-                                    <ComboBox Width="150" ItemsSource="{Binding BeginHourItems}" SelectedItem="{Binding BeginTime}" SelectionChanged="BeginTime_SelectionChanged" IsSynchronizedWithCurrentItem="True" IsEditable="True" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                                    <ComboBox Width="150" ItemsSource="{Binding BeginHourItems}" SelectedItem="{Binding BeginTime}" SelectionChanged="BeginTime_SelectionChanged" IsEditable="True" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
                                 </StackPanel>
 
@@ -105,16 +105,13 @@
 
                                     <TextBlock Text="End Time" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
-                                    <ComboBox Width="150" ItemsSource="{Binding EndHourItems}" SelectedItem="{Binding EndTime}" SelectionChanged="EndTime_SelectionChanged" IsSynchronizedWithCurrentItem="True" IsEditable="True" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                                    <ComboBox Width="150" ItemsSource="{Binding EndHourItems}" SelectedItem="{Binding EndTime}" SelectionChanged="EndTime_SelectionChanged" IsEditable="True" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
                                 </StackPanel>
 
                             </StackPanel>
 
                         </Grid>
-
-                        <!--Edit Button-->
-                        <!--<th_wpf:Button_02 Image="/TH_GeneratedData;component/Resources/Edit_02.png" ToolTip="Edit" Margin="5,0" VerticalAlignment="Center" Clicked="EditShiftName_Clicked"/>-->
 
                     </StackPanel>
 
@@ -126,7 +123,6 @@
             </Grid>
 
             
-
             <!--Break Times-->
             <StackPanel Margin="10">
 

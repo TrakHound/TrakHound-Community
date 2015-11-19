@@ -33,6 +33,37 @@ namespace TH_DeviceManager.Controls
 
         public object Parent { get; set; }
 
+        const System.Windows.Threading.DispatcherPriority contextidle = System.Windows.Threading.DispatcherPriority.ContextIdle;
+
+        TH_Configuration.Configuration config;
+        public TH_Configuration.Configuration Config
+        {
+            get { return config; }
+            set
+            {
+                config = value;
+
+                this.Dispatcher.BeginInvoke(new Action<TH_Configuration.Configuration>(SetDeviceConfig), contextidle, new object[] { config });
+            }
+        }
+
+        void SetDeviceConfig(TH_Configuration.Configuration config)
+        {
+            if (config != null)
+            {
+                DeviceEnabled = config.Enabled;
+                enabled_CHK.IsChecked = config.Enabled;
+
+                Shared = config.Shared;
+
+                Description = config.Description.Description;
+                Manufacturer = config.Description.Manufacturer;
+                Model = config.Description.Model;
+                Serial = config.Description.Serial;
+                Id = config.Description.Machine_ID;
+            }
+        }
+
 
         public bool DeviceEnabled
         {

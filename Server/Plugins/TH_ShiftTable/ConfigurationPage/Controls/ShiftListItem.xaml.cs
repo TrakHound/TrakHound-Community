@@ -28,19 +28,10 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             DataContext = this;
         }
 
-
-        //public TH_ShiftTable.ConfigurationPage.Page ParentPage
-        //{
-        //    get { return (TH_ShiftTable.ConfigurationPage.Page)GetValue(ParentPageProperty); }
-        //    set { SetValue(ParentPageProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ParentPageProperty =
-        //    DependencyProperty.Register("ParentPage", typeof(TH_ShiftTable.ConfigurationPage.Page), typeof(ShiftListItem), new PropertyMetadata(null));
-
         public Page ParentPage;
-        public Page.Shift ParentShift;
+        public Shift ParentShift;
 
+        #region "Properties"
 
         public string ShiftName
         {
@@ -71,8 +62,7 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
         public static readonly DependencyProperty EndTimeProperty =
             DependencyProperty.Register("EndTime", typeof(ShiftTime), typeof(ShiftListItem), new PropertyMetadata(null));
 
-
-        // Use seperate collections since it was producing weird behavior, one of the comboboxes would be selected sometimes and other not other times
+        // Use seperate collections since it was producing weird behavior, one of the comboboxes would be selected sometimes and not other times
         ObservableCollection<ShiftTime> beginhouritems;
         public ObservableCollection<ShiftTime> BeginHourItems
         {
@@ -105,11 +95,33 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             }
         }
 
+        #endregion
+
+        public delegate void SettingChanged_Handler(string name);
+        public event SettingChanged_Handler SettingChanged;
+
+        #region "Shift Name"
+
+        bool namechanged = false;
 
         private void shiftname_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (ParentShift != null) ParentShift.name = ((TextBox)sender).Text;
+
+            if (namechanged) if (SettingChanged != null) SettingChanged("Shift Name");
+            namechanged = true;
         }
+
+        private void EditShiftName_Clicked(TH_WPF.Button_04 bt)
+        {
+
+        }
+
+        #endregion
+
+        #region "Begin Time"
+
+        bool begintimechanged = false;
 
         private void BeginTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -118,8 +130,17 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             {
                 ShiftTime selectedTime = (ShiftTime)combo.SelectedItem;
                 if (ParentShift != null) ParentShift.begintime = selectedTime;
-            }          
+            }
+
+            if (begintimechanged) if (SettingChanged != null) SettingChanged("Shift Begin Time");
+            begintimechanged = true;
         }
+
+        #endregion
+
+        #region "End Time"
+
+        bool endtimechanged = false;
 
         private void EndTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -128,8 +149,15 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             {
                 ShiftTime selectedTime = (ShiftTime)combo.SelectedItem;
                 if (ParentShift != null) ParentShift.endtime = selectedTime;
-            }     
+            }
+
+            if (endtimechanged) if (SettingChanged != null) SettingChanged("Shift End Time");
+            endtimechanged = true;
         }
+
+        #endregion
+
+        #region "Remove"
 
         public delegate void Clicked_Handler(ShiftListItem item);
         public event Clicked_Handler RemoveClicked;
@@ -139,11 +167,7 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             if (RemoveClicked != null) RemoveClicked(this);
         }
 
-        private void EditShiftName_Clicked(TH_WPF.Button_04 bt)
-        {
-
-        }
-
+        #endregion
 
         #region "Break Times"
 
@@ -167,7 +191,7 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
         {
             if (ParentShift != null)
             {
-                Page.Segment b = new Page.Segment();
+                Segment b = new Segment();
 
                 ParentShift.Breaks.Add(b);
 
@@ -182,10 +206,18 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
                 bli.EndHourItems = new ObservableCollection<ShiftTime>();
                 foreach (ShiftTime time in EndHourItems) bli.EndHourItems.Add(time.Copy());
 
+                bli.SettingChanged += bli_SettingChanged;
                 bli.RemoveClicked += bli_RemoveClicked;
 
                 BreakItems.Add(bli);
+
+                if (SettingChanged != null) SettingChanged("Break Added");
             }
+        }
+
+        void bli_SettingChanged(string name)
+        {
+            if (SettingChanged != null) SettingChanged(name);
         }
 
         public delegate void BreakClicked_Handler(BreakListItem item);

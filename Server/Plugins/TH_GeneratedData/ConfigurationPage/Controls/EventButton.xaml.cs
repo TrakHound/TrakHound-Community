@@ -31,11 +31,13 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public delegate void SettingChanged_Handler();
         public event SettingChanged_Handler SettingChanged;
 
+        #region "Properties"
+
         public string EventName
         {
             get { return (string)GetValue(EventNameProperty); }
-            set 
-            { 
+            set
+            {
                 SetValue(EventNameProperty, value);
             }
         }
@@ -53,6 +55,28 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public static readonly DependencyProperty EventValuesProperty =
             DependencyProperty.Register("EventValues", typeof(string), typeof(EventButton), new PropertyMetadata(null));
 
+        #endregion
+
+        #region "Event Name"
+
+        private void EventName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox txt = (TextBox)sender;
+
+            if (ParentEvent != null) ParentEvent.name = txt.Text;
+
+            if (txt.IsKeyboardFocused) if (SettingChanged != null) SettingChanged();
+        }
+
+        private void TXT_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) { ((TextBox)sender).SelectAll(); }
+
+        private void TXT_GotFocus(object sender, RoutedEventArgs e) { ((TextBox)sender).SelectAll(); }
+
+        private void TXT_GotMouseCapture(object sender, MouseEventArgs e) { ((TextBox)sender).SelectAll(); }
+
+        #endregion
+
+        #region "Remove"
 
         public delegate void Clicked_Handler(EventButton bt);
         public event Clicked_Handler RemoveClicked;
@@ -62,26 +86,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             if (RemoveClicked != null) RemoveClicked(this);
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (ParentEvent != null) ParentEvent.name = ((TextBox)sender).Text;
-        }
+        #endregion
 
-        private void Edit_Clicked(TH_WPF.Button_02 bt)
-        {
-
-            FocusManager.SetFocusedElement(eventname_TXT, eventname_TXT);
-
-            //Keyboard.Focus(eventname_TXT);
-
-            ////eventname_TXT.Focus();
-            //eventname_TXT.SelectAll();
-        }
-
-        private void eventname_TXT_Select(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            eventname_TXT.SelectAll();
-        }
-  
     }
 }
