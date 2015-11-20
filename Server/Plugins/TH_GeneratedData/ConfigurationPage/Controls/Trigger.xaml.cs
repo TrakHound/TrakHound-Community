@@ -38,9 +38,9 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         }
 
        
-        public TH_GeneratedData.ConfigurationPage.Page.Event ParentEvent;
-        public TH_GeneratedData.ConfigurationPage.Page.Value ParentValue;
-        public TH_GeneratedData.ConfigurationPage.Page.Trigger ParentTrigger;
+        public Page.Event ParentEvent;
+        public Page.Value ParentValue;
+        public Page.Trigger ParentTrigger;
 
 
         public TH_GeneratedData.ConfigurationPage.Page ParentPage

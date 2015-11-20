@@ -7,3 +7,7 @@ C:\TrakHound\Server\Plugins\TH_Cycles\LICENSE.txt
 C:\TrakHound\Plugins\Server\Cycles\LICENSE.txt
 C:\TrakHound\Plugins\Server\Cycles\TH_Cycles.dll
 C:\TrakHound\Plugins\Server\Cycles\TH_Cycles.pdb
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\ConfigurationPage\Page.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\ConfigurationPage\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.g.resources

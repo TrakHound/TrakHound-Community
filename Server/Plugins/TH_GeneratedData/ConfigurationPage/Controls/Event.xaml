@@ -71,6 +71,24 @@
             <!--Default Value-->
             <ContentControl Content="{Binding DefaultValue}" HorizontalAlignment="Left" Margin="0,5"/>
             
+            <!--Separator-->
+            <Rectangle Height="1" Fill="#ccc" Margin="0,20"/>
+            
+            <!--Capture Links-->
+            <TextBlock Text="Capture Items" FontSize="8pt" Foreground="#aaa" Margin="10,5"/>
+
+            <!--Values-->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding CaptureItems}">
+                <ItemsControl.Resources>
+                    <Style TargetType="controls:CaptureItem">
+                        <Setter Property="Margin" Value="0,5"/>
+                    </Style>
+                </ItemsControl.Resources>
+            </ItemsControl>
+
+            <!--Add Capture Item Button-->
+            <th_wpf:Button_04 Height="30" Width="30" Image="/TH_GeneratedData;component/Resources/Add_01.png" ToolTip="Add Capture Item" Margin="0,20" Clicked="AddCaptureItem_Clicked" HorizontalAlignment="Left"/>
+
         </StackPanel>
      
     </Grid>

@@ -28,6 +28,17 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DataContext = this;
         }
 
+
+        public Page ParentPage
+        {
+            get { return (Page)GetValue(ParentPageProperty); }
+            set { SetValue(ParentPageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ParentPageProperty =
+            DependencyProperty.Register("ParentPage", typeof(Page), typeof(Event), new PropertyMetadata(null));
+        
+
         public TH_GeneratedData.ConfigurationPage.Page.Event ParentEvent;
 
         ObservableCollection<Value> values;
@@ -94,6 +105,36 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         private void TXT_GotMouseCapture(object sender, MouseEventArgs e) { if (oldFocus != sender) ((TextBox)sender).SelectAll(); oldFocus = sender; }
 
         private void TXT_LostFocus(object sender, RoutedEventArgs e) { oldFocus = null; }
+
+
+
+
+        #region "Capture Items"
+
+        ObservableCollection<CaptureItem> captureitems;
+        public ObservableCollection<CaptureItem> CaptureItems
+        {
+            get
+            {
+                if (captureitems == null)
+                    captureitems = new ObservableCollection<CaptureItem>();
+                return captureitems;
+            }
+
+            set
+            {
+                captureitems = value;
+            }
+        }
+
+        #endregion
+
+        public event Clicked_Handler AddCaptureItemClicked;
+
+        private void AddCaptureItem_Clicked(TH_WPF.Button_04 bt)
+        {
+            if (AddCaptureItemClicked != null) AddCaptureItemClicked(this);
+        }
 
     }
 }

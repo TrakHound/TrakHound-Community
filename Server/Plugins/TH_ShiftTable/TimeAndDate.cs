@@ -150,6 +150,8 @@ namespace TH_ShiftTable
                 result.minute = minute;
                 result.second = second;
 
+                result.dayOffset = dayOffset;
+
                 return result;
             }
             else return null;

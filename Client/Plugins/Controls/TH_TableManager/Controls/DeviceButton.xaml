@@ -16,20 +16,20 @@
             
             <StackPanel>
 
-                <TextBlock Text="{Binding Description}" FontSize="12pt" Foreground="#aaffffff" Margin="0,0,0,5"/>
+                <TextBlock Text="{Binding Description}" FontSize="12pt" Foreground="#fff" Margin="0,0,0,5"/>
 
-                <TextBlock Text="{Binding Manufacturer}" FontSize="8pt" Foreground="#66ffffff" />
+                <TextBlock Text="{Binding Manufacturer}" FontSize="8pt" Foreground="#aaffffff" />
 
-                <TextBlock Text="{Binding Model}" FontSize="8pt" Foreground="#66ffffff" />
+                <TextBlock Text="{Binding Model}" FontSize="8pt" Foreground="#aaffffff" />
 
-                <TextBlock Text="{Binding Serial}" FontSize="8pt" Foreground="#66ffffff" />
+                <TextBlock Text="{Binding Serial}" FontSize="8pt" Foreground="#aaffffff" />
 
             </StackPanel>
                 
         </Grid>
         
         <!--Device Id-->
-        <TextBlock Grid.Column="1" Text="{Binding Id}" FontSize="20pt" Foreground="#33ffffff" VerticalAlignment="Bottom" Margin="5,0,0,0" />
+        <TextBlock Grid.Column="1" Text="{Binding Id}" FontSize="20pt" Foreground="#66ffffff" VerticalAlignment="Bottom" Margin="5,0,0,0" />
 
     </Grid>
     

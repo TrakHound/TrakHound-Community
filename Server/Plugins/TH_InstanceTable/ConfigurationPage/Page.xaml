@@ -25,20 +25,20 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Instance Table" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
+        <TextBlock Text="Instance Table" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
      
         <StackPanel Grid.Row="1" Width="1000" HorizontalAlignment="Left">
 
-            <TextBlock FontSize="10pt" Foreground="#888" Margin="10,10,10,20" TextWrapping="Wrap">
+            <TextBlock FontSize="10pt" Foreground="#888" Margin="0,10,10,20" TextWrapping="Wrap">
                 The Instance Table is used to record all of the variables from the Agent at every Timestamp and/or Sequence captured.
                 This simplifies the process of interpreting the status of the device at any captured Timestamp.
             </TextBlock>
 
-            <TextBlock FontSize="12pt" Foreground="#333" Margin="20,0" Text="Example of Table Data :"/>
+            <TextBlock FontSize="12pt" Foreground="#333" Margin="0,0" Text="Example of Table Data :"/>
 
             <DataGrid ItemsSource="{Binding ExampleTableItems}"
                 Background="{x:Null}"
-                Margin="10"
+                Margin="0,10"
                 HeadersVisibility="Column"
                 BorderBrush="#330080ff" BorderThickness="1"
                 IsReadOnly="True" CanUserReorderColumns="False"
@@ -105,7 +105,7 @@
 
         </StackPanel>
 
-        <Grid Grid.Row="2" Margin="10">
+        <Grid Grid.Row="2" Margin="0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="auto"/>
@@ -115,9 +115,9 @@
             <!--Upload to Database-->
             <StackPanel Grid.Column="0">
 
-                <TextBlock Text="Upload to Database" FontSize="12pt" Foreground="#333" Margin="10"/>
+                <TextBlock Text="Upload to Database" FontSize="12pt" Foreground="#333" Margin="0,10"/>
                 
-                <Border CornerRadius="2" BorderThickness="1" BorderBrush="#aaa">
+                <Border CornerRadius="2" BorderThickness="1" BorderBrush="#ccc">
                     
                     <StackPanel Margin="20">
 
@@ -347,7 +347,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Data Items to Initiate New Row" FontSize="12pt" Foreground="#333" Margin="10,10"/>
+                        <TextBlock Text="Data Items to Initiate New Row" FontSize="12pt" Foreground="#333" Margin="0,10,10,10"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -409,7 +409,7 @@
 
                 </StackPanel>
                 
-                <Border Grid.Row="1" CornerRadius="2" BorderThickness="1" BorderBrush="#aaa">
+                <Border Grid.Row="1" CornerRadius="2" BorderThickness="1" BorderBrush="#ccc">
 
                     <Grid Margin="20">
 

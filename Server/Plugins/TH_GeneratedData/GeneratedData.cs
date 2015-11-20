@@ -403,6 +403,7 @@ namespace TH_GeneratedData
                     {
                         CaptureItem i = new CaptureItem();
                         i.id = item.id;
+                        i.name = item.name;
                         i.link = item.link;
 
                         InstanceTable.InstanceData.Value instanceValue = instanceData.values.ToList().Find(x => x.id.ToLower() == item.link.ToLower());
@@ -476,6 +477,7 @@ namespace TH_GeneratedData
             public class CaptureItem
             {
                 public string id {get; set;}
+                public string name { get; set; }
                 public string link { get; set; }
                 public string value { get; set; }
             }
@@ -693,6 +695,7 @@ namespace TH_GeneratedData
                                                                 {
                                                                     GeneratedEvents.CaptureItem item = new GeneratedEvents.CaptureItem();
                                                                     item.id = itemNode.Attributes["id"].Value;
+                                                                    item.name = itemNode.Attributes["name"].Value;
                                                                     item.link = itemNode.Attributes["link"].Value;
                                                                     Event.CaptureItems.Add(item);
                                                                 }
@@ -893,7 +896,7 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(new ColumnDefinition(item.id, DataType.LargeText));
+            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(new ColumnDefinition(item.name, DataType.LargeText));
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
@@ -920,7 +923,7 @@ namespace TH_GeneratedData
                     GeneratedEvents.Event e = gdc.generatedEvents.events.Find(x => x.Name.ToLower() == eventName.ToLower());
                     if (e != null)
                     {
-                        foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(item.id);
+                        foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(item.name);
                     }
                 }
 

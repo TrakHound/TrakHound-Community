@@ -26,7 +26,6 @@ namespace TH_MySQL.ConfigurationPage
             DataContext = this;
         }
 
-
         public string DatabaseName
         {
             get { return (string)GetValue(DatabaseNameProperty); }

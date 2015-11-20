@@ -21,6 +21,11 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Width="300">
+            <StackPanel.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="0,5"/>
+                </Style>
+            </StackPanel.Resources>
 
             <!--Database Name-->
             <StackPanel>
@@ -722,6 +727,11 @@
             </StackPanel>
             
             <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="0,5"/>
+                    </Style>
+                </StackPanel.Resources>
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="IsEnabled" Value="false"/>

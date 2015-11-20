@@ -21,37 +21,39 @@
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="#22ffffff"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#22ffffff"/>
+                                    <ColorAnimation Duration="0:0:0.05" Storyboard.TargetProperty="Background.Color" To="#22ffffff"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
                         <DataTrigger.ExitActions>
                             <BeginStoryboard>
                                 <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
+                                    <ColorAnimation Duration="0:0:0.05" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="#33ffffff"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#33ffffff"/>
+                                    <ColorAnimation Duration="0:0:0.05" Storyboard.TargetProperty="Background.Color" To="#33ffffff"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
                         <DataTrigger.ExitActions>
                             <BeginStoryboard>
                                 <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
+                                    <ColorAnimation Duration="0:0:0.05" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
 
                 </Style.Triggers>
@@ -203,13 +205,13 @@
 
 
             <Style x:Key="Text_Normal" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="#aaffffff"/>
+                <Setter Property="Foreground" Value="#fff"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                    <!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
@@ -224,7 +226,7 @@
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.ExitActions>
-                    </DataTrigger>
+                    </DataTrigger>-->
 
                 </Style.Triggers>
             </Style>

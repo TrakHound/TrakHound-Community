@@ -33,6 +33,8 @@ namespace TrakHound_Client.Developer_Console
             DataContext = this;
         }
 
+        const int MaxLines = 500;
+
         public delegate void ShownChanged_Handler(bool shown);
         public event ShownChanged_Handler ShownChanged;
 
@@ -55,7 +57,7 @@ namespace TrakHound_Client.Developer_Console
 
         public class Console_Item
         {
-            public int Row { get; set; }
+            public Int64 Row { get; set; }
             public DateTime Timestamp { get; set; }
             public string Text { get; set; }
         }
@@ -71,19 +73,32 @@ namespace TrakHound_Client.Developer_Console
             set { console_output = value; }
         }
 
+        Int64 rowIndex = 0;
+
         public void AddLine(string line)
         {
             Console_Item ci = new Console_Item();
-            ci.Row = Console_Output.Count;
+            ci.Row = rowIndex;
             ci.Timestamp = DateTime.Now;
             ci.Text = line;
+
+            rowIndex++;
 
             this.Dispatcher.BeginInvoke(new Action<Console_Item>(AddLine_GUI), new object[] { ci });
         }
 
+
+
         void AddLine_GUI(Console_Item ci)
         {
             Console_Output.Add(ci);
+
+            if (Console_Output.Count > MaxLines)
+            {
+                int first = Console_Output.Count - MaxLines;
+
+                for (int x = 0; x < first; x++) Console_Output.RemoveAt(0);
+            }  
         }
         
         private void Minimize_ToolBarItem_Clicked()

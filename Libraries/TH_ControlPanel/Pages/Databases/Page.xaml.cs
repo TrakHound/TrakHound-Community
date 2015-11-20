@@ -285,6 +285,7 @@ namespace TH_DeviceManager.Pages.Databases
                         Controls.DatabaseItemContainer item = new Controls.DatabaseItemContainer();
                         item.prefix = address;
                         item.ItemContent = configButton;
+                        item.Clicked += item_Clicked;
                         item.RemoveClicked += item_RemoveClicked;
 
                         CollapseButton bt = new CollapseButton();
@@ -299,6 +300,11 @@ namespace TH_DeviceManager.Pages.Databases
                     }
                 }
             }
+        }
+
+        void item_Clicked(Controls.DatabaseItemContainer item)
+        {
+            if (item.collapseButton != null) item.collapseButton.IsExpanded = !item.collapseButton.IsExpanded;
         }
 
         List<string> GetAddressesForDatabase(string prefix, DataTable dt)

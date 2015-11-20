@@ -11,15 +11,18 @@
 
         <ResourceDictionary Source="Styles/ComboBox1.Xaml" />
 
+        <ResourceDictionary Source="Styles/ComboBox3.Xaml" />
+
         <ResourceDictionary Source="Styles/RadioButtons.Xaml" />
 
         <ResourceDictionary Source="Styles/Text.Xaml" />
         
         <ResourceDictionary Source="Styles/Borders.Xaml" />
 
+        <ResourceDictionary Source="Styles/ScrollBars.Xaml" />
+
         <ResourceDictionary Source="Styles/Windows.Xaml" />
 
-    </ResourceDictionary.MergedDictionaries>
-    
+    </ResourceDictionary.MergedDictionaries> 
     
 </ResourceDictionary>

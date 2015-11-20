@@ -27,3 +27,5 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_Gener
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData.dll
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData.pdb
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\CaptureItem.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\CaptureItem.g.cs

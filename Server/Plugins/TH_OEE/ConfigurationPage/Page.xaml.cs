@@ -17,6 +17,8 @@ using System.Data;
 using System.Collections.ObjectModel;
 
 using TH_PlugIns_Server;
+using TH_Configuration;
+using TH_Configuration.User;
 
 namespace TH_OEE.ConfigurationPage
 {
@@ -39,6 +41,8 @@ namespace TH_OEE.ConfigurationPage
 
         public void LoadConfiguration(DataTable dt)
         {
+            configurationTable = dt;
+
             GeneratedEvents.Clear();
 
             genEvents = GetGeneratedEvents(dt);
@@ -47,17 +51,178 @@ namespace TH_OEE.ConfigurationPage
             {
                 foreach (Event e in genEvents)
                 {
-                    GeneratedEvents.Add(TH_Global.Formatting.UppercaseFirst(e.name));
+                    GeneratedEvents.Add(TH_Global.Formatting.UppercaseFirst(e.name.Replace('_',' ')));
                 }
             }
+
+            LoadOEEData(dt);
         }
 
         public void SaveConfiguration(DataTable dt)
         {
+            Table_Functions.UpdateTableValue(SelectedAvailabilityEvent.ToString(), "/OEE/Availability/Event", dt);
 
+            Table_Functions.UpdateTableValue(SelectedAvailabilityValue.ToString(), "/OEE/Availability/Value", dt);
+
+            configurationTable = dt;
         }
 
-        List<Event> genEvents;
+        DataTable configurationTable;
+
+
+        void LoadOEEData(DataTable dt)
+        {
+            LoadAvailabilityData(dt);
+        }
+
+        #region "Availability"
+
+        void LoadAvailabilityData(DataTable dt)
+        {
+            string address = "/OEE/Availability/";
+
+            string filter = "address LIKE '" + address + "*'";
+            DataView dv = dt.AsDataView();
+            dv.RowFilter = filter;
+            DataTable temp_dt = dv.ToTable();
+            temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+
+            // Get Events
+            foreach (DataRow row in temp_dt.Rows)
+            {
+                string node = Table_Functions.GetLastNode(row);
+                switch (node.ToLower())
+                {
+                    case "event": SelectedAvailabilityEvent = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_',' ')); break;
+
+                    case "value": SelectedAvailabilityValue = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
+                }
+            }
+        }
+
+        ObservableCollection<object> availabilityeventvalues;
+        public ObservableCollection<object> AvailabilityEventValues
+        {
+            get
+            {
+                if (availabilityeventvalues == null)
+                    availabilityeventvalues = new ObservableCollection<object>();
+                return availabilityeventvalues;
+            }
+
+            set
+            {
+                availabilityeventvalues = value;
+            }
+        }
+
+
+        public object SelectedAvailabilityEvent
+        {
+            get { return (object)GetValue(SelectedAvailabilityEventProperty); }
+            set { SetValue(SelectedAvailabilityEventProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedAvailabilityEventProperty =
+            DependencyProperty.Register("SelectedAvailabilityEvent", typeof(object), typeof(Page), new PropertyMetadata(null));
+
+
+        public object SelectedAvailabilityValue
+        {
+            get { return (object)GetValue(SelectedAvailabilityValueProperty); }
+            set { SetValue(SelectedAvailabilityValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedAvailabilityValueProperty =
+            DependencyProperty.Register("SelectedAvailabilityValue", typeof(object), typeof(Page), new PropertyMetadata(null));
+
+
+        private void AvailabilityEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string selectedItem = null;
+
+            ComboBox cmbox = (ComboBox)sender;
+            if (cmbox.SelectedItem != null) selectedItem = cmbox.SelectedItem.ToString();
+
+            if (selectedItem != null)
+            {
+                AvailabilityEventValues.Clear();
+
+                if (genEvents != null)
+                {
+                    Event ev = genEvents.Find(x => TH_Global.Formatting.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == selectedItem.ToLower());
+                    if (ev != null)
+                    {
+                        if (ev.values != null)
+                        {
+                            foreach (Value v in ev.values)
+                            {
+                                if (v.result != null)
+                                {
+                                    AvailabilityEventValues.Add(TH_Global.Formatting.UppercaseFirst(v.result.value));
+                                }
+                            }
+                        }
+
+                        if (ev.Default != null)
+                        {
+                            if (ev.Default.value != null)
+                            {
+                                AvailabilityEventValues.Add(TH_Global.Formatting.UppercaseFirst(ev.Default.value));
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (cmbox.IsKeyboardFocused || cmbox.IsMouseCaptured) if (SettingChanged != null) SettingChanged("Availability Event", null, null);
+        }
+
+        private void AvailabilityValue_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmbox = (ComboBox)sender;
+
+            if (cmbox.IsKeyboardFocused || cmbox.IsMouseCaptured) if (SettingChanged != null) SettingChanged("Availability Value", null, null);
+        }
+
+        #endregion
+
+        #region "Generated Events"
+
+        #region "Sub Classes"
+
+        public class Event
+        {
+            public Event() { values = new List<Value>(); }
+
+            public List<Value> values { get; set; }
+
+            public int id { get; set; }
+            public string name { get; set; }
+
+            public Result Default { get; set; }
+
+            public string description { get; set; }
+        }
+
+        public class Value
+        {
+            public Value() { triggers = new List<Trigger>(); }
+
+            public List<Trigger> triggers { get; set; }
+
+            public int id { get; set; }
+
+            public Result result { get; set; }
+        }
+
+        public class Result
+        {
+            public int numval { get; set; }
+            public string value { get; set; }
+        }
+
+        #endregion
 
         ObservableCollection<object> generatedevents;
         public ObservableCollection<object> GeneratedEvents
@@ -75,31 +240,7 @@ namespace TH_OEE.ConfigurationPage
             }
         }
 
-        ObservableCollection<object> eventvalues;
-        public ObservableCollection<object> EventValues
-        {
-            get
-            {
-                if (eventvalues == null)
-                    eventvalues = new ObservableCollection<object>();
-                return eventvalues;
-            }
-
-            set
-            {
-                eventvalues = value;
-            }
-        }
-
-
-
-
-
-
-
-
-
-
+        List<Event> genEvents;
 
         List<Event> GetGeneratedEvents(DataTable dt)
         {
@@ -164,7 +305,7 @@ namespace TH_OEE.ConfigurationPage
 
             string adr = row["address"].ToString();
 
-            string lastNode = GetLastNode(row);
+            string lastNode = Table_Functions.GetLastNode(row);
 
             if (lastNode != null)
             {
@@ -176,7 +317,7 @@ namespace TH_OEE.ConfigurationPage
 
                     if (separatorIndex > slashIndex)
                     {
-                        string name = GetAttribute("name", row);
+                        string name = Table_Functions.GetAttribute("name", row);
                         string strId = adr.Substring(separatorIndex + 2, 2);
 
                         int id;
@@ -188,7 +329,7 @@ namespace TH_OEE.ConfigurationPage
                                 result = new Event();
                                 result.id = id;
                                 result.name = name;
-                                result.description = GetAttribute("description", row);
+                                result.description = Table_Functions.GetAttribute("description", row);
                             }
                         }
                     }
@@ -198,96 +339,19 @@ namespace TH_OEE.ConfigurationPage
             return result;
         }
 
-        void GetDefaultFromRow(Event e, DataRow row)
-        {
-            string adr = row["address"].ToString();
-
-            if (adr.Contains("Default"))
-            {
-                string n = GetAttribute("numval", row);
-                if (n != null)
-                {
-                    int numval;
-                    if (int.TryParse(n, out numval))
-                    {
-                        Result r = new Result();
-                        r.value = row["value"].ToString().Replace('_', ' '); ;
-                        r.numval = numval;
-                        e.Default = r;
-                    }
-                }
-            }
-        }
-
-        void GetResultFromRow(Value v, DataRow row)
-        {
-            string adr = row["address"].ToString();
-
-            if (adr.Contains("Result"))
-            {
-                string n = GetAttribute("numval", row);
-                if (n != null)
-                {
-                    int numval;
-                    if (int.TryParse(n, out numval))
-                    {
-                        Result r = new Result();
-                        r.value = row["value"].ToString();
-                        r.numval = numval;
-                        v.result = r;
-                    }
-                }
-            }
-        }
-
-
-
-
-
-        string GetLastNode(DataRow row)
-        {
-            string result = null;
-
-            string adr = row["address"].ToString();
-
-            if (adr.Contains('/'))
-            {
-                string s = adr;
-
-                // Remove Last forward slash
-                if (s[s.Length - 1] == '/') s = s.Substring(0, s.Length - 1);
-
-                // Get index of last forward slash
-                int slashIndex = s.LastIndexOf('/') + 1;
-                if (slashIndex < s.Length) s = s.Substring(slashIndex);
-
-                // Remove Id
-                if (s.Contains("||"))
-                {
-                    int separatorIndex = s.LastIndexOf("||");
-                    s = s.Substring(0, separatorIndex);
-                }
-
-                result = s;
-            }
-
-            return result;
-        }
-
-
         Value GetValueFromRow(Event e, DataRow row)
         {
             Value result = null;
 
             string adr = row["address"].ToString();
 
-            string lastNode = GetLastNode(row);
+            string lastNode = Table_Functions.GetLastNode(row);
 
             if (lastNode != null)
             {
                 if (lastNode.ToLower() == "value")
                 {
-                    string strId = GetAttribute("id", row);
+                    string strId = Table_Functions.GetAttribute("id", row);
                     if (strId != null)
                     {
                         int id = -1;
@@ -308,98 +372,49 @@ namespace TH_OEE.ConfigurationPage
             return result;
         }
 
-
-
-        string GetAttribute(string name, DataRow row)
+        void GetDefaultFromRow(Event e, DataRow row)
         {
-            string line = row["attributes"].ToString();
+            string adr = row["address"].ToString();
 
-            if (line.Contains(name))
+            if (adr.Contains("Default"))
             {
-                int a = line.IndexOf(name);
-                if (a >= 0)
+                string n = Table_Functions.GetAttribute("numval", row);
+                if (n != null)
                 {
-                    int b = line.IndexOf("||", a) + 2;
-                    int c = line.IndexOf(";", a);
-
-                    if (b >= 0 && (c - b) > 0)
+                    int numval;
+                    if (int.TryParse(n, out numval))
                     {
-                        return line.Substring(b, c - b);
+                        Result r = new Result();
+                        r.value = row["value"].ToString().Replace('_', ' '); ;
+                        r.numval = numval;
+                        e.Default = r;
                     }
                 }
             }
-
-            return null;
         }
 
-
-
-        private void AvailabilityEvent_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void GetResultFromRow(Value v, DataRow row)
         {
-            string selectedItem = null;
+            string adr = row["address"].ToString();
 
-            ComboBox cmbox = (ComboBox)sender;
-            if (cmbox.SelectedItem != null) selectedItem = cmbox.SelectedItem.ToString();
-
-            if (selectedItem != null)
+            if (adr.Contains("Result"))
             {
-                EventValues.Clear();
-
-                if (genEvents != null)
+                string n = Table_Functions.GetAttribute("numval", row);
+                if (n != null)
                 {
-                    Event ev = genEvents.Find(x => x.name.ToLower() == selectedItem.ToLower());
-                    if (ev != null)
+                    int numval;
+                    if (int.TryParse(n, out numval))
                     {
-                        if (ev.values != null)
-                        {
-                            foreach (Value v in ev.values)
-                            {
-                                if (v.result != null)
-                                {
-                                    EventValues.Add(TH_Global.Formatting.UppercaseFirst(v.result.value));
-                                }
-                            }
-                        }
+                        Result r = new Result();
+                        r.value = row["value"].ToString();
+                        r.numval = numval;
+                        v.result = r;
                     }
                 }
-            }     
+            }
         }
 
-        private void AvailabilityValue_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-
-        public class Event
-        {
-            public Event() { values = new List<Value>(); }
-
-            public List<Value> values { get; set; }
-
-            public int id { get; set; }
-            public string name { get; set; }
-
-            public Result Default { get; set; }
-
-            public string description { get; set; }
-        }
-
-        public class Value
-        {
-            public Value() { triggers = new List<Trigger>(); }
-
-            public List<Trigger> triggers { get; set; }
-
-            public int id { get; set; }
-
-            public Result result { get; set; }
-        }
-
-        public class Result
-        {
-            public int numval { get; set; }
-            public string value { get; set; }
-        }
+        #endregion
+ 
     }
 }

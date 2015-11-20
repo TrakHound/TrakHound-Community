@@ -217,6 +217,22 @@ namespace TH_GeneratedData.ConfigurationPage
             {
                 this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(SnapshotItem_UpdateCollectedLink), priority, new object[] { item });
             }
+
+            foreach (Controls.Event ev in events)
+            {
+                foreach (Controls.Value v in ev.Values)
+                {
+                    foreach (Controls.Trigger t in v.Triggers)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { t });
+                    } 
+                }
+
+                foreach (Controls.CaptureItem ci in ev.CaptureItems)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<Controls.CaptureItem>(CaptureItem_UpdateCollectedLink), priority, new object[] { ci });
+                }
+            }
         }
 
         void probe_ProbeError(Probe.ErrorData errorData)
@@ -564,6 +580,8 @@ namespace TH_GeneratedData.ConfigurationPage
 
             foreach (Value v in e.values) SaveValue(v, e, dt);
 
+            foreach (CaptureItem ci in e.captureItems) SaveCaptureItems(ci, e, dt);
+
             if (e.Default != null)
             {
                 string addr = adr + "/Default";
@@ -640,21 +658,58 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 t.id = id;
 
-                //string prefix = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
-                //prefix += "/Value||" + v.id.ToString("00");
-                //prefix += "/Triggers";
-                //prefix += "/Trigger||" + t.id.ToString("00");
-
                 // Save Root
                 string attr = "";
                 attr += "id||" + t.id.ToString("00") + ";";
-                attr += "link||" + t.link + ";";
+
+                string link = t.link;
+                List<CollectedItem> linkitems = CollectedItems.ToList();
+                CollectedItem dataitem = linkitems.Find(x => x.display == link);
+                if (dataitem != null) link = dataitem.id;
+
+                attr += "link||" + link + ";";
+
+
                 attr += "value||" + t.value + ";";
 
 
 
                 Table_Functions.UpdateTableValue(null, attr, adr, dt);
             }
+        }
+
+        void SaveCaptureItems(CaptureItem ci, Event e, DataTable dt)
+        {
+            int id = 0;
+            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Capture/Item||";
+            string test = adr + id.ToString("00");
+
+            // Reassign Id (to keep everything in sequence)
+            if (configurationTable != null)
+            {
+                while (Table_Functions.GetTableValue(test, dt) != null)
+                {
+                    id += 1;
+                    test = adr + id.ToString("00");
+                }
+            }
+
+            adr = test;
+
+            ci.id = id;
+
+            // Save Root
+            string attr = "";
+            attr += "id||" + ci.id.ToString("00") + ";";
+            attr += "name||" + ci.name + ";";
+
+            string link = ci.link;
+            List<CollectedItem> linkitems = CollectedItems.ToList();
+            CollectedItem dataitem = linkitems.Find(x => x.display == link);
+            if (dataitem != null) link = dataitem.id;
+
+            attr += "link||" + link;
+            Table_Functions.UpdateTableValue(null, attr, adr, dt);
         }
 
         #endregion
@@ -695,6 +750,10 @@ namespace TH_GeneratedData.ConfigurationPage
                     if (v != null) e.values.Add(v);
 
                     GetDefaultFromRow(e, row);
+
+                    // Get Capture Items
+                    CaptureItem ci = GetCaptureItemFromRow(e, row);
+                    if (ci != null) e.captureItems.Add(ci);
                 }
 
                 foreach (Value v in e.values)
@@ -889,6 +948,32 @@ namespace TH_GeneratedData.ConfigurationPage
             return result;
         }
 
+        CaptureItem GetCaptureItemFromRow(Event e, DataRow row)
+        {
+            CaptureItem result = null;
+
+            string adr = row["address"].ToString();
+
+            if (adr.Contains("Capture"))
+            {
+                string node = Table_Functions.GetLastNode(row);
+                if (node.ToLower() == "item")
+                {
+                    string strId = Table_Functions.GetAttribute("id", row);
+                    int id;
+                    if (int.TryParse(strId, out id))
+                    {
+                        result = new CaptureItem();
+                        result.id = id;
+                        result.name = Table_Functions.GetAttribute("name", row);
+                        result.link = Table_Functions.GetAttribute("link", row);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         #region "Controls"
 
         void CreateGeneratedEvents(List<Event> genEvents)
@@ -939,17 +1024,25 @@ namespace TH_GeneratedData.ConfigurationPage
         Controls.Event CreateEvent(Event e)
         {
             Controls.Event result = new Controls.Event();
+            result.ParentPage = this;
             result.ParentEvent = e;
 
             result.Description = e.description;
 
             result.SettingChanged += Event_SettingChanged;
             result.AddValueClicked += Event_AddValueClicked;
+            result.AddCaptureItemClicked += Event_AddCaptureItemClicked;
 
             foreach (Value v in e.values)
             {
                 Controls.Value val = CreateValue(v, e);
                 result.Values.Add(val);
+            }
+
+            foreach (CaptureItem ci in e.captureItems)
+            {
+                Controls.CaptureItem cap = CreateCaptureItem(ci, e);
+                result.CaptureItems.Add(cap);
             }
 
             // Default
@@ -960,6 +1053,20 @@ namespace TH_GeneratedData.ConfigurationPage
             result.DefaultValue = def;
 
             return result;
+        }
+
+        void Event_AddCaptureItemClicked(Controls.Event e)
+        {
+            CaptureItem ci = new CaptureItem();
+
+            if (e.ParentEvent != null)
+            {
+                Controls.CaptureItem item = CreateCaptureItem(ci, e.ParentEvent);
+                e.ParentEvent.captureItems.Add(ci);
+                e.CaptureItems.Add(item);
+            }
+
+            if (SettingChanged != null) SettingChanged(null, null, null);
         }
 
         void def_SettingChanged()
@@ -1122,6 +1229,61 @@ namespace TH_GeneratedData.ConfigurationPage
             }
         }
 
+        void Trigger_UpdateCollectedLink(Controls.Trigger item)
+        {
+            Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.id == item.link_COMBO.Text);
+            if (ci != null) item.link_COMBO.Text = ci.display;
+        }
+
+        #endregion
+
+        #region "Capture Item"
+
+        Controls.CaptureItem CreateCaptureItem(CaptureItem ci, Event e)
+        {
+            Controls.CaptureItem result = new Controls.CaptureItem();
+
+            result.ParentPage = this;
+            result.ParentEvent = e;
+            result.ParentCaptureItem = ci;
+
+            result.SettingChanged += CaptureItem_SettingChanged;
+            result.RemoveClicked += CaptureItem_RemoveClicked;
+
+            result.CaptureName = ci.name;
+
+            result.link_COMBO.Text = ci.link;
+
+            return result;
+        }
+
+        void CaptureItem_SettingChanged()
+        {
+            ChangeSetting(null, null, null);
+        }
+
+        void CaptureItem_RemoveClicked(Controls.CaptureItem item)
+        {
+            if (item.ParentEvent != null)
+            {
+                item.ParentEvent.captureItems.Remove(item.ParentCaptureItem);
+
+                Controls.Event e = events.Find(x => x.ParentEvent == item.ParentEvent);
+                if (e != null)
+                {
+                    if (e.CaptureItems.Contains(item)) e.CaptureItems.Remove(item);
+                }
+            }
+
+            if (SettingChanged != null) SettingChanged(null, null, null);
+        }
+
+        void CaptureItem_UpdateCollectedLink(Controls.CaptureItem item)
+        {
+            Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.id == item.link_COMBO.Text);
+            if (ci != null) item.link_COMBO.Text = ci.display;
+        }
+
         #endregion
 
         #endregion
@@ -1183,9 +1345,11 @@ namespace TH_GeneratedData.ConfigurationPage
 
         public class Event
         {
-            public Event() { values = new List<Value>(); }
+            public Event() { values = new List<Value>(); captureItems = new List<CaptureItem>(); }
 
             public List<Value> values { get; set; }
+
+            public List<CaptureItem> captureItems { get; set; }
 
             public int id { get; set; }
             public string name { get; set; }
@@ -1225,6 +1389,13 @@ namespace TH_GeneratedData.ConfigurationPage
         {
             public int numval { get; set; }
             public string value { get; set; }         
+        }
+
+        public class CaptureItem
+        {
+            public int id { get; set; }
+            public string name { get; set; }
+            public string link { get; set; }
         }
 
         #endregion

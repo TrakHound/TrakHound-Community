@@ -43,7 +43,10 @@ namespace TH_DeviceManager.Pages.Databases.Controls
             set { SetValue(ItemContentProperty, value); }
         }
 
+
+
         public delegate void Clicked_Handler(DatabaseItemContainer item);
+        public event Clicked_Handler Clicked;
         public event Clicked_Handler RemoveClicked;
 
 
@@ -53,6 +56,11 @@ namespace TH_DeviceManager.Pages.Databases.Controls
         private void Remove_Clicked(Button_02 bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Clicked != null) Clicked(this);
         }
 
     }
