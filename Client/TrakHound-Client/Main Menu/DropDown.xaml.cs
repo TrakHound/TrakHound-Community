@@ -20,6 +20,8 @@ using System.Windows.Shapes;
 
 using System.Collections.ObjectModel;
 
+using TH_UserManagement;
+
 namespace TrakHound_Client.Main_Menu
 {
     /// <summary>
@@ -197,7 +199,7 @@ namespace TrakHound_Client.Main_Menu
             if (mw != null) mw.MyAccount_Open();
         }
 
-        void mw_CurrentUserChanged(TH_Configuration.UserConfiguration userConfig)
+        void mw_CurrentUserChanged(UserConfiguration userConfig)
         {
             if (userConfig != null)
             {

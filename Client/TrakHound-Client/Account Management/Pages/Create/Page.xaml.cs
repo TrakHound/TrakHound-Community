@@ -19,6 +19,7 @@ using TH_Configuration;
 using TH_Database.Tables;
 using TH_Global;
 using TH_PlugIns_Client_Control;
+using TH_UserManagement;
 
 
 namespace TrakHound_Client.Account_Management.Pages.Create
@@ -214,7 +215,7 @@ namespace TrakHound_Client.Account_Management.Pages.Create
                 // If no userconfiguration database configuration found then use default TrakHound User Database
                 if (mw.userDatabaseSettings == null)
                 {
-                    TH_Configuration.User.Management.CreateUser(userConfig, password_TXT.Password);
+                    Management.CreateUser(userConfig, password_TXT.Password);
                 }
                 else
                 {
@@ -249,19 +250,25 @@ namespace TrakHound_Client.Account_Management.Pages.Create
         void ConfirmUserCreation_GUI()
         {
 
-            mw.LoginMenu.username_TXT.Text = username_TXT.Text;
-            mw.LoginMenu.password_TXT.Password = password_TXT.Password;
+            //mw.LoginMenu.username_TXT.Text = username_TXT.Text;
+            //mw.LoginMenu.password_TXT.Password = password_TXT.Password;
 
-            if (mw.LoginMenu.Login())
-            {
-                CleanForm();
-                mw.ClosePage("Create Account");
-                mw.LoginMenu.Shown = true;
-            }
-            else
-            {
+            mw.LoginMenu.Login(username_TXT.Text, password_TXT.Password);
 
-            }
+            CleanForm();
+            mw.ClosePage("Create Account");
+            mw.LoginMenu.Shown = true;
+
+            //if (mw.LoginMenu.Login())
+            //{
+            //    CleanForm();
+            //    mw.ClosePage("Create Account");
+            //    mw.LoginMenu.Shown = true;
+            //}
+            //else
+            //{
+
+            //}
         }
 
 
@@ -313,7 +320,7 @@ namespace TrakHound_Client.Account_Management.Pages.Create
                 if (mw.userDatabaseSettings == null)
                 {
                     //UsernameVerified = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
-                    TH_Configuration.User.Management.VerifyUsernameReturn usernameReturn = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
+                    Management.VerifyUsernameReturn usernameReturn = Management.VerifyUsername(username_TXT.Text);
                     if (usernameReturn != null)
                     {
                         UsernameVerified = usernameReturn.available;
@@ -385,8 +392,8 @@ namespace TrakHound_Client.Account_Management.Pages.Create
         {
             System.Security.SecureString pwd = password_TXT.SecurePassword;
 
-            if (!TH_Configuration.User.Management.VerifyPasswordMinimum(pwd)) PasswordShort = true;
-            else if (!TH_Configuration.User.Management.VerifyPasswordMaximum(pwd)) PasswordLong = true;
+            if (!Management.VerifyPasswordMinimum(pwd)) PasswordShort = true;
+            else if (!Management.VerifyPasswordMaximum(pwd)) PasswordLong = true;
         }
 
         System.Timers.Timer confirmpassword_TIMER;

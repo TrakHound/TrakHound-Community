@@ -33,6 +33,7 @@ using TH_DeviceManager;
 using TH_Global;
 using TH_PlugIns_Server;
 using TH_WPF;
+using TH_UserManagement;
 
 namespace TrakHound_Server_Control_Panel
 {
@@ -57,20 +58,12 @@ namespace TrakHound_Server_Control_Panel
 
             CurrentPage = devicemanager;
 
-
-
             // Read Users and Login
             ReadUserManagementSettings();
 
             devicemanager.userDatabaseSettings = userDatabaseSettings;
 
-            LoginMenu.LoadRememberMeData();
-
-            //InitializePages();
-
-            //LoadPlugins();
-
-            //LoadDevices();
+            LoginMenu.LoadRememberMe(Management.RememberMeType.Server);
         }
 
         DeviceManager devicemanager;
@@ -489,15 +482,17 @@ namespace TrakHound_Server_Control_Panel
 
         private void Login_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender.GetType() == typeof(Grid))
-            {
-                Grid grid = (Grid)sender;
+            LoginMenu.Shown = true;
 
-                Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
-                LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
+            //if (sender.GetType() == typeof(Grid))
+            //{
+            //    Grid grid = (Grid)sender;
 
-                LoginMenu.Shown = true;
-            }
+            //    Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+            //    LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
+
+            //    LoginMenu.Shown = true;
+            //}
         }
 
         public object CurrentPage
@@ -512,6 +507,28 @@ namespace TrakHound_Server_Control_Panel
 
 
         #region "User Login"
+
+        private void LoginMenu_CurrentUserChanged(TH_UserManagement.UserConfiguration userConfig)
+        {
+            CurrentUser = userConfig;
+            //LoginMenu.Shown = true;
+        }
+
+        private void LoginMenu_ShownChanged(bool val)
+        {
+            //if (val)
+            //{
+            //    Point point = Login_GRID.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+            //    LoginMenu.Margin = new Thickness(0, point.Y + 30, Main_GRID.RenderSize.Width - point.X - Login_GRID.RenderSize.Width, 0);
+            //}
+
+
+            //if (val)
+            //{
+            //    Point point = Login_GRID.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+            //    LoginMenu.Margin = new Thickness(0, point.Y + Login_GRID.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - Login_GRID.RenderSize.Width, 0);
+            //}
+        }
 
         #region "Properties"
 
@@ -606,618 +623,21 @@ namespace TrakHound_Server_Control_Panel
                     Global.Initialize(userDatabaseSettings);
                 }
             }
-
         }
 
         #endregion
 
-        //#region "Device Management"
+        void LoginMenu_MyAccountClicked()
+        {
 
-        //Configuration selecteddevice;
-        //public Configuration SelectedDevice
-        //{
-        //    get { return selecteddevice; }
-        //    set
-        //    {
-        //        selecteddevice = value;
-        //    }
-        //}
+            TH_UserManagement.MyAccount.Page page = new TH_UserManagement.MyAccount.Page();
+            page.ProfileImage = LoginMenu.ProfileImage;
+            page.LoadProfile(CurrentUser);
 
-        //DataTable configurationtable;
-        //public DataTable ConfigurationTable
-        //{
-        //    get { return configurationtable; }
-        //    set 
-        //    {
-        //        configurationtable = value;
+            CurrentPage = page;
 
-        //        if (ConfigurationPages != null)
-        //        {
-        //            foreach (ConfigurationPage page in ConfigurationPages)
-        //            {
-        //                this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), new object[] { configurationtable });
-        //            }
-        //        }
-        //    }
-        //}
+        }
 
-        //public TrakHound_Server_Control_Panel.Pages.DeviceManagement.Page devicemanagementpage;
-
-        //public void LoadDevices()
-        //{
-        //    DeviceListShown = false;
-        //    DeviceList.Clear();
-
-        //    if (currentuser != null)
-        //    {
-        //        if (userDatabaseSettings == null)
-        //        {
-        //            Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
-        //        }
-        //        else
-        //        {
-        //            Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-        //        }
-        //    }
-        //    // If not logged in Read from File in 'C:\TrakHound\'
-        //    else
-        //    {
-        //        Configurations = ReadConfigurationFile();
-        //    }
-
-        //    if (Configurations != null)
-        //    {
-        //        // Create DevicesList based on Configurations
-        //        foreach (Configuration config in Configurations)
-        //        {
-        //            CreateDeviceButton(config);
-        //        }
-
-
-        //        // Update Device Management Page
-        //        if (devicemanagementpage == null) devicemanagementpage = new Pages.DeviceManagement.Page();
-        //        devicemanagementpage.LoadDevices(Configurations);
-
-        //        DeviceListShown = true;
-        //    }
-        //}
-
-        //#region "Configuration Files"
-
-        //List<Configuration> Configurations;
-
-        //static List<Configuration> ReadConfigurationFile()
-        //{
-        //    List<Configuration> Result = new List<Configuration>();
-
-        //    string configPath;
-
-        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "Configuration.Xml";
-        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
-
-        //    // systemPath takes priority (easier for user to navigate to)
-        //    if (File.Exists(systemPath)) configPath = systemPath;
-        //    else configPath = localPath;
-
-        //    Logger.Log(configPath);
-
-        //    if (System.IO.File.Exists(configPath))
-        //    {
-        //        XmlDocument doc = new XmlDocument();
-        //        doc.Load(configPath);
-
-        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-        //        {
-        //            if (Node.NodeType == XmlNodeType.Element)
-        //            {
-        //                switch (Node.Name.ToLower())
-        //                {
-        //                    case "devices":
-        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
-        //                        {
-        //                            if (ChildNode.NodeType == XmlNodeType.Element)
-        //                            {
-        //                                switch (ChildNode.Name.ToLower())
-        //                                {
-        //                                    case "device":
-
-        //                                        Configuration device = ProcessDevice(ChildNode);
-        //                                        if (device != null)
-        //                                        {
-        //                                            Result.Add(device);
-        //                                        }
-        //                                        break;
-        //                                }
-        //                            }
-        //                        }
-        //                        break;
-        //                }
-        //            }
-        //        }
-
-        //        Logger.Log("Configuration File Successfully Read From : " + configPath);
-        //    }
-        //    else Logger.Log("Configuration File Not Found : " + configPath);
-
-        //    return Result;
-        //}
-
-        //static Configuration ProcessDevice(XmlNode node)
-        //{
-        //    Configuration Result = null;
-
-        //    string configPath = null;
-
-        //    foreach (XmlNode childNode in node.ChildNodes)
-        //    {
-        //        if (childNode.NodeType == XmlNodeType.Element)
-        //        {
-        //            if (childNode.Name.ToLower() == "configuration_path")
-        //            {
-        //                configPath = childNode.InnerText;
-        //            }
-        //        }
-        //    }
-
-        //    if (configPath != null)
-        //    {
-        //        configPath = GetConfigurationPath(configPath);
-
-        //        Logger.Log("Reading Device Configuration File @ '" + configPath + "'");
-
-        //        if (File.Exists(configPath))
-        //        {
-        //            Configuration config = new Configuration();
-        //            config = Configuration.ReadConfigFile(configPath);
-
-        //            if (config != null)
-        //            {
-        //                Console.WriteLine("Device Congifuration Read Successfully!");
-
-        //                // Initialize Database Configurations
-        //                Global.Initialize(config.Databases);
-
-        //                Result = config;
-        //            }
-        //            else Logger.Log("Error Occurred While Reading : " + configPath);
-        //        }
-        //        else Logger.Log("Can't find Device Configuration file @ " + configPath);
-        //    }
-        //    else Logger.Log("No Device Congifuration found");
-
-        //    return Result;
-
-        //}
-
-        //static string GetConfigurationPath(string path)
-        //{
-        //    // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-        //    if (!System.IO.Path.IsPathRooted(path))
-        //    {
-        //        // Remove initial Backslash if contained in "configuration_path"
-        //        if (path[0] == '\\' && path.Length > 1) path.Substring(1);
-
-        //        string original = path;
-
-        //        // Check System Path
-        //        path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-        //        if (File.Exists(path)) return path;
-        //        else Logger.Log(path + " Not Found");
-
-
-        //        // Check local app Path
-        //        path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-        //        if (File.Exists(path)) return path;
-        //        else Logger.Log(path + " Not Found");
-
-        //        // if no files exist return null
-        //        return null;
-        //    }
-        //    else return path;
-        //}
-
-        //#endregion
-
-        //void LoadConfiguration()
-        //{
-        //    if (ConfigurationPages != null)
-        //    {
-        //        foreach (ConfigurationPage page in ConfigurationPages)
-        //        {
-        //            page.LoadConfiguration(configurationtable);
-        //        }
-        //    }
-        //}
-
-        //public void SaveConfiguration()
-        //{
-        //    DataTable dt = ConfigurationTable;
-
-        //    if (dt != null)
-        //    {
-        //        if (currentuser != null)
-        //        {
-        //            if (SelectedDevice != null)
-        //            {
-        //                string tablename = TH_Configuration.User.Management.GetConfigurationTableName(currentuser, SelectedDevice);
-
-        //                if (userDatabaseSettings == null)
-        //                {
-        //                    TH_Configuration.User.Management.CreateConfigurationTable(currentuser, SelectedDevice);
-        //                    TH_Configuration.User.Management.UpdateConfigurationTable(currentuser, tablename, dt);
-        //                }
-        //                else
-        //                {
-        //                    //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
-        //                }
-        //            }
-        //        }
-        //        // If not logged in Save to File in 'C:\TrakHound\'
-        //        else
-        //        {
-
-        //        }
-        //    }
-        //}
-
-        //public bool DeviceListShown
-        //{
-        //    get { return (bool)GetValue(DeviceListShownProperty); }
-        //    set { SetValue(DeviceListShownProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty DeviceListShownProperty =
-        //    DependencyProperty.Register("DeviceListShown", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
-        //ObservableCollection<ListButton> devicelist;
-        //public ObservableCollection<ListButton> DeviceList
-        //{
-        //    get
-        //    {
-        //        if (devicelist == null)
-        //            devicelist = new ObservableCollection<ListButton>();
-        //        return devicelist;
-        //    }
-
-        //    set
-        //    {
-        //        devicelist = value;
-        //    }
-        //}
-
-        //void CreateDeviceButton(Configuration config)
-        //{
-        //    Controls.DeviceButton db = new Controls.DeviceButton();
-        //    db.Description = config.Description.Description;
-        //    db.Manufacturer = config.Description.Manufacturer;
-        //    db.Model = config.Description.Model;
-        //    db.Serial = config.Description.Serial;
-        //    db.Id = config.Description.Machine_ID;
-
-        //    ListButton lb = new ListButton();
-        //    lb.ButtonContent = db;
-        //    lb.ShowImage = false;
-        //    lb.Selected += lb_Device_Selected;
-        //    lb.DataObject = config;
-        //    DeviceList.Add(lb);
-        //}
-
-        //void lb_Device_Selected(TH_WPF.ListButton lb)
-        //{
-        //    foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
-        //    lb.IsSelected = true;
-
-        //    Configuration config = (Configuration)lb.DataObject;
-
-        //    if (config != null)
-        //    {
-        //        SelectedDevice = config;
-
-        //        ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
-
-        //        PageListShown = true;
-        //    }
-        //}
-
-        //#endregion
-
-        //#region "Pages"
-
-        //public object CurrentPage
-        //{
-        //    get { return (object)GetValue(CurrentPageProperty); }
-        //    set { SetValue(CurrentPageProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty CurrentPageProperty =
-        //    DependencyProperty.Register("CurrentPage", typeof(object), typeof(MainWindow), new PropertyMetadata(null));
- 
-
-        //ObservableCollection<PageItem> pagelist;
-        //public ObservableCollection<PageItem> PageList
-        //{
-        //    get
-        //    {
-        //        if (pagelist == null)
-        //            pagelist = new ObservableCollection<PageItem>();
-        //        return pagelist;
-        //    }
-
-        //    set
-        //    {
-        //        pagelist = value;
-        //    }
-        //}
-
-        //List<ConfigurationPage> ConfigurationPages;
-
-        //void InitializePages()
-        //{
-        //    PageListShown = false;
-
-        //    PageList.Clear();
-
-        //    ConfigurationPages = new List<ConfigurationPage>();
-
-        //    ConfigurationPages.Add(new Pages.DescriptionConfiguration());
-        //    ConfigurationPages.Add(new Pages.AgentConfiguration());
-        //    ConfigurationPages.Add(new Pages.DatabaseConfiguration());
-            
-        //    // Create PageItem and add to PageList
-        //    foreach (ConfigurationPage page in ConfigurationPages)
-        //    {
-        //        page.SettingChanged += page_SettingChanged;
-
-        //        PageItem item = new PageItem();
-        //        item.Text = page.PageName;
-        //        item.Image = page.Image;
-        //        item.Data = page;
-        //        item.Clicked += PageItem_Clicked;
-        //        PageList.Add(item);
-        //    }
-        //}
-
-
-        //public bool SaveNeeded
-        //{
-        //    get { return (bool)GetValue(SaveNeededProperty); }
-        //    set { SetValue(SaveNeededProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty SaveNeededProperty =
-        //    DependencyProperty.Register("SaveNeeded", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
-        
-
-        //void page_SettingChanged(string name, string oldVal, string newVal)
-        //{
-        //    SaveNeeded = true;
-        //}
-
-        //private void Restore_Clicked(Controls.Button bt)
-        //{
-        //    LoadConfiguration();
-        //}
-
-        //private void Save_Clicked(Controls.Button bt)
-        //{
-        //    if (ConfigurationTable != null)
-        //    {
-        //        if (ConfigurationPages != null)
-        //        {
-        //            foreach (ConfigurationPage page in ConfigurationPages)
-        //            {
-        //                page.SaveConfiguration(configurationtable);
-        //            }
-        //        }
-
-        //        SaveConfiguration();
-        //    }
-
-        //    SaveNeeded = false;
-        //}
-
-        //void PageItem_Clicked(object data)
-        //{
-        //    if (data != null)
-        //    {
-        //        if (CurrentPage != null)
-        //        {
-        //            if (CurrentPage.GetType() != data.GetType())
-        //            {
-        //                CurrentPage = data;
-        //            }
-        //        }
-        //        else CurrentPage = data;
-        //    }
-        //}
-
-        //void Description_Clicked()
-        //{
-        //    if (CurrentPage != null)
-        //    {
-        //        if (CurrentPage.GetType() != typeof(Pages.DescriptionConfiguration))
-        //        {
-        //            CurrentPage = new Pages.DescriptionConfiguration();
-        //        }
-        //    }
-        //    else CurrentPage = new Pages.DescriptionConfiguration();
-        //}
-
-        //void Agent_Clicked()
-        //{
-        //    if (CurrentPage != null)
-        //    {
-        //        if (CurrentPage.GetType() != typeof(Pages.AgentConfiguration))
-        //        {
-        //            CurrentPage = new Pages.AgentConfiguration();
-        //        }
-        //    }
-        //    else CurrentPage = new Pages.AgentConfiguration();
-        //}
-
-        //void AddConfigurationPage(Table_PlugIn tp)
-        //{
-        //    ConfigurationPage configPage = tp.ConfigPage;
-
-        //    if (configPage != null)
-        //    {
-        //        PageItem item = new PageItem();
-        //        item.Text = configPage.PageName;
-        //        PageList.Add(item);
-        //    }
-        //}
-
-        //#endregion
-
-        //#region "PlugIns"
-
-        //public IEnumerable<Lazy<Table_PlugIn>> TablePlugIns { get; set; }
-
-        //public List<Lazy<Table_PlugIn>> Table_Plugins { get; set; }
-
-        //TablePlugs TPLUGS;
-
-        //class TablePlugs
-        //{
-        //    [ImportMany(typeof(Table_PlugIn))]
-        //    public IEnumerable<Lazy<Table_PlugIn>> PlugIns { get; set; }
-        //}
-
-        //void LoadPlugins()
-        //{
-        //    string plugin_rootpath = FileLocations.Plugins + @"\Server";
-
-        //    if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
-
-        //    Table_Plugins = new List<Lazy<Table_PlugIn>>();
-
-        //    string pluginsPath;
-
-        //    // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-        //    pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
-        //    if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
-
-        //    // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-        //    pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-        //    if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
-
-        //    TablePlugIns = Table_Plugins;
-        //}
-
-        //void LoadTablePlugins(string Path)
-        //{
-        //    Logger.Log("Searching for Table Plugins in '" + Path + "'");
-        //    if (Directory.Exists(Path))
-        //    {
-        //        try
-        //        {
-        //            TPLUGS = new TablePlugs();
-
-        //            var PageCatalog = new DirectoryCatalog(Path);
-        //            var PageContainer = new CompositionContainer(PageCatalog);
-        //            PageContainer.SatisfyImportsOnce(TPLUGS);
-
-        //            TablePlugIns = TPLUGS.PlugIns;
-
-        //            foreach (Lazy<Table_PlugIn> ltp in TablePlugIns)
-        //            {
-        //                Table_PlugIn tp = ltp.Value;
-
-        //                if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == tp.Name.ToLower()) == null)
-        //                {
-        //                    Logger.Log(tp.Name + " : PlugIn Found");
-        //                    Table_Plugins.Add(ltp);
-        //                }
-        //                else
-        //                {
-        //                    Logger.Log(tp.Name + " : PlugIn Already Found");
-        //                }
-        //            }
-        //        }
-        //        catch (Exception ex) { Logger.Log("LoadTablePlugins() : Exception : " + ex.Message); }
-
-        //        // Search Subdirectories
-        //        foreach (string directory in Directory.GetDirectories(Path))
-        //        {
-        //            LoadTablePlugins(directory);
-        //        }
-        //    }
-        //    else Logger.Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
-        //}
-
-        //void TablePlugIns_Initialize(Configuration config)
-        //{
-        //    if (TablePlugIns != null && config != null)
-        //    {
-        //        foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-        //        {
-        //            try
-        //            {
-        //                Table_PlugIn tp = ltp.Value;
-        //                tp.Initialize(config);
-
-        //                AddConfigurationPage(tp);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine("Plugin Exception! : " + ex.Message);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //void TablePlugIns_Closing()
-        //{
-        //    if (TablePlugIns != null)
-        //    {
-        //        foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-        //        {
-        //            try
-        //            {
-        //                Table_PlugIn tp = ltp.Value;
-        //                tp.Closing();
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine("Plugin Exception! : " + ex.Message);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //#endregion
-
-
-        //public bool PageListShown
-        //{
-        //    get { return (bool)GetValue(PageListShownProperty); }
-        //    set { SetValue(PageListShownProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty PageListShownProperty =
-        //    DependencyProperty.Register("PageListShown", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
-
-
-        //const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
-
-
-        //private void TableList_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    PageListShown = false;
-        //}
-
-        //private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (CurrentPage != null)
-        //    {
-        //        if (CurrentPage.GetType() != typeof(Pages.AddDevice))
-        //        {
-        //            CurrentPage = new Pages.AddDevice(); 
-        //        }
-        //    }
-        //    else CurrentPage = new Pages.AddDevice();
-        //}
 
     }
 

@@ -25,10 +25,10 @@ using System.Data;
 using System.IO;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_Global;
 using TH_Global.Functions;
 using TH_PlugIns_Server;
+using TH_UserManagement;
 
 namespace TH_DeviceManager.Pages.Description
 {
@@ -406,7 +406,7 @@ namespace TH_DeviceManager.Pages.Description
         {
             string result = null;
 
-            string imagePath = TH_Configuration.User.Images.OpenImageBrowse("Select a Manufacturer Logo");
+            string imagePath = Images.OpenImageBrowse("Select a Manufacturer Logo");
             if (imagePath != null)
             {
                 string filename = String_Functions.RandomString(20);
@@ -435,7 +435,7 @@ namespace TH_DeviceManager.Pages.Description
 
                 if (File.Exists(localPath))
                 {
-                    TH_Configuration.User.Images.UploadImage(localPath);
+                    Images.UploadImage(localPath);
 
                     result = filename;
                 }
@@ -538,7 +538,7 @@ namespace TH_DeviceManager.Pages.Description
         {
             string result = null;
 
-            string imagePath = TH_Configuration.User.Images.OpenImageBrowse("Select a Device Image");
+            string imagePath = Images.OpenImageBrowse("Select a Device Image");
             if (imagePath != null)
             {
                 string filename = String_Functions.RandomString(20);
@@ -567,7 +567,7 @@ namespace TH_DeviceManager.Pages.Description
 
                 if (File.Exists(localPath))
                 {
-                    TH_Configuration.User.Images.UploadImage(localPath);
+                    Images.UploadImage(localPath);
 
                     result = filename;
                 }

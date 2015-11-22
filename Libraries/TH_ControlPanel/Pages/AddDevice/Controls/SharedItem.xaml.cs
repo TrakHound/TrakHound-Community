@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TH_UserManagement;
+
 namespace TH_DeviceManager.Pages.AddDevice.Controls
 {
     /// <summary>
@@ -31,7 +33,7 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
             DataContext = this;
         }
 
-        public TH_Configuration.User.Management.SharedListItem listitem;
+        public Management.SharedListItem listitem;
 
         public ImageSource FullSizeImage { get; set; }
 

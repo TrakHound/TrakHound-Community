@@ -19,6 +19,7 @@ using TH_Configuration;
 using TH_Database.Tables;
 using TH_Global;
 using TH_PlugIns_Client_Control;
+using TH_UserManagement;
 
 namespace TrakHound_Client.Account_Management.Pages.MyAccount
 {

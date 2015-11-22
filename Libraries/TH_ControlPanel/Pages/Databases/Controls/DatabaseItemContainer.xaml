@@ -19,7 +19,7 @@
         <!--Custom Content-->
         <ContentControl Content="{Binding ItemContent}" VerticalAlignment="Center"/>
 
-        <Grid Background="#00000000" MouseDown="Grid_MouseDown" />
+        <Grid Background="#00000000" PreviewMouseDown="Grid_MouseDown" />
 
         <!--Remove-->
         <th_wpf:Button_02 Grid.Column="1" Image="/TH_DeviceManager;component/Resources/X_01.png" Clicked="Remove_Clicked"/>

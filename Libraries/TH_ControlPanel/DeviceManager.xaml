@@ -136,7 +136,7 @@
             <!--Page Content-->
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="#eee">
 
-                <ContentControl Margin="40,20,20,20" Content="{Binding CurrentPage}"/>
+                <ContentControl Margin="40,40,20,20" Content="{Binding CurrentPage}"/>
 
             </ScrollViewer>
 

@@ -1,0 +1,178 @@
+﻿<UserControl x:Class="TH_UserManagement.MyAccount.Page"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+                          
+             mc:Ignorable="d" 
+             d:DesignWidth="800" Background="#eee"
+             
+             Loaded="UserControl_Loaded"
+             >
+
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!--Profile Info-->
+        <StackPanel Width="400" HorizontalAlignment="Left">
+            <StackPanel.Resources>
+
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="0,2"/>
+                </Style>
+
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="0,5"/>
+                </Style>
+
+            </StackPanel.Resources>
+
+            <!--Full Name-->
+            <StackPanel>
+                <TextBlock Text="Name" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Fullname}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--Choose your username-->
+            <StackPanel Margin="0,20,0,5">
+                <TextBlock Text="Username" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="#0080ff"/>
+            </StackPanel>
+            
+            <!--Password-->
+            <StackPanel Margin="0,5,0,20">
+                <th_wpf:Button_01 Grid.Column="1" Text="Change Password" AlternateStyle="True" HorizontalAlignment="Left"/>
+            </StackPanel>       
+
+            <!--Email-->
+            <StackPanel>
+                <TextBlock Text="Email" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Email}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--Company-->
+            <StackPanel>
+                <TextBlock Text="Company" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Company}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--Phone-->
+            <StackPanel>
+                <TextBlock Text="Phone" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Phone}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--Address-->
+            <StackPanel>
+                <TextBlock Text="Address" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Address1}" FontSize="12pt" Foreground="#333"/>
+                <TextBlock Text="{Binding Address2}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--City-->
+            <StackPanel>
+                <TextBlock Text="City" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding City}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--Country-->
+            <StackPanel>
+                <TextBlock Text="Country" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Country}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--State-->
+            <StackPanel>
+                <TextBlock Text="State" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding State}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+            <!--Zip Code-->
+            <StackPanel>
+                <TextBlock Text="Zip Code" Foreground="#888" FontSize="12pt"/>
+                <TextBlock Text="{Binding Zipcode}" FontSize="12pt" Foreground="#333"/>
+            </StackPanel>
+
+        </StackPanel>
+
+        <!--Profile Side Panel-->
+        <StackPanel Grid.Column="1" Margin="0,10">
+
+            <!--Profile Image-->
+            <Grid Margin="10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Profile Image" Foreground="#888" VerticalAlignment="Center"/>
+
+                <th_wpf:Button_01 Grid.Column="1" Text="Upload" AlternateStyle="True" HorizontalAlignment="Right"/>
+
+            </Grid>
+            
+            <Border x:Name="profileimage_BD" Margin="10" BorderThickness="1" BorderBrush="#ccc" CornerRadius="2" Height="200" Width="200" VerticalAlignment="Top">
+
+                <Grid Margin="2">
+
+                    <Image Source="{Binding ProfileImage}" />
+
+                    <Border Height="30" CornerRadius="2" Width="100" HorizontalAlignment="Center" PreviewMouseDown="ProfileImage_PreviewMouseDown">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Background" Value="#88ffffff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#aaffffff"/>
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=profileimage_BD}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+
+                        <Grid Margin="5,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Camera Icon-->
+                            <Rectangle x:Name="uploadphoto_image" Height="30"  Width="30" >
+                                <Rectangle.Resources>
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_UserManagement;component/Resources/Camera_01.png" />
+                                </Rectangle.Resources>
+
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Setter Property="Fill" Value="#333"/>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+
+                            <!--Change Text-->
+                            <TextBlock Grid.Column="1" Text="Change" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+        </StackPanel>
+
+    </Grid>
+
+</UserControl>

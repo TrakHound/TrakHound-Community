@@ -42,6 +42,7 @@ using TH_Global;
 using TH_PlugIns_Client_Control;
 using TH_WPF;
 using TH_Updater;
+using TH_UserManagement;
 
 using TrakHound_Client.Controls;
 
@@ -80,6 +81,8 @@ namespace TrakHound_Client
             Splash_UpdateStatus("...Logging in User");
             ReadUserManagementSettings();
             devicemangager.userDatabaseSettings = userDatabaseSettings;
+
+            LoginMenu.LoadRememberMe(Management.RememberMeType.Client);
 
 
             Splash_UpdateStatus("...Loading Plugins");
@@ -1032,15 +1035,27 @@ namespace TrakHound_Client
 
         private void Login_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender.GetType() == typeof(Grid))
-            {
-                Grid grid = (Grid)sender;
+            LoginMenu.Shown = true;
 
-                Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
-                LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
+            //if (sender.GetType() == typeof(Grid))
+            //{
+            //    Grid grid = (Grid)sender;
 
-                LoginMenu.Shown = true;
-            }
+            //    Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+            //    //LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
+
+            //    //LoginMenu.Shown = true;
+            //}
+        }
+
+        private void LoginMenu_CurrentUserChanged(UserConfiguration userConfig)
+        {
+            CurrentUser = userConfig;
+        }
+
+        private void LoginMenu_ShownChanged(bool val)
+        {
+            
         }
 
         UserConfiguration currentuser;
@@ -1712,7 +1727,7 @@ namespace TrakHound_Client
             {
                 if (userDatabaseSettings == null)
                 {
-                    Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
+                    Configurations = Management.GetConfigurationsForUser(currentuser);
                     remote = true;
                 }
                 else
@@ -2099,6 +2114,7 @@ namespace TrakHound_Client
         }
 
         #endregion
+
 
     }
 

@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Collections.ObjectModel;
 
-using TH_Configuration.User;
 using TH_Global.Functions;
 using TH_PlugIns_Server;
+using TH_UserManagement;
 
 namespace TH_ShiftTable.ConfigurationPage
 {

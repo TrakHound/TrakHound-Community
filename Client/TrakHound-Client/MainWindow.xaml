@@ -14,7 +14,8 @@
         xmlns:notifications="clr-namespace:TrakHound_Client.Notifications"
         xmlns:main_menu="clr-namespace:TrakHound_Client.Main_Menu"
         xmlns:plugins="clr-namespace:TrakHound_Client.Plugins.Launcher"
-        xmlns:login="clr-namespace:TrakHound_Client.Login"
+        
+        xmlns:user="clr-namespace:TH_UserManagement;assembly=TH_UserManagement"
         
         Title="TrakHound - [Beta] - CNC Monitoring Software"
         
@@ -1047,10 +1048,13 @@
                                 Shown="False" ShownChanged="MainMenu_ShownChanged"
                                 />
 
+                <user:Menu x:Name="LoginMenu" Margin="0,30,144,0" Shown="False" CurrentUserChanged="LoginMenu_CurrentUserChanged" ShownChanged="LoginMenu_ShownChanged"/>
+
                 <!--User Login Menu-->
-                <login:DropDown x:Name="LoginMenu" 
+                <!--<login:DropDown x:Name="LoginMenu" 
                            Shown="False"
-                            />
+                            />-->
+                
 
                 <!--Message Center-->
                 <message:MessageCenter x:Name="messageCenter" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,25" Shown="False"/>

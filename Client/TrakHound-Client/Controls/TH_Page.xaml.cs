@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Collections.ObjectModel;
+
 namespace TrakHound_Client.Controls
 {
     /// <summary>
@@ -29,6 +31,28 @@ namespace TrakHound_Client.Controls
         {
             InitializeComponent();
             DataContext = this;
+
+            ZoomLevels.Add("50%");
+            ZoomLevels.Add("75%");
+            ZoomLevels.Add("100%");
+            ZoomLevels.Add("150%");
+            ZoomLevels.Add("200%");
+        }
+
+        ObservableCollection<string> zoomlevels;
+        public ObservableCollection<string> ZoomLevels
+        {
+            get
+            {
+                if (zoomlevels == null)
+                    zoomlevels = new ObservableCollection<string>();
+                return zoomlevels;
+            }
+
+            set
+            {
+                zoomlevels = value;
+            }
         }
 
         public object PageContent
@@ -44,11 +68,24 @@ namespace TrakHound_Client.Controls
         public double ZoomLevel
         {
             get { return (double)GetValue(ZoomLevelProperty); }
-            set { SetValue(ZoomLevelProperty, value); }
+            set {  SetValue(ZoomLevelProperty, value); }
         }
 
         public static readonly DependencyProperty ZoomLevelProperty =
             DependencyProperty.Register("ZoomLevel", typeof(double), typeof(TH_Page), new PropertyMetadata(1D));
+
+
+        public string ZoomLevelText
+        {
+            get { return (string)GetValue(ZoomLevelTextProperty); }
+            set { SetValue(ZoomLevelTextProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty ZoomLevelTextProperty =
+            DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(TH_Page), new PropertyMetadata(null));
+
+        
 
         public bool Closing
         {
@@ -59,7 +96,52 @@ namespace TrakHound_Client.Controls
         public static readonly DependencyProperty ClosingProperty =
             DependencyProperty.Register("Closing", typeof(bool), typeof(TH_Page), new PropertyMetadata(false));
 
-        
+        private void ZoomOut_Clicked(TH_WPF.Button_02 bt)
+        {
+            double zoom = Math.Max(ZoomLevel - 0.1, 0.5);
+            zoom_COMBO.Text = zoom.ToString("P0");
+        }
+
+        private void ZoomIn_Clicked(TH_WPF.Button_02 bt)
+        {
+            double zoom = Math.Min(ZoomLevel + 0.1, 2.0);
+            zoom_COMBO.Text = zoom.ToString("P0");
+        }
+
+        private void RestoreZoom_Clicked(TH_WPF.Button_02 bt)
+        {
+
+        }
+
+        private void Fullscreen_Clicked(TH_WPF.Button_02 bt)
+        {
+
+        }
+
+        void SetZoom(double zoom)
+        {
+            ZoomLevel = zoom;
+        }
+
+        private void zoom_COMBO_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+            ComboBox combo = (ComboBox)sender;
+
+            if (combo.Text != null)
+            {
+                string val = combo.Text;
+
+                if (val.Contains('%')) val = val.Substring(0, val.IndexOf('%'));
+
+                double zoom;
+                if (double.TryParse(val, out zoom))
+                {
+                    this.Dispatcher.BeginInvoke(new Action<double>(SetZoom), new object[] { zoom / 100 });
+                }
+            }
+
+        }
 
     }
 }

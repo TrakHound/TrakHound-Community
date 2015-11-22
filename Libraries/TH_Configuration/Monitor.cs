@@ -12,7 +12,6 @@ using System.Threading;
 using System.Data;
 using System.Xml;
 
-using TH_Configuration.User;
 using TH_Global;
 
 namespace TH_Configuration

@@ -22,11 +22,11 @@ using System.Collections.ObjectModel;
 using System.Data;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_Global.Functions;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
 using TH_PlugIns_Server;
+using TH_UserManagement;
 
 namespace TH_DeviceManager.Pages.Agent
 {

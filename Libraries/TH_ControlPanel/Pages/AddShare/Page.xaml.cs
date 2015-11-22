@@ -23,9 +23,9 @@ using System.Threading;
 using System.IO;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_Global;
 using TH_Global.Functions;
+using TH_UserManagement;
 
 namespace TH_DeviceManager.Pages.AddShare
 {
@@ -320,7 +320,7 @@ namespace TH_DeviceManager.Pages.AddShare
         {
             string result = null;
 
-            string imagePath = TH_Configuration.User.Images.OpenImageBrowse("Select a Image to Respresent this Configuration");
+            string imagePath = Images.OpenImageBrowse("Select a Image to Respresent this Configuration");
             if (imagePath != null)
             {
                 string filename = String_Functions.RandomString(20);
@@ -349,7 +349,7 @@ namespace TH_DeviceManager.Pages.AddShare
 
                 if (File.Exists(localPath))
                 {
-                    TH_Configuration.User.Images.UploadImage(localPath);
+                    Images.UploadImage(localPath);
 
                     result = filename;
                 }

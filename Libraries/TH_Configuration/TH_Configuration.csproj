@@ -66,12 +66,12 @@
     <Compile Include="Data\Server_Settings.cs" />
     <Compile Include="Data\SQL_Settings.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="Monitor.cs" />
+    <None Include="Monitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="User\Images.cs" />
-    <Compile Include="User\UserConfiguration.cs" />
-    <Compile Include="User\UserManagementSettings.cs" />
-    <Compile Include="User\Management.cs" />
+    <None Include="User\Images.cs" />
+    <None Include="User\UserConfiguration.cs" />
+    <None Include="User\UserManagementSettings.cs" />
+    <None Include="User\Management.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt">

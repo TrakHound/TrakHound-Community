@@ -15,10 +15,10 @@ using System.Windows.Shapes;
 
 using System.Data;
 
-using TH_Configuration.User;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
+using TH_UserManagement;
 
 namespace TH_MySQL.ConfigurationPage
 {
@@ -311,8 +311,8 @@ namespace TH_MySQL.ConfigurationPage
         {
             System.Security.SecureString pwd = password_TXT.SecurePassword;
 
-            if (!TH_Configuration.User.Management.VerifyPasswordMinimum(pwd)) PasswordShort = true;
-            else if (!TH_Configuration.User.Management.VerifyPasswordMaximum(pwd)) PasswordLong = true;
+            if (!Management.VerifyPasswordMinimum(pwd)) PasswordShort = true;
+            else if (!Management.VerifyPasswordMaximum(pwd)) PasswordLong = true;
         }
 
         System.Timers.Timer confirmpassword_TIMER;

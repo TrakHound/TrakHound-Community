@@ -18,7 +18,9 @@ using System.Collections.ObjectModel;
 
 using TH_PlugIns_Server;
 using TH_Configuration;
-using TH_Configuration.User;
+using TH_UserManagement;
+
+using TH_GeneratedData.ConfigurationPage;
 
 namespace TH_Cycles.ConfigurationPage
 {
@@ -45,13 +47,13 @@ namespace TH_Cycles.ConfigurationPage
 
             GeneratedEvents.Clear();
 
-            genEvents = GetGeneratedEvents(dt);
+            genEvents = TH_GeneratedData.ConfigurationPage.Page.GetGeneratedEvents(dt);
 
             if (genEvents != null)
             {
-                foreach (Event e in genEvents)
+                foreach (TH_GeneratedData.ConfigurationPage.Page.Event ev in genEvents)
                 {
-                    GeneratedEvents.Add(TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' ')));
+                    GeneratedEvents.Add(TH_Global.Formatting.UppercaseFirst(ev.name.Replace('_', ' ')));
                 }
             }
 
@@ -60,7 +62,12 @@ namespace TH_Cycles.ConfigurationPage
 
         public void SaveConfiguration(DataTable dt)
         {
-            
+            string eventName = event_COMBO.Text;
+            string capturelink = capturelink_COMBO.Text;
+
+            Table_Functions.UpdateTableValue(eventName.Replace(' ', '_').ToLower(), "/Cycles/Event", dt);
+
+            Table_Functions.UpdateTableValue(capturelink.Replace(' ', '_').ToLower(), "/Cycles/CycleIdLink", dt);
         }
 
         DataTable configurationTable;
@@ -84,7 +91,7 @@ namespace TH_Cycles.ConfigurationPage
                 {
                     case "event": SelectedEvent = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
 
-                    case "value": SelectCaptureLink = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
+                    case "cycleidlink": SelectedCaptureLink = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
                 }
             }
         }
@@ -118,14 +125,16 @@ namespace TH_Cycles.ConfigurationPage
             DependencyProperty.Register("SelectedEvent", typeof(object), typeof(Page), new PropertyMetadata(null));
 
 
-        public object SelectCaptureLink
+        public object SelectedCaptureLink
         {
-            get { return (object)GetValue(SelectCaptureLinkProperty); }
-            set { SetValue(SelectCaptureLinkProperty, value); }
+            get { return (object)GetValue(SelectedCaptureLinkProperty); }
+            set { SetValue(SelectedCaptureLinkProperty, value); }
         }
 
-        public static readonly DependencyProperty SelectCaptureLinkProperty =
-            DependencyProperty.Register("SelectCaptureLink", typeof(object), typeof(Page), new PropertyMetadata(null));
+        public static readonly DependencyProperty SelectedCaptureLinkProperty =
+            DependencyProperty.Register("SelectedCaptureLink", typeof(object), typeof(Page), new PropertyMetadata(null));
+
+        
 
 
         private void Event_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -141,25 +150,14 @@ namespace TH_Cycles.ConfigurationPage
 
                 if (genEvents != null)
                 {
-                    Event ev = genEvents.Find(x => TH_Global.Formatting.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == selectedItem.ToLower());
+                    TH_GeneratedData.ConfigurationPage.Page.Event ev = genEvents.Find(x => TH_Global.Formatting.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == selectedItem.ToLower());
                     if (ev != null)
                     {
-                        if (ev.values != null)
+                        if (ev.captureItems != null)
                         {
-                            foreach (Value v in ev.values)
+                            foreach (TH_GeneratedData.ConfigurationPage.Page.CaptureItem item in ev.captureItems)
                             {
-                                if (v.result != null)
-                                {
-                                    CaptureLinks.Add(TH_Global.Formatting.UppercaseFirst(v.result.value));
-                                }
-                            }
-                        }
-
-                        if (ev.Default != null)
-                        {
-                            if (ev.Default.value != null)
-                            {
-                                CaptureLinks.Add(TH_Global.Formatting.UppercaseFirst(ev.Default.value));
+                                CaptureLinks.Add(item.name);
                             }
                         }
                     }
@@ -177,43 +175,6 @@ namespace TH_Cycles.ConfigurationPage
         }
 
 
-        #region "Generated Events"
-
-        #region "Sub Classes"
-
-        public class Event
-        {
-            public Event() { values = new List<Value>(); }
-
-            public List<Value> values { get; set; }
-
-            public int id { get; set; }
-            public string name { get; set; }
-
-            public Result Default { get; set; }
-
-            public string description { get; set; }
-        }
-
-        public class Value
-        {
-            public Value() { triggers = new List<Trigger>(); }
-
-            public List<Trigger> triggers { get; set; }
-
-            public int id { get; set; }
-
-            public Result result { get; set; }
-        }
-
-        public class Result
-        {
-            public int numval { get; set; }
-            public string value { get; set; }
-        }
-
-        #endregion
-
         ObservableCollection<object> generatedevents;
         public ObservableCollection<object> GeneratedEvents
         {
@@ -230,181 +191,237 @@ namespace TH_Cycles.ConfigurationPage
             }
         }
 
-        List<Event> genEvents;
+        List<TH_GeneratedData.ConfigurationPage.Page.Event> genEvents;
 
-        List<Event> GetGeneratedEvents(DataTable dt)
-        {
-            List<Event> result = new List<Event>();
 
-            string address = "/GeneratedData/GeneratedEvents/";
+        //#region "Generated Events"
 
-            string filter = "address LIKE '" + address + "*'";
-            DataView dv = dt.AsDataView();
-            dv.RowFilter = filter;
-            DataTable temp_dt = dv.ToTable();
-            temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+        //#region "Sub Classes"
 
-            // Get Events
-            foreach (DataRow row in temp_dt.Rows)
-            {
-                Event e = GetEventFromRow(result, row);
-                if (e != null) result.Add(e);
-            }
+        //public class Event
+        //{
+        //    public Event() { values = new List<Value>(); }
 
-            // Get Values
-            foreach (Event e in result)
-            {
-                string eventfilter = "address LIKE '" + address + "Event||" + e.id.ToString("00") + "/";
-                dv = dt.AsDataView();
-                dv.RowFilter = eventfilter + "*'";
-                temp_dt = dv.ToTable();
-                temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+        //    public List<Value> values { get; set; }
 
-                foreach (DataRow row in temp_dt.Rows)
-                {
-                    Value v = GetValueFromRow(e, row);
-                    if (v != null) e.values.Add(v);
+        //    public int id { get; set; }
+        //    public string name { get; set; }
 
-                    GetDefaultFromRow(e, row);
-                }
+        //    public Result Default { get; set; }
 
-                foreach (Value v in e.values)
-                {
-                    filter = eventfilter + "Value||" + v.id.ToString("00") + "/" + "*'";
-                    dv = dt.AsDataView();
-                    dv.RowFilter = filter;
-                    temp_dt = dv.ToTable();
-                    temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+        //    public string description { get; set; }
+        //}
 
-                    foreach (DataRow row in temp_dt.Rows)
-                    {
-                        //Trigger t = GetTriggerFromRow(v, row);
-                        //if (t != null) v.triggers.Add(t);
+        //public class Value
+        //{
+        //    public Value() { triggers = new List<Trigger>(); }
 
-                        GetResultFromRow(v, row);
-                    }
-                }
-            }
+        //    public List<Trigger> triggers { get; set; }
 
-            return result;
-        }
+        //    public int id { get; set; }
 
-        Event GetEventFromRow(List<Event> genEvents, DataRow row)
-        {
-            Event result = null;
+        //    public Result result { get; set; }
+        //}
 
-            string adr = row["address"].ToString();
+        //public class Result
+        //{
+        //    public int numval { get; set; }
+        //    public string value { get; set; }
+        //}
 
-            string lastNode = Table_Functions.GetLastNode(row);
+        //#endregion
 
-            if (lastNode != null)
-            {
-                if (lastNode.ToLower() == "event")
-                {
-                    int eventIndex = adr.IndexOf("Event");
-                    int slashIndex = adr.IndexOf('/', eventIndex) + 1;
-                    int separatorIndex = adr.IndexOf("||", slashIndex);
+        //ObservableCollection<object> generatedevents;
+        //public ObservableCollection<object> GeneratedEvents
+        //{
+        //    get
+        //    {
+        //        if (generatedevents == null)
+        //            generatedevents = new ObservableCollection<object>();
+        //        return generatedevents;
+        //    }
 
-                    if (separatorIndex > slashIndex)
-                    {
-                        string name = Table_Functions.GetAttribute("name", row);
-                        string strId = adr.Substring(separatorIndex + 2, 2);
+        //    set
+        //    {
+        //        generatedevents = value;
+        //    }
+        //}
 
-                        int id;
-                        if (int.TryParse(strId, out id))
-                        {
-                            Event e = genEvents.Find(x => x.id == id);
-                            if (e == null)
-                            {
-                                result = new Event();
-                                result.id = id;
-                                result.name = name;
-                                result.description = Table_Functions.GetAttribute("description", row);
-                            }
-                        }
-                    }
-                }
-            }
+        //List<Event> genEvents;
 
-            return result;
-        }
+        //List<Event> GetGeneratedEvents(DataTable dt)
+        //{
+        //    List<Event> result = new List<Event>();
 
-        Value GetValueFromRow(Event e, DataRow row)
-        {
-            Value result = null;
+        //    string address = "/GeneratedData/GeneratedEvents/";
 
-            string adr = row["address"].ToString();
+        //    string filter = "address LIKE '" + address + "*'";
+        //    DataView dv = dt.AsDataView();
+        //    dv.RowFilter = filter;
+        //    DataTable temp_dt = dv.ToTable();
+        //    temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
 
-            string lastNode = Table_Functions.GetLastNode(row);
+        //    // Get Events
+        //    foreach (DataRow row in temp_dt.Rows)
+        //    {
+        //        Event e = GetEventFromRow(result, row);
+        //        if (e != null) result.Add(e);
+        //    }
 
-            if (lastNode != null)
-            {
-                if (lastNode.ToLower() == "value")
-                {
-                    string strId = Table_Functions.GetAttribute("id", row);
-                    if (strId != null)
-                    {
-                        int id = -1;
-                        if (int.TryParse(strId, out id))
-                        {
-                            Value v = e.values.Find(x => x.id == id);
-                            if (v == null)
-                            {
-                                result = new Value();
-                                result.id = id;
-                            }
-                        }
-                    }
-                }
+        //    // Get Values
+        //    foreach (Event e in result)
+        //    {
+        //        string eventfilter = "address LIKE '" + address + "Event||" + e.id.ToString("00") + "/";
+        //        dv = dt.AsDataView();
+        //        dv.RowFilter = eventfilter + "*'";
+        //        temp_dt = dv.ToTable();
+        //        temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
 
-            }
+        //        foreach (DataRow row in temp_dt.Rows)
+        //        {
+        //            Value v = GetValueFromRow(e, row);
+        //            if (v != null) e.values.Add(v);
 
-            return result;
-        }
+        //            GetDefaultFromRow(e, row);
+        //        }
 
-        void GetDefaultFromRow(Event e, DataRow row)
-        {
-            string adr = row["address"].ToString();
+        //        foreach (Value v in e.values)
+        //        {
+        //            filter = eventfilter + "Value||" + v.id.ToString("00") + "/" + "*'";
+        //            dv = dt.AsDataView();
+        //            dv.RowFilter = filter;
+        //            temp_dt = dv.ToTable();
+        //            temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
 
-            if (adr.Contains("Default"))
-            {
-                string n = Table_Functions.GetAttribute("numval", row);
-                if (n != null)
-                {
-                    int numval;
-                    if (int.TryParse(n, out numval))
-                    {
-                        Result r = new Result();
-                        r.value = row["value"].ToString().Replace('_', ' '); ;
-                        r.numval = numval;
-                        e.Default = r;
-                    }
-                }
-            }
-        }
+        //            foreach (DataRow row in temp_dt.Rows)
+        //            {
+        //                //Trigger t = GetTriggerFromRow(v, row);
+        //                //if (t != null) v.triggers.Add(t);
 
-        void GetResultFromRow(Value v, DataRow row)
-        {
-            string adr = row["address"].ToString();
+        //                GetResultFromRow(v, row);
+        //            }
+        //        }
+        //    }
 
-            if (adr.Contains("Result"))
-            {
-                string n = Table_Functions.GetAttribute("numval", row);
-                if (n != null)
-                {
-                    int numval;
-                    if (int.TryParse(n, out numval))
-                    {
-                        Result r = new Result();
-                        r.value = row["value"].ToString();
-                        r.numval = numval;
-                        v.result = r;
-                    }
-                }
-            }
-        }
+        //    return result;
+        //}
 
-        #endregion
+        //Event GetEventFromRow(List<Event> genEvents, DataRow row)
+        //{
+        //    Event result = null;
+
+        //    string adr = row["address"].ToString();
+
+        //    string lastNode = Table_Functions.GetLastNode(row);
+
+        //    if (lastNode != null)
+        //    {
+        //        if (lastNode.ToLower() == "event")
+        //        {
+        //            int eventIndex = adr.IndexOf("Event");
+        //            int slashIndex = adr.IndexOf('/', eventIndex) + 1;
+        //            int separatorIndex = adr.IndexOf("||", slashIndex);
+
+        //            if (separatorIndex > slashIndex)
+        //            {
+        //                string name = Table_Functions.GetAttribute("name", row);
+        //                string strId = adr.Substring(separatorIndex + 2, 2);
+
+        //                int id;
+        //                if (int.TryParse(strId, out id))
+        //                {
+        //                    Event e = genEvents.Find(x => x.id == id);
+        //                    if (e == null)
+        //                    {
+        //                        result = new Event();
+        //                        result.id = id;
+        //                        result.name = name;
+        //                        result.description = Table_Functions.GetAttribute("description", row);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        //Value GetValueFromRow(Event e, DataRow row)
+        //{
+        //    Value result = null;
+
+        //    string adr = row["address"].ToString();
+
+        //    string lastNode = Table_Functions.GetLastNode(row);
+
+        //    if (lastNode != null)
+        //    {
+        //        if (lastNode.ToLower() == "value")
+        //        {
+        //            string strId = Table_Functions.GetAttribute("id", row);
+        //            if (strId != null)
+        //            {
+        //                int id = -1;
+        //                if (int.TryParse(strId, out id))
+        //                {
+        //                    Value v = e.values.Find(x => x.id == id);
+        //                    if (v == null)
+        //                    {
+        //                        result = new Value();
+        //                        result.id = id;
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //    }
+
+        //    return result;
+        //}
+
+        //void GetDefaultFromRow(Event e, DataRow row)
+        //{
+        //    string adr = row["address"].ToString();
+
+        //    if (adr.Contains("Default"))
+        //    {
+        //        string n = Table_Functions.GetAttribute("numval", row);
+        //        if (n != null)
+        //        {
+        //            int numval;
+        //            if (int.TryParse(n, out numval))
+        //            {
+        //                Result r = new Result();
+        //                r.value = row["value"].ToString().Replace('_', ' '); ;
+        //                r.numval = numval;
+        //                e.Default = r;
+        //            }
+        //        }
+        //    }
+        //}
+
+        //void GetResultFromRow(Value v, DataRow row)
+        //{
+        //    string adr = row["address"].ToString();
+
+        //    if (adr.Contains("Result"))
+        //    {
+        //        string n = Table_Functions.GetAttribute("numval", row);
+        //        if (n != null)
+        //        {
+        //            int numval;
+        //            if (int.TryParse(n, out numval))
+        //            {
+        //                Result r = new Result();
+        //                r.value = row["value"].ToString();
+        //                r.numval = numval;
+        //                v.result = r;
+        //            }
+        //        }
+        //    }
+        //}
+
+        //#endregion
 
     }
 }

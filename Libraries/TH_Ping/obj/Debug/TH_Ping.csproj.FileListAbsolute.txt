@@ -15,10 +15,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\TH_Ping.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\TH_Ping.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\MySql.Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\TH_Configuration.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\TH_Global.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\TH_Configuration.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\obj\Debug\TH_Ping.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\obj\Debug\TH_Ping.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Ping\obj\Debug\TH_Ping.pdb

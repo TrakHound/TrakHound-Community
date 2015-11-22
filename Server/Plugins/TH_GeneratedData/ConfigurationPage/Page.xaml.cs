@@ -18,11 +18,11 @@ using System.Collections.ObjectModel;
 using System.Threading;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_Global.Functions;
 using TH_PlugIns_Server;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
+using TH_UserManagement;
 
 namespace TH_GeneratedData.ConfigurationPage
 {
@@ -54,6 +54,9 @@ namespace TH_GeneratedData.ConfigurationPage
             List<Event> genEvents;
 
             genEvents = GetGeneratedEvents(dt);
+
+            if (genEvents.Count > 0) DisplayEvents = true;
+            else DisplayEvents = false;
 
             CreateGeneratedEvents(genEvents);
 
@@ -716,7 +719,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
         #region "Load"
 
-        List<Event> GetGeneratedEvents(DataTable dt)
+        public static List<Event> GetGeneratedEvents(DataTable dt)
         {
             List<Event> result = new List<Event>();
 
@@ -774,13 +777,10 @@ namespace TH_GeneratedData.ConfigurationPage
                 }
             }
 
-            if (result.Count > 0) DisplayEvents = true;
-            else DisplayEvents = false;
-
             return result;
         }
 
-        Event GetEventFromRow(List<Event> genEvents, DataRow row)
+        static Event GetEventFromRow(List<Event> genEvents, DataRow row)
         {
             Event result = null;
 
@@ -820,7 +820,7 @@ namespace TH_GeneratedData.ConfigurationPage
             return result;
         }
 
-        Value GetValueFromRow(Event e, DataRow row)
+        static Value GetValueFromRow(Event e, DataRow row)
         {
             Value result = null;
 
@@ -853,7 +853,7 @@ namespace TH_GeneratedData.ConfigurationPage
             return result;
         }
 
-        void GetDefaultFromRow(Event e, DataRow row)
+        static void GetDefaultFromRow(Event e, DataRow row)
         {
             string adr = row["address"].ToString();
 
@@ -874,7 +874,7 @@ namespace TH_GeneratedData.ConfigurationPage
             }
         }
 
-        void GetResultFromRow(Value v, DataRow row)
+        static void GetResultFromRow(Value v, DataRow row)
         {
             string adr = row["address"].ToString();
 
@@ -895,7 +895,7 @@ namespace TH_GeneratedData.ConfigurationPage
             }
         }
 
-        Trigger GetTriggerFromRow(Value v, DataRow row)
+        static Trigger GetTriggerFromRow(Value v, DataRow row)
         {
             Trigger result = null;
 
@@ -948,7 +948,7 @@ namespace TH_GeneratedData.ConfigurationPage
             return result;
         }
 
-        CaptureItem GetCaptureItemFromRow(Event e, DataRow row)
+        static CaptureItem GetCaptureItemFromRow(Event e, DataRow row)
         {
             CaptureItem result = null;
 

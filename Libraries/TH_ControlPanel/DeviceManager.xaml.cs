@@ -29,11 +29,11 @@ using System.Xml;
 using System.Data;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
 using TH_PlugIns_Server;
+using TH_UserManagement;
 using TH_WPF;
 
 using TH_DeviceManager.Controls;
@@ -67,115 +67,12 @@ namespace TH_DeviceManager
 
                 if (currentuser != null)
                 {
-                    //CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
-
                     LoadDevices();
-
-                    //LoggedIn = true;
                 }
-                //else
-                //{
-                //    LoggedIn = false;
-                //    CurrentUsername = null;
-                //}
-
-                //if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
         }
 
         public Database_Settings userDatabaseSettings;
-
-        //#region "Properties"
-
-        //public string CurrentUsername
-        //{
-        //    get { return (string)GetValue(CurrentUsernameProperty); }
-        //    set { SetValue(CurrentUsernameProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty CurrentUsernameProperty =
-        //    DependencyProperty.Register("CurrentUsername", typeof(string), typeof(ControlPanel), new PropertyMetadata(null));
-
-
-        //public ImageSource ProfileImage
-        //{
-        //    get { return (ImageSource)GetValue(ProfileImageProperty); }
-        //    set { SetValue(ProfileImageProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty ProfileImageProperty =
-        //    DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(ControlPanel), new PropertyMetadata(null));
-
-
-        //public bool LoggedIn
-        //{
-        //    get { return (bool)GetValue(LoggedInProperty); }
-        //    set { SetValue(LoggedInProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty LoggedInProperty =
-        //    DependencyProperty.Register("LoggedIn", typeof(bool), typeof(ControlPanel), new PropertyMetadata(false));
-
-        //#endregion
-
-        //public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
-        //public event CurrentUserChanged_Handler CurrentUserChanged;
-
-        //UserConfiguration currentuser;
-        //public UserConfiguration CurrentUser
-        //{
-        //    get { return currentuser; }
-        //    set
-        //    {
-        //        currentuser = value;
-
-        //        if (currentuser != null)
-        //        {
-        //            CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
-
-        //            LoadDevices();
-
-        //            LoggedIn = true;
-        //        }
-        //        else
-        //        {
-        //            LoggedIn = false;
-        //            CurrentUsername = null;
-        //        }
-
-        //        if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
-        //    }
-        //}
-
-        //public Database_Settings userDatabaseSettings;
-
-        //void ReadUserManagementSettings()
-        //{
-        //    DatabasePluginReader dpr = new DatabasePluginReader();
-
-        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
-        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
-
-        //    string configPath;
-
-        //    // systemPath takes priority (easier for user to navigate to)
-        //    if (File.Exists(systemPath)) configPath = systemPath;
-        //    else configPath = localPath;
-
-        //    Logger.Log(configPath);
-
-        //    UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
-
-        //    if (userSettings != null)
-        //    {
-        //        if (userSettings.Databases.Databases.Count > 0)
-        //        {
-        //            userDatabaseSettings = userSettings.Databases;
-        //            Global.Initialize(userDatabaseSettings);
-        //        }
-        //    }
-
-        //}
 
         #endregion
 
@@ -387,7 +284,7 @@ namespace TH_DeviceManager
             {
                 if (userDatabaseSettings == null)
                 {
-                    configs = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
+                    configs = Management.GetConfigurationsForUser(currentuser);
                 }
                 else
                 {
@@ -433,8 +330,6 @@ namespace TH_DeviceManager
 
         void LoadConfiguration()
         {
-            //SaveNeeded = false;
-
             if (ConfigurationTable != null)
             {
                 if (ConfigurationPages != null)
@@ -457,23 +352,28 @@ namespace TH_DeviceManager
         {
             Saving = true;
 
-            DataTable dt = ConfigurationTable;
+            //DataTable dt = ConfigurationTable;
 
-            if (ConfigurationPages != null)
+            if (SelectedDevice != null)
             {
-                foreach (ConfigurationPage page in ConfigurationPages)
+                DataTable dt = Converter.XMLToTable(SelectedDevice.ConfigurationXML);
+                dt.TableName = SelectedDevice.TableName;
+
+                if (ConfigurationPages != null)
                 {
-                    page.SaveConfiguration(dt);
+                    foreach (ConfigurationPage page in ConfigurationPages)
+                    {
+                        page.SaveConfiguration(dt);
+                    }
                 }
-            }
 
-            if (save_THREAD != null) save_THREAD.Abort();
+                if (save_THREAD != null) save_THREAD.Abort();
 
-            save_THREAD = new Thread(new ParameterizedThreadStart(Save_Worker));
-            save_THREAD.Start(dt);
+                save_THREAD = new Thread(new ParameterizedThreadStart(Save_Worker));
+                save_THREAD.Start(dt);
+            }  
         }
 
-        //void Save_Worker()
         void Save_Worker(object o)
         {
             DataTable dt = (DataTable)o;
@@ -522,59 +422,6 @@ namespace TH_DeviceManager
             }
 
             this.Dispatcher.BeginInvoke(new Action(Save_Finished), background, null);
-
-            //if (ConfigurationTable != null)
-            //{
-            //    //if (ConfigurationPages != null)
-            //    //{
-            //    //    foreach (ConfigurationPage page in ConfigurationPages)
-            //    //    {
-            //    //        this.Dispatcher.Invoke(new Action<ConfigurationPage>(Save_GUI), new object[] { page });
-            //    //    }
-            //    //}
-
-            //    SaveConfiguration();
-
-            //    if (SelectedDevice.Shared && SelectedDevice.SharedTableName != null && ConfigurationTable != null)
-            //    {
-            //        MessageBoxResult result = MessageBox.Show("This configuration is Shared. Do you want to Update the Shared Configuration as well?", "Update Shared Configuration", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            //        if (result == MessageBoxResult.Yes)
-            //        {
-            //            if (Management.UpdateConfigurationTable(SelectedDevice.TableName, ConfigurationTable))
-            //            {
-            //                Management.SharedListItem item = new Management.SharedListItem();
-
-            //                item.upload_date = DateTime.Now;
-
-            //                if (SelectedDevice.Version != null)
-            //                {
-            //                    Version version;
-            //                    if (Version.TryParse(SelectedDevice.Version, out version))
-            //                    {
-            //                        int major = version.Major;
-            //                        int minor = version.Minor;
-            //                        int build = version.Build;
-            //                        int revision = version.Revision;
-
-            //                        if (minor < 10) minor += 1;
-            //                        else
-            //                        {
-            //                            major += 1;
-            //                            minor = 0;
-            //                        }
-
-            //                        item.version = major.ToString() + "." + minor.ToString() + "." + build.ToString() + "." + revision.ToString();
-            //                    }
-            //                }
-
-            //                Management.UpdateSharedConfiguration_ToList(CurrentUser, item);
-            //                Management.UpdateConfigurationTable(SelectedDevice.SharedTableName, ConfigurationTable);
-            //            }
-            //        }
-            //    }
-            //}
-
-            //this.Dispatcher.BeginInvoke(new Action(Save_Finished), background, null);
         }
 
         void Save_GUI(ConfigurationPage page)
@@ -586,80 +433,28 @@ namespace TH_DeviceManager
         {
             if (SelectedDevice != null) SelectDevice(SelectedDevice);
 
-
             SaveNeeded = false;
             Saving = false;
         }
 
-        //void Save_Finished()
-        //{
-        //    if (SelectedDevice != null)
-        //    {
-        //        //if (SelectedDevice.Shared && SelectedDevice.SharedTableName != null && ConfigurationTable != null)
-        //        //{
-        //        //    MessageBoxResult result = MessageBox.Show("This configuration is Shared. Do you want to Update the Shared Configuration as well?", "Update Shared Configuration", MessageBoxButton.YesNo, MessageBoxImage.Question);
-        //        //    if (result == MessageBoxResult.Yes)
-        //        //    {
-        //        //        if (Management.UpdateConfigurationTable(SelectedDevice.TableName, ConfigurationTable))
-        //        //        {
-        //        //            Management.SharedListItem item = new Management.SharedListItem();
-
-        //        //            item.upload_date = DateTime.Now;
-
-        //        //            if (SelectedDevice.Version != null)
-        //        //            {
-        //        //                Version version;
-        //        //                if (Version.TryParse(SelectedDevice.Version, out version))
-        //        //                {
-        //        //                    int major = version.Major;
-        //        //                    int minor = version.Minor;
-        //        //                    int build = version.Build;
-        //        //                    int revision = version.Revision;
-
-        //        //                    if (minor < 10) minor += 1;
-        //        //                    else
-        //        //                    {
-        //        //                        major += 1;
-        //        //                        minor = 0;
-        //        //                    }
-
-        //        //                    item.version = major.ToString() + "." + minor.ToString() + "." + build.ToString() + "." + revision.ToString();
-        //        //                }
-        //        //            }
-
-        //        //            Management.UpdateSharedConfiguration_ToList(CurrentUser, item);
-        //        //            Management.UpdateConfigurationTable(SelectedDevice.SharedTableName, ConfigurationTable);
-        //        //        }
-        //        //    }
-        //        //}
-
-        //        SelectDevice(SelectedDevice);
-        //    }
-
-
-        //    SaveNeeded = false;
-        //    Saving = false;
-
-        //    //LoadDevices();
-        //}
-
         public void SaveConfiguration(DataTable dt)
         {
+            string tablename = null;
+
             if (dt != null)
             {
+                tablename = dt.TableName;
+
                 if (currentuser != null)
                 {
-
-                    string tablename = dt.TableName;
-
                     // Reset Update ID
                     Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
 
                     if (userDatabaseSettings == null)
                     {
-                        TH_Configuration.User.Management.ClearConfigurationTable(tablename);
+                        Management.ClearConfigurationTable(tablename);
 
-                        TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
+                        Management.UpdateConfigurationTable(tablename, dt);
                     }
                     else
                     {
@@ -673,83 +468,18 @@ namespace TH_DeviceManager
                 }
             }
 
-            ConfigurationTable = dt;
+            ConfigurationTable = dt.Copy();
 
-            XmlDocument xml = Converter.TableToXML(ConfigurationTable);
+            XmlDocument xml = Converter.TableToXML(dt);
             if (xml != null)
             {
                 SelectedDevice = Configuration.ReadConfigFile(xml);
+                SelectedDevice.TableName = tablename;
+
                 SelectedDeviceButton.Config = SelectedDevice;
             }
         }
-
-        //public void SaveConfiguration()
-        //{
-        //    DataTable dt = ConfigurationTable;
-
-        //    if (dt != null)
-        //    {
-        //        if (currentuser != null)
-        //        {
-
-        //            string tablename = dt.TableName;
-
-        //            //// Save Enabled
-        //            //Table_Functions.UpdateTableValue(SelectedDevice.Enabled.ToString(), "/Enabled", dt);
-
-        //            // Reset Update ID
-        //            Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
-
-        //            if (userDatabaseSettings == null)
-        //            {
-        //                TH_Configuration.User.Management.ClearConfigurationTable(tablename);
-
-        //                TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
-        //            }
-        //            else
-        //            {
-        //                //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
-        //            }
-
-        //            //if (SelectedDevice != null)
-        //            //{
-        //            //    string tablename = dt.TableName;
-
-        //            //    //// Save Enabled
-        //            //    //Table_Functions.UpdateTableValue(SelectedDevice.Enabled.ToString(), "/Enabled", dt);
-
-        //            //    // Reset Update ID
-        //            //    Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
-
-        //            //    if (userDatabaseSettings == null)
-        //            //    {
-        //            //        TH_Configuration.User.Management.ClearConfigurationTable(tablename);
-
-        //            //        TH_Configuration.User.Management.UpdateConfigurationTable(tablename, dt);
-        //            //    }
-        //            //    else
-        //            //    {
-        //            //        //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
-        //            //    }
-        //            //}
-        //        }
-        //        // If not logged in Save to File in 'C:\TrakHound\'
-        //        else
-        //        {
-
-        //        }
-        //    }
-
-        //    ConfigurationTable = dt;
-
-        //    XmlDocument xml = Converter.TableToXML(ConfigurationTable);
-        //    if (xml != null)
-        //    {
-        //        SelectedDevice = Configuration.ReadConfigFile(xml);
-        //        this.Dispatcher.BeginInvoke(new Action<Configuration>(SelectDevice), background, new object[] { SelectedDevice });
-        //    }
-        //}
-
+      
         #endregion
 
         #region "Remove Device"
@@ -1033,18 +763,6 @@ namespace TH_DeviceManager
                 }
             }
 
-            //Configuration config = (Configuration)lb.DataObject;
-
-            //if (config != null)
-            //{
-            //    if (SelectedDevice != config)
-            //    {
-            //        SelectedDevice = config;
-
-            //        SelectDevice(config);
-            //    }
-            //}
-
             foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
             lb.IsSelected = true;
         }
@@ -1287,32 +1005,6 @@ namespace TH_DeviceManager
             }
         }
 
-        //void Description_Clicked()
-        //{
-        //    if (CurrentPage != null)
-        //    {
-        //        if (CurrentPage.GetType() != typeof(Pages.DescriptionConfiguration))
-        //        {
-        //            CurrentPage = new Pages.DescriptionConfiguration();
-        //        }
-        //    }
-        //    else CurrentPage = new Pages.DescriptionConfiguration();
-        //}
-
-        //void Agent_Clicked()
-        //{
-        //    if (CurrentPage != null)
-        //    {
-        //        if (CurrentPage.GetType() != typeof(Pages.Agent.Page))
-        //        {
-        //            CurrentPage = new Pages.AgentConfiguration();
-        //        }
-        //    }
-        //    else CurrentPage = new Pages.AgentConfiguration();
-        //}
-
-
-
         List<ConfigurationPage> AddConfigurationPageButtons(List<Table_PlugIn> plugins)
         {
             List<ConfigurationPage> result = new List<ConfigurationPage>();
@@ -1386,7 +1078,6 @@ namespace TH_DeviceManager
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
 
-            //TablePlugIns = Table_Plugins;
         }
 
         void LoadTablePlugins(string Path)
@@ -1441,7 +1132,6 @@ namespace TH_DeviceManager
                 {
                     try
                     {
-
                         Table_PlugIn tp = ltp.Value;
 
                         Type config_type = tp.Config_Page;
@@ -1449,42 +1139,11 @@ namespace TH_DeviceManager
                         object o = Activator.CreateInstance(config_type);
 
                         ConfigurationPage page = (ConfigurationPage)o;
-                        //page.SettingChanged += page_SettingChanged;
-                        
-
-                        //configurationPages.Add(page);
-
                     }
                     catch (Exception ex) { Logger.Log("Plugin Exception! : " + ex.Message); }
                 }
             }
         }
-
-
-        //void TablePlugIns_Initialize(Configuration config)
-        //{
-        //    if (TablePlugIns != null && config != null)
-        //    {
-        //        foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-        //        {
-        //            try
-        //            {
-        //                Table_PlugIn tp = ltp.Value;
-
-
-
-
-        //                //tp.Initialize(config);
-
-        //                //AddConfigurationPage(tp);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine("Plugin Exception! : " + ex.Message);
-        //            }
-        //        }
-        //    }
-        //}
 
         void TablePlugIns_Closing()
         {

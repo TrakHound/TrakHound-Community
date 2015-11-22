@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         
-        xmlns:login="clr-namespace:TrakHound_Server_Control_Panel.Login"
+        xmlns:user="clr-namespace:TH_UserManagement;assembly=TH_UserManagement"
+        
         xmlns:local="clr-namespace:TrakHound_Server_Control_Panel"
         xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
@@ -552,6 +553,7 @@
                                                             </BeginStoryboard>
                                                         </DataTrigger.ExitActions>
                                                     </DataTrigger>
+                                                
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
@@ -682,11 +684,6 @@
 
                                     </Grid>
 
-
-
-
-
-
                                 </Grid>
 
                                 <!--TrakHound Icon-->
@@ -767,7 +764,7 @@
                 </DockPanel>
 
                 <!--User Login Menu-->
-                <login:DropDown x:Name="LoginMenu" Shown="False" />
+                <user:Menu x:Name="LoginMenu" Margin="0,30,144,0" CurrentUserChanged="LoginMenu_CurrentUserChanged" ShownChanged="LoginMenu_ShownChanged" MyAccountClicked="LoginMenu_MyAccountClicked"/>
 
             </Grid>
 

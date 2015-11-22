@@ -34,7 +34,65 @@
     <Grid x:Name="Root_GRID">
         <Grid.Style>
             <Style TargetType="Grid">
-                <Style.Triggers>                
+                <Style.Triggers>
+
+                    <DataTrigger Binding="{Binding Loading}" Value="true">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="275" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="315" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseIn"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
+                                        <DiscreteDoubleKeyFrame Value="0" />
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
+                                        <DiscreteDoubleKeyFrame Value="0" />
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseIn"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+
                     <DataTrigger Binding="{Binding Shown}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
@@ -392,55 +450,132 @@
 
                             <Grid>
 
-                                <Image Source="{Binding ProfileImage}" />
+                                <!--Profile Image-->
+                                <Grid>
 
-                                <Border Height="30" CornerRadius="2" Margin="10,0" PreviewMouseDown="ProfileImage_PreviewMouseDown">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Setter Property="Background" Value="#88ffffff"/>
+                                    <Image Source="{Binding ProfileImage}" />
+
+                                    <Border Height="30" CornerRadius="2" Margin="10,0" PreviewMouseDown="ProfileImage_PreviewMouseDown">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Setter Property="Background" Value="#88ffffff"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter Property="Background" Value="#aaffffff"/>
+                                                        <Setter Property="Cursor" Value="Hand"/>
+                                                    </Trigger>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=profileimage_BD}" Value="true">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid Margin="5,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--Camera Icon-->
+                                            <Rectangle x:Name="uploadphoto_image" Height="30"  Width="30" >
+                                                <Rectangle.Resources>
+                                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Server-Control-Panel;component/Resources/Camera_01.png" />
+                                                </Rectangle.Resources>
+
+                                                <Rectangle.Style>
+                                                    <Style TargetType="Rectangle">
+                                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Setter Property="Fill" Value="#333"/>
+                                                    </Style>
+                                                </Rectangle.Style>
+                                            </Rectangle>
+
+                                            <!--Change Text-->
+                                            <TextBlock Grid.Column="1" Text="Change" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap"/>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </Grid>
+
+                                <!--Loading Animation-->
+                                <Grid Background="#eee">
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Opacity" Value="0.0"/>
+                                            <Setter Property="Width" Value="0"/>
+                                            <Setter Property="Height" Value="0"/>
                                             <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter Property="Background" Value="#aaffffff"/>
-                                                    <Setter Property="Cursor" Value="Hand"/>
-                                                </Trigger>
-                                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=profileimage_BD}" Value="true">
-                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                <DataTrigger Binding="{Binding ProfileImageLoading}" Value="true">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="120" >
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="120" >
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseIn"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                    <DataTrigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
+                                                                    <DiscreteDoubleKeyFrame Value="0" />
+                                                                </DoubleAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
+                                                                    <DiscreteDoubleKeyFrame Value="0" />
+                                                                </DoubleAnimationUsingKeyFrames>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                    <DoubleAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseIn"/>
+                                                                    </DoubleAnimation.EasingFunction>
+                                                                </DoubleAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.ExitActions>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Border.Style>
+                                    </Grid.Style>
 
-                                    <Grid Margin="5,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
 
-                                        <!--Camera Icon-->
-                                        <Rectangle x:Name="uploadphoto_image" Height="30"  Width="30" >
-                                            <Rectangle.Resources>
-                                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Server-Control-Panel;component/Resources/Camera_01.png" />
-                                            </Rectangle.Resources>
-
-                                            <Rectangle.Style>
-                                                <Style TargetType="Rectangle">
-                                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                <Setter Property="Fill" Value="#333"/>
-                                            </Style>
-                                            </Rectangle.Style>
-                                        </Rectangle>
-                                        
-                                        <!--Change Text-->
-                                        <TextBlock Grid.Column="1" Text="Change" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap"/>
-
-                                    </Grid>
-
-                                </Border>
+                                </Grid>
 
                             </Grid>
-                            
+
                         </Border>
 
                         <StackPanel Grid.Column="1" Margin="10">
@@ -474,11 +609,24 @@
 
                         </StackPanel>
 
-
                     </Grid>
 
+                    <!--Loading Cover-->
+                    <Grid Background="#eee">
+                        <Grid.Style>
+                            <Style TargetType="Grid">     
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Loading}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                    </Grid>
+                    
                     <!--Loading Animation-->
-                    <Grid Background="#0080ff">
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Opacity" Value="0.0"/>
@@ -489,7 +637,7 @@
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="180" >
+                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="215" >
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseOut"/>
                                                         </DoubleAnimation.EasingFunction>
@@ -498,7 +646,7 @@
                                             </BeginStoryboard>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="305" >
+                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="315" >
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseOut"/>
                                                         </DoubleAnimation.EasingFunction>
@@ -545,7 +693,13 @@
                             </Style>
                         </Grid.Style>
 
-                        <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="#fff" />
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0">
+
+                            <loadinganimation:Wheel Width="75" Height="75" Foreground="#0080ff" />
+                            
+                            <TextBlock Text="Logging In.." FontSize="14pt" Foreground="#0080ff" HorizontalAlignment="Center" Margin="0,30,0,10"/>
+
+                        </StackPanel>
 
                     </Grid>
 

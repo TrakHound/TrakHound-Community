@@ -25,8 +25,8 @@ using System.Collections.ObjectModel;
 using System.Threading;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_Global;
+using TH_UserManagement;
 
 namespace TH_DeviceManager.Pages.AddDevice
 {
@@ -116,7 +116,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                     {
                         if (deviceManager.userDatabaseSettings == null)
                         {
-                            TH_Configuration.User.Management.AddConfigurationToUser(deviceManager.CurrentUser, config);
+                            Management.AddConfigurationToUser(deviceManager.CurrentUser, config);
 
                             //Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
                         }

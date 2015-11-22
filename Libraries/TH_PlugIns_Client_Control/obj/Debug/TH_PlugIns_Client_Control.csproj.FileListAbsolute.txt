@@ -5,7 +5,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_D
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_PlugIns_Client_Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Global.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Device_Client.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_PlugIns_Client_Data.pdb

@@ -24,13 +24,13 @@
             <!--Event Link-->
             <TextBlock Text="Event" FontSize="8pt" Foreground="#666666" Margin="0,10" VerticalAlignment="Center"/>
 
-            <ComboBox Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedEvent}" SelectionChanged="Event_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+            <ComboBox x:Name="event_COMBO" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedEvent}" SelectionChanged="Event_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
 
             <!--Cycle Id Link-->
             <TextBlock Text="Value" FontSize="8pt" Foreground="#666666" Margin="0,10" VerticalAlignment="Center"/>
 
-            <ComboBox Width="200" ItemsSource="{Binding CaptureLinks}" Text="{Binding SelectedCaptureLink}" SelectionChanged="CaptureLink_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+            <ComboBox x:Name="capturelink_COMBO" Width="200" ItemsSource="{Binding CaptureLinks}" Text="{Binding SelectedCaptureLink}" SelectionChanged="CaptureLink_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
         </StackPanel>
 

@@ -6,6 +6,8 @@
              
              MinWidth="30"
              MinHeight="30"
+             
+             x:Name="uc"
              >
 
     <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Cursor="Hand">
@@ -152,12 +154,16 @@
             </Grid>
 
             <!--Text Label-->
-            <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" Margin="5,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="#aaffffff"/>
+                        <Setter Property="Margin" Value="5,0,10,0"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                            <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                <Setter Property="Margin" Value="10,0"/>                                
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">

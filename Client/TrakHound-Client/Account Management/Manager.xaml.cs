@@ -19,8 +19,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_PlugIns_Client_Control;
+using TH_UserManagement;
 using TH_WPF;
 
 namespace TrakHound_Client.Account_Management

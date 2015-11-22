@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Net;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Configuration.User;
@@ -48,22 +49,9 @@ namespace TrakHound_Server_Control_Panel.Login
 
             Root_GRID.Width = 0;
             Root_GRID.Height = 0;
-
-            // Remember Me
-
         }
 
-        public void LoadRememberMeData()
-        {
-            UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
-            if (RememberUser != null)
-            {
-                Login(RememberUser);
-
-                currentUser = RememberUser;
-                mw.CurrentUser = currentUser;
-            }
-        }
+        
 
         public TrakHound_Server_Control_Panel.MainWindow mw;
 
@@ -133,7 +121,10 @@ namespace TrakHound_Server_Control_Panel.Login
         public bool Loading
         {
             get { return (bool)GetValue(LoadingProperty); }
-            set { SetValue(LoadingProperty, value); }
+            set 
+            {            
+                SetValue(LoadingProperty, value);
+            }
         }
 
         public static readonly DependencyProperty LoadingProperty =
@@ -246,25 +237,272 @@ namespace TrakHound_Server_Control_Panel.Login
             ChangeProfileImage();
         }
 
-        void LoadProfileImage(UserConfiguration userConfig)
+
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+        #region "Login"
+
+        class Login_Info
         {
+            public string username { get; set; }
+            public string password { get; set; }
+        }
+
+        Thread login_THREAD;
+
+        void Login()
+        {
+            Loading = true;
+
+            LoginError = false;        
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
+
+            Login_Info info = new Login_Info();
+            info.username = username_TXT.Text;
+            info.password = password_TXT.Password;
+
+            if (login_THREAD != null) login_THREAD.Abort();
+
+            login_THREAD = new Thread(new ParameterizedThreadStart(Login_Worker));
+            login_THREAD.Start(info);
+        }
+
+        void Login_Worker(object o)
+        {
+            if (o != null)
+            {
+                Login_Info info = (Login_Info)o;
+
+                UserConfiguration userConfig = null;
+
+                //If no userconfiguration database configuration found then use default TrakHound User Database
+                if (mw.userDatabaseSettings == null)
+                {
+                    userConfig = TH_Configuration.User.Management.Login(info.username, info.password);
+                }
+                else
+                {
+                    userConfig = Users.Login(info.username, info.password, mw.userDatabaseSettings);
+                }
+
+                this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
+            }         
+        }
+
+        void Login_GUI(UserConfiguration userConfig)
+        {
+            if (RememberMe) Management.SetRememberMe(userConfig, Management.RememberMeType.Client);
+
+            Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+            Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
+            Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+
+            Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+            EmailAddress = userConfig.email;
+
+            username_TXT.Clear();
+            password_TXT.Clear();
+
+            LoadProfileImage(userConfig);
+            LoggedIn = true;
+        }
+
+        void Login_Finished(UserConfiguration userConfig)
+        {
+            // If login was successful
             if (userConfig != null)
             {
-                System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
-
-                if (img != null)
-                {
-                    System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
-
-                    IntPtr bmpPt = bmp.GetHbitmap();
-                    BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                    bmpSource.Freeze();
-
-                    ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
-                    //mw.ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 200, 200);
-                }
+                Login_GUI(userConfig);
             }
+            else
+            {
+                LoginError = true;
+                LoggedIn = false;
+
+                Fullname = null;
+                Firstname = null;
+                Lastname = null;
+
+                Username = null;
+            }
+
+            currentUser = userConfig;
+            mw.CurrentUser = currentUser;
+
+            Loading = false;          
+        }
+
+        #endregion
+
+        #region "Logout"
+
+        void SignOut()
+        {
+            LoggedIn = false;
+
+            Fullname = null;
+            Firstname = null;
+            Lastname = null;
+
+            Username = null;
+            currentUser = null;
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
+            //mw.CurrentUser = null;
+        }
+
+        #endregion
+
+        #region "Remember Me"
+
+        public bool RememberMe
+        {
+            get { return (bool)GetValue(RememberMeProperty); }
+            set { SetValue(RememberMeProperty, value); }
+        }
+
+        public static readonly DependencyProperty RememberMeProperty =
+            DependencyProperty.Register("RememberMe", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
+
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            RememberMe = true;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            RememberMe = false;
+        }
+
+
+        Thread rememberme_THREAD;
+
+        public void LoadRememberMe()
+        {
+            Loading = true;
+
+            LoginError = false;
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
+
+            if (login_THREAD != null) login_THREAD.Abort();
+
+            login_THREAD = new Thread(new ThreadStart(LoadRememberMe_Worker));
+            login_THREAD.Start();
+        }
+
+        void LoadRememberMe_Worker()
+        {
+            UserConfiguration RememberUser = Management.GetRememberMe(Management.RememberMeType.Client);
+
+            this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
+        }
+
+        void LoadRememberMe_GUI(UserConfiguration userConfig)
+        {
+            Management.SetRememberMe(userConfig, Management.RememberMeType.Client);
+
+            Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+            Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
+            Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+
+            Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+            EmailAddress = userConfig.email;
+
+            username_TXT.Clear();
+            password_TXT.Clear();
+
+            LoadProfileImage(userConfig);
+            LoggedIn = true;
+        }
+
+        void LoadRememberMe_Finished(UserConfiguration userConfig)
+        {
+            // If login was successful
+            if (userConfig != null)
+            {
+                LoadRememberMe_GUI(userConfig);
+            }
+            else
+            {
+                LoginError = true;
+                LoggedIn = false;
+
+                Fullname = null;
+                Firstname = null;
+                Lastname = null;
+
+                Username = null;
+            }
+
+            currentUser = userConfig;
+            mw.CurrentUser = currentUser;
+
+            Loading = false;
+        }
+
+        #endregion
+
+        #region "Profile Image"
+
+        public bool ProfileImageLoading
+        {
+            get { return (bool)GetValue(ProfileImageLoadingProperty); }
+            set { SetValue(ProfileImageLoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageLoadingProperty =
+            DependencyProperty.Register("ProfileImageLoading", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
+
+
+        Thread profileimage_THREAD;
+
+        void LoadProfileImage(UserConfiguration userConfig)
+        {
+            ProfileImageLoading = true;
+
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
+
+            if (profileimage_THREAD != null) profileimage_THREAD.Abort();
+
+            profileimage_THREAD = new Thread(new ParameterizedThreadStart(LoadProfileImage_Worker));
+            profileimage_THREAD.Start(userConfig);
+        }
+
+        void LoadProfileImage_Worker(object o)
+        {
+            if (o != null)
+            {
+                UserConfiguration userConfig = (UserConfiguration)o;
+
+                if (userConfig != null)
+                {
+                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
+
+                    this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadProfileImage_GUI), priority, new object[] { img });
+                }
+
+                this.Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), priority, new object[] { });
+            }
+        }
+
+        void LoadProfileImage_GUI(System.Drawing.Image img)
+        {
+            if (img != null)
+            {
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+
+                IntPtr bmpPt = bmp.GetHbitmap();
+                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                bmpSource.Freeze();
+
+                ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+            }
+        }
+
+        void LoadProfileImage_Finished()
+        {
+            ProfileImageLoading = false;
         }
 
         void ChangeProfileImage()
@@ -300,102 +538,9 @@ namespace TrakHound_Server_Control_Panel.Login
             }
         }
 
-        public bool Login()
-        {
-            bool result = false;
-
-            LoginError = false;
-            Loading = true;
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
+        #endregion
 
 
-            UserConfiguration userConfig = null;
-
-             //If no userconfiguration database configuration found then use default TrakHound User Database
-            if (mw.userDatabaseSettings == null)
-            {
-                userConfig = TH_Configuration.User.Management.Login(username_TXT.Text, password_TXT.Password);
-            }
-            else
-            {
-                userConfig = Users.Login(username_TXT.Text, password_TXT.Password, mw.userDatabaseSettings);
-            }
-
-            // If login was successful
-            if (userConfig != null)
-            {
-                Login(userConfig);
-
-                result = true;
-
-                //if (RememberMe) Management.SetRememberMe(userConfig, Management.RememberMeType.Client);
-
-                //Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-                //Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-                //Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-
-                //Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-                //EmailAddress = userConfig.email;
-
-                //username_TXT.Clear();
-                //password_TXT.Clear();
-
-                //LoadProfileImage(userConfig);
-                //LoggedIn = true;
-                //result = true;
-            }
-            else
-            {
-                LoginError = true;
-                LoggedIn = false;
-
-                Fullname = null;
-                Firstname = null;
-                Lastname = null;
-
-                Username = null;
-            }
-
-
-            currentUser = userConfig;
-            mw.CurrentUser = currentUser;
-
-            Loading = false;
-
-            return result;
-        }
-
-        void Login(UserConfiguration userConfig)
-        {
-            if (RememberMe) Management.SetRememberMe(userConfig, Management.RememberMeType.Client);
-
-            Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-            Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-            Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-
-            Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-            EmailAddress = userConfig.email;
-
-            username_TXT.Clear();
-            password_TXT.Clear();
-
-            LoadProfileImage(userConfig);
-            LoggedIn = true;
-        }
-
-        void SignOut()
-        {
-            LoggedIn = false;
-
-            Fullname = null;
-            Firstname = null;
-            Lastname = null;
-
-            Username = null;
-            currentUser = null;
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Server-Control-Panel;component/Resources/blank_profile_01.png"));
-            //mw.CurrentUser = null;
-        }
 
         void CreateAccount()
         {
@@ -435,36 +580,7 @@ namespace TrakHound_Server_Control_Panel.Login
             password_TXT.Password = null;
         }
 
-        #region "Remember Me"
 
-        public bool RememberMe
-        {
-            get { return (bool)GetValue(RememberMeProperty); }
-            set { SetValue(RememberMeProperty, value); }
-        }
-
-        public static readonly DependencyProperty RememberMeProperty =
-            DependencyProperty.Register("RememberMe", typeof(bool), typeof(DropDown), new PropertyMetadata(false));
-
-        void LoadRememberMe()
-        {
-
-
-
-
-        }
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            RememberMe = true;
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            RememberMe = false;
-        }
-
-        #endregion
 
         private void ManageDevices_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {

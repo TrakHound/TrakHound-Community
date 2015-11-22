@@ -17,10 +17,10 @@ using System.Data;
 using System.Collections.ObjectModel;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_PlugIns_Server;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
+using TH_UserManagement;
 
 using TH_InstanceTable.ConfigurationPage;
 

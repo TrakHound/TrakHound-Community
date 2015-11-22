@@ -22,10 +22,10 @@ using System.Data;
 using System.Collections.ObjectModel;
 
 using TH_Configuration;
-using TH_Configuration.User;
 using TH_Global.Functions;
 using TH_PlugIns_Server;
 using TH_WPF;
+using TH_UserManagement;
 
 namespace TH_DeviceManager.Pages.Databases
 {
@@ -226,6 +226,7 @@ namespace TH_DeviceManager.Pages.Databases
                     Controls.DatabaseItemContainer item = new Controls.DatabaseItemContainer();
                     item.prefix = address;
                     item.ItemContent = configButton;
+                    item.Clicked += item_Clicked;
                     item.RemoveClicked += item_RemoveClicked;
 
                     CollapseButton cbt = new CollapseButton();

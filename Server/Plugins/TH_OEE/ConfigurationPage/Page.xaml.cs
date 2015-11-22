@@ -18,7 +18,7 @@ using System.Collections.ObjectModel;
 
 using TH_PlugIns_Server;
 using TH_Configuration;
-using TH_Configuration.User;
+using TH_UserManagement;
 
 namespace TH_OEE.ConfigurationPage
 {

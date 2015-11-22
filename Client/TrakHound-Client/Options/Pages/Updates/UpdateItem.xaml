@@ -14,7 +14,20 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border CornerRadius="1" BorderThickness="1" BorderBrush="{StaticResource VeryLightText}" Margin="0, 0, 0, 20">
+    <Border BorderThickness="1" Margin="0, 0, 0, 20">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="Background" Value="#00000000"/>
+                <Setter Property="BorderBrush" Value="#888"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="#110080ff"/>
+                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        
         <Grid Margin="10, 5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>

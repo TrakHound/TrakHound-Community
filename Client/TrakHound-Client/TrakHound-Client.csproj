@@ -83,9 +83,9 @@
     <Compile Include="Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Login\DropDown.xaml.cs">
+    <None Include="Login\DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Options\Pages\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
@@ -190,10 +190,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Login\DropDown.xaml">
+    <None Include="Login\DropDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Options\Pages\Updates\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -359,6 +359,13 @@
     <Resource Include="Resources\feenux_logo_05_30px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\FullScreen_02_30px.png" />
+    <Resource Include="Resources\Minus_04.png" />
+    <Resource Include="Resources\Plus_04.png" />
+    <None Include="Resources\Plus_02.png" />
+    <None Include="Resources\Minus_02.png" />
+    <Resource Include="Resources\Plus_01.png" />
+    <Resource Include="Resources\Minus_01.png" />
     <Resource Include="Resources\Root.png" />
     <Resource Include="Resources\Camera_01.png" />
     <Resource Include="Resources\AddUser_01.png" />
@@ -449,6 +456,10 @@
     <ProjectReference Include="..\..\Libraries\TH_Updater\TH_Updater.csproj">
       <Project>{908a68da-2ba5-49b5-afc0-044e37d8d92a}</Project>
       <Name>TH_Updater</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
+      <Name>TH_UserManagement</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
