@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Text;
 using System.Reflection;
+using System.Drawing;
 
 namespace TH_Configuration
 {
@@ -60,6 +61,14 @@ namespace TH_Configuration
 
         #endregion
 
+        #region "Images"
+
+        public Image Manufacturer_Logo { get; set; }
+
+        public Image Device_Image { get; set; }
+
+        #endregion
+
         /// <summary>
         /// Used as a UniqueId between any number of devices
         /// Composed of Database name, IP address, and Port (so it should always be unique)
@@ -89,8 +98,6 @@ namespace TH_Configuration
         {
             get { return GetDatabaseName(SQL); }
         }
-
-        
 
         #endregion
 
@@ -281,7 +288,7 @@ namespace TH_Configuration
 
             //Result.UniqueId = GetUniqueID();
 
-            Console.WriteLine("Configuration Successfully Read");
+            //Console.WriteLine("Configuration Successfully Read");
 
             return Result;
 

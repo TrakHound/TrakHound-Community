@@ -642,6 +642,18 @@ namespace TH_UserManagement
                                             Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
                                             if (config != null)
                                             {
+                                                if (config.FileLocations.Manufacturer_Logo_Path != null)
+                                                {
+                                                    System.Drawing.Image manufacturer_logo = Images.GetImage(config.FileLocations.Manufacturer_Logo_Path);
+                                                    if (manufacturer_logo != null) config.Manufacturer_Logo = manufacturer_logo;
+                                                }
+
+                                                if (config.FileLocations.Image_Path != null)
+                                                {
+                                                    System.Drawing.Image device_image = Images.GetImage(config.FileLocations.Image_Path);
+                                                    if (device_image != null) config.Device_Image = device_image;
+                                                }
+
                                                 config.TableName = tablename;
                                                 result.Add(config);
                                             }

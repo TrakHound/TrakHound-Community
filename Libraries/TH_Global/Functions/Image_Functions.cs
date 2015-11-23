@@ -3,6 +3,11 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+
+using System.IO;
+
 namespace TH_Global.Functions
 {
     public static class Image_Functions
@@ -94,6 +99,43 @@ namespace TH_Global.Functions
 
             return destImage;
         }
+
+
+        public static BitmapImage SourceFromImage(System.Drawing.Image img)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                img.Save(stream, img.RawFormat);
+
+                return ImageFromBuffer(stream.ToArray());
+            }
+        }
+
+        public static BitmapImage ImageFromBuffer(Byte[] bytes)
+        {
+            MemoryStream stream = new MemoryStream(bytes);
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.StreamSource = stream;
+            image.EndInit();
+            return image;
+        }
+
+        public static Byte[] BufferFromImage(BitmapImage imageSource)
+        {
+            Stream stream = imageSource.StreamSource;
+            Byte[] buffer = null;
+            if (stream != null && stream.Length > 0)
+            {
+                using (BinaryReader br = new BinaryReader(stream))
+                {
+                    buffer = br.ReadBytes((Int32)stream.Length);
+                }
+            }
+
+            return buffer;
+        }
+
 
     }
 }

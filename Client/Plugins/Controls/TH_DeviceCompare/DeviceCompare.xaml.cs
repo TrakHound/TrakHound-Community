@@ -46,7 +46,7 @@ namespace TH_DeviceCompare
 
             CreateRowHeaders();
 
-            CheckHeaderHeight();
+            //CheckHeaderHeight();
         }
 
         #region "PlugIn"
@@ -151,7 +151,7 @@ namespace TH_DeviceCompare
 
                 foreach (Device_Client device in Devices) CreateDeviceDisplay(device);
 
-                CheckHeaderHeight();
+                //CheckHeaderHeight();
             }
         }
 
@@ -1430,13 +1430,24 @@ namespace TH_DeviceCompare
 
             Result.Clicked += ColumnHeader_Clicked;
 
+
+            if (device.configuration.Device_Image != null)
+            {
+                BitmapImage img = TH_Global.Functions.Image_Functions.SourceFromImage(device.configuration.Device_Image);
+                Result.Device_Image = Image_Functions.SetImageSize(img, 160);
+            }
+
+            if (device.configuration.Manufacturer_Logo != null)
+            {
+                BitmapImage img = TH_Global.Functions.Image_Functions.SourceFromImage(device.configuration.Manufacturer_Logo);
+                Result.Device_Logo = Image_Functions.SetImageSize(img, 0, 50);
+            }
+
+            //BitmapImage device_image = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Image_Path);
+            //BitmapImage device_logo = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Manufacturer_Logo_Path);
+
             
-
-            BitmapImage device_image = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Image_Path);
-            BitmapImage device_logo = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Manufacturer_Logo_Path);
-
-            Result.Device_Image = Image_Functions.SetImageSize(device_image, 160);
-            Result.Device_Logo = Image_Functions.SetImageSize(device_logo, 0, 50);
+            //Result.Device_Logo = Image_Functions.SetImageSize(device_logo, 0, 50);
 
             return Result;
         }
@@ -1445,6 +1456,15 @@ namespace TH_DeviceCompare
         {
             DeviceSelected(Index);
         }
+
+        public bool ColumnHeaderMinimized
+        {
+            get { return (bool)GetValue(ColumnHeaderMinimizedProperty); }
+            set { SetValue(ColumnHeaderMinimizedProperty, value); }
+        }
+
+        public static readonly DependencyProperty ColumnHeaderMinimizedProperty =
+            DependencyProperty.Register("ColumnHeaderMinimized", typeof(bool), typeof(DeviceCompare), new PropertyMetadata(false));
 
         #endregion
 
@@ -1619,21 +1639,54 @@ namespace TH_DeviceCompare
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.HeightChanged)
+            //if (e.HeightChanged)
+            //{
+            //    CheckHeaderHeight();
+            //}
+        }
+
+        //void CheckHeaderHeight()
+        //{
+        //    if (this.RenderSize.Height < 850) foreach (Header header in ColumnHeaders) header.Minimized = true;
+        //    else foreach (Header header in ColumnHeaders) header.Minimized = false;
+        //}
+
+        #endregion
+
+        bool collapsed = true;
+        bool minimized = true;
+
+        private void ColumnHeaderMinimize_Clicked(TH_WPF.Button_02 bt)
+        {
+            if (!minimized)
             {
-                CheckHeaderHeight();
+                foreach (Header header in ColumnHeaders) { header.Minimized = true; }
+                minimized = true;              
+            }
+            else if (!collapsed)
+            {
+                foreach (Header header in ColumnHeaders) header.Collapsed = true;
+                collapsed = true;
             }
         }
 
-        void CheckHeaderHeight()
+        private void ColumnHeaderMaximize_Clicked(TH_WPF.Button_02 bt)
         {
-            if (this.RenderSize.Height < 850) foreach (Header header in ColumnHeaders) header.Minimized = true;
-            else foreach (Header header in ColumnHeaders) header.Minimized = false;
+            if (collapsed)
+            {
+                foreach (Header header in ColumnHeaders) header.Collapsed = false;
+                collapsed = false;
+            }
+            else if (minimized)
+            {
+                foreach (Header header in ColumnHeaders) { header.Minimized = false; }
+                minimized = false;
+            }
         }
 
         #endregion
 
-        #endregion
+        
 
     }
 

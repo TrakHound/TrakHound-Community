@@ -24,7 +24,66 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown">
+    <Grid MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown" MinHeight="30">
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="Height" Value="30"/>
+                <Style.Triggers>
+
+                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Height" From="150" To="30" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Height" From="30" To="150" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding Minimized}" Value="false">
+                        <DataTrigger.EnterActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Height" From="150" To="300" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.EnterActions>
+                        <DataTrigger.ExitActions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="00:00:01" Storyboard.TargetProperty="Height" From="300" To="150" >
+                                        <DoubleAnimation.EasingFunction>
+                                            <CubicEase EasingMode="EaseOut"/>
+                                        </DoubleAnimation.EasingFunction>
+                                    </DoubleAnimation>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </DataTrigger.ExitActions>
+                    </DataTrigger>
+
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
@@ -34,78 +93,24 @@
             <TranslateTransform />
         </Grid.RenderTransform>
 
-        <Grid.Style>
-            <Style TargetType="Grid">
-                <Setter Property="Background" Value="#00000000"/>
-                <Setter Property="Height" Value="180"/>
-                <!--<Setter Property="Height" Value="300"/>-->
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Minimized}" Value="true">
-                        <!--<Setter Property="Height" Value="180"/>-->
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Height" From="300" To="180" Timeline.DesiredFrameRate="30">
-                                        <DoubleAnimation.EasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard >
-                                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Height" From="180" To="300" Timeline.DesiredFrameRate="30">
-                                        <DoubleAnimation.EasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
-                                        </DoubleAnimation.EasingFunction>
-                                    </DoubleAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                        <Setter Property="Background" Value="#10ffffff"/>
-                        <!--<DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10ffffff"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>-->
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <Setter Property="Background" Value="#18ffffff"/>
-                        <!--<DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#18ffffff"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>-->
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
-
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
+                
+                <!--Updated Timestamp-->
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                            <Setter Property="Height" Value="auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Height" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                
+                <!--Device Logo-->
                 <RowDefinition >
                     <RowDefinition.Style>
                         <Style TargetType="RowDefinition">
@@ -114,11 +119,29 @@
                                 <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
                                     <Setter Property="Height" Value="*"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Height" Value="0"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                <RowDefinition Height="auto" />
+                        
+                <!--Description-->
+                <RowDefinition>
+                    <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                            <Setter Property="Height" Value="auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Height" Value="*"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+                
+                <!--Device Image-->
                 <RowDefinition >
                     <RowDefinition.Style>
                         <Style TargetType="RowDefinition">
@@ -127,18 +150,37 @@
                                 <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
                                     <Setter Property="Height" Value="auto"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Height" Value="0"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
+                
+                <!--Break Indicator-->
                 <RowDefinition Height="auto" />
+                
+                <!--Alert Indicator-->
                 <RowDefinition Height="auto" />
+                
             </Grid.RowDefinitions>
+
             
             <!--Last Updated Timestamp-->
             <TextBlock Grid.Row="0" Foreground="#33000000" FontSize="8pt" Margin="5,2" HorizontalAlignment="Right">
                 <Run Text="Last Updated : "/>
                 <Run Text="{Binding LastUpdatedTimestamp}"/>
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
             </TextBlock>
 
             <!--Device Logo-->
@@ -160,13 +202,16 @@
                             <DataTrigger Binding="{Binding Device_Logo}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Image.Style>
             </Image>
 
             <!--Device Description-->
-            <TextBlock Grid.Row="2" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5,10,0" TextAlignment="Center" Foreground="#fff"/>
+            <TextBlock Grid.Row="2" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5,10,0" TextAlignment="Center" VerticalAlignment="Center" Foreground="#fff"/>
 
             <!--Device Image and Info-->
             <Grid Grid.Row="3">
@@ -193,6 +238,9 @@
                                 <DataTrigger Binding="{Binding Connected}" Value="false">
                                     <Setter Property="Opacity" Value="0.3"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </Image.Style>
@@ -200,6 +248,16 @@
 
                 <!--Device Info-->
                 <StackPanel Margin="10" VerticalAlignment="Bottom">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
                     <TextBlock Text="{Binding Device_Model}" FontSize="8pt" Foreground="#aaffffff"/>
 
@@ -211,7 +269,18 @@
                 <TextBlock Text="{Binding Device_ID}" 
                                    FontSize="45pt"
                                    TextAlignment="Right" VerticalAlignment="Bottom" Foreground="#33ffffff"
-                                   Margin="5,0"/>
+                                   Margin="5,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
             </Grid>
 

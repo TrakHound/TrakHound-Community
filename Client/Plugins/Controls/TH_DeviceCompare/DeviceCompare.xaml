@@ -8,6 +8,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800"
              
@@ -28,17 +31,17 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" MinHeight="100"/>
+                    <RowDefinition Height="Auto" MinHeight="30"/>
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <Grid>
                     <Grid.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#44000000" Offset="0"/>
+                            <GradientStop Color="#18000000" Offset="0"/>
                             <GradientStop Color="#11000000" Offset="0.4"/>
                             <GradientStop Color="#11000000" Offset="0.6"/>
-                            <GradientStop Color="#44000000" Offset="1"/>
+                            <GradientStop Color="#22000000" Offset="1"/>
                         </LinearGradientBrush>
                     </Grid.Background>
 
@@ -47,6 +50,28 @@
                         <ColumnDefinition Width="auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    
+                    <Grid Height="30" VerticalAlignment="Bottom">
+                        <!--<Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ColumnHeaderMinimized}" Value="true">
+                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>-->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <th_wpf:Button_02 Image="Resources/Carrot_Arrow_Down_01.png" Clicked="ColumnHeaderMaximize_Clicked"/>
+
+                        <th_wpf:Button_02 Grid.Column="1" Image="Resources/Carrot_Arrow_Up_01.png" Clicked="ColumnHeaderMinimize_Clicked"/>
+
+                    </Grid>
 
                     <Rectangle Grid.Column="1" Width="1" Fill="#66ffffff"/>
 
@@ -58,7 +83,7 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
-
+                    
                 </Grid>
 
                 <Grid Grid.Row="1" Background="#0080ff">

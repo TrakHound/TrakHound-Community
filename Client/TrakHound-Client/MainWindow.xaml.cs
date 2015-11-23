@@ -1071,6 +1071,7 @@ namespace TrakHound_Client
                 if (currentuser != null)
                 {
                     CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+
                     LoggedIn = true;
                 }
                 else
@@ -1078,6 +1079,8 @@ namespace TrakHound_Client
                     LoggedIn = false;
                     CurrentUsername = null;
                 }
+
+                ReadConfigurations();
 
                 if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
@@ -1820,8 +1823,6 @@ namespace TrakHound_Client
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(configPath);
-
-                //int index = 0;
 
                 foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
                 {

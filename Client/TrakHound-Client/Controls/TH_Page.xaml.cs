@@ -39,6 +39,48 @@ namespace TrakHound_Client.Controls
             ZoomLevels.Add("200%");
         }
 
+
+        public object PageContent
+        {
+            get { return (object)GetValue(PageContentProperty); }
+            set { SetValue(PageContentProperty, value); }
+        }
+
+        public static readonly DependencyProperty PageContentProperty =
+            DependencyProperty.Register("PageContent", typeof(object), typeof(TH_Page), new PropertyMetadata(null));
+
+        public bool Closing
+        {
+            get { return (bool)GetValue(ClosingProperty); }
+            set { SetValue(ClosingProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClosingProperty =
+            DependencyProperty.Register("Closing", typeof(bool), typeof(TH_Page), new PropertyMetadata(false));
+
+
+
+        #region "Page Control"
+
+        public double ZoomLevel
+        {
+            get { return (double)GetValue(ZoomLevelProperty); }
+            set { SetValue(ZoomLevelProperty, value); }
+        }
+
+        public static readonly DependencyProperty ZoomLevelProperty =
+            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(TH_Page), new PropertyMetadata(1D));
+
+
+        public string ZoomLevelText
+        {
+            get { return (string)GetValue(ZoomLevelTextProperty); }
+            set { SetValue(ZoomLevelTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ZoomLevelTextProperty =
+            DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(TH_Page), new PropertyMetadata(null));
+
         ObservableCollection<string> zoomlevels;
         public ObservableCollection<string> ZoomLevels
         {
@@ -55,47 +97,6 @@ namespace TrakHound_Client.Controls
             }
         }
 
-        public object PageContent
-        {
-            get { return (object)GetValue(PageContentProperty); }
-            set { SetValue(PageContentProperty, value); }
-        }
-
-        public static readonly DependencyProperty PageContentProperty =
-            DependencyProperty.Register("PageContent", typeof(object), typeof(TH_Page), new PropertyMetadata(null));
-
-
-        public double ZoomLevel
-        {
-            get { return (double)GetValue(ZoomLevelProperty); }
-            set {  SetValue(ZoomLevelProperty, value); }
-        }
-
-        public static readonly DependencyProperty ZoomLevelProperty =
-            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(TH_Page), new PropertyMetadata(1D));
-
-
-        public string ZoomLevelText
-        {
-            get { return (string)GetValue(ZoomLevelTextProperty); }
-            set { SetValue(ZoomLevelTextProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty ZoomLevelTextProperty =
-            DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(TH_Page), new PropertyMetadata(null));
-
-        
-
-        public bool Closing
-        {
-            get { return (bool)GetValue(ClosingProperty); }
-            set { SetValue(ClosingProperty, value); }
-        }
-
-        public static readonly DependencyProperty ClosingProperty =
-            DependencyProperty.Register("Closing", typeof(bool), typeof(TH_Page), new PropertyMetadata(false));
-
         private void ZoomOut_Clicked(TH_WPF.Button_02 bt)
         {
             double zoom = Math.Max(ZoomLevel - 0.1, 0.5);
@@ -108,14 +109,33 @@ namespace TrakHound_Client.Controls
             zoom_COMBO.Text = zoom.ToString("P0");
         }
 
-        private void RestoreZoom_Clicked(TH_WPF.Button_02 bt)
-        {
-
-        }
-
         private void Fullscreen_Clicked(TH_WPF.Button_02 bt)
         {
+            FullScreen_View();
+        }
 
+        void FullScreen_View()
+        {
+            Fullscreen fs = new Fullscreen();
+            fs.FullScreenClosing += fs_FullScreenClosing;
+
+            object o = PageContent;
+
+            PageContent = null;
+
+            fs.WindowContent = o;
+
+            fs.Show();
+        }
+
+        void fs_FullScreenClosing(object windowcontent)
+        {
+            if (windowcontent != null)
+            {
+                object o = windowcontent;
+
+                PageContent = o;
+            }
         }
 
         void SetZoom(double zoom)
@@ -142,6 +162,9 @@ namespace TrakHound_Client.Controls
             }
 
         }
+
+        #endregion
+
 
     }
 }

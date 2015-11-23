@@ -71,12 +71,34 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                    <Setter Property="Width" Value="*"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                    <Setter Property="Width" Value="*"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <!--Image-->
-            <Grid Margin="5,0">
+            <Grid Margin="5,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -88,7 +110,7 @@
                     </Style>
                 </Grid.Style>
 
-                <Rectangle Width="20" Height="20">
+                <Rectangle Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Rectangle.Resources>
                         <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
                     </Rectangle.Resources>

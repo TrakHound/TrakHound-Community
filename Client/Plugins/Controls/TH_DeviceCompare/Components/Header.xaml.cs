@@ -120,10 +120,6 @@ namespace TH_DeviceCompare.Components
 
 
 
-
-
-
-
         public ImageSource Device_Image
         {
             get { return (ImageSource)GetValue(Device_ImageProperty); }
@@ -132,7 +128,6 @@ namespace TH_DeviceCompare.Components
 
         public static readonly DependencyProperty Device_ImageProperty =
             DependencyProperty.Register("Device_Image", typeof(ImageSource), typeof(Header), new PropertyMetadata(null));
-
 
 
         public ImageSource Device_Logo
@@ -145,8 +140,6 @@ namespace TH_DeviceCompare.Components
             DependencyProperty.Register("Device_Logo", typeof(ImageSource), typeof(Header), new PropertyMetadata(null));
 
 
-
-
         public string Device_ID
         {
             get { return (string)GetValue(Device_IDProperty); }
@@ -157,8 +150,6 @@ namespace TH_DeviceCompare.Components
             DependencyProperty.Register("Device_ID", typeof(string), typeof(Header), new PropertyMetadata(""));
 
         
-
-
 
         public bool Alert
         {
@@ -181,8 +172,6 @@ namespace TH_DeviceCompare.Components
 
         
 
-
-
         public bool Minimized
         {
             get { return (bool)GetValue(MinimizedProperty); }
@@ -192,9 +181,17 @@ namespace TH_DeviceCompare.Components
         public static readonly DependencyProperty MinimizedProperty =
             DependencyProperty.Register("Minimized", typeof(bool), typeof(Header), new PropertyMetadata(true));
 
-        
 
-        
+
+        public bool Collapsed
+        {
+            get { return (bool)GetValue(CollapsedProperty); }
+            set { SetValue(CollapsedProperty, value); }
+        }
+
+        public static readonly DependencyProperty CollapsedProperty =
+            DependencyProperty.Register("Collapsed", typeof(bool), typeof(Header), new PropertyMetadata(true));
+
         
 
 
@@ -255,11 +252,6 @@ namespace TH_DeviceCompare.Components
         }
 
         #endregion
-
-
-        
-
-        
 
 
     }
