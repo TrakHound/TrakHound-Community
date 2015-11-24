@@ -75,7 +75,7 @@ namespace TH_UserManagement.Management
             string rootPath;
             rootPath = System.IO.Path.GetDirectoryName(filepath);
             rootPath += @"\";
-            Console.WriteLine("User Configuration Root Path = " + rootPath);
+            //Console.WriteLine("User Configuration Root Path = " + rootPath);
 
             if (System.IO.File.Exists(filepath))
             {
@@ -97,7 +97,7 @@ namespace TH_UserManagement.Management
             }
             else
             {
-                Console.WriteLine("User Configuration File Not Found : " + filepath);
+                //Console.WriteLine("User Configuration File Not Found : " + filepath);
             }
 
             return result;

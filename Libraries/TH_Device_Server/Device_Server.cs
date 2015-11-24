@@ -14,21 +14,13 @@ using System.IO;
 using System.Data;
 
 using TH_Configuration;
-
 using TH_Database;
 using TH_Database.Tables;
-
 using TH_Global;
-
-//using TH_MySQL;
-//using TH_MySQL.Tables;
-
 using TH_MTC_Data;
 using TH_MTC_Requests;
 using TH_Ping;
 using TH_PlugIns_Server;
-
-using TH_Device_Server.TableManagement;
 
 namespace TH_Device_Server
 {
@@ -370,7 +362,7 @@ namespace TH_Device_Server
 
         #region "Console Output"
 
-        static bool DEBUG = false;
+        static bool DEBUG = true;
 
         public void Log(string line)
         {

@@ -25,7 +25,6 @@ namespace TH_UserManagement.Management
 
     public static class Users
     {
-
         public static UserConfiguration Login(string username, string password, Database_Settings userDatabaseSettings)
         {
             UserConfiguration result = null;
@@ -107,57 +106,6 @@ namespace TH_UserManagement.Management
 
             return result;
 
-        }
-
-        public static class RememberMe
-        {
-            public static bool Set(UserConfiguration userConfig, RememberMeType type, Database_Settings userDatabaseSettings)
-            {
-                bool result = false;
-
-                if (userDatabaseSettings == null)
-                {
-                    result = Remote.Users.RememberMe.Set(userConfig, type);
-                }
-                else
-                {
-                    //result = Local.Users.RememberMe.Set(userConfig, type, userDatabaseSettings);
-                }
-
-                return result;
-            }
-
-            public static UserConfiguration Get(RememberMeType type, Database_Settings userDatabaseSettings)
-            {
-                UserConfiguration result = null;
-
-                if (userDatabaseSettings == null)
-                {
-                    result = Remote.Users.RememberMe.Get(type);
-                }
-                else
-                {
-                    //result = Local.Users.RememberMe.Get(type, userDatabaseSettings);
-                }
-
-                return result;
-            }
-
-            public static bool Clear(RememberMeType type, Database_Settings userDatabaseSettings)
-            {
-                bool result = false;
-
-                if (userDatabaseSettings == null)
-                {
-                    result = Remote.Users.RememberMe.Clear(type);
-                }
-                else
-                {
-                    //result = Local.Users.RememberMe.Clear(type, userDatabaseSettings);
-                }
-
-                return result;
-            }
         }
     }
 

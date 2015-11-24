@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Devices.cs" />
+    <Compile Include="Header.cs" />
+    <Compile Include="Login.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -82,10 +85,13 @@
       <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
       <Name>TH_PlugIns_Server</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
+      <Name>TH_UserManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configuration.xml">
-      <SubType>Designer</SubType>
+    <Content Include="Header.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LICENSE.txt">

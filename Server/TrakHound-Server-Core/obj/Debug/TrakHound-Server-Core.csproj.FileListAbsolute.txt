@@ -1,5 +1,4 @@
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Configuration.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TrakHound-Server-Core.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_Configuration.dll
@@ -25,3 +24,8 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-S
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_UserManagement.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_WPF.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_UserManagement.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Header.txt

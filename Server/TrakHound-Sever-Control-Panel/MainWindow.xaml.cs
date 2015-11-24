@@ -64,7 +64,8 @@ namespace TrakHound_Server_Control_Panel
 
             devicemanager.userDatabaseSettings = userDatabaseSettings;
 
-            LoginMenu.LoadRememberMe(RememberMeType.Server);
+            LoginMenu.rememberMeType = RememberMeType.Server;
+            LoginMenu.LoadRememberMe();
         }
 
         DeviceManager devicemanager;

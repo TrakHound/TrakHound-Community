@@ -312,7 +312,7 @@ namespace TH_UserManagement
 
         void Login_GUI(UserConfiguration userConfig)
         {
-            if (RememberMe) Remote.Users.RememberMe.Set(userConfig, Management.RememberMeType.Client);
+            if (RememberMe) Remote.Users.RememberMe.Set(userConfig, rememberMeType);
 
             Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
             Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
@@ -396,7 +396,7 @@ namespace TH_UserManagement
 
         void Logout_Worker()
         {
-            if (remembermetypeset) Remote.Users.RememberMe.Clear(remembermetype);
+            Remote.Users.RememberMe.Clear(rememberMeType);
 
             this.Dispatcher.BeginInvoke(new Action(Logout_Finished), priority, new object[] { });
         }
@@ -411,8 +411,10 @@ namespace TH_UserManagement
 
         #region "Remember Me"
 
-        Management.RememberMeType remembermetype;
-        bool remembermetypeset;
+        public RememberMeType rememberMeType { get; set; }
+
+        //Management.RememberMeType remembermetype;
+        //bool remembermetypeset;
 
         public bool RememberMe
         {
@@ -437,10 +439,10 @@ namespace TH_UserManagement
 
         Thread rememberme_THREAD;
 
-        public void LoadRememberMe(Management.RememberMeType type)
+        public void LoadRememberMe()
         {
-            remembermetype = type;
-            remembermetypeset = true;
+            //remembermetype = type;
+            //remembermetypeset = true;
 
             Loading = true;
 
@@ -449,17 +451,17 @@ namespace TH_UserManagement
 
             if (rememberme_THREAD != null) rememberme_THREAD.Abort();
 
-            rememberme_THREAD = new Thread(new ParameterizedThreadStart(LoadRememberMe_Worker));
-            rememberme_THREAD.Start(type);
+            rememberme_THREAD = new Thread(new ThreadStart(LoadRememberMe_Worker));
+            rememberme_THREAD.Start();
         }
 
-        void LoadRememberMe_Worker(object o)
+        void LoadRememberMe_Worker()
         {
-            Management.RememberMeType type = (Management.RememberMeType)o;
+            //Management.RememberMeType type = (Management.RememberMeType)o;
 
-            UserConfiguration RememberUser = Remote.Users.RememberMe.Get(type);
+            UserConfiguration RememberUser = Remote.Users.RememberMe.Get(rememberMeType);
 
-            if (RememberUser != null) Remote.Users.RememberMe.Set(RememberUser, type);
+            if (RememberUser != null) Remote.Users.RememberMe.Set(RememberUser, rememberMeType);
 
             this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
         }

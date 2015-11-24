@@ -6,10 +6,60 @@ using System.Threading.Tasks;
 
 using Microsoft.Win32;
 
+using TH_Configuration;
+
 namespace TH_UserManagement.Management
 {
     public static class RememberMe
     {
+
+        public static bool Set(UserConfiguration userConfig, RememberMeType type, Database_Settings userDatabaseSettings)
+        {
+            bool result = false;
+
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.Users.RememberMe.Set(userConfig, type);
+            }
+            else
+            {
+                //result = Local.Users.RememberMe.Set(userConfig, type, userDatabaseSettings);
+            }
+
+            return result;
+        }
+
+        public static UserConfiguration Get(RememberMeType type, Database_Settings userDatabaseSettings)
+        {
+            UserConfiguration result = null;
+
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.Users.RememberMe.Get(type);
+            }
+            else
+            {
+                //result = Local.Users.RememberMe.Get(type, userDatabaseSettings);
+            }
+
+            return result;
+        }
+
+        public static bool Clear(RememberMeType type, Database_Settings userDatabaseSettings)
+        {
+            bool result = false;
+
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.Users.RememberMe.Clear(type);
+            }
+            else
+            {
+                //result = Local.Users.RememberMe.Clear(type, userDatabaseSettings);
+            }
+
+            return result;
+        }
 
         public static class Registry_Functions
         {
@@ -34,7 +84,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("UserManagement_RememberMe_SetRegistryKey() : " + ex.Message);
+                    //Console.WriteLine("UserManagement_RememberMe_SetRegistryKey() : " + ex.Message);
                 }
             }
 
@@ -61,7 +111,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("UserManagement_RememberMe_GetRegistryKey() : " + ex.Message);
+                    //Console.WriteLine("UserManagement_RememberMe_GetRegistryKey() : " + ex.Message);
                 }
 
                 return Result;
@@ -86,7 +136,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("UserManagement_RememberMe_GetRegistryKeys() : " + ex.Message);
+                    //Console.WriteLine("UserManagement_RememberMe_GetRegistryKeys() : " + ex.Message);
                 }
 
                 return Result;
@@ -110,7 +160,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("UserManagement_RememberMe_DeleteRegistryKey() : " + ex.Message);
+                    //Console.WriteLine("UserManagement_RememberMe_DeleteRegistryKey() : " + ex.Message);
                 }
             }
         }
