@@ -14,6 +14,8 @@ using System.Net;
 using TH_Global;
 using TH_Global.Functions;
 
+using TH_UserManagement.Management;
+
 namespace TH_UserManagement
 {
     public static class Images

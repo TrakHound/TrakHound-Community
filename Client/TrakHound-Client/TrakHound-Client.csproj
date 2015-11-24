@@ -74,12 +74,12 @@
     <Compile Include="Account Management\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Account Management\Pages\Create\Page.xaml.cs">
+    <None Include="Account Management\Pages\Create\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Account Management\Pages\MyAccount\Page.xaml.cs">
+    </None>
+    <None Include="Account Management\Pages\MyAccount\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Controls\Fullscreen.xaml.cs">
       <DependentUpon>Fullscreen.xaml</DependentUpon>
     </Compile>
@@ -181,14 +181,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Account Management\Pages\Create\Page.xaml">
+    <None Include="Account Management\Pages\Create\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Account Management\Pages\MyAccount\Page.xaml">
+    </None>
+    <None Include="Account Management\Pages\MyAccount\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="Controls\Fullscreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

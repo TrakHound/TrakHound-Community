@@ -145,7 +145,7 @@
                     </Grid.RowDefinitions>
                     
                     <!--Zoom Controls-->
-                    <Grid Grid.Row="0" Height="35">
+                    <Grid Grid.Row="0" Height="35" Visibility="Collapsed">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="auto"/>
@@ -306,7 +306,7 @@
                     </Grid>
                     
                     <!--Seperator-->
-                    <Rectangle Grid.Row="1" Height="1" Margin="5,0" Fill="#22000000"/>
+                    <Rectangle Grid.Row="1" Height="1" Margin="5,0" Fill="#22000000" Visibility="Collapsed"/>
                     
                     <!--MenuItem List-->
                     <ItemsControl Grid.Row="2" ItemsSource="{Binding MenuItems}" HorizontalAlignment="Center">

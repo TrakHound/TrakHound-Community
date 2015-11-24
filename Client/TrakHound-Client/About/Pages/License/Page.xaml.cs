@@ -37,6 +37,8 @@ namespace TrakHound_Client.About.Pages.License
 
             string LicensePath = AppDomain.CurrentDomain.BaseDirectory + @"\License.txt";
             LicenseText = File.ReadAllText(LicensePath);
+
+            PageContent = this;
         }
 
         public string LicenseText
@@ -51,6 +53,8 @@ namespace TrakHound_Client.About.Pages.License
         public string PageName { get { return "License"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/About/Pages/License/Key_03.png")); } }
+
+        public object PageContent { get; set; }
 
     }
 }

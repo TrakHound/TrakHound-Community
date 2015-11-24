@@ -13,5 +13,7 @@ namespace TH_PlugIns_Client_Control
 
         ImageSource Image { get; }
 
+        object PageContent { get; set; }
+
     }
 }

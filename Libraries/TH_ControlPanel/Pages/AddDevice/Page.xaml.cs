@@ -27,6 +27,7 @@ using System.Threading;
 using TH_Configuration;
 using TH_Global;
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TH_DeviceManager.Pages.AddDevice
 {
@@ -42,6 +43,8 @@ namespace TH_DeviceManager.Pages.AddDevice
         }
 
         public UserConfiguration currentuser;
+
+        public Database_Settings userDatabaseSettings;
 
         public delegate void DeviceAdded_Handler();
         public event DeviceAdded_Handler DeviceAdded;
@@ -68,7 +71,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         public void LoadCatalog()
         {
-            List<Management.SharedListItem> listitems = Management.GetSharedList();
+            List<Shared.SharedListItem> listitems = Shared.GetSharedList();
 
             shareditems = listitems;
 
@@ -116,7 +119,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                     {
                         if (deviceManager.userDatabaseSettings == null)
                         {
-                            Management.AddConfigurationToUser(deviceManager.CurrentUser, config);
+                            Configurations.AddConfigurationToUser(deviceManager.CurrentUser, config, userDatabaseSettings);
 
                             //Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
                         }
@@ -145,8 +148,8 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
-        List<Management.SharedListItem> shareditems;
-        List<Management.SharedListItem> shareditems_search;
+        List<Shared.SharedListItem> shareditems;
+        List<Shared.SharedListItem> shareditems_search;
 
         #region "Shared Items"
 
@@ -162,11 +165,11 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         Thread LoadImage_THREAD;
 
-        void LoadSharedItems(List<Management.SharedListItem> items)
+        void LoadSharedItems(List<Shared.SharedListItem> items)
         {
             CatalogLoading = true;
 
-            shareditems_search = new List<Management.SharedListItem>();
+            shareditems_search = new List<Shared.SharedListItem>();
             SharedList.Clear();
 
             if (LoadImage_THREAD != null) LoadImage_THREAD.Abort();
@@ -179,27 +182,27 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             if (o != null)
             {
-                List<Management.SharedListItem> items = (List<Management.SharedListItem>)o;
+                List<Shared.SharedListItem> items = (List<Shared.SharedListItem>)o;
 
-                foreach (Management.SharedListItem item in items)
+                foreach (Shared.SharedListItem item in items)
                 {
                     System.Drawing.Image img = null;
 
                     // Set Image --------------------------------------------
                     if (item.image_url != null)
                     {
-                        img = Images.GetImage(item.image_url);                   
+                        img = Images.GetImage(item.image_url, userDatabaseSettings);                   
                     }
                     // ------------------------------------------------------
 
-                    this.Dispatcher.BeginInvoke(new Action<Management.SharedListItem, System.Drawing.Image>(LoadSharedItems_GUI), priority, new object[] { item, img });
+                    this.Dispatcher.BeginInvoke(new Action<Shared.SharedListItem, System.Drawing.Image>(LoadSharedItems_GUI), priority, new object[] { item, img });
                 } 
             }
 
             this.Dispatcher.BeginInvoke(new Action(LoadSharedItems_Finish), priority, new object[] { });
         }
 
-        void LoadSharedItems_GUI(Management.SharedListItem listitem, System.Drawing.Image img)
+        void LoadSharedItems_GUI(Shared.SharedListItem listitem, System.Drawing.Image img)
         {
 
             shareditems_search.Add(listitem);
@@ -264,7 +267,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
                 if (tablename != null)
                 {
-                    DataTable dt = Management.GetConfigurationTable(tablename);
+                    DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
                     if (dt != null)
                     {
                         XmlDocument xml = Converter.TableToXML(dt);
@@ -275,7 +278,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                             {
                                 if (currentuser != null)
                                 {
-                                    Management.AddConfigurationToUser(currentuser, config);
+                                    Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
                                 }
                                 else
                                 {
@@ -299,7 +302,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         #region "Details"
 
-        Management.SharedListItem selectedItem = null;
+        Shared.SharedListItem selectedItem = null;
 
         #region "Properties"
 
@@ -436,7 +439,7 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             if (item.listitem != null)
             {
-                Management.SharedListItem i = item.listitem;
+                Shared.SharedListItem i = item.listitem;
 
                 selectedItem = i;
 
@@ -488,9 +491,9 @@ namespace TH_DeviceManager.Pages.AddDevice
                 {
                     this.Cursor = Cursors.Wait;
 
-                    if (Management.RemoveSharedConfiguration_FromList(selectedItem))
+                    if (Shared.RemoveSharedConfiguration_FromList(selectedItem))
                     {
-                        Management.RemoveConfigurationTable(selectedItem.tablename);
+                        Configurations.RemoveConfigurationTable(selectedItem.tablename, null);
                     }
 
                     DetailsShown = false;
@@ -538,11 +541,11 @@ namespace TH_DeviceManager.Pages.AddDevice
             {
                 string[] searchList = search.Split(' ');
 
-                List<Management.SharedListItem> results = new List<Management.SharedListItem>();
+                List<Shared.SharedListItem> results = new List<Shared.SharedListItem>();
 
                 foreach (string s in searchList)
                 {
-                    List<Management.SharedListItem> list = shareditems_search.FindAll(
+                    List<Shared.SharedListItem> list = shareditems_search.FindAll(
                     x => 
                     (x.manufacturer.ToLower().Contains(s) || x.manufacturer.ToLower() == s) ||
                     (x.model.ToLower().Contains(s) || x.model.ToLower() == s) ||
@@ -552,7 +555,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                     (x.device_type.ToLower().Contains(s) || x.device_type.ToLower() == s)
                     );
 
-                    foreach (Management.SharedListItem item in list)
+                    foreach (Shared.SharedListItem item in list)
                     {
                         if (results.Find(x => x.list_id == item.list_id) == null) results.Add(item);
                     }

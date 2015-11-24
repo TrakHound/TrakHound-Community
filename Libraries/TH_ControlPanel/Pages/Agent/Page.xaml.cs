@@ -27,6 +27,7 @@ using TH_MTC_Data.Components;
 using TH_MTC_Requests;
 using TH_PlugIns_Server;
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TH_DeviceManager.Pages.Agent
 {
@@ -60,13 +61,22 @@ namespace TH_DeviceManager.Pages.Agent
             configurationTable = dt;
 
             // Load IP Address
-            ipaddress_TXT.Text = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+            IpAddress = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
 
             // Load Port
-            port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
+            Port = Table_Functions.GetTableValue(prefix + "Port", dt);
 
             // Load Device Name
-            devicename_TXT.Text = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+            DeviceName = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+
+            //// Load IP Address
+            //ipaddress_TXT.Text = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+
+            //// Load Port
+            //port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
+
+            //// Load Device Name
+            //devicename_TXT.Text = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
             // Load Current Heartbeat
             int currentHeartbeat;
@@ -84,13 +94,22 @@ namespace TH_DeviceManager.Pages.Agent
         public void SaveConfiguration(DataTable dt)
         {
             // Save IP Address
-            Table_Functions.UpdateTableValue(ipaddress_TXT.Text, prefix + "IP_Address", dt);
+            Table_Functions.UpdateTableValue(IpAddress, prefix + "IP_Address", dt);
 
             // Save Port
-            Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
+            Table_Functions.UpdateTableValue(Port, prefix + "Port", dt);
 
             // Save Device Name
-            Table_Functions.UpdateTableValue(devicename_TXT.Text, prefix + "Device_Name", dt);
+            Table_Functions.UpdateTableValue(DeviceName, prefix + "Device_Name", dt);
+
+            //// Save IP Address
+            //Table_Functions.UpdateTableValue(ipaddress_TXT.Text, prefix + "IP_Address", dt);
+
+            //// Save Port
+            //Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
+
+            //// Save Device Name
+            //Table_Functions.UpdateTableValue(devicename_TXT.Text, prefix + "Device_Name", dt);
 
             // Save Current Heartbeat
             Table_Functions.UpdateTableValue(CurrentHeartbeat.ToString(), prefix + "Current_Heartbeat", dt);
@@ -117,6 +136,39 @@ namespace TH_DeviceManager.Pages.Agent
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
+        #region "Properties"
+
+        public string IpAddress
+        {
+            get { return (string)GetValue(IpAddressProperty); }
+            set { SetValue(IpAddressProperty, value); }
+        }
+
+        public static readonly DependencyProperty IpAddressProperty =
+            DependencyProperty.Register("IpAddress", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Port
+        {
+            get { return (string)GetValue(PortProperty); }
+            set { SetValue(PortProperty, value); }
+        }
+
+        public static readonly DependencyProperty PortProperty =
+            DependencyProperty.Register("Port", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string DeviceName
+        {
+            get { return (string)GetValue(DeviceNameProperty); }
+            set { SetValue(DeviceNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceNameProperty =
+            DependencyProperty.Register("DeviceName", typeof(string), typeof(Page), new PropertyMetadata(null));
+        
+
+        #endregion
 
         #region "Test Connection"
 
@@ -144,24 +196,30 @@ namespace TH_DeviceManager.Pages.Agent
             int port = -1;
 
             // Get IP Address or URL
-            ip = ipaddress_TXT.Text;
+            ip = IpAddress;
+            //ip = ipaddress_TXT.Text;
             if (ip.Length > 7)
             {
                 if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
             }
 
             // Get Port
-            if (port_TXT.Text != null)
+            if (Port != null)
             {
-                int.TryParse(port_TXT.Text, out port);
+                int.TryParse(Port, out port);
             }
+            //if (port_TXT.Text != null)
+            //{
+            //    int.TryParse(port_TXT.Text, out port);
+            //}
 
             tryPortIndex = 0;
 
             MTCDeviceList.Clear();
             MessageList.Clear();
 
-            RunProbe(ip, port, devicename_TXT.Text);
+            RunProbe(ip, port, DeviceName);
+            //RunProbe(ip, port, devicename_TXT.Text);
         }
 
         void RunProbe(string url, int port, string deviceName)
@@ -293,14 +351,16 @@ namespace TH_DeviceManager.Pages.Agent
 
         void radio_Checked(object sender, RoutedEventArgs e)
         {
-            devicename_TXT.Text = ((RadioButton)sender).Content.ToString();
+            DeviceName = ((RadioButton)sender).Content.ToString();
+            //devicename_TXT.Text = ((RadioButton)sender).Content.ToString();
         }
 
         #endregion
 
         void UpdatePort(int port)
         {
-            port_TXT.Text = port.ToString();
+            Port = port.ToString();
+            //port_TXT.Text = port.ToString();
         }
 
         #endregion
@@ -332,6 +392,11 @@ namespace TH_DeviceManager.Pages.Agent
                 result = uri.ToString();
             }
             return result;
+        }
+
+        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ChangeSetting(null, null);
         }
 
         private void ipaddress_TXT_TextChanged(object sender, TextChangedEventArgs e)

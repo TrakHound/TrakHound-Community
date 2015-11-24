@@ -86,6 +86,9 @@
     <Compile Include="LoadingAnimation\Wheel.xaml.cs">
       <DependentUpon>Wheel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PasswordBox.xaml.cs">
+      <DependentUpon>PasswordBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProductionIndicator.xaml.cs">
       <DependentUpon>ProductionIndicator.xaml</DependentUpon>
     </Compile>
@@ -101,6 +104,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="TextBox.xaml.cs">
+      <DependentUpon>TextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeLine\Segment.xaml.cs">
       <DependentUpon>Segment.xaml</DependentUpon>
@@ -165,7 +171,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ProductionIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -187,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Expand_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Help_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using TH_PlugIns_Server;
 using TH_Configuration;
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 using TH_GeneratedData.ConfigurationPage;
 
@@ -193,6 +194,56 @@ namespace TH_Cycles.ConfigurationPage
 
         List<TH_GeneratedData.ConfigurationPage.Page.Event> genEvents;
 
+        private void Help_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void Help_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void Help_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = false;
+                    }
+                }
+            }
+        }
 
         //#region "Generated Events"
 

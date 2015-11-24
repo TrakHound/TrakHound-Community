@@ -6,7 +6,7 @@
              
              xmlns:controls="clr-namespace:TH_DeviceManager.Controls"
              
-             xmlns:thwpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
@@ -38,337 +38,28 @@
                 </StackPanel.Resources>
 
                 <!--IP Address-->
-                <StackPanel>
-
-                    <!--Title and Help-->
-                    <StackPanel Orientation="Horizontal">
-
-                        <!--Title-->
-                        <TextBlock Text="IP Address" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                        <!--Help-->
-                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                            <Rectangle.ToolTip>
-                                <ToolTip MaxWidth="400">
-                                    <StackPanel>
-                                        <TextBlock Text="IP Address" FontWeight="Bold"/>
-                                        <TextBlock TextWrapping="Wrap">
-                                            Enter the IP address or URL of the MTConnect Agent.
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </Rectangle.ToolTip>
-
-
-                            <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
-                            </Rectangle.Resources>
-
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
-
-                        </Rectangle>
-
-                    </StackPanel>
-
-                    <!--Input-->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=ipaddress_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock Text="Enter agent ip address" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=ipaddress_TXT}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <TextBox x:Name="ipaddress_TXT" TextChanged="ipaddress_TXT_TextChanged" LostFocus="ipaddress_TXT_LostFocus" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                            </Grid>
-
-                        </Border>
-
-                    </Grid>
-
-                </StackPanel>
+                <th_wpf:TextBox Text="{Binding IpAddress}" Title="IP Address" Instructions="Enter agent ip address" TextChanged="TXT_TextChanged">
+                    <th_wpf:TextBox.HelpText>
+                        Enter the IP address or URL of the MTConnect Agent.
+                    </th_wpf:TextBox.HelpText>
+                </th_wpf:TextBox>
 
                 <!--Port-->
-                <StackPanel>
-
-                    <!--Title and Help-->
-                    <StackPanel Orientation="Horizontal">
-
-                        <!--Title-->
-                        <TextBlock Text="Port" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                        <!--Help-->
-                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                            <Rectangle.ToolTip>
-                                <ToolTip MaxWidth="400">
-                                    <StackPanel>
-                                        <TextBlock Text="Port" FontWeight="Bold"/>
-                                        <TextBlock TextWrapping="Wrap">
-                                            Enter the Port of the MTConnect Agent. If the Agent is a URL (ex. www.agent.mtconnect.org) the Port will be 80.
-                                            If the Port value is left blank the Port will default to 80. 
-                                            If the Port is not known, click the 'Test Connection' button and the standard MTConnect ports will be tested and found.
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </Rectangle.ToolTip>
-
-
-                            <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
-                            </Rectangle.Resources>
-
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
-
-                        </Rectangle>
-
-                    </StackPanel>
-
-                    <!--Input-->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=port_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock Text="Enter agent port" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=port_TXT}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <TextBox x:Name="port_TXT" TextChanged="port_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                            </Grid>
-
-                        </Border>
-
-                    </Grid>
-
-                </StackPanel>
+                <th_wpf:TextBox Text="{Binding Port}" Title="Port" Instructions="Enter agent port" TextChanged="TXT_TextChanged">
+                    <th_wpf:TextBox.HelpText>
+                        Enter the Port of the MTConnect Agent. If the Agent is a URL (ex. www.agent.mtconnect.org) the Port will be 80.
+                        If the Port value is left blank the Port will default to 80. 
+                        If the Port is not known, click the 'Test Connection' button and the standard MTConnect ports will be tested and found.
+                    </th_wpf:TextBox.HelpText>
+                </th_wpf:TextBox>
 
                 <!--Device Name-->
-                <StackPanel>
-
-                    <!--Title and Help-->
-                    <StackPanel Orientation="Horizontal">
-
-                        <!--Title-->
-                        <TextBlock Text="Device Name" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                        <!--Help-->
-                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                            <Rectangle.ToolTip>
-                                <ToolTip MaxWidth="400">
-                                    <StackPanel>
-                                        <TextBlock Text="Device Name" FontWeight="Bold"/>
-                                        <TextBlock TextWrapping="Wrap">
-                                            Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
-                                            If the Device Name is not known, click the 'Test Connection' button and select it from the list.
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ToolTip>
-                            </Rectangle.ToolTip>
-
-
-                            <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Help_01.png" />
-                            </Rectangle.Resources>
-
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
-
-                        </Rectangle>
-
-                    </StackPanel>
-
-                    <!--Input-->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=devicename_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock Text="Enter device name" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=devicename_TXT}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <TextBox x:Name="devicename_TXT" TextChanged="devicename_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                            </Grid>
-
-                        </Border>
-
-                    </Grid>
-
-                </StackPanel>
+                <th_wpf:TextBox Text="{Binding DeviceName}" Title="Device Name" Instructions="Enter device name" TextChanged="TXT_TextChanged">
+                    <th_wpf:TextBox.HelpText>
+                        Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
+                        If the Device Name is not known, click the 'Test Connection' button and select it from the list.
+                    </th_wpf:TextBox.HelpText>
+                </th_wpf:TextBox>
 
                 <!--Current Heartbeat-->
                 <StackPanel>
@@ -377,7 +68,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Current Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Current Heartbeat Interval" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -452,11 +143,14 @@
                                 VerticalAlignment="Center"
                                 />
 
-                        <Border  BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="#fff">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="#aaa"/>
                                     <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                        </Trigger>
                                         <DataTrigger Binding="{Binding IsFocused, ElementName=currentHeartbeat_TXT}" Value="true">
                                             <Setter Property="BorderBrush" Value="#0080ff"/>
                                         </DataTrigger>
@@ -498,7 +192,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Sample Heartbeat Interval" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Sample Heartbeat Interval" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -576,11 +270,14 @@
                                 VerticalAlignment="Center"
                                 />
 
-                        <Border  BorderThickness="1" CornerRadius="1" Margin="10,5">
+                        <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="#fff">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="#aaa"/>
                                     <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                        </Trigger>
                                         <DataTrigger Binding="{Binding IsFocused, ElementName=sampleHeartbeat_TXT}" Value="true">
                                             <Setter Property="BorderBrush" Value="#0080ff"/>
                                         </DataTrigger>
@@ -625,7 +322,7 @@
                 </Grid.RowDefinitions>
 
                 <!--Buttton-->
-                <thwpf:Button_01 Text="Test Connection" Clicked="TestConnection_Clicked" AlternateStyle="True" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <th_wpf:Button_01 Text="Test Connection" Clicked="TestConnection_Clicked" AlternateStyle="True" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
                 <StackPanel Grid.Row="1">
 

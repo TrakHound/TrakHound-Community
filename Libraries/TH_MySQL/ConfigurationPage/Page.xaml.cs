@@ -19,6 +19,7 @@ using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TH_MySQL.ConfigurationPage
 {
@@ -47,17 +48,41 @@ namespace TH_MySQL.ConfigurationPage
 
             configurationTable = dt;
 
+            
+
             // Load Database Name
-            databasename_TXT.Text = Table_Functions.GetTableValue(prefix + "Database", dt);
+            DatabaseName = Table_Functions.GetTableValue(prefix + "Database", dt);
 
             // Load Server
-            server_TXT.Text = Table_Functions.GetTableValue(prefix + "Server", dt);
+            Server = Table_Functions.GetTableValue(prefix + "Server", dt);
 
             // Load Port
-            port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
+            Port = Table_Functions.GetTableValue(prefix + "Port", dt);
 
             // Load Username
-            username_TXT.Text = Table_Functions.GetTableValue(prefix + "Username", dt);
+            Username = Table_Functions.GetTableValue(prefix + "Username", dt);
+
+
+            // Load PHP Server
+            PhpServer = Table_Functions.GetTableValue(prefix + "PHP_Server", dt);
+
+            // Load PHP Directory
+            PhpDirectory = Table_Functions.GetTableValue(prefix + "PHP_Directory", dt);
+
+
+
+
+            //// Load Database Name
+            //databasename_TXT.Text = Table_Functions.GetTableValue(prefix + "Database", dt);
+
+            //// Load Server
+            //server_TXT.Text = Table_Functions.GetTableValue(prefix + "Server", dt);
+
+            //// Load Port
+            //port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
+
+            //// Load Username
+            //username_TXT.Text = Table_Functions.GetTableValue(prefix + "Username", dt);
 
             // Load UsePHP
             bool usePHP = false;
@@ -69,11 +94,11 @@ namespace TH_MySQL.ConfigurationPage
                 //UsePHPServer = usePHP;
             }
 
-            // Load PHP Server
-            phpserver_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Server", dt);
+            //// Load PHP Server
+            //phpserver_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Server", dt);
 
-            // Load PHP Directory
-            phpdirectory_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Directory", dt);
+            //// Load PHP Directory
+            //phpdirectory_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Directory", dt);
 
             Loading = false;
         }
@@ -81,34 +106,58 @@ namespace TH_MySQL.ConfigurationPage
         public void SaveConfiguration(DataTable dt)
         {
             // Save Database Name
-            Table_Functions.UpdateTableValue(databasename_TXT.Text, prefix + "Database", dt);
+            Table_Functions.UpdateTableValue(DatabaseName, prefix + "Database", dt);
 
             // Save Server
-            Table_Functions.UpdateTableValue(server_TXT.Text, prefix + "Server", dt);
+            Table_Functions.UpdateTableValue(Server, prefix + "Server", dt);
 
             // Save Port
-            Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
+            Table_Functions.UpdateTableValue(Port, prefix + "Port", dt);
 
             // Save Username
-            Table_Functions.UpdateTableValue(username_TXT.Text, prefix + "Username", dt);
+            Table_Functions.UpdateTableValue(Username, prefix + "Username", dt);
+
+
+            // Save PHP Server
+            Table_Functions.UpdateTableValue(PhpServer, prefix + "PHP_Server", dt);
+
+            // Save PHP Directory
+            Table_Functions.UpdateTableValue(PhpDirectory, prefix + "PHP_Directory", dt);
+
+            //// Save Database Name
+            //Table_Functions.UpdateTableValue(databasename_TXT.Text, prefix + "Database", dt);
+
+            //// Save Server
+            //Table_Functions.UpdateTableValue(server_TXT.Text, prefix + "Server", dt);
+
+            //// Save Port
+            //Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
+
+            //// Save Username
+            //Table_Functions.UpdateTableValue(username_TXT.Text, prefix + "Username", dt);
 
             // Save Password
             if (PasswordVerified)
             {
-                Table_Functions.UpdateTableValue(password_TXT.Password, prefix + "Password", dt);
+                Table_Functions.UpdateTableValue(password_TXT.PasswordText, prefix + "Password", dt);
             }
 
             // Save UsePHP
             Table_Functions.UpdateTableValue(UsePHPServer.ToString(), prefix + "UsePHP", dt);
 
-            // Save PHP Server
-            Table_Functions.UpdateTableValue(phpserver_TXT.Text, prefix + "PHP_Server", dt);
+            //// Save PHP Server
+            //Table_Functions.UpdateTableValue(phpserver_TXT.Text, prefix + "PHP_Server", dt);
 
-            // Save PHP Directory
-            Table_Functions.UpdateTableValue(phpdirectory_TXT.Text, prefix + "PHP_Directory", dt);
+            //// Save PHP Directory
+            //Table_Functions.UpdateTableValue(phpdirectory_TXT.Text, prefix + "PHP_Directory", dt);
             
         }
 
+
+        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ChangeSetting(null, null);
+        }
 
         private void databasename_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -209,14 +258,93 @@ namespace TH_MySQL.ConfigurationPage
             }
         }
 
+        #region "Properties"
+
+        public string DatabaseName
+        {
+            get { return (string)GetValue(DatabaseNameProperty); }
+            set { SetValue(DatabaseNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty DatabaseNameProperty =
+            DependencyProperty.Register("DatabaseName", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Server
+        {
+            get { return (string)GetValue(ServerProperty); }
+            set { SetValue(ServerProperty, value); }
+        }
+
+        public static readonly DependencyProperty ServerProperty =
+            DependencyProperty.Register("Server", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Port
+        {
+            get { return (string)GetValue(PortProperty); }
+            set { SetValue(PortProperty, value); }
+        }
+
+        public static readonly DependencyProperty PortProperty =
+            DependencyProperty.Register("Port", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Username
+        {
+            get { return (string)GetValue(UsernameProperty); }
+            set { SetValue(UsernameProperty, value); }
+        }
+
+        public static readonly DependencyProperty UsernameProperty =
+            DependencyProperty.Register("Username", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+
+
+        public string PhpServer
+        {
+            get { return (string)GetValue(PhpServerProperty); }
+            set { SetValue(PhpServerProperty, value); }
+        }
+
+        public static readonly DependencyProperty PhpServerProperty =
+            DependencyProperty.Register("PhpServer", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string PhpDirectory
+        {
+            get { return (string)GetValue(PhpDirectoryProperty); }
+            set { SetValue(PhpDirectoryProperty, value); }
+        }
+
+        public static readonly DependencyProperty PhpDirectoryProperty =
+            DependencyProperty.Register("PhpDirectory", typeof(string), typeof(Page), new PropertyMetadata(null));
+
         
+
+        #endregion
+
+
         #region "Password"
+
+
+        //private void confirmpassword_TXT_PasswordChanged_1(object sender, EventArgs e)
+        //{
+
+        //}
+
+        //private void password_TXT_PasswordChanged_1(object sender, EventArgs e)
+        //{
+
+        //}
 
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (!Loading)
             {
-                if (password_TXT.Password != "") PasswordEntered = true;
+                if (password_TXT.PasswordText != "") PasswordEntered = true;
                 else PasswordEntered = false;
 
                 PasswordShort = false;
@@ -231,7 +359,7 @@ namespace TH_MySQL.ConfigurationPage
         {
             if (!Loading)
             {
-                if (confirmpassword_TXT.Password != "") ConfirmPasswordEntered = true;
+                if (confirmpassword_TXT.PasswordText != "") ConfirmPasswordEntered = true;
                 else ConfirmPasswordEntered = false;
 
                 ConfirmPassword();
@@ -311,8 +439,8 @@ namespace TH_MySQL.ConfigurationPage
         {
             System.Security.SecureString pwd = password_TXT.SecurePassword;
 
-            if (!Management.VerifyPasswordMinimum(pwd)) PasswordShort = true;
-            else if (!Management.VerifyPasswordMaximum(pwd)) PasswordLong = true;
+            if (!Security_Functions.VerifyPasswordMinimum(pwd)) PasswordShort = true;
+            else if (!Security_Functions.VerifyPasswordMaximum(pwd)) PasswordLong = true;
         }
 
         System.Timers.Timer confirmpassword_TIMER;
@@ -338,10 +466,10 @@ namespace TH_MySQL.ConfigurationPage
         {
             if (PasswordEntered && ConfirmPasswordEntered)
             {
-                if (password_TXT.Password == confirmpassword_TXT.Password) PasswordVerified = true;
+                if (password_TXT.PasswordText == confirmpassword_TXT.PasswordText) PasswordVerified = true;
                 else PasswordVerified = false;
 
-                if (PasswordVerified) ChangeSetting(prefix + "Password", password_TXT.Password);
+                if (PasswordVerified) ChangeSetting(prefix + "Password", password_TXT.PasswordText);
             }
         }
 
@@ -385,6 +513,8 @@ namespace TH_MySQL.ConfigurationPage
         }
 
         #endregion
+
+        
 
     }
 }

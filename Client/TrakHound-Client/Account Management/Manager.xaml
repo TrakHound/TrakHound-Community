@@ -36,7 +36,10 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Background="#0080ff">
-                <StackPanel x:Name="Pages_STACK" Margin="0,40" />
+                
+                <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40"/>
+                
+                <!--<StackPanel x:Name="Pages_STACK" Margin="0,40" />-->
             </Border>
 
             <Border Grid.Column="1" BorderBrush="{StaticResource DWBlue}" BorderThickness="1" Background="#eee">
@@ -61,12 +64,22 @@
 
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto" Margin="0,0,20,0">
 
-                        <Grid x:Name="Content_GRID">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" MinWidth="800"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+                            
+                            <ContentControl Content="{Binding PageContent}"/>
+                            
                         </Grid>
+                        
+                        <!--<Grid x:Name="Content_GRID">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" MinWidth="800"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>-->
 
                     </ScrollViewer>
 

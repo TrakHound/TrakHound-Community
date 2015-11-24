@@ -49,6 +49,8 @@ namespace TH_Configuration
 
         #region "Remote Configurations"
 
+        public bool Remote { get; set; }
+
         public bool Shared { get; set; }
 
         public string UpdateId { get; set; }

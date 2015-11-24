@@ -43,6 +43,7 @@ using TH_PlugIns_Client_Control;
 using TH_WPF;
 using TH_Updater;
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 using TrakHound_Client.Controls;
 
@@ -82,14 +83,15 @@ namespace TrakHound_Client
             ReadUserManagementSettings();
             devicemangager.userDatabaseSettings = userDatabaseSettings;
 
-            LoginMenu.LoadRememberMe(Management.RememberMeType.Client);
+            LoginMenu.LoadRememberMe(RememberMeType.Client);
 
 
             Splash_UpdateStatus("...Loading Plugins");
             LoadPlugIns();
 
-            Splash_UpdateStatus("...Reading Configuration");
-            ReadConfigurations();
+            Splash_UpdateStatus("...Reading Devices");
+            LoadDevices();
+            //ReadConfigurations();
 
             //ReadConfigurationFile();
 
@@ -935,17 +937,42 @@ namespace TrakHound_Client
         #region "My Account"
 
         public Account_Management.Manager accountManager;
+        MyAccountPage myaccountpage;
+
+        class MyAccountPage : AboutPage
+        {
+            public MyAccountPage()
+            {
+                ParentPage = new TH_UserManagement.MyAccount.Page();
+                PageContent = ParentPage;
+            }
+
+            public void LoadUser(UserConfiguration userConfig)
+            {
+                if (userConfig != null) ParentPage.LoadProfile(userConfig);
+            }
+
+            TH_UserManagement.MyAccount.Page ParentPage;
+
+            public string PageName { get { return ParentPage.PageName; } }
+
+            public ImageSource Image { get { return ParentPage.Image; } }
+
+            public object PageContent { get; set; }
+        }
 
         void MyAccount_Initialize()
         {
             accountManager = new Account_Management.Manager();
+            myaccountpage = new MyAccountPage();
 
-            accountManager.AddPage(new Account_Management.Pages.MyAccount.Page());
-
+            accountManager.AddPage(myaccountpage);
         }
 
         public void MyAccount_Open()
         {
+            if (myaccountpage != null) myaccountpage.LoadUser(currentuser);
+
             accountManager.currentUser = currentuser;
 
             AddPageAsTab(accountManager, "My Account", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
@@ -1058,6 +1085,11 @@ namespace TrakHound_Client
             
         }
 
+        private void LoginMenu_MyAccountClicked()
+        {
+            MyAccount_Open();
+        }
+
         UserConfiguration currentuser;
         public UserConfiguration CurrentUser
         {
@@ -1080,7 +1112,8 @@ namespace TrakHound_Client
                     CurrentUsername = null;
                 }
 
-                ReadConfigurations();
+                LoadDevices();
+                //ReadConfigurations();
 
                 if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
@@ -1713,6 +1746,85 @@ namespace TrakHound_Client
 
         #region "Clients"
 
+        #region "Load Devices"
+
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+        Thread loaddevices_THREAD;
+
+        void LoadDevices()
+        {
+
+            if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
+
+            loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
+            loaddevices_THREAD.Start();
+        }
+
+        void LoadDevices_Worker()
+        {
+            List<Configuration> configs = new List<Configuration>();
+
+            if (currentuser != null)
+            {
+                if (userDatabaseSettings == null)
+                {
+                    configs = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                }
+                else
+                {
+                    //configs = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                }
+            }
+            // If not logged in Read from File in 'C:\TrakHound\'
+            else
+            {
+                configs = ReadConfigurationFile();
+            }
+
+
+            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
+        }
+
+        void LoadDevices_GUI(List<Configuration> configs)
+        {
+            if (configs != null)
+            {
+                int index = 0;
+
+                Devices.Clear();
+
+                if (monitors != null) { monitors.Clear(); }
+
+                // Create DevicesList based on Configurations
+                foreach (Configuration config in configs)
+                {
+                    config.Index = index;
+
+                    if (config.Remote) { StartMonitor(config); }
+
+                    if (config.Enabled)
+                    {
+                        Device_Client device = new Device_Client(config);
+                        device.Index = index;
+                        device.DataUpdated += Device_DataUpdated;
+                        Devices.Add(device);
+                    }
+
+                    index += 1;
+                }
+            }
+
+            configurations = configs;
+
+            UpdatePlugInDevices();
+            
+        }
+
+
+
+        #endregion
+
         // Device Update Interval
         public int clientUpdateInterval = 5000;
 
@@ -1720,68 +1832,66 @@ namespace TrakHound_Client
 
         List<ReturnData> DeviceData = new List<ReturnData>();
 
-        List<Configuration> Configurations;
+        List<Configuration> configurations;
 
-        void ReadConfigurations()
-        {
-            bool remote = false;
+        // OBSOLETE 11-23-15
+        //void ReadConfigurations()
+        //{
+        //    if (currentuser != null)
+        //    {
+        //        if (userDatabaseSettings == null)
+        //        {
+        //            configurations = Management.GetConfigurationsForUser(currentuser);
+        //        }
+        //        else
+        //        {
+        //            //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+        //        }
+        //    }
+        //    // If not logged in Read from File in 'C:\TrakHound\'
+        //    else
+        //    {
+        //        configurations = ReadConfigurationFile();
+        //    }
 
-            if (currentuser != null)
-            {
-                if (userDatabaseSettings == null)
-                {
-                    Configurations = Management.GetConfigurationsForUser(currentuser);
-                    remote = true;
-                }
-                else
-                {
-                    //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-                }
-            }
-            // If not logged in Read from File in 'C:\TrakHound\'
-            else
-            {
-                Configurations = ReadConfigurationFile();
-            }
+        //    if (configurations != null)
+        //    {
+        //        int index = 0;
 
-            if (Configurations != null)
-            {
-                int index = 0;
+        //        Devices.Clear();
 
-                Devices.Clear();
+        //        if (monitors != null)
+        //        {
+        //            //foreach (ConfigurationMonitor monitor in monitors) monitor.Stop();
+        //            monitors.Clear();
+        //        }
 
-                if (monitors != null)
-                {
-                    //foreach (ConfigurationMonitor monitor in monitors) monitor.Stop();
-                    monitors.Clear();
-                }
+        //        // Create DevicesList based on Configurations
+        //        foreach (Configuration config in configurations)
+        //        {
+        //            config.Index = index;
 
-                // Create DevicesList based on Configurations
-                foreach (Configuration config in Configurations)
-                {
-                    config.Index = index;
+        //            if (config.Remote)
+        //            {
+        //                StartMonitor(config);
+        //            }
 
-                    if (remote)
-                    {
-                        StartMonitor(config);
-                    }
+        //            if (config.Enabled)
+        //            {
+        //                Device_Client device = new Device_Client(config);
+        //                device.Index = index;
+        //                device.DataUpdated += Device_DataUpdated;
+        //                Devices.Add(device);  
+        //            }
 
-                    if (config.Enabled)
-                    {
-                        Device_Client device = new Device_Client(config);
-                        device.Index = index;
-                        device.DataUpdated += Device_DataUpdated;
-                        Devices.Add(device);  
-                    }
+        //            index += 1;
+        //        }
 
-                    index += 1;
-                }
+        //    }
 
-            }
+        //    UpdatePlugInDevices();
 
-            UpdatePlugInDevices();
-
-        }
+        //}
 
         List<ConfigurationMonitor> monitors = new List<ConfigurationMonitor>();
 
@@ -1801,7 +1911,7 @@ namespace TrakHound_Client
         void monitor_ConfigurationChanged(Configuration config)
         {
             Logger.Log("New Configuration Found : Reading New Configurations");
-            ReadConfigurations();
+            LoadDevices();
         }
 
         List<Configuration> ReadConfigurationFile()

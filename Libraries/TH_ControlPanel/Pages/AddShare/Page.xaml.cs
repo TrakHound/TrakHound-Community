@@ -26,6 +26,7 @@ using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TH_DeviceManager.Pages.AddShare
 {
@@ -45,6 +46,8 @@ namespace TH_DeviceManager.Pages.AddShare
         public DataTable configurationtable;
 
         public UserConfiguration currentuser;
+
+        public Database_Settings userDatabaseSettings;
 
         public DeviceManager devicemanager;
 
@@ -173,7 +176,7 @@ namespace TH_DeviceManager.Pages.AddShare
 
         private void Share_Clicked(TH_WPF.Button_01 bt)
         {
-            Management.SharedListItem item = new Management.SharedListItem();
+            Shared.SharedListItem item = new Shared.SharedListItem();
 
             item.description = description_TXT.Text;
             item.device_type = devicetype_TXT.Text;
@@ -204,7 +207,7 @@ namespace TH_DeviceManager.Pages.AddShare
                 // Save Shared Tablename
                 Table_Functions.UpdateTableValue(tablename, "/SharedTableName", configurationtable);
 
-                if (Management.CreateSharedConfiguration(currentuser, tablename, configurationtable, item))
+                if (Shared.CreateSharedConfiguration(currentuser, tablename, configurationtable, item))
                 {
 
                 }
@@ -278,7 +281,7 @@ namespace TH_DeviceManager.Pages.AddShare
             {
                 string filename = o.ToString();
 
-                System.Drawing.Image img = Images.GetImage(filename);
+                System.Drawing.Image img = Images.GetImage(filename, userDatabaseSettings);
 
                 this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadImage_GUI), priority, new object[] { img });
             }
@@ -349,7 +352,7 @@ namespace TH_DeviceManager.Pages.AddShare
 
                 if (File.Exists(localPath))
                 {
-                    Images.UploadImage(localPath);
+                    Images.UploadImage(localPath, userDatabaseSettings);
 
                     result = filename;
                 }

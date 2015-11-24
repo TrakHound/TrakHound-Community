@@ -48,14 +48,22 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Images.cs" />
-    <Compile Include="Management.cs" />
-    <Compile Include="Menu.xaml.cs">
+    <Compile Include="Controls\Create\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <None Include="Images.cs" />
+    <Compile Include="Management\Configuration.cs" />
+    <Compile Include="Management\Global.cs" />
+    <Compile Include="Management\Local.cs" />
+    <Compile Include="Management\RememberMe.cs" />
+    <Compile Include="Management\Remote.cs" />
+    <Compile Include="Management\Shared.cs" />
+    <Compile Include="Management\Tools.cs" />
+    <Compile Include="Controls\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Monitor.cs" />
-    <Compile Include="MyAccount\Page.xaml.cs">
+    <Compile Include="Controls\MyAccount\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,15 +72,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UserConfiguration.cs" />
-    <Compile Include="UserManagementSettings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Menu.xaml">
+    <Page Include="Controls\Create\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MyAccount\Page.xaml">
+    <Page Include="Controls\MyAccount\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -81,6 +91,10 @@
     <ProjectReference Include="..\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_Database\TH_Database.csproj">
+      <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
+      <Name>TH_Database</Name>
     </ProjectReference>
     <ProjectReference Include="..\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
@@ -106,6 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Camera_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CheckMark_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

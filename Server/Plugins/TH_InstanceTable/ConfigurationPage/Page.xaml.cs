@@ -20,7 +20,7 @@ using TH_Configuration;
 using TH_PlugIns_Server;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
-using TH_UserManagement;
+using TH_UserManagement.Management;
 
 using TH_InstanceTable.ConfigurationPage;
 

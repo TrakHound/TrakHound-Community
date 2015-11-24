@@ -16,22 +16,146 @@
         <TextBlock Text="Cycles" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
 
         <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
-
+Use Cycles to track machine programs or sequences. 
+            Uses a Generated Event with two values (Cycle Started and Cycle Stopped). 
+            The cycles table records the total number of cycles ran during a shift along with average cycle time and total parts produced.
         </TextBlock>
 
-        <StackPanel Grid.Row="2" Margin="0,10" HorizontalAlignment="Left">
+        <StackPanel Grid.Row="2" Margin="10,10" HorizontalAlignment="Left">
+            <StackPanel.Resources>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Margin" Value="0,5"/>
+                </Style>
+            </StackPanel.Resources>
 
-            <!--Event Link-->
-            <TextBlock Text="Event" FontSize="8pt" Foreground="#666666" Margin="0,10" VerticalAlignment="Center"/>
+            
+            <!--Title and Help-->
+            <StackPanel Orientation="Horizontal">
 
-            <ComboBox x:Name="event_COMBO" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedEvent}" SelectionChanged="Event_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <!--Title-->
+                <TextBlock Text="Event" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                <!--Help-->
+                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                    <Rectangle.ToolTip>
+                        <ToolTip MaxWidth="400">
+                            <StackPanel>
+                                <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                <TextBlock TextWrapping="Wrap">
+                                            Select the Generated Event that uses values of 'Cycle Started' and 'Cycle Stopped'.
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Rectangle.ToolTip>
 
 
-            <!--Cycle Id Link-->
-            <TextBlock Text="Value" FontSize="8pt" Foreground="#666666" Margin="0,10" VerticalAlignment="Center"/>
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
+                    </Rectangle.Resources>
 
-            <ComboBox x:Name="capturelink_COMBO" Width="200" ItemsSource="{Binding CaptureLinks}" Text="{Binding SelectedCaptureLink}" SelectionChanged="CaptureLink_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Fill" Value="#0080ff"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard FillBehavior="Stop">
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
 
+                </Rectangle>
+
+            </StackPanel>
+
+            <ComboBox x:Name="event_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedEvent}" SelectionChanged="Event_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+
+            <!--Title and Help-->
+            <StackPanel Orientation="Horizontal">
+
+                <!--Title-->
+                <TextBlock Text="Capture Link" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                <!--Help-->
+                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                    <Rectangle.ToolTip>
+                        <ToolTip MaxWidth="400">
+                            <StackPanel>
+                                <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                <TextBlock TextWrapping="Wrap">
+                                            Select the 'Capture Link' that corresponds to the cycle name.
+                                </TextBlock>
+                            </StackPanel>
+                        </ToolTip>
+                    </Rectangle.ToolTip>
+
+
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
+                    </Rectangle.Resources>
+
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Fill" Value="#0080ff"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard FillBehavior="Stop">
+                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                    <ColorAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ColorAnimation.EasingFunction>
+                                                </ColorAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+
+                </Rectangle>
+
+            </StackPanel>
+
+            <ComboBox x:Name="capturelink_COMBO" Margin="0,0" Width="200" ItemsSource="{Binding CaptureLinks}" Text="{Binding SelectedCaptureLink}" SelectionChanged="CaptureLink_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+          
         </StackPanel>
 
     </Grid>

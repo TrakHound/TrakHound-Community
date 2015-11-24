@@ -111,7 +111,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -208,7 +208,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -305,7 +305,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -401,7 +401,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -498,7 +498,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -594,7 +594,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -690,7 +690,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -786,7 +786,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -882,7 +882,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>

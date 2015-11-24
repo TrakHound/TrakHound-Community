@@ -37,6 +37,8 @@ namespace TrakHound_Client.About.Pages.Information
 
             DataContext = this;
 
+            PageContent = this;
+
             // Build Information
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             Version version = assembly.GetName().Version;
@@ -74,6 +76,8 @@ namespace TrakHound_Client.About.Pages.Information
         public string PageName { get { return "Information"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/About/Pages/Information/Information_01.png")); } }
+
+        public object PageContent { get; set; }
 
         #region "Build Information"
 

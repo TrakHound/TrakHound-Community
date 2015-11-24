@@ -11,6 +11,8 @@ using System.Threading;
 using TH_Configuration;
 using TH_Global;
 
+using TH_UserManagement.Management;
+
 namespace TH_UserManagement
 {
 
@@ -78,7 +80,7 @@ namespace TH_UserManagement
         {
             try
             {
-                DataTable dt = Management.GetConfigurationTable(TableName);
+                DataTable dt = Remote.Configurations.GetConfigurationTable(TableName);
                 if (dt != null)
                 {
                     XmlDocument xml = Converter.TableToXML(dt);

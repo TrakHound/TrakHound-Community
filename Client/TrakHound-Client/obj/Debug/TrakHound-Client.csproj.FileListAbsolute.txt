@@ -248,8 +248,6 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Manager.g.
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Pages\Information\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Pages\License\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Manager.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\Create\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\MyAccount\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Developer Console\PopUp.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\UpdateItem.g.cs
@@ -283,8 +281,6 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\About\Manager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Manager.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\Create\Page.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Account Management\Pages\MyAccount\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Developer Console\PopUp.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Options\Pages\Updates\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Plugins\Launcher\Menu.baml

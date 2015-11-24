@@ -20,7 +20,7 @@ using System.Windows.Shapes;
 
 using System.Collections.ObjectModel;
 
-using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TrakHound_Client.Main_Menu
 {

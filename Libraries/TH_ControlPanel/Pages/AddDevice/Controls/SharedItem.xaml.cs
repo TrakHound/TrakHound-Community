@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TH_DeviceManager.Pages.AddDevice.Controls
 {
@@ -33,7 +34,7 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
             DataContext = this;
         }
 
-        public Management.SharedListItem listitem;
+        public Shared.SharedListItem listitem;
 
         public ImageSource FullSizeImage { get; set; }
 

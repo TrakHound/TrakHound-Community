@@ -34,6 +34,7 @@ using TH_Global;
 using TH_PlugIns_Server;
 using TH_WPF;
 using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TrakHound_Server_Control_Panel
 {
@@ -63,7 +64,7 @@ namespace TrakHound_Server_Control_Panel
 
             devicemanager.userDatabaseSettings = userDatabaseSettings;
 
-            LoginMenu.LoadRememberMe(Management.RememberMeType.Server);
+            LoginMenu.LoadRememberMe(RememberMeType.Server);
         }
 
         DeviceManager devicemanager;
@@ -508,7 +509,7 @@ namespace TrakHound_Server_Control_Panel
 
         #region "User Login"
 
-        private void LoginMenu_CurrentUserChanged(TH_UserManagement.UserConfiguration userConfig)
+        private void LoginMenu_CurrentUserChanged(UserConfiguration userConfig)
         {
             CurrentUser = userConfig;
             //LoginMenu.Shown = true;

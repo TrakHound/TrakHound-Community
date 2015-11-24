@@ -60,7 +60,7 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="0,5,10,5">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="0,5,10,5" Background="#fff">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
@@ -127,7 +127,7 @@
                     </Grid>
 
                     <!--List-->
-                    <Border Grid.Row="2" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="300" VerticalAlignment="Stretch">
+                    <Border Grid.Row="2" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="300" VerticalAlignment="Stretch" Background="#fff">
 
                         <Grid>
 

@@ -54,4 +54,8 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.Properties.Resou
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TextBox.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TextBox.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\PasswordBox.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\PasswordBox.g.cs

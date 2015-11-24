@@ -18,7 +18,7 @@ using System.Collections.ObjectModel;
 
 using TH_Global.Functions;
 using TH_PlugIns_Server;
-using TH_UserManagement;
+using TH_UserManagement.Management;
 
 namespace TH_ShiftTable.ConfigurationPage
 {

@@ -316,9 +316,35 @@
             <Border CornerRadius="1" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Normal}">
 
                 <Grid>
+                    <!--<Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>-->
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="auto"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="auto"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <!--Image-->
@@ -366,9 +392,35 @@
             <Border CornerRadius="1" PreviewMouseDown="Border_PreviewMouseDown" Style="{StaticResource MainBorder_Alternate}">
 
                 <Grid>
+                    <!--<Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>-->
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="auto"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="auto"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
                     <!--Image-->
