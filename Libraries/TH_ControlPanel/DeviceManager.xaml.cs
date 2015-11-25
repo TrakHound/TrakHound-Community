@@ -350,6 +350,8 @@ namespace TH_DeviceManager
 
         private void Save_Clicked(Button_02 bt)
         {
+            bt.Focus();
+
             Saving = true;
 
             //DataTable dt = ConfigurationTable;
@@ -450,16 +452,9 @@ namespace TH_DeviceManager
                     // Reset Update ID
                     Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
 
-                    if (userDatabaseSettings == null)
-                    {
-                        Configurations.ClearConfigurationTable(tablename, userDatabaseSettings);
+                    Configurations.ClearConfigurationTable(tablename, userDatabaseSettings);
 
-                        Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);
-                    }
-                    else
-                    {
-                        //TH_Database.Tables.Users.Configuration_UpdateRows(currentuser, userDatabaseSettings, SelectedDevice);
-                    }
+                    Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);
                 }
                 // If not logged in Save to File in 'C:\TrakHound\'
                 else

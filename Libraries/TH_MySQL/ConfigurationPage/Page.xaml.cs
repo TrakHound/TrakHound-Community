@@ -156,7 +156,12 @@ namespace TH_MySQL.ConfigurationPage
 
         private void TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ChangeSetting(null, null);
+            UIElement txt = (UIElement)sender;
+
+            if (txt.IsMouseCaptured || txt.IsKeyboardFocused)
+            {
+                ChangeSetting(null, null);
+            }
         }
 
         private void databasename_TXT_TextChanged(object sender, TextChangedEventArgs e)
@@ -350,7 +355,7 @@ namespace TH_MySQL.ConfigurationPage
                 PasswordShort = false;
                 PasswordLong = false;
 
-                VerifyPassword();
+                //VerifyPassword();
                 ConfirmPassword(); 
             }
         }

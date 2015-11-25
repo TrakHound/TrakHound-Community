@@ -48,8 +48,8 @@ namespace TrakHound_Server_Core
                     if (config.Enabled)
                     {
                         Device_Server server = new Device_Server(config);
-                        server.configurationPath = configPath;
-                        server.updateConfigurationFile = false;
+                        //server.configurationPath = configPath;
+                        //server.updateConfigurationFile = false;
 
                         // Initialize Database Configurations
                         Global.Initialize(server.configuration.Databases);
@@ -75,6 +75,43 @@ namespace TrakHound_Server_Core
         void monitor_ConfigurationChanged(Configuration config)
         {
             Console.WriteLine("Configuration Changed!");
+
+            Configuration c = configurations.Find(x => x.UniqueId == config.UniqueId);
+            if (c != null)
+            {
+                string tablename = c.TableName;
+                int index = c.Index;
+
+                c = config;
+                c.TableName = tablename;
+                c.Index = index + 1;
+
+                c.Remote = true;
+
+                int deviceIndex = Devices.FindIndex(x => x.configuration.UniqueId == c.UniqueId);
+                if (deviceIndex >= 0)
+                {
+                    Devices[deviceIndex].Stop();
+                    Devices.RemoveAt(deviceIndex);
+                }
+                
+
+                if (c.Enabled)
+                {
+                    Device_Server device = new Device_Server(c);
+
+                    // Initialize Database Configurations
+                    Global.Initialize(device.configuration.Databases);
+
+                    device.Start();
+
+                    if (deviceIndex >= 0) Devices.Insert(deviceIndex, device);
+                    else Devices.Add(device);
+                }
+
+                StartMonitor(c);
+
+            }
         }
 
         #region "Xml File"

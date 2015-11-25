@@ -9,7 +9,7 @@ namespace TrakHound_Server_Core
 
         void PrintHeader()
         {
-            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine("--------------------------------------------------");
 
             string trakhoundlogo_path = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Header.txt";
 
@@ -25,7 +25,7 @@ namespace TrakHound_Server_Core
                 }
             }
 
-            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine("--------------------------------------------------");
         }
 
         static string GetVersion()

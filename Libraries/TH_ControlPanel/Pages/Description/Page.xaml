@@ -39,7 +39,7 @@
                 </StackPanel.Resources>
 
                 <!--Device Description-->
-                <th_wpf:TextBox Text="{Binding DeviceDescription}" Title="Device Description" Instructions="Enter description of device" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding DeviceDescription, Mode=TwoWay}" Title="Device Description" Instructions="Enter description of device" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Used to record a general desciption of the device.
                         For example: 5 Axis Mill, Horizontal Lathe, 3 Axis Mill, etc.
@@ -47,7 +47,7 @@
                 </th_wpf:TextBox>
 
                 <!--Device Type-->
-                <th_wpf:TextBox Text="{Binding DeviceType}" Title="Device Type" Instructions="Enter device type" TextChanged="TXT_TextChanged" Width="200">
+                <th_wpf:TextBox Text="{Binding DeviceType, Mode=TwoWay}" Title="Device Type" Instructions="Enter device type" TextChanged="TXT_TextChanged" Width="200">
                     <th_wpf:TextBox.HelpText>
                         Used to record the type of device.
                         For example: CNC, Press, Conveyor, etc.
@@ -55,7 +55,7 @@
                 </th_wpf:TextBox>
 
                 <!--Manufacturer-->
-                <th_wpf:TextBox Text="{Binding Manufacturer}" Title="Manufacturer" Instructions="Enter device manufacturer" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding Manufacturer, Mode=TwoWay}" Title="Manufacturer" Instructions="Enter device manufacturer" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Used to record the device's manufacturer.
                         For example: Okuma, Mazak, Haas, etc.
@@ -63,7 +63,7 @@
                 </th_wpf:TextBox>
                
                 <!--Device ID-->
-                <th_wpf:TextBox Text="{Binding DeviceId}" Title="Device Id" Instructions="Enter device id" TextChanged="TXT_TextChanged" Width="200">
+                <th_wpf:TextBox Text="{Binding DeviceId, Mode=TwoWay}" Title="Device Id" Instructions="Enter device id" TextChanged="TXT_TextChanged" Width="200">
                     <th_wpf:TextBox.HelpText>
                         Used to create an ID for the device that is different than other devices with similar Manufacturer, Model, etc. 
                         For example: 01, 02, A, B, C, etc.
@@ -71,21 +71,21 @@
                 </th_wpf:TextBox>
 
                 <!--Model-->
-                <th_wpf:TextBox Text="{Binding Model}" Title="Model" Instructions="Enter device model" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding Model, Mode=TwoWay}" Title="Model" Instructions="Enter device model" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Used to record the device's model.
                     </th_wpf:TextBox.HelpText>
                 </th_wpf:TextBox>
 
                 <!--Serial-->
-                <th_wpf:TextBox Text="{Binding Serial}" Title="Serial" Instructions="Enter device serial number" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding Serial, Mode=TwoWay}" Title="Serial" Instructions="Enter device serial number" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Used to record what the serial number for the device is. Can be used to help differentiate from other devices.
                     </th_wpf:TextBox.HelpText>
                 </th_wpf:TextBox>
 
                 <!--Controller-->
-                <th_wpf:TextBox Text="{Binding Controller}" Title="Controller" Instructions="Enter device controller type" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding Controller, Mode=TwoWay}" Title="Controller" Instructions="Enter device controller type" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Used to record what type/brand of controller the device has.
                         For example: Fanuc, Mazatrol, OPC, Siemens, etc.
@@ -93,7 +93,7 @@
                 </th_wpf:TextBox>
 
                 <!--Company-->
-                <th_wpf:TextBox Text="{Binding Company}" Title="Company" Instructions="Enter company device is used by" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company" Instructions="Enter company device is used by" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Used to record the Company that this machine belongs to. 
                         For example if TrakHound is used by a Machine Service Provider and monitors many different company's machines.

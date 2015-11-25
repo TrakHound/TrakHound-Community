@@ -164,12 +164,22 @@ namespace TH_DeviceManager.Controls
 
         private void enabled_CHK_Checked(object sender, RoutedEventArgs e)
         {
-            if (Enabled != null) Enabled(this);
+            CheckBox chk = (CheckBox)sender;
+
+            if (chk.IsMouseCaptured || chk.IsKeyboardFocused)
+            {
+                if (Enabled != null) Enabled(this);
+            }
         }
 
         private void enabled_CHK_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (Disabled != null) Disabled(this);
+            CheckBox chk = (CheckBox)sender;
+
+            if (chk.IsMouseCaptured || chk.IsKeyboardFocused)
+            {
+                if (Disabled != null) Disabled(this);
+            }
         }
 
 

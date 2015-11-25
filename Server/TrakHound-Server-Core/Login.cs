@@ -32,7 +32,7 @@ namespace TrakHound_Server_Core
 
                 currentuser = rememberUser;
 
-                Logger.Log(rememberUser.username + " logged in succesfully");
+                Logger.Log(TH_Global.Formatting.UppercaseFirst(rememberUser.username) + " logged in succesfully");
             }
         }
 

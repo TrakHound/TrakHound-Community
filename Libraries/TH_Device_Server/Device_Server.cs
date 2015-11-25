@@ -7,24 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.IO;
-using System.Data;
 
 using TH_Configuration;
 using TH_Database;
 using TH_Database.Tables;
 using TH_Global;
-using TH_MTC_Data;
-using TH_MTC_Requests;
-using TH_Ping;
-using TH_PlugIns_Server;
 
 namespace TH_Device_Server
 {
-    public class Device_Server
+    public partial class Device_Server
     {
 
         #region "Public"
@@ -33,17 +25,15 @@ namespace TH_Device_Server
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            updateConfigurationFile = true;
-
             LoadPlugins();
 
             configuration = config;
 
             RunningTime_Initialize();
 
-            Ping_Agent_Initialize(config);
-            Ping_DB_Initialize(config);
-            Ping_PHP_Initialize(config);
+            //Ping_Agent_Initialize(config);
+            //Ping_DB_Initialize(config);
+            //Ping_PHP_Initialize(config);
 
             Status = ConnectionStatus.Stopped;
 
@@ -54,11 +44,17 @@ namespace TH_Device_Server
 
         public void Initialize()
         {
+            /// Initialize MTConnect Requests (probe, current, and sample)
             Requests_Initialize();
 
+            // Initialize any aux tables such as Agent info or variables
             InitializeTables();
 
+            // Initialize each Table Plugin with the current Configuration 
             TablePlugIns_Initialize(configuration);
+
+            //// Checkdatabase connections
+            //CheckDatabaseConnections(configuration);
         }
 
         public void Start() { start(); }
@@ -73,25 +69,25 @@ namespace TH_Device_Server
 
         void start()
         {
-            Console.WriteLine("Device_Server Started...");
+            PrintDeviceHeader(configuration);
 
-            if (updateConfigurationFile && configurationPath != null)
-            {
-                if (File.Exists(configurationPath))
-                {
-                    Configuration lSettings = Configuration.ReadConfigFile(configurationPath);
+            //if (updateConfigurationFile && configurationPath != null)
+            //{
+            //    if (File.Exists(configurationPath))
+            //    {
+            //        Configuration lSettings = Configuration.ReadConfigFile(configurationPath);
 
-                    if (lSettings != null)
-                    {
-                        configuration.Agent = lSettings.Agent;
-                        configuration.Description = lSettings.Description;
-                        configuration.FileLocations = lSettings.FileLocations;
-                        configuration.SQL = lSettings.SQL;
+            //        if (lSettings != null)
+            //        {
+            //            configuration.Agent = lSettings.Agent;
+            //            configuration.Description = lSettings.Description;
+            //            configuration.FileLocations = lSettings.FileLocations;
+            //            configuration.SQL = lSettings.SQL;
 
-                        FSW_Start();
-                    }
-                }
-            }
+            //            FSW_Start();
+            //        }
+            //    }
+            //}
 
             Database.Create(configuration.Databases);
 
@@ -102,6 +98,9 @@ namespace TH_Device_Server
         public void Stop()
         {
             RunningTimeSTPW.Stop();
+            RunningTime_TIMER.Enabled = false;
+
+            Worker_Stop();
 
             if (worker != null) worker.Abort();
 
@@ -123,6 +122,11 @@ namespace TH_Device_Server
             Log("Device (" + configuration.Index.ToString() + ") Closed");
         }
 
+        public void Restart()
+        {
+
+        }
+
         #endregion
 
         #region "Properties"
@@ -139,7 +143,14 @@ namespace TH_Device_Server
 
         #region "Worker Thread"
 
-        void Worker_Start() { Connection_Initialize(); }
+        //void Worker_Start() { Connection_Initialize(); }
+
+        void Worker_Start() 
+        {
+            Initialize();
+
+            Requests_Start();
+        }
 
         void Worker_Stop()
         {
@@ -334,6 +345,7 @@ namespace TH_Device_Server
             set
             {
                 processingstatus = value;
+
                 if (ProcessingStatusChanged != null && configuration != null)
                 {
                     ProcessingStatusChanged(configuration.Index, processingstatus);
@@ -347,6 +359,8 @@ namespace TH_Device_Server
         {
             prev_processingstatus = ProcessingStatus;
             ProcessingStatus = status;
+
+            WriteToConsole(processingstatus, ConsoleOutputType.Status);
         }
 
         void ClearProcessingStatus()
@@ -364,6 +378,83 @@ namespace TH_Device_Server
 
         static bool DEBUG = true;
 
+        string previousLine = null;
+        ConsoleOutputType previousType;
+        DateTime previousErrorTimestamp;
+
+        enum ConsoleOutputType
+        {
+            Normal = 0,
+            Status = 1,
+            Error = 2
+        }
+
+        void WriteToConsole(string line, ConsoleOutputType type)
+        {
+
+            switch (type)
+            {
+                case ConsoleOutputType.Normal:
+
+                    Console.WriteLine(line);
+
+                    break;
+
+                case ConsoleOutputType.Status:
+
+                    if (previousType == ConsoleOutputType.Status)
+                    {
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    }
+
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.Write("[Status]");
+                    Console.ResetColor();
+
+                    if (configuration != null)
+                    {
+                        Console.Write(" [" + configuration.Index.ToString() + "] " + line + Environment.NewLine);
+                    }
+                    else
+                    {
+                        Console.Write(" " + line + Environment.NewLine);
+                    }
+                    
+
+                    break;
+
+                case ConsoleOutputType.Error:
+
+                    if (line == previousLine)
+                    {
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    }
+                    else
+                    {
+                        previousErrorTimestamp = DateTime.Now;
+                    }
+
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.Write("[Error]");
+                        Console.ResetColor();
+
+                        Console.Write(" [" + previousErrorTimestamp.ToString() + " - " + DateTime.Now.ToString() + "] " + line + Environment.NewLine);
+                        //Log(line);
+                    
+
+                    break;
+            }
+
+            previousType = type;
+            previousLine = line;
+        }
+
         public void Log(string line)
         {
             if (DEBUG) Logger.Log(line);
@@ -380,711 +471,25 @@ namespace TH_Device_Server
 
         #endregion
 
-        #region "Ping"
+        #region "Header"
 
-        public bool MTC_PingResult = false;
-        public bool SQL_PingResult = false;
-        public bool PHP_PingResult = false;
-
-        void Ping_Agent_MTCPingResult(bool PingResult) { MTC_PingResult = PingResult; }
-
-        void Ping_DB_MySQLPingResult(bool PingResult) { SQL_PingResult = PingResult; }
-
-        void Ping_PHP_PingResult(bool PingResult) { PHP_PingResult = PingResult; }
-
-
-        void Ping_Agent_Initialize(Configuration lSettings)
+        void PrintDeviceHeader(Configuration config)
         {
-            PortPing Agent_Ping = new PortPing();
-            Agent_Ping.Address = lSettings.Agent.IP_Address;
-            Agent_Ping.Port = lSettings.Agent.Port;
-            Agent_Ping.Interval = 2000;
-            Agent_Ping.PingResult += Ping_Agent_MTCPingResult;
-            Agent_Ping.Start();
+            Console.WriteLine("Device [" + config.Index.ToString() + "] ---------------------------------------");
+
+            Console.WriteLine("Description --------------------------");
+            if (config.Description.Description != null) Console.WriteLine(config.Description.Description);
+            if (config.Description.Manufacturer != null) Console.WriteLine(config.Description.Manufacturer);
+            if (config.Description.Model != null) Console.WriteLine(config.Description.Model);
+            if (config.Description.Serial != null) Console.WriteLine(config.Description.Serial);
+
+            Console.WriteLine("Agent --------------------------------");
+            if (config.Agent.IP_Address != null) Console.WriteLine(config.Agent.IP_Address);
+            if (config.Agent.Port > 0) Console.WriteLine(config.Agent.Port.ToString());
+            if (config.Agent.Device_Name != null) Console.WriteLine(config.Agent.Device_Name);
+
+            Console.WriteLine("--------------------------------------------------");
         }
-
-        void Ping_DB_Initialize(Configuration lSettings)
-        {
-            //if (lSettings.SQL.PHP_Server == null)
-            //{
-            //    MySQLPing DB_Ping = new MySQLPing();
-            //    DB_Ping.Settings = lSettings.SQL;
-            //    DB_Ping.MySQLPingResult += Ping_DB_MySQLPingResult;
-            //    DB_Ping.Start();
-            //}
-            //else SQL_PingResult = true;
-        }
-
-        void Ping_PHP_Initialize(Configuration lSettings)
-        {
-            //if (lSettings.SQL.PHP_Server != null)
-            //{
-            //    PortPing PHP_Ping = new PortPing();
-            //    PHP_Ping.Address = lSettings.SQL.PHP_Server;
-            //    PHP_Ping.Port = 0;
-            //    PHP_Ping.Interval = 2000;
-            //    PHP_Ping.PingResult += Ping_PHP_PingResult;
-            //    PHP_Ping.Start();
-            //}
-            //else PHP_PingResult = true;
-        }
-
-        #endregion
-
-        #region "PlugIns"
-
-        public IEnumerable<Lazy<Table_PlugIn>> TablePlugIns { get; set; }
-
-        public List<Lazy<Table_PlugIn>> Table_Plugins { get; set; }
-
-        TablePlugs TPLUGS;
-
-        class TablePlugs
-        {
-            [ImportMany(typeof(Table_PlugIn))]
-            public IEnumerable<Lazy<Table_PlugIn>> PlugIns { get; set; }
-        }
-
-        void LoadPlugins()
-        {
-            UpdateProcessingStatus("Loading Plugins...");
-
-            string plugin_rootpath = FileLocations.Plugins + @"\Server";
-
-            if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
-
-            Table_Plugins = new List<Lazy<Table_PlugIn>>();
-
-            string pluginsPath;
-
-            // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
-            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
-
-            // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-            pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
-
-            TablePlugIns = Table_Plugins;
-
-            ClearProcessingStatus();
-        }
-
-        void LoadTablePlugins(string Path)
-        {
-            Logger.Log("Searching for Table Plugins in '" + Path + "'");
-            if (Directory.Exists(Path))
-            {
-                try
-                {
-                    TPLUGS = new TablePlugs();
-
-                    var PageCatalog = new DirectoryCatalog(Path);
-                    var PageContainer = new CompositionContainer(PageCatalog);
-                    PageContainer.SatisfyImportsOnce(TPLUGS);
-
-                    TablePlugIns = TPLUGS.PlugIns;
-
-                    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns)
-                    {
-                        Table_PlugIn tp = ltp.Value;
-
-                        if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == tp.Name.ToLower()) == null)
-                        {
-                            Logger.Log(tp.Name + " : PlugIn Found");
-                            Table_Plugins.Add(ltp);
-                        }
-                        else
-                        {
-                            Logger.Log(tp.Name + " : PlugIn Already Found");
-                        }
-                    }
-                }
-                catch (Exception ex) { Logger.Log("LoadTablePlugins() : Exception : " + ex.Message); }              
-
-                // Search Subdirectories
-                foreach (string directory in Directory.GetDirectories(Path))
-                {
-                    LoadTablePlugins(directory);
-                }      
-            }
-            else Logger.Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
-        }
-
-
-        class InitializeWorkerInfo
-        {
-            public Configuration config { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
-        }
-
-        class ComponentWorkerInfo
-        {
-            public TH_MTC_Data.Components.ReturnData returnData { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
-        }
-
-        class StreamWorkerInfo
-        {
-            public TH_MTC_Data.Streams.ReturnData returnData { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
-        }
-
-        class DataEventWorkerInfo
-        {
-            public DataEvent_Data de_data { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
-        }
-
-        void TablePlugIns_Initialize(Configuration Config)
-        {
-            if (TablePlugIns != null && Config != null)
-            {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
-                {
-                    //if (tp.IsValueCreated)
-                    //{
-                        InitializeWorkerInfo info = new InitializeWorkerInfo();
-                        info.config = Config;
-                        info.tablePlugin = tp.Value;
-
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
-                    //}
-                }
-            }
-        }
-
-        void TablePlugIn_Initialize_Worker(object o)
-        {
-            InitializeWorkerInfo info = (InitializeWorkerInfo)o;
-
-            try
-            {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.DataEvent -= TablePlugIn_Update_DataEvent;
-                tpi.DataEvent += TablePlugIn_Update_DataEvent;
-                tpi.Initialize(info.config);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Plugin Exception! : " + ex.Message);
-            }
-        }
-
-
-        void TablePlugIns_Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
-        {
-            if (TablePlugIns != null)
-            {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
-                {
-                    if (tp.IsValueCreated)
-                    {
-                        ComponentWorkerInfo info = new ComponentWorkerInfo();
-                        info.returnData = returnData;
-                        info.tablePlugin = tp.Value;
-
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
-                    }
-                }
-            }
-        }
-
-        void TablePlugIns_Update_Probe_Worker(object o)
-        {
-            ComponentWorkerInfo info = (ComponentWorkerInfo)o;
-
-            try
-            {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_Probe(info.returnData);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Plugin Exception! : " + ex.Message);
-            }
-        }
-
-
-        void TablePlugIns_Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
-        {
-            if (TablePlugIns != null)
-            {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
-                {
-                    if (tp.IsValueCreated)
-                    {
-                        StreamWorkerInfo info = new StreamWorkerInfo();
-                        info.returnData = returnData;
-                        info.tablePlugin = tp.Value;
-
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
-                    }
-                }
-            }
-        }
-
-        void TablePlugIns_Update_Current_Worker(object o)
-        {
-            StreamWorkerInfo info = (StreamWorkerInfo)o;
-
-            try
-            {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_Current(info.returnData);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Plugin Exception! : " + ex.Message);
-            }
-        }
-
-
-        void TablePlugIns_Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
-        {
-            if (TablePlugIns != null)
-            {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
-                {
-                    if (tp.IsValueCreated)
-                    {
-                        StreamWorkerInfo info = new StreamWorkerInfo();
-                        info.returnData = returnData;
-                        info.tablePlugin = tp.Value;
-
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
-                    }
-                }
-            }
-        }
-
-        void TablePlugIns_Update_Sample_Worker(object o)
-        {
-            StreamWorkerInfo info = (StreamWorkerInfo)o;
-
-            try
-            {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_Sample(info.returnData);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Plugin Exception! : " + ex.Message);
-            }
-        }
-
-
-        void TablePlugIn_Update_DataEvent(DataEvent_Data de_data)
-        {
-            if (TablePlugIns != null)
-            {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
-                {
-                    if (tp.IsValueCreated)
-                    {
-                        DataEventWorkerInfo info = new DataEventWorkerInfo();
-                        info.de_data = de_data;
-                        info.tablePlugin = tp.Value;
-
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
-                    }
-                }
-            }
-        }
-
-        void TablePlugIn_Update_DataEvent_Worker(object o)
-        {
-            DataEventWorkerInfo info = (DataEventWorkerInfo)o;
-
-            try
-            {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_DataEvent(info.de_data);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Plugin Exception! : " + ex.Message);
-            }
-        }
-
-
-        void TablePlugIns_Closing()
-        {
-            if (TablePlugIns != null)
-            {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
-                {
-                    if (tp.IsValueCreated)
-                    {
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Closing_Worker), tp.Value);
-                    }
-                }
-            }
-        }
-
-        void TablePlugIn_Closing_Worker(object o)
-        {
-            Table_PlugIn tp = (Table_PlugIn)o;
-
-            try
-            {
-                tp.Closing();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Plugin Exception! : " + ex.Message);
-            }
-        }
-
-        #endregion
-
-        #region "MTC Requests"
-
-        void Requests_Initialize()
-        {
-            Probe_Initialize();
-            Current_Initialize();
-            Sample_Initialize();
-        }
-
-        void Requests_Start()
-        {
-            Probe_Start();
-            Current_Start();
-        }
-
-        void Requests_Stop()
-        {
-            Probe_Stop();
-            Current_Stop();
-            Sample_Stop();
-        }
-
-        #region "Probe"
-
-        Probe probe;
-
-        TH_MTC_Data.Components.ReturnData ProbeData;
-
-        void Probe_Initialize()
-        {
-            probe = new Probe();
-            probe.configuration = configuration;
-            probe.ProbeFinished -= probe_ProbeFinished;   
-            probe.ProbeFinished += probe_ProbeFinished;          
-        }
-
-        void Probe_Start()
-        {
-            UpdateProcessingStatus("Running Probe Request..");
-            if (probe != null) probe.Start();
-        }
-
-        void Probe_Stop()
-        {
-            if (probe != null) probe.Stop();
-        }
-
-        void probe_ProbeFinished(TH_MTC_Data.Components.ReturnData returnData, Probe probe)
-        {
-            UpdateProcessingStatus("Probe Received");
-
-            ProbeData = returnData;
-
-            if (configuration.Server.Tables.MTConnect.Sample)
-            {
-                //CreateSampleTables_MySQL(returnData.DS);
-            }
-
-            TablePlugIns_Update_Probe(returnData);
-
-            ClearProcessingStatus();
-        }
-
-        #endregion
-
-        #region "Current"
-
-        Current current;
-
-        int sampleInterval;
-        int sampleCounter = -1;
-
-        Int64 Agent_ID;
-        DateTime Agent_First;
-        DateTime Agent_Last;
-
-        void Current_Initialize()
-        {
-            Agent_First = DateTime.MinValue;
-            Agent_Last = DateTime.MinValue;
-
-            current = new Current();
-            current.configuration = configuration;
-            current.CurrentFinished -= current_CurrentFinished;
-            current.CurrentFinished += current_CurrentFinished;
-
-            // Calculate interval to use for when to run a Sample
-            sampleInterval = configuration.Agent.Sample_Heartbeat / configuration.Agent.Current_Heartbeat;
-        }
-
-        void Current_Start()
-        {
-            UpdateProcessingStatus("Running Current Request..");
-            if (current != null) current.Start(configuration.Agent.Current_Heartbeat);
-        }
-
-        void Current_Stop()
-        {
-            if (current != null) current.Stop();
-
-            sampleCounter = -1;
-        }
-
-        void current_CurrentFinished(TH_MTC_Data.Streams.ReturnData returnData)
-        {
-            UpdateProcessingStatus("Current Received");
-
-            // Update Agent_Info
-            if (Agent_ID != returnData.header.instanceId)
-            {
-                Agent_First = returnData.header.creationTime;
-            }
-            Agent_Last = returnData.header.creationTime;
-            if (Agent_Last < Agent_First) Agent_Last = Agent_First;
-            Agent_ID = returnData.header.instanceId;
-
-            // Update all of the PlugIns with the ReturnData object
-            TablePlugIns_Update_Current(returnData);
-
-            sampleCounter += 1;
-
-            if (configuration.Agent.Simulation_Sample_Files.Count > 0)
-            {
-                Sample_Start();
-            }
-            else
-            {
-                if (sampleCounter >= sampleInterval || (sampleCounter <= 0))
-                {
-                    if (!inProgress)
-                    {
-                        Sample_Start(returnData.header);
-                        sampleCounter = 0;
-                    }
-                }
-            }
-
-            ClearProcessingStatus();
-        }
-
-        #endregion
-
-        #region "Sample"
-
-        bool startFromFirst = true;
-
-        Sample sample;
-
-        Int64 lastSequenceSampled = -1;
-        Int64 agentInstanceId = -1;
-
-        bool inProgress = false;
-
-        void Sample_Initialize()
-        {
-            lastSequenceSampled = GetLastSequenceFromMySQL();
-
-            agentInstanceId = GetAgentInstanceIdFromMySQL();
-        }
-
-        Int64 GetLastSequenceFromMySQL()
-        {
-            Int64 Result = -1;
-
-            Variables.VariableData vd = Variables.Get(configuration.Databases, "last_sequence_sampled");
-            if (vd != null)
-            {
-                Int64.TryParse(vd.value, out Result);
-            }               
-
-            return Result;
-        }
-
-        Int64 GetAgentInstanceIdFromMySQL()
-        {
-            Int64 Result = -1;
-
-            Variables.VariableData vd = Variables.Get(configuration.Databases, "agent_instanceid");
-            if (vd != null)
-            {
-                Int64.TryParse(vd.value, out Result);
-            }
-
-            return Result;
-        }
-
-        const Int64 MaxSampleCount = 10000;
-
-        void Sample_Start(TH_MTC_Data.Header_Streams header)
-        {
-            UpdateProcessingStatus("Running Sample Request..");
-
-            sample = new Sample();
-            sample.configuration = configuration;
-            sample.SampleFinished -= sample_SampleFinished;
-            sample.SampleFinished += sample_SampleFinished;
-
-            if (sample != null)
-            {
-                // Check/Update Agent Instance Id -------------------
-                Int64 lastInstanceId = agentInstanceId;
-                agentInstanceId = header.instanceId;
-                Variables.Update(configuration.Databases, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime);
-                // --------------------------------------------------
-
-                // Get Sequence Number to use -----------------------
-                Int64 First = header.firstSequence;
-                if (!startFromFirst)
-                {
-                    First = header.lastSequence;
-                    startFromFirst = true;
-                }
-                else if (lastInstanceId == agentInstanceId && lastSequenceSampled > 0 && lastSequenceSampled >= header.firstSequence)
-                {
-                    First = lastSequenceSampled + 1;
-                }
-                else if (First > 0)
-                {
-                    Int64 first = First;
-
-                    // Increment some sequences since the Agent might change the first sequence
-                    // before the Sample request gets read
-                    // (should be fixed in Agent to automatically read the first 'available' sequence
-                    // instead of returning an error)
-                    First += 20;
-                }
-                    
-                // Get Last Sequence Number available from Header
-                Int64 Last = header.lastSequence;
-
-                // Calculate Sample count
-                Int64 SampleCount = Last - First;
-                if (SampleCount > MaxSampleCount)
-                {
-                    SampleCount = MaxSampleCount;
-                    Last = First + MaxSampleCount;
-                }
-
-                // Update Last Sequence Sampled for the subsequent samples
-                // lastSequenceSampled_temp = Last;
-                lastSequenceSampled = Last;
-                Variables.Update(configuration.Databases, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
-
-
-                //if (configuration.Agent.Simulation_Sample_Path != null)
-                //{
-                //    Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
-                //    sample.Start(null, First, SampleCount);
-                //}
-                //else if (SampleCount > 0)
-                if (SampleCount > 0 && configuration.Agent.Sample_Heartbeat >= 0)
-                {
-                    Log("Sample_Start() : " + First.ToString() + " to " + Last.ToString());
-                    sample.Start(null, First, SampleCount);
-                }
-                else
-                {
-                    Log("Sample Skipped : No New Data! : " + First.ToString() + " to " + Last.ToString());
-
-                    // Update all of the Table Plugins with a Null ReturnData
-                    TablePlugIns_Update_Sample(null);
-                }
-                    
-            }
-        }
-
-        void Sample_Start()
-        {
-            Probe_Stop();
-            Current_Stop();
-
-
-            SampleSimulation_Start();
-
-            //if (configuration.Agent.Simulation_Sample_Files.Count > 0)
-            //{
-            //    foreach (string filePath in configuration.Agent.Simulation_Sample_Files)
-            //    {
-            //        Sample simSample = new Sample();
-            //        simSample.configuration = configuration;
-            //        //simSample.SampleFinished -= sample_SampleFinished;
-            //        simSample.SampleFinished += sample_SampleFinished;
-            //        simSample.Start(filePath);
-            //    }
-            //}
-
-
-
-
-            //Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
-
-            //sample = new Sample();
-            //sample.configuration = configuration;
-            //sample.SampleFinished -= sample_SampleFinished;
-            //sample.SampleFinished += sample_SampleFinished;
-            //sample.Start(null, 0, 0);
-        }
-
-        int simulationIndex = 0;
-
-        System.Timers.Timer SampleSimulation_TIMER;
-
-        void SampleSimulation_Start()
-        {
-            SampleSimulation_TIMER = new System.Timers.Timer();
-            SampleSimulation_TIMER.Interval = 2000;
-            SampleSimulation_TIMER.Elapsed += SampleSimulation_TIMER_Elapsed;
-            SampleSimulation_TIMER.Enabled = true;
-        }
-
-        void SampleSimulation_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (configuration.Agent.Simulation_Sample_Files.Count > simulationIndex)
-            {
-                string filePath = configuration.Agent.Simulation_Sample_Files[simulationIndex];
-
-                Sample simSample = new Sample();
-                simSample.configuration = configuration;
-                simSample.SampleFinished += sample_SampleFinished;
-                simSample.Start(filePath);
-
-                simulationIndex += 1;
-            }
-            else
-            {
-                SampleSimulation_TIMER.Enabled = false;
-            }
-        }
-
-        
-
-        void Sample_Stop()
-        {
-            if (sample != null) sample.Stop();
-        }
-
-        void sample_SampleFinished(TH_MTC_Data.Streams.ReturnData returnData)
-        {
-            UpdateProcessingStatus("Sample Received..");
-
-            // Update all of the Table Plugins with the ReturnData
-            TablePlugIns_Update_Sample(returnData);
-
-            ClearProcessingStatus();
-        }
-
-        #endregion
 
         #endregion
 
@@ -1097,6 +502,7 @@ namespace TH_Device_Server
         void RunningTime_Initialize()
         {
             RunningTimeSTPW = new System.Diagnostics.Stopwatch();
+            RunningTimeSTPW.Start();
             RunningTime_TIMER = new System.Timers.Timer();
             RunningTime_TIMER.Interval = 500;
             RunningTime_TIMER.Elapsed += RunningTime_TIMER_Elapsed;
@@ -1106,11 +512,17 @@ namespace TH_Device_Server
         void RunningTime_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             RunningTime = RunningTimeSTPW.Elapsed;
+
+            Console.Title = "TrakHound Server - " + RunningTime.ToString(@"dd\.hh\:mm\:ss");
         }
 
         #endregion
 
         #region "Settings File Watcher"
+        /// <summary>
+        /// This has been mostly replaced by TH_UserManagement.Monitor but still may be needed for local files
+        /// Needs some work though..
+        /// </summary>
 
         FileSystemWatcher FSW;
 

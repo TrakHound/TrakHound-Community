@@ -24,6 +24,8 @@ namespace TH_MTC_Requests
         public event Connection_Handler Started;
         public event Connection_Handler Stopped;
 
+        public bool Verbose;
+
         public MTC_Stream_Status Status;
 
         public Configuration configuration { get; set; }
@@ -155,7 +157,7 @@ namespace TH_MTC_Requests
             stream.ResponseReceived -= stream_ResponseReceived;
             stream.ResponseReceived += stream_ResponseReceived;
 
-            Console.WriteLine("Attempting Sample @ : " + stream.uri);
+            if (Verbose) Console.WriteLine("Attempting Sample @ : " + stream.uri);
             stream.Start();
         }
 
@@ -212,7 +214,7 @@ namespace TH_MTC_Requests
                 // Raise SampleRecieved Event
                 SampleRecieved(returnData);
             }
-            else Console.WriteLine("DocumentElement == null");
+            else if (Verbose) Console.WriteLine("DocumentElement == null");
         }
 
         DeviceStream ProcessDeviceStream(XmlElement Root)
@@ -230,10 +232,6 @@ namespace TH_MTC_Requests
                     DeviceStream deviceStream = Tools.GetDeviceStreamFromXML(DeviceStreamNode);
 
                     DataItemCollection dataItems = Tools.GetDataItemsFromDeviceStream(deviceStream);
-
-                    //Console.WriteLine("Conditions.Count = " + dataItems.Conditions.Count.ToString());
-                    //Console.WriteLine("Events.Count = " + dataItems.Events.Count.ToString());
-                    //Console.WriteLine("Samples.Count = " + dataItems.Samples.Count.ToString());
 
                     Result = deviceStream;
                 }

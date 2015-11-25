@@ -114,7 +114,7 @@
                 </TextBlock>
 
                 <!--User Input-->
-                <TextBox x:Name="txt" Text="{Binding Text}" TextChanged="txt_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                <TextBox x:Name="txt" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="txt_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
             </Grid>
 

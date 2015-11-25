@@ -31,28 +31,28 @@
             </StackPanel.Resources>
 
             <!--Database Name-->
-            <th_wpf:TextBox Text="{Binding DatabaseName}" Title="Database Name" Instructions="Enter name of database" TextChanged="TXT_TextChanged">
+            <th_wpf:TextBox Text="{Binding DatabaseName, Mode=TwoWay}" Title="Database Name" Instructions="Enter name of database" TextChanged="TXT_TextChanged">
                 <th_wpf:TextBox.HelpText>
                     Enter the name of the Database to connect to
                 </th_wpf:TextBox.HelpText>
             </th_wpf:TextBox>
             
             <!--Server Address-->
-            <th_wpf:TextBox Text="{Binding Server}" Title="Server" Instructions="Enter the server URL" TextChanged="TXT_TextChanged">
+            <th_wpf:TextBox Text="{Binding Server, Mode=TwoWay}" Title="Server" Instructions="Enter the server URL" TextChanged="TXT_TextChanged">
                 <th_wpf:TextBox.HelpText>
                     Enter the URL of the database connection
                 </th_wpf:TextBox.HelpText>
             </th_wpf:TextBox>
             
             <!--Port-->
-            <th_wpf:TextBox Text="{Binding Port}" Title="Port" Instructions="Enter the server port" TextChanged="TXT_TextChanged">
+            <th_wpf:TextBox Text="{Binding Port, Mode=TwoWay}" Title="Port" Instructions="Enter the server port" TextChanged="TXT_TextChanged">
                 <th_wpf:TextBox.HelpText>
                     Enter the port used for the database connection
                 </th_wpf:TextBox.HelpText>
             </th_wpf:TextBox>
 
             <!--Username-->
-            <th_wpf:TextBox Text="{Binding Username}" Title="Port" Instructions="Enter the username" TextChanged="TXT_TextChanged">
+            <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Username" Instructions="Enter the username" TextChanged="TXT_TextChanged">
                 <th_wpf:TextBox.HelpText>
                     Enter the username used for the database connection
                 </th_wpf:TextBox.HelpText>

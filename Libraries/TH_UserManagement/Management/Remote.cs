@@ -397,8 +397,6 @@ namespace TH_UserManagement.Management
                                             if (DT.Rows.Count > 0)
                                             {
                                                 result = LoginSuccess(DT.Rows[0]);
-
-                                                Console.WriteLine(result.username + " Auto Logged in Successfully!");
                                             }
                                         }
                                     }
@@ -520,6 +518,7 @@ namespace TH_UserManagement.Management
                                                         if (device_image != null) config.Device_Image = device_image;
                                                     }
 
+                                                    config.Remote = true;
                                                     config.TableName = tablename;
                                                     result.Add(config);
                                                 }

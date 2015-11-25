@@ -9,6 +9,7 @@ using System.Xml;
 using System.Data;
 
 using TH_Configuration;
+using TH_Global;
 using TH_MTC_Data;
 using TH_MTC_Data.Streams;
 
@@ -22,12 +23,23 @@ namespace TH_MTC_Requests
         public event Connection_Handler Started;
         public event Connection_Handler Stopped;
 
+        public bool Verbose;
+
         public MTC_Stream_Status Status;
 
         public Configuration configuration { get; set; }
 
         public delegate void CurrentFinishedDelly(ReturnData returnData);
         public event CurrentFinishedDelly CurrentFinished;
+
+        public class ErrorData
+        {
+            public Current current { get; set; }
+            public string message { get; set; }
+        }
+
+        public delegate void CurrentError_Handler(ErrorData errorData);
+        public event CurrentError_Handler CurrentError;
 
         public Current()
         {
@@ -47,6 +59,7 @@ namespace TH_MTC_Requests
         public void Stop()
         {
             Stream_Stop();
+            if (worker != null) worker.Abort();
         }
 
         #endregion
@@ -67,18 +80,65 @@ namespace TH_MTC_Requests
 
             stream = new Stream();
 
-            string port;
-            if (configuration.Agent.Port > 0)
-                port = ":" + configuration.Agent.Port.ToString();
-            else
-                port = null;
+            //string port;
+            //if (configuration.Agent.Port > 0)
+            //    port = ":" + configuration.Agent.Port.ToString();
+            //else
+            //    port = null;
 
-            stream.uri = new Uri("http://" + configuration.Agent.IP_Address + port + "/" + configuration.Agent.Device_Name + "/current");
+            //stream.uri = new Uri("http://" + configuration.Agent.IP_Address + port + "/" + configuration.Agent.Device_Name + "/current");
+
+
+            string url = "http://";
+
+            // Add Ip Address
+            string ip = configuration.Agent.IP_Address;
+
+            // Add Port
+            string port = null;
+            // If port is in ip address
+            if (ip.Contains(":"))
+            {
+                int colonindex = ip.LastIndexOf(':');
+                int slashindex = -1;
+
+                // Get index of last forward slash
+                if (ip.Contains("/")) slashindex = ip.IndexOf('/', colonindex);
+
+                // Get port based on indexes
+                if (slashindex > colonindex) port = ":" + ip.Substring(colonindex + 1, slashindex - colonindex - 1) + "/";
+                else port = ":" + ip.Substring(colonindex + 1) + "/";
+
+                ip = ip.Substring(0, colonindex);
+            }
+            else
+            {
+                if (configuration.Agent.Port > 0) port = ":" + configuration.Agent.Port.ToString() + "/";
+            }
+
+            url += ip;
+            url += port;
+
+            // Add Device Name
+            string deviceName = null;
+            if (configuration.Agent.Device_Name != String.Empty)
+            {
+                if (port != null) deviceName = configuration.Agent.Device_Name;
+                else deviceName = "/" + configuration.Agent.Device_Name;
+                deviceName += "/";
+            }
+            url += deviceName;
+
+            if (url[url.Length - 1] != '/') url += "/";
+
+            stream.uri = new Uri(url + "current");
+            stream.HttpTimeout = 3000;
             stream.interval = Heartbeat;
 
             stream.ResponseReceived += stream_ResponseReceived;
+            stream.ResponseError += stream_ResponseError;
 
-            Console.WriteLine("Connecting Current @ : " + stream.uri);
+            if (Verbose) Console.WriteLine("Connecting Current @ : " + stream.uri);
             stream.Start();
         }
 
@@ -105,29 +165,33 @@ namespace TH_MTC_Requests
         {
             if (responseString != null)
             {
-                XmlDocument Document = new XmlDocument();
-                Document.LoadXml(responseString);
-
-                if (Document.DocumentElement != null)
+                try
                 {
-                    // Get Root Element from Xml Document
-                    XmlElement Root = Document.DocumentElement;
+                    XmlDocument Document = new XmlDocument();
+                    Document.LoadXml(responseString);
 
-                    // Get Header_Streams object from Root node
-                    Header_Streams header = ProcessHeader(Root);
+                    if (Document.DocumentElement != null)
+                    {
+                        // Get Root Element from Xml Document
+                        XmlElement Root = Document.DocumentElement;
 
-                    // Get DeviceStream object from Root node
-                    DeviceStream deviceStream = ProcessDeviceStream(Root);
+                        // Get Header_Streams object from Root node
+                        Header_Streams header = ProcessHeader(Root);
 
-                    // Create ReturnData object to send as Event argument
-                    ReturnData returnData = new ReturnData();
-                    returnData.deviceStream = deviceStream;
-                    //returnData.xmlDocument = Document;
-                    returnData.header = header;
+                        // Get DeviceStream object from Root node
+                        DeviceStream deviceStream = ProcessDeviceStream(Root);
 
-                    // Raise CurrentReceived Event
-                    CurrentRecieved(returnData);
+                        // Create ReturnData object to send as Event argument
+                        ReturnData returnData = new ReturnData();
+                        returnData.deviceStream = deviceStream;
+                        //returnData.xmlDocument = Document;
+                        returnData.header = header;
+
+                        // Raise CurrentReceived Event
+                        CurrentRecieved(returnData);
+                    }
                 }
+                catch (Exception ex) { if (Verbose) Logger.Log("stream_ResponseReceived() :: Exception :: " + ex.Message); }
             }
         }
 
@@ -173,6 +237,15 @@ namespace TH_MTC_Requests
             }
 
             return Result;
+        }
+
+        void stream_ResponseError(Error error)
+        {
+            ErrorData data = new ErrorData();
+            data.message = error.message;
+            data.current = this;
+
+            if (CurrentError != null) CurrentError(data);
         }
 
         #endregion

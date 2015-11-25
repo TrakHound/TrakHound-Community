@@ -38,14 +38,14 @@
                 </StackPanel.Resources>
 
                 <!--IP Address-->
-                <th_wpf:TextBox Text="{Binding IpAddress}" Title="IP Address" Instructions="Enter agent ip address" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding IpAddress, Mode=TwoWay}" Title="IP Address" Instructions="Enter agent ip address" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Enter the IP address or URL of the MTConnect Agent.
                     </th_wpf:TextBox.HelpText>
                 </th_wpf:TextBox>
 
                 <!--Port-->
-                <th_wpf:TextBox Text="{Binding Port}" Title="Port" Instructions="Enter agent port" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding Port, Mode=TwoWay}" Title="Port" Instructions="Enter agent port" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Enter the Port of the MTConnect Agent. If the Agent is a URL (ex. www.agent.mtconnect.org) the Port will be 80.
                         If the Port value is left blank the Port will default to 80. 
@@ -54,7 +54,7 @@
                 </th_wpf:TextBox>
 
                 <!--Device Name-->
-                <th_wpf:TextBox Text="{Binding DeviceName}" Title="Device Name" Instructions="Enter device name" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding DeviceName, Mode=TwoWay}" Title="Device Name" Instructions="Enter device name" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
                         If the Device Name is not known, click the 'Test Connection' button and select it from the list.

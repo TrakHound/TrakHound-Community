@@ -396,7 +396,12 @@ namespace TH_DeviceManager.Pages.Agent
 
         private void TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ChangeSetting(null, null);
+            UIElement txt = (UIElement)sender;
+
+            if (txt.IsMouseCaptured || txt.IsKeyboardFocused)
+            {
+                ChangeSetting(null, null);
+            }
         }
 
         private void ipaddress_TXT_TextChanged(object sender, TextChangedEventArgs e)

@@ -31,6 +31,8 @@ namespace TH_MTC_Requests
         public event Connection_Handler Started;
         public event Connection_Handler Stopped;
 
+        public bool Verbose;
+
         public Configuration configuration { get; set; }
 
         public string URL { get; set; }
@@ -131,7 +133,7 @@ namespace TH_MTC_Requests
                 stream.ResponseError += stream_ResponseError;
 
                 URL = stream.uri.ToString();
-                Console.WriteLine("Connecting Probe @ : " + URL);
+                if (Verbose) Console.WriteLine("Connecting Probe @ : " + URL);
                 stream.Start();
             }
         }
@@ -190,8 +192,7 @@ namespace TH_MTC_Requests
                         ProbeRecieved(returnData);
                     }
                 }
-                catch (Exception ex) { Logger.Log("stream_ResponseReceived() :: Exception :: " + ex.Message); }
-                
+                catch (Exception ex) { if (Verbose) Logger.Log("stream_ResponseReceived() :: Exception :: " + ex.Message); }            
             }
         }
 

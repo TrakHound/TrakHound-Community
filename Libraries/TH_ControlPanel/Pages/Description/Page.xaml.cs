@@ -308,7 +308,12 @@ namespace TH_DeviceManager.Pages.Description
 
         private void TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ChangeSetting(null, null);
+            UIElement txt = (UIElement)sender;
+
+            if (txt.IsMouseCaptured || txt.IsKeyboardFocused)
+            {
+                ChangeSetting(null, null);
+            }
         }
 
 
