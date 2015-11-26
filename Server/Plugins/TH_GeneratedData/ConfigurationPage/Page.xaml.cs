@@ -704,7 +704,7 @@ namespace TH_GeneratedData.ConfigurationPage
             // Save Root
             string attr = "";
             attr += "id||" + ci.id.ToString("00") + ";";
-            attr += "name||" + ci.name + ";";
+            attr += "name||" + ci.name.Replace(' ','_').ToLower() + ";";
 
             string link = ci.link;
             List<CollectedItem> linkitems = CollectedItems.ToList();
@@ -1250,7 +1250,7 @@ namespace TH_GeneratedData.ConfigurationPage
             result.SettingChanged += CaptureItem_SettingChanged;
             result.RemoveClicked += CaptureItem_RemoveClicked;
 
-            result.CaptureName = ci.name;
+            result.CaptureName = TH_Global.Formatting.UppercaseFirst(ci.name.Replace('_',' '));
 
             result.link_COMBO.Text = ci.link;
 

@@ -17,38 +17,52 @@ namespace TH_MySQL.PHP
     public static class Row
     {
 
+        const bool Verbose = false;
+
         public static bool Insert(MySQL_Configuration config, string tablename, object[] Columns, object[] Values, bool Update)
         {
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                using (WebClient client = new WebClient())
+                attempts += 1;
+
+                try
                 {
+                    using (WebClient client = new WebClient())
+                    {
 
-                    NameValueCollection values = new NameValueCollection();
-                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                    else values["server"] = config.Server;
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
 
-                    values["user"] = config.Username;
-                    values["password"] = config.Password;
-                    values["db"] = config.Database;
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["db"] = config.Database;
 
-                    values["query"] = MySQL_Tools.Row_Insert_CreateQuery(tablename, Columns, Values, Update);
+                        values["query"] = MySQL_Tools.Row_Insert_CreateQuery(tablename, Columns, Values, Update);
 
-                    string PHP_Directory = "";
-                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Send.php", values);
+                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Send.php", values);
 
-                    string responseString = Encoding.Default.GetString(response);
+                        string responseString = Encoding.Default.GetString(response);
 
-                    if (responseString.ToLower().Trim() == "true") Result = true;
+                        if (responseString.ToLower().Trim() == "true") Result = true;
 
+                        success = true;
+                    }
                 }
+                catch (Exception ex) { message = ex.Message; }
             }
-            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
 
             return Result;
 
@@ -60,21 +74,20 @@ namespace TH_MySQL.PHP
 
             bool Result = true;
 
-            try
-            {
-                InsertParameters iparams = new InsertParameters();
-                iparams.sql = config;
-                iparams.tablename = tablename;
-                iparams.columns = Columns;
-                iparams.values = Values;
-                iparams.update = Update;
+                try
+                {
+                    InsertParameters iparams = new InsertParameters();
+                    iparams.sql = config;
+                    iparams.tablename = tablename;
+                    iparams.columns = Columns;
+                    iparams.values = Values;
+                    iparams.update = Update;
 
-
-                Thread worker = new Thread(new ParameterizedThreadStart(Insert_Worker));
-                worker.Start(iparams);
-            }
-            catch (Exception ex) { Logger.Log(ex.Message); }
-
+                    Thread worker = new Thread(new ParameterizedThreadStart(Insert_Worker));
+                    worker.Start(iparams);
+                }
+                catch (Exception ex) { if (Verbose) Logger.Log(ex.Message); }
+            
             return Result;
 
         }
@@ -100,32 +113,46 @@ namespace TH_MySQL.PHP
             List<List<object>> Values = iparams.values;
             bool Update = iparams.update;
 
+            int attempts = 0;
+            bool success = false;
+            string message = null;
 
-            using (WebClient client = new WebClient())
+            while (attempts < Database.connectionAttempts && !success)
             {
+                attempts += 1;
 
-                System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
-                stpw.Start();
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    {
+                        System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
+                        stpw.Start();
 
-                NameValueCollection values = new NameValueCollection();
-                if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                else values["server"] = config.Server;
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
 
-                values["user"] = config.Username;
-                values["password"] = config.Password;
-                values["db"] = config.Database;
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["db"] = config.Database;
 
-                values["query"] = MySQL_Tools.Row_Insert_CreateQuery(tablename, Columns, Values, Update);
+                        values["query"] = MySQL_Tools.Row_Insert_CreateQuery(tablename, Columns, Values, Update);
 
-                string PHP_Directory = "";
-                if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                stpw = new System.Diagnostics.Stopwatch();
-                stpw.Start();
+                        stpw = new System.Diagnostics.Stopwatch();
+                        stpw.Start();
 
-                client.UploadValuesAsync(new Uri("http://" + config.PHP_Server + PHP_Directory + "/Send.php"), values);
+                        client.UploadValuesAsync(new Uri("http://" + config.PHP_Server + PHP_Directory + "/Send.php"), values);
 
+                        success = true;
+                    }
+                }
+                catch (Exception ex) { message = ex.Message; } 
             }
+
+            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
         }
 
         public static bool Insert(MySQL_Configuration config, string Query)
@@ -133,33 +160,45 @@ namespace TH_MySQL.PHP
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                using (WebClient client = new WebClient())
+                attempts += 1;
+
+                try
                 {
+                    using (WebClient client = new WebClient())
+                    {
 
-                    NameValueCollection values = new NameValueCollection();
-                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                    else values["server"] = config.Server;
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
 
-                    values["user"] = config.Username;
-                    values["password"] = config.Password;
-                    values["db"] = config.Database;
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["db"] = config.Database;
 
-                    values["query"] = Query;
+                        values["query"] = Query;
 
-                    string PHP_Directory = "";
-                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Send.php", values);
+                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Send.php", values);
 
-                    string responseString = Encoding.Default.GetString(response);
+                        string responseString = Encoding.Default.GetString(response);
 
-                    if (responseString.ToLower().Trim() == "true") Result = true;
+                        if (responseString.ToLower().Trim() == "true") Result = true;
 
+                        success = true;
+                    }
                 }
+                catch (Exception ex) { message = ex.Message; } 
             }
-            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
 
             return Result;
 
@@ -171,43 +210,55 @@ namespace TH_MySQL.PHP
 
             DataRow Result = null;
 
-            try
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                using (WebClient client = new WebClient())
+                attempts += 1;
+
+                try
                 {
-
-                    NameValueCollection values = new NameValueCollection();
-                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                    else values["server"] = config.Server;
-
-                    values["user"] = config.Username;
-                    values["password"] = config.Password;
-                    values["db"] = config.Database;
-
-                    values["query"] = "SELECT * FROM " + tablename + " WHERE " + TableKey + " = '" + RowKey + "'";
-
-                    string PHP_Directory = "";
-                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
-
-                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
-
-                    string responseString = Encoding.Default.GetString(response);
-
-                    if (responseString.Trim() != "")
+                    using (WebClient client = new WebClient())
                     {
-                        JsonSerializerSettings JSS = new JsonSerializerSettings();
-                        JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                        JSS.DateParseHandling = DateParseHandling.DateTime;
-                        JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
-                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
 
-                        if (DT.Rows.Count > 0) Result = DT.Rows[0];
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["db"] = config.Database;
+
+                        values["query"] = "SELECT * FROM " + tablename + " WHERE " + TableKey + " = '" + RowKey + "'";
+
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
+
+                        string responseString = Encoding.Default.GetString(response);
+
+                        if (responseString.Trim() != "")
+                        {
+                            JsonSerializerSettings JSS = new JsonSerializerSettings();
+                            JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                            JSS.DateParseHandling = DateParseHandling.DateTime;
+                            JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+
+                            DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
+
+                            if (DT.Rows.Count > 0) Result = DT.Rows[0];
+                        }
+
+                        success = true;
                     }
-
                 }
+                catch (Exception ex) { message = ex.Message; }
             }
-            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
 
             return Result;
 
@@ -218,40 +269,52 @@ namespace TH_MySQL.PHP
 
             DataRow Result = null;
 
-            try
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                using (WebClient client = new WebClient())
+                attempts += 1;
+
+                try
                 {
+                    using (WebClient client = new WebClient())
+                    {
 
-                    NameValueCollection values = new NameValueCollection();
-                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                    else values["server"] = config.Server;
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
 
-                    values["user"] = config.Username;
-                    values["password"] = config.Password;
-                    values["db"] = config.Database;
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["db"] = config.Database;
 
-                    values["query"] = "SELECT * FROM " + tablename + " " + Query;
+                        values["query"] = "SELECT * FROM " + tablename + " " + Query;
 
-                    string PHP_Directory = "";
-                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
+                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
 
-                    string responseString = Encoding.Default.GetString(response);
+                        string responseString = Encoding.Default.GetString(response);
 
-                    JsonSerializerSettings JSS = new JsonSerializerSettings();
-                    JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                    JSS.DateParseHandling = DateParseHandling.DateTime;
-                    JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                        JsonSerializerSettings JSS = new JsonSerializerSettings();
+                        JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                        JSS.DateParseHandling = DateParseHandling.DateTime;
+                        JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
-                    DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
+                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
 
-                    if (DT.Rows.Count > 0) Result = DT.Rows[0];
+                        if (DT.Rows.Count > 0) Result = DT.Rows[0];
 
+                        success = true;
+                    }
                 }
+                catch (Exception ex) { message = ex.Message; }
             }
-            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
 
             return Result;
 
@@ -263,38 +326,50 @@ namespace TH_MySQL.PHP
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                using (WebClient client = new WebClient())
+                attempts += 1;
+
+                try
                 {
-
-                    NameValueCollection values = new NameValueCollection();
-                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                    else values["server"] = config.Server;
-
-                    values["user"] = config.Username;
-                    values["password"] = config.Password;
-                    values["db"] = config.Database;
-
-                    values["query"] = "SELECT IF( EXISTS(SELECT * FROM " + tablename + " " + FilterString + "), 1, 0)";
-
-                    string PHP_Directory = "";
-                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
-
-                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
-
-                    string responseString = Encoding.Default.GetString(response);
-
-                    DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
-
-                    if (DT.Rows.Count > 0)
+                    using (WebClient client = new WebClient())
                     {
-                        if (DT.Rows[0][0].ToString() == "1") Result = true;
-                    }
 
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
+
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["db"] = config.Database;
+
+                        values["query"] = "SELECT IF( EXISTS(SELECT * FROM " + tablename + " " + FilterString + "), 1, 0)";
+
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
+
+                        string responseString = Encoding.Default.GetString(response);
+
+                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
+
+                        if (DT.Rows.Count > 0)
+                        {
+                            if (DT.Rows[0][0].ToString() == "1") Result = true;
+                        }
+
+                        success = true;
+                    }
                 }
+                catch (Exception ex) { message = ex.Message; }
             }
-            catch (Exception ex) { Logger.Log(ex.Message); }
+
+            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
 
             return Result;
 

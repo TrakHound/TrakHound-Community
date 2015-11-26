@@ -23,13 +23,6 @@ namespace TH_PlugIns_Server
         string Name { get; }
 
         /// <summary>
-        /// Sets the priority level so that other plugins can always run before or after this one
-        /// (ex. TH_GeneratedData relies on TH_IntstanceTable's data so 
-        /// TH_GeneratedData's priority would be a bigger number than TH_InstanceTable's)
-        /// </summary>
-        //int Priority { get; }
-
-        /// <summary>
         /// Called to initialize the plugin using the Configuration file passed as a parameter
         /// </summary>
         /// <param name="Config"></param>
@@ -69,11 +62,24 @@ namespace TH_PlugIns_Server
         /// </summary>
         event DataEvent_Handler DataEvent;
 
+        /// <summary>
+        /// Notifiy Server (and/or other plugins) that this plugin's status has changed
+        /// Can be used to update the processing status
+        /// </summary>
+        event Status_Handler StatusChanged;
+
+        /// <summary>
+        /// Notifiy Server (and/or other plugins) that an error occurred in this plugin
+        /// </summary>
+        event Status_Handler ErrorOccurred;
+
         Type Config_Page { get; }
 
     }
 
     public delegate void DataEvent_Handler(DataEvent_Data de_data);
+
+    public delegate void Status_Handler(string status);
 
     public class DataEvent_Data
     {

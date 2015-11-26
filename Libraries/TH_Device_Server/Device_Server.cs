@@ -381,6 +381,7 @@ namespace TH_Device_Server
         string previousLine = null;
         ConsoleOutputType previousType;
         DateTime previousErrorTimestamp;
+        int previousRow;
 
         enum ConsoleOutputType
         {
@@ -391,12 +392,13 @@ namespace TH_Device_Server
 
         void WriteToConsole(string line, ConsoleOutputType type)
         {
-
             switch (type)
             {
                 case ConsoleOutputType.Normal:
 
                     Console.WriteLine(line);
+
+                    previousRow = Console.CursorTop;
 
                     break;
 
@@ -404,10 +406,19 @@ namespace TH_Device_Server
 
                     if (previousType == ConsoleOutputType.Status)
                     {
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
-                        Console.Write(new string(' ', Console.WindowWidth));
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        //Console.SetCursorPosition(0, previousRow);
+                        //Console.Write(new string(' ', Console.WindowWidth));
+                        //Console.SetCursorPosition(0, previousRow);
+
+                        //Console.SetCursorPosition(0, previousRow - 1);
+                        //Console.Write(new string(' ', Console.WindowWidth));
+                        //Console.SetCursorPosition(0, previousRow - 1);
+
+                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        //Console.Write(new string(' ', Console.WindowWidth));
+                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
                     }
+                    else previousRow = Console.CursorTop;
 
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
@@ -430,9 +441,13 @@ namespace TH_Device_Server
 
                     if (line == previousLine)
                     {
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
-                        Console.Write(new string(' ', Console.WindowWidth));
-                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        //Console.SetCursorPosition(0, previousRow - 1);
+                        //Console.Write(new string(' ', Console.WindowWidth));
+                        //Console.SetCursorPosition(0, previousRow - 1);
+
+                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        //Console.Write(new string(' ', Console.WindowWidth));
+                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
                     }
                     else
                     {
@@ -453,6 +468,7 @@ namespace TH_Device_Server
 
             previousType = type;
             previousLine = line;
+            //previousRow = Console.CursorTop;
         }
 
         public void Log(string line)
@@ -477,13 +493,13 @@ namespace TH_Device_Server
         {
             Console.WriteLine("Device [" + config.Index.ToString() + "] ---------------------------------------");
 
-            Console.WriteLine("Description --------------------------");
+            Console.WriteLine("Description ----------------------------");
             if (config.Description.Description != null) Console.WriteLine(config.Description.Description);
             if (config.Description.Manufacturer != null) Console.WriteLine(config.Description.Manufacturer);
             if (config.Description.Model != null) Console.WriteLine(config.Description.Model);
             if (config.Description.Serial != null) Console.WriteLine(config.Description.Serial);
 
-            Console.WriteLine("Agent --------------------------------");
+            Console.WriteLine("Agent ----------------------------------");
             if (config.Agent.IP_Address != null) Console.WriteLine(config.Agent.IP_Address);
             if (config.Agent.Port > 0) Console.WriteLine(config.Agent.Port.ToString());
             if (config.Agent.Device_Name != null) Console.WriteLine(config.Agent.Device_Name);

@@ -1770,7 +1770,7 @@ namespace TrakHound_Client
             {
                 if (userDatabaseSettings == null)
                 {
-                    configs = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                    configs = Configurations.GetConfigurationsForUser(currentuser, true, userDatabaseSettings);
                 }
                 else
                 {

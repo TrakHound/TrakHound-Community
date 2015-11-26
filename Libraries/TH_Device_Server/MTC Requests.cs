@@ -105,10 +105,6 @@ namespace TH_Device_Server
             current.CurrentFinished += current_CurrentFinished;
             current.CurrentError += current_CurrentError;
 
-            // $$$ DEBUG
-            current.Verbose = true;
-
-
             // Calculate interval to use for when to run a Sample
             sampleInterval = configuration.Agent.Sample_Heartbeat / configuration.Agent.Current_Heartbeat;
         }

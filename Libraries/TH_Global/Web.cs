@@ -13,6 +13,7 @@ namespace TH_Global
 {
     public static class Web
     {
+        public static int connectionAttempts = 3;
 
         public static bool HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
         {
@@ -58,27 +59,38 @@ namespace TH_Global
             rs.Close();
 
             WebResponse wresp = null;
-            try
-            {
-                wresp = wr.GetResponse();
-                Stream stream2 = wresp.GetResponseStream();
-                StreamReader reader2 = new StreamReader(stream2);
-                Logger.Log(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
 
-                result = true;
-            }
-            catch (Exception ex)
+                         int attempts = 0;
+            bool success = false;
+
+            while (attempts < connectionAttempts && !success)
             {
-                Logger.Log("Error uploading file : " + ex.Message);
-                if (wresp != null)
+                attempts += 1;
+
+                try
                 {
-                    wresp.Close();
-                    wresp = null;
+                    wresp = wr.GetResponse();
+                    Stream stream2 = wresp.GetResponseStream();
+                    StreamReader reader2 = new StreamReader(stream2);
+                    Logger.Log(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
+
+                    result = true;
+
+                    success = true;
                 }
-            }
-            finally
-            {
-                wr = null;
+                catch (Exception ex)
+                {
+                    Logger.Log("Error uploading file : " + ex.Message);
+                    if (wresp != null)
+                    {
+                        wresp.Close();
+                        wresp = null;
+                    }
+                }
+                finally
+                {
+                    wr = null;
+                }
             }
 
             return result;

@@ -16,47 +16,13 @@ namespace TH_MySQL.Connector
         {
             bool result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySqlConnection conn;
-                conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySqlCommand Command;
-                Command = new MySqlCommand();
-                Command.Connection = conn;
-
-                Command.CommandText = MySQL_Tools.Row_Insert_CreateQuery(tableName, columns, values, update);
-
-                Command.Prepare();
-                Command.ExecuteNonQuery();
-
-                Command.Dispose();
-
-                conn.Close();
-
-                Command.Dispose();
-                conn.Dispose();
-
-                result = true;
-            }
-            catch (MySqlException ex)
-            {
-                Logger.Log("Insert_Row : " + ex.Message);
-            }
-
-            catch (Exception ex) { }
-
-            return result;
-        }
-
-        public static bool Insert(MySQL_Configuration config, string tableName, object[] columns, List<List<object>> values, bool update)
-        {
-            bool result = false;
-
-            if (values.Count > 0)
-            {
                 try
                 {
                     MySqlConnection conn;
@@ -81,6 +47,8 @@ namespace TH_MySQL.Connector
                     conn.Dispose();
 
                     result = true;
+
+                    success = true;
                 }
                 catch (MySqlException ex)
                 {
@@ -93,96 +61,157 @@ namespace TH_MySQL.Connector
             return result;
         }
 
+        public static bool Insert(MySQL_Configuration config, string tableName, object[] columns, List<List<object>> values, bool update)
+        {
+            bool result = false;
+
+            int attempts = 0;
+            bool success = false;
+
+            if (values.Count > 0)
+            {
+                while (attempts < Database.connectionAttempts && !success)
+                {
+                    attempts += 1;
+
+                    try
+                    {
+                        MySqlConnection conn;
+                        conn = new MySqlConnection();
+                        conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                        conn.Open();
+
+                        MySqlCommand Command;
+                        Command = new MySqlCommand();
+                        Command.Connection = conn;
+
+                        Command.CommandText = MySQL_Tools.Row_Insert_CreateQuery(tableName, columns, values, update);
+
+                        Command.Prepare();
+                        Command.ExecuteNonQuery();
+
+                        Command.Dispose();
+
+                        conn.Close();
+
+                        Command.Dispose();
+                        conn.Dispose();
+
+                        result = true;
+
+                        success = true;
+                    }
+                    catch (MySqlException ex)
+                    {
+                        Logger.Log("Insert_Row : " + ex.Message);
+                    }
+
+                    catch (Exception ex) { }
+                }
+            }
+
+            return result;
+        }
+
         public static bool Insert(MySQL_Configuration config, string tableName, List<object[]> columnsList, List<object[]> valuesList, bool update)
         {
             bool result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySqlConnection conn;
-                conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
-
-                MySqlCommand Command;
-                Command = new MySqlCommand();
-                Command.Connection = conn;
-
-                for (int i = 0; i <= columnsList.Count - 1; i++)
+                attempts += 1;
+                try
                 {
-                    object[] Columns = columnsList[i];
-                    object[] Values = valuesList[i];
+                    MySqlConnection conn;
+                    conn = new MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
 
-                    //Create Columns string
-                    string cols = "";
-                    for (int x = 0; x <= Columns.Length - 1; x++)
+                    MySqlCommand Command;
+                    Command = new MySqlCommand();
+                    Command.Connection = conn;
+
+                    for (int i = 0; i <= columnsList.Count - 1; i++)
                     {
-                        cols += Columns[x].ToString().ToUpper();
-                        if (x < Columns.Length - 1) cols += ", ";
-                    }
+                        object[] Columns = columnsList[i];
+                        object[] Values = valuesList[i];
 
-                    //Create Values string
-                    string vals = "";
-                    for (int x = 0; x <= Values.Length - 1; x++)
-                    {
-                        // Dont put the ' characters if the value is null
-                        if (Values[x] == null) vals += "null";
-                        else
-                        {
-                            object val = Values[x];
-                            if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
-
-                            if (val.ToString().ToLower() != "null") vals += "'" + val.ToString() + "'";
-                            else vals += val.ToString();
-                        }
-
-
-                        if (x < Values.Length - 1) vals += ", ";
-                    }
-
-                    //Create Update string
-                    string sUpdate = "";
-                    if (update)
-                    {
-                        sUpdate = " ON DUPLICATE KEY UPDATE ";
+                        //Create Columns string
+                        string cols = "";
                         for (int x = 0; x <= Columns.Length - 1; x++)
                         {
-                            if (Values[x] != null)
-                            {
-                                sUpdate += Columns[x].ToString().ToUpper();
-                                sUpdate += "=";
+                            cols += Columns[x].ToString().ToUpper();
+                            if (x < Columns.Length - 1) cols += ", ";
+                        }
 
+                        //Create Values string
+                        string vals = "";
+                        for (int x = 0; x <= Values.Length - 1; x++)
+                        {
+                            // Dont put the ' characters if the value is null
+                            if (Values[x] == null) vals += "null";
+                            else
+                            {
                                 object val = Values[x];
                                 if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
 
-                                sUpdate += "'" + val.ToString() + "'";
+                                if (val.ToString().ToLower() != "null") vals += "'" + val.ToString() + "'";
+                                else vals += val.ToString();
+                            }
 
-                                if (x < Columns.Length - 1) sUpdate += ", ";
+
+                            if (x < Values.Length - 1) vals += ", ";
+                        }
+
+                        //Create Update string
+                        string sUpdate = "";
+                        if (update)
+                        {
+                            sUpdate = " ON DUPLICATE KEY UPDATE ";
+                            for (int x = 0; x <= Columns.Length - 1; x++)
+                            {
+                                if (Values[x] != null)
+                                {
+                                    sUpdate += Columns[x].ToString().ToUpper();
+                                    sUpdate += "=";
+
+                                    object val = Values[x];
+                                    if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
+
+                                    sUpdate += "'" + val.ToString() + "'";
+
+                                    if (x < Columns.Length - 1) sUpdate += ", ";
+                                }
                             }
                         }
+
+                        Command.CommandText = "INSERT IGNORE INTO " + tableName + " (" + cols + ") VALUES (" + vals + ")" + sUpdate;
+
+                        Command.Prepare();
+                        Command.ExecuteNonQuery();
                     }
 
-                    Command.CommandText = "INSERT IGNORE INTO " + tableName + " (" + cols + ") VALUES (" + vals + ")" + sUpdate;
+                    Command.Dispose();
 
-                    Command.Prepare();
-                    Command.ExecuteNonQuery();
+                    conn.Close();
+
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    result = true;
+
+                    success = true;
+                }
+                catch (MySqlException ex)
+                {
+                    Logger.Log("Insert_Row : " + ex.Message);
                 }
 
-                Command.Dispose();
-
-                conn.Close();
-
-                Command.Dispose();
-                conn.Dispose();
-
-                result = true;
+                catch (Exception ex) { }
             }
-            catch (MySqlException ex)
-            {
-                Logger.Log("Insert_Row : " + ex.Message);
-            }
-
-            catch (Exception ex) { }
 
             return result;
         }
@@ -192,37 +221,47 @@ namespace TH_MySQL.Connector
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySqlConnection conn;
-                conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySqlCommand Command;
-                Command = new MySqlCommand();
-                Command.Connection = conn;
+                try
+                {
+                    MySqlConnection conn;
+                    conn = new MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
 
-                Command.CommandText = query;
+                    MySqlCommand Command;
+                    Command = new MySqlCommand();
+                    Command.Connection = conn;
 
-                Command.Prepare();
-                Command.ExecuteNonQuery();
+                    Command.CommandText = query;
 
-                Command.Dispose();
+                    Command.Prepare();
+                    Command.ExecuteNonQuery();
 
-                conn.Close();
+                    Command.Dispose();
 
-                Command.Dispose();
-                conn.Dispose();
+                    conn.Close();
 
-                Result = true;
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    Result = true;
+
+                    success = true;
+                }
+                catch (MySqlException ex)
+                {
+                    Logger.Log("Insert_Row : " + ex.Message);
+                }
+
+                catch (Exception ex) { }
             }
-            catch (MySqlException ex)
-            {
-                Logger.Log("Insert_Row : " + ex.Message);
-            }
-
-            catch (Exception ex) { }
 
             return Result;
 
@@ -234,60 +273,70 @@ namespace TH_MySQL.Connector
 
             DataRow Result = null;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySql.Data.MySqlClient.MySqlConnection conn;
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySql.Data.MySqlClient.MySqlCommand Command;
-                Command = new MySql.Data.MySqlClient.MySqlCommand();
-                Command.Connection = conn;
-                Command.CommandText = "SELECT * FROM " + tablename + " WHERE " + tableKey + " = '" + rowKey + "'";
-
-                MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
-
-                if (Reader.HasRows)
+                try
                 {
-                    int ColumnCount = Reader.FieldCount;
+                    MySql.Data.MySqlClient.MySqlConnection conn;
+                    conn = new MySql.Data.MySqlClient.MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
 
-                    DataTable Dummy_TABLE = new DataTable();
+                    MySql.Data.MySqlClient.MySqlCommand Command;
+                    Command = new MySql.Data.MySqlClient.MySqlCommand();
+                    Command.Connection = conn;
+                    Command.CommandText = "SELECT * FROM " + tablename + " WHERE " + tableKey + " = '" + rowKey + "'";
 
-                    for (int x = 0; x <= ColumnCount - 1; x++)
+                    MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
+
+                    if (Reader.HasRows)
                     {
-                        Dummy_TABLE.Columns.Add(Reader.GetName(x));
-                    }
+                        int ColumnCount = Reader.FieldCount;
 
-                    DataRow Row = Dummy_TABLE.NewRow();
+                        DataTable Dummy_TABLE = new DataTable();
 
-                    object[] Values = new object[ColumnCount];
-
-                    while (Reader.Read())
-                    {
-                        for (int j = 0; j <= Values.Length - 1; j++)
+                        for (int x = 0; x <= ColumnCount - 1; x++)
                         {
-                            Values[j] = Reader[j];
+                            Dummy_TABLE.Columns.Add(Reader.GetName(x));
                         }
+
+                        DataRow Row = Dummy_TABLE.NewRow();
+
+                        object[] Values = new object[ColumnCount];
+
+                        while (Reader.Read())
+                        {
+                            for (int j = 0; j <= Values.Length - 1; j++)
+                            {
+                                Values[j] = Reader[j];
+                            }
+                        }
+
+                        Row.ItemArray = Values;
+
+                        Result = Row;
                     }
 
-                    Row.ItemArray = Values;
+                    Reader.Close();
+                    conn.Close();
 
-                    Result = Row;
+                    Reader.Dispose();
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    success = true;
                 }
-
-                Reader.Close();
-                conn.Close();
-
-                Reader.Dispose();
-                Command.Dispose();
-                conn.Dispose();
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 
@@ -298,59 +347,69 @@ namespace TH_MySQL.Connector
 
             DataRow Result = null;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySql.Data.MySqlClient.MySqlConnection conn;
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySql.Data.MySqlClient.MySqlCommand Command;
-                Command = new MySql.Data.MySqlClient.MySqlCommand();
-                Command.Connection = conn;
-                Command.CommandText = "SELECT * FROM " + tablename + " " + query;
-
-                MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
-                if (Reader.HasRows)
+                try
                 {
-                    int ColumnCount = Reader.FieldCount;
+                    MySql.Data.MySqlClient.MySqlConnection conn;
+                    conn = new MySql.Data.MySqlClient.MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
 
-                    DataTable Dummy_TABLE = new DataTable();
+                    MySql.Data.MySqlClient.MySqlCommand Command;
+                    Command = new MySql.Data.MySqlClient.MySqlCommand();
+                    Command.Connection = conn;
+                    Command.CommandText = "SELECT * FROM " + tablename + " " + query;
 
-                    for (int x = 0; x <= ColumnCount - 1; x++)
+                    MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
+                    if (Reader.HasRows)
                     {
-                        Dummy_TABLE.Columns.Add(Reader.GetName(x));
-                    }
+                        int ColumnCount = Reader.FieldCount;
 
-                    DataRow Row = Dummy_TABLE.NewRow();
+                        DataTable Dummy_TABLE = new DataTable();
 
-                    object[] Values = new object[ColumnCount];
-
-                    while (Reader.Read())
-                    {
-                        for (int j = 0; j <= Values.Length - 1; j++)
+                        for (int x = 0; x <= ColumnCount - 1; x++)
                         {
-                            Values[j] = Reader[j];
+                            Dummy_TABLE.Columns.Add(Reader.GetName(x));
                         }
+
+                        DataRow Row = Dummy_TABLE.NewRow();
+
+                        object[] Values = new object[ColumnCount];
+
+                        while (Reader.Read())
+                        {
+                            for (int j = 0; j <= Values.Length - 1; j++)
+                            {
+                                Values[j] = Reader[j];
+                            }
+                        }
+
+                        Row.ItemArray = Values;
+
+                        Result = Row;
                     }
 
-                    Row.ItemArray = Values;
+                    Reader.Close();
+                    conn.Close();
 
-                    Result = Row;
+                    Reader.Dispose();
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    success = true;
                 }
-
-                Reader.Close();
-                conn.Close();
-
-                Reader.Dispose();
-                Command.Dispose();
-                conn.Dispose();
+                catch (MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 
@@ -362,42 +421,52 @@ namespace TH_MySQL.Connector
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySql.Data.MySqlClient.MySqlConnection conn;
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySql.Data.MySqlClient.MySqlCommand Command;
-                Command = new MySql.Data.MySqlClient.MySqlCommand();
-                Command.Connection = conn;
-                Command.CommandText = "SELECT IF( EXISTS(SELECT * FROM " + tableName + " " + filterString + "), 1, 0)";
-
-                MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
-                if (Reader.HasRows)
+                try
                 {
-                    int i = 0;
+                    MySql.Data.MySqlClient.MySqlConnection conn;
+                    conn = new MySql.Data.MySqlClient.MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
 
-                    while (Reader.Read())
+                    MySql.Data.MySqlClient.MySqlCommand Command;
+                    Command = new MySql.Data.MySqlClient.MySqlCommand();
+                    Command.Connection = conn;
+                    Command.CommandText = "SELECT IF( EXISTS(SELECT * FROM " + tableName + " " + filterString + "), 1, 0)";
+
+                    MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
+                    if (Reader.HasRows)
                     {
-                        Result = Reader.GetBoolean(i);
-                        i += 1;
+                        int i = 0;
+
+                        while (Reader.Read())
+                        {
+                            Result = Reader.GetBoolean(i);
+                            i += 1;
+                        }
                     }
+
+                    Reader.Close();
+                    conn.Close();
+
+                    Reader.Dispose();
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    success = true;
                 }
-
-                Reader.Close();
-                conn.Close();
-
-                Reader.Dispose();
-                Command.Dispose();
-                conn.Dispose();
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 

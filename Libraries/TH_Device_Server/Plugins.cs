@@ -10,6 +10,7 @@ using System.Threading;
 using System.IO;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 
 using TH_Configuration;
 using TH_Global;
@@ -34,7 +35,7 @@ namespace TH_Device_Server
 
         void LoadPlugins()
         {
-            UpdateProcessingStatus("Loading Plugins...");
+            //UpdateProcessingStatus("Loading Plugins...");
 
             string plugin_rootpath = FileLocations.Plugins + @"\Server";
 
@@ -54,7 +55,31 @@ namespace TH_Device_Server
 
             TablePlugIns = Table_Plugins;
 
-            ClearProcessingStatus();
+            Console.WriteLine("Table Plugins --------------------------");
+            Console.WriteLine(Table_Plugins.Count.ToString() + " Table Plugins Found");
+            Console.WriteLine("------------------------------");
+            foreach (Lazy<Table_PlugIn> ltp in Table_Plugins)
+            {
+                Table_PlugIn tp = ltp.Value;
+
+                string name = tp.Name;
+                string version = null;
+
+                 // Version Info
+                    Assembly assembly = Assembly.GetAssembly(tp.GetType());
+                    if (assembly != null)
+                    {
+                        Version v = assembly.GetName().Version;
+                        version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
+                    }
+
+                    Console.WriteLine(tp.Name + " : " + version);
+            }
+            Console.WriteLine("----------------------------------------");
+
+
+
+            //ClearProcessingStatus();
         }
 
         void LoadTablePlugins(string Path)
@@ -78,7 +103,7 @@ namespace TH_Device_Server
 
                         if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == tp.Name.ToLower()) == null)
                         {
-                            Logger.Log(tp.Name + " : PlugIn Found");
+                            //Logger.Log(tp.Name + " : PlugIn Found");
                             Table_Plugins.Add(ltp);
                         }
                         else
@@ -150,12 +175,18 @@ namespace TH_Device_Server
                 Table_PlugIn tpi = info.tablePlugin;
                 tpi.DataEvent -= TablePlugIn_Update_DataEvent;
                 tpi.DataEvent += TablePlugIn_Update_DataEvent;
+                tpi.StatusChanged += tpi_StatusChanged;
                 tpi.Initialize(info.config);
             }
             catch (Exception ex)
             {
                 Log("Plugin Exception! : " + ex.Message);
             }
+        }
+
+        void tpi_StatusChanged(string status)
+        {
+            UpdateProcessingStatus(status);
         }
 
 

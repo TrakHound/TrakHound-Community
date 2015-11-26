@@ -80,6 +80,9 @@ namespace TH_OEE
 
         public event DataEvent_Handler DataEvent;
 
+        public event Status_Handler StatusChanged;
+
+        public event Status_Handler ErrorOccurred;
 
         public void Closing()
         {

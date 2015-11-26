@@ -16,40 +16,50 @@ namespace TH_MySQL.Connector
 
             List<string> Result = new List<string>();
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySql.Data.MySqlClient.MySqlConnection conn;
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySql.Data.MySqlClient.MySqlCommand Command;
-                Command = new MySql.Data.MySqlClient.MySqlCommand();
-                Command.Connection = conn;
-                Command.CommandText = "SHOW COLUMNS FROM " + tableName;
-
-                MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
-                if (Reader.HasRows)
+                try
                 {
-                    while (Reader.Read())
+                    MySql.Data.MySqlClient.MySqlConnection conn;
+                    conn = new MySql.Data.MySqlClient.MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    MySql.Data.MySqlClient.MySqlCommand Command;
+                    Command = new MySql.Data.MySqlClient.MySqlCommand();
+                    Command.Connection = conn;
+                    Command.CommandText = "SHOW COLUMNS FROM " + tableName;
+
+                    MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
+                    if (Reader.HasRows)
                     {
-                        string line = Reader[0].ToString();
-                        Result.Add(line);
+                        while (Reader.Read())
+                        {
+                            string line = Reader[0].ToString();
+                            Result.Add(line);
+                        }
                     }
+
+                    Reader.Close();
+                    conn.Close();
+
+                    Reader.Dispose();
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    success = true;
                 }
-
-                Reader.Close();
-                conn.Close();
-
-                Reader.Dispose();
-                Command.Dispose();
-                conn.Dispose();
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 
@@ -60,34 +70,44 @@ namespace TH_MySQL.Connector
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySqlConnection conn;
-                conn = new MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySqlCommand Command;
-                Command = new MySqlCommand();
-                Command.Connection = conn;
+                try
+                {
+                    MySqlConnection conn;
+                    conn = new MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
 
-                Command.CommandText = "ALTER IGNORE TABLE " + tableName + " ADD COLUMN " + columnDefinition;
+                    MySqlCommand Command;
+                    Command = new MySqlCommand();
+                    Command.Connection = conn;
 
-                Command.Prepare();
-                Command.ExecuteNonQuery();
+                    Command.CommandText = "ALTER IGNORE TABLE " + tableName + " ADD COLUMN " + columnDefinition;
 
-                Command.Dispose();
+                    Command.Prepare();
+                    Command.ExecuteNonQuery();
 
-                conn.Close();
+                    Command.Dispose();
 
-                Command.Dispose();
-                conn.Dispose();
+                    conn.Close();
 
-                Result = true;
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    Result = true;
+
+                    success = true;
+                }
+                catch (MySqlException ex) { }
+
+                catch (Exception ex) { }
             }
-            catch (MySqlException ex) { }
-
-            catch (Exception ex) { }
 
             return Result;
 

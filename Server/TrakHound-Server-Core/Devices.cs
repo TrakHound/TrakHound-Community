@@ -30,7 +30,7 @@ namespace TrakHound_Server_Core
 
             if (currentuser != null)
             {
-                configurations = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                configurations = Configurations.GetConfigurationsForUser(currentuser, false, userDatabaseSettings);
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else
@@ -47,9 +47,9 @@ namespace TrakHound_Server_Core
 
                     if (config.Enabled)
                     {
+                        config.Index = Devices.Count;
+
                         Device_Server server = new Device_Server(config);
-                        //server.configurationPath = configPath;
-                        //server.updateConfigurationFile = false;
 
                         // Initialize Database Configurations
                         Global.Initialize(server.configuration.Databases);
@@ -80,20 +80,20 @@ namespace TrakHound_Server_Core
             if (c != null)
             {
                 string tablename = c.TableName;
-                int index = c.Index;
 
                 c = config;
                 c.TableName = tablename;
-                c.Index = index + 1;
 
                 c.Remote = true;
 
                 int deviceIndex = Devices.FindIndex(x => x.configuration.UniqueId == c.UniqueId);
                 if (deviceIndex >= 0)
                 {
+                    c.Index = deviceIndex;
                     Devices[deviceIndex].Stop();
                     Devices.RemoveAt(deviceIndex);
                 }
+                else c.Index = Devices.Count;
                 
 
                 if (c.Enabled)

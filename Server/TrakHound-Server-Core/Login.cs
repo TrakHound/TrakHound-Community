@@ -32,7 +32,12 @@ namespace TrakHound_Server_Core
 
                 currentuser = rememberUser;
 
-                Logger.Log(TH_Global.Formatting.UppercaseFirst(rememberUser.username) + " logged in succesfully");
+                Console.BackgroundColor = ConsoleColor.Blue;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write(TH_Global.Formatting.UppercaseFirst(rememberUser.username));
+                Console.ResetColor();
+
+                Console.Write(" Logged in Successfully" + Environment.NewLine);
             }
         }
 

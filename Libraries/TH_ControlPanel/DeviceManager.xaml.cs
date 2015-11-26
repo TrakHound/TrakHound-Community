@@ -284,7 +284,7 @@ namespace TH_DeviceManager
             {
                 if (userDatabaseSettings == null)
                 {
-                    configs = Remote.Configurations.GetConfigurationsForUser(currentuser);
+                    configs = Remote.Configurations.GetConfigurationsForUser(currentuser, true);
                 }
                 else
                 {

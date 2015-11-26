@@ -10,43 +10,55 @@ namespace TH_MySQL.Connector
     public static class Database
     {
 
+        public static int connectionAttempts = 3;
+
         public static bool Create(MySQL_Configuration config, string databaseName)
         {
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < connectionAttempts && !success)
             {
-                MySqlConnection conn;
-                conn = new MySqlConnection();
+                attempts += 1;
 
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";";
-                conn.Open();
+                try
+                {
+                    MySqlConnection conn;
+                    conn = new MySqlConnection();
 
-                MySqlCommand Command;
-                Command = new MySqlCommand();
-                Command.Connection = conn;
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";";
+                    conn.Open();
+
+                    MySqlCommand Command;
+                    Command = new MySqlCommand();
+                    Command.Connection = conn;
 
 
-                Command.CommandText = "CREATE DATABASE IF NOT EXISTS " + databaseName;
+                    Command.CommandText = "CREATE DATABASE IF NOT EXISTS " + databaseName;
 
-                Command.Prepare();
-                Command.ExecuteNonQuery();
+                    Command.Prepare();
+                    Command.ExecuteNonQuery();
 
-                Command.Dispose();
+                    Command.Dispose();
 
-                conn.Close();
+                    conn.Close();
 
-                Command.Dispose();
-                conn.Dispose();
+                    Command.Dispose();
+                    conn.Dispose();
 
-                Result = true;
+                    Result = true;
+
+                    success = true;
+                }
+                catch (MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 
@@ -57,37 +69,47 @@ namespace TH_MySQL.Connector
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < connectionAttempts && !success)
             {
-                MySqlConnection conn;
-                conn = new MySqlConnection();
+                attempts += 1;
 
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";";
-                conn.Open();
+                try
+                {
+                    MySqlConnection conn;
+                    conn = new MySqlConnection();
 
-                MySqlCommand Command;
-                Command = new MySqlCommand();
-                Command.Connection = conn;
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";";
+                    conn.Open();
 
-                Command.CommandText = "DROP DATABASE IF EXISTS " + databaseName;
+                    MySqlCommand Command;
+                    Command = new MySqlCommand();
+                    Command.Connection = conn;
 
-                Command.Prepare();
-                Command.ExecuteNonQuery();
+                    Command.CommandText = "DROP DATABASE IF EXISTS " + databaseName;
 
-                Command.Dispose();
+                    Command.Prepare();
+                    Command.ExecuteNonQuery();
 
-                conn.Close();
+                    Command.Dispose();
 
-                Command.Dispose();
-                conn.Dispose();
+                    conn.Close();
 
-                Result = true;
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    Result = true;
+
+                    success = true;
+                }
+                catch (MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 

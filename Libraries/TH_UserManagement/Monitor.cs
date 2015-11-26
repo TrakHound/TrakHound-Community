@@ -101,7 +101,10 @@ namespace TH_UserManagement
                     }
                 }
             }
-            catch (Exception ex) { Logger.Log("Run_Worker() :: Exception :: " + ex.Message); }
+            catch (Exception ex) 
+            {
+                //Logger.Log("Run_Worker() :: Exception :: " + ex.Message);
+            }
         }
 
     }

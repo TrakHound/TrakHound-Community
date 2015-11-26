@@ -15,36 +15,46 @@ namespace TH_MySQL.PHP
     public static class Database
     {
 
+        public static int connectionAttempts = 3;
+
         public static bool Create(MySQL_Configuration config, string databaseName)
         {
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < connectionAttempts && !success)
             {
-                using (WebClient client = new WebClient())
+                attempts += 1;
+
+                try
                 {
+                    using (WebClient client = new WebClient())
+                    {
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
 
-                    NameValueCollection values = new NameValueCollection();
-                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                    else values["server"] = config.Server;
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["query"] = "CREATE DATABASE IF NOT EXISTS " + databaseName;
 
-                    values["user"] = config.Username;
-                    values["password"] = config.Password;
-                    values["query"] = "CREATE DATABASE IF NOT EXISTS " + databaseName;
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                    string PHP_Directory = "";
-                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php", values);
 
-                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php", values);
+                        string responseString = Encoding.Default.GetString(response);
 
-                    string responseString = Encoding.Default.GetString(response);
+                        if (responseString.ToLower().Trim() == "true") Result = true;
 
-                    if (responseString.ToLower().Trim() == "true") Result = true;
-
+                        success = true;
+                    }
                 }
+                catch (Exception ex) { Logger.Log(ex.Message); }
             }
-            catch (Exception ex) { Logger.Log(ex.Message); }
 
             return Result;
 
@@ -55,31 +65,39 @@ namespace TH_MySQL.PHP
 
             bool Result = false;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < connectionAttempts && !success)
             {
-                using (WebClient client = new WebClient())
+                attempts += 1;
+
+                try
                 {
+                    using (WebClient client = new WebClient())
+                    {
+                        NameValueCollection values = new NameValueCollection();
+                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+                        else values["server"] = config.Server;
 
-                    NameValueCollection values = new NameValueCollection();
-                    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                    else values["server"] = config.Server;
+                        values["user"] = config.Username;
+                        values["password"] = config.Password;
+                        values["query"] = "DROP DATABASE IF EXISTS " + databaseName;
 
-                    values["user"] = config.Username;
-                    values["password"] = config.Password;
-                    values["query"] = "DROP DATABASE IF EXISTS " + databaseName;
+                        string PHP_Directory = "";
+                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                    string PHP_Directory = "";
-                    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php", values);
 
-                    byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php", values);
+                        string responseString = Encoding.Default.GetString(response);
 
-                    string responseString = Encoding.Default.GetString(response);
+                        if (responseString.ToLower().Trim() == "true") Result = true;
 
-                    if (responseString.ToLower().Trim() == "true") Result = true;
-
+                        success = true;
+                    }
                 }
+                catch (Exception ex) { Logger.Log(ex.Message); }
             }
-            catch (Exception ex) { Logger.Log(ex.Message); }
 
             return Result;
 

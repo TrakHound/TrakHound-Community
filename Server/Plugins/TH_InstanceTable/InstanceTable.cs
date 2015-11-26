@@ -114,6 +114,9 @@ namespace TH_InstanceTable
 
         public event DataEvent_Handler DataEvent;
 
+        public event Status_Handler StatusChanged;
+
+        public event Status_Handler ErrorOccurred;
 
         public void Closing()
         {
@@ -140,6 +143,11 @@ namespace TH_InstanceTable
         #endregion
 
         #region "Methods"
+
+        void UpdateStatus(string status)
+        {
+            if (StatusChanged != null) StatusChanged(status);
+        }
 
         #region "Configuration"
 
@@ -412,12 +420,12 @@ namespace TH_InstanceTable
                 columnsMySQL.AddRange(columns);
 
                 stpw.Stop();
-                Logger.Log("InstanceTable AddRowsToMySQL() : Processing : " + stpw.ElapsedMilliseconds + "ms");
+                UpdateStatus("InstanceTable AddRowsToMySQL() : Processing : " + stpw.ElapsedMilliseconds + "ms");
 
                 stpw = new System.Diagnostics.Stopwatch();
                 stpw.Start();
 
-                Logger.Log("Adding " + rowValues.Count.ToString() + " Rows to MySQL Instance Table...");
+                UpdateStatus("Adding " + rowValues.Count.ToString() + " Rows to MySQL Instance Table...");
 
                 int interval = 100;
                 int countLeft = rowValues.Count;
@@ -441,7 +449,7 @@ namespace TH_InstanceTable
                 }
 
                 stpw.Stop();
-                Logger.Log("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
+                UpdateStatus("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
             }
 
         }

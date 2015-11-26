@@ -17,40 +17,50 @@ namespace TH_MySQL.Connector
 
             object[] Result = null;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySql.Data.MySqlClient.MySqlConnection conn;
-                conn = new MySql.Data.MySqlClient.MySqlConnection();
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
+                attempts += 1;
 
-                MySql.Data.MySqlClient.MySqlCommand Command;
-                Command = new MySql.Data.MySqlClient.MySqlCommand();
-                Command.Connection = conn;
-                Command.CommandText = commandText;
-
-                MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
-                if (Reader.HasRows)
+                try
                 {
-                    List<object> Columns = new List<object>();
+                    MySql.Data.MySqlClient.MySqlConnection conn;
+                    conn = new MySql.Data.MySqlClient.MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
 
-                    while (Reader.Read()) Columns.Add(Reader[0].ToString());
+                    MySql.Data.MySqlClient.MySqlCommand Command;
+                    Command = new MySql.Data.MySqlClient.MySqlCommand();
+                    Command.Connection = conn;
+                    Command.CommandText = commandText;
 
-                    Result = Columns.ToArray();
+                    MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
+                    if (Reader.HasRows)
+                    {
+                        List<object> Columns = new List<object>();
+
+                        while (Reader.Read()) Columns.Add(Reader[0].ToString());
+
+                        Result = Columns.ToArray();
+                    }
+
+                    Reader.Close();
+                    conn.Close();
+
+                    Reader.Dispose();
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    success = true;
                 }
-
-                Reader.Close();
-                conn.Close();
-
-                Reader.Dispose();
-                Command.Dispose();
-                conn.Dispose();
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 
@@ -62,36 +72,46 @@ namespace TH_MySQL.Connector
 
             object Result = null;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+                attempts += 1;
 
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
-
-                string query = "SELECT " + column + " FROM " + tableName + " " + filterExpression;
-
-
-                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
-
-                DataTable t1 = new DataTable();
-                using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                try
                 {
-                    if (a != null) a.Fill(t1);
+                    MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    string query = "SELECT " + column + " FROM " + tableName + " " + filterExpression;
+
+
+                    MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
+
+                    DataTable t1 = new DataTable();
+                    using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                    {
+                        if (a != null) a.Fill(t1);
+                    }
+
+                    if (t1.Rows.Count > 0) Result = t1.Rows[0][column];
+
+                    conn.Close();
+
+                    cmd.Dispose();
+                    conn.Dispose();
+
+                    success = true;
                 }
-
-                if (t1.Rows.Count > 0) Result = t1.Rows[0][column];
-
-                conn.Close();
-
-                cmd.Dispose();
-                conn.Dispose();
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 
@@ -102,36 +122,46 @@ namespace TH_MySQL.Connector
 
             DataTable Result = null;
 
-            try
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
             {
-                MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+                attempts += 1;
 
-                conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
-                conn.Open();
-
-                string query = "SHOW GRANTS FOR '" + username + "'@'%'";
-
-
-                MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
-
-                DataTable t1 = new DataTable();
-                using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                try
                 {
-                    if (a != null) a.Fill(t1);
+                    MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    string query = "SHOW GRANTS FOR '" + username + "'@'%'";
+
+
+                    MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
+
+                    DataTable t1 = new DataTable();
+                    using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                    {
+                        if (a != null) a.Fill(t1);
+                    }
+
+                    conn.Close();
+
+                    cmd.Dispose();
+                    conn.Dispose();
+
+                    Result = t1.Copy();
+
+                    success = true;
                 }
-
-                conn.Close();
-
-                cmd.Dispose();
-                conn.Dispose();
-
-                Result = t1.Copy();
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
             }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Logger.Log(ex.Message);
-            }
-            catch (Exception ex) { }
 
             return Result;
 
