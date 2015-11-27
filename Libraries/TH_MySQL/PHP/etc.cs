@@ -7,107 +7,89 @@ using System.Text;
 
 using System.Threading;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
 using TH_Global;
+using TH_Global.Web;
 
 namespace TH_MySQL.PHP
 {
     public static class etc
     {
 
-        public static object[] CustomCommand(MySQL_Configuration config, string commandText)
+        public static string CustomCommand(MySQL_Configuration config, string commandText)
         {
-            object[] Result = null;
+            string Result = null;
 
-            int attempts = 0;
-            bool success = false;
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
 
-            while (attempts < Database.connectionAttempts && !success)
-            {
-                attempts += 1;
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
 
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
+            values["query"] = commandText;
 
-                        NameValueCollection values = new NameValueCollection();
-                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                        else values["server"] = config.Server;
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        values["user"] = config.Username;
-                        values["password"] = config.Password;
-                        values["db"] = config.Database;
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
-                        values["query"] = commandText;
-
-                        string PHP_Directory = "";
-                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
-
-                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
-
-                        string responseString = Encoding.Default.GetString(response);
-
-                        success = true;
-                    }
-                }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
+            Result = HTTP.SendData(url, values);
 
             return Result;
 
         }
+
+        //public static object[] CustomCommand(MySQL_Configuration config, string commandText)
+        //{
+        //    object[] Result = null;
+
+        //    NameValueCollection values = new NameValueCollection();
+        //    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+        //    else values["server"] = config.Server;
+
+        //    values["user"] = config.Username;
+        //    values["password"] = config.Password;
+        //    values["db"] = config.Database;
+
+        //    values["query"] = commandText;
+
+        //    string PHP_Directory = "";
+        //    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+        //    string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
+
+        //    Result = Web.HttpSendData(url, values);
+
+        //    return Result;
+
+        //}
 
         public static object GetValue(MySQL_Configuration config, string tablename, string column, string filterExpression)
         {
 
             object Result = null;
 
-            int attempts = 0;
-            bool success = false;
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
 
-            while (attempts < Database.connectionAttempts && !success)
-            {
-                attempts += 1;
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
 
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
+            values["query"] = "SELECT " + column + " FROM " + tablename + " " + filterExpression;
 
-                        NameValueCollection values = new NameValueCollection();
-                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                        else values["server"] = config.Server;
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        values["user"] = config.Username;
-                        values["password"] = config.Password;
-                        values["db"] = config.Database;
 
-                        values["query"] = "SELECT " + column + " FROM " + tablename + " " + filterExpression;
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
-                        string PHP_Directory = "";
-                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+            string responseString = HTTP.SendData(url, values);
 
-                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
-
-                        string responseString = Encoding.Default.GetString(response);
-
-                        JsonSerializerSettings JSS = new JsonSerializerSettings();
-                        JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                        JSS.DateParseHandling = DateParseHandling.DateTime;
-                        JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-
-                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
-
-                        if (DT.Rows.Count > 0) Result = DT.Rows[0][column];
-
-                        success = true;
-                    }
-                }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
+            DataTable dt = JSON.ToTable(responseString);
+            if (dt != null) if (dt.Rows.Count > 0) Result = dt.Rows[0][column];
 
             return Result;
 
@@ -118,51 +100,27 @@ namespace TH_MySQL.PHP
 
             DataTable Result = null;
 
-            int attempts = 0;
-            bool success = false;
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
 
-            while (attempts < Database.connectionAttempts && !success)
-            {
-                attempts += 1;
+            values["server"] = config.Server;
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
 
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
+            values["query"] = "SHOW GRANTS FOR '" + username + "'@'%'";
 
-                        NameValueCollection values = new NameValueCollection();
-                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                        else values["server"] = config.Server;
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        values["server"] = config.Server;
-                        values["user"] = config.Username;
-                        values["password"] = config.Password;
-                        values["db"] = config.Database;
 
-                        values["query"] = "SHOW GRANTS FOR '" + username + "'@'%'";
 
-                        string PHP_Directory = "";
-                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
-                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
+            string responseString = HTTP.SendData(url, values);
 
-                        string responseString = Encoding.Default.GetString(response);
-
-                        JsonSerializerSettings JSS = new JsonSerializerSettings();
-                        JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                        JSS.DateParseHandling = DateParseHandling.DateTime;
-                        JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-
-                        DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
-
-                        Result = DT;
-
-                        success = true;
-                    }
-                }
-                catch (JsonReaderException JRE) { Logger.Log(JRE.Message); }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
+            Result = JSON.ToTable(responseString);
 
             return Result;
 

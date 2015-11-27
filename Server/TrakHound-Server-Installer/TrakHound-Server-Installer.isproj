@@ -41,6 +41,10 @@
 			<Name>TH_Database</Name>
 			<Project>{00E275C4-3494-4FCC-8781-FD815024117E}</Project>
 		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_ControlPanel\TH_DeviceManager.csproj">
+			<Name>TH_DeviceManager</Name>
+			<Project>{B5F883CC-0E97-468C-9CA4-84031F446EDF}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Device_Server\TH_Device_Server.csproj">
 			<Name>TH_Device_Server</Name>
 			<Project>{DE797C18-8530-40B6-964F-3164E34420F9}</Project>
@@ -97,6 +101,18 @@
 			<Name>TH_StopService</Name>
 			<Project>{DBBBD291-8CE9-474A-A575-FFF46709C3A0}</Project>
 		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_Styles\TH_Styles.csproj">
+			<Name>TH_Styles</Name>
+			<Project>{EBFABB3A-6FB4-47AE-8CB1-B663D57CF5B1}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+			<Name>TH_UserManagement</Name>
+			<Project>{85F2C2A8-CD43-486B-9918-2A1F11CFC15F}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_WPF\TH_WPF.csproj">
+			<Name>TH_WPF</Name>
+			<Project>{E039A6BE-D47C-4046-86D3-71ACD62A217A}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\TrakHound-Server\TrakHound-Server.csproj">
 			<Name>TrakHound-Server</Name>
 			<Project>{AAC6D3F3-D589-4CCC-8264-3EF620E2AE9C}</Project>
@@ -104,6 +120,10 @@
 		<ProjectReference Include="..\TrakHound-Server-Console\TrakHound-Server-Console.csproj">
 			<Name>TrakHound-Server-Console</Name>
 			<Project>{6F02E73F-8300-446C-91FB-41E5DF3C8C4F}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\TrakHound-Sever-Control-Panel\TrakHound-Server-Control-Panel.csproj">
+			<Name>TrakHound-Server-Control-Panel</Name>
+			<Project>{B2FE4410-125F-433F-8286-41B5968892C1}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\TrakHound-Server-Controller\TrakHound-Server-Controller.csproj">
 			<Name>TrakHound-Server-Controller</Name>

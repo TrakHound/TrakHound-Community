@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 
 using MySql.Data.MySqlClient;
 
@@ -12,10 +13,10 @@ namespace TH_MySQL.Connector
     public static class etc
     {
 
-        public static object[] CustomCommand(MySQL_Configuration config, string commandText)
+        public static string CustomCommand(MySQL_Configuration config, string commandText)
         {
 
-            object[] Result = null;
+            string Result = null;
 
             int attempts = 0;
             bool success = false;
@@ -39,11 +40,13 @@ namespace TH_MySQL.Connector
                     MySql.Data.MySqlClient.MySqlDataReader Reader = Command.ExecuteReader();
                     if (Reader.HasRows)
                     {
-                        List<object> Columns = new List<object>();
+                        //List<object> Columns = new List<object>();
 
-                        while (Reader.Read()) Columns.Add(Reader[0].ToString());
+                        //while (Reader.Read()) Columns.Add(Reader[0].ToString());
 
-                        Result = Columns.ToArray();
+                        Result = "";
+                        while (Reader.Read()) Result += Reader[0].ToString() + ";";
+                       
                     }
 
                     Reader.Close();

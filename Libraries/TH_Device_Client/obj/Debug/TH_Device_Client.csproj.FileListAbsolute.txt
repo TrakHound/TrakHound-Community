@@ -29,3 +29,4 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\TH_PlugIns_Cl
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\obj\Debug\TH_Device_Client.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\obj\Debug\TH_Device_Client.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\obj\Debug\TH_Device_Client.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Client\bin\Debug\Newtonsoft.Json.dll

@@ -12,3 +12,4 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_P
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_PlugIns_Client_Control.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_PlugIns_Client_Control.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\Newtonsoft.Json.dll

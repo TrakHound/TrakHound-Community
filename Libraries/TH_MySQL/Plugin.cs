@@ -549,9 +549,9 @@ namespace TH_MySQL
 
         // Etc --------------------------------------------------------------------------
 
-        public object[] CustomCommand(object settings, string commandText)
+        public string CustomCommand(object settings, string commandText)
         {
-            object[] result = null;
+            string result = null;
 
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)

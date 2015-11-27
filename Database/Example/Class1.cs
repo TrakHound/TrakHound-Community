@@ -91,7 +91,7 @@ namespace TH_Example
 
         // Etc --------------------------------------------------------------------------
 
-        public object[] CustomCommand(object settings, string commandText) { return null; }
+        public string CustomCommand(object settings, string commandText) { return null; }
 
         public object GetValue(object settings, string tablename, string column, string filterExpression) { return null; }
 

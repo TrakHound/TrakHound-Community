@@ -5,10 +5,8 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Text;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
 using TH_Global;
+using TH_Global.Web;
 
 namespace TH_MySQL.PHP
 {
@@ -20,52 +18,26 @@ namespace TH_MySQL.PHP
 
             List<string> Result = new List<string>();
 
-            int attempts = 0;
-            bool success = false;
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
 
-            while (attempts < Database.connectionAttempts && !success)
-            {
-                attempts += 1;
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
 
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
-                        NameValueCollection values = new NameValueCollection();
-                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                        else values["server"] = config.Server;
+            values["query"] = "SHOW COLUMNS FROM " + tablename;
 
-                        values["user"] = config.Username;
-                        values["password"] = config.Password;
-                        values["db"] = config.Database;
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        values["query"] = "SHOW COLUMNS FROM " + tablename;
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
 
-                        string PHP_Directory = "";
-                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php", values);
+            string responseString = HTTP.SendData(url, values);
 
-                        string responseString = Encoding.Default.GetString(response);
-
-                        try
-                        {
-
-                            DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
-
-                            if (DT != null)
-                            {
-                                foreach (DataRow Row in DT.Rows) Result.Add(Row[0].ToString());                           
-                            }
-
-                        }
-                        catch (Exception ex) { }
-
-                        success = true;
-                    }
-                }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
+            DataTable dt = JSON.ToTable(responseString);
+            if (dt != null) foreach (DataRow Row in dt.Rows) Result.Add(Row[0].ToString()); 
 
             return Result;
 
@@ -76,41 +48,23 @@ namespace TH_MySQL.PHP
 
             bool Result = false;
 
-            int attempts = 0;
-            bool success = false;
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
 
-            while (attempts < Database.connectionAttempts && !success)
-            {
-                attempts += 1;
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
 
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
-                        NameValueCollection values = new NameValueCollection();
-                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                        else values["server"] = config.Server;
+            values["query"] = "ALTER IGNORE TABLE " + tablename + " ADD COLUMN " + ColumnDefinition;
 
-                        values["user"] = config.Username;
-                        values["password"] = config.Password;
-                        values["db"] = config.Database;
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        values["query"] = "ALTER IGNORE TABLE " + tablename + " ADD COLUMN " + ColumnDefinition;
 
-                        string PHP_Directory = "";
-                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
-                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Send.php", values);
-
-                        string responseString = Encoding.Default.GetString(response);
-
-                        if (responseString.ToLower().Trim() == "true") Result = true;
-
-                        success = true;
-                    }
-                }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
+            if (HTTP.SendData(url, values) == "true") Result = true;
 
             return Result;
 

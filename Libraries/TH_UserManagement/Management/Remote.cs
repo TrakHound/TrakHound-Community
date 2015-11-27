@@ -14,11 +14,12 @@ using System.Xml;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
+using TH_Global.Web;
 
 namespace TH_UserManagement.Management
 {
@@ -51,43 +52,17 @@ namespace TH_UserManagement.Management
             {
                 DataRow Result = null;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
+                values["id"] = id;
+                values["password"] = password;
 
-                while (attempts < connectionAttempts && !success)
-                {
-                    attempts += 1;
+                string url = "http://www.feenux.com/php/users/login.php";
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
 
-                            NameValueCollection values = new NameValueCollection();
-                            values["id"] = id;
-                            values["password"] = password;
+                string responseString = HTTP.SendData(url, values);
 
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/users/login.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.Trim() != "")
-                            {
-                                JsonSerializerSettings JSS = new JsonSerializerSettings();
-                                JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                                JSS.DateParseHandling = DateParseHandling.DateTime;
-                                JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-
-                                DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
-
-                                if (DT.Rows.Count > 0) Result = DT.Rows[0];
-                            }
-                        }
-
-                        success = true;
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
-                }
+                DataTable dt = JSON.ToTable(responseString);
+                if (dt.Rows.Count > 0) Result = dt.Rows[0];
 
                 return Result;
             }
@@ -188,35 +163,17 @@ namespace TH_UserManagement.Management
 
                 string query = "INSERT IGNORE INTO " + tablename + " (" + cols + ") VALUES (" + vals + ")" + update;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
 
-                while (attempts < connectionAttempts && !success)
-                {
-                    attempts += 1;
+                values["username"] = userConfig.username.ToLower();
+                values["password"] = password;
+                values["query"] = query;
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
+                string url = "http://www.feenux.com/php/users/createuser.php";
 
-                            NameValueCollection values = new NameValueCollection();
 
-                            values["username"] = userConfig.username.ToLower();
-                            values["password"] = password;
-                            values["query"] = query;
-
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/users/createuser.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.ToLower().Trim() == "true") result = true;
-
-                            success = true;
-                        }
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
-                }
+                string responseString = HTTP.SendData(url, values);
+                if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
 
@@ -227,50 +184,34 @@ namespace TH_UserManagement.Management
             {
                 VerifyUsernameReturn result = null;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
+                values["username"] = username;
 
-                while (attempts < connectionAttempts && !success)
+                string url = "http://www.feenux.com/php/users/verifyusername.php";
+
+
+                string responseString = HTTP.SendData(url, values);
+
+                string output = responseString.Trim();
+
+                if (output != "")
                 {
-                    attempts += 1;
+                    result = new VerifyUsernameReturn();
 
-                    try
+                    if (output.Contains(';'))
                     {
-                        using (WebClient client = new WebClient())
-                        {
-                            NameValueCollection values = new NameValueCollection();
-                            values["username"] = username;
+                        int index = output.IndexOf(';');
 
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/users/verifyusername.php", values);
+                        bool available = false;
+                        string avail = output.Substring(0, index);
+                        bool.TryParse(avail, out available);
 
-                            string responseString = Encoding.Default.GetString(response);
+                        string message = null;
+                        if (output.Length > index + 1) message = output.Substring(index + 1);
 
-                            string output = responseString.Trim();
-
-                            if (output != "")
-                            {
-                                result = new VerifyUsernameReturn();
-
-                                if (output.Contains(';'))
-                                {
-                                    int index = output.IndexOf(';');
-
-                                    bool available = false;
-                                    string avail = output.Substring(0, index);
-                                    bool.TryParse(avail, out available);
-
-                                    string message = null;
-                                    if (output.Length > index + 1) message = output.Substring(index + 1);
-
-                                    result.available = available;
-                                    result.message = message;
-                                }
-                            }
-                        }
-
-                        success = true;
+                        result.available = available;
+                        result.message = message;
                     }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
                 }
 
                 return result;
@@ -280,35 +221,17 @@ namespace TH_UserManagement.Management
             {
                 bool result = false;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
 
-                while (attempts < connectionAttempts && !success)
-                {
-                    attempts += 1;
+                values["username"] = userConfig.username;
+                values["lastlogin"] = ConvertDateStringtoMySQL(userConfig.last_login.ToString());
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
+                string url = "http://www.feenux.com/php/users/updatelastlogin.php";
 
-                            NameValueCollection values = new NameValueCollection();
 
-                            values["username"] = userConfig.username;
-                            values["lastlogin"] = ConvertDateStringtoMySQL(userConfig.last_login.ToString());
+                string responseString = HTTP.SendData(url, values);
 
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/users/updatelastlogin.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.ToLower().Trim() == "true") result = true;
-
-                        }
-
-                        success = true;
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
-                }
+                if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -319,35 +242,16 @@ namespace TH_UserManagement.Management
 
                 bool result = false;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
 
-                while (attempts < connectionAttempts && !success)
-                {
-                    attempts += 1;
+                values["username"] = userConfig.username;
+                values["imageurl"] = userConfig.image_url;
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
+                string url = "http://www.feenux.com/php/users/updateimageurl.php";
 
-                            NameValueCollection values = new NameValueCollection();
+                string responseString = HTTP.SendData(url, values);
 
-                            values["username"] = userConfig.username;
-                            values["imageurl"] = userConfig.image_url;
-
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/users/updateimageurl.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.ToLower().Trim() == "true") result = true;
-
-                        }
-
-                        success = true;
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
-                }
+                if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
 
@@ -363,46 +267,30 @@ namespace TH_UserManagement.Management
 
                     string t = type.ToString().ToLower();
 
-                    int attempts = 0;
-                    bool success = false;
+                    NameValueCollection values = new NameValueCollection();
 
-                    while (attempts < connectionAttempts && !success)
+                    values["id"] = id;
+                    values["type"] = type.ToString();
+
+                    string url = "http://www.feenux.com/php/users/setrememberme.php";
+
+
+                    string responseString = HTTP.SendData(url, values);
+
+                    if (responseString.Trim() != "")
                     {
-                        attempts += 1;
+                        string hash = responseString.Trim();
 
-                        try
-                        {
-                            using (WebClient client = new WebClient())
-                            {
-                                NameValueCollection values = new NameValueCollection();
+                        // Set "id" registry key
+                        TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_id", userConfig.username);
 
-                                values["id"] = id;
-                                values["type"] = type.ToString();
+                        // Set Date of Last Login using Remember Me
+                        TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_last_login", DateTime.UtcNow.ToString());
 
-                                byte[] response = client.UploadValues("http://www.feenux.com/php/users/setrememberme.php", values);
+                        // Set "hash" registry key
+                        TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_hash", hash);
 
-                                string responseString = Encoding.Default.GetString(response);
-
-                                if (responseString.Trim() != "")
-                                {
-                                    string hash = responseString.Trim();
-
-                                    // Set "id" registry key
-                                    TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_id", userConfig.username);
-
-                                    // Set Date of Last Login using Remember Me
-                                    TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_last_login", DateTime.UtcNow.ToString());
-
-                                    // Set "hash" registry key
-                                    TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_hash", hash);
-
-                                    result = true;
-                                }
-                            }
-
-                            success = true;
-                        }
-                        catch (Exception ex) { Logger.Log(ex.Message); }
+                        result = true;
                     }
 
                     return result;
@@ -430,47 +318,19 @@ namespace TH_UserManagement.Management
 
                             if (hash != null)
                             {
-                                int attempts = 0;
-                                bool success = false;
+                                NameValueCollection values = new NameValueCollection();
 
-                                while (attempts < connectionAttempts && !success)
-                                {
-                                    attempts += 1;
+                                values["id"] = id;
+                                values["hash"] = hash;
+                                values["type"] = type.ToString();
 
-                                    try
-                                    {
-                                        using (WebClient client = new WebClient())
-                                        {
-                                            NameValueCollection values = new NameValueCollection();
+                                string url = "http://www.feenux.com/php/users/getrememberme.php";
 
-                                            values["id"] = id;
-                                            values["hash"] = hash;
-                                            values["type"] = type.ToString();
 
-                                            byte[] response = client.UploadValues("http://www.feenux.com/php/users/getrememberme.php", values);
+                                string responseString = HTTP.SendData(url, values);
 
-                                            string responseString = Encoding.Default.GetString(response);
-
-                                            if (responseString.Trim() != "")
-                                            {
-                                                JsonSerializerSettings JSS = new JsonSerializerSettings();
-                                                JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                                                JSS.DateParseHandling = DateParseHandling.DateTime;
-                                                JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-
-                                                DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
-
-                                                if (DT.Rows.Count > 0)
-                                                {
-                                                    result = LoginSuccess(DT.Rows[0]);
-                                                }
-                                            }
-                                        }
-
-                                        success = true;
-                                    }
-                                    catch (Exception ex) { Logger.Log(ex.Message); }
-                                }
+                                DataTable dt = JSON.ToTable(responseString);
+                                if (dt.Rows.Count > 0) result = LoginSuccess(dt.Rows[0]);
                             }
                         }
                     }
@@ -488,33 +348,17 @@ namespace TH_UserManagement.Management
                     string key = TH_UserManagement.Management.RememberMe.Registry_Functions.GetRegistryKey(t + "_id");
                     if (key != null)
                     {
-                        int attempts = 0;
-                        bool success = false;
+                        NameValueCollection values = new NameValueCollection();
 
-                        while (attempts < connectionAttempts && !success)
-                        {
-                            attempts += 1;
+                        values["id"] = key;
+                        values["type"] = type.ToString();
 
-                            try
-                            {
-                                using (WebClient client = new WebClient())
-                                {
-                                    NameValueCollection values = new NameValueCollection();
 
-                                    values["id"] = key;
-                                    values["type"] = type.ToString();
+                        string url = "http://www.feenux.com/php/users/clearrememberme.php";
 
-                                    byte[] response = client.UploadValues("http://www.feenux.com/php/users/clearrememberme.php", values);
+                        string responseString = HTTP.SendData(url, values);
 
-                                    string responseString = Encoding.Default.GetString(response);
-
-                                    if (responseString.ToLower().Trim() == "true") result = true;
-                                }
-
-                                success = true;
-                            }
-                            catch (Exception ex) { Logger.Log(ex.Message); }
-                        }
+                        if (responseString.ToLower().Trim() == "true") result = true;
                     }
 
                     TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "_id");
@@ -552,79 +396,56 @@ namespace TH_UserManagement.Management
             {
                 List<Configuration> result = null;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
 
-                while (attempts < connectionAttempts && !success)
+                values["username"] = userConfig.username;
+
+                string url = "http://www.feenux.com/php/configurations/getconfigurations.php";
+
+
+                string responseString = HTTP.SendData(url, values);
+
+                DataTable DT = JSON.ToTable(responseString);
+
+                if (DT != null)
                 {
-                    attempts += 1;
+                    result = new List<Configuration>();
 
-                    try
+                    foreach (DataRow Row in DT.Rows)
                     {
-                        using (WebClient client = new WebClient())
+                        string tablename = Row[0].ToString();
+
+                        DataTable dt = GetConfigurationTable(tablename);
+                        if (dt != null)
                         {
-                            NameValueCollection values = new NameValueCollection();
-
-                            values["username"] = userConfig.username;
-
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/getconfigurations.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.Trim() != "")
+                            XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                            if (xml != null)
                             {
-                                try
+                                Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+                                if (config != null)
                                 {
-                                    DataTable DT = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
-
-                                    if (DT != null)
+                                    if (getImages)
                                     {
-                                        result = new List<Configuration>();
-
-                                        foreach (DataRow Row in DT.Rows)
+                                        if (config.FileLocations.Manufacturer_Logo_Path != null)
                                         {
-                                            string tablename = Row[0].ToString();
+                                            System.Drawing.Image manufacturer_logo = Images.GetImage(config.FileLocations.Manufacturer_Logo_Path);
+                                            if (manufacturer_logo != null) config.Manufacturer_Logo = manufacturer_logo;
+                                        }
 
-                                            DataTable dt = GetConfigurationTable(tablename);
-                                            if (dt != null)
-                                            {
-                                                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
-                                                if (xml != null)
-                                                {
-                                                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
-                                                    if (config != null)
-                                                    {
-                                                        if (getImages)
-                                                        {
-                                                            if (config.FileLocations.Manufacturer_Logo_Path != null)
-                                                            {
-                                                                System.Drawing.Image manufacturer_logo = Images.GetImage(config.FileLocations.Manufacturer_Logo_Path);
-                                                                if (manufacturer_logo != null) config.Manufacturer_Logo = manufacturer_logo;
-                                                            }
-
-                                                            if (config.FileLocations.Image_Path != null)
-                                                            {
-                                                                System.Drawing.Image device_image = Images.GetImage(config.FileLocations.Image_Path);
-                                                                if (device_image != null) config.Device_Image = device_image;
-                                                            }
-                                                        }
-
-                                                        config.Remote = true;
-                                                        config.TableName = tablename;
-                                                        result.Add(config);
-                                                    }
-                                                }
-                                            }
+                                        if (config.FileLocations.Image_Path != null)
+                                        {
+                                            System.Drawing.Image device_image = Images.GetImage(config.FileLocations.Image_Path);
+                                            if (device_image != null) config.Device_Image = device_image;
                                         }
                                     }
 
-                                    success = true;
+                                    config.Remote = true;
+                                    config.TableName = tablename;
+                                    result.Add(config);
                                 }
-                                catch (Exception ex) { Logger.Log("GetConfigurationsForUser() :: Exception :: " + ex.Message); }
                             }
                         }
                     }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
                 }
 
                 return result;
@@ -634,45 +455,15 @@ namespace TH_UserManagement.Management
             {
                 DataTable Result = null;
 
-                int attempts = 0;
-                bool success = false;
-                string message = null;
+                NameValueCollection values = new NameValueCollection();
+                values["tablename"] = table;
 
-                while (attempts < connectionAttempts && !success)
-                {
-                    attempts += 1;
+                string url = "http://www.feenux.com/php/configurations/getconfigurationtable.php";
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
 
-                            NameValueCollection values = new NameValueCollection();
-                            values["tablename"] = table;
+                string responseString = HTTP.SendData(url, values);
 
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/getconfigurationtable.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.Trim() != "")
-                            {
-                                JsonSerializerSettings JSS = new JsonSerializerSettings();
-                                JSS.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                                JSS.DateParseHandling = DateParseHandling.DateTime;
-                                JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-
-                                DataTable dt = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)), JSS);
-
-                                Result = dt;
-                            }
-                        }
-
-                        success = true;
-                    }
-                    catch (Exception ex) { message = ex.Message; }
-                }
-
-                if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
+                Result = JSON.ToTable(responseString);
 
                 return Result;
             }
@@ -756,35 +547,17 @@ namespace TH_UserManagement.Management
                     string query = "INSERT IGNORE INTO " + tableName + " (" + cols + ") " + vals;
 
 
-                    int attempts = 0;
-                    bool success = false;
+                    NameValueCollection postValues = new NameValueCollection();
 
-                    while (attempts < connectionAttempts && !success)
-                    {
-                        attempts += 1;
+                    postValues["query"] = query;
 
-                        try
-                        {
-                            using (WebClient client = new WebClient())
-                            {
+                    string url = "http://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
-                                NameValueCollection values = new NameValueCollection();
 
-                                values["query"] = query;
+                    string responseString = HTTP.SendData(url, postValues);
 
-                                byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updateconfigurationtable.php", values);
+                    if (responseString.ToLower().Trim() == "true") result = true;
 
-                                string responseString = Encoding.Default.GetString(response);
-
-                                if (responseString.ToLower().Trim() == "true") result = true;
-
-                                success = true;
-
-                            }
-                        }
-                        catch (Exception ex) { Logger.Log(ex.Message); }
-
-                    }
                 }
 
                 return result;
@@ -805,33 +578,16 @@ namespace TH_UserManagement.Management
 
                     string query = "INSERT IGNORE INTO " + tableName + columns + set + update;
 
-                    int attempts = 0;
-                    bool success = false;
+                    NameValueCollection values = new NameValueCollection();
 
-                    while (attempts < connectionAttempts && !success)
-                    {
-                        attempts += 1;
+                    values["query"] = query;
 
-                        try
-                        {
-                            using (WebClient client = new WebClient())
-                            {
+                    string url = "http://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
-                                NameValueCollection values = new NameValueCollection();
 
-                                values["query"] = query;
+                    string responseString = HTTP.SendData(url, values);
 
-                                byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updateconfigurationtable.php", values);
-
-                                string responseString = Encoding.Default.GetString(response);
-
-                                if (responseString.ToLower().Trim() == "true") result = true;
-
-                                success = true;
-                            }
-                        }
-                        catch (Exception ex) { Logger.Log(ex.Message); }
-                    }
+                    if (responseString.ToLower().Trim() == "true") result = true;
 
                 }
 
@@ -853,33 +609,15 @@ namespace TH_UserManagement.Management
 
                     string query = "INSERT IGNORE INTO " + tableName + columns + set + update;
 
-                    int attempts = 0;
-                    bool success = false;
+                    NameValueCollection values = new NameValueCollection();
 
-                    while (attempts < connectionAttempts && !success)
-                    {
-                        attempts += 1;
+                    values["query"] = query;
 
-                        try
-                        {
-                            using (WebClient client = new WebClient())
-                            {
+                    string url = "http://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
-                                NameValueCollection values = new NameValueCollection();
+                    string responseString = HTTP.SendData(url, values);
 
-                                values["query"] = query;
-
-                                byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/updateconfigurationtable.php", values);
-
-                                string responseString = Encoding.Default.GetString(response);
-
-                                if (responseString.ToLower().Trim() == "true") result = true;
-
-                                success = true;
-                            }
-                        }
-                        catch (Exception ex) { Logger.Log(ex.Message); }
-                    }
+                    if (responseString.ToLower().Trim() == "true") result = true;
 
                 }
 
@@ -890,33 +628,16 @@ namespace TH_UserManagement.Management
             {
                 bool result = false;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
 
-                while (attempts < connectionAttempts && !success)
-                {
-                    attempts += 1;
+                values["query"] = "TRUNCATE TABLE " + tableName;
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
+                string url = "http://www.feenux.com/php/configurations/createconfigurationtable.php";
 
-                            NameValueCollection values = new NameValueCollection();
 
-                            values["query"] = "TRUNCATE TABLE " + tableName;
+                string responseString = HTTP.SendData(url, values);
 
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/createconfigurationtable.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.ToLower().Trim() == "true") result = true;
-
-                            success = true;
-                        }
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
-                }
+                if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -935,46 +656,28 @@ namespace TH_UserManagement.Management
 
                 string primaryKey = "address";
 
+                NameValueCollection values = new NameValueCollection();
 
-                int attempts = 0;
-                bool success = false;
+                string coldef = "";
 
-                while (attempts < connectionAttempts && !success)
+                //Create Column Definition string
+                for (int x = 0; x <= columns.Length - 1; x++)
                 {
-                    attempts += 1;
-
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
-
-                            NameValueCollection values = new NameValueCollection();
-
-                            string coldef = "";
-
-                            //Create Column Definition string
-                            for (int x = 0; x <= columns.Length - 1; x++)
-                            {
-                                coldef += columns[x].ToString();
-                                if (x < columns.Length - 1) coldef += ",";
-                            }
-
-                            string Keydef = "";
-                            if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
-
-                            values["query"] = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
-
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/createconfigurationtable.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.ToLower().Trim() == "true") result = true;
-
-                            success = true;
-                        }
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
+                    coldef += columns[x].ToString();
+                    if (x < columns.Length - 1) coldef += ",";
                 }
+
+                string Keydef = "";
+                if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+
+                values["query"] = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
+
+                string url = "http://www.feenux.com/php/configurations/createconfigurationtable.php";
+
+
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -995,45 +698,28 @@ namespace TH_UserManagement.Management
 
                 string table = GetConfigurationTableName(userConfig, configuration);
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
 
-                while (attempts < connectionAttempts && !success)
+                string coldef = "";
+
+                //Create Column Definition string
+                for (int x = 0; x <= columns.Length - 1; x++)
                 {
-                    attempts += 1;
-
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
-
-                            NameValueCollection values = new NameValueCollection();
-
-                            string coldef = "";
-
-                            //Create Column Definition string
-                            for (int x = 0; x <= columns.Length - 1; x++)
-                            {
-                                coldef += columns[x].ToString();
-                                if (x < columns.Length - 1) coldef += ",";
-                            }
-
-                            string Keydef = "";
-                            if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
-
-                            values["query"] = "CREATE TABLE IF NOT EXISTS " + table + " (" + coldef + Keydef + ")";
-
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/createconfigurationtable.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.ToLower().Trim() == "true") result = true;
-
-                            success = true;
-                        }
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
+                    coldef += columns[x].ToString();
+                    if (x < columns.Length - 1) coldef += ",";
                 }
+
+                string Keydef = "";
+                if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+
+                values["query"] = "CREATE TABLE IF NOT EXISTS " + table + " (" + coldef + Keydef + ")";
+
+                string url = "http://www.feenux.com/php/configurations/createconfigurationtable.php";
+
+
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -1055,33 +741,16 @@ namespace TH_UserManagement.Management
             {
                 bool result = false;
 
-                int attempts = 0;
-                bool success = false;
+                NameValueCollection values = new NameValueCollection();
 
-                while (attempts < connectionAttempts && !success)
-                {
-                    attempts += 1;
+                values["tablename"] = tableName;
 
-                    try
-                    {
-                        using (WebClient client = new WebClient())
-                        {
+                string url = "http://www.feenux.com/php/configurations/removeconfigurationtable.php";
 
-                            NameValueCollection values = new NameValueCollection();
 
-                            values["tablename"] = tableName;
+                string responseString = HTTP.SendData(url, values);
 
-                            byte[] response = client.UploadValues("http://www.feenux.com/php/configurations/removeconfigurationtable.php", values);
-
-                            string responseString = Encoding.Default.GetString(response);
-
-                            if (responseString.ToLower().Trim() == "true") result = true;
-
-                            success = true;
-                        }
-                    }
-                    catch (Exception ex) { Logger.Log(ex.Message); }
-                }
+                if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -1138,7 +807,7 @@ namespace TH_UserManagement.Management
                         else if (ImageFormat.Tiff.Equals(img.RawFormat)) contentFormat = "image/tiff";
 
                         NameValueCollection nvc = new NameValueCollection();
-                        if (Web.HttpUploadFile("http://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
+                        if (HTTP.UploadFile("http://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
                         {
                             result = true;
                         }
@@ -1233,7 +902,7 @@ namespace TH_UserManagement.Management
                 bool result = false;
 
                 NameValueCollection nvc = new NameValueCollection();
-                if (Web.HttpUploadFile("http://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+                if (HTTP.UploadFile("http://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
                 {
                     result = true;
                 }

@@ -5,10 +5,8 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Text;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
 using TH_Global;
+using TH_Global.Web;
 
 namespace TH_MySQL.PHP
 {
@@ -22,39 +20,21 @@ namespace TH_MySQL.PHP
 
             bool Result = false;
 
-            int attempts = 0;
-            bool success = false;
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
 
-            while (attempts < connectionAttempts && !success)
-            {
-                attempts += 1;
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["query"] = "CREATE DATABASE IF NOT EXISTS " + databaseName;
 
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
-                        NameValueCollection values = new NameValueCollection();
-                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                        else values["server"] = config.Server;
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        values["user"] = config.Username;
-                        values["password"] = config.Password;
-                        values["query"] = "CREATE DATABASE IF NOT EXISTS " + databaseName;
 
-                        string PHP_Directory = "";
-                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php";
 
-                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php", values);
-
-                        string responseString = Encoding.Default.GetString(response);
-
-                        if (responseString.ToLower().Trim() == "true") Result = true;
-
-                        success = true;
-                    }
-                }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
+            if (HTTP.SendData(url, values) == "true") Result = true;
 
             return Result;
 
@@ -65,39 +45,20 @@ namespace TH_MySQL.PHP
 
             bool Result = false;
 
-            int attempts = 0;
-            bool success = false;
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
 
-            while (attempts < connectionAttempts && !success)
-            {
-                attempts += 1;
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["query"] = "DROP DATABASE IF EXISTS " + databaseName;
 
-                try
-                {
-                    using (WebClient client = new WebClient())
-                    {
-                        NameValueCollection values = new NameValueCollection();
-                        if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-                        else values["server"] = config.Server;
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-                        values["user"] = config.Username;
-                        values["password"] = config.Password;
-                        values["query"] = "DROP DATABASE IF EXISTS " + databaseName;
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php";
 
-                        string PHP_Directory = "";
-                        if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
-
-                        byte[] response = client.UploadValues("http://" + config.PHP_Server + PHP_Directory + "/Create_Database.php", values);
-
-                        string responseString = Encoding.Default.GetString(response);
-
-                        if (responseString.ToLower().Trim() == "true") Result = true;
-
-                        success = true;
-                    }
-                }
-                catch (Exception ex) { Logger.Log(ex.Message); }
-            }
+            if (HTTP.SendData(url, values) == "true") Result = true;
 
             return Result;
 

@@ -6,16 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Net;
+using System.Web;
 using System.Net.Mail;
 using System.IO;
 
-namespace TH_Global
+namespace TH_Global.Web
 {
-    public static class Web
+    public static class HTTP
     {
         public static int connectionAttempts = 3;
 
-        public static bool HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
+        public static bool UploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
         {
             bool result = false;
 
@@ -60,7 +61,7 @@ namespace TH_Global
 
             WebResponse wresp = null;
 
-                         int attempts = 0;
+            int attempts = 0;
             bool success = false;
 
             while (attempts < connectionAttempts && !success)
@@ -96,5 +97,80 @@ namespace TH_Global
             return result;
         }
 
+
+        /// <summary>
+        /// Send Data to URL with POST Data using HTTP
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="nvc"></param>
+        /// <returns></returns>
+        public static string SendData(string url, NameValueCollection nvc)
+        {
+
+            string result = null;
+
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            while (attempts < connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    // Create POST data string
+                    StringBuilder postData = new StringBuilder();
+                    for (int x = 0; x <= nvc.AllKeys.Length - 1; x++)
+                    {
+                        string key = nvc.AllKeys[x];
+                        string vals = "";
+                        foreach (string value in nvc.GetValues(key))
+                        {
+                            vals += value;
+                        }
+                        postData.Append(HttpUtility.UrlEncode(key));
+                        postData.Append("=");
+                        postData.Append(HttpUtility.UrlEncode(vals));
+
+                        if (x < nvc.AllKeys.Length) postData.Append("&");
+                    }
+
+                    // Convert POST data to byte array
+                    ASCIIEncoding ascii = new ASCIIEncoding();
+                    byte[] postBytes = ascii.GetBytes(postData.ToString());
+
+                    // Create HTTP request and define Header info
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Timeout = 10000;
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = postBytes.Length;
+                    request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+
+                    // Add POST data to request stream
+                    Stream postStream = request.GetRequestStream();
+                    postStream.Write(postBytes, 0, postBytes.Length);
+                    postStream.Flush();
+                    postStream.Close();
+
+                    // Get HTTP resonse and return as string
+                    using (var response = (HttpWebResponse)request.GetResponse())
+                    using (var s = response.GetResponseStream())
+                    using (var reader = new StreamReader(s))
+                    {
+                        result = reader.ReadToEnd();
+                        success = true;
+                    }
+                }
+                catch (WebException wex) { message = wex.Message; }
+                catch (Exception ex) { message = ex.Message; }
+            }
+
+            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
+
+            return result;
+        }
     }
 }
+

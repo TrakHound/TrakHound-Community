@@ -94,7 +94,7 @@ namespace TH_Database
 
         // Etc --------------------------------------------------------------------------
 
-        object[] CustomCommand(object settings, string commandText);
+        string CustomCommand(object settings, string commandText);
 
         object GetValue(object settings, string tablename, string column, string filterExpression);
 

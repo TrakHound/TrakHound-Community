@@ -415,6 +415,8 @@ namespace TH_GeneratedData.ConfigurationPage
             item.Loading = false;
 
             SnapshotItems.Add(item);
+
+            DisplaySnapshots = true;
         }
 
         ObservableCollection<string> GenerateTypeList()

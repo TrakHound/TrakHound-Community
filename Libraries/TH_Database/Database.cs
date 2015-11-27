@@ -981,9 +981,9 @@ namespace TH_Database
         #endregion
 
 
-        public static object[] CustomCommand(Database_Settings settings, string commandText)
+        public static string CustomCommand(Database_Settings settings, string commandText)
         {
-            object[] result = null;
+            string result = null;
 
             if (Global.Plugins != null)
             {
