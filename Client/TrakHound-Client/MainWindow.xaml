@@ -1048,7 +1048,13 @@
                                 Shown="False" ShownChanged="MainMenu_ShownChanged"
                                 />
 
-                <user:Menu x:Name="LoginMenu" Margin="0,30,144,0" Shown="False" CurrentUserChanged="LoginMenu_CurrentUserChanged" ShownChanged="LoginMenu_ShownChanged" MyAccountClicked="LoginMenu_MyAccountClicked"/>
+
+                <user:Menu x:Name="LoginMenu" Margin="0,30,144,0" Shown="False" 
+                           CurrentUserChanged="LoginMenu_CurrentUserChanged" 
+                           ShownChanged="LoginMenu_ShownChanged" 
+                           MyAccountClicked="LoginMenu_MyAccountClicked"
+                           CreateClicked="LoginMenu_CreateClicked"
+                           />
 
                 <!--User Login Menu-->
                 <!--<login:DropDown x:Name="LoginMenu" 

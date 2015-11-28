@@ -607,9 +607,12 @@ namespace TH_UserManagement
         #endregion
 
 
+        public event Clicked_Handler CreateClicked;
 
         void CreateAccount()
         {
+            if (CreateClicked != null) CreateClicked();
+
             //if (mw != null)
             //{
             //    Account_Management.Pages.Create.Page page = new Account_Management.Pages.Create.Page();

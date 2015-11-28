@@ -69,6 +69,19 @@ namespace TH_WPF
         public static readonly DependencyProperty InstructionsProperty =
             DependencyProperty.Register("Instructions", typeof(string), typeof(TextBox), new PropertyMetadata(null));
 
+
+        public bool Required
+        {
+            get { return (bool)GetValue(RequiredProperty); }
+            set { SetValue(RequiredProperty, value); }
+        }
+
+        public static readonly DependencyProperty RequiredProperty =
+            DependencyProperty.Register("Required", typeof(bool), typeof(TextBox), new PropertyMetadata(false));
+
+        
+
+
         private void txt_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TextChanged != null) TextChanged(sender, e);

@@ -145,20 +145,10 @@
       <Name>TH_Device_Server</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_Functions\TH_Functions.csproj">
-      <Project>{79f4879c-44e9-4915-849a-b4c190db4aa8}</Project>
-      <Name>TH_Functions</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
-      <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
-      <Name>TH_MySQL</Name>
-      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj">
       <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
@@ -180,6 +170,10 @@
       <Name>TH_WPF</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Server\Plugins\TH_GeneratedData\TH_GeneratedData.csproj">
+      <Project>{51202eb2-c838-456e-9bd0-50840d12a19c}</Project>
+      <Name>TH_GeneratedData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Server\Plugins\TH_InstanceTable\TH_InstanceTable.csproj">
       <Project>{86a72f6d-0c7d-40fd-b7ce-d0b9d75ee99b}</Project>
       <Name>TH_InstanceTable</Name>
@@ -189,13 +183,12 @@
     <Resource Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-    <Content Include="Machines.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="TrakHound_Logo_Initials_10.ico" />
     <Resource Include="Resources\Stop_30px.png" />
     <Resource Include="Resources\Start_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

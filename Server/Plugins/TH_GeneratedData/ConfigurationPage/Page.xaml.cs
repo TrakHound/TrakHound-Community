@@ -405,7 +405,7 @@ namespace TH_GeneratedData.ConfigurationPage
                     item.generatedlink_COMBO.Text = TH_Global.Formatting.UppercaseFirst(snapshot.link.Replace('_', ' ')); 
                     break;
 
-                case "variable": item.variable_TXT.Text = snapshot.link; break;
+                case "variable": item.SelectedVariableLink = snapshot.link; break;
             }
 
             item.SettingChanged += SnapshotItem_SettingChanged;

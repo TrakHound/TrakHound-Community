@@ -27,9 +27,10 @@ using TH_PlugIns_Client_Control;
 using TH_Device_Client;
 using TH_Configuration;
 using TH_Device_Server;
-using TH_MySQL;
-
+using TH_Global.Functions;
 using TH_ServerManager.Controls;
+
+using TH_GeneratedData;
 
 namespace TH_ServerManager
 {
@@ -44,12 +45,7 @@ namespace TH_ServerManager
 
             DataContext = this;
 
-            servers = new List<ServerGroup>();
-
-            ReadMachines();
-
-            CreateDeviceList(servers);
-
+            servers = new List<Device_Server>();
         }
 
         #region "PlugIn"
@@ -70,7 +66,7 @@ namespace TH_ServerManager
         public ImageSource AuthorImage { get { return new BitmapImage(new Uri("pack://application:,,,/TH_ServerManager;component/Resources/TrakHound_Logo_10_200px.png")); } }
 
 
-        public string LicenseName { get { return "GPLv2"; } }
+        public string LicenseName { get { return "GPLv3"; } }
 
         public string LicenseText { get { return File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\License\" + "License.txt"); } }
 
@@ -91,6 +87,8 @@ namespace TH_ServerManager
 
         public bool OpenOnStartUp { get { return false; } }
 
+        public bool ShowInAppMenu { get { return true; } }
+
         public List<PlugInConfigurationCategory> SubCategories { get; set; }
 
         public List<Control_PlugIn> PlugIns { get; set; }
@@ -106,7 +104,12 @@ namespace TH_ServerManager
 
         }
 
-        public void Closing() { }
+        public void Closing() 
+        {
+
+            foreach (Device_Server server in servers) server.Close();
+
+        }
 
         #endregion
 
@@ -118,6 +121,8 @@ namespace TH_ServerManager
         }
 
         public event DataEvent_Handler DataEvent;
+
+        public event PlugInTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 
@@ -133,6 +138,15 @@ namespace TH_ServerManager
             set
             {
                 lDevices = value;
+
+
+                foreach (Device_Client device in lDevices)
+                {
+                    AddServer(device.configuration);
+                }
+
+                CreateDeviceList(servers);
+
             }
         }
 
@@ -161,185 +175,9 @@ namespace TH_ServerManager
 
         #endregion
 
-        class ServerGroup
-        {
-            public Device_Server server;
-            public string output;
-            //public List<Console_Item> console_lines;
+        #region "Devices"
 
-            ObservableCollection<Console_Item> console_output;
-            public ObservableCollection<Console_Item> Console_Output
-            {
-                get
-                {
-                    if (console_output == null) console_output = new ObservableCollection<Console_Item>();
-                    return console_output;
-                }
-                set
-                {
-                    console_output = value;
-                }
-            }
-        }
-
-        List<ServerGroup> servers;
-
-        ServerGroup selectedServer;
-
-        private void ReadMachines()
-        {
-
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-
-            string MachinesListFilePath = System.IO.Path.GetDirectoryName(assembly.Location) + @"\" + "Machines.Xml";
-
-            Console.WriteLine(MachinesListFilePath);
-
-            if (System.IO.File.Exists(MachinesListFilePath))
-            {
-
-                XmlDocument doc = new XmlDocument();
-                doc.Load(MachinesListFilePath);
-
-                int Index = 0;
-
-                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-                {
-                    // Sort through Machine Types
-                    switch (Node.Name.ToLower())
-                    {
-
-                        case "device":
-                            ProcessDevice(Index, Node);
-                            Index += 1;
-                            break;
-                    }
-
-                }
-
-                Console.WriteLine("Machines File Successfully Read From : " + MachinesListFilePath);
-
-            }
-            else
-            {
-                Console.WriteLine("Machines File Not Found : " + MachinesListFilePath);
-            }
-
-        }
-
-        private void ProcessDevice(int Index, XmlNode Node)
-        {
-
-            string SettingsPath = null;
-
-            foreach (XmlNode ChildNode in Node.ChildNodes)
-            {
-
-                switch (ChildNode.Name.ToLower())
-                {
-                    case "settings_path": SettingsPath = ChildNode.InnerText; break;
-                }
-
-            }
-
-            if (SettingsPath != null)
-            {
-                SettingsPath = GetConfigurationPath(SettingsPath);
-
-                Console.WriteLine("Reading Device Configuration File @ '" + SettingsPath + "'");
-
-
-                if (File.Exists(SettingsPath))
-                {
-
-                    Configuration config = new Configuration();
-
-                    config = Configuration.ReadConfigFile(SettingsPath);
-                    config.Index = Index;
-
-                    Device_Server server = new Device_Server(config);
-                    server.configurationPath = SettingsPath;
-                    server.updateConfigurationFile = false;
-
-                    // Set handler for Connection Status
-                    server.StatusUpdated += Machine_StatusUpdated;
-                    server.ProcessingStatusChanged += server_ProcessingStatusChanged;
-                    //server.Output_LineAdded += server_Output_LineAdded;
-
-                    //OutputWriter outputWriter = new OutputWriter();
-                    //outputWriter.Index = config.Index;
-                    //outputWriter.LineWritten += outputWriter_LineWritten;
-
-                    ServerGroup deviceserver = new ServerGroup();
-                    deviceserver.server = server;
-                    //device.outputWriter = outputWriter;
-
-                    servers.Add(deviceserver);
-
-                }
-
-            }
-
-        }
-
-        static string GetConfigurationPath(string path)
-        {
-            // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-            if (!System.IO.Path.IsPathRooted(path))
-            {
-                // Remove initial Backslash if contained in "configuration_path"
-                if (path[0] == '\\' && path.Length > 1) path.Substring(1);
-
-                string original = path;
-
-                // Check System Path
-                path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-                else Console.WriteLine(path + " Not Found");
-
-
-                // Check local app Path
-                path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-                else Console.WriteLine(path + " Not Found");
-
-                // if no files exist return null
-                return null;
-            }
-            else return path;
-        }
-
-
-
-
-        void server_ProcessingStatusChanged(int index, string status)
-        {
-            this.Dispatcher.Invoke(new Action<int, string>(server_ProcessingStatusChanged_GUI), Priority, new object[] { index, status });
-        }
-
-        void server_ProcessingStatusChanged_GUI(int index, string status)
-        {
-            DeviceItem device = Device_List[index];
-
-            device.Device_ProcessingStatus = status;
-        }
-
-
-        void Machine_StatusUpdated(int Index, Device_Server.ConnectionStatus Status)
-        {
-
-            this.Dispatcher.Invoke(new Action<int, Device_Server.ConnectionStatus>(Machine_StatusUpdated_GUI), Priority, new object[] { Index, Status });
-
-        }
-
-        void Machine_StatusUpdated_GUI(int Index, Device_Server.ConnectionStatus Status)
-        {
-
-            DeviceItem device = Device_List[Index];
-
-            device.Device_ConnectionStatus = Status;
-
-        }
+        #region "Device List"
 
         ObservableCollection<DeviceItem> device_list;
         public ObservableCollection<DeviceItem> Device_List
@@ -355,13 +193,13 @@ namespace TH_ServerManager
             }
         }
 
-        void CreateDeviceList(List<ServerGroup> devices)
+        void CreateDeviceList(List<Device_Server> devices)
         {
             Device_List.Clear();
 
             for (int x = 0; x <= devices.Count - 1; x++)
             {
-                Device_Server device = devices[x].server;
+                Device_Server device = devices[x];
 
                 DeviceItem DI = new DeviceItem();
                 DI.Index = x;
@@ -372,8 +210,8 @@ namespace TH_ServerManager
                 DI.Device_ID = device.configuration.Description.Machine_ID;
 
                 // Set Images
-                DI.Device_Image = TH_Functions.Image_Functions.SetImageSize(TH_Functions.Image_Functions.GetImageFromFile(device.configuration.FileLocations.Image_Path), 0, 50);
-                DI.Device_ManufacturerLogo = TH_Functions.Image_Functions.SetImageSize(TH_Functions.Image_Functions.GetImageFromFile(device.configuration.FileLocations.Manufacturer_Logo_Path), 100, 40);
+                //DI.Device_Image = Image_Functions.SetImageSize(Image_Functions.GetImageFromFile(device.configuration.FileLocations.Image_Path), 0, 50);
+                //DI.Device_ManufacturerLogo = Image_Functions.SetImageSize(Image_Functions.GetImageFromFile(device.configuration.FileLocations.Manufacturer_Logo_Path), 100, 40);
 
                 // Event handlers
                 DI.Selected += DI_Selected;
@@ -386,21 +224,14 @@ namespace TH_ServerManager
             }
         }
 
+
         void DI_StartFromLastClicked(int Index)
         {
-            servers[Index].server.Start(false);
+
         }
 
         void DI_DropTablesClicked(int Index)
         {
-            ServerGroup device = servers[Index];
-
-            if (MessageBox.Show("Delete ALL tables in " + device.server.configuration.DataBaseName + "?", "Delete Tables", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                string[] tablenames = Global.Table_List(device.server.configuration.SQL);
-
-                Global.Table_Drop(device.server.configuration.SQL, tablenames);
-            }
 
         }
 
@@ -411,404 +242,171 @@ namespace TH_ServerManager
 
             Device_List[Index].IsSelected = true;
 
-            selectedServer = servers[Index];
-
-            Console_Output = selectedServer.Console_Output;
-
-            this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadTablesList), Priority, new object[] { selectedServer.server.configuration });
-
-            ReadDeviceSettings();
-
         }
 
         void DI_StartClicked(int Index)
         {
-            servers[Index].server.Start();
+            servers[Index].Start();
         }
 
         void DI_StopClicked(int Index)
         {
-            servers[Index].server.Close();
+            servers[Index].Close();
         }
 
-        #region "Console Output"
+        #endregion
 
-        public class Console_Item
+
+        List<Device_Server> servers;
+
+        void AddServer(Configuration config)
         {
-            public int Row { get; set; }
-            public DateTime Timestamp { get; set; }
-            public string Text { get; set; }
+
+            Device_Server server = new Device_Server(config, false);
+
+            // Set handler for Connection Status
+            server.StatusUpdated += Machine_StatusUpdated;
+            server.ProcessingStatusChanged += server_ProcessingStatusChanged;
+            
+
+            server.DataEvent += server_DataEvent;
+
+            servers.Add(server);
+
         }
 
-        ObservableCollection<Console_Item> console_output;
-        public ObservableCollection<Console_Item> Console_Output
+        void server_DataEvent(TH_PlugIns_Server.DataEvent_Data de_data)
         {
-            get
+            SendConnectionData(true);
+
+            GetSnapShots(de_data);
+
+        }
+
+
+
+        void server_ProcessingStatusChanged(int index, string status)
+        {
+            //this.Dispatcher.Invoke(new Action<int, string>(server_ProcessingStatusChanged_GUI), Priority, new object[] { index, status });
+        }
+
+        void server_ProcessingStatusChanged_GUI(int index, string status)
+        {
+            //DeviceItem device = Device_List[index];
+
+            //device.Device_ProcessingStatus = status;
+        }
+
+
+        void Machine_StatusUpdated(int Index, Device_Server.ConnectionStatus Status)
+        {
+
+            //this.Dispatcher.Invoke(new Action<int, Device_Server.ConnectionStatus>(Machine_StatusUpdated_GUI), Priority, new object[] { Index, Status });
+
+        }
+
+        void Machine_StatusUpdated_GUI(int Index, Device_Server.ConnectionStatus Status)
+        {
+
+            //DeviceItem device = Device_List[Index];
+
+            //device.Device_ConnectionStatus = Status;
+
+        }
+
+        #endregion
+
+        #region "Data Conversion"
+
+        string shiftDate = null;
+        string shiftName = null;
+        string shiftId = null;
+        string shiftStart = null;
+        string shiftEnd = null;
+        string shiftStartUTC = null;
+        string shiftEndUTC = null;
+
+        void SendConnectionData(bool connected)
+        {
+            DataEvent_Data de_d = new DataEvent_Data();
+            de_d.id = "DeviceStatus_Connection";
+            de_d.data = connected;
+
+            if (DataEvent != null) DataEvent(de_d);
+        }
+
+        void GetSnapShots(TH_PlugIns_Server.DataEvent_Data de_d)
+        {
+            if (de_d.id.ToLower() == "snapshotitems")
             {
-                if (console_output == null) console_output = new ObservableCollection<Console_Item>();
-                return console_output;
-            }
-            set
-            {
-                console_output = value;
-            }
-        }
-
-        void server_Output_LineAdded(int index, string line)
-        {
-            ServerGroup server = servers[index];
-
-            Console_Item ci = new Console_Item();
-            ci.Row = server.Console_Output.Count;
-            ci.Timestamp = DateTime.Now;
-            ci.Text = line;
-
-            this.Dispatcher.BeginInvoke(new Action<ServerGroup, Console_Item>(UpdateConsoleOutput), new object[] { server, ci });
-        }
-
-        void UpdateConsoleOutput(ServerGroup server, Console_Item ci)
-        {
-            server.Console_Output.Add(ci);
-        }
-
-        private void Console_DG_LoadingRow(object sender, DataGridRowEventArgs e)
-        {
-            if (sender.GetType() == typeof(DataGrid))
-            {
-                DataGrid dg = (DataGrid)sender;
-                dg.SelectedItem = e.Row.Item;
-                dg.ScrollIntoView(e.Row.Item);
-            }
-        }
-
-        #endregion
-
-        #region "Device Settings"
-
-        void ReadDeviceSettings()
-        {
-
-            if (selectedServer != null)
-            {
-
-                ReadDeviceSettings_Server();
-
-                ReadDeviceSettings_InstanceTable();
-
-            }
-
-        }
-
-        #region "Server"
-
-        void ReadDeviceSettings_Server()
-        {
-
-            ReadDeviceSettings_Server_Tables();
-
-        }
-
-        #region "Tables"
-
-        void ReadDeviceSettings_Server_Tables()
-        {
-
-            ReadDeviceSettings_Server_Tables_MTConnect();
-
-        }
-
-        #region "MTConnect"
-
-        void ReadDeviceSettings_Server_Tables_MTConnect()
-        {
-
-            Server_Tables_MTConnect_Probe = selectedServer.server.configuration.Server.Tables.MTConnect.Probe;
-            Server_Tables_MTConnect_Current = selectedServer.server.configuration.Server.Tables.MTConnect.Current;
-            Server_Tables_MTConnect_Sample = selectedServer.server.configuration.Server.Tables.MTConnect.Sample;
-
-        }
-
-        #region "Server_Tables_MTConnect_Probe"
-
-        public bool Server_Tables_MTConnect_Probe
-        {
-            get { return (bool)GetValue(Server_Tables_MTConnect_ProbeProperty); }
-            set { SetValue(Server_Tables_MTConnect_ProbeProperty, value); }
-        }
-
-        public static readonly DependencyProperty Server_Tables_MTConnect_ProbeProperty =
-            DependencyProperty.Register("Server_Tables_MTConnect_Probe", typeof(bool), typeof(ServerManager), new PropertyMetadata(false));
-
-        private void Server_Tables_MTConnect_Probe_Checked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null) selectedServer.server.configuration.Server.Tables.MTConnect.Probe = true;
-        }
-
-        private void Server_Tables_MTConnect_Probe_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null) selectedServer.server.configuration.Server.Tables.MTConnect.Probe = false;
-        }
-
-        #endregion
-
-        #region "Server_Tables_MTConnect_Current"
-
-        public bool Server_Tables_MTConnect_Current
-        {
-            get { return (bool)GetValue(Server_Tables_MTConnect_CurrentProperty); }
-            set { SetValue(Server_Tables_MTConnect_CurrentProperty, value); }
-        }
-
-        public static readonly DependencyProperty Server_Tables_MTConnect_CurrentProperty =
-            DependencyProperty.Register("Server_Tables_MTConnect_Current", typeof(bool), typeof(ServerManager), new PropertyMetadata(false));
-
-        private void Server_Tables_MTConnect_Current_Checked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null) selectedServer.server.configuration.Server.Tables.MTConnect.Probe = true;
-        }
-
-        private void Server_Tables_MTConnect_Current_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null) selectedServer.server.configuration.Server.Tables.MTConnect.Probe = false;
-        }
-
-        #endregion
-
-        #region "Server_Tables_MTConnect_Sample"
-
-        public bool Server_Tables_MTConnect_Sample
-        {
-            get { return (bool)GetValue(Server_Tables_MTConnect_SampleProperty); }
-            set { SetValue(Server_Tables_MTConnect_SampleProperty, value); }
-        }
-
-        public static readonly DependencyProperty Server_Tables_MTConnect_SampleProperty =
-            DependencyProperty.Register("Server_Tables_MTConnect_Sample", typeof(bool), typeof(ServerManager), new PropertyMetadata(false));
-
-        private void Server_Tables_MTConnect_Sample_Checked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null) selectedServer.server.configuration.Server.Tables.MTConnect.Probe = true;
-        }
-
-        private void Server_Tables_MTConnect_Sample_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null) selectedServer.server.configuration.Server.Tables.MTConnect.Probe = false;
-        }
-
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #region "InstanceTable"
-
-        public bool ConfigurationFound_InstanceTable
-        {
-            get { return (bool)GetValue(ConfigurationFound_InstanceTableProperty); }
-            set { SetValue(ConfigurationFound_InstanceTableProperty, value); }
-        }
-
-        public static readonly DependencyProperty ConfigurationFound_InstanceTableProperty =
-            DependencyProperty.Register("ConfigurationFound_InstanceTable", typeof(bool), typeof(ServerManager), new PropertyMetadata(false));
-
-
-        TH_InstanceTable.InstanceTable.InstanceConfiguration instanceConfiguration;
-
-
-        void ReadDeviceSettings_InstanceTable()
-        {
-
-            instanceConfiguration = null;
-
-            var obj = selectedServer.server.configuration.CustomClasses.Find(x => x.GetType().ToString().ToLower() == "th_instancetable.instancetable+instanceconfiguration");
-
-            if (obj != null)
-            {
-                instanceConfiguration = (TH_InstanceTable.InstanceTable.InstanceConfiguration)obj;
-
-                ReadDeviceSettings_InstanceTable_DataItems();
-            }
-
-            ConfigurationFound_InstanceTable = obj != null;
-
-        }
-
-        #region "DataItems"
-
-        void ReadDeviceSettings_InstanceTable_DataItems()
-        {
-
-            InstanceTable_DataItems_Conditions = instanceConfiguration.DataItems.Conditions;
-            InstanceTable_DataItems_Events = instanceConfiguration.DataItems.Events;
-            InstanceTable_DataItems_Samples = instanceConfiguration.DataItems.Samples;
-
-
-
-
-            //InstanceTable_DataItems_Omit_LIST.Items.Clear();
-            //foreach (string omitvar in instanceConfiguration.DataItems.Omit) InstanceTable_DataItems_Omit_LIST.Items.Add(omitvar);
-
-        }
-
-        #region "InstanceTable_DataItems_Conditions"
-
-        public bool InstanceTable_DataItems_Conditions
-        {
-            get { return (bool)GetValue(InstanceTable_DataItems_ConditionsProperty); }
-            set { SetValue(InstanceTable_DataItems_ConditionsProperty, value); }
-        }
-
-        public static readonly DependencyProperty InstanceTable_DataItems_ConditionsProperty =
-            DependencyProperty.Register("InstanceTable_DataItems_Conditions", typeof(bool), typeof(ServerManager), new PropertyMetadata(false));
-
-        private void InstanceTable_DataItems_Conditions_Checked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null && instanceConfiguration != null) instanceConfiguration.DataItems.Conditions = true;
-        }
-
-        private void InstanceTable_DataItems_Conditions_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null && instanceConfiguration != null) instanceConfiguration.DataItems.Conditions = false;
-        }
-
-        #endregion
-
-        #region "InstanceTable_DataItems_Events"
-
-        public bool InstanceTable_DataItems_Events
-        {
-            get { return (bool)GetValue(InstanceTable_DataItems_EventsProperty); }
-            set { SetValue(InstanceTable_DataItems_EventsProperty, value); }
-        }
-
-        public static readonly DependencyProperty InstanceTable_DataItems_EventsProperty =
-            DependencyProperty.Register("InstanceTable_DataItems_Events", typeof(bool), typeof(ServerManager), new PropertyMetadata(false));
-
-        private void InstanceTable_DataItems_Events_Checked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null && instanceConfiguration != null) instanceConfiguration.DataItems.Events = true;
-        }
-
-        private void InstanceTable_DataItems_Events_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null && instanceConfiguration != null) instanceConfiguration.DataItems.Events = false;
-        }
-
-        #endregion
-
-        #region "InstanceTable_DataItems_Samples"
-
-        public bool InstanceTable_DataItems_Samples
-        {
-            get { return (bool)GetValue(InstanceTable_DataItems_SamplesProperty); }
-            set { SetValue(InstanceTable_DataItems_SamplesProperty, value); }
-        }
-
-        public static readonly DependencyProperty InstanceTable_DataItems_SamplesProperty =
-            DependencyProperty.Register("InstanceTable_DataItems_Samples", typeof(bool), typeof(ServerManager), new PropertyMetadata(false));
-
-        private void InstanceTable_DataItems_Samples_Checked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null && instanceConfiguration != null) instanceConfiguration.DataItems.Samples = true;
-        }
-
-        private void InstanceTable_DataItems_Samples_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (selectedServer != null && instanceConfiguration != null) instanceConfiguration.DataItems.Samples = false;
-        }
-
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #region "Tables"
-
-        ObservableCollection<TH_WPF.ListButton> tables_list;
-        public ObservableCollection<TH_WPF.ListButton> Tables_List
-        {
-            get
-            {
-                if (tables_list == null)
-                    tables_list = new ObservableCollection<TH_WPF.ListButton>();
-                return tables_list;
-            }
-
-            set
-            {
-                tables_list = value;
+                if (de_d.data != null)
+                {
+                    List<GeneratedData.SnapShotItem> items = (List<GeneratedData.SnapShotItem>)de_d.data;
+
+                    Dictionary<string, Tuple<DateTime, string, string>> data = new Dictionary<string, Tuple<DateTime, string, string>>();
+
+                    foreach (GeneratedData.SnapShotItem item in items)
+                    {
+                        string key = item.name;
+
+                        DateTime timestamp = item.timestamp;
+
+                        string value = item.value;
+                        string prevvalue = item.previous_value;
+
+                        data.Add(key, new Tuple<DateTime, string, string>(timestamp, value, prevvalue));
+                    }
+
+                    // Set shiftDate and shiftName for other functions in Device Status
+                    Tuple<DateTime, string, string> val = null;
+                    data.TryGetValue("Current Shift Name", out val);
+                    if (val != null) shiftName = val.Item2;
+                    else shiftName = null;
+
+                    val = null;
+                    data.TryGetValue("Current Shift Date", out val);
+                    if (val != null) shiftDate = val.Item2;
+                    else shiftDate = null;
+
+                    val = null;
+                    data.TryGetValue("Current Shift Id", out val);
+                    if (val != null) shiftId = val.Item2;
+                    else shiftId = null;
+
+                    // Local
+                    val = null;
+                    data.TryGetValue("Current Shift Begin", out val);
+                    if (val != null) shiftStart = val.Item2;
+                    else shiftStart = null;
+
+                    val = null;
+                    data.TryGetValue("Current Shift End", out val);
+                    if (val != null) shiftEnd = val.Item2;
+                    else shiftEnd = null;
+
+                    // UTC
+                    val = null;
+                    data.TryGetValue("Current Shift Begin UTC", out val);
+                    if (val != null) shiftStartUTC = val.Item2;
+                    else shiftStartUTC = null;
+
+                    val = null;
+                    data.TryGetValue("Current Shift End UTC", out val);
+                    if (val != null) shiftEndUTC = val.Item2;
+                    else shiftEndUTC = null;
+
+
+                    DataEvent_Data de_data = new DataEvent_Data();
+                    de_data.id = "DeviceStatus_Snapshots";
+                    de_data.data = data;
+
+                    if (DataEvent != null) DataEvent(de_data);
+                }
             }
         }
 
-        public DataView Tables_DataView
-        {
-            get { return (DataView)GetValue(Tables_DataViewProperty); }
-            set { SetValue(Tables_DataViewProperty, value); }
-        }
-
-        public static readonly DependencyProperty Tables_DataViewProperty =
-            DependencyProperty.Register("Tables_DataView", typeof(DataView), typeof(ServerManager), new PropertyMetadata(null));
-
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
-
-        void LoadTablesList(Configuration config)
-        {
-            Tables_List.Clear();
-
-            string[] tableNames = Global.Table_List(config.SQL);
-
-            foreach (string tableName in tableNames)
-            {
-                TH_WPF.ListButton lb = new TH_WPF.ListButton();
-                lb.Text = tableName;
-                lb.Selected += lb_Selected;
-                Tables_List.Add(lb);
-            }
-        }
-
-        void lb_Selected(TH_WPF.ListButton LB)
-        {
-            foreach (TH_WPF.ListButton olb in Tables_List.OfType<TH_WPF.ListButton>()) if (olb != LB) olb.IsSelected = false;
-            LB.IsSelected = true;
-
-            this.Dispatcher.BeginInvoke(new Action<string, Configuration>(LoadTable), Priority, new object[] { LB.Text, selectedServer.server.configuration });
-            //LoadTable(LB.Text, selectedServer.server.configuration);
-        }
-
-        void bt_Click(object sender, RoutedEventArgs e)
-        {
-            Button bt = (Button)sender;
-
-            LoadTable(bt.Content.ToString(), selectedServer.server.configuration);
-        }
-
-        void LoadTable(string tableName, Configuration config)
-        {
-
-            DataTable dt = Global.Table_Get(config.SQL, tableName, "LIMIT 1000");
-
-            if (dt != null) Tables_DataView = dt.AsDataView();
-
-        }
 
         #endregion
-
-        private void TH_TabHeader_Clicked(Controls.TH_TabHeader header)
-        {
-
-            if (header.TabParent != null)
-            {
-                Main_TABCONTROL.SelectedItem = header.TabParent;
-            }
-
-        }
-
 
     }
 }

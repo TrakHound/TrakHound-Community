@@ -32,7 +32,6 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_ServerManager\bin\Debug
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_ServerManager\bin\Debug\TH_MTC_Requests.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_ServerManager\bin\Debug\TH_Logger.pdb
 C:\TrakHound\Plugins\Pages\ServerManager\LICENSE.txt
-C:\TrakHound\Plugins\Pages\ServerManager\Machines.xml
 C:\TrakHound\Plugins\Pages\ServerManager\TH_ServerManager.dll
 C:\TrakHound\Plugins\Pages\ServerManager\TH_ServerManager.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_ServerManager\obj\Debug\TH_ServerManager.csprojResolveAssemblyReference.cache

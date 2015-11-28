@@ -41,6 +41,7 @@ namespace TH_GeneratedData
                 config = configuration;
 
                 // Snapshot 
+                if (UseDatabases)
                 if (gdc.snapshots.UploadToMySQL)
                 {
                     CreateSnapShotTable();
@@ -49,6 +50,7 @@ namespace TH_GeneratedData
 
 
                 // Generated Events
+                if (UseDatabases)
                 if (gdc.generatedEvents.UploadToMySQL)
                 {
                     foreach (GeneratedEvents.Event e in gdc.generatedEvents.events) CreateGeneratedEventTable(e);
@@ -97,7 +99,7 @@ namespace TH_GeneratedData
 
                             List<GeneratedEventItem> geis = ProcessGeneratedEvents(instanceDatas);
 
-                            if (gdc.generatedEvents.UploadToMySQL) InsertGeneratedEventItems(geis);
+                            if (UseDatabases) if (gdc.generatedEvents.UploadToMySQL) InsertGeneratedEventItems(geis);
 
                             // Send List of GeneratedEventItems to other Plugins--------
                             SendGeneratedEventItems(geis);
@@ -113,7 +115,7 @@ namespace TH_GeneratedData
 
                             List<SnapShotItem> snapShots = ProcessSnapShots(previousSSI, currentInstanceData.currentData, currentInstanceData.data);
 
-                            if (gdc.snapshots.UploadToMySQL) UpdateRows(snapShots);
+                            if (UseDatabases) if (gdc.snapshots.UploadToMySQL) UpdateRows(snapShots);
 
                             previousSSI = snapShots;
 
@@ -140,6 +142,8 @@ namespace TH_GeneratedData
         }
 
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+
+        public bool UseDatabases { get; set; }
 
         #endregion
 

@@ -64,7 +64,7 @@ namespace TH_InstanceTable
 
             ColumnNames = GetVariablesFromProbeData(returnData);
 
-            if (AddMySQL) CreateInstanceTable(ColumnNames);
+            if (UseDatabases) if (AddMySQL) CreateInstanceTable(ColumnNames);
             
         }
 
@@ -93,7 +93,7 @@ namespace TH_InstanceTable
         {
             List<InstanceData> instanceDatas = ProcessInstances(CurrentData, returnData);
 
-            if (AddMySQL) AddRowsToMySQL(ColumnNames, instanceDatas);
+            if (UseDatabases) if (AddMySQL) AddRowsToMySQL(ColumnNames, instanceDatas);
 
             PreviousInstanceData_old = PreviousInstanceData_new;
 
@@ -125,6 +125,8 @@ namespace TH_InstanceTable
         }
 
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+
+        public bool UseDatabases { get; set; }
 
         //public ConfigurationPage ConfigPage { get { return new Configuration_Page(); } }
 
@@ -427,7 +429,7 @@ namespace TH_InstanceTable
 
                 UpdateStatus("Adding " + rowValues.Count.ToString() + " Rows to MySQL Instance Table...");
 
-                int interval = 100;
+                int interval = 50;
                 int countLeft = rowValues.Count;
 
 

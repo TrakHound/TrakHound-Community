@@ -47,7 +47,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public delegate void Clicked_Handler(Snapshot_Item item);
 
-        string prefix = "/GeneratedData/SnapShotData/";
+        //string prefix = "/GeneratedData/SnapShotData/";
 
         #region "Name"
 
@@ -123,6 +123,18 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         #region "Link"
 
+        public string SelectedVariableLink
+        {
+            get { return (string)GetValue(SelectedVariableLinkProperty); }
+            set { SetValue(SelectedVariableLinkProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty SelectedVariableLinkProperty =
+            DependencyProperty.Register("SelectedVariableLink", typeof(string), typeof(Snapshot_Item), new PropertyMetadata(null));
+
+        
+
         public string SelectedLink
         {
             get { return (string)GetValue(SelectedLinkProperty); }
@@ -170,13 +182,25 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             }
         }
 
+        private void variable_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox txt = (TextBox)sender;
+
+            if (ParentSnapshot != null) ParentSnapshot.link = txt.Text;
+            
+            if (txt.IsKeyboardFocused || txt.IsMouseCaptured)
+            {
+                if (SettingChanged != null) SettingChanged();
+            }
+        }
+
         private void ComboBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             ComboBox combo = (ComboBox)sender;
 
             if (ParentSnapshot != null) ParentSnapshot.link = combo.Text;
 
-            if (combo.IsKeyboardFocusWithin)
+            if (combo.IsKeyboardFocusWithin || combo.IsMouseCaptured)
             {
                 if (SettingChanged != null) SettingChanged();
             }
@@ -202,6 +226,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         {
             if (RefreshClicked != null) RefreshClicked(this);
         }
+
 
     }
 }

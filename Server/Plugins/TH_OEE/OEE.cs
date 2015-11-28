@@ -38,7 +38,7 @@ namespace TH_OEE
             if (oc != null) configuration.CustomClasses.Add(oc);
             config = configuration;
 
-            CreateTable();
+            if (UseDatabases) CreateTable();
         }
 
 
@@ -72,7 +72,7 @@ namespace TH_OEE
 
                         List<OeeRowInfo> rowInfos = GetRowInfos(oeeInfos);
 
-                        UpdateRows(rowInfos);
+                        if (UseDatabases) UpdateRows(rowInfos);
                     }
                 }
             }
@@ -90,6 +90,8 @@ namespace TH_OEE
         }
 
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+
+        public bool UseDatabases { get; set; }
 
         #endregion
 

@@ -1686,8 +1686,6 @@ namespace TH_DeviceCompare
 
         #endregion
 
-        
-
     }
 
 }

@@ -894,7 +894,7 @@ namespace TrakHound_Client
         {
             About_Initialize();
             DeviceManager_Initialize();
-            MyAccount_Initialize();
+            AccountManager_Initialize();
             Options_Initialize();
             Plugins_Initialize();
         }
@@ -935,16 +935,16 @@ namespace TrakHound_Client
         #endregion
 
 
-        #region "My Account"
+        #region "Account Manager"
 
         public Account_Management.Manager accountManager;
-        MyAccountPage myaccountpage;
+        CreateAccountPage createaccountpage;
 
-        class MyAccountPage : AboutPage
+        class CreateAccountPage : AboutPage
         {
-            public MyAccountPage()
+            public CreateAccountPage()
             {
-                ParentPage = new TH_UserManagement.MyAccount.Page();
+                ParentPage = new TH_UserManagement.Create.Page();
                 PageContent = ParentPage;
             }
 
@@ -953,7 +953,7 @@ namespace TrakHound_Client
                 if (userConfig != null) ParentPage.LoadProfile(userConfig);
             }
 
-            TH_UserManagement.MyAccount.Page ParentPage;
+            TH_UserManagement.Create.Page ParentPage;
 
             public string PageName { get { return ParentPage.PageName; } }
 
@@ -962,21 +962,21 @@ namespace TrakHound_Client
             public object PageContent { get; set; }
         }
 
-        void MyAccount_Initialize()
+        void AccountManager_Initialize()
         {
             accountManager = new Account_Management.Manager();
-            myaccountpage = new MyAccountPage();
+            createaccountpage = new CreateAccountPage();
 
-            accountManager.AddPage(myaccountpage);
+            accountManager.AddPage(createaccountpage);
         }
 
-        public void MyAccount_Open()
+        public void AccountManager_Open()
         {
-            if (myaccountpage != null) myaccountpage.LoadUser(currentuser);
+            if (createaccountpage != null) createaccountpage.LoadUser(currentuser);
 
             accountManager.currentUser = currentuser;
 
-            AddPageAsTab(accountManager, "My Account", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
+            AddPageAsTab(accountManager, "Acount Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
         }
 
         #endregion
@@ -1088,7 +1088,12 @@ namespace TrakHound_Client
 
         private void LoginMenu_MyAccountClicked()
         {
-            MyAccount_Open();
+            AccountManager_Open();
+        }
+
+        private void LoginMenu_CreateClicked()
+        {
+            AccountManager_Open();
         }
 
         UserConfiguration currentuser;

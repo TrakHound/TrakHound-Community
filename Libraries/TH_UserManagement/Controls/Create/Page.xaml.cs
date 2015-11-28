@@ -45,36 +45,156 @@ namespace TH_UserManagement.Create
 
         Database_Settings userDatabaseSettings = null;
 
+        public void LoadProfile(UserConfiguration userConfig)
+        {
+
+        }
+
         public void CleanForm()
         {
-            firstname_TXT.Clear();
-            lastname_TXT.Clear();
 
-            username_TXT.Clear();
-
-            password_TXT.Clear();
-            confirmpassword_TXT.Clear();
-
-            email_TXT.Clear();
-            phone_TXT.Clear();
-
-            address1_TXT.Clear();
-            address2_TXT.Clear();
-
-            city_TXT.Clear();
+            FirstName = null;
+            LastName = null;
+            Username = null;
+            Email = null;
+            Phone = null;
+            Address1 = null;
+            Address2 = null;
+            City = null;
+            ZipCode = null;
 
             int US = CountryList.ToList().FindIndex(x => x == "United States");
             if (US >= 0) country_COMBO.SelectedIndex = US;
 
             state_COMBO.SelectedIndex = -1;
 
-            zipcode_TXT.Clear();
         }
 
         public string PageName { get { return "Create Account"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/AddUser_01.png")); } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png")); } }
 
+
+        #region "Properties"
+
+        public string FirstName
+        {
+            get { return (string)GetValue(FirstNameProperty); }
+            set { SetValue(FirstNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty FirstNameProperty =
+            DependencyProperty.Register("FirstName", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+        public string LastName
+        {
+            get { return (string)GetValue(LastNameProperty); }
+            set { SetValue(LastNameProperty, value); }
+        }
+
+        public static readonly DependencyProperty LastNameProperty =
+            DependencyProperty.Register("LastName", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+
+        public string Username
+        {
+            get { return (string)GetValue(UsernameProperty); }
+            set { SetValue(UsernameProperty, value); }
+        }
+
+        public static readonly DependencyProperty UsernameProperty =
+            DependencyProperty.Register("Username", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+
+        public string Company
+        {
+            get { return (string)GetValue(CompanyProperty); }
+            set { SetValue(CompanyProperty, value); }
+        }
+
+        public static readonly DependencyProperty CompanyProperty =
+            DependencyProperty.Register("Company", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+
+        public string Email
+        {
+            get { return (string)GetValue(EmailProperty); }
+            set { SetValue(EmailProperty, value); }
+        }
+
+        public static readonly DependencyProperty EmailProperty =
+            DependencyProperty.Register("Email", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Phone
+        {
+            get { return (string)GetValue(PhoneProperty); }
+            set { SetValue(PhoneProperty, value); }
+        }
+
+        public static readonly DependencyProperty PhoneProperty =
+            DependencyProperty.Register("Phone", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+        
+
+        public string Address1
+        {
+            get { return (string)GetValue(Address1Property); }
+            set { SetValue(Address1Property, value); }
+        }
+
+        public static readonly DependencyProperty Address1Property =
+            DependencyProperty.Register("Address1", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Address2
+        {
+            get { return (string)GetValue(Address2Property); }
+            set { SetValue(Address2Property, value); }
+        }
+
+        public static readonly DependencyProperty Address2Property =
+            DependencyProperty.Register("Address2", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+
+        public string City
+        {
+            get { return (string)GetValue(CityProperty); }
+            set { SetValue(CityProperty, value); }
+        }
+
+        public static readonly DependencyProperty CityProperty =
+            DependencyProperty.Register("City", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+
+        public string ZipCode
+        {
+            get { return (string)GetValue(ZipCodeProperty); }
+            set { SetValue(ZipCodeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ZipCodeProperty =
+            DependencyProperty.Register("ZipCode", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+        
+
+        #endregion
+
+        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
 
 
         public bool PasswordEntered
@@ -100,7 +220,7 @@ namespace TH_UserManagement.Create
 
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (password_TXT.Password != "") PasswordEntered = true;
+            if (password_TXT.PasswordText != "") PasswordEntered = true;
             else PasswordEntered = false;
 
             PasswordShort = false;
@@ -112,7 +232,7 @@ namespace TH_UserManagement.Create
 
         private void confirmpassword_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (confirmpassword_TXT.Password != "") ConfirmPasswordEntered = true;
+            if (confirmpassword_TXT.PasswordText != "") ConfirmPasswordEntered = true;
             else ConfirmPasswordEntered = false;
 
             ConfirmPassword();
@@ -188,36 +308,27 @@ namespace TH_UserManagement.Create
             // Create new UserConfiguration object with new data
             UserConfiguration userConfig = new UserConfiguration();
 
-            userConfig.first_name = firstname_TXT.Text;
-            userConfig.last_name = lastname_TXT.Text;
+            userConfig.first_name = FirstName;
+            userConfig.last_name = LastName;
 
-            userConfig.username = username_TXT.Text;
+            userConfig.username = Username;
 
-            userConfig.company = company_TXT.Text;
+            userConfig.company = Company;
 
-            userConfig.email = email_TXT.Text;
-            userConfig.phone = phone_TXT.Text;
+            userConfig.email = Email;
+            userConfig.phone = Phone;
 
-            userConfig.address1 = address1_TXT.Text;
-            userConfig.address2 = address2_TXT.Text;
-            userConfig.city = city_TXT.Text;
+            userConfig.address1 = Address1;
+            userConfig.address2 = Address2;
+            userConfig.city = City;
 
             if (country_COMBO.SelectedItem != null) userConfig.country = country_COMBO.SelectedItem.ToString();
             if (state_COMBO.SelectedItem != null) userConfig.state = state_COMBO.SelectedItem.ToString();
 
-            userConfig.zipcode = zipcode_TXT.Text;
+            userConfig.zipcode = ZipCode;
 
 
-            // If no userconfiguration database configuration found then use default TrakHound User Database
-            if (userDatabaseSettings == null)
-            {
-                Remote.Users.CreateUser(userConfig, password_TXT.Password);
-            }
-            else
-            {
-                //Users.CreateUserTable(mw.userDatabaseSettings);
-                //Users.CreateUser(userConfig, password_TXT.Password, mw.userDatabaseSettings);
-            }
+            Users.CreateUser(userConfig, password_TXT.PasswordText, userDatabaseSettings);
 
             ConfirmUserCreation();    
         }
@@ -311,8 +422,7 @@ namespace TH_UserManagement.Create
             // If no userconfiguration database configuration found then use default TrakHound User Database
             if (userDatabaseSettings == null)
             {
-                //UsernameVerified = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
-                VerifyUsernameReturn usernameReturn = Remote.Users.VerifyUsername(username_TXT.Text);
+                VerifyUsernameReturn usernameReturn = Remote.Users.VerifyUsername(Username);
                 if (usernameReturn != null)
                 {
                     UsernameVerified = usernameReturn.available;
@@ -324,29 +434,6 @@ namespace TH_UserManagement.Create
                     UsernameMessage = null;
                 }
             }
-            //else UsernameVerified = Users.VerifyUsername(username_TXT.Text, mw.userDatabaseSettings);
-
-
-            //if (mw != null)
-            //{
-            //    // If no userconfiguration database configuration found then use default TrakHound User Database
-            //    if (mw.userDatabaseSettings == null)
-            //    {
-            //        //UsernameVerified = TH_Configuration.User.Management.VerifyUsername(username_TXT.Text);
-            //        Management.VerifyUsernameReturn usernameReturn = Management.VerifyUsername(username_TXT.Text);
-            //        if (usernameReturn != null)
-            //        {
-            //            UsernameVerified = usernameReturn.available;
-            //            UsernameMessage = usernameReturn.message;
-            //        }
-            //        else
-            //        {
-            //            UsernameVerified = false;
-            //            UsernameMessage = null;
-            //        }
-            //    }
-            //    else UsernameVerified = Users.VerifyUsername(username_TXT.Text, mw.userDatabaseSettings);
-            //}
         }
 
         #endregion
@@ -432,7 +519,7 @@ namespace TH_UserManagement.Create
         {
             if (PasswordEntered && ConfirmPasswordEntered)
             {
-                if (password_TXT.Password == confirmpassword_TXT.Password) PasswordVerified = true;
+                if (password_TXT.PasswordText == confirmpassword_TXT.PasswordText) PasswordVerified = true;
                 else PasswordVerified = false;
             }
         }

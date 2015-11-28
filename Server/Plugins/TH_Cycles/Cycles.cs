@@ -44,12 +44,15 @@ namespace TH_Cycles
 
                 cycleInfos = new List<CycleRowInfo>();
 
-                CreateCycleTable();
-                CreateSetupTable();
+                if (UseDatabases)
+                {
+                    CreateCycleTable();
+                    CreateSetupTable();
+                }
 
 
                 // $$$ DEBUG $$$
-                DEBUG_AddSetupRows();
+                if (UseDatabases) DEBUG_AddSetupRows();
             }
         }
 
@@ -98,6 +101,8 @@ namespace TH_Cycles
         }
 
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+
+        public bool UseDatabases { get; set; }
 
         #endregion
 
@@ -406,7 +411,7 @@ namespace TH_Cycles
                 }
 
                 // Upload new data to MySQL
-                AddCycleRows(newInfos);
+                if (UseDatabases) AddCycleRows(newInfos);
             }
         }
 

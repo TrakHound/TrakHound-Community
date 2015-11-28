@@ -330,7 +330,7 @@ namespace TH_UserManagement.Management
                                 string responseString = HTTP.SendData(url, values);
 
                                 DataTable dt = JSON.ToTable(responseString);
-                                if (dt.Rows.Count > 0) result = LoginSuccess(dt.Rows[0]);
+                                if (dt != null) if (dt.Rows.Count > 0) result = LoginSuccess(dt.Rows[0]);
                             }
                         }
                     }

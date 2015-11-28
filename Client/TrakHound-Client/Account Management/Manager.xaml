@@ -62,7 +62,9 @@
 
                     </Grid>
 
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto" Margin="0,0,20,0">
+                    <ContentControl Grid.Row="1" Content="{Binding PageContent}"/>
+
+                    <!--<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto" Margin="0,0,20,0">
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -70,18 +72,18 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
-                            <ContentControl Content="{Binding PageContent}"/>
+                            
                             
                         </Grid>
                         
-                        <!--<Grid x:Name="Content_GRID">
+                        --><!--<Grid x:Name="Content_GRID">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" MinWidth="800"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                        </Grid>-->
+                        </Grid>--><!--
 
-                    </ScrollViewer>
+                    </ScrollViewer>-->
 
                 </Grid>
 

@@ -9,729 +9,234 @@
              mc:Ignorable="d" 
              d:DesignWidth="800" Background="#eee">
 
-    <Grid >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        
-        <!--Title-->
-        <StackPanel Width="800" HorizontalAlignment="Left" Margin="0,0,0,10">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-            <TextBlock FontSize="20pt" Foreground="#333" HorizontalAlignment="Center" Margin="0,20">
-                <Run Text="Create your"/>
-                <Run Text="TrakHound" Foreground="#0080ff"/>
-                <Run Text="Account"/>
-            </TextBlock>
-            
-            <!--Seperator-->
-            <Rectangle Fill="#0080ff" Height="1" Margin="10,0"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Resources>
+                <Style TargetType="th_wpf:TextBox">
+                    <Setter Property="Margin" Value="0,5"/>
+                </Style>
+                <Style TargetType="th_wpf:PasswordBox">
+                    <Setter Property="Margin" Value="0,5"/>
+                </Style>
+            </Grid.Resources>
 
-        </StackPanel>
+            <!--User Configuration-->
+            <StackPanel Width="315" HorizontalAlignment="Left" Margin="0,0,0,0">
 
-        <!--Form-->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" >
+                <!--Name-->
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <Style TargetType="th_wpf:TextBox">
+                            <Setter Property="VerticalAlignment" Value="Bottom"/>
+                        </Style>
+                    </Grid.Resources>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                    <!--First Name-->
+                    <th_wpf:TextBox Text="{Binding FirstName, Mode=TwoWay}" Title="Name" Instructions="First" TextChanged="TXT_TextChanged" Margin="0,0,0,0"/>
 
-                <!--User Configuration-->
-                <StackPanel Width="300" HorizontalAlignment="Left" Margin="40,20,0,0">
+                    <!--Last Name-->
+                    <th_wpf:TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay}" Instructions="Last" TextChanged="TXT_TextChanged"/>
 
-                    <!--Name-->
-                    <TextBlock Text="Name" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!--First Name-->
-                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=firstname_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock Text="First" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=firstname_TXT}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <TextBox x:Name="firstname_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                            </Grid>
-
-                        </Border>
-
-                        <!--Last Name-->
-                        <Border Grid.Column="1" BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=lastname_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock Text="Last" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=lastname_TXT}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <TextBox x:Name="lastname_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                            </Grid>
-
-                        </Border>
-
-                    </Grid>
+                </Grid>
 
 
-                    <!--Choose your username-->
-                    <TextBlock Text="Choose your username" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                <!--Choose your username-->
+                <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Choose your username" Instructions="Username" TextChanged="username_TXT_TextChanged" Required="True"/>
 
-                    <!--Username-->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
+                <!--Verify Username-->
+                <Grid Margin="10,0,10,10">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Username}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
-                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock Text="Username" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Text, ElementName=username_TXT}" Value="">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <TextBox x:Name="username_TXT" TextChanged="username_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                            </Grid>
-
-                        </Border>
-
-                        <TextBlock Grid.Column="1" Text="*" Foreground="Red" Margin="0,8" FontSize="14pt"/>
-
-                    </Grid>
-                    
-                    <!--Verify Username-->
-                    <Grid Margin="10,0,10,10">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=username_TXT}" Value="">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-
-                        <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="Red"/>
-                                    <!--<Setter Property="Visibility" Value="Collapsed"/>-->
+                    <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="Red"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
-                                            <Setter Property="Foreground" Value="Green"/>
-                                            <!--<Setter Property="Visibility" Value="Visible"/>-->
+                                        <Setter Property="Foreground" Value="Green"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
-                        </TextBlock>
-                        
-                        <!--Available-->
-                        <!--<TextBlock Text="Username is available" Foreground="Green" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
+                    </TextBlock>
+                </Grid>
+
+
+                <!--Password-->
+                <th_wpf:PasswordBox x:Name="password_TXT" Title="Create a password" PasswordChanged="password_TXT_PasswordChanged" Required="True"/>
+
+                <!--Verify Password -->
+                <Grid Margin="10,0,10,10">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
                                     <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <!--Too Short-->
+                    <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
+                                    <DataTrigger Binding="{Binding PasswordShort}" Value="true">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
-                        </TextBlock>
+                    </TextBlock>
 
-
-                        --><!--Taken--><!--
-                        <TextBlock Text="That username is already taken. Try another?" Foreground="Red" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding UsernameVerified}" Value="false">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>-->
-
-                    </Grid>
-                    
-
-                    <!--Password-->
-                    <TextBlock Text="Create a password" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <!--Password-->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <PasswordBox x:Name="password_TXT"  BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged"/>
-
-                            </Grid>
-
-                        </Border>
-
-                        <TextBlock Grid.Column="1" Text="*" Foreground="Red" Margin="0,8" FontSize="14pt"/>
-
-                    </Grid>
-
-                    <!--Verify Password -->
-                    <Grid Margin="10,0,10,10">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-
-                        <!--Too Short-->
-                        <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding PasswordShort}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <!--Too Long-->
-                        <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding PasswordLong}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                    </Grid>
-
-
-
-                    <!--Confirm Password-->
-                    <TextBlock Text="Confirm your password" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <!--Confirm Password-->
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused, ElementName=confirmpassword_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="10,0">
-
-                                <!--Instructions-->
-                                <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--User Input-->
-                                <PasswordBox x:Name="confirmpassword_TXT"  BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="confirmpassword_TXT_PasswordChanged"/>
-
-                            </Grid>
-
-                        </Border>
-
-                        <TextBlock Grid.Column="1" Text="*" Foreground="Red" Margin="0,8" FontSize="14pt"/>
-
-                        <!--Password Confirmed-->
-                        <Rectangle x:Name="confirmpassword_image" Grid.Column="2" Height="20"  Width="20" Margin="5,0,0,0">
-                            <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_UserManagement;component/Resources/CheckMark_01.png" />
-                            </Rectangle.Resources>
-
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Setter Property="Fill" Value="Green"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding PasswordVerified}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
-                        </Rectangle>
-
-                    </Grid>
-
-                    <!--Verify Confirm Password -->
-                    <Grid Margin="10,0,10,10">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
+                    <!--Too Long-->
+                    <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                            <Condition Binding="{Binding PasswordVerified}" Value="false"/>
-                                        </MultiDataTrigger.Conditions>
-
-                                        <Setter Property="Visibility" Value="Visible"/>
-
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-
-                        <!--Don't Match-->
-                        <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
-
-                    </Grid>
-
-
-
-                    <!--Company-->
-                    <TextBlock Text="Company" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <!--Company-->
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=company_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid Margin="10,0">
-
-                            <!--Instructions-->
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=company_TXT}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--User Input-->
-                            <TextBox x:Name="company_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                        </Grid>
-
-                    </Border>
-
-
-                    <!--Email-->
-                    <TextBlock Text="Email" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <!--Email-->
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=email_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid Margin="10,0">
-
-                            <!--Instructions-->
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=email_TXT}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--User Input-->
-                            <TextBox x:Name="email_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                        </Grid>
-
-                    </Border>
-
-
-                    <!--Phone-->
-                    <TextBlock Text="Phone" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <!--Phone-->
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=phone_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid Margin="10,0">
-
-                            <!--Instructions-->
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=phone_TXT}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--User Input-->
-                            <TextBox x:Name="phone_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                        </Grid>
-
-                    </Border>
-
-
-                    <!--Address-->
-                    <TextBlock Text="Address" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <!--Address 1-->
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=address1_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid Margin="10,0">
-
-                            <!--Instructions-->
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=address1_TXT}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--User Input-->
-                            <TextBox x:Name="address1_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                        </Grid>
-
-                    </Border>
-
-                    <!--Address 2-->
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=address2_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid Margin="10,0">
-
-                            <!--Instructions-->
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=address2_TXT}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--User Input-->
-                            <TextBox x:Name="address2_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                        </Grid>
-
-                    </Border>
-
-
-                    <!--City-->
-                    <TextBlock Text="City" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <!--City-->
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=city_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid Margin="10,0">
-
-                            <!--Instructions-->
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=city_TXT}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            <!--User Input-->
-                            <TextBox x:Name="city_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
-
-                        </Grid>
-
-                    </Border>
-
-
-                    <!--Country-->
-                    <TextBlock Text="Country" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                    <ComboBox x:Name="country_COMBO" Height="35" Margin="10,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14"/>
-
-                                       
-                    <!--State-->
-                    <StackPanel>
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShowStates}" Value="true">
+                                    <DataTrigger Binding="{Binding PasswordLong}" Value="true">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </StackPanel.Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
-                        <TextBlock Text="State" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                        <ComboBox x:Name="state_COMBO" Height="35" Margin="10,5" ItemsSource="{Binding StateList}" SelectionChanged="state_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14"/>
-                        
-                    </StackPanel>
+                </Grid>
 
 
-                    <!--Zip Code-->
-                    <TextBlock Text="Zip Code" Foreground="#333" Margin="10,0" FontSize="12pt"/>
+                <!--Confirm Password-->
+                <th_wpf:PasswordBox x:Name="confirmpassword_TXT" Title="Confirm your password" PasswordChanged="confirmpassword_TXT_PasswordChanged" Required="True"/>
 
-                    <!--Zip Code-->
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Width="150" HorizontalAlignment="Left">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=zipcode_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
+                <!--Verify Confirm Password -->
+                <Grid Margin="10,0,10,10">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
 
-                        <Grid Margin="10,0">
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                        <Condition Binding="{Binding PasswordVerified}" Value="false"/>
+                                    </MultiDataTrigger.Conditions>
 
-                            <!--Instructions-->
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=zipcode_TXT}" Value="">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                                    <Setter Property="Visibility" Value="Visible"/>
 
-                            <!--User Input-->
-                            <TextBox x:Name="zipcode_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
-                        </Grid>
+                    <!--Don't Match-->
+                    <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
 
-                    </Border>
+                </Grid>
 
-                    
-                    <!--Create Account-->
-                    <Grid HorizontalAlignment="Left" Margin="10,20,0,200">
+
+
+                <!--Company-->
+                <th_wpf:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company" TextChanged="TXT_TextChanged"/>
+
+
+                <!--Email-->
+                <th_wpf:TextBox Text="{Binding Email, Mode=TwoWay}" Title="Email" TextChanged="TXT_TextChanged"/>
+
+
+                <!--Phone-->
+                <th_wpf:TextBox Text="{Binding Phone, Mode=TwoWay}" Title="Phone" TextChanged="TXT_TextChanged"/>
+
+
+                <!--Address-->
+                <th_wpf:TextBox Text="{Binding Address1, Mode=TwoWay}" Title="Address" TextChanged="TXT_TextChanged"/>
+
+                <th_wpf:TextBox Text="{Binding Address2, Mode=TwoWay}" TextChanged="TXT_TextChanged"/>
+
+
+                <!--City-->
+                <th_wpf:TextBox Text="{Binding City, Mode=TwoWay}" Title="City" TextChanged="TXT_TextChanged"/>
+
+
+                <!--Country-->
+                <TextBlock Text="Country" Foreground="#333" Margin="0,0" FontSize="12pt"/>
+
+                <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14"/>
+
+
+                <!--State-->
+                <StackPanel>
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ShowStates}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <TextBlock Text="State" Foreground="#333" Margin="0,0" FontSize="12pt"/>
+
+                    <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" SelectionChanged="state_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14"/>
+
+                </StackPanel>
+
+
+                <!--Zip Code-->
+                <th_wpf:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code" TextChanged="TXT_TextChanged"/>
+
+
+                <!--Create Account-->
+                <Grid HorizontalAlignment="Right" Margin="0,20,15,200">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="IsEnabled" Value="false"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding UsernameVerified}" Value="true"/>
+                                        <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                        <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                        <Condition Binding="{Binding PasswordVerified}" Value="true"/>
+                                    </MultiDataTrigger.Conditions>
+
+                                    <Setter Property="IsEnabled" Value="true"/>
+
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <th_wpf:Button_01 AlternateStyle="True" Text="Create Account" Clicked="CreateAccount_Clicked" Height="40"/>
+
+                    <!--Disabled Shade-->
+                    <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="IsEnabled" Value="false"/>
+                                <Setter Property="Background" Value="#88000000"/>
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
@@ -741,44 +246,20 @@
                                             <Condition Binding="{Binding PasswordVerified}" Value="true"/>
                                         </MultiDataTrigger.Conditions>
 
-                                        <Setter Property="IsEnabled" Value="true"/>
+                                        <Setter Property="Background" Value="{x:Null}"/>
 
                                     </MultiDataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-
-                        <th_wpf:Button_01 AlternateStyle="True" Text="Create Account" Clicked="CreateAccount_Clicked" Height="40"/>
-
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="#88000000"/>
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding UsernameVerified}" Value="true"/>
-                                                <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                                <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                                <Condition Binding="{Binding PasswordVerified}" Value="true"/>
-                                            </MultiDataTrigger.Conditions>
-
-                                            <Setter Property="Background" Value="{x:Null}"/>
-
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-                        </Grid>
-
                     </Grid>
-                    
-                </StackPanel>
 
-            </Grid>
+                </Grid>
 
-        </ScrollViewer>
+            </StackPanel>
 
-    </Grid>
+        </Grid>
 
+    </ScrollViewer>
+      
 </UserControl>

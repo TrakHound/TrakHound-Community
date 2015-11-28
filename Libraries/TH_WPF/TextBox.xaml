@@ -81,44 +81,66 @@
             </Rectangle>
 
         </StackPanel>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="15"/>
+            </Grid.ColumnDefinitions>
 
-        <Border BorderThickness="1" CornerRadius="1" Background="#fff">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="#aaa"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
-                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding IsFocused, ElementName=txt}" Value="true">
-                            <Setter Property="BorderBrush" Value="#0080ff"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
+            <Border BorderThickness="1" CornerRadius="1" Background="#fff">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="#aaa"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
+                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsFocused, ElementName=txt}" Value="true">
+                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-            <Grid Margin="10,0">
+                <Grid Margin="10,0">
 
-                <!--Instructions-->
-                <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="#aaa" VerticalAlignment="Center" Margin="2,0" >
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                    <!--Instructions-->
+                    <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="#aaa" VerticalAlignment="Center" Margin="2,0" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
-                <!--User Input-->
-                <TextBox x:Name="txt" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="txt_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                    <!--User Input-->
+                    <TextBox x:Name="txt" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="txt_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
-            </Grid>
+                </Grid>
 
-        </Border>
+            </Border>
+
+            <!--Required Symbol-->
+            <TextBlock Grid.Column="1" Text="*" Foreground="Red" FontSize="16pt" Margin="5,0,0,0" VerticalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Required}" Value="true">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+        </Grid>
 
     </StackPanel>
     

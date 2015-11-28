@@ -24,7 +24,7 @@
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style x:Key="PageTabItem" TargetType="{x:Type controls:TH_TabItem}">
+            <!--<Style x:Key="PageTabItem" TargetType="{x:Type controls:TH_TabItem}">
 
                 <Setter Property="FontSize" Value="10pt"/>
 
@@ -35,7 +35,7 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style>
+            </Style>-->
 
         </ResourceDictionary>
     </UserControl.Resources>
@@ -56,9 +56,9 @@
 
         <Border Grid.Column="1" Margin="20,0,0,0" >
 
-            <TabControl x:Name="Main_TABCONTROL" Background="#0080ff" Padding="0" BorderThickness="0">
+            <!--<TabControl x:Name="Main_TABCONTROL" Background="#0080ff" Padding="0" BorderThickness="0">
 
-                <!--Tables-->
+                --><!--Tables--><!--
                 <controls:TH_TabItem Title="Tables" Style="{StaticResource PageTabItem}">
                     <controls:TH_TabItem.Header>
                         <controls:TH_TabHeader Text="Tables" Clicked="TH_TabHeader_Clicked" TabParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:TH_TabItem}}}"/>
@@ -173,7 +173,7 @@
                     
                 </controls:TH_TabItem>
 
-                <!--Console-->
+                --><!--Console--><!--
                 <controls:TH_TabItem Title="Console" Style="{StaticResource PageTabItem}">
                     <controls:TH_TabItem.Header>
                         <controls:TH_TabHeader Text="Console" Clicked="TH_TabHeader_Clicked" TabParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:TH_TabItem}}}"/>
@@ -200,7 +200,7 @@
                                 
                                 <DataGrid.Resources>
                                     
-                                    <!--Standard CellStyle (Centered Text)-->
+                                    --><!--Standard CellStyle (Centered Text)--><!--
                                     <Style x:Key="DGC_Centered" TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="0,0,0,0"/>
                                         <Setter Property="Template">
@@ -228,7 +228,7 @@
                                         </Style.Triggers>
                                     </Style>
 
-                                    <!--ConsoleText CellStyle (Left Align Text)-->
+                                    --><!--ConsoleText CellStyle (Left Align Text)--><!--
                                     <Style x:Key="DGC_Left" TargetType="DataGridCell">
                                         <Setter Property="BorderThickness" Value="0,0,0,0"/>
                                         <Setter Property="Template">
@@ -316,7 +316,7 @@
 
                 </controls:TH_TabItem>
 
-                <!--<controls:TH_TabItem Title="Options" Style="{StaticResource PageTabItem}">
+                --><!--<controls:TH_TabItem Title="Options" Style="{StaticResource PageTabItem}">
                     <controls:TH_TabItem.Header>
                         <controls:TH_TabHeader Text="Options" Clicked="TH_TabHeader_Clicked" TabParent="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type controls:TH_TabItem}}}"/>
                     </controls:TH_TabItem.Header>
@@ -495,9 +495,9 @@
 
                     </controls:TH_Page>
 
-                </controls:TH_TabItem>-->
+                </controls:TH_TabItem>--><!--
 
-            </TabControl>
+            </TabControl>-->
 
         </Border>
 

@@ -127,12 +127,13 @@ namespace TH_MTC_Requests
 
                 if (url[url.Length - 1] != '/') url += "/";
 
-                stream.uri = new Uri(url + "probe");
+                //stream.url = new Uri(url + "probe");
+                stream.url = url + "probe";
                 stream.HttpTimeout = 3000;
                 stream.ResponseReceived += stream_ResponseReceived;
                 stream.ResponseError += stream_ResponseError;
 
-                URL = stream.uri.ToString();
+                URL = stream.url.ToString();
                 if (Verbose) Console.WriteLine("Connecting Probe @ : " + URL);
                 stream.Start();
             }

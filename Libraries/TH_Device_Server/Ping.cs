@@ -22,11 +22,13 @@ namespace TH_Device_Server
         {
             bool result = true;
 
+            if (UseDatabases)
+            {
                 foreach (Database_Configuration db_config in config.Databases.Databases)
                 {
                     if (!TH_Database.Global.Ping(db_config)) { result = false; break; }
                 }
-
+            }
 
                 return result;
 

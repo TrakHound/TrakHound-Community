@@ -14,7 +14,9 @@ namespace TH_Global.Web
 {
     public static class HTTP
     {
-        public static int connectionAttempts = 3;
+        const int connectionAttempts = 3;
+
+        const int timeout = 10000;
 
         public static bool UploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
         {
@@ -25,6 +27,7 @@ namespace TH_Global.Web
 
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
             wr.ContentType = "multipart/form-data; boundary=" + boundary;
+            wr.Timeout = timeout;
             wr.Method = "POST";
             wr.KeepAlive = true;
             wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
@@ -98,13 +101,16 @@ namespace TH_Global.Web
         }
 
 
+
+
+
         /// <summary>
         /// Send Data to URL with POST Data using HTTP
         /// </summary>
         /// <param name="url"></param>
         /// <param name="nvc"></param>
         /// <returns></returns>
-        public static string SendData(string url, NameValueCollection nvc)
+        public static string SendData(string url, NameValueCollection nvc, bool insureDelivery = false)
         {
 
             string result = null;
@@ -113,7 +119,8 @@ namespace TH_Global.Web
             bool success = false;
             string message = null;
 
-            while (attempts < connectionAttempts && !success)
+            // Try to send & receive data for number of connectionAttempts or infinitely if insureDelivery is set
+            while ((attempts < connectionAttempts || insureDelivery) && !success)
             {
                 attempts += 1;
 
@@ -142,7 +149,7 @@ namespace TH_Global.Web
 
                     // Create HTTP request and define Header info
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Timeout = 10000;
+                    request.Timeout = timeout;
                     request.Method = "POST";
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = postBytes.Length;
@@ -165,9 +172,51 @@ namespace TH_Global.Web
                 }
                 catch (WebException wex) { message = wex.Message; }
                 catch (Exception ex) { message = ex.Message; }
+
+                if (!success) System.Threading.Thread.Sleep(1000);
             }
 
-            if (!success) Logger.Log(attempts.ToString() + " Attempts :: " + message);
+            if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+
+            return result;
+        }
+
+        public static string GetData(string url, bool insureDelivery = false)
+        {
+
+            string result = null;
+
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            // Try to send & receive data for number of connectionAttempts or infinitely if insureDelivery is set
+            while ((attempts < connectionAttempts || insureDelivery) && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    // Create HTTP request and define Header info
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Timeout = timeout;
+
+                    // Get HTTP resonse and return as string
+                    using (var response = (HttpWebResponse)request.GetResponse())
+                    using (var s = response.GetResponseStream())
+                    using (var reader = new StreamReader(s))
+                    {
+                        result = reader.ReadToEnd();
+                        success = true;
+                    }
+                }
+                catch (WebException wex) { message = wex.Message; }
+                catch (Exception ex) { message = ex.Message; }
+
+                if (!success) System.Threading.Thread.Sleep(1000);
+            }
+
+            if (!success) Logger.Log("Get :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
 
             return result;
         }

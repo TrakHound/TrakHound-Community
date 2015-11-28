@@ -21,9 +21,11 @@ namespace TH_Device_Server
 
         #region "Public"
 
-        public Device_Server(Configuration config)
+        public Device_Server(Configuration config, bool useDatabases = true)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            UseDatabases = useDatabases;
 
             LoadPlugins();
 
@@ -40,6 +42,13 @@ namespace TH_Device_Server
             ConnectionStatus_Initialize();
         }
 
+        bool usedatabases = true;
+        public bool UseDatabases 
+        {
+            get { return usedatabases; }
+            set { usedatabases = value; }
+        }
+
         #region "Methods"
 
         public void Initialize()
@@ -51,10 +60,7 @@ namespace TH_Device_Server
             InitializeTables();
 
             // Initialize each Table Plugin with the current Configuration 
-            TablePlugIns_Initialize(configuration);
-
-            //// Checkdatabase connections
-            //CheckDatabaseConnections(configuration);
+            TablePlugIns_Initialize(configuration, UseDatabases);
         }
 
         public void Start() { start(); }
@@ -83,13 +89,13 @@ namespace TH_Device_Server
             //            configuration.Description = lSettings.Description;
             //            configuration.FileLocations = lSettings.FileLocations;
             //            configuration.SQL = lSettings.SQL;
-
+            
             //            FSW_Start();
             //        }
             //    }
             //}
 
-            Database.Create(configuration.Databases);
+            if (UseDatabases) Database.Create(configuration.Databases);
 
             worker = new Thread(new ThreadStart(Worker_Start));
             worker.Start();
@@ -398,7 +404,7 @@ namespace TH_Device_Server
 
                     Console.WriteLine(line);
 
-                    previousRow = Console.CursorTop;
+                    //previousRow = Console.CursorTop;
 
                     break;
 
@@ -418,7 +424,7 @@ namespace TH_Device_Server
                         //Console.Write(new string(' ', Console.WindowWidth));
                         //Console.SetCursorPosition(0, Console.CursorTop - 1);
                     }
-                    else previousRow = Console.CursorTop;
+                    //else previousRow = Console.CursorTop;
 
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
@@ -529,7 +535,7 @@ namespace TH_Device_Server
         {
             RunningTime = RunningTimeSTPW.Elapsed;
 
-            Console.Title = "TrakHound Server - " + RunningTime.ToString(@"dd\.hh\:mm\:ss");
+            //Console.Title = "TrakHound Server - " + RunningTime.ToString(@"dd\.hh\:mm\:ss");
         }
 
         #endregion
@@ -597,7 +603,7 @@ namespace TH_Device_Server
 
         void InitializeTables()
         {
-            Variables.CreateTable(configuration.Databases);
+            if (UseDatabases) Variables.CreateTable(configuration.Databases);
         }
 
         #endregion

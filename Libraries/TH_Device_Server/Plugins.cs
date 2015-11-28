@@ -20,6 +20,8 @@ namespace TH_Device_Server
 {
     public partial class Device_Server
     {
+        public delegate void DataEvent_Handler(DataEvent_Data de_data);
+        public event DataEvent_Handler DataEvent;
 
         public IEnumerable<Lazy<Table_PlugIn>> TablePlugIns { get; set; }
 
@@ -127,6 +129,7 @@ namespace TH_Device_Server
         class InitializeWorkerInfo
         {
             public Configuration config { get; set; }
+            public bool useDatabases { get; set; }
             public Table_PlugIn tablePlugin { get; set; }
         }
 
@@ -148,7 +151,7 @@ namespace TH_Device_Server
             public Table_PlugIn tablePlugin { get; set; }
         }
 
-        void TablePlugIns_Initialize(Configuration Config)
+        void TablePlugIns_Initialize(Configuration Config, bool useDatabases = true)
         {
             if (TablePlugIns != null && Config != null)
             {
@@ -158,6 +161,7 @@ namespace TH_Device_Server
                     //{
                     InitializeWorkerInfo info = new InitializeWorkerInfo();
                     info.config = Config;
+                    info.useDatabases = useDatabases;
                     info.tablePlugin = tp.Value;
 
                     ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
@@ -173,6 +177,7 @@ namespace TH_Device_Server
             try
             {
                 Table_PlugIn tpi = info.tablePlugin;
+                tpi.UseDatabases = info.useDatabases;
                 tpi.DataEvent -= TablePlugIn_Update_DataEvent;
                 tpi.DataEvent += TablePlugIn_Update_DataEvent;
                 tpi.StatusChanged += tpi_StatusChanged;
@@ -308,6 +313,8 @@ namespace TH_Device_Server
                     }
                 }
             }
+
+            if (DataEvent != null) DataEvent(de_data);
         }
 
         void TablePlugIn_Update_DataEvent_Worker(object o)

@@ -196,7 +196,7 @@ namespace TrakHound_Client.Main_Menu
         void MyAccount_Clicked()
         {
             Shown = false;
-            if (mw != null) mw.MyAccount_Open();
+            if (mw != null) mw.AccountManager_Open();
         }
 
         void mw_CurrentUserChanged(UserConfiguration userConfig)

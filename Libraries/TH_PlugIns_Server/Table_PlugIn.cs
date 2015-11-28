@@ -75,6 +75,8 @@ namespace TH_PlugIns_Server
 
         Type Config_Page { get; }
 
+        bool UseDatabases { get; set; }
+
     }
 
     public delegate void DataEvent_Handler(DataEvent_Data de_data);

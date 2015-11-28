@@ -6,13 +6,14 @@
 using System;
 using System.Collections.Generic;
 
-using System.IO;
-using System.Net;
+//using System.IO;
+//using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 using TH_MTC_Data;
 using TH_Global;
+using TH_Global.Web;
 
 namespace TH_MTC_Requests
 {
@@ -24,6 +25,8 @@ namespace TH_MTC_Requests
         public Stream() { }
 
         public bool Verbose { get; set; }
+
+        public bool InsureDelivery { get; set; }
 
         #region "Events"
 
@@ -37,7 +40,9 @@ namespace TH_MTC_Requests
 
         #region "Properties"
 
-        public Uri uri { get; set; }
+        //public Uri uri { get; set; }
+
+        public string url { get; set; }
 
         public int interval { get; set; }
 
@@ -107,15 +112,25 @@ namespace TH_MTC_Requests
         {
             while (!stop.WaitOne(0, true))
             {
-                RequestReturn requestReturn = GetHttpRequest(uri);
-                if (requestReturn.success)
+                //RequestReturn requestReturn = GetHttpRequest(uri);
+                //if (requestReturn.success)
+                //{
+                //    if (ResponseReceived != null) ResponseReceived(requestReturn.result);
+
+                //    if (interval > 0) Thread.Sleep(interval);
+                //    else break;
+                //}
+
+                string response = HTTP.GetData(url, InsureDelivery);
+
+                if (response != null)
                 {
-                    if (ResponseReceived != null) ResponseReceived(requestReturn.result);
+                    if (ResponseReceived != null) ResponseReceived(response);
 
                     if (interval > 0) Thread.Sleep(interval);
                     else break;
                 }
-                else Thread.Sleep(2000);
+                else Thread.Sleep(interval);
             } 
         }
 
@@ -124,103 +139,103 @@ namespace TH_MTC_Requests
 
         #region "OBSOLETE 11-25-15"
 
-        // Timer used for calling GetHttpRequest() at given interval
-        System.Timers.Timer heartBeat_TIMER;
+        //// Timer used for calling GetHttpRequest() at given interval
+        //System.Timers.Timer heartBeat_TIMER;
 
 
-        CancellationTokenSource source = new CancellationTokenSource();
+        //CancellationTokenSource source = new CancellationTokenSource();
     
 
-        void heartBeat_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            DoWork();
-        }
+        //void heartBeat_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    DoWork();
+        //}
 
-        void DoWork()
-        {
-            //heartBeat_TIMER.Enabled = false;
+        //void DoWork()
+        //{
+        //    //heartBeat_TIMER.Enabled = false;
 
-            RequestReturn requestReturn = GetHttpRequest(uri);
+        //    RequestReturn requestReturn = GetHttpRequest(uri);
 
-            if (requestReturn.success)
-            {
-                tryCount = 0;
+        //    if (requestReturn.success)
+        //    {
+        //        tryCount = 0;
 
-                if (interval > 0)
-                {
-                    heartBeat_TIMER.Interval = interval;
-                    //if (IsStarted) heartBeat_TIMER.Enabled = true;
-                    //else if (Stopped != null) Stopped();
-                }
-                else
-                {
-                    if (Stopped != null) Stopped();
-                }
+        //        if (interval > 0)
+        //        {
+        //            heartBeat_TIMER.Interval = interval;
+        //            //if (IsStarted) heartBeat_TIMER.Enabled = true;
+        //            //else if (Stopped != null) Stopped();
+        //        }
+        //        else
+        //        {
+        //            if (Stopped != null) Stopped();
+        //        }
 
-                if (ResponseReceived != null) ResponseReceived(requestReturn.result);
-            }
-            else
-            {
-                //if (IsStarted) heartBeat_TIMER.Enabled = true;
-            }
-
-
-            //else if (Stopped != null) Stopped();
+        //        if (ResponseReceived != null) ResponseReceived(requestReturn.result);
+        //    }
+        //    else
+        //    {
+        //        //if (IsStarted) heartBeat_TIMER.Enabled = true;
+        //    }
 
 
+        //    //else if (Stopped != null) Stopped();
 
-            //if (IsStarted)
-            //{
-            //    heartBeat_TIMER.Enabled = false;
 
-            //    RequestReturn requestReturn = GetHttpRequest(uri);
 
-            //    if (requestReturn.success)
-            //    {
-            //        tryCount = 0;
+        //    //if (IsStarted)
+        //    //{
+        //    //    heartBeat_TIMER.Enabled = false;
 
-            //        if (interval > 0)
-            //        {
-            //            heartBeat_TIMER.Interval = interval;
-            //            if (IsStarted) heartBeat_TIMER.Enabled = true;
-            //        }
-            //        else
-            //        {
-            //            if (Stopped != null) Stopped();
-            //        }
+        //    //    RequestReturn requestReturn = GetHttpRequest(uri);
 
-            //        if (ResponseReceived != null) ResponseReceived(requestReturn.result);
-            //    }
-            //    else if (Stopped != null) Stopped();
-            //    //else
-            //    //{
-            //    //    //if (tryCount < Math.Max(3, failureAttempts))
-            //    //    //{
-            //    //    //    heartBeat_TIMER.Interval = Math.Max(1000, failureRetryInterval);
-            //    //    //    if (IsStarted) heartBeat_TIMER.Enabled = true;
-            //    //    //}
-            //    //    //else
-            //    //    //{
-            //    //    tryCount = 0;
+        //    //    if (requestReturn.success)
+        //    //    {
+        //    //        tryCount = 0;
 
-            //    //    // if interval > 0 then restart hearBeat with regular interval
-            //    //    if (interval > 0)
-            //    //    {
-            //    //        heartBeat_TIMER.Interval = interval;
-            //    //        if (IsStarted) heartBeat_TIMER.Enabled = true;
-            //    //    }
-            //    //    else
-            //    //    {
-            //    //        if (Stopped != null) Stopped();
-            //    //    }
+        //    //        if (interval > 0)
+        //    //        {
+        //    //            heartBeat_TIMER.Interval = interval;
+        //    //            if (IsStarted) heartBeat_TIMER.Enabled = true;
+        //    //        }
+        //    //        else
+        //    //        {
+        //    //            if (Stopped != null) Stopped();
+        //    //        }
 
-            //    //    // if still failed after failureAttempts is exceeded then raise event with no data
-            //    //    if (ResponseReceived != null) ResponseReceived(null);
+        //    //        if (ResponseReceived != null) ResponseReceived(requestReturn.result);
+        //    //    }
+        //    //    else if (Stopped != null) Stopped();
+        //    //    //else
+        //    //    //{
+        //    //    //    //if (tryCount < Math.Max(3, failureAttempts))
+        //    //    //    //{
+        //    //    //    //    heartBeat_TIMER.Interval = Math.Max(1000, failureRetryInterval);
+        //    //    //    //    if (IsStarted) heartBeat_TIMER.Enabled = true;
+        //    //    //    //}
+        //    //    //    //else
+        //    //    //    //{
+        //    //    //    tryCount = 0;
 
-            //    //    //}
-            //    //}
-            //}
-        }
+        //    //    //    // if interval > 0 then restart hearBeat with regular interval
+        //    //    //    if (interval > 0)
+        //    //    //    {
+        //    //    //        heartBeat_TIMER.Interval = interval;
+        //    //    //        if (IsStarted) heartBeat_TIMER.Enabled = true;
+        //    //    //    }
+        //    //    //    else
+        //    //    //    {
+        //    //    //        if (Stopped != null) Stopped();
+        //    //    //    }
+
+        //    //    //    // if still failed after failureAttempts is exceeded then raise event with no data
+        //    //    //    if (ResponseReceived != null) ResponseReceived(null);
+
+        //    //    //    //}
+        //    //    //}
+        //    //}
+        //}
 
         #endregion
 
@@ -241,50 +256,50 @@ namespace TH_MTC_Requests
         /// </summary>
         /// <param name="uri"></param>
         /// <returns>Response string</returns>
-        RequestReturn GetHttpRequest(Uri uri)
-        {
-            RequestReturn Result = new RequestReturn();
+        //RequestReturn GetHttpRequest(Uri uri)
+        //{
+        //    RequestReturn Result = new RequestReturn();
 
-            Result.success = false;
+        //    Result.success = false;
 
-            if (uri != null)
-            {
-                try
-                {
-                    HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(uri);
-                    Request.KeepAlive = false;
+        //    if (uri != null)
+        //    {
+        //        try
+        //        {
+        //            HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(uri);
+        //            Request.KeepAlive = false;
 
-                    int timeout = 30000;
-                    if (HttpTimeout > 0) timeout = HttpTimeout;
+        //            int timeout = 30000;
+        //            if (HttpTimeout > 0) timeout = HttpTimeout;
 
-                    Request.Timeout = timeout;
-                    Request.ContinueTimeout = timeout;
-                    Request.ReadWriteTimeout = timeout;
+        //            Request.Timeout = timeout;
+        //            Request.ContinueTimeout = timeout;
+        //            Request.ReadWriteTimeout = timeout;
 
-                    using (WebResponse Response = Request.GetResponse())
-                    {
-                        using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
-                        {
-                            Result.result = Reader.ReadToEnd();
-                            Result.success = true;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    tryCount += 1;
+        //            using (WebResponse Response = Request.GetResponse())
+        //            {
+        //                using (StreamReader Reader = new StreamReader(Response.GetResponseStream()))
+        //                {
+        //                    Result.result = Reader.ReadToEnd();
+        //                    Result.success = true;
+        //                }
+        //            }
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            tryCount += 1;
 
-                    Error error = new Error();
-                    error.message = e.Message;
+        //            Error error = new Error();
+        //            error.message = e.Message;
 
-                    if (ResponseError != null) ResponseError(error);
+        //            if (ResponseError != null) ResponseError(error);
 
-                    if (Verbose) Console.WriteLine("TH_MTC_Requests.Streams.GetHttpRequest() : " + e.Message);
-                }
-            }
+        //            if (Verbose) Console.WriteLine("TH_MTC_Requests.Streams.GetHttpRequest() : " + e.Message);
+        //        }
+        //    }
 
-            return Result;
-        }
+        //    return Result;
+        //}
 
         #endregion
 

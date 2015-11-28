@@ -131,14 +131,15 @@ namespace TH_MTC_Requests
 
             if (url[url.Length - 1] != '/') url += "/";
 
-            stream.uri = new Uri(url + "current");
+            //stream.uri = new Uri(url + "current");
+            stream.url = url + "current";
             stream.HttpTimeout = 3000;
             stream.interval = Heartbeat;
 
             stream.ResponseReceived += stream_ResponseReceived;
             stream.ResponseError += stream_ResponseError;
 
-            if (Verbose) Console.WriteLine("Connecting Current @ : " + stream.uri);
+            if (Verbose) Console.WriteLine("Connecting Current @ : " + stream.url);
             stream.Start();
         }
 

@@ -152,12 +152,13 @@ namespace TH_MTC_Requests
                 FullAddress += "&from=" + BeginSeq.ToString() + "&count=" + Count.ToString();
             }
 
-            stream.uri = new Uri("http://" + configuration.Agent.IP_Address + port + "/" + configuration.Agent.Device_Name + "/sample" + FullAddress);
-
+            //stream.uri = new Uri("http://" + configuration.Agent.IP_Address + port + "/" + configuration.Agent.Device_Name + "/sample" + FullAddress);
+            stream.url = "http://" + configuration.Agent.IP_Address + port + "/" + configuration.Agent.Device_Name + "/sample" + FullAddress;
+            stream.InsureDelivery = true;
             stream.ResponseReceived -= stream_ResponseReceived;
             stream.ResponseReceived += stream_ResponseReceived;
 
-            if (Verbose) Console.WriteLine("Attempting Sample @ : " + stream.uri);
+            if (Verbose) Console.WriteLine("Attempting Sample @ : " + stream.url);
             stream.Start();
         }
 

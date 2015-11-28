@@ -89,6 +89,7 @@
 
                         <Rectangle Height="3" Fill="#0080ff" />
 
+                        <!--Descriptions-->
                         <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,15,10,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
                             Snapshot data is a central table for current device data. 
                             Three types of data are avaiable:

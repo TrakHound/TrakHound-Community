@@ -45,6 +45,8 @@ namespace TH_MySQL.PHP
 
         }
 
+        #region "Bulk Insert"
+
         // Bulk Row Insert (uses seperate thread to process data for query and runs query Async)
         public static bool Insert(MySQL_Configuration config, string tablename, object[] Columns, List<List<object>> Values, bool Update)
         {
@@ -106,8 +108,10 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
-            HTTP.SendData(url, values);
+            HTTP.SendData(url, values, true);
         }
+
+        #endregion
 
         public static bool Insert(MySQL_Configuration config, string Query)
         {
