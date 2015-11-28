@@ -70,8 +70,8 @@ namespace TrakHound_Client.Options.Pages.General
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            DeviceUpdateInterval_TimeSpan = TimeSpan.FromMilliseconds(DeviceUpdateInterval);
-            if (mw != null) mw.clientUpdateInterval = DeviceUpdateInterval;
+            //DeviceUpdateInterval_TimeSpan = TimeSpan.FromMilliseconds(DeviceUpdateInterval);
+            //if (mw != null) mw.clientUpdateInterval = DeviceUpdateInterval;
         }
 
     }

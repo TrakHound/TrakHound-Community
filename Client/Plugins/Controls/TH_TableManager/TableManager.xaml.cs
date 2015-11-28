@@ -119,8 +119,8 @@ namespace TH_TableManager
 
         #region "Device Properties"
 
-        private List<Device_Client> lDevices;
-        public List<Device_Client> Devices 
+        private List<Configuration> lDevices;
+        public List<Configuration> Devices
         {
             get { return lDevices; }
             set
@@ -129,18 +129,18 @@ namespace TH_TableManager
 
                 DeviceList.Clear();
 
-                foreach (Device_Client device in lDevices)
+                foreach (Configuration device in lDevices)
                 {
 
                     // Initialize Database Configurations
-                    Global.Initialize(device.configuration.Databases);
+                    Global.Initialize(device.Databases);
 
                     Controls.DeviceButton db = new DeviceButton();
-                    db.Description = device.configuration.Description.Description;
-                    db.Manufacturer = device.configuration.Description.Manufacturer;
-                    db.Model = device.configuration.Description.Model;
-                    db.Serial = device.configuration.Description.Serial;
-                    db.Id = device.configuration.Description.Machine_ID;
+                    db.Description = device.Description.Description;
+                    db.Manufacturer = device.Description.Manufacturer;
+                    db.Model = device.Description.Model;
+                    db.Serial = device.Description.Serial;
+                    db.Id = device.Description.Machine_ID;
 
                     db.Clicked += db_Clicked;
 
@@ -156,6 +156,44 @@ namespace TH_TableManager
                 }
             }
         }
+
+        //private List<Device_Client> lDevices;
+        //public List<Device_Client> Devices 
+        //{
+        //    get { return lDevices; }
+        //    set
+        //    {
+        //        lDevices = value;
+
+        //        DeviceList.Clear();
+
+        //        foreach (Device_Client device in lDevices)
+        //        {
+
+        //            // Initialize Database Configurations
+        //            Global.Initialize(device.configuration.Databases);
+
+        //            Controls.DeviceButton db = new DeviceButton();
+        //            db.Description = device.configuration.Description.Description;
+        //            db.Manufacturer = device.configuration.Description.Manufacturer;
+        //            db.Model = device.configuration.Description.Model;
+        //            db.Serial = device.configuration.Description.Serial;
+        //            db.Id = device.configuration.Description.Machine_ID;
+
+        //            db.Clicked += db_Clicked;
+
+        //            ListButton lb = new ListButton();
+        //            lb.ButtonContent = db;
+        //            lb.ShowImage = false;
+        //            lb.Selected += lb_Device_Selected;
+        //            lb.DataObject = device;
+
+        //            db.Parent = lb;
+
+        //            DeviceList.Add(lb);
+        //        }
+        //    }
+        //}
 
         void db_Clicked(DeviceButton bt)
         {
@@ -350,8 +388,8 @@ namespace TH_TableManager
             SelectedTableName = null;
             TableRowCount = null;
 
-            this.Dispatcher.BeginInvoke(new Action<string, Configuration>(LoadInfo), Priority, new object[] { LB.Text, selectedDevice.configuration });
-            this.Dispatcher.BeginInvoke(new Action<string, Int64, Configuration>(LoadTable), Priority, new object[] { LB.Text, page, selectedDevice.configuration });
+            this.Dispatcher.BeginInvoke(new Action<string, Configuration>(LoadInfo), Priority, new object[] { LB.Text, selectedDevice });
+            this.Dispatcher.BeginInvoke(new Action<string, Int64, Configuration>(LoadTable), Priority, new object[] { LB.Text, page, selectedDevice });
         }
 
         #endregion
@@ -360,18 +398,26 @@ namespace TH_TableManager
 
         const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
-        Device_Client selectedDevice = null;
+        //Device_Client selectedDevice = null;
+
+        Configuration selectedDevice = null;
 
         void lb_Device_Selected(TH_WPF.ListButton lb)
         {
             foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
             lb.IsSelected = true;
         
-            Device_Client device = (Device_Client)lb.DataObject;
+            //Device_Client device = (Device_Client)lb.DataObject;
+
+            Configuration device = (Configuration)lb.DataObject;
 
             selectedDevice = device;
 
-            LoadTableList(device.configuration);
+            LoadTableList(device);
+
+            
+
+            //LoadTableList(device.configuration);
         }
 
         #region "Table View"
@@ -468,7 +514,7 @@ namespace TH_TableManager
 
         private void TableInfoRefresh_Button_Clicked(Controls.Button bt)
         {
-            LoadInfo(SelectedTableName, selectedDevice.configuration);
+            LoadInfo(SelectedTableName, selectedDevice);
         }
 
         Int64 RowCount;
@@ -578,7 +624,7 @@ namespace TH_TableManager
 
         void PageButton_Clicked(Controls.Button bt)
         {
-            LoadTable(SelectedTableName, (Int64)bt.data, selectedDevice.configuration);
+            LoadTable(SelectedTableName, (Int64)bt.data, selectedDevice);
             CreatePageNumbers(RowCount, (Int64)bt.data);
         }
 
@@ -761,9 +807,9 @@ namespace TH_TableManager
             {
                 string[] tablenames = SelectedTables.Select(x => x.Text).Distinct().ToArray();
 
-                TH_Database.Table.Drop(selectedDevice.configuration.Databases, tablenames);
+                TH_Database.Table.Drop(selectedDevice.Databases, tablenames);
 
-                LoadTableList(selectedDevice.configuration);
+                LoadTableList(selectedDevice);
             }
 
         }

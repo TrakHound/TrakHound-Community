@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using System.Windows.Media;
 
-using TH_Device_Client;
+using TH_Configuration;
 
 namespace TH_PlugIns_Client_Control
 {
@@ -130,7 +130,7 @@ namespace TH_PlugIns_Client_Control
         /// Updated information sent so that the UI can be updated
         /// </summary>
         /// <param name="rd">ReturnData object with updated information</param>
-        void Update( ReturnData rd);
+        //void Update( ReturnData rd);
 
         /// <summary>
         /// Called when parent Window or plugin is closing so that the plugin can 
@@ -165,7 +165,8 @@ namespace TH_PlugIns_Client_Control
         /// <summary>
         /// List of Device_Client objects
         /// </summary>
-        List<Device_Client> Devices { get; set; }
+        //List<Device_Client> Devices { get; set; }
+        List<Configuration> Devices { get; set; }
 
         #endregion
 

@@ -7,4 +7,3 @@ C:\TrakHound\Plugins\Data\TH_DeviceStatus.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\obj\Debug\TH_DeviceStatus.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\obj\Debug\TH_DeviceStatus.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Data\TH_DeviceStatus\obj\Debug\TH_DeviceStatus.pdb
-C:\TrakHound\Plugins\Data\LICENSE.txt
