@@ -23,8 +23,9 @@ using System.IO;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 
+using TH_Configuration;
 using TH_PlugIns_Client_Control;
-using TH_Device_Client;
+//using TH_Device_Client;
 using TH_WPF;
 
 namespace TH_Dashboard
@@ -101,16 +102,16 @@ namespace TH_Dashboard
             }
         }
 
-        public void Update(ReturnData rd)
-        {
-            if (PlugIns != null)
-            {
-                foreach (Control_PlugIn CP in PlugIns)
-                {
-                    this.Dispatcher.BeginInvoke(new Action<ReturnData>(CP.Update), Priority, new object[] { rd });
-                }
-            }
-        }
+        //public void Update(ReturnData rd)
+        //{
+        //    if (PlugIns != null)
+        //    {
+        //        foreach (Control_PlugIn CP in PlugIns)
+        //        {
+        //            this.Dispatcher.BeginInvoke(new Action<ReturnData>(CP.Update), Priority, new object[] { rd });
+        //        }
+        //    }
+        //}
 
         public void Closing() { }
 
@@ -147,7 +148,9 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        public List<Device_Client> Devices { get; set; }
+        //public List<Device_Client> Devices { get; set; }
+
+        public List<Configuration> Devices { get; set; }
 
         #endregion
 

@@ -189,7 +189,11 @@ namespace TH_PlugIns_Client_Control
 
         public string id { get; set; }
 
-        public object data { get; set; }
+        public object data01 { get; set; }
+        public object data02 { get; set; }
+        public object data03 { get; set; }
+        public object data04 { get; set; }
+        public object data05 { get; set; }
 
     }
 

@@ -16,5 +16,5 @@ DEBUG;TRACE
 24221810172
 Controls\Calendar\Calendar.xaml;Controls\Calendar\Day.xaml;Controls\Calendar\DayOfWeekTitle.xaml;Controls\HistogramDisplay.xaml;Controls\HistoryContainer.xaml;Controls\HistoryItem.xaml;Controls\ShiftComparison.xaml;History.xaml;
 
-True
+False
 

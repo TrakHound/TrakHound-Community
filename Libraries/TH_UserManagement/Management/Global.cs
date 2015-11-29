@@ -127,13 +127,13 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, bool getImages, Database_Settings userDatabaseSettings)
+        public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
             List<Configuration> result = null;
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.GetConfigurationsForUser(userConfig, getImages);
+                result = Remote.Configurations.GetConfigurationsForUser(userConfig);
             }
             else
             {

@@ -25,10 +25,11 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 
 using TH_Configuration;
-using TH_Device_Client;
+//using TH_Device_Client;
 using TH_Global;
+using TH_Global.Functions;
 using TH_PlugIns_Client_Control;
-using TH_Functions;
+//using TH_Functions;
 
 using TH_DeviceCompare.Components;
 
@@ -100,10 +101,10 @@ namespace TH_DeviceCompare
 
         public void Initialize() { }
 
-        public void Update(ReturnData rd)
-        {
-            this.Dispatcher.BeginInvoke(new Action<ReturnData>(Update_GUI), Priority_Background, new object[] { rd });
-        }
+        //public void Update(ReturnData rd)
+        //{
+        //    this.Dispatcher.BeginInvoke(new Action<ReturnData>(Update_GUI), Priority_Background, new object[] { rd });
+        //}
 
         public void Closing() { }
 
@@ -123,7 +124,30 @@ namespace TH_DeviceCompare
 
         public void Update_DataEvent(DataEvent_Data de_d)
         {
+            Configuration config = de_d.data01 as Configuration;
+            if (config != null)
+            {
+                DeviceDisplay dd = DeviceDisplays.Find(x => x.configuration.UniqueId == config.UniqueId);
+                if (dd != null)
+                {
+                    // Connection
+                    if (de_d.id.ToLower() == "statusdata_connection")
+                    {
+                        bool connected;
+                        bool.TryParse(de_d.data02.ToString(), out connected);
 
+                        dd.Connected = connected;
+                    }
+
+                    if (de_d.id.ToLower() == "statusdata_snapshots")
+                    {
+                         //Update Header
+                         this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority_Context, new object[] { dd, de_d.data02 });
+
+
+                    }
+                }
+            }
         }
 
         public event DataEvent_Handler DataEvent;
@@ -134,24 +158,46 @@ namespace TH_DeviceCompare
 
         #region "Device Properties"
 
-        private List<Device_Client> lDevices;
-        public List<Device_Client> Devices
+        //private List<Device_Client> lDevices;
+        //public List<Device_Client> Devices
+        //{
+        //    get
+        //    {
+        //        return lDevices;
+        //    }
+        //    set
+        //    {
+        //        lDevices = value;
+
+        //        DeviceDisplays = new List<DeviceDisplay>();
+        //        ColumnHeaders.Clear();
+        //        Columns.Clear();
+
+        //        foreach (Device_Client device in Devices) CreateDeviceDisplay(device);
+
+        //        //CheckHeaderHeight();
+        //    }
+        //}
+
+        List<Configuration> devices;
+        public List<Configuration> Devices
         {
-            get
-            {
-                return lDevices;
-            }
+            get { return devices; }
             set
             {
-                lDevices = value;
+                devices = value;
 
-                DeviceDisplays = new List<DeviceDisplay>();
-                ColumnHeaders.Clear();
-                Columns.Clear();
+                if (devices != null)
+                {
+                    DeviceDisplays = new List<DeviceDisplay>();
+                    ColumnHeaders.Clear();
+                    Columns.Clear();
 
-                foreach (Device_Client device in Devices) CreateDeviceDisplay(device);
-
-                //CheckHeaderHeight();
+                    foreach (Configuration device in devices)
+                    {
+                        CreateDeviceDisplay(device);
+                    }
+                }
             }
         }
 
@@ -198,13 +244,13 @@ namespace TH_DeviceCompare
 
         List<DeviceDisplay> DeviceDisplays { get; set; }
 
-        void CreateDeviceDisplay(Device_Client device)
+        void CreateDeviceDisplay(Configuration config)
         {
-            DeviceDisplay dd = new DeviceDisplay(device.configuration);
+            DeviceDisplay dd = new DeviceDisplay(config);
 
             int index = DeviceDisplays.Count;
 
-            Header header = CreateColumnHeader(device);
+            Header header = CreateColumnHeader(config);
             Column column = CreateColumn();
 
             header.Index = index;
@@ -240,125 +286,130 @@ namespace TH_DeviceCompare
         {
             DataEvent_Data de_d = new DataEvent_Data();
             de_d.id = "DeviceSelected";
-            de_d.data = index;
+            de_d.data02 = index;
             if (DataEvent != null) DataEvent(de_d);
         }
 
-        void Update_GUI(ReturnData rd)
+        void Update_GUI(DataEvent_Data de_d)
         {
-            if (Devices != null && rd != null)
-            {
-                foreach (Device_Client device in Devices)
-                {
-                    if (device.configuration != null)
-                    {
-                        if (device.configuration.UniqueId == rd.configuration.UniqueId)
-                        {
-                            int index = Devices.IndexOf(device);
-
-                            if (index >= 0 && index < DeviceDisplays.Count)
-                            {
-                                DeviceDisplay dd = DeviceDisplays[index];
-                                Header hdr = dd.ComparisonGroup.header;
-
-                                hdr.LastUpdatedTimestamp = DateTime.Now.ToLongTimeString();
-
-                                int cellIndex = -1;
-
-                                // Get connection data from TH_DeviceStatus
-                                object connectiondata = null;
-                                rd.data.TryGetValue("DeviceStatus_Connection", out connectiondata);
-                                if (connectiondata != null)
-                                {
-                                    if (connectiondata.GetType() == typeof(bool))
-                                    {
-                                        bool connected = (bool)connectiondata;
-                                        if (connected)
-                                        {
-                                            dd.connectionAttempts = 0;
-                                            dd.Connected = connected;
-                                            dd.ConnectionStatus = "Connected";
-                                        }
-                                        else
-                                        {
-                                            if (dd.connectionAttempts < DeviceDisplay.maxConnectionAttempts)
-                                            {
-                                                dd.connectionAttempts += 1;
-                                                dd.ConnectionStatus = "Connecting...";
-                                            }
-                                            else
-                                            {
-                                                dd.Connected = connected;
-                                                dd.ConnectionStatus = "Not Connected";
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // Get data from Snapshots Table
-                                object snapshotdata = null;
-                                rd.data.TryGetValue("DeviceStatus_Snapshots", out snapshotdata);
-
-                                if (snapshotdata != null)
-                                {
-                                    // Update Header
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority_Context, new object[] { dd, snapshotdata });
-
-                                    // Update Header
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateBreak), Priority_Context, new object[] { dd, snapshotdata });
-                                }
-
-                                // Get data from Shifts Table
-                                object shiftdata = null;
-                                rd.data.TryGetValue("DeviceStatus_Shifts", out shiftdata);
-
-                                if (shiftdata != null)
-                                {
-                                    // Production Status Times
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateProductionStatusTimes), Priority_Context, new object[] { dd, shiftdata, snapshotdata });
-                                }
-
-                                if (snapshotdata != null && shiftdata != null)
-                                {
-                                    // Shift Info
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateShiftInfo), Priority_Context, new object[] { dd, snapshotdata, shiftdata });
-                                }
-
-                                // Get data from Production Status
-                                object productionstatusdata = null;
-                                rd.data.TryGetValue("DeviceStatus_ProductionStatus", out productionstatusdata);
-
-                                if (productionstatusdata != null && snapshotdata != null)
-                                {
-                                    // Production Status Timeline
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd, productionstatusdata, snapshotdata });
-                                }
-
-                                // Get data from OEE Info
-                                object oeedata = null;
-                                rd.data.TryGetValue("DeviceStatus_OEE", out oeedata);
-                                if (oeedata != null)
-                                {
-                                    // Update Average OEE display
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority_Context, new object[] { dd, oeedata });
-
-                                    // Update Segment OEE display
-                                    this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, oeedata });
-
-                                    if (shiftdata != null && snapshotdata != null)
-                                    {
-                                        // Update OEE Timeline display
-                                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object, object>(Update_OEE_Timeline), Priority_Context, new object[] { dd, oeedata, shiftdata, snapshotdata });
-                                    }
-                                }
-
-                                dd.ComparisonGroup.column.Loading = false;
-                            }
-                        }
-                    }
-                }
-            }
+            
         }
+
+        //void Update_GUI(ReturnData rd)
+        //{
+        //    if (Devices != null && rd != null)
+        //    {
+        //        foreach (Device_Client device in Devices)
+        //        {
+        //            if (device.configuration != null)
+        //            {
+        //                if (device.configuration.UniqueId == rd.configuration.UniqueId)
+        //                {
+        //                    int index = Devices.IndexOf(device);
+
+        //                    if (index >= 0 && index < DeviceDisplays.Count)
+        //                    {
+        //                        DeviceDisplay dd = DeviceDisplays[index];
+        //                        Header hdr = dd.ComparisonGroup.header;
+
+        //                        hdr.LastUpdatedTimestamp = DateTime.Now.ToLongTimeString();
+
+        //                        int cellIndex = -1;
+
+        //                        // Get connection data from TH_DeviceStatus
+        //                        object connectiondata = null;
+        //                        rd.data.TryGetValue("DeviceStatus_Connection", out connectiondata);
+        //                        if (connectiondata != null)
+        //                        {
+        //                            if (connectiondata.GetType() == typeof(bool))
+        //                            {
+        //                                bool connected = (bool)connectiondata;
+        //                                if (connected)
+        //                                {
+        //                                    dd.connectionAttempts = 0;
+        //                                    dd.Connected = connected;
+        //                                    dd.ConnectionStatus = "Connected";
+        //                                }
+        //                                else
+        //                                {
+        //                                    if (dd.connectionAttempts < DeviceDisplay.maxConnectionAttempts)
+        //                                    {
+        //                                        dd.connectionAttempts += 1;
+        //                                        dd.ConnectionStatus = "Connecting...";
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        dd.Connected = connected;
+        //                                        dd.ConnectionStatus = "Not Connected";
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+
+        //                        // Get data from Snapshots Table
+        //                        object snapshotdata = null;
+        //                        rd.data.TryGetValue("DeviceStatus_Snapshots", out snapshotdata);
+
+        //                        if (snapshotdata != null)
+        //                        {
+        //                            // Update Header
+        //                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateAlert), Priority_Context, new object[] { dd, snapshotdata });
+
+        //                            // Update Header
+        //                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateBreak), Priority_Context, new object[] { dd, snapshotdata });
+        //                        }
+
+        //                        // Get data from Shifts Table
+        //                        object shiftdata = null;
+        //                        rd.data.TryGetValue("DeviceStatus_Shifts", out shiftdata);
+
+        //                        if (shiftdata != null)
+        //                        {
+        //                            // Production Status Times
+        //                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateProductionStatusTimes), Priority_Context, new object[] { dd, shiftdata, snapshotdata });
+        //                        }
+
+        //                        if (snapshotdata != null && shiftdata != null)
+        //                        {
+        //                            // Shift Info
+        //                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(UpdateShiftInfo), Priority_Context, new object[] { dd, snapshotdata, shiftdata });
+        //                        }
+
+        //                        // Get data from Production Status
+        //                        object productionstatusdata = null;
+        //                        rd.data.TryGetValue("DeviceStatus_ProductionStatus", out productionstatusdata);
+
+        //                        if (productionstatusdata != null && snapshotdata != null)
+        //                        {
+        //                            // Production Status Timeline
+        //                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object>(Update_ProductionStatusTimeline), Priority_Context, new object[] { dd, productionstatusdata, snapshotdata });
+        //                        }
+
+        //                        // Get data from OEE Info
+        //                        object oeedata = null;
+        //                        rd.data.TryGetValue("DeviceStatus_OEE", out oeedata);
+        //                        if (oeedata != null)
+        //                        {
+        //                            // Update Average OEE display
+        //                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority_Context, new object[] { dd, oeedata });
+
+        //                            // Update Segment OEE display
+        //                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, oeedata });
+
+        //                            if (shiftdata != null && snapshotdata != null)
+        //                            {
+        //                                // Update OEE Timeline display
+        //                                this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object, object, object>(Update_OEE_Timeline), Priority_Context, new object[] { dd, oeedata, shiftdata, snapshotdata });
+        //                            }
+        //                        }
+
+        //                        dd.ComparisonGroup.column.Loading = false;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         #region "Data"
 
@@ -1418,36 +1469,30 @@ namespace TH_DeviceCompare
             }
         }
 
-        Header CreateColumnHeader(Device_Client device)
+        Header CreateColumnHeader(Configuration config)
         {
             Header Result = new Header();
 
-            Result.Device_Description = device.configuration.Description.Description;
-            Result.Device_Manufacturer = device.configuration.Description.Manufacturer;
-            Result.Device_Model = device.configuration.Description.Model;
-            Result.Device_Serial = device.configuration.Description.Serial;
-            Result.Device_ID = device.configuration.Description.Machine_ID;
+            Result.Device_Description = config.Description.Description;
+            Result.Device_Manufacturer = config.Description.Manufacturer;
+            Result.Device_Model = config.Description.Model;
+            Result.Device_Serial = config.Description.Serial;
+            Result.Device_ID = config.Description.Machine_ID;
 
             Result.Clicked += ColumnHeader_Clicked;
 
 
-            if (device.configuration.Device_Image != null)
+            if (config.Device_Image != null)
             {
-                BitmapImage img = TH_Global.Functions.Image_Functions.SourceFromImage(device.configuration.Device_Image);
-                Result.Device_Image = Image_Functions.SetImageSize(img, 160);
+                System.Drawing.Image img = Image_Functions.SetImageSize(config.Device_Image, 0, 160);
+                Result.Device_Image = Image_Functions.SourceFromImage(img);
             }
 
-            if (device.configuration.Manufacturer_Logo != null)
+            if (config.Manufacturer_Logo != null)
             {
-                BitmapImage img = TH_Global.Functions.Image_Functions.SourceFromImage(device.configuration.Manufacturer_Logo);
-                Result.Device_Logo = Image_Functions.SetImageSize(img, 0, 50);
+                System.Drawing.Image img = Image_Functions.SetImageSize(config.Manufacturer_Logo, 0, 50);
+                Result.Device_Logo = Image_Functions.SourceFromImage(img);
             }
-
-            //BitmapImage device_image = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Image_Path);
-            //BitmapImage device_logo = Image_Functions.GetImageFromFile(device.configuration.FileLocations.Manufacturer_Logo_Path);
-
-            
-            //Result.Device_Logo = Image_Functions.SetImageSize(device_logo, 0, 50);
 
             return Result;
         }

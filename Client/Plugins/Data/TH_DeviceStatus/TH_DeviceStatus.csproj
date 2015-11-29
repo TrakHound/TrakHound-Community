@@ -64,6 +64,10 @@
       <Name>TH_Global</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_Ping\TH_Ping.csproj">
+      <Project>{d767cb7a-7c4e-4df9-8b4c-9aa6ec8d12ec}</Project>
+      <Name>TH_Ping</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Data\TH_PlugIns_Client_Data.csproj">
       <Project>{62109ec3-e65a-493f-8120-2e4ea2ef30a1}</Project>
       <Name>TH_PlugIns_Client_Data</Name>
