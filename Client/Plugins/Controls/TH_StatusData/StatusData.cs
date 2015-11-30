@@ -13,6 +13,7 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_PlugIns_Client_Control;
+using TH_UserManagement.Management;
 
 namespace TH_StatusData
 {
@@ -117,6 +118,14 @@ namespace TH_StatusData
 
         #endregion
 
+        #region "User"
+
+        public UserConfiguration CurrentUser { get; set; }
+
+        public Database_Settings UserDatabaseSettings { get; set; }
+
+        #endregion
+
         public object RootParent { get; set; }
 
         #endregion
@@ -131,19 +140,32 @@ namespace TH_StatusData
                 {
                     if (DataEvent != null)
                     {
+                        // Get Connection Status
                         DataEvent_Data connected = GetConnectionData(device);
 
-                        Console.WriteLine(device.Description.Description + " Connected = " + connected.data02.ToString());
+                        // Send Connection Status
+                        SendDataEvent(connected);
 
-                        //// Get Connection Status
-                        SendConnectionData(connected);
 
-                        //// Get Snapshot Data
+                        // Get Snapshot Data
                         Snapshot_Return snapshotData = GetSnapShots(device);
-                        DataEvent(snapshotData.de_data);
+
+                        // Send Snapshot Data
+                        SendDataEvent(snapshotData.de_data);
 
 
+                        // Get Shift Data
+                        DataEvent_Data shiftData = GetShifts(device, snapshotData.shiftData);
+                        
+                        // Send Shift Data
+                        SendDataEvent(shiftData);
 
+
+                        // Get OEE Data
+                        DataEvent_Data oeeData = GetOEE(device, snapshotData.shiftData);
+
+                        // Send OEE Data
+                        SendDataEvent(oeeData);
                     }
                 }
             }       
@@ -179,7 +201,7 @@ namespace TH_StatusData
             return result;
         }
 
-        void SendConnectionData(DataEvent_Data de_d)
+        void SendDataEvent(DataEvent_Data de_d)
         {
             if (DataEvent != null) DataEvent(de_d);
         }
@@ -278,27 +300,32 @@ namespace TH_StatusData
                 DataTable shifts_DT = Table.Get(config.Databases, TableNames.Shifts, "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
                 if (shifts_DT != null)
                 {
-                    List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
-
-                    foreach (DataRow row in shifts_DT.Rows)
-                    {
-                        Dictionary<string, string> rowdata = new Dictionary<string, string>();
-
-                        foreach (DataColumn column in row.Table.Columns)
-                        {
-                            string key = column.ColumnName;
-                            string value = row[column].ToString();
-
-                            rowdata.Add(key, value);
-                        }
-
-                        data.Add(rowdata);
-                    }
-
                     DataEvent_Data de_d = new DataEvent_Data();
-                    de_d.id = "DeviceStatus_Shifts";
+                    de_d.id = "StatusData_ShiftData";
                     de_d.data01 = config;
-                    de_d.data02 = data;
+                    de_d.data02 = shifts_DT;
+
+                    //List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
+
+                    //foreach (DataRow row in shifts_DT.Rows)
+                    //{
+                    //    Dictionary<string, string> rowdata = new Dictionary<string, string>();
+
+                    //    foreach (DataColumn column in row.Table.Columns)
+                    //    {
+                    //        string key = column.ColumnName;
+                    //        string value = row[column].ToString();
+
+                    //        rowdata.Add(key, value);
+                    //    }
+
+                    //    data.Add(rowdata);
+                    //}
+
+                    //DataEvent_Data de_d = new DataEvent_Data();
+                    //de_d.id = "DeviceStatus_Shifts";
+                    //de_d.data01 = config;
+                    //de_d.data02 = data;
 
                     result = de_d;
                 }
@@ -371,30 +398,35 @@ namespace TH_StatusData
                     DataTable dt = Table.Get(config.Databases, TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
-                        List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
-
-                        foreach (DataRow row in dt.Rows)
-                        {
-                            Dictionary<string, string> rowdata = new Dictionary<string, string>();
-
-                            foreach (DataColumn column in row.Table.Columns)
-                            {
-                                string key = column.ColumnName;
-                                string value = row[column].ToString();
-
-                                rowdata.Add(key, value);
-                            }
-
-                            string shiftname = "";
-                            if (row.Table.Columns.Contains("shift_id")) shiftname = row["shift_id"].ToString();
-
-                            data.Add(rowdata);
-                        }
-
                         DataEvent_Data de_d = new DataEvent_Data();
-                        de_d.id = "DeviceStatus_OEE";
+                        de_d.id = "StatusData_OEE";
                         de_d.data01 = config;
-                        de_d.data02 = data;
+                        de_d.data02 = dt;
+
+                        //List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
+
+                        //foreach (DataRow row in dt.Rows)
+                        //{
+                        //    Dictionary<string, string> rowdata = new Dictionary<string, string>();
+
+                        //    foreach (DataColumn column in row.Table.Columns)
+                        //    {
+                        //        string key = column.ColumnName;
+                        //        string value = row[column].ToString();
+
+                        //        rowdata.Add(key, value);
+                        //    }
+
+                        //    string shiftname = "";
+                        //    if (row.Table.Columns.Contains("shift_id")) shiftname = row["shift_id"].ToString();
+
+                        //    data.Add(rowdata);
+                        //}
+
+                        //DataEvent_Data de_d = new DataEvent_Data();
+                        //de_d.id = "DeviceStatus_OEE";
+                        //de_d.data01 = config;
+                        //de_d.data02 = data;
 
                         result = de_d;
                     }

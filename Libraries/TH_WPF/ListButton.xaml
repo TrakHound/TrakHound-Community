@@ -6,7 +6,6 @@
              mc:Ignorable="d" 
              
              MinHeight="40"
-             MinWidth="150"
              
              Background="#00000000"
              >
@@ -208,7 +207,7 @@
                 <Setter Property="Foreground" Value="#fff"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
+                    <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
                     <!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
@@ -235,9 +234,12 @@
                 <Setter Property="Foreground" Value="#00aaff"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
+                    <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>
+                    <!--<DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>-->
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>

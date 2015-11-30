@@ -28,6 +28,8 @@
         <Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="#FF19B419"/>
+                <!--<Setter Property="Background" Value="#00ff00"/>-->
                 <Style.Triggers>
 
                     <DataTrigger Binding="{Binding Collapsed}" Value="true">
@@ -80,6 +82,10 @@
                         </DataTrigger.ExitActions>
                     </DataTrigger>
 
+                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                        <Setter Property="Background" Value="Red"/>
+                    </DataTrigger>
+
                 </Style.Triggers>
             </Style>
         </Grid.Style>
@@ -94,6 +100,26 @@
         </Grid.RenderTransform>
 
         <Grid>
+            <!--<Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Background" Value="#FF19B419"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Alert}" Value="true">
+                            <Setter Property="Background" Value="Red"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>-->
+
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#18000000" Offset="0"/>
+                    <GradientStop Color="#11ffffff" Offset="0.2"/>
+                    <GradientStop Color="#11ffffff" Offset="0.8"/>
+                    <GradientStop Color="#22000000" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+
             <Grid.RowDefinitions>
                 
                 <!--Updated Timestamp-->
@@ -114,8 +140,12 @@
                 <RowDefinition >
                     <RowDefinition.Style>
                         <Style TargetType="RowDefinition">
-                            <Setter Property="Height" Value="3*"/>
+                            <Setter Property="Height" Value="*"/>
+                            <!--<Setter Property="Height" Value="3*"/>-->
                             <Style.Triggers>
+                                <DataTrigger Binding="{Binding Alert}" Value="true">
+                                    <Setter Property="Height" Value="auto"/>
+                                </DataTrigger>
                                 <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
                                     <Setter Property="Height" Value="*"/>
                                 </DataTrigger>
@@ -127,6 +157,26 @@
                     </RowDefinition.Style>
                 </RowDefinition>
                         
+                <!--Device Image-->
+                <RowDefinition >
+                    <RowDefinition.Style>
+                        <Style TargetType="RowDefinition">
+                            <Setter Property="Height" Value="auto"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Alert}" Value="true">
+                                    <Setter Property="Height" Value="*"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
+                                    <Setter Property="Height" Value="0"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Height" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </RowDefinition.Style>
+                </RowDefinition>
+
                 <!--Description-->
                 <RowDefinition>
                     <RowDefinition.Style>
@@ -140,16 +190,13 @@
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                
-                <!--Device Image-->
+
+                <!--Device Info-->
                 <RowDefinition >
                     <RowDefinition.Style>
                         <Style TargetType="RowDefinition">
-                            <Setter Property="Height" Value="7*"/>
+                            <Setter Property="Height" Value="auto"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
-                                    <Setter Property="Height" Value="auto"/>
-                                </DataTrigger>
                                 <DataTrigger Binding="{Binding Collapsed}" Value="true">
                                     <Setter Property="Height" Value="0"/>
                                 </DataTrigger>
@@ -157,7 +204,7 @@
                         </Style>
                     </RowDefinition.Style>
                 </RowDefinition>
-                
+
                 <!--Break Indicator-->
                 <RowDefinition Height="auto" />
                 
@@ -188,14 +235,18 @@
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Visible"/>
-                        <Setter Property="Opacity" Value="0.75"/>
+                        <!--<Setter Property="Opacity" Value="0.75"/>-->
+                        <Setter Property="Opacity" Value="0.95"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding MouseOver}" Value="True">
-                                <Setter Property="Opacity" Value="0.75"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="True">
                                 <Setter Property="Opacity" Value="1.0"/>
                             </DataTrigger>
+                            <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
+                                <Setter Property="Opacity" Value="0.75"/>
+                            </DataTrigger>-->
+                            <!--<DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Opacity" Value="1.0"/>
+                            </DataTrigger>-->
                             <DataTrigger Binding="{Binding Connected}" Value="false">
                                 <Setter Property="Opacity" Value="0.3"/>
                             </DataTrigger>
@@ -210,41 +261,45 @@
                 </Image.Style>
             </Image>
 
-            <!--Device Description-->
-            <TextBlock Grid.Row="2" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5,10,0" TextAlignment="Center" VerticalAlignment="Center" Foreground="#fff"/>
-
-            <!--Device Image and Info-->
-            <Grid Grid.Row="3">
-
-                <!--Device Image-->
-                <Image Source="{Binding Device_Image}" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top" MaxWidth="160">
-                    <Image.Effect>
-                        <DropShadowEffect Direction="225" Color="#33000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
-                    </Image.Effect>
-                    <Image.Style>
-                        <Style TargetType="Image">
-                            <Setter Property="Opacity" Value="0.75"/>
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Minimized}" Value="false">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding MouseOver}" Value="True">
+            <!--Device Image-->
+            <Image Grid.Row="2" Source="{Binding Device_Image}" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top" MaxWidth="160">
+                <Image.Effect>
+                    <DropShadowEffect Direction="225" Color="#33000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
+                </Image.Effect>
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <!--<Setter Property="Opacity" Value="0.75"/>-->
+                        <Setter Property="Opacity" Value="0.95"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Minimized}" Value="false">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding MouseOver}" Value="True">
+                                <Setter Property="Opacity" Value="1.0"/>
+                            </DataTrigger>
+                            <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
                                     <Setter Property="Opacity" Value="0.75"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                </DataTrigger>-->
+                            <!--<DataTrigger Binding="{Binding IsSelected}" Value="True">
                                     <Setter Property="Opacity" Value="1.0"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Connected}" Value="false">
-                                    <Setter Property="Opacity" Value="0.3"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Image.Style>
-                </Image>
+                                </DataTrigger>-->
+                            <DataTrigger Binding="{Binding Connected}" Value="false">
+                                <Setter Property="Opacity" Value="0.3"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+            <!--Device Description-->
+            <TextBlock Grid.Row="3" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5,10,0" TextAlignment="Center" VerticalAlignment="Center" Foreground="#fff"/>
+
+            <!--Device Info-->
+            <Grid Grid.Row="4">
 
                 <!--Device Info-->
                 <StackPanel Margin="10" VerticalAlignment="Bottom">
@@ -258,6 +313,8 @@
                             </Style.Triggers>
                         </Style>
                     </StackPanel.Style>
+
+                    <TextBlock Text="{Binding Device_Manufacturer}" FontSize="8pt" Foreground="#aaffffff"/>
 
                     <TextBlock Text="{Binding Device_Model}" FontSize="8pt" Foreground="#aaffffff"/>
 
@@ -285,7 +342,7 @@
             </Grid>
 
             <!--Break Indicator-->
-            <Grid Grid.Row="4" Background="#33ffffff">
+            <Grid Grid.Row="5" Background="#33ffffff">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -367,7 +424,7 @@
             </Grid>
 
             <!--Alert Indicator-->
-            <Grid Grid.Row="5" Background="Red">
+            <Grid Grid.Row="6">
                 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
@@ -429,7 +486,7 @@
                 </Grid.Style>
 
                 <!--Seperator-->
-                <Rectangle Grid.Row="0" Fill="#66ffffff" Height="1" />
+                <!--<Rectangle Grid.Row="0" Fill="#66ffffff" Height="1" />-->
                                
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>

@@ -264,7 +264,7 @@ namespace TH_ShiftTable.ConfigurationPage
 
             foreach (Segment segment in segments)
             {
-                string segadr = adr + "/" + TH_Global.Formatting.UppercaseFirst(segment.type) + "||" + segment.id.ToString("00");
+                string segadr = adr + "/Segments/" + TH_Global.Formatting.UppercaseFirst(segment.type) + "||" + segment.id.ToString("00");
 
                 string segattr = "";
                 segattr += "id||" + segment.id.ToString("00") + ";";

@@ -18,6 +18,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Threading;
+
+using TH_Configuration;
+using TH_UserManagement.Management;
+
 namespace TH_DeviceCompare.Components
 {
     /// <summary>
@@ -34,6 +39,8 @@ namespace TH_DeviceCompare.Components
         public Column column;
 
         public int Index;
+
+        public Database_Settings userDatabaseSettings;
 
         public bool Connected
         {
@@ -253,6 +260,150 @@ namespace TH_DeviceCompare.Components
 
         #endregion
 
+
+        #region "Device Logo"
+
+        public bool ManufacturerLogoLoading
+        {
+            get { return (bool)GetValue(ManufacturerLogoLoadingProperty); }
+            set { SetValue(ManufacturerLogoLoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty ManufacturerLogoLoadingProperty =
+            DependencyProperty.Register("ManufacturerLogoLoading", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
+
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+
+        Thread LoadManufacturerLogo_THREAD;
+
+        public void LoadManufacturerLogo(string filename)
+        {
+            ManufacturerLogoLoading = true;
+
+            if (LoadManufacturerLogo_THREAD != null) LoadManufacturerLogo_THREAD.Abort();
+
+            LoadManufacturerLogo_THREAD = new Thread(new ParameterizedThreadStart(LoadManufacturerLogo_Worker));
+            LoadManufacturerLogo_THREAD.Start(filename);
+        }
+
+        void LoadManufacturerLogo_Worker(object o)
+        {
+            if (o != null)
+            {
+                string filename = o.ToString();
+
+                System.Drawing.Image img = Images.GetImage(filename, userDatabaseSettings);
+
+                this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadManufacturerLogo_GUI), priority, new object[] { img });
+            }
+            else this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadManufacturerLogo_GUI), priority, new object[] { null });
+        }
+
+        void LoadManufacturerLogo_GUI(System.Drawing.Image img)
+        {
+            if (img != null)
+            {
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+
+                IntPtr bmpPt = bmp.GetHbitmap();
+                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                bmpSource.Freeze();
+
+                if (bmpSource.PixelWidth > bmpSource.PixelHeight)
+                {
+                    Device_Logo = TH_WPF.Image_Functions.SetImageSize(bmpSource, 180);
+                }
+                else
+                {
+                    Device_Logo = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 80);
+                }
+
+                //ManufacturerLogoSet = true;
+            }
+            else
+            {
+                Device_Logo = null;
+                //ManufacturerLogoSet = false;
+            }
+
+            ManufacturerLogoLoading = false;
+        }
+
+        #endregion
+
+        #region "Device Image"
+
+        public bool DeviceImageLoading
+        {
+            get { return (bool)GetValue(DeviceImageLoadingProperty); }
+            set { SetValue(DeviceImageLoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceImageLoadingProperty =
+            DependencyProperty.Register("DeviceImageLoading", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
+        
+
+        Thread LoadDeviceImage_THREAD;
+
+        public void LoadDeviceImage(string filename)
+        {
+            ManufacturerLogoLoading = true;
+
+            if (LoadDeviceImage_THREAD != null) LoadDeviceImage_THREAD.Abort();
+
+            LoadDeviceImage_THREAD = new Thread(new ParameterizedThreadStart(LoadDeviceImage_Worker));
+            LoadDeviceImage_THREAD.Start(filename);
+        }
+
+        void LoadDeviceImage_Worker(object o)
+        {
+            if (o != null)
+            {
+                string filename = o.ToString();
+
+                System.Drawing.Image img = Images.GetImage(filename, userDatabaseSettings);
+
+                this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadDeviceImage_GUI), priority, new object[] { img });
+            }
+            else this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadDeviceImage_GUI), priority, new object[] { null });
+        }
+
+        void LoadDeviceImage_GUI(System.Drawing.Image img)
+        {
+            if (img != null)
+            {
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+
+                IntPtr bmpPt = bmp.GetHbitmap();
+                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                bmpSource.Freeze();
+
+                if (bmpSource.PixelWidth > bmpSource.PixelHeight)
+                {
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 180);
+                }
+                else
+                {
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 80);
+                }
+
+                //ManufacturerLogoSet = true;
+            }
+            else
+            {
+                Device_Image = null;
+                //ManufacturerLogoSet = false;
+            }
+
+            ManufacturerLogoLoading = false;
+        }
+
+        #endregion
 
     }
 }

@@ -8,6 +8,7 @@ using System.ComponentModel.Composition;
 using System.Windows.Media;
 
 using TH_Configuration;
+using TH_UserManagement.Management;
 
 namespace TH_PlugIns_Client_Control
 {
@@ -177,6 +178,14 @@ namespace TH_PlugIns_Client_Control
         /// (use if Plugin has parameters or options for how it operates or looks)
         /// </summary>
         OptionsPage Options { get; set; }
+
+        #endregion
+
+        #region "User"
+
+        UserConfiguration CurrentUser { get; set; }
+
+        Database_Settings UserDatabaseSettings { get; set; }
 
         #endregion
 

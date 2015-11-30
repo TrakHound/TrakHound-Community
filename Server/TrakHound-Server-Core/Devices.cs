@@ -30,7 +30,7 @@ namespace TrakHound_Server_Core
 
             if (currentuser != null)
             {
-                configurations = Configurations.GetConfigurationsForUser(currentuser, false, userDatabaseSettings);
+                configurations = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else

@@ -125,7 +125,21 @@ namespace TH_DeviceCompare
 
         public ImageSource Logo { get; set; }
 
-        public bool Alert { get; set; }
+        bool alert;
+        public bool Alert 
+        {
+            get { return alert; }
+            set
+            {
+                alert = value;
+
+                if (ComparisonGroup != null)
+                {
+                    if (ComparisonGroup.header != null) ComparisonGroup.header.Alert = alert;
+                    if (ComparisonGroup.column != null) ComparisonGroup.column.Alert = alert;
+                }
+            }
+        }
         public bool Break { get; set; }
         public int Index { get; set; }
         public bool IsConnected { get; set; }

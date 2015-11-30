@@ -131,6 +131,10 @@
       <Name>TH_Styles</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
+      <Name>TH_UserManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>

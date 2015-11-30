@@ -17,7 +17,7 @@
              Margin="0,10"
              
              >
-    
+
     <UserControl.Resources>
 
         <ResourceDictionary>
@@ -45,12 +45,12 @@
                                     <ColumnDefinition Width="15" />
                                 </Grid.ColumnDefinitions>
 
-                                <Ellipse Stroke="#33ffffff" Fill="{x:Null}" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
-                                <Ellipse Stroke="#33ffffff" Margin="10" Fill="{x:Null}" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+                                <!--<Ellipse Stroke="#66ffffff" Fill="{x:Null}" Grid.ColumnSpan="3" Grid.RowSpan="3"/>
+                                <Ellipse Stroke="#66ffffff" Margin="10" Fill="{x:Null}" Grid.ColumnSpan="3" Grid.RowSpan="3"/>-->
 
-                                <local:Arc StrokeThickness="10" Stroke="#11ffffff" Margin="0" Grid.ColumnSpan="3" Grid.RowSpan="3" StartAngle="0" EndAngle="359.99999"/>
+                                <local:Arc StrokeThickness="10" Stroke="#22ffffff" Margin="0" Grid.ColumnSpan="3" Grid.RowSpan="3" StartAngle="0" EndAngle="359.99999"/>
 
-                                <local:Arc StrokeThickness="10" Stroke="#aaffffff" Margin="0" Grid.ColumnSpan="3" Grid.RowSpan="3">
+                                <local:Arc StrokeThickness="10" Stroke="#fff" Margin="0" Grid.ColumnSpan="3" Grid.RowSpan="3">
                                     <local:Arc.StartAngle>
                                         <MultiBinding Converter="{StaticResource ProgressConverter}">
                                             <Binding Path="Minimum" RelativeSource="{RelativeSource TemplatedParent}"/>
@@ -67,16 +67,16 @@
 
                                 <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" >
 
-                                    <TextBlock Text="Time Left" FontSize="6pt" FontWeight="Normal" Foreground="#33ffffff" HorizontalAlignment="Center" />
-                                    
+                                    <TextBlock Text="Time Left" FontSize="6pt" FontWeight="Normal" Foreground="#88ffffff" HorizontalAlignment="Center" />
+
                                     <TextBlock  Text="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource FriendlyTimeConverter}}"
-                                        Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                        Foreground="#fff" VerticalAlignment="Center" HorizontalAlignment="Center"
                                         FontSize="14pt"
                                         FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"
                                         />
-                                    
+
                                     <TextBlock  Text="{Binding Maximum, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource FriendlyTimeConverter}}"
-                                        Foreground="#66ffffff" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                        Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Center"
                                         FontSize="12pt"
                                         FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"
                                         />
@@ -140,28 +140,28 @@
                 <StackPanel HorizontalAlignment="Right">
 
                     <!--Month-->
-                    <TextBlock Text="{Binding Month}" FontSize="8pt" Foreground="#33ffffff" HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Month}" FontSize="8pt" Foreground="#88ffffff" HorizontalAlignment="Right"/>
 
                     <!--Day-->
-                    <TextBlock Text="{Binding Day}" FontSize="24pt" Foreground="#33ffffff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    <TextBlock Text="{Binding Day}" FontSize="24pt" Foreground="#88ffffff" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
 
                 </StackPanel>
-                
-                
+
+
                 <StackPanel>
 
                     <!--Shift Name-->
-                    <TextBlock Text="{Binding Shift_Name}" FontSize="14pt" Foreground="#aaffffff" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding Shift_Name}" FontSize="14pt" Foreground="#fff" VerticalAlignment="Top" HorizontalAlignment="Left" />
 
                     <!--Shift Times-->
-                    <TextBlock Text="{Binding Shift_Times}" FontSize="8pt" Foreground="#33ffffff" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <TextBlock Text="{Binding Shift_Times}" FontSize="8pt" Foreground="#aaffffff" VerticalAlignment="Top" HorizontalAlignment="Left" />
 
                 </StackPanel>
 
             </Grid>
 
             <Rectangle Grid.Row="1" Height="1" Margin="10,5,10,10" Fill="#11ffffff" />
-            
+
             <!--Shift Progress & Segment Indicators-->
             <Grid Grid.Row="2" Margin="10,0">
                 <Grid.ColumnDefinitions>
@@ -175,15 +175,15 @@
                     <ItemsControl ItemsSource="{Binding SegmentIndicators}"/>
 
                 </StackPanel>
-                
+
                 <!--Shift Progress-->
                 <ProgressBar Grid.Column="1" Style="{StaticResource ProgressBarStyle}" Height="100" Width="100" Maximum="{Binding Bar_Maximum}" Minimum="0" Value="{Binding Bar_Value}" Margin="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             </Grid>
 
-            
+
         </Grid>
-        
+
     </Grid>
-    
+
 </UserControl>

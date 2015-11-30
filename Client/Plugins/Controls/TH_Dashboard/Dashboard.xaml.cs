@@ -26,6 +26,7 @@ using System.ComponentModel.Composition.Hosting;
 using TH_Configuration;
 using TH_PlugIns_Client_Control;
 //using TH_Device_Client;
+using TH_UserManagement.Management;
 using TH_WPF;
 
 namespace TH_Dashboard
@@ -160,6 +161,15 @@ namespace TH_Dashboard
 
         #endregion
 
+        #region "User"
+
+        public UserConfiguration CurrentUser { get; set; }
+
+        public Database_Settings UserDatabaseSettings { get; set; }
+
+        #endregion
+
+
         public object RootParent { get; set; }
 
         #endregion
@@ -220,7 +230,8 @@ namespace TH_Dashboard
                         catch { }
 
                         ListButton lb = new ListButton();
-                        lb.Text = config.name;
+                        //lb.Text = config.name;
+                        lb.ToolTip = config.name;
                         lb.Image = CP.Image;
                         lb.Selected += lb_Selected;
                         lb.DataObject = CP;
@@ -306,20 +317,24 @@ namespace TH_Dashboard
                         else oLB.IsSelected = false;
                     }
 
-                    foreach (PlugInConfigurationCategory category in SubCategories)
+                    Control_PlugIn cp = lb.DataObject as Control_PlugIn;
+                    if (cp != null)
                     {
-                        PlugInConfiguration config = category.PlugInConfigurations.Find(x => x.name.ToUpper() == lb.Text.ToUpper());
-                        if (config != null)
+                        foreach (PlugInConfigurationCategory category in SubCategories)
                         {
-                            currentPage = config;
-                            break;
+                            PlugInConfiguration config = category.PlugInConfigurations.Find(x => x.name.ToUpper() == cp.Title.ToUpper());
+                            if (config != null)
+                            {
+                                currentPage = config;
+                                break;
+                            }
                         }
-                    }
 
-                    UserControl childPlugIn = lb.DataObject as UserControl;
+                        UserControl childPlugIn = lb.DataObject as UserControl;
 
-                    Content_GRID.Children.Clear();
-                    Content_GRID.Children.Add(childPlugIn);
+                        Content_GRID.Children.Clear();
+                        Content_GRID.Children.Add(childPlugIn);
+                    }                
                 }
             }
         }

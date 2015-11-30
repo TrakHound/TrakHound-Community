@@ -62,6 +62,8 @@ namespace TH_DeviceCompare.Controls
 
 
         public int id { get; set; }
+
+        public SegmentInfo Segment { get; set; }
         
 
         public string SegmentId

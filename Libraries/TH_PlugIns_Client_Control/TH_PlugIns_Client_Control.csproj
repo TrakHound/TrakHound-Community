@@ -58,9 +58,9 @@
       <Name>TH_Configuration</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\TH_Device_Client\TH_Device_Client.csproj">
-      <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
-      <Name>TH_Device_Client</Name>
+    <ProjectReference Include="..\TH_UserManagement\TH_UserManagement.csproj">
+      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
+      <Name>TH_UserManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

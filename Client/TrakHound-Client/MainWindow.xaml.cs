@@ -81,7 +81,7 @@ namespace TrakHound_Client
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User");
             ReadUserManagementSettings();
-            devicemangager.userDatabaseSettings = userDatabaseSettings;
+            devicemangager.userDatabaseSettings = UserDatabaseSettings;
 
             LoginMenu.rememberMeType = RememberMeType.Client;
             LoginMenu.LoadRememberMe();
@@ -1121,11 +1121,13 @@ namespace TrakHound_Client
                 LoadDevices();
                 //ReadConfigurations();
 
+                UpdatePlugInUser(currentuser, UserDatabaseSettings);
+
                 if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
         }
 
-        public Database_Settings userDatabaseSettings;
+        public Database_Settings UserDatabaseSettings;
 
         void ReadUserManagementSettings()
         {
@@ -1148,8 +1150,8 @@ namespace TrakHound_Client
             {
                 if (userSettings.Databases.Databases.Count > 0)
                 {
-                    userDatabaseSettings = userSettings.Databases;
-                    Global.Initialize(userDatabaseSettings);
+                    UserDatabaseSettings = userSettings.Databases;
+                    Global.Initialize(UserDatabaseSettings);
                 }
             }
         }
@@ -1746,6 +1748,27 @@ namespace TrakHound_Client
             cp.Devices = Devices;
         }
 
+
+        void UpdatePlugInUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        {
+            if (PagePlugIns != null)
+            {
+                foreach (Lazy<Control_PlugIn> lcp in PagePlugIns.ToList())
+                {
+                    Control_PlugIn cp = lcp.Value;
+
+                    this.Dispatcher.BeginInvoke(new Action<Control_PlugIn, UserConfiguration, Database_Settings>(UpdatePlugInUser), Priority, new object[] { cp, userConfig, userDatabaseSettings });
+                }
+            }
+        }
+
+        void UpdatePlugInUser(Control_PlugIn cp, UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        {
+            cp.UserDatabaseSettings = userDatabaseSettings;
+            cp.CurrentUser = userConfig;
+           
+        }
+
         #endregion
 
         #endregion
@@ -1783,7 +1806,7 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
-                configs = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                configs = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else

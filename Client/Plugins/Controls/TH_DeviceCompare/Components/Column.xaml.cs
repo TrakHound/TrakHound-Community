@@ -72,6 +72,28 @@ namespace TH_DeviceCompare.Components
         public static readonly DependencyProperty LoadingProperty =
             DependencyProperty.Register("Loading", typeof(bool), typeof(Column), new PropertyMetadata(true));
 
+
+
+        public bool Alert
+        {
+            get { return (bool)GetValue(AlertProperty); }
+            set { SetValue(AlertProperty, value); }
+        }
+
+        public static readonly DependencyProperty AlertProperty =
+            DependencyProperty.Register("Alert", typeof(bool), typeof(Column), new PropertyMetadata(false));
+
+
+        public bool Idle
+        {
+            get { return (bool)GetValue(IdleProperty); }
+            set { SetValue(IdleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IdleProperty =
+            DependencyProperty.Register("Idle", typeof(bool), typeof(Column), new PropertyMetadata(false));
+
+        
         
 
         ObservableCollection<Cell> cells;

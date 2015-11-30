@@ -60,7 +60,7 @@ namespace TH_OEE.ConfigurationPage
 
         public void SaveConfiguration(DataTable dt)
         {
-            Table_Functions.UpdateTableValue(SelectedAvailabilityEvent.ToString(), "/OEE/Availability/Event", dt);
+            Table_Functions.UpdateTableValue(SelectedAvailabilityEvent.ToString().Replace(' ','_'), "/OEE/Availability/Event", dt);
 
             Table_Functions.UpdateTableValue(SelectedAvailabilityValue.ToString(), "/OEE/Availability/Value", dt);
 

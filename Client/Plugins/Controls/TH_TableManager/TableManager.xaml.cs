@@ -28,6 +28,7 @@ using TH_Database;
 using TH_Device_Client;
 using TH_Global;
 using TH_PlugIns_Client_Control;
+using TH_UserManagement.Management;
 using TH_WPF;
 
 using TH_TableManager.Controls;
@@ -213,6 +214,14 @@ namespace TH_TableManager
         #region "Options"
 
         public OptionsPage Options { get; set; }
+
+        #endregion
+
+        #region "User"
+
+        public UserConfiguration CurrentUser { get; set; }
+
+        public Database_Settings UserDatabaseSettings { get; set; }
 
         #endregion
 

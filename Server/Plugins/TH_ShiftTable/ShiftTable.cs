@@ -51,7 +51,6 @@ namespace TH_ShiftTable
 
                 rowInfos = GetExistingValues();
             }
-   
         }
 
 

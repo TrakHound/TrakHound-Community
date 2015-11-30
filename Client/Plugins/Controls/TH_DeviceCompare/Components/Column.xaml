@@ -63,11 +63,12 @@
                 </Style.Triggers>
             </Style>
         </Grid.Style>
-        
-        <Grid>
+
+        <Grid >
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Opacity" Value="1.0"/>
+                    <!--<Setter Property="Background" Value="#FF199319"/>-->
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Loading}" Value="true">
                             <DataTrigger.EnterActions>
@@ -85,6 +86,9 @@
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
                         </DataTrigger>
+                        <!--<DataTrigger Binding="{Binding Alert}" Value="true">
+                            <Setter Property="Background" Value="#FFC32121"/>
+                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
