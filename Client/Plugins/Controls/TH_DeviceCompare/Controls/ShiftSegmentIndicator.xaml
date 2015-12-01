@@ -51,13 +51,13 @@
             <!--Time Bar-->
             <Grid Grid.Column="1" Width="{Binding ProgressWidth}" HorizontalAlignment="Left">
 
-                <ProgressBar Height="5" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Margin="5,0" Background="#33000000" BorderThickness="0" VerticalAlignment="Center" >
+                <ProgressBar Height="6" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Margin="5,0" Background="#22ffffff" BorderThickness="0" VerticalAlignment="Center" >
                     <ProgressBar.Style>
                         <Style TargetType="ProgressBar">
-                            <Setter Property="Foreground" Value="#33ffffff"/>
+                            <Setter Property="Foreground" Value="#55ffffff"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding CurrentShift}" Value="true">
-                                    <Setter Property="Foreground" Value="#aaffffff"/>
+                                    <Setter Property="Foreground" Value="#fff"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

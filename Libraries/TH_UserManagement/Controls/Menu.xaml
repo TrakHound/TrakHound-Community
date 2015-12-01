@@ -602,7 +602,7 @@
                             <TextBlock Text="{Binding EmailAddress}" FontSize="10pt" Foreground="#888" Margin="0,5"/>
 
                             <!--Manage Devices-->
-                            <th_wpf:Button_01 Grid.Column="1" Height="40" Text="Manage Devices" PreviewMouseDown="ManageDevices_PreviewMouseDown" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" AlternateStyle="True"/>
+                            <!--<th_wpf:Button_01 Grid.Column="1" Height="40" Text="Manage Devices" PreviewMouseDown="ManageDevices_PreviewMouseDown" Margin="0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" AlternateStyle="True"/>-->
 
                         </StackPanel>
 

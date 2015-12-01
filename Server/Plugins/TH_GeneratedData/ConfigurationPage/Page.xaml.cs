@@ -674,6 +674,19 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 attr += "link||" + link + ";";
 
+                if (t.modifier != null)
+                {
+                    switch (t.modifier)
+                    {
+                        case "Not Equal To": attr += "modifier||" + "not" + ";"; break;
+                        case "Greater Than": attr += "modifier||" + "greater_than" + ";"; break;
+                        case "Less Than": attr += "modifier||" + "less_than" + ";"; break;
+                        case "Contains": attr += "modifier||" + "contains" + ";"; break;
+                        case "Contains Match Case": attr += "modifier||" + "contains_match_case" + ";"; break;
+                        case "Contains Whole Word": attr += "modifier||" + "contains_whole_word" + ";"; break;
+                        case "Contains Whole Word Match Case": attr += "modifier||" + "contains_whole_word_match_case" + ";"; break;
+                    }
+                }
 
                 attr += "value||" + t.value + ";";
 
@@ -1148,7 +1161,7 @@ namespace TH_GeneratedData.ConfigurationPage
                                 val.ParentValue.triggers.Add(t);
 
                                 Controls.Trigger tr = CreateTrigger(t, val.ParentValue, val.ParentEvent);
-                                tr.SelectedModifier = "Equal To";
+                                tr.modifier_COMBO.SelectedItem = "Equal To";
                                 val.Triggers.Add(tr);
                             }
                         }
@@ -1198,7 +1211,7 @@ namespace TH_GeneratedData.ConfigurationPage
             result.link_COMBO.Text = t.link;
 
             //result.SelectedLink = t.link;
-            result.SelectedModifier = t.modifier;
+            result.modifier_COMBO.SelectedItem = t.modifier;
 
             result.Value = t.value;
 

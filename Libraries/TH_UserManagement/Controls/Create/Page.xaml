@@ -14,19 +14,20 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.Resources>
                 <Style TargetType="th_wpf:TextBox">
-                    <Setter Property="Margin" Value="0,5"/>
+                    <Setter Property="Margin" Value="0,10"/>
                 </Style>
                 <Style TargetType="th_wpf:PasswordBox">
-                    <Setter Property="Margin" Value="0,5"/>
+                    <Setter Property="Margin" Value="0,10"/>
                 </Style>
             </Grid.Resources>
 
             <!--User Configuration-->
-            <StackPanel Width="315" HorizontalAlignment="Left" Margin="0,0,0,0">
+            <StackPanel Width="315" HorizontalAlignment="Left" Margin="0,0,40,0">
 
                 <!--Name-->
                 <Grid Margin="0,0,0,5">
@@ -49,113 +50,160 @@
                 </Grid>
 
 
-                <!--Choose your username-->
-                <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Choose your username" Instructions="Username" TextChanged="username_TXT_TextChanged" Required="True"/>
-
-                <!--Verify Username-->
-                <Grid Margin="10,0,10,10">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Username}" Value="">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-
-                    <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="Red"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
-                                        <Setter Property="Foreground" Value="Green"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-                </Grid>
-
-
-                <!--Password-->
-                <th_wpf:PasswordBox x:Name="password_TXT" Title="Create a password" PasswordChanged="password_TXT_PasswordChanged" Required="True"/>
-
-                <!--Verify Password -->
-                <Grid Margin="10,0,10,10">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-
-                    <!--Too Short-->
-                    <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
+                <Grid>
+                    
+                    <!--Logged Out-->
+                    <StackPanel>
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PasswordShort}" Value="true">
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        </StackPanel.Style>
 
-                    <!--Too Long-->
-                    <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PasswordLong}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        <!--Choose your username-->
+                        <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Choose your username" Instructions="Username" TextChanged="username_TXT_TextChanged" Required="True"/>
 
-                </Grid>
-
-
-                <!--Confirm Password-->
-                <th_wpf:PasswordBox x:Name="confirmpassword_TXT" Title="Confirm your password" PasswordChanged="confirmpassword_TXT_PasswordChanged" Required="True"/>
-
-                <!--Verify Confirm Password -->
-                <Grid Margin="10,0,10,10">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                        <Condition Binding="{Binding PasswordVerified}" Value="false"/>
-                                    </MultiDataTrigger.Conditions>
-
+                        <!--Verify Username-->
+                        <Grid Margin="10,0,10,10">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Username}" Value="">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
 
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+                            <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="Red"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
+                                                <Setter Property="Foreground" Value="Green"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
 
-                    <!--Don't Match-->
-                    <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
+
+                        <!--Password-->
+                        <th_wpf:PasswordBox x:Name="password_TXT" Title="Create a password" PasswordChanged="password_TXT_PasswordChanged" Required="True"/>
+
+                        <!--Verify Password -->
+                        <Grid Margin="10,0,10,10">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <!--Too Short-->
+                            <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PasswordShort}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <!--Too Long-->
+                            <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PasswordLong}" Value="true">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                        </Grid>
+
+
+                        <!--Confirm Password-->
+                        <th_wpf:PasswordBox x:Name="confirmpassword_TXT" Title="Confirm your password" PasswordChanged="confirmpassword_TXT_PasswordChanged" Required="True"/>
+
+                        <!--Verify Confirm Password -->
+                        <Grid Margin="10,0,10,10">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                                <Condition Binding="{Binding PasswordVerified}" Value="false"/>
+                                            </MultiDataTrigger.Conditions>
+
+                                            <Setter Property="Visibility" Value="Visible"/>
+
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <!--Don't Match-->
+                            <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
+
+                        </Grid>
+
+
+                    </StackPanel>
+
+                    <!--Logged In-->
+                    <StackPanel>
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <!--Choose your username-->
+                        <StackPanel Margin="0,20,0,10">
+                            <TextBlock Text="Username" Foreground="#aaa" FontSize="10pt" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="#0080ff"/>
+                        </StackPanel>
+
+                        <!--Password-->
+                        <StackPanel Margin="0,0,0,20">
+                            <th_wpf:Button_01 Grid.Column="1" Text="Change Password" AlternateStyle="True" HorizontalAlignment="Left" Height="40"/>
+                        </StackPanel>
+
+                    </StackPanel>
+
+
 
                 </Grid>
-
-
+                
 
                 <!--Company-->
                 <th_wpf:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company" TextChanged="TXT_TextChanged"/>
@@ -208,12 +256,27 @@
                 <!--Zip Code-->
                 <th_wpf:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code" TextChanged="TXT_TextChanged"/>
 
+            </StackPanel>
 
-                <!--Create Account-->
-                <Grid HorizontalAlignment="Right" Margin="0,20,15,200">
-                    <Grid.Style>
+            <!--Side Panel-->
+            <StackPanel Grid.Column="1">
+
+                <th_wpf:ImageBox Title="Profile Image"
+                                 Height="200" 
+                                 Width="200"
+                                 UploadClicked="ProfileImage_UploadClicked" 
+                                 ClearClicked="ProfileImage_ClearClicked"
+                                 Image="{Binding ProfileImage}"
+                                 ImageSet="{Binding ProfileImageSet}"
+                                 Loading="{Binding ProfileImageLoading}"
+                                 />
+
+
+                <!--Apply Button-->
+                <Grid Margin="10,50,10,0">
+                    <!--<Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="IsEnabled" Value="false"/>
+                            --><!--<Setter Property="IsEnabled" Value="false"/>--><!--
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
@@ -223,41 +286,69 @@
                                         <Condition Binding="{Binding PasswordVerified}" Value="true"/>
                                     </MultiDataTrigger.Conditions>
 
-                                    <Setter Property="IsEnabled" Value="true"/>
+                                    --><!--<Setter Property="IsEnabled" Value="true"/>--><!--
 
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
+                    </Grid.Style>-->
 
-                    <th_wpf:Button_01 AlternateStyle="True" Text="Create Account" Clicked="CreateAccount_Clicked" Height="40"/>
+                    <th_wpf:Button_01 AlternateStyle="True" Clicked="Apply_Clicked" Height="40">
+                        <th_wpf:Button_01.Style>
+                            <Style TargetType="th_wpf:Button_01">
+                                <Setter Property="Text" Value="Apply Changes"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Text" Value="Create Account"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button_01.Style>
+                    </th_wpf:Button_01>
 
                     <!--Disabled Shade-->
                     <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="Background" Value="#88000000"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding UsernameVerified}" Value="true"/>
-                                            <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                            <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                            <Condition Binding="{Binding PasswordVerified}" Value="true"/>
-                                        </MultiDataTrigger.Conditions>
-
-                                        <Setter Property="Background" Value="{x:Null}"/>
-
-                                    </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Background" Value="#88000000"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding UsernameVerified}" Value="true"/>
+                                                <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                                <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                                <Condition Binding="{Binding PasswordVerified}" Value="true"/>
+                                            </MultiDataTrigger.Conditions>
+
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+
+                                        </MultiDataTrigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                        </Grid>
+                        
                     </Grid>
 
                 </Grid>
 
             </StackPanel>
-
+            
+            
         </Grid>
 
     </ScrollViewer>

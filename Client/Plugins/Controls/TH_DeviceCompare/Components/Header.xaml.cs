@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Threading;
+using System.Windows.Media.Animation;
 
 using TH_Configuration;
 using TH_UserManagement.Management;
@@ -156,7 +157,29 @@ namespace TH_DeviceCompare.Components
         public static readonly DependencyProperty Device_IDProperty =
             DependencyProperty.Register("Device_ID", typeof(string), typeof(Header), new PropertyMetadata(""));
 
-        
+
+
+
+
+        public bool Production
+        {
+            get { return (bool)GetValue(ProductionProperty); }
+            set { SetValue(ProductionProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProductionProperty =
+            DependencyProperty.Register("Production", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
+
+        public bool Idle
+        {
+            get { return (bool)GetValue(IdleProperty); }
+            set { SetValue(IdleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IdleProperty =
+            DependencyProperty.Register("Idle", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
 
         public bool Alert
         {
@@ -165,7 +188,7 @@ namespace TH_DeviceCompare.Components
         }
 
         public static readonly DependencyProperty AlertProperty =
-            DependencyProperty.Register("Alert", typeof(bool), typeof(Header), new PropertyMetadata(true));
+            DependencyProperty.Register("Alert", typeof(bool), typeof(Header), new PropertyMetadata(false));
 
 
         public bool Break
@@ -193,13 +216,55 @@ namespace TH_DeviceCompare.Components
         public bool Collapsed
         {
             get { return (bool)GetValue(CollapsedProperty); }
-            set { SetValue(CollapsedProperty, value); }
+            set 
+            {
+                SetValue(CollapsedProperty, value);
+            }
         }
 
         public static readonly DependencyProperty CollapsedProperty =
             DependencyProperty.Register("Collapsed", typeof(bool), typeof(Header), new PropertyMetadata(true));
 
         
+
+        public void Collapse()
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = Main_GRID.RenderSize.Height;
+            animation.To = 30;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+            Main_GRID.BeginAnimation(HeightProperty, animation);
+
+            Collapsed = true;
+        }
+
+        public void Minimize()
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = Main_GRID.RenderSize.Height;
+            animation.To = 150;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+            Main_GRID.BeginAnimation(HeightProperty, animation);
+
+            Collapsed = false;
+            Minimized = true;
+        }
+
+        public void Expand()
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = Main_GRID.RenderSize.Height;
+            animation.To = 300;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+            Main_GRID.BeginAnimation(HeightProperty, animation);
+
+            Collapsed = false;
+            Minimized = false;
+        }
+
 
 
 

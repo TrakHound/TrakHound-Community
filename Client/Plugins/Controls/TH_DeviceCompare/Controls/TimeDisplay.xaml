@@ -23,7 +23,7 @@
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#33ffffff"/>
+                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#18ffffff"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
@@ -71,7 +71,7 @@
             </Grid>
 
             <!--Time Bar-->
-            <ProgressBar Grid.Row="1" Height="5" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{Binding BarBrush}" Background="#33000000" BorderThickness="0"/>
+            <ProgressBar Grid.Row="1" Height="10" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{Binding BarBrush}" Background="#22ffffff" BorderThickness="0"/>
 
         </Grid>
 

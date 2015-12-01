@@ -83,6 +83,16 @@ namespace TH_UserManagement.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap blank_profile_01_sm {
+            get {
+                object obj = ResourceManager.GetObject("blank_profile_01_sm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Camera_01 {
             get {
                 object obj = ResourceManager.GetObject("Camera_01", resourceCulture);

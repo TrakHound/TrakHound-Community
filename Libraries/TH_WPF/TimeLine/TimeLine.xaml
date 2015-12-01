@@ -59,9 +59,9 @@
 
             </Grid>
                       
-            <TextBlock Grid.Row="2" FontSize="6pt" Text="{Binding shiftStart}" Foreground="#aaffffff"/>
+            <TextBlock Grid.Row="2" FontSize="6pt" Text="{Binding StartTimeText}" Foreground="#aaffffff"/>
           
-            <TextBlock Grid.Row="2" FontSize="6pt" Text="{Binding shiftEnd}" Foreground="#aaffffff" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Row="2" FontSize="6pt" Text="{Binding EndTimeText}" Foreground="#aaffffff" HorizontalAlignment="Right"/>
 
         </Grid>
             

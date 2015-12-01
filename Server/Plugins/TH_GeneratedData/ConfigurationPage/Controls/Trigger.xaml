@@ -44,7 +44,7 @@
                 
                 
                 <!--Modifier-->
-                <ComboBox x:Name="modifier_COMBO" Margin="0,5" ItemsSource="{Binding Modifiers}" SelectedItem="{Binding SelectedModifier}" SelectionChanged="Modifier_SelectionChanged" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <ComboBox x:Name="modifier_COMBO" Margin="0,5" ItemsSource="{Binding Modifiers}" SelectionChanged="Modifier_SelectionChanged" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
 
                 <!--Value-->

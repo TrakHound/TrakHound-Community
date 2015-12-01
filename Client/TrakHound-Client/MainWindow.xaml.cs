@@ -938,7 +938,7 @@ namespace TrakHound_Client
         #region "Account Manager"
 
         public Account_Management.Manager accountManager;
-        CreateAccountPage createaccountpage;
+        CreateAccountPage accountpage;
 
         class CreateAccountPage : AboutPage
         {
@@ -950,10 +950,10 @@ namespace TrakHound_Client
 
             public void LoadUser(UserConfiguration userConfig)
             {
-                if (userConfig != null) ParentPage.LoadProfile(userConfig);
+                ParentPage.LoadProfile(userConfig);
             }
 
-            TH_UserManagement.Create.Page ParentPage;
+            public TH_UserManagement.Create.Page ParentPage;
 
             public string PageName { get { return ParentPage.PageName; } }
 
@@ -965,14 +965,19 @@ namespace TrakHound_Client
         void AccountManager_Initialize()
         {
             accountManager = new Account_Management.Manager();
-            createaccountpage = new CreateAccountPage();
 
-            accountManager.AddPage(createaccountpage);
+
+            //accountManager.AddPage(accountpage);
         }
 
         public void AccountManager_Open()
         {
-            if (createaccountpage != null) createaccountpage.LoadUser(currentuser);
+            accountManager.ClearPages();
+            accountpage = new CreateAccountPage();
+
+            accountpage.LoadUser(currentuser);
+
+            accountManager.AddPage(accountpage);
 
             accountManager.currentUser = currentuser;
 

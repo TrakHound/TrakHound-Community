@@ -50,6 +50,7 @@ namespace TH_MySQL
         {
             MySQL_Configuration result = null;
 
+            if (o != null)
             if (o.GetType() == typeof(MySQL_Configuration))
             {
                 result = (MySQL_Configuration)o;

@@ -111,6 +111,13 @@ namespace TrakHound_Client.Account_Management
             //} 
         }
 
+        public void ClearPages()
+        {
+            Pages.Clear();
+
+            PageContent = null;
+        }
+
 
 
         private void ListButton_Selected(ListButton LB)

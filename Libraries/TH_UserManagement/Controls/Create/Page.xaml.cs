@@ -14,9 +14,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.IO;
 
 using TH_Configuration;
 using TH_Global;
+using TH_Global.Functions;
 using TH_UserManagement;
 using TH_WPF;
 
@@ -45,10 +48,32 @@ namespace TH_UserManagement.Create
 
         Database_Settings userDatabaseSettings = null;
 
-        public void LoadProfile(UserConfiguration userConfig)
-        {
 
+
+        public UserConfiguration CurrentUser
+        {
+            get { return (UserConfiguration)GetValue(CurrentUserProperty); }
+            set 
+            {               
+                SetValue(CurrentUserProperty, value);
+
+                if (CurrentUser == null) 
+                {
+                    PageName = "Create Account";
+                    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
+                }
+                else 
+                {
+                    PageName = "Edit Account";
+                    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
+                }
+            }
         }
+
+        public static readonly DependencyProperty CurrentUserProperty =
+            DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(Page), new PropertyMetadata(null));
+
+        
 
         public void CleanForm()
         {
@@ -70,12 +95,16 @@ namespace TH_UserManagement.Create
 
         }
 
-        public string PageName { get { return "Create Account"; } }
+        public string PageName { get; set; }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png")); } }
+        public ImageSource Image { get; set; }
+
+        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png")); } }
 
 
-        #region "Properties"
+
+
+        #region "Form Properties"
 
         public string FirstName
         {
@@ -298,9 +327,16 @@ namespace TH_UserManagement.Create
 
         }
 
-        private void CreateAccount_Clicked(Button_01 bt)
+        private void Apply_Clicked(Button_01 bt)
         {
-            CreateAccount();
+            if (CurrentUser != null)
+            {
+
+            }
+            else
+            {
+                CreateAccount();
+            } 
         }
 
         void CreateAccount()
@@ -374,6 +410,30 @@ namespace TH_UserManagement.Create
             //{
 
             //}
+        }
+
+
+        public void LoadProfile(UserConfiguration userConfig)
+        {
+            CurrentUser = userConfig;
+
+            if (userConfig != null)
+            {
+                FirstName = Formatting.UppercaseFirst(userConfig.first_name);
+                LastName = Formatting.UppercaseFirst(userConfig.last_name);
+                Username = Formatting.UppercaseFirst(userConfig.username);
+                Email = userConfig.email;
+                Company = Formatting.UppercaseFirst(userConfig.company);
+                Phone = userConfig.phone;
+                Address1 = userConfig.address1;
+                Address2 = userConfig.address2;
+                City = Formatting.UppercaseFirst(userConfig.city);
+                //Country = Formatting.UppercaseFirst(userConfig.country);
+                //State = Formatting.UppercaseFirst(userConfig.state);
+                //Zipcode = userConfig.zipcode;
+
+                LoadProfileImage(userConfig);
+            }
         }
 
 
@@ -525,6 +585,146 @@ namespace TH_UserManagement.Create
         }
 
         #endregion
+
+
+        #region "Profile Image"
+
+
+
+        public ImageSource ProfileImage
+        {
+            get { return (ImageSource)GetValue(ProfileImageProperty); }
+            set { SetValue(ProfileImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageProperty =
+            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
+
+
+
+        public bool ProfileImageSet
+        {
+            get { return (bool)GetValue(ProfileImageSetProperty); }
+            set { SetValue(ProfileImageSetProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageSetProperty =
+            DependencyProperty.Register("ProfileImageSet", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        
+
+        
+
+        public bool ProfileImageLoading
+        {
+            get { return (bool)GetValue(ProfileImageLoadingProperty); }
+            set { SetValue(ProfileImageLoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageLoadingProperty =
+            DependencyProperty.Register("ProfileImageLoading", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+        Thread profileimage_THREAD;
+
+        void LoadProfileImage(UserConfiguration userConfig)
+        {
+            ProfileImageLoading = true;
+            ProfileImageSet = false;
+
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
+
+            if (profileimage_THREAD != null) profileimage_THREAD.Abort();
+
+            profileimage_THREAD = new Thread(new ParameterizedThreadStart(LoadProfileImage_Worker));
+            profileimage_THREAD.Start(userConfig);
+        }
+
+        void LoadProfileImage_Worker(object o)
+        {
+            if (o != null)
+            {
+                UserConfiguration userConfig = (UserConfiguration)o;
+
+                if (userConfig != null)
+                {
+                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, userDatabaseSettings);
+
+                    this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadProfileImage_GUI), priority, new object[] { img });
+                }
+
+                this.Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), priority, new object[] { });
+            }
+        }
+
+        void LoadProfileImage_GUI(System.Drawing.Image img)
+        {
+            if (img != null)
+            {
+                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+
+                IntPtr bmpPt = bmp.GetHbitmap();
+                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                bmpSource.Freeze();
+
+                ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+
+                ProfileImageSet = true;
+            }
+        }
+
+        void LoadProfileImage_Finished()
+        {
+            ProfileImageLoading = false;
+        }
+
+        void ChangeProfileImage()
+        {
+            if (CurrentUser != null)
+            {
+
+                // Show OpenFileDialog for selecting new Profile Image
+                string imagePath = ProfileImages.OpenImageBrowse();
+                if (imagePath != null)
+                {
+                    // Crop and Resize image
+                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath, userDatabaseSettings);
+                    if (img != null)
+                    {
+                        string filename = String_Functions.RandomString(20);
+
+                        string tempdir = FileLocations.TrakHound + @"\temp";
+                        if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+
+                        string localPath = tempdir + @"\" + filename;
+
+                        img.Save(localPath);
+
+                        if (ProfileImages.UploadProfileImage(filename, localPath, userDatabaseSettings))
+                        {
+                            Remote.Users.UpdateImageURL(filename, CurrentUser);
+
+                            LoadProfileImage(CurrentUser);
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+
+        private void ProfileImage_UploadClicked(ImageBox sender)
+        {
+
+        }
+
+        private void ProfileImage_ClearClicked(ImageBox sender)
+        {
+
+        }
 
     }
 }

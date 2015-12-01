@@ -90,14 +90,14 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         }
 
 
-        public object SelectedModifier
-        {
-            get { return (object)GetValue(SelectedModifierProperty); }
-            set { SetValue(SelectedModifierProperty, value); }
-        }
+        //public object SelectedModifier
+        //{
+        //    get { return (object)GetValue(SelectedModifierProperty); }
+        //    set { SetValue(SelectedModifierProperty, value); }
+        //}
 
-        public static readonly DependencyProperty SelectedModifierProperty =
-            DependencyProperty.Register("SelectedModifier", typeof(object), typeof(Trigger), new PropertyMetadata(null));
+        //public static readonly DependencyProperty SelectedModifierProperty =
+        //    DependencyProperty.Register("SelectedModifier", typeof(object), typeof(Trigger), new PropertyMetadata(null));
 
 
         #region "Value"

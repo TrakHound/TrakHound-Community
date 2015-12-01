@@ -409,52 +409,6 @@ namespace TH_DeviceManager.Pages.Description
             }
         }
 
-        private void manufacturerlogo_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            string path = UploadManufacturerLogo();
-
-            if (path != null)
-            {
-                manufacturerLogoFileName = path;
-
-                LoadManufacturerLogo(manufacturerLogoFileName);
-
-                ChangeSetting(fprefix + "Manufacturer_Logo_Path", manufacturerLogoFileName);
-            }
-        }
-
-        private void ManufacturerLogo_Clear_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            manufacturerLogoFileName = null;
-            ManufacturerLogo = null;
-            ManufacturerLogoSet = false;
-            ChangeSetting(fprefix + "Manufacturer_Logo_Path", null);
-        }
-
-
-
-        private void deviceimage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            string path = UploadDeviceImage();
-
-            if (path != null)
-            {
-                deviceImageFileName = path;
-
-                LoadDeviceImage(deviceImageFileName);
-
-                ChangeSetting(fprefix + "Image_Path", deviceImageFileName);
-            }
-        }
-
-        private void DeviceImage_Clear_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            deviceImageFileName = null;
-            DeviceImage = null;
-            DeviceImageSet = false;
-            ChangeSetting(fprefix + "Image_Path", null);
-        }
-
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
@@ -589,6 +543,28 @@ namespace TH_DeviceManager.Pages.Description
             return result;
         }
 
+        private void ManufacturerLogo_UploadClicked(TH_WPF.ImageBox sender)
+        {
+            string path = UploadManufacturerLogo();
+
+            if (path != null)
+            {
+                manufacturerLogoFileName = path;
+
+                LoadManufacturerLogo(manufacturerLogoFileName);
+
+                ChangeSetting(fprefix + "Manufacturer_Logo_Path", manufacturerLogoFileName);
+            }
+        }
+
+        private void ManufacturerLogo_ClearClicked(TH_WPF.ImageBox sender)
+        {
+            manufacturerLogoFileName = null;
+            ManufacturerLogo = null;
+            ManufacturerLogoSet = false;
+            ChangeSetting(fprefix + "Manufacturer_Logo_Path", null);
+        }
+
         #endregion
 
         #region "Device Image"
@@ -721,7 +697,31 @@ namespace TH_DeviceManager.Pages.Description
             return result;
         }
 
+
+        private void DeviceImage_UploadClicked(TH_WPF.ImageBox sender)
+        {
+            string path = UploadDeviceImage();
+
+            if (path != null)
+            {
+                deviceImageFileName = path;
+
+                LoadDeviceImage(deviceImageFileName);
+
+                ChangeSetting(fprefix + "Image_Path", deviceImageFileName);
+            }
+        }
+
+        private void DeviceImage_ClearClicked(TH_WPF.ImageBox sender)
+        {
+            deviceImageFileName = null;
+            DeviceImage = null;
+            DeviceImageSet = false;
+            ChangeSetting(fprefix + "Image_Path", null);
+        }
+
         #endregion
+
 
 
 

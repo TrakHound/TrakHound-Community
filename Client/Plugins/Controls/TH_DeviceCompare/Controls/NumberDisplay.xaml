@@ -43,7 +43,7 @@
 
         <!--Number Value-->
         <TextBlock Grid.Column="1" Text="{Binding ValueText}" FontSize="24"
-                   Foreground="#aaffffff"
+                   Foreground="#fff"
                    VerticalAlignment="Center" HorizontalAlignment="Right"
                    FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"
                    Margin="5,0"

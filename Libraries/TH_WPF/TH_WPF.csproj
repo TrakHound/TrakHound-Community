@@ -73,6 +73,9 @@
       <DependentUpon>CollapseButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Color_Functions.cs" />
+    <Compile Include="ImageBox.xaml.cs">
+      <DependentUpon>ImageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Image_Functions.cs" />
     <Compile Include="Info_BT.xaml.cs">
       <DependentUpon>Info_BT.xaml</DependentUpon>
@@ -155,6 +158,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ImageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Info_BT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -204,6 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Help_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Camera_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

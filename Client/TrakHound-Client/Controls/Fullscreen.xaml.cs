@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 
 namespace TrakHound_Client.Controls
 {
@@ -31,6 +32,19 @@ namespace TrakHound_Client.Controls
             ZoomLevels.Add("100%");
             ZoomLevels.Add("150%");
             ZoomLevels.Add("200%");
+
+            fPreviousExecutionState = NativeMethods.SetThreadExecutionState(NativeMethods.ES_CONTINUOUS | NativeMethods.ES_SYSTEM_REQUIRED);
+        }
+
+        private uint fPreviousExecutionState;
+
+        internal static class NativeMethods
+        {
+            // Import SetThreadExecutionState Win32 API and necessary flags
+            [DllImport("kernel32.dll")]
+            public static extern uint SetThreadExecutionState(uint esFlags);
+            public const uint ES_CONTINUOUS = 0x80000000;
+            public const uint ES_SYSTEM_REQUIRED = 0x00000001;
         }
 
         public object WindowContent
@@ -50,6 +64,8 @@ namespace TrakHound_Client.Controls
             object content = WindowContent;
 
             WindowContent = null;
+
+            NativeMethods.SetThreadExecutionState(fPreviousExecutionState);
 
             if (FullScreenClosing != null) FullScreenClosing(content);
         }

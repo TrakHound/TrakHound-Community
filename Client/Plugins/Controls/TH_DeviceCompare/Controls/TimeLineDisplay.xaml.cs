@@ -116,7 +116,6 @@ namespace TH_DeviceCompare.Controls
                     Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == prevItem.Item2.ToLower());
                     if (colorItem != null) c = colorItem.Item1;
 
-                    //OxyColor oc = OxyColor.FromArgb(170, c.R, c.G, c.B);
                     OxyColor oc = OxyColor.FromRgb(c.R, c.G, c.B);
 
                     // Get Duration (value)
@@ -127,23 +126,6 @@ namespace TH_DeviceCompare.Controls
                     series.FillColor = oc;
                     series.Items.Add(new BarItem(duration.TotalSeconds, -1));
                     pm.Series.Add(series);
-
-
-                    //// Get Color from "colors"
-                    //Color c = Colors.White;
-                    //Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == item.Item2.ToLower());
-                    //if (colorItem != null) c = colorItem.Item1;
-
-                    //OxyColor oc = OxyColor.FromArgb(170, c.R, c.G, c.B);
-
-                    //// Get Duration (value)
-                    //TimeSpan duration = item.Item1 - prevItem.Item1;
-
-                    //// Add Series to PlotModel
-                    //BarSeries series = Times_Create_Series(item.Item2);
-                    //series.FillColor = oc;
-                    //series.Items.Add(new BarItem(duration.TotalSeconds, -1));
-                    //pm.Series.Add(series);
                 }
 
                 prevItem = item;

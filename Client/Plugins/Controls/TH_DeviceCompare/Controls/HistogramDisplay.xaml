@@ -73,7 +73,7 @@
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="BorderBrush" Value="#00000000"/>
                                 <Setter Property="Background" Value="#00000000"/>
-                                <Setter Property="Foreground" Value="#33ffffff"/>
+                                <Setter Property="Foreground" Value="#55ffffff"/>
                                 <Setter Property="ToolTipService.ShowDuration" Value="10000"/>
                                 <Setter Property="ToolTipService.BetweenShowDelay" Value="3000"/>
                                 <Setter Property="ToolTipService.InitialShowDelay" Value="1000"/>
@@ -89,10 +89,10 @@
                                 
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding CurrentSegment, RelativeSource={RelativeSource Self}}" Value="true">
-                                        <Setter Property="Foreground" Value="#aaffffff"/>
+                                        <Setter Property="Foreground" Value="#ccffffff"/>
                                     </DataTrigger>
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Foreground" Value="#55ffffff"/>
+                                        <Setter Property="Foreground" Value="#aaffffff"/>
                                     </Trigger>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
@@ -100,7 +100,7 @@
                                             <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                         </MultiDataTrigger.Conditions>
 
-                                        <Setter Property="Foreground" Value="#ccffffff"/>
+                                        <Setter Property="Foreground" Value="#fff"/>
 
                                     </MultiDataTrigger>
                                 </Style.Triggers>

@@ -14,7 +14,7 @@
             <StackPanel>
                 
                 <!--Value-->
-                <TextBlock Text="{Binding Value}" FontSize="8pt" FontWeight="Bold"/>
+                <TextBlock Text="{Binding ValueText}" FontSize="8pt" FontWeight="Bold"/>
 
                 <!--Duration-->
                 <TextBlock FontSize="8pt">

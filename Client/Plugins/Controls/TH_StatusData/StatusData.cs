@@ -12,6 +12,7 @@ using System.Data;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
+using TH_Global.Functions;
 using TH_PlugIns_Client_Control;
 using TH_UserManagement.Management;
 
@@ -166,6 +167,12 @@ namespace TH_StatusData
 
                         // Send OEE Data
                         SendDataEvent(oeeData);
+
+                        // Get Production Status Data
+                        DataEvent_Data productionStatusData = GetProductionStatusList(device, snapshotData.shiftData);
+
+                        // Send Production Status Data
+                        SendDataEvent(productionStatusData);
                     }
                 }
             }       
@@ -223,67 +230,21 @@ namespace TH_StatusData
         {
             Snapshot_Return result = new Snapshot_Return();
 
-            DataTable snapshots_DT = Table.Get(config.Databases, TableNames.SnapShots);
-            if (snapshots_DT != null)
+            DataTable dt = Table.Get(config.Databases, TableNames.SnapShots);
+            if (dt != null)
             {
-                Dictionary<string, Tuple<DateTime, string, string>> data = new Dictionary<string, Tuple<DateTime, string, string>>();
-
-                foreach (DataRow row in snapshots_DT.Rows)
-                {
-                    string key = row["name"].ToString();
-
-                    DateTime timestamp = DateTime.MinValue;
-                    DateTime.TryParse(row["timestamp"].ToString(), out timestamp);
-
-                    string value = row["value"].ToString();
-                    string prevvalue = row["previous_value"].ToString();
-
-                    data.Add(key, new Tuple<DateTime, string, string>(timestamp, value, prevvalue));
-                }
-
-                // Set shiftDate and shiftName for other functions in Device Status
-                Tuple<DateTime, string, string> val = null;
-                data.TryGetValue("Current Shift Name", out val);
-                if (val != null) result.shiftData.shiftName = val.Item2;
-                else result.shiftData.shiftName = null;
-
-                val = null;
-                data.TryGetValue("Current Shift Date", out val);
-                if (val != null) result.shiftData.shiftDate = val.Item2;
-                else result.shiftData.shiftDate = null;
-
-                val = null;
-                data.TryGetValue("Current Shift Id", out val);
-                if (val != null) result.shiftData.shiftId = val.Item2;
-                else result.shiftData.shiftId = null;
-
-                // Local
-                val = null;
-                data.TryGetValue("Current Shift Begin", out val);
-                if (val != null) result.shiftData.shiftStart = val.Item2;
-                else result.shiftData.shiftStart = null;
-
-                val = null;
-                data.TryGetValue("Current Shift End", out val);
-                if (val != null) result.shiftData.shiftEnd = val.Item2;
-                else result.shiftData.shiftEnd = null;
-
-                // UTC
-                val = null;
-                data.TryGetValue("Current Shift Begin UTC", out val);
-                if (val != null) result.shiftData.shiftStartUTC = val.Item2;
-                else result.shiftData.shiftStartUTC = null;
-
-                val = null;
-                data.TryGetValue("Current Shift End UTC", out val);
-                if (val != null) result.shiftData.shiftEndUTC = val.Item2;
-                else result.shiftData.shiftEndUTC = null;
-
+                result.shiftData.shiftName = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
+                result.shiftData.shiftDate = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Date", "value");
+                result.shiftData.shiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
+                result.shiftData.shiftStart = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Begin", "value");
+                result.shiftData.shiftEnd = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End", "value");
+                result.shiftData.shiftStartUTC = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Begin UTC", "value");
+                result.shiftData.shiftEndUTC = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End UTC", "value");
 
                 DataEvent_Data de_d = new DataEvent_Data();
                 de_d.id = "StatusData_Snapshots";
                 de_d.data01 = config;
-                de_d.data02 = data;
+                de_d.data02 = dt;
 
                 result.de_data = de_d;
             }
@@ -353,30 +314,30 @@ namespace TH_StatusData
                 string tableName = TableNames.Gen_Events_TablePrefix + "production_status";
 
 
-                DataTable table = Table.Get(config.Databases, tableName, filter);
-                if (table != null)
+                DataTable dt = Table.Get(config.Databases, tableName, filter);
+                if (dt != null)
                 {
-                    List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
+                    //List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
 
-                    foreach (DataRow row in table.Rows)
-                    {
-                        Dictionary<string, string> rowdata = new Dictionary<string, string>();
+                    //foreach (DataRow row in table.Rows)
+                    //{
+                    //    Dictionary<string, string> rowdata = new Dictionary<string, string>();
 
-                        foreach (DataColumn column in row.Table.Columns)
-                        {
-                            string key = column.ColumnName;
-                            string value = row[column].ToString();
+                    //    foreach (DataColumn column in row.Table.Columns)
+                    //    {
+                    //        string key = column.ColumnName;
+                    //        string value = row[column].ToString();
 
-                            rowdata.Add(key, value);
-                        }
+                    //        rowdata.Add(key, value);
+                    //    }
 
-                        data.Add(rowdata);
-                    }
+                    //    data.Add(rowdata);
+                    //}
 
                     DataEvent_Data de_d = new DataEvent_Data();
-                    de_d.id = "DeviceStatus_ProductionStatus";
+                    de_d.id = "StatusData_ProductionStatus";
                     de_d.data01 = config;
-                    de_d.data02 = data;
+                    de_d.data02 = dt;
 
                     result = de_d;
                 }

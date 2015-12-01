@@ -47,14 +47,37 @@ namespace TH_WPF.TimeLine
             DependencyProperty.Register("Value", typeof(string), typeof(Segment), new PropertyMetadata(null));
 
 
-        public string Duration
+
+        public string ValueText
         {
-            get { return (string)GetValue(DurationProperty); }
+            get { return (string)GetValue(ValueTextProperty); }
+            set { SetValue(ValueTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ValueTextProperty =
+            DependencyProperty.Register("ValueText", typeof(string), typeof(Segment), new PropertyMetadata(null));
+
+        
+
+
+        public TimeSpan Duration
+        {
+            get { return (TimeSpan)GetValue(DurationProperty); }
             set { SetValue(DurationProperty, value); }
         }
 
         public static readonly DependencyProperty DurationProperty =
-            DependencyProperty.Register("Duration", typeof(string), typeof(Segment), new PropertyMetadata(null));
+            DependencyProperty.Register("Duration", typeof(TimeSpan), typeof(Segment), new PropertyMetadata(null));
+
+
+        public string DurationText
+        {
+            get { return (string)GetValue(DurationTextProperty); }
+            set { SetValue(DurationTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty DurationTextProperty =
+            DependencyProperty.Register("DurationText", typeof(string), typeof(Segment), new PropertyMetadata(null));
 
 
         public string StartTimeStamp

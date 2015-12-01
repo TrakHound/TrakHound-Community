@@ -70,8 +70,11 @@ namespace TrakHound_Client.Controls
         void Close_TIMER_Elapsed_GUI()
         {
             TabControl tabParent = (TabControl)this.Parent;
-            if (tabParent.Items.Contains(this)) tabParent.Items.Remove(this); 
-  
+            if (tabParent != null)
+            {
+                if (tabParent.Items.Contains(this)) tabParent.Items.Remove(this); 
+            }
+
             if (Closed != null) Closed(this);
         }
 

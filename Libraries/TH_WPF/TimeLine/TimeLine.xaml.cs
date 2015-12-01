@@ -69,138 +69,277 @@ namespace TH_WPF.TimeLine
 
 
 
-        public string shiftStart
+
+        //public string StartTime
+        //{
+        //    get { return (string)GetValue(StartTimeProperty); }
+        //    set { SetValue(StartTimeProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty StartTimeProperty =
+        //    DependencyProperty.Register("StartTime", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+
+
+        //public string EndTime
+        //{
+        //    get { return (string)GetValue(EndTimeProperty); }
+        //    set { SetValue(EndTimeProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty EndTimeProperty =
+        //    DependencyProperty.Register("EndTime", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+
+
+
+
+
+        public DateTime StartTime
         {
-            get { return (string)GetValue(shiftStartProperty); }
-            set { SetValue(shiftStartProperty, value); }
+            get { return (DateTime)GetValue(StartTimeProperty); }
+            set 
+            { 
+                SetValue(StartTimeProperty, value);
+
+                if (EndTime - StartTime > TimeSpan.FromDays(1))
+                {
+                    StartTimeText = StartTime.ToString();
+                    EndTimeText = EndTime.ToString();
+                }
+                else
+                {
+                    StartTimeText = StartTime.ToShortTimeString();
+                    EndTimeText = EndTime.ToShortTimeString();
+                }
+
+                TotalDuration = EndTime - StartTime;
+            }
         }
 
-        public static readonly DependencyProperty shiftStartProperty =
-            DependencyProperty.Register("shiftStart", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+        public static readonly DependencyProperty StartTimeProperty =
+            DependencyProperty.Register("StartTime", typeof(DateTime), typeof(TimeLine), new PropertyMetadata(new DateTime(0)));
 
-        public string shiftEnd
+
+
+        public DateTime EndTime
         {
-            get { return (string)GetValue(shiftEndProperty); }
-            set { SetValue(shiftEndProperty, value); }
+            get { return (DateTime)GetValue(EndTimeProperty); }
+            set 
+            { 
+                SetValue(EndTimeProperty, value);
+
+                if (EndTime - StartTime > TimeSpan.FromDays(1))
+                {
+                    StartTimeText = StartTime.ToString();
+                    EndTimeText = EndTime.ToString();
+                }
+                else
+                {
+                    StartTimeText = StartTime.ToShortTimeString();
+                    EndTimeText = EndTime.ToShortTimeString();
+                }
+
+                TotalDuration = EndTime - StartTime;
+            }
         }
 
-        public static readonly DependencyProperty shiftEndProperty =
-            DependencyProperty.Register("shiftEnd", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+        public static readonly DependencyProperty EndTimeProperty =
+            DependencyProperty.Register("EndTime", typeof(DateTime), typeof(TimeLine), new PropertyMetadata(new DateTime(0)));
+
+
+
+
+
+
+        public string StartTimeText
+        {
+            get { return (string)GetValue(StartTimeTextProperty); }
+            set { SetValue(StartTimeTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty StartTimeTextProperty =
+            DependencyProperty.Register("StartTimeText", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+
+
+
+        public string EndTimeText
+        {
+            get { return (string)GetValue(EndTimeTextProperty); }
+            set { SetValue(EndTimeTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty EndTimeTextProperty =
+            DependencyProperty.Register("EndTimeText", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+
+        
+
+
+
+
+
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+
+        
+
+
+
+
+
+
 
         
 
         public DateTime previousTimestamp = DateTime.MinValue;
 
+        public int SeriesCount { get; set; }
 
-        public string shiftName
+        public int prev_SeriesCount { get; set; }
+
+        public List<int> Series = new List<int>();
+
+
+        //public string shiftName
+        //{
+        //    get { return (string)GetValue(shiftNameProperty); }
+        //    set { SetValue(shiftNameProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty shiftNameProperty =
+        //    DependencyProperty.Register("shiftName", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
+
+
+
+
+
+        TimeSpan totalDuration = TimeSpan.Zero;
+        public TimeSpan TotalDuration
         {
-            get { return (string)GetValue(shiftNameProperty); }
-            set { SetValue(shiftNameProperty, value); }
+            get { return totalDuration; }
+            set
+            {
+                totalDuration = value;
+
+                UpdateTickMarks();
+                UpdateWidth();
+            }
         }
 
-        public static readonly DependencyProperty shiftNameProperty =
-            DependencyProperty.Register("shiftName", typeof(string), typeof(TimeLine), new PropertyMetadata(null));
 
-        public TimeSpan shiftDuration = TimeSpan.Zero;
+        List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
+        public List<Tuple<Color, string>> Colors
+        {
+            get { return colors; }
+            set
+            {
+                colors = value;
 
-        public List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
+                UpdateColors();
+            }
+        }
 
-        Tuple<DateTime, string> prevItem = null;
 
-        List<Tuple<DateTime, string>> timelineData;
+        Tuple<DateTime, string, string> prevItem = null;
 
-        public void Create(List<Tuple<DateTime, string>> data)
+        List<Tuple<DateTime, string, string>> timelineData = new List<Tuple<DateTime, string, string>>();
+
+        public void UpdateColors()
+        {
+            foreach (Segment s in Segments)
+            {
+                // Get Color from "colors"
+                Color c = System.Windows.Media.Colors.White;
+                Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == s.Value.ToLower());
+                if (colorItem != null) c = colorItem.Item1;
+                Color color = Color.FromRgb(c.R, c.G, c.B);
+
+                s.Color = new SolidColorBrush(color);
+            }
+        }
+
+        void UpdateWidth()
+        {          
+            foreach (Segment s in Segments)
+            {
+                s.Width = (GetSegmentWidth(s.Duration, TotalDuration));
+            }
+        }
+
+        void UpdateTickMarks()
         {
             TickMarks.Clear();
 
             // Add Tick Marks
-            TickMarkCount = Convert.ToInt16(Math.Round(shiftDuration.TotalHours, 0));
-
-            // WorkingWidth = Control.ActualWidth - margins
-            int width = Convert.ToInt16(this.ActualWidth) - 20;
-
-            // Tick Width
-            int tickWidth = Convert.ToInt16((double)width / TickMarkCount) - 3;
-
-            if (width > 0)
+            if (TotalDuration.TotalHours < Int16.MaxValue && TotalDuration.TotalHours > Int16.MinValue)
             {
-                for (int x = 0; x <= TickMarkCount; x++)
+                TickMarkCount = Convert.ToInt16(Math.Round(TotalDuration.TotalHours, 0));
+
+                // WorkingWidth = Control.ActualWidth - margins
+                int width = Convert.ToInt16(this.ActualWidth) - 20;
+
+                // Tick Width
+                int tickWidth = 0;
+                if (TickMarkCount > 0) tickWidth = Convert.ToInt16((double)width / TickMarkCount) - 3;
+
+                if (width > 0)
                 {
-                    TickMark tick = new TickMark();
-
-                    tick.PaddingLeft = tickWidth;
-                    if (x == 0) tick.PaddingLeft -= 1;
-
-                    TickMarks.Add(tick);
-                }
-
-                Segments.Clear();
-
-                foreach (Tuple<DateTime, string> item in data)
-                {
-                    if (prevItem != null)
+                    for (int x = 0; x <= TickMarkCount; x++)
                     {
-                        // Get Color from "colors"
-                        Color c = Colors.White;
-                        Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == prevItem.Item2.ToLower());
-                        if (colorItem != null) c = colorItem.Item1;
-                        Color color = Color.FromRgb(c.R, c.G, c.B);
+                        TickMark tick = new TickMark();
 
-                        // Get Duration (value)
-                        TimeSpan duration = item.Item1 - prevItem.Item1;
+                        tick.PaddingLeft = tickWidth;
+                        if (x == 0) tick.PaddingLeft -= 1;
 
-                        Segment segment = new Segment();
-                        segment.Value = prevItem.Item2;
-                        segment.Duration = duration.ToString();
-                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToString();
-                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToString();
-
-                        segment.Width = GetSegmentWidth(duration, shiftDuration);
-                        segment.Color = new SolidColorBrush(color);
-
-                        Segments.Add(segment);
+                        TickMarks.Add(tick);
                     }
-                    prevItem = item;
                 }
-            }
-
-            timelineData = data;
+            } 
         }
 
-        public void Update(List<Tuple<DateTime, string>> data)
+        public void AddData(List<Tuple<DateTime, string, string>> data)
         {
-            if (data.Count > 0)
+            if (data != null)
             {
-                foreach (Tuple<DateTime, string> item in data)
+                if (data.Count > 0)
                 {
-                    if (prevItem != null)
+                    foreach (Tuple<DateTime, string, string> item in data)
                     {
-                        // Get Color from "colors"
-                        Color c = Colors.White;
-                        Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == prevItem.Item2.ToLower());
-                        if (colorItem != null) c = colorItem.Item1;
-                        Color color = Color.FromRgb(c.R, c.G, c.B);
+                        if (prevItem != null)
+                        {
+                            // Get Color from "colors"
+                            Color c = System.Windows.Media.Colors.White;
+                            Tuple<Color, string> colorItem = colors.Find(x => x.Item2.ToLower() == prevItem.Item2.ToLower());
+                            if (colorItem != null) c = colorItem.Item1;
+                            Color color = Color.FromRgb(c.R, c.G, c.B);
 
-                        // Get Duration (value)
-                        TimeSpan duration = item.Item1 - prevItem.Item1;
+                            // Get Duration (value)
+                            TimeSpan duration = item.Item1 - prevItem.Item1;
 
-                        Segment segment = new Segment();
-                        segment.Value = prevItem.Item2;
-                        segment.Duration = duration.ToString();
-                        segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToString();
-                        segment.EndTimeStamp = item.Item1.ToLocalTime().ToString();
+                            Segment segment = new Segment();
+                            segment.Value = prevItem.Item2;
+                            segment.ValueText = prevItem.Item3;
+                            segment.Duration = duration;
+                            segment.DurationText = duration.ToString();
+                            segment.StartTimeStamp = prevItem.Item1.ToLocalTime().ToString();
+                            segment.EndTimeStamp = item.Item1.ToLocalTime().ToString();
 
-                        segment.Width = GetSegmentWidth(duration, shiftDuration);
-                        segment.Color = new SolidColorBrush(color);
+                            segment.Width = GetSegmentWidth(duration, TotalDuration);
+                            segment.Color = new SolidColorBrush(color);
 
-                        Segments.Add(segment);
+                            Segments.Add(segment);
+                        }
+
+                        prevItem = item;
+
                     }
 
-                    prevItem = item;
-
+                    timelineData.AddRange(data);
                 }
-
-                timelineData.AddRange(data);
             }
         }
 
@@ -222,7 +361,7 @@ namespace TH_WPF.TimeLine
             if (e.WidthChanged && timelineData != null)
             {
                 prevItem = null;
-                Create(timelineData);
+                UpdateWidth();
             }
         }
 
