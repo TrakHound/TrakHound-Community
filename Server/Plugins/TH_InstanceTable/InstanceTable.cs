@@ -82,7 +82,8 @@ namespace TH_InstanceTable
             // Send InstanceData object to other Plugins --
             DataEvent_Data de_d = new DataEvent_Data();
             de_d.id = "CurrentInstanceData";
-            de_d.data = cid;
+            de_d.data01 = config;
+            de_d.data02 = cid;
 
             if (DataEvent != null) DataEvent(de_d);
             // --------------------------------------------
@@ -100,7 +101,8 @@ namespace TH_InstanceTable
             // Send instanceDatas to other Plugins --------
             DataEvent_Data de_d = new DataEvent_Data();
             de_d.id = "InstanceData";
-            de_d.data = instanceDatas;
+            de_d.data01 = config;
+            de_d.data02 = instanceDatas;
 
             if (DataEvent != null) DataEvent(de_d);
             // --------------------------------------------

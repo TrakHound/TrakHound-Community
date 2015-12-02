@@ -79,9 +79,9 @@ namespace TH_Cycles
             {
                 if (de_data.id.ToLower() == "shifttable_geneventshiftitems")
                 {
-                    if (de_data.data.GetType() == typeof(List<GenEventShiftItem>))
+                    if (de_data.data02.GetType() == typeof(List<GenEventShiftItem>))
                     {
-                        List<GenEventShiftItem> items = (List<GenEventShiftItem>)de_data.data;
+                        List<GenEventShiftItem> items = (List<GenEventShiftItem>)de_data.data02;
 
                         ProcessCycles(items);               
                     }

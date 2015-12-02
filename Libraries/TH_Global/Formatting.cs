@@ -28,7 +28,7 @@ namespace TH_Global
         {
             if (string.IsNullOrEmpty(s))
             {
-                return string.Empty;
+                return null;
             }
 
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());

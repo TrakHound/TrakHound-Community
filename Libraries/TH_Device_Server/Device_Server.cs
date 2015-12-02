@@ -37,9 +37,9 @@ namespace TH_Device_Server
             //Ping_DB_Initialize(config);
             //Ping_PHP_Initialize(config);
 
-            Status = ConnectionStatus.Stopped;
+            //Status = ConnectionStatus.Stopped;
 
-            ConnectionStatus_Initialize();
+            //ConnectionStatus_Initialize();
         }
 
         bool usedatabases = true;
@@ -77,24 +77,6 @@ namespace TH_Device_Server
         {
             PrintDeviceHeader(configuration);
 
-            //if (updateConfigurationFile && configurationPath != null)
-            //{
-            //    if (File.Exists(configurationPath))
-            //    {
-            //        Configuration lSettings = Configuration.ReadConfigFile(configurationPath);
-
-            //        if (lSettings != null)
-            //        {
-            //            configuration.Agent = lSettings.Agent;
-            //            configuration.Description = lSettings.Description;
-            //            configuration.FileLocations = lSettings.FileLocations;
-            //            configuration.SQL = lSettings.SQL;
-            
-            //            FSW_Start();
-            //        }
-            //    }
-            //}
-
             if (UseDatabases) Database.Create(configuration.Databases);
 
             worker = new Thread(new ThreadStart(Worker_Start));
@@ -110,7 +92,7 @@ namespace TH_Device_Server
 
             if (worker != null) worker.Abort();
 
-            Status = ConnectionStatus.Stopped;
+            //Status = ConnectionStatus.Stopped;
 
             Log("Device Server (" + configuration.Index.ToString() + ") Stopped");
         }
@@ -121,7 +103,7 @@ namespace TH_Device_Server
 
             TablePlugIns_Closing();
 
-            if (Connection_Timer != null) Connection_Timer.Enabled = false;
+            //if (Connection_Timer != null) Connection_Timer.Enabled = false;
 
             FSW_Stop();
 
@@ -164,8 +146,6 @@ namespace TH_Device_Server
 
             Requests_Stop();
 
-            Status = ConnectionStatus.Stopped;
-
             Log("Device Server (" + configuration.Index.ToString() + ") Stopped");
         }
 
@@ -173,78 +153,108 @@ namespace TH_Device_Server
 
         #region "Connection"
 
-        public System.Timers.Timer Connection_Timer;
-
-        int TryCount = 1;
-        const int ConnectionAttempts = 5;
-
-        bool FirstAttempt = true;
-
-        void Connection_Initialize()
+        bool connected;
+        public bool Connected 
         {
-            Connection_Timer = new System.Timers.Timer();
-            Connection_Timer.Elapsed += Connection_Timer_Elapsed;
-            Connection_Timer.Interval = 1000;
-            Connection_Timer.Enabled = true;
-        }
-
-        void Connection_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            Connection_Check();
-        }
-
-        void Connection_Check()
-        {
-
-            if (MTC_PingResult)
+            get { return connected; }
+            set
             {
-                if (FirstAttempt) Log("Device Connected...");
+                bool prev_val = connected;
 
-                if (TryCount > 1) Log("Connection Reestablished");
+                connected = value;
 
-                TryCount = 1;
+                //if (connected) AgentConnected(this);
+                //else AgentDisconnected(this);
 
-                Connection_Timer.Interval = 1000;
-
-                if (Status == ConnectionStatus.Stopped)
+                if (prev_val != connected)
                 {
-                    Status = ConnectionStatus.Started;
-
-                    Initialize();
-
-                    RunningTimeSTPW.Start();
-
-                    Requests_Start();
-
-                    Log("Device (" + configuration.Index.ToString() + ") Started...");
-                }
-
-                FirstAttempt = false;
-            }
-            else
-            {
-                if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
-
-                if (Status == ConnectionStatus.Started || FirstAttempt)
-                {
-                    FirstAttempt = false;
-
-                    Connection_Timer.Interval = 5000;
-
-                    Log("Attempting to Connect...(Attempt #" + TryCount.ToString() + ")");
-
-                    if (TryCount >= ConnectionAttempts)
-                    {
-                        TryCount = 1;
-
-                        Connection_Timer.Interval = 1000;
-
-                        Stop();
-                    }
-
-                    TryCount += 1;
+                    if (connected) AgentConnected(this);
+                    else AgentDisconnected(this);
                 }
             }
+        }
+
+        public delegate void AgentConnection_Handler(Device_Server server);
+
+        public event AgentConnection_Handler AgentConnected;
+        public event AgentConnection_Handler AgentDisconnected;
+
+
+
+
+
+        //public System.Timers.Timer Connection_Timer;
+
+        //int TryCount = 1;
+        //const int ConnectionAttempts = 5;
+
+        //bool FirstAttempt = true;
+
+        //void Connection_Initialize()
+        //{
+        //    Connection_Timer = new System.Timers.Timer();
+        //    Connection_Timer.Elapsed += Connection_Timer_Elapsed;
+        //    Connection_Timer.Interval = 1000;
+        //    Connection_Timer.Enabled = true;
+        //}
+
+        //void Connection_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    Connection_Check();
+        //}
+
+        //void Connection_Check()
+        //{
+
+        //    if (MTC_PingResult)
+        //    {
+        //        if (FirstAttempt) Log("Device Connected...");
+
+        //        if (TryCount > 1) Log("Connection Reestablished");
+
+        //        TryCount = 1;
+
+        //        Connection_Timer.Interval = 1000;
+
+        //        if (Status == ConnectionStatus.Stopped)
+        //        {
+        //            Status = ConnectionStatus.Started;
+
+        //            Initialize();
+
+        //            RunningTimeSTPW.Start();
+
+        //            Requests_Start();
+
+        //            Log("Device (" + configuration.Index.ToString() + ") Started...");
+        //        }
+
+        //        FirstAttempt = false;
+        //    }
+        //    else
+        //    {
+        //        if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
+
+        //        if (Status == ConnectionStatus.Started || FirstAttempt)
+        //        {
+        //            FirstAttempt = false;
+
+        //            Connection_Timer.Interval = 5000;
+
+        //            Log("Attempting to Connect...(Attempt #" + TryCount.ToString() + ")");
+
+        //            if (TryCount >= ConnectionAttempts)
+        //            {
+        //                TryCount = 1;
+
+        //                Connection_Timer.Interval = 1000;
+
+        //                Stop();
+        //            }
+
+        //            TryCount += 1;
+        //        }
+        //    }
 
 
             //if (MTC_PingResult && SQL_PingResult && PHP_PingResult)
@@ -302,43 +312,43 @@ namespace TH_Device_Server
             //        TryCount += 1;
             //    }
             //}
-        }
+        //}
 
         #endregion
 
         #region "Connection Status"
 
-        public enum ConnectionStatus
-        {
-            Stopped = 0,
-            Started = 1
-        }
+        //public enum ConnectionStatus
+        //{
+        //    Stopped = 0,
+        //    Started = 1
+        //}
 
-        public ConnectionStatus Status;
+        //public ConnectionStatus Status;
 
-        public delegate void StatusDelly(int Index, ConnectionStatus Status);
-        public event StatusDelly StatusUpdated;
+        //public delegate void StatusDelly(int Index, ConnectionStatus Status);
+        //public event StatusDelly StatusUpdated;
 
-        void ConnectionStatus_Initialize()
-        {
-            ConnectionStatus_Timer = new System.Timers.Timer();
-            ConnectionStatus_Timer.Interval = 1000;
-            ConnectionStatus_Timer.Elapsed += ConnectionStatus_Timer_Elapsed;
-            ConnectionStatus_Timer.Enabled = true;
-        }
+        //void ConnectionStatus_Initialize()
+        //{
+        //    ConnectionStatus_Timer = new System.Timers.Timer();
+        //    ConnectionStatus_Timer.Interval = 1000;
+        //    ConnectionStatus_Timer.Elapsed += ConnectionStatus_Timer_Elapsed;
+        //    ConnectionStatus_Timer.Enabled = true;
+        //}
 
-        void ConnectionStatus_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            UpdateStatus(Status);
-        }
+        //void ConnectionStatus_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    UpdateStatus(Status);
+        //}
 
-        private void UpdateStatus(ConnectionStatus Status)
-        {
-            StatusDelly handler = StatusUpdated;
-            if (handler != null) handler(configuration.Index, Status);
-        }
+        //private void UpdateStatus(ConnectionStatus status)
+        //{
+        //    StatusDelly handler = StatusUpdated;
+        //    if (handler != null) handler(configuration.Index, status);
+        //}
 
-        System.Timers.Timer ConnectionStatus_Timer;
+        //System.Timers.Timer ConnectionStatus_Timer;
 
         #endregion
 

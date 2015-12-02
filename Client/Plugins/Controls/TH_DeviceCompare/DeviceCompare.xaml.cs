@@ -233,85 +233,90 @@ namespace TH_DeviceCompare
 
         void Update(DataEvent_Data de_d)
         {
-
-            Configuration config = de_d.data01 as Configuration;
-            if (config != null)
+            if (de_d != null)
             {
-                DeviceDisplay dd = DeviceDisplays.Find(x => x.configuration.UniqueId == config.UniqueId);
-                if (dd != null)
+                Configuration config = de_d.data01 as Configuration;
+                if (config != null)
                 {
-                    // Connection
-                    if (de_d.id.ToLower() == "statusdata_connection")
+                    DeviceDisplay dd = DeviceDisplays.Find(x => x.configuration.UniqueId == config.UniqueId);
+                    if (dd != null)
                     {
-                        bool connected;
-                        bool.TryParse(de_d.data02.ToString(), out connected);
+                        // Connection
+                        if (de_d.id.ToLower() == "statusdata_connection")
+                        {
+                            bool connected;
+                            bool.TryParse(de_d.data02.ToString(), out connected);
 
-                        dd.Connected = connected;
+                            if (dd.Connected != connected)
+                            {
 
-                        dd.ComparisonGroup.column.Loading = false;
+                                dd.Connected = connected;
+
+                                dd.ComparisonGroup.column.Loading = false;
+                            }
+                        }
+
+                        // Snapshot Table Data
+                        if (de_d.id.ToLower() == "statusdata_snapshots")
+                        {
+
+                            // Production
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Production), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Idle
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Idle), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Alert
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Alert), Priority_Context, new object[] { dd, de_d.data02 });
+
+
+
+
+                            // Shift Info
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_Snapshots), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Production Status Times
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Production Status Timeline
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_ProductionStatusTimeline_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
+                        }
+
+                        // Shifts Table Data
+                        if (de_d.id.ToLower() == "statusdata_shiftdata")
+                        {
+                            // Shift Info
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_ShiftData), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // OEE Timeline / Histogram
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Timeline_ShiftData), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Production Status Times
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { dd, de_d.data02 });
+                        }
+
+                        // OEE Table Data
+                        if (de_d.id.ToLower() == "statusdata_oee")
+                        {
+                            // OEE Average
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Current Segment OEE
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // OEE Timeline / Histogram
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Timeline_OEEData), Priority_Context, new object[] { dd, de_d.data02 });
+                        }
+
+                        // Production Status (Generated Event) Table Data
+                        if (de_d.id.ToLower() == "statusdata_productionstatus")
+                        {
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_ProductionStatusTimeline_ProductionStatusData), Priority_Context, new object[] { dd, de_d.data02 });
+                        }
+
                     }
-
-                    // Snapshot Table Data
-                    if (de_d.id.ToLower() == "statusdata_snapshots")
-                    {
-
-                        // Production
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Production), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // Idle
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Idle), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // Alert
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Alert), Priority_Context, new object[] { dd, de_d.data02 });
-
-
-
-
-                        // Shift Info
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_Snapshots), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // Production Status Times
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // Production Status Timeline
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_ProductionStatusTimeline_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
-                    }
-
-                    // Shifts Table Data
-                    if (de_d.id.ToLower() == "statusdata_shiftdata")
-                    {
-                        // Shift Info
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_ShiftData), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // OEE Timeline / Histogram
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Timeline_ShiftData), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // Production Status Times
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { dd, de_d.data02 });
-                    }
-
-                    // OEE Table Data
-                    if (de_d.id.ToLower() == "statusdata_oee")
-                    {
-                        // OEE Average
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // Current Segment OEE
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, de_d.data02 });
-
-                        // OEE Timeline / Histogram
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Timeline_OEEData), Priority_Context, new object[] { dd, de_d.data02 });
-                    }
-
-                    // Production Status (Generated Event) Table Data
-                    if (de_d.id.ToLower() == "statusdata_productionstatus")
-                    {
-                        this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_ProductionStatusTimeline_ProductionStatusData), Priority_Context, new object[] { dd, de_d.data02 });
-                    }
-
                 }
             }
-
         }
 
         void DeviceSelected(int index)

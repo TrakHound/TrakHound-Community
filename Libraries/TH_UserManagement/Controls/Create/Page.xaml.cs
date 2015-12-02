@@ -46,9 +46,7 @@ namespace TH_UserManagement.Create
             
         }
 
-        Database_Settings userDatabaseSettings = null;
-
-
+        public Database_Settings UserDatabaseSettings = null;
 
         public UserConfiguration CurrentUser
         {
@@ -73,11 +71,45 @@ namespace TH_UserManagement.Create
         public static readonly DependencyProperty CurrentUserProperty =
             DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(Page), new PropertyMetadata(null));
 
-        
+
+        public string PageName { get; set; }
+
+        public ImageSource Image { get; set; }
+
+
+        public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        {
+            CurrentUser = userConfig;
+            UserDatabaseSettings = userDatabaseSettings;
+
+            if (userConfig != null)
+            {
+                FirstName = Formatting.UppercaseFirst(userConfig.first_name);
+                LastName = Formatting.UppercaseFirst(userConfig.last_name);
+
+                Username = Formatting.UppercaseFirst(userConfig.username);
+                Email = userConfig.email;
+
+                Company = Formatting.UppercaseFirst(userConfig.company);
+                Phone = userConfig.phone;
+                Address1 = userConfig.address1;
+                Address2 = userConfig.address2;
+                City = Formatting.UppercaseFirst(userConfig.city);
+
+                int country = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.country));
+                if (country >= 0) country_COMBO.SelectedIndex = country;
+
+                int state = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.state));
+                if (state >= 0) state_COMBO.SelectedIndex = state;
+
+                ZipCode = userConfig.zipcode;
+
+                LoadProfileImage(userConfig);
+            }
+        }
 
         public void CleanForm()
         {
-
             FirstName = null;
             LastName = null;
             Username = null;
@@ -92,19 +124,10 @@ namespace TH_UserManagement.Create
             if (US >= 0) country_COMBO.SelectedIndex = US;
 
             state_COMBO.SelectedIndex = -1;
-
         }
 
-        public string PageName { get; set; }
 
-        public ImageSource Image { get; set; }
-
-        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png")); } }
-
-
-
-
-        #region "Form Properties"
+        #region "Form"
 
         public string FirstName
         {
@@ -114,7 +137,6 @@ namespace TH_UserManagement.Create
 
         public static readonly DependencyProperty FirstNameProperty =
             DependencyProperty.Register("FirstName", typeof(string), typeof(Page), new PropertyMetadata(null));
-
 
 
         public string LastName
@@ -127,8 +149,6 @@ namespace TH_UserManagement.Create
             DependencyProperty.Register("LastName", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-
-
         public string Username
         {
             get { return (string)GetValue(UsernameProperty); }
@@ -139,8 +159,6 @@ namespace TH_UserManagement.Create
             DependencyProperty.Register("Username", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-
-
         public string Company
         {
             get { return (string)GetValue(CompanyProperty); }
@@ -149,8 +167,6 @@ namespace TH_UserManagement.Create
 
         public static readonly DependencyProperty CompanyProperty =
             DependencyProperty.Register("Company", typeof(string), typeof(Page), new PropertyMetadata(null));
-
-
 
 
         public string Email
@@ -172,7 +188,6 @@ namespace TH_UserManagement.Create
         public static readonly DependencyProperty PhoneProperty =
             DependencyProperty.Register("Phone", typeof(string), typeof(Page), new PropertyMetadata(null));
 
-        
 
         public string Address1
         {
@@ -194,8 +209,6 @@ namespace TH_UserManagement.Create
             DependencyProperty.Register("Address2", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-
-
         public string City
         {
             get { return (string)GetValue(CityProperty); }
@@ -206,7 +219,6 @@ namespace TH_UserManagement.Create
             DependencyProperty.Register("City", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-
         public string ZipCode
         {
             get { return (string)GetValue(ZipCodeProperty); }
@@ -215,57 +227,6 @@ namespace TH_UserManagement.Create
 
         public static readonly DependencyProperty ZipCodeProperty =
             DependencyProperty.Register("ZipCode", typeof(string), typeof(Page), new PropertyMetadata(null));
-
-        
-
-        #endregion
-
-        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-
-        public bool PasswordEntered
-        {
-            get { return (bool)GetValue(PasswordEnteredProperty); }
-            set { SetValue(PasswordEnteredProperty, value); }
-        }
-
-        public static readonly DependencyProperty PasswordEnteredProperty =
-            DependencyProperty.Register("PasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
-
-
-        public bool ConfirmPasswordEntered
-        {
-            get { return (bool)GetValue(ConfirmPasswordEnteredProperty); }
-            set { SetValue(ConfirmPasswordEnteredProperty, value); }
-        }
-
-        public static readonly DependencyProperty ConfirmPasswordEnteredProperty =
-            DependencyProperty.Register("ConfirmPasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
-
-        
-
-        private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (password_TXT.PasswordText != "") PasswordEntered = true;
-            else PasswordEntered = false;
-
-            PasswordShort = false;
-            PasswordLong = false;
-
-            VerifyPassword();
-            ConfirmPassword();
-        }
-
-        private void confirmpassword_TXT_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (confirmpassword_TXT.PasswordText != "") ConfirmPasswordEntered = true;
-            else ConfirmPasswordEntered = false;
-
-            ConfirmPassword();
-        }
 
 
         ObservableCollection<string> countrylist;
@@ -316,9 +277,11 @@ namespace TH_UserManagement.Create
             {
                 ComboBox cb = (ComboBox)sender;
 
-                if (cb.SelectedItem.ToString() == "United States") ShowStates = true;
-                else ShowStates = false;
-
+                if (cb.SelectedItem != null)
+                {
+                    if (cb.SelectedItem.ToString() == "United States") ShowStates = true;
+                    else ShowStates = false;
+                }
             }
         }
 
@@ -327,19 +290,70 @@ namespace TH_UserManagement.Create
 
         }
 
-        private void Apply_Clicked(Button_01 bt)
-        {
-            if (CurrentUser != null)
-            {
 
-            }
-            else
-            {
-                CreateAccount();
-            } 
+        #region "Password"
+
+        public bool PasswordEntered
+        {
+            get { return (bool)GetValue(PasswordEnteredProperty); }
+            set { SetValue(PasswordEnteredProperty, value); }
         }
 
-        void CreateAccount()
+        public static readonly DependencyProperty PasswordEnteredProperty =
+            DependencyProperty.Register("PasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (password_TXT.PasswordText != "") PasswordEntered = true;
+            else PasswordEntered = false;
+
+            PasswordShort = false;
+            PasswordLong = false;
+
+            VerifyPassword();
+            ConfirmPassword();
+        }
+
+        #endregion
+
+        #region "Confirm Password"
+
+        public bool ConfirmPasswordEntered
+        {
+            get { return (bool)GetValue(ConfirmPasswordEnteredProperty); }
+            set { SetValue(ConfirmPasswordEnteredProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConfirmPasswordEnteredProperty =
+            DependencyProperty.Register("ConfirmPasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        private void confirmpassword_TXT_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (confirmpassword_TXT.PasswordText != "") ConfirmPasswordEntered = true;
+            else ConfirmPasswordEntered = false;
+
+            ConfirmPassword();
+        }
+
+        #endregion
+
+
+        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region "Apply / Create"
+
+        private void Apply_Clicked(Button_01 bt)
+        {
+            UpdateUser(CreateUserConfiguration());
+        }
+
+        UserConfiguration CreateUserConfiguration()
         {
             // Create new UserConfiguration object with new data
             UserConfiguration userConfig = new UserConfiguration();
@@ -363,78 +377,61 @@ namespace TH_UserManagement.Create
 
             userConfig.zipcode = ZipCode;
 
-
-            Users.CreateUser(userConfig, password_TXT.PasswordText, userDatabaseSettings);
-
-            ConfirmUserCreation();    
-        }
-
-        System.Timers.Timer create_TIMER;
-
-        void ConfirmUserCreation()
-        {
-            if (create_TIMER != null) create_TIMER.Enabled = false;
-
-            create_TIMER = new System.Timers.Timer();
-            create_TIMER.Interval = 2000;
-            create_TIMER.Elapsed += create_TIMER_Elapsed;
-            create_TIMER.Enabled = true;
-        }
-
-        void create_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            create_TIMER.Enabled = false;
-
-            this.Dispatcher.BeginInvoke(new Action(ConfirmUserCreation_GUI));
-        }
-
-        void ConfirmUserCreation_GUI()
-        {
-
-            //mw.LoginMenu.username_TXT.Text = username_TXT.Text;
-            //mw.LoginMenu.password_TXT.Password = password_TXT.Password;
-
-            //mw.LoginMenu.Login(username_TXT.Text, password_TXT.Password);
-
-            //CleanForm();
-            //mw.ClosePage("Create Account");
-            //mw.LoginMenu.Shown = true;
-
-            //if (mw.LoginMenu.Login())
-            //{
-            //    CleanForm();
-            //    mw.ClosePage("Create Account");
-            //    mw.LoginMenu.Shown = true;
-            //}
-            //else
-            //{
-
-            //}
+            return userConfig;
         }
 
 
-        public void LoadProfile(UserConfiguration userConfig)
+        class UpdateUser_Info
         {
-            CurrentUser = userConfig;
+            public UserConfiguration userConfig { get; set; }
+            public Database_Settings userDatabaseSettings { get; set; }
+            public string password { get; set; }
+        }
 
-            if (userConfig != null)
+        Thread updateuser_THREAD;
+
+        void UpdateUser(UserConfiguration userConfig)
+        {
+            UpdateUser_Info info = new UpdateUser_Info();
+            info.userConfig = userConfig;
+            info.userDatabaseSettings = UserDatabaseSettings;
+            info.password = password_TXT.PasswordText;
+
+
+            if (updateuser_THREAD != null) updateuser_THREAD.Abort();
+
+            updateuser_THREAD = new Thread(new ParameterizedThreadStart(UpdateUser_Worker));
+            updateuser_THREAD.Start(info);
+        }
+
+        void UpdateUser_Worker(object o)
+        {
+            if (o != null)
             {
-                FirstName = Formatting.UppercaseFirst(userConfig.first_name);
-                LastName = Formatting.UppercaseFirst(userConfig.last_name);
-                Username = Formatting.UppercaseFirst(userConfig.username);
-                Email = userConfig.email;
-                Company = Formatting.UppercaseFirst(userConfig.company);
-                Phone = userConfig.phone;
-                Address1 = userConfig.address1;
-                Address2 = userConfig.address2;
-                City = Formatting.UppercaseFirst(userConfig.city);
-                //Country = Formatting.UppercaseFirst(userConfig.country);
-                //State = Formatting.UppercaseFirst(userConfig.state);
-                //Zipcode = userConfig.zipcode;
+                UpdateUser_Info info = (UpdateUser_Info)o;
 
-                LoadProfileImage(userConfig);
+                if (info.userConfig != null)
+                {
+                    bool result = Users.CreateUser(info.userConfig, info.password, info.userDatabaseSettings);
+
+                    this.Dispatcher.BeginInvoke(new Action<bool>(UpdateUser_GUI), priority, new object[] { result });
+                }
+                else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateUser_GUI), priority, new object[] { false });
             }
         }
+
+        void UpdateUser_GUI(bool result)
+        {
+            if (result) MessageBox.Show("User Created / Updated Successfully!");
+            else MessageBox.Show("Error during User Creation!");
+        }
+
+        void UpdateUser_Finished()
+        {
+
+        }
+
+        #endregion
 
 
         #region "Username"
@@ -480,7 +477,7 @@ namespace TH_UserManagement.Create
         void VerifyUsername()
         {
             // If no userconfiguration database configuration found then use default TrakHound User Database
-            if (userDatabaseSettings == null)
+            if (UserDatabaseSettings == null)
             {
                 VerifyUsernameReturn usernameReturn = Remote.Users.VerifyUsername(Username);
                 if (usernameReturn != null)
@@ -589,8 +586,6 @@ namespace TH_UserManagement.Create
 
         #region "Profile Image"
 
-
-
         public ImageSource ProfileImage
         {
             get { return (ImageSource)GetValue(ProfileImageProperty); }
@@ -599,7 +594,6 @@ namespace TH_UserManagement.Create
 
         public static readonly DependencyProperty ProfileImageProperty =
             DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
-
 
 
         public bool ProfileImageSet
@@ -611,9 +605,6 @@ namespace TH_UserManagement.Create
         public static readonly DependencyProperty ProfileImageSetProperty =
             DependencyProperty.Register("ProfileImageSet", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
-        
-
-        
 
         public bool ProfileImageLoading
         {
@@ -649,7 +640,7 @@ namespace TH_UserManagement.Create
 
                 if (userConfig != null)
                 {
-                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, userDatabaseSettings);
+                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, UserDatabaseSettings);
 
                     this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadProfileImage_GUI), priority, new object[] { img });
                 }
@@ -690,7 +681,7 @@ namespace TH_UserManagement.Create
                 if (imagePath != null)
                 {
                     // Crop and Resize image
-                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath, userDatabaseSettings);
+                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath, UserDatabaseSettings);
                     if (img != null)
                     {
                         string filename = String_Functions.RandomString(20);
@@ -702,7 +693,7 @@ namespace TH_UserManagement.Create
 
                         img.Save(localPath);
 
-                        if (ProfileImages.UploadProfileImage(filename, localPath, userDatabaseSettings))
+                        if (ProfileImages.UploadProfileImage(filename, localPath, UserDatabaseSettings))
                         {
                             Remote.Users.UpdateImageURL(filename, CurrentUser);
 
@@ -713,9 +704,6 @@ namespace TH_UserManagement.Create
             }
         }
 
-        #endregion
-
-
         private void ProfileImage_UploadClicked(ImageBox sender)
         {
 
@@ -725,6 +713,8 @@ namespace TH_UserManagement.Create
         {
 
         }
+
+        #endregion
 
     }
 }

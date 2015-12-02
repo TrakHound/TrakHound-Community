@@ -64,15 +64,17 @@ namespace TH_OEE
             {
                 if (de_data.id.ToLower() == "shifttable_shiftrowinfos")
                 {
-                    if (de_data.data.GetType() == typeof(List<ShiftRowInfo>))
+                    if (de_data.data02.GetType() == typeof(List<ShiftRowInfo>))
                     {
-                        List<ShiftRowInfo> infos = (List<ShiftRowInfo>)de_data.data;
+                        List<ShiftRowInfo> infos = (List<ShiftRowInfo>)de_data.data02;
 
                         List<OEEInfo> oeeInfos = ProcessOEE(infos);
 
                         List<OeeRowInfo> rowInfos = GetRowInfos(oeeInfos);
 
                         if (UseDatabases) UpdateRows(rowInfos);
+
+                        SendOEETable(rowInfos);
                     }
                 }
             }
@@ -254,7 +256,7 @@ namespace TH_OEE
 
         #endregion
 
-        #region "MySQL"
+        #region "Database"
 
         void CreateTable()
         {
@@ -602,6 +604,46 @@ namespace TH_OEE
         #endregion
 
         #endregion
+
+        void SendOEETable(List<OeeRowInfo> infos)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("SHIFT_ID");
+            dt.Columns.Add("OEE");
+            dt.Columns.Add("AVAILABILITY");
+            dt.Columns.Add("PERFORMANCE");
+            dt.Columns.Add("QUALITY");
+            dt.Columns.Add("OPERATING_TIME");
+            dt.Columns.Add("PLANNED_PRODUCTION_TIME");
+            dt.Columns.Add("IDEAL_CYCLE_TIME");
+            dt.Columns.Add("TOTAL_PIECES");
+            dt.Columns.Add("GOOD_PIECES");
+
+            foreach (OeeRowInfo info in infos)
+            {
+                DataRow row = dt.NewRow();
+
+                row["SHIFT_ID"] = info.shift_id;
+                row["OEE"] = info.oee;
+                row["AVAILABILITY"] = info.availability;
+                row["PERFORMANCE"] = info.performance;
+                row["QUALITY"] = info.quality;
+                row["OPERATING_TIME"] = info.operating_time;
+                row["PLANNED_PRODUCTION_TIME"] = info.planned_production_time;
+                row["IDEAL_CYCLE_TIME"] = info.ideal_cycle_time;
+                row["TOTAL_PIECES"] = info.total_pieces;
+                row["GOOD_PIECES"] = info.good_pieces;
+
+                dt.Rows.Add(row);
+            }
+
+            DataEvent_Data data = new DataEvent_Data();
+            data.id = "OeeTable";
+            data.data01 = config;
+            data.data02 = dt;
+            if (DataEvent != null) DataEvent(data);
+
+        }
 
         #endregion
 

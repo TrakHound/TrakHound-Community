@@ -127,6 +127,7 @@ namespace TH_Device_Server
             if (current != null) current.Stop();
 
             currentStopped = true;
+            Connected = false;
 
             sampleCounter = -1;
         }
@@ -142,6 +143,8 @@ namespace TH_Device_Server
 
         void current_CurrentFinished(TH_MTC_Data.Streams.ReturnData returnData)
         {
+            Connected = true;
+
             UpdateProcessingStatus("Current Received");
 
             // Check Database Connections (if any) and don't continue till connection established
@@ -179,9 +182,9 @@ namespace TH_Device_Server
             // Update all of the PlugIns with the ReturnData object
             TablePlugIns_Update_Current(returnData);
 
-
             // Run Sample if sampleCounter is over sampleInterval
             sampleCounter += 1;
+
 
             if (configuration.Agent.Simulation_Sample_Files.Count > 0)
             {
@@ -204,6 +207,8 @@ namespace TH_Device_Server
 
         void current_CurrentError(Current.ErrorData errorData)
         {
+            Connected = false;
+
             //Log(errorData.message);
             WriteToConsole("Error Connecting to Current", ConsoleOutputType.Error);
 

@@ -58,15 +58,15 @@
                     </Grid.RowDefinitions>
 
                     <!--Title-->
-                    <TextBlock Text="{Binding Text}" FontSize="14" Foreground="#aaffffff" />
+                    <TextBlock Text="{Binding Text}" FontSize="14" Foreground="#fff" />
 
                     <!--Time Elapsed-->
-                    <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="10" Foreground="#33ffffff" />
+                    <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="10" Foreground="#88ffffff" />
 
                 </Grid>
 
                 <!--Percentage-->
-                <TextBlock Grid.Column="1" Text="{Binding Percentage}" FontSize="20" Foreground="#88ffffff" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" />
+                <TextBlock Grid.Column="1" Text="{Binding Percentage}" FontSize="20" Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" />
 
             </Grid>
 

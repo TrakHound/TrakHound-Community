@@ -156,9 +156,10 @@ namespace TH_UserManagement.Management
                         if (val.GetType() == typeof(DateTime)) val = ConvertDateStringtoMySQL(val.ToString());
 
                         update += "'" + ConvertToSafe(val.ToString()) + "'";
-
-                        if (x < columns.Length - 1) update += ", ";
                     }
+                    else update += columns[x].ToString().ToUpper() + "=null";
+
+                    if (x < columns.Length - 1) update += ", ";
                 }
 
                 string query = "INSERT IGNORE INTO " + tablename + " (" + cols + ") VALUES (" + vals + ")" + update;

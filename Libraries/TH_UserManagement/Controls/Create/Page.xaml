@@ -230,7 +230,7 @@
                 <!--Country-->
                 <TextBlock Text="Country" Foreground="#333" Margin="0,0" FontSize="12pt"/>
 
-                <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14"/>
+                <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
 
 
                 <!--State-->
@@ -248,7 +248,7 @@
 
                     <TextBlock Text="State" Foreground="#333" Margin="0,0" FontSize="12pt"/>
 
-                    <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" SelectionChanged="state_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14"/>
+                    <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" SelectionChanged="state_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
 
                 </StackPanel>
 
@@ -293,7 +293,41 @@
                         </Style>
                     </Grid.Style>-->
 
-                    <th_wpf:Button_01 AlternateStyle="True" Clicked="Apply_Clicked" Height="40">
+                    <!--Apply Changes-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <th_wpf:Button_01 Text="Apply Changes" AlternateStyle="True" Clicked="Apply_Clicked" Height="40" />
+
+                    </Grid>
+                    
+                    <!--Create Account-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <th_wpf:Button_01 Text="Create Account" AlternateStyle="True" Clicked="Apply_Clicked" Height="40" />
+
+                    </Grid>
+                    
+                    <!--<th_wpf:Button_01 AlternateStyle="True" Clicked="Apply_Clicked" Height="40">
                         <th_wpf:Button_01.Style>
                             <Style TargetType="th_wpf:Button_01">
                                 <Setter Property="Text" Value="Apply Changes"/>
@@ -304,7 +338,7 @@
                                 </Style.Triggers>
                             </Style>
                         </th_wpf:Button_01.Style>
-                    </th_wpf:Button_01>
+                    </th_wpf:Button_01>-->
 
                     <!--Disabled Shade-->
                     <Grid>

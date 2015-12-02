@@ -48,7 +48,6 @@ namespace TH_GeneratedData
                     IntializeRows();
                 }
 
-
                 // Generated Events
                 if (UseDatabases)
                 if (gdc.generatedEvents.UploadToMySQL)
@@ -95,7 +94,7 @@ namespace TH_GeneratedData
                         // InstanceTable data after Sample received
                         case "instancedata":
 
-                            List<InstanceTable.InstanceData> instanceDatas = (List<InstanceTable.InstanceData>)de_data.data;
+                            List<InstanceTable.InstanceData> instanceDatas = (List<InstanceTable.InstanceData>)de_data.data02;
 
                             List<GeneratedEventItem> geis = ProcessGeneratedEvents(instanceDatas);
 
@@ -111,13 +110,17 @@ namespace TH_GeneratedData
                         // InstanceData object after current received
                         case "currentinstancedata":
 
-                            InstanceTable.CurrentInstanceData currentInstanceData = (InstanceTable.CurrentInstanceData)de_data.data;
+                            InstanceTable.CurrentInstanceData currentInstanceData = (InstanceTable.CurrentInstanceData)de_data.data02;
 
                             List<SnapShotItem> snapShots = ProcessSnapShots(previousSSI, currentInstanceData.currentData, currentInstanceData.data);
 
                             if (UseDatabases) if (gdc.snapshots.UploadToMySQL) UpdateRows(snapShots);
 
                             previousSSI = snapShots;
+
+                            // Send Table of SnapShotItems to other Plugins--------
+                            SendSnapShotTable(snapShots);
+                            // ----------------------------------------------------
 
                             // Send List of SnapShotItems to other Plugins--------
                             SendSnapShotItems(snapShots);
@@ -1208,15 +1211,45 @@ namespace TH_GeneratedData
         {
             DataEvent_Data data = new DataEvent_Data();
             data.id = "GeneratedEventItems";
-            data.data = items;
+            data.data01 = config;
+            data.data02 = items;
             if (DataEvent != null) DataEvent(data);
+        }
+
+        void SendSnapShotTable(List<SnapShotItem> items)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Timestamp");
+            dt.Columns.Add("Name");
+            dt.Columns.Add("Value");
+            dt.Columns.Add("Previous_Value");
+
+            foreach (SnapShotItem item in items)
+            {
+                DataRow row = dt.NewRow();
+
+                row["Timestamp"] = item.timestamp;
+                row["Name"] = item.name;
+                row["Value"] = item.value;
+                row["Previous_Value"] = item.previous_value;
+
+                dt.Rows.Add(row);
+            }
+
+            DataEvent_Data data = new DataEvent_Data();
+            data.id = "SnapShotTable";
+            data.data01 = config;
+            data.data02 = dt;
+            if (DataEvent != null) DataEvent(data);
+
         }
 
         void SendSnapShotItems(List<SnapShotItem> items)
         {
             DataEvent_Data data = new DataEvent_Data();
             data.id = "SnapShotItems";
-            data.data = items;
+            data.data01 = config;
+            data.data02 = items;
             if (DataEvent != null) DataEvent(data);
         }
 

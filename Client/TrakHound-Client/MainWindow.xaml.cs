@@ -84,7 +84,7 @@ namespace TrakHound_Client
             devicemangager.userDatabaseSettings = UserDatabaseSettings;
 
             LoginMenu.rememberMeType = RememberMeType.Client;
-            LoginMenu.LoadRememberMe();
+            //LoginMenu.LoadRememberMe();
 
 
             Splash_UpdateStatus("...Loading Plugins");
@@ -948,9 +948,9 @@ namespace TrakHound_Client
                 PageContent = ParentPage;
             }
 
-            public void LoadUser(UserConfiguration userConfig)
+            public void LoadUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
             {
-                ParentPage.LoadProfile(userConfig);
+                ParentPage.LoadUserConfiguration(userConfig, userDatabaseSettings);
             }
 
             public TH_UserManagement.Create.Page ParentPage;
@@ -974,8 +974,9 @@ namespace TrakHound_Client
         {
             accountManager.ClearPages();
             accountpage = new CreateAccountPage();
+            
 
-            accountpage.LoadUser(currentuser);
+            accountpage.LoadUser(currentuser, UserDatabaseSettings);
 
             accountManager.AddPage(accountpage);
 
@@ -1798,7 +1799,6 @@ namespace TrakHound_Client
 
         void LoadDevices()
         {
-
             if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
 
             loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
@@ -1816,9 +1816,8 @@ namespace TrakHound_Client
             // If not logged in Read from File in 'C:\TrakHound\'
             else
             {
-                //configs = ReadConfigurationFile();
+                configs = ReadConfigurationFile();
             }
-
 
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
         }
@@ -1873,6 +1872,125 @@ namespace TrakHound_Client
             Logger.Log("New Configuration Found!");
             //LoadDevices();
         }
+
+        #region "Offline Configurations"
+
+        List<Configuration> ReadConfigurationFile()
+        {
+            List<Configuration> result = new List<Configuration>();
+
+            //UpdateExceptionsThrown = new List<string>();
+
+            string configPath;
+
+            string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
+            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+
+            // systemPath takes priority (easier for user to navigate to)
+            if (File.Exists(systemPath)) configPath = systemPath;
+            else configPath = localPath;
+
+            if (System.IO.File.Exists(configPath))
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(configPath);
+
+                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
+                {
+                    if (Node.NodeType == XmlNodeType.Element)
+                    {
+                        switch (Node.Name.ToLower())
+                        {
+                            case "devices":
+                                foreach (XmlNode ChildNode in Node.ChildNodes)
+                                {
+                                    if (ChildNode.NodeType == XmlNodeType.Element)
+                                    {
+                                        switch (ChildNode.Name.ToLower())
+                                        {
+                                            case "device":
+
+                                                Configuration config = GetSettingsFromNode(ChildNode);
+                                                if (config != null) result.Add(config);
+
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private Configuration GetSettingsFromNode(XmlNode Node)
+        {
+
+            Configuration Result = null;
+
+            string configPath = null;
+
+            foreach (XmlNode ChildNode in Node.ChildNodes)
+            {
+                switch (ChildNode.Name.ToLower())
+                {
+                    case "configuration_path": configPath = ChildNode.InnerText; break;
+                }
+            }
+
+            if (configPath != null)
+            {
+                configPath = GetConfigurationPath(configPath);
+
+                Result = Configuration.ReadConfigFile(configPath);
+
+                if (Result == null)
+                {
+                    Message_Center.Message_Data mData = new Message_Center.Message_Data();
+                    mData.title = "Device Configuration Error";
+                    mData.text = "Could not load device configuration from " + configPath;
+                    mData.additionalInfo = "Check to make sure the file exists at "
+                        + configPath
+                        + " and that the format is correct and restart TrakHound Client."
+                        + Environment.NewLine
+                        + Environment.NewLine
+                        + "For more information please contact us at info@TrakHound.org";
+                    if (messageCenter != null) messageCenter.AddError(mData);
+                }
+            }
+
+            return Result;
+
+        }
+
+        static string GetConfigurationPath(string path)
+        {
+            // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
+            if (!System.IO.Path.IsPathRooted(path))
+            {
+                // Remove initial Backslash if contained in "configuration_path"
+                if (path[0] == '\\' && path.Length > 1) path.Substring(1);
+
+                string original = path;
+
+                // Check System Path
+                path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
+                if (File.Exists(path)) return path;
+
+                // Check local app Path
+                path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
+                if (File.Exists(path)) return path;
+
+                // if no files exist return null
+                return null;
+            }
+            else return path;
+        }
+
+        #endregion
 
         #endregion
 
@@ -2363,7 +2481,6 @@ namespace TrakHound_Client
         }
 
         #endregion
-
 
     }
 
