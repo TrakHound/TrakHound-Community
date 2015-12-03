@@ -27,9 +27,6 @@
     <Grid x:Name="Main_GRID" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown" Height="150">
         <Grid.Style>
             <Style TargetType="Grid">
-                <!--<Setter Property="Height" Value="30"/>-->
-                <!--<Setter Property="Background" Value="#FF19B419"/>-->
-                <!--<Setter Property="Background" Value="#00ff00"/>-->
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
 
@@ -190,7 +187,7 @@
             </TextBlock>
 
             <!--Device Logo-->
-            <Image Grid.Row="1" Source="{Binding Device_Logo}" Margin="10,5" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="50">
+            <Image Grid.Row="1" Source="{Binding Device_Logo}" Margin="10,5" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="50" MaxWidth="160">
                 <Image.Style>
                     <Style TargetType="Image">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -221,19 +218,103 @@
             </Image>
 
             <!--Device Image-->
-            <Image Grid.Row="2" Source="{Binding Device_Image}" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Top" MaxWidth="160">
+            <Image Grid.Row="2" Source="{Binding Device_Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image.Effect>
-                    <DropShadowEffect Direction="225" Color="#33000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
+                    <DropShadowEffect Direction="225" Color="#66000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
                 </Image.Effect>
                 <Image.Style>
                     <Style TargetType="Image">
-                        <!--<Setter Property="Opacity" Value="0.75"/>-->
-                        <Setter Property="Opacity" Value="1.0"/>
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Opacity" Value="0.0"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="MaxWidth" Value="0"/>
+                        <Setter Property="MaxHeight" Value="0"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Minimized}" Value="false">
-                                <Setter Property="Visibility" Value="Visible"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="MaxHeight" From="0" To="140" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="MaxWidth" From="0" To="140" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Margin" From="0" To="10" >
+                                                <ThicknessAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseOut"/>
+                                                </ThicknessAnimation.EasingFunction>
+                                            </ThicknessAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxHeight" From="140" To="0" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="MaxWidth" From="140" To="0" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                <DoubleAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Margin" From="10" To="0" >
+                                                <ThicknessAnimation.EasingFunction>
+                                                    <CubicEase EasingMode="EaseIn"/>
+                                                </ThicknessAnimation.EasingFunction>
+                                            </ThicknessAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
                             </DataTrigger>
+
+
+
+
+                            <!--<DataTrigger Binding="{Binding Minimized}" Value="false">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>-->
                             <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
                                 <Setter Property="Opacity" Value="1.0"/>
                             </DataTrigger>-->
@@ -246,9 +327,14 @@
                             <DataTrigger Binding="{Binding Connected}" Value="false">
                                 <Setter Property="Opacity" Value="0.3"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                            <!--<DataTrigger Binding="{Binding Collapsed}" Value="true">
                                 <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
+                            </DataTrigger>-->
+                            
+                            <Trigger Property="MaxHeight" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            
                         </Style.Triggers>
                     </Style>
                 </Image.Style>

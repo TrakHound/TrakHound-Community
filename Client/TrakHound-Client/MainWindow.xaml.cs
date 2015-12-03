@@ -1114,7 +1114,6 @@ namespace TrakHound_Client
                 devicemangager.CurrentUser = currentuser;
 
                 
-
                 if (currentuser != null)
                 {
                     CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
@@ -1127,12 +1126,12 @@ namespace TrakHound_Client
                     CurrentUsername = null;
                 }
 
-                //LoadDevices();
+                LoadDevices();
 
 
                 if (accountpage != null) accountpage.LoadUser(currentuser, UserDatabaseSettings);
 
-                //UpdatePlugInUser(currentuser, UserDatabaseSettings);
+                UpdatePlugInUser(currentuser, UserDatabaseSettings);
 
                 if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
@@ -1837,6 +1836,8 @@ namespace TrakHound_Client
 
                 //if (monitors != null) { monitors.Clear(); }
 
+                DatabasePluginReader dpr = new DatabasePluginReader();
+
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in configs)
                 {
@@ -1847,6 +1848,9 @@ namespace TrakHound_Client
                     if (config.Enabled)
                     {
                         Devices.Add(config);
+
+                        // Initialize Database Configurations
+                        Global.Initialize(config.Databases);
                     }
 
                     index += 1;

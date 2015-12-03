@@ -452,6 +452,9 @@ namespace TH_DeviceManager
                     // Reset Update ID
                     Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
 
+                    // Add Unique Id (ONLY if one not already set)
+                    if (Table_Functions.GetTableValue("/UniqueId", dt) == null) Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UniqueId", dt);
+
                     Configurations.ClearConfigurationTable(tablename, userDatabaseSettings);
 
                     Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);

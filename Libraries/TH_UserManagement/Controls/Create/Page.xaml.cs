@@ -83,7 +83,7 @@ namespace TH_UserManagement.Create
 
         public ImageSource Image { get; set; }
 
-        BitmapImage NoProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
+        BitmapImage NoProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
 
         public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
@@ -93,7 +93,7 @@ namespace TH_UserManagement.Create
             if (userConfig != null)
             {
                 PageName = "Edit Account";
-                Image = NoProfileImage;
+                Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
 
                 FirstName = Formatting.UppercaseFirst(userConfig.first_name);
                 LastName = Formatting.UppercaseFirst(userConfig.last_name);

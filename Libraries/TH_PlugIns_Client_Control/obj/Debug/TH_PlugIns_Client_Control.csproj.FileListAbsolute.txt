@@ -12,4 +12,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_D
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Database.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\LICENSE.txt

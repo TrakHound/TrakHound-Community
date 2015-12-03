@@ -230,7 +230,6 @@ namespace TH_DeviceCompare
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
-
         void Update(DataEvent_Data de_d)
         {
             if (de_d != null)
@@ -268,7 +267,6 @@ namespace TH_DeviceCompare
 
                             // Alert
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Alert), Priority_Context, new object[] { dd, de_d.data02 });
-
 
 
 
@@ -756,7 +754,11 @@ namespace TH_DeviceCompare
         {
             Controls.TimeDisplay td;
 
-            string text = updateData.variable.name.Replace("PRODUCTION_STATUS__", "").Replace("_", " ");
+            string text = updateData.variable.name;
+            if (updateData.variable.name.Contains("PRODUCTION_STATUS__")) text = updateData.variable.name.Replace("PRODUCTION_STATUS__", "");
+            if (updateData.variable.name.Contains("Production_Status__")) text = updateData.variable.name.Replace("Production_Status__", "");
+            if (updateData.variable.name.Contains("production_status__")) text = updateData.variable.name.Replace("production_status__", "");
+            text = text.Replace('_', ' ');
 
             int index = -1;
             index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
@@ -808,7 +810,7 @@ namespace TH_DeviceCompare
                     // Get Production Status Variables
                     foreach (DataColumn column in dt.Columns)
                     {
-                        if (column.ColumnName.Contains("PRODUCTION_STATUS"))
+                        if (column.ColumnName.Contains("PRODUCTION_STATUS") || column.ColumnName.Contains("Production_Status") || column.ColumnName.Contains("production_status"))
                         {
                             string name = column.ColumnName;
                             string value = row[column].ToString();
