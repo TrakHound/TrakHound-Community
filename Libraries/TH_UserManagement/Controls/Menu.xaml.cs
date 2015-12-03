@@ -65,7 +65,6 @@ namespace TH_UserManagement
 
         public delegate void Clicked_Handler();
 
-
         #region "Properties"
 
         public bool Shown
@@ -73,12 +72,17 @@ namespace TH_UserManagement
             get { return (bool)GetValue(ShownProperty); }
             set
             {
+                bool prev = Shown;
+
                 SetValue(ShownProperty, value);
 
-                if (Shown) ShowMenu();
-                else HideMenu();
-             
-                if (ShownChanged != null) ShownChanged(value);
+                if (Shown != prev)
+                {
+                    if (Shown) ShowMenu();
+                    else HideMenu();
+
+                    if (ShownChanged != null) ShownChanged(value);
+                }
             }
         }
 
@@ -133,6 +137,7 @@ namespace TH_UserManagement
             else PasswordEntered = false;
         }
 
+        bool loadingOpened;
 
         public bool Loading
         {
@@ -140,6 +145,17 @@ namespace TH_UserManagement
             set
             {
                 SetValue(LoadingProperty, value);
+
+                if (Loading && !Shown)
+                {
+                    Shown = true;
+                    loadingOpened = true;
+                }
+                else if (loadingOpened)
+                {
+                    Shown = false;
+                    loadingOpened = false;
+                }
             }
         }
 
@@ -157,9 +173,6 @@ namespace TH_UserManagement
             DependencyProperty.Register("LoadingMessage", typeof(string), typeof(Menu), new PropertyMetadata(null));
 
         
-
-
-
         public bool LoginError
         {
             get { return (bool)GetValue(LoginErrorProperty); }
@@ -168,7 +181,6 @@ namespace TH_UserManagement
 
         public static readonly DependencyProperty LoginErrorProperty =
             DependencyProperty.Register("LoginError", typeof(bool), typeof(Menu), new PropertyMetadata(false));
-
 
 
 
@@ -231,21 +243,30 @@ namespace TH_UserManagement
         public static readonly DependencyProperty ProfileImageProperty =
             DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(Menu), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"))));
 
-
         #endregion
 
         #region "Animations"
 
         const double LoggedInHeight = 215;
-        const double LoggedOutHeight = 275;
+        const double LoggedOutHeight = 295;
 
         void HideMenu()
         {
+            DoubleAnimation opacity = new DoubleAnimation();
+            opacity.From = 1.0;
+            opacity.To = 0.0;
+            opacity.Duration = new Duration(TimeSpan.FromMilliseconds(150));
 
+            Root_GRID.BeginAnimation(OpacityProperty, opacity);
         }
 
         void ShowMenu()
         {
+            DoubleAnimation opacity = new DoubleAnimation();
+            opacity.From = 0;
+            opacity.To = 1.0;
+            opacity.Duration = new Duration(TimeSpan.FromMilliseconds(150));
+
             DoubleAnimation width = new DoubleAnimation();
             width.From = 0;
             width.To = 315;
@@ -257,6 +278,7 @@ namespace TH_UserManagement
             else height.To = LoggedOutHeight;
             height.Duration = new Duration(TimeSpan.FromMilliseconds(150));
 
+            Root_GRID.BeginAnimation(OpacityProperty, opacity);
             Root_GRID.BeginAnimation(HeightProperty, height);
             Root_GRID.BeginAnimation(WidthProperty, width);
         }
@@ -306,8 +328,6 @@ namespace TH_UserManagement
             Shown = false;
 
             if (MyAccountClicked != null) MyAccountClicked();
-
-            //if (mw != null) mw.MyAccount_Open();
         }
 
         private void ProfileImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -340,6 +360,8 @@ namespace TH_UserManagement
             {
                 LoggedIn = false;
             }
+
+            CurrentUser = userConfig;
         }
 
         #region "Login"
@@ -348,6 +370,7 @@ namespace TH_UserManagement
         {
             public string username { get; set; }
             public string password { get; set; }
+            public bool rememberMe { get; set; }
         }
 
         Thread login_THREAD;
@@ -363,6 +386,7 @@ namespace TH_UserManagement
             Login_Info info = new Login_Info();
             info.username = username;
             info.password = password;
+            info.rememberMe = RememberMe;
 
             if (login_THREAD != null) login_THREAD.Abort();
 
@@ -388,15 +412,10 @@ namespace TH_UserManagement
                     userConfig = Local.Users.Login(info.username, info.password, userDatabaseSettings);
                 }
 
+                if (userConfig != null && info.rememberMe) Remote.Users.RememberMe.Set(userConfig, rememberMeType);
+
                 this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
             }
-        }
-
-        void Login_GUI(UserConfiguration userConfig)
-        {
-            if (RememberMe) Remote.Users.RememberMe.Set(userConfig, rememberMeType);
-
-            LoadUserConfiguration(userConfig);
         }
 
         void Login_Finished(UserConfiguration userConfig)
@@ -404,7 +423,7 @@ namespace TH_UserManagement
             // If login was successful
             if (userConfig != null)
             {
-                Login_GUI(userConfig);
+                LoadUserConfiguration(userConfig);
             }
             else
             {
@@ -418,29 +437,12 @@ namespace TH_UserManagement
                 Username = null;
             }
 
-            CurrentUser = userConfig;
-
             Loading = false;
         }
 
         #endregion
 
         #region "Logout"
-
-        //void SignOut()
-        //{
-        //    LoggedIn = false;
-
-        //    Fullname = null;
-        //    Firstname = null;
-        //    Lastname = null;
-
-        //    if (remembermetypeset) Management.ClearRememberMe(remembermetype);
-
-        //    Username = null;
-        //    CurrentUser = null;
-        //    ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
-        //}
 
         Thread logout_THREAD;
 
@@ -484,9 +486,6 @@ namespace TH_UserManagement
 
         public RememberMeType rememberMeType { get; set; }
 
-        //Management.RememberMeType remembermetype;
-        //bool remembermetypeset;
-
         public bool RememberMe
         {
             get { return (bool)GetValue(RememberMeProperty); }
@@ -512,10 +511,8 @@ namespace TH_UserManagement
 
         public void LoadRememberMe()
         {
-            //remembermetype = type;
-            //remembermetypeset = true;
-
             Loading = true;
+            LoadingMessage = "Logging in..";
 
             LoginError = false;
             ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
@@ -528,8 +525,6 @@ namespace TH_UserManagement
 
         void LoadRememberMe_Worker()
         {
-            //Management.RememberMeType type = (Management.RememberMeType)o;
-
             UserConfiguration RememberUser = Remote.Users.RememberMe.Get(rememberMeType);
 
             if (RememberUser != null) Remote.Users.RememberMe.Set(RememberUser, rememberMeType);
@@ -537,34 +532,15 @@ namespace TH_UserManagement
             this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
         }
 
-        //void LoadRememberMe_GUI(UserConfiguration userConfig)
-        //{
-        //    Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-        //    Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-        //    Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-
-        //    Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-        //    EmailAddress = userConfig.email;
-
-        //    username_TXT.Clear();
-        //    password_TXT.Clear();
-
-        //    LoadProfileImage(userConfig);
-        //    LoggedIn = true;
-        //}
-
         void LoadRememberMe_Finished(UserConfiguration userConfig)
         {
             // If login was successful
             if (userConfig != null)
             {
                 LoadUserConfiguration(userConfig);
-
-                //LoadRememberMe_GUI(userConfig);
             }
             else
             {
-                //LoginError = true;
                 LoggedIn = false;
 
                 Fullname = null;
@@ -573,8 +549,6 @@ namespace TH_UserManagement
 
                 Username = null;
             }
-
-            CurrentUser = userConfig;
 
             Loading = false;
         }
@@ -686,14 +660,6 @@ namespace TH_UserManagement
         void CreateAccount()
         {
             if (CreateClicked != null) CreateClicked();
-
-            //if (mw != null)
-            //{
-            //    Account_Management.Pages.Create.Page page = new Account_Management.Pages.Create.Page();
-            //    page.CleanForm();
-            //    mw.AddPageAsTab(page, page.PageName, page.Image);
-
-            //}
         }
 
         private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -721,20 +687,6 @@ namespace TH_UserManagement
         private void password_TXT_GotFocus(object sender, RoutedEventArgs e)
         {
             password_TXT.Password = null;
-        }
-
-
-        private void ManageDevices_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //if (mw.CurrentPage != null)
-            //{
-            //    if (mw.CurrentPage.GetType() != typeof(TrakHound_Server_Control_Panel.Pages.DeviceManagement.Page))
-            //    {
-            //        mw.CurrentPage = mw.devicemanagementpage;
-            //    }
-            //}
-            //else mw.CurrentPage = mw.devicemanagementpage;
-
         }
 
     }

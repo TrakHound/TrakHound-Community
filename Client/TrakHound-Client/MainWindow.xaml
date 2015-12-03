@@ -16,6 +16,7 @@
         xmlns:plugins="clr-namespace:TrakHound_Client.Plugins.Launcher"
         
         xmlns:user="clr-namespace:TH_UserManagement;assembly=TH_UserManagement"
+        xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
         
         Title="TrakHound - [Beta] - CNC Monitoring Software"
         
@@ -588,7 +589,7 @@
                                         </Grid.Style>
 
                                         <!--UserName-->
-                                        <TextBlock Text="{Binding CurrentUsername}" Foreground="#fff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
+                                        <TextBlock Text="{Binding CurrentUsername}" Foreground="#fff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
 
                                         <!--Arrow-->
                                         <Path 
@@ -711,12 +712,7 @@
                                             </Path.Style>
                                         </Path>
 
-                                    </Grid>
-
-                                    
-
-
-                                    
+                                    </Grid>                                   
 
                                 </Grid>
 

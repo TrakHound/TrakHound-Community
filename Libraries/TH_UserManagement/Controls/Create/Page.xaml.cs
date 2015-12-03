@@ -43,7 +43,10 @@ namespace TH_UserManagement.Create
 
             // Fill State List
             foreach (string state in States.Abbreviations) StateList.Add(state);
-            
+
+            PageName = "Create Account";
+            Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
+
         }
 
         public Database_Settings UserDatabaseSettings = null;
