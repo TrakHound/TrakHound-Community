@@ -56,7 +56,7 @@ namespace TH_UserManagement.Management
                 values["id"] = id;
                 values["password"] = password;
 
-                string url = "http://www.feenux.com/php/users/login.php";
+                string url = "https://www.feenux.com/php/users/login.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -170,7 +170,7 @@ namespace TH_UserManagement.Management
                 values["password"] = password;
                 values["query"] = query;
 
-                string url = "http://www.feenux.com/php/users/createuser.php";
+                string url = "https://www.feenux.com/php/users/createuser.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -188,7 +188,7 @@ namespace TH_UserManagement.Management
                 NameValueCollection values = new NameValueCollection();
                 values["username"] = username;
 
-                string url = "http://www.feenux.com/php/users/verifyusername.php";
+                string url = "https://www.feenux.com/php/users/verifyusername.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -227,7 +227,7 @@ namespace TH_UserManagement.Management
                 values["username"] = userConfig.username;
                 values["lastlogin"] = ConvertDateStringtoMySQL(userConfig.last_login.ToString());
 
-                string url = "http://www.feenux.com/php/users/updatelastlogin.php";
+                string url = "https://www.feenux.com/php/users/updatelastlogin.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -248,7 +248,7 @@ namespace TH_UserManagement.Management
                 values["username"] = userConfig.username;
                 values["imageurl"] = userConfig.image_url;
 
-                string url = "http://www.feenux.com/php/users/updateimageurl.php";
+                string url = "https://www.feenux.com/php/users/updateimageurl.php";
 
                 string responseString = HTTP.SendData(url, values);
 
@@ -273,7 +273,7 @@ namespace TH_UserManagement.Management
                     values["id"] = id;
                     values["type"] = type.ToString();
 
-                    string url = "http://www.feenux.com/php/users/setrememberme.php";
+                    string url = "https://www.feenux.com/php/users/setrememberme.php";
 
 
                     string responseString = HTTP.SendData(url, values);
@@ -325,7 +325,7 @@ namespace TH_UserManagement.Management
                                 values["hash"] = hash;
                                 values["type"] = type.ToString();
 
-                                string url = "http://www.feenux.com/php/users/getrememberme.php";
+                                string url = "https://www.feenux.com/php/users/getrememberme.php";
 
 
                                 string responseString = HTTP.SendData(url, values);
@@ -355,7 +355,7 @@ namespace TH_UserManagement.Management
                         values["type"] = type.ToString();
 
 
-                        string url = "http://www.feenux.com/php/users/clearrememberme.php";
+                        string url = "https://www.feenux.com/php/users/clearrememberme.php";
 
                         string responseString = HTTP.SendData(url, values);
 
@@ -401,7 +401,7 @@ namespace TH_UserManagement.Management
 
                 values["username"] = userConfig.username;
 
-                string url = "http://www.feenux.com/php/configurations/getconfigurations.php";
+                string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -459,7 +459,7 @@ namespace TH_UserManagement.Management
                 NameValueCollection values = new NameValueCollection();
                 values["tablename"] = table;
 
-                string url = "http://www.feenux.com/php/configurations/getconfigurationtable.php";
+                string url = "https://www.feenux.com/php/configurations/getconfigurationtable.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -552,7 +552,7 @@ namespace TH_UserManagement.Management
 
                     postValues["query"] = query;
 
-                    string url = "http://www.feenux.com/php/configurations/updateconfigurationtable.php";
+                    string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
 
                     string responseString = HTTP.SendData(url, postValues);
@@ -583,7 +583,7 @@ namespace TH_UserManagement.Management
 
                     values["query"] = query;
 
-                    string url = "http://www.feenux.com/php/configurations/updateconfigurationtable.php";
+                    string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
 
                     string responseString = HTTP.SendData(url, values);
@@ -614,7 +614,7 @@ namespace TH_UserManagement.Management
 
                     values["query"] = query;
 
-                    string url = "http://www.feenux.com/php/configurations/updateconfigurationtable.php";
+                    string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
 
                     string responseString = HTTP.SendData(url, values);
 
@@ -633,7 +633,7 @@ namespace TH_UserManagement.Management
 
                 values["query"] = "TRUNCATE TABLE " + tableName;
 
-                string url = "http://www.feenux.com/php/configurations/createconfigurationtable.php";
+                string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -673,7 +673,7 @@ namespace TH_UserManagement.Management
 
                 values["query"] = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
 
-                string url = "http://www.feenux.com/php/configurations/createconfigurationtable.php";
+                string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -715,7 +715,7 @@ namespace TH_UserManagement.Management
 
                 values["query"] = "CREATE TABLE IF NOT EXISTS " + table + " (" + coldef + Keydef + ")";
 
-                string url = "http://www.feenux.com/php/configurations/createconfigurationtable.php";
+                string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -746,7 +746,7 @@ namespace TH_UserManagement.Management
 
                 values["tablename"] = tableName;
 
-                string url = "http://www.feenux.com/php/configurations/removeconfigurationtable.php";
+                string url = "https://www.feenux.com/php/configurations/removeconfigurationtable.php";
 
 
                 string responseString = HTTP.SendData(url, values);
@@ -808,7 +808,7 @@ namespace TH_UserManagement.Management
                         else if (ImageFormat.Tiff.Equals(img.RawFormat)) contentFormat = "image/tiff";
 
                         NameValueCollection nvc = new NameValueCollection();
-                        if (HTTP.UploadFile("http://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
+                        if (HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
                         {
                             result = true;
                         }
@@ -835,7 +835,7 @@ namespace TH_UserManagement.Management
                         {
                             try
                             {
-                                byte[] data = webClient.DownloadData("http://www.feenux.com/trakhound/users/files/" + filename);
+                                byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/users/files/" + filename);
 
                                 using (MemoryStream mem = new MemoryStream(data))
                                 {
@@ -878,19 +878,19 @@ namespace TH_UserManagement.Management
                 return result;
             }
 
-            public static System.Drawing.Image ProcessImage(string path)
-            {
-                System.Drawing.Image result = null;
+            //public static System.Drawing.Image ProcessImage(string path)
+            //{
+            //    System.Drawing.Image result = null;
 
-                if (File.Exists(path))
-                {
-                    System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
+            //    if (File.Exists(path))
+            //    {
+            //        System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
 
-                    result = Image_Functions.SetImageSize(img, 200, 200);
-                }
+            //        result = Image_Functions.SetImageSize(img, 200, 200);
+            //    }
 
-                return result;
-            }
+            //    return result;
+            //}
 
             /// <summary>
             /// Uploads a Profile Image to the TrakHound Server
@@ -903,7 +903,7 @@ namespace TH_UserManagement.Management
                 bool result = false;
 
                 NameValueCollection nvc = new NameValueCollection();
-                if (HTTP.UploadFile("http://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+                if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
                 {
                     result = true;
                 }
@@ -928,7 +928,7 @@ namespace TH_UserManagement.Management
                         {
                             try
                             {
-                                byte[] data = webClient.DownloadData("http://www.feenux.com/trakhound/users/files/" + userConfig.image_url);
+                                byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/users/files/" + userConfig.image_url);
 
                                 using (MemoryStream mem = new MemoryStream(data))
                                 {

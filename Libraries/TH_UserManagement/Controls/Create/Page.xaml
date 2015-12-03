@@ -5,59 +5,178 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
              d:DesignWidth="800" Background="#eee">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
+        
+        <StackPanel>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.Resources>
-                <Style TargetType="th_wpf:TextBox">
-                    <Setter Property="Margin" Value="0,10"/>
-                </Style>
-                <Style TargetType="th_wpf:PasswordBox">
-                    <Setter Property="Margin" Value="0,10"/>
-                </Style>
-            </Grid.Resources>
+            <!--Description-->
+            <StackPanel>
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
 
-            <!--User Configuration-->
-            <StackPanel Width="315" HorizontalAlignment="Left" Margin="0,0,40,0">
+                <TextBlock Foreground="#666666" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
+                Create a Free TrakHound User Account so you can easily reach your devices from anywhere, remotely manage your configurations, have the option to share your configurations with others, and much more!
+                </TextBlock>
 
-                <!--Name-->
-                <Grid Margin="0,0,0,5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="th_wpf:TextBox">
-                            <Setter Property="VerticalAlignment" Value="Bottom"/>
-                        </Style>
-                    </Grid.Resources>
+                <TextBlock Foreground="#666666" TextWrapping="Wrap" Margin="0,0,0,5" MaxWidth="600" HorizontalAlignment="Left">
+                Enter only the information you want below, all we require is a username and a secure password.
+                </TextBlock>
 
-                    <!--First Name-->
-                    <th_wpf:TextBox Text="{Binding FirstName, Mode=TwoWay}" Title="Name" Instructions="First" TextChanged="TXT_TextChanged" Margin="0,0,0,0"/>
+                <TextBlock Foreground="#666666" TextWrapping="Wrap" Margin="0,0,0,20" MaxWidth="600" HorizontalAlignment="Left">
+                If you enter your contact information we will only use it to contact you if you have requested assistance from us, we need to inform you about information regarding your account, or we have an update to our policies.
+                </TextBlock>
 
-                    <!--Last Name-->
-                    <th_wpf:TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay}" Instructions="Last" TextChanged="TXT_TextChanged"/>
+            </StackPanel>
 
-                </Grid>
+            <!--Form-->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="th_wpf:TextBox">
+                        <Setter Property="Margin" Value="0,10"/>
+                    </Style>
+                    <Style TargetType="th_wpf:PasswordBox">
+                        <Setter Property="Margin" Value="0,10"/>
+                    </Style>
+                </Grid.Resources>
 
+                <!--User Configuration-->
+                <StackPanel Width="315" HorizontalAlignment="Left" Margin="0,0,0,0">
 
-                <Grid>
-                    
-                    <!--Logged Out-->
+                    <!--Name-->
+                    <Grid Margin="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="th_wpf:TextBox">
+                                <Setter Property="VerticalAlignment" Value="Bottom"/>
+                            </Style>
+                        </Grid.Resources>
+
+                        <!--First Name-->
+                        <th_wpf:TextBox Text="{Binding FirstName, Mode=TwoWay}" Title="Name" Instructions="First" TextChanged="TXT_TextChanged" Margin="0,0,0,0"/>
+
+                        <!--Last Name-->
+                        <th_wpf:TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay}" Instructions="Last" TextChanged="TXT_TextChanged"/>
+
+                    </Grid>
+
+                    <Grid>
+
+                        <!--Logged Out-->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <!--Choose your username-->
+                            <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Choose your username" Instructions="Username" TextChanged="username_TXT_TextChanged" Required="True"/>
+
+                            <!--Verify Username-->
+                            <Grid Margin="10,0,10,10">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Username}" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Username}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+
+                        </StackPanel>
+
+                        <!--Logged In-->
+                        <StackPanel>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <!--Choose your username-->
+                            <StackPanel Margin="0,20,0,10">
+                                <TextBlock Text="Username" Foreground="#aaa" FontSize="10pt" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="#0080ff"/>
+                            </StackPanel>
+
+                            <!--Password-->
+                            <Grid Margin="0,0,0,20">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                <th_wpf:Button_01 Grid.Column="1" Text="Change Password" AlternateStyle="True" HorizontalAlignment="Left" Height="40" Clicked="ChangePassword_Clicked"/>
+                            </Grid>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!--Password Boxes-->
                     <StackPanel>
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
@@ -65,39 +184,19 @@
                             </Style>
                         </StackPanel.Style>
 
-                        <!--Choose your username-->
-                        <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Choose your username" Instructions="Username" TextChanged="username_TXT_TextChanged" Required="True"/>
-
-                        <!--Verify Username-->
-                        <Grid Margin="10,0,10,10">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Visibility" Value="Visible"/>
+                        <!--Password-->
+                        <th_wpf:PasswordBox x:Name="password_TXT" PasswordChanged="password_TXT_PasswordChanged" Required="True">
+                            <th_wpf:PasswordBox.Style>
+                                <Style TargetType="th_wpf:PasswordBox">
+                                    <Setter Property="Title" Value="Enter new password"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Username}" Value="">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                            <Setter Property="Title" Value="Create a password"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Grid.Style>
-
-                            <TextBlock Text="{Binding UsernameMessage}" TextWrapping="Wrap">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="Red"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding UsernameVerified}" Value="true">
-                                                <Setter Property="Foreground" Value="Green"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
-
-
-                        <!--Password-->
-                        <th_wpf:PasswordBox x:Name="password_TXT" Title="Create a password" PasswordChanged="password_TXT_PasswordChanged" Required="True"/>
+                            </th_wpf:PasswordBox.Style>
+                        </th_wpf:PasswordBox>
 
                         <!--Verify Password -->
                         <Grid Margin="10,0,10,10">
@@ -171,98 +270,68 @@
 
                         </Grid>
 
-
                     </StackPanel>
 
-                    <!--Logged In-->
+
+                    <!--Company-->
+                    <th_wpf:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company" TextChanged="TXT_TextChanged"/>
+
+
+                    <!--Email-->
+                    <th_wpf:TextBox Text="{Binding Email, Mode=TwoWay}" Title="Email" TextChanged="TXT_TextChanged"/>
+
+
+                    <!--Phone-->
+                    <th_wpf:TextBox Text="{Binding Phone, Mode=TwoWay}" Title="Phone" TextChanged="TXT_TextChanged"/>
+
+
+                    <!--Address-->
+                    <th_wpf:TextBox Text="{Binding Address1, Mode=TwoWay}" Title="Address" TextChanged="TXT_TextChanged"/>
+
+                    <th_wpf:TextBox Text="{Binding Address2, Mode=TwoWay}" TextChanged="TXT_TextChanged"/>
+
+
+                    <!--City-->
+                    <th_wpf:TextBox Text="{Binding City, Mode=TwoWay}" Title="City" TextChanged="TXT_TextChanged"/>
+
+
+                    <!--Country-->
+                    <TextBlock Text="Country" Foreground="#333" Margin="0,0" FontSize="12pt"/>
+
+                    <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
+
+
+                    <!--State-->
                     <StackPanel>
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
-                                <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    <DataTrigger Binding="{Binding ShowStates}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </StackPanel.Style>
 
-                        <!--Choose your username-->
-                        <StackPanel Margin="0,20,0,10">
-                            <TextBlock Text="Username" Foreground="#aaa" FontSize="10pt" Margin="0,0,0,5"/>
-                            <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="#0080ff"/>
-                        </StackPanel>
+                        <TextBlock Text="State" Foreground="#333" Margin="0,0" FontSize="12pt"/>
 
-                        <!--Password-->
-                        <StackPanel Margin="0,0,0,20">
-                            <th_wpf:Button_01 Grid.Column="1" Text="Change Password" AlternateStyle="True" HorizontalAlignment="Left" Height="40"/>
-                        </StackPanel>
+                        <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" SelectionChanged="state_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
 
                     </StackPanel>
 
 
-
-                </Grid>
-                
-
-                <!--Company-->
-                <th_wpf:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company" TextChanged="TXT_TextChanged"/>
-
-
-                <!--Email-->
-                <th_wpf:TextBox Text="{Binding Email, Mode=TwoWay}" Title="Email" TextChanged="TXT_TextChanged"/>
-
-
-                <!--Phone-->
-                <th_wpf:TextBox Text="{Binding Phone, Mode=TwoWay}" Title="Phone" TextChanged="TXT_TextChanged"/>
-
-
-                <!--Address-->
-                <th_wpf:TextBox Text="{Binding Address1, Mode=TwoWay}" Title="Address" TextChanged="TXT_TextChanged"/>
-
-                <th_wpf:TextBox Text="{Binding Address2, Mode=TwoWay}" TextChanged="TXT_TextChanged"/>
-
-
-                <!--City-->
-                <th_wpf:TextBox Text="{Binding City, Mode=TwoWay}" Title="City" TextChanged="TXT_TextChanged"/>
-
-
-                <!--Country-->
-                <TextBlock Text="Country" Foreground="#333" Margin="0,0" FontSize="12pt"/>
-
-                <ComboBox x:Name="country_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding CountryList}" SelectionChanged="country_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
-
-
-                <!--State-->
-                <StackPanel>
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ShowStates}" Value="true">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                    <TextBlock Text="State" Foreground="#333" Margin="0,0" FontSize="12pt"/>
-
-                    <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" SelectionChanged="state_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
+                    <!--Zip Code-->
+                    <th_wpf:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code" TextChanged="TXT_TextChanged"/>
 
                 </StackPanel>
 
+                <!--Side Panel-->
+                <StackPanel Grid.Column="1">
 
-                <!--Zip Code-->
-                <th_wpf:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code" TextChanged="TXT_TextChanged"/>
-
-            </StackPanel>
-
-            <!--Side Panel-->
-            <StackPanel Grid.Column="1">
-
-                <th_wpf:ImageBox Title="Profile Image"
-                                 Height="200" 
+                    <!--Profile Image-->
+                    <th_wpf:ImageBox Title="Profile Image"
+                                 Height="255" 
                                  Width="200"
                                  UploadClicked="ProfileImage_UploadClicked" 
                                  ClearClicked="ProfileImage_ClearClicked"
@@ -271,119 +340,144 @@
                                  Loading="{Binding ProfileImageLoading}"
                                  />
 
+                    <!--Legend-->
+                    <StackPanel Margin="0,20,0,0">
 
-                <!--Apply Button-->
-                <Grid Margin="10,50,10,0">
-                    <!--<Grid.Style>
-                        <Style TargetType="Grid">
-                            --><!--<Setter Property="IsEnabled" Value="false"/>--><!--
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding UsernameVerified}" Value="true"/>
-                                        <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                        <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                        <Condition Binding="{Binding PasswordVerified}" Value="true"/>
-                                    </MultiDataTrigger.Conditions>
+                        <!--Required-->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-                                    --><!--<Setter Property="IsEnabled" Value="true"/>--><!--
+                            <TextBlock Text="Required Fields are indicated with" Foreground="#666666" FontSize="8pt" VerticalAlignment="Center"/>
 
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>-->
+                            <TextBlock Text="*" Foreground="Red" FontSize="16pt" Margin="5,7,0,0"/>
 
-                    <!--Apply Changes-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
+                        </StackPanel>
 
-                        <th_wpf:Button_01 Text="Apply Changes" AlternateStyle="True" Clicked="Apply_Clicked" Height="40" />
+                    </StackPanel>
 
-                    </Grid>
-                    
-                    <!--Create Account-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
+                    <!--Apply Button-->
+                    <Grid Margin="10,30,10,0">
 
-                        <th_wpf:Button_01 Text="Create Account" AlternateStyle="True" Clicked="Apply_Clicked" Height="40" />
+                        <StackPanel>
 
-                    </Grid>
-                    
-                    <!--<th_wpf:Button_01 AlternateStyle="True" Clicked="Apply_Clicked" Height="40">
-                        <th_wpf:Button_01.Style>
-                            <Style TargetType="th_wpf:Button_01">
-                                <Setter Property="Text" Value="Apply Changes"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Text" Value="Create Account"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </th_wpf:Button_01.Style>
-                    </th_wpf:Button_01>-->
+                            <!--Privacy Policy Statement-->
+                            <Grid Margin="0,0,0,10">
 
-                    <!--Disabled Shade-->
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-                        <Grid>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="#88000000"/>
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding UsernameVerified}" Value="true"/>
-                                                <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                                <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                                <Condition Binding="{Binding PasswordVerified}" Value="true"/>
-                                            </MultiDataTrigger.Conditions>
+                                <TextBlock TextWrapping="Wrap" Foreground="#666666" FontSize="8pt">
+                                    <Run Text="By clicking"/>
+                                    <Run>
+                                        <Run.Style>
+                                            <Style TargetType="Run">
+                                                <Setter Property="Text" Value="Apply Changes,"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                                    <Setter Property="Text" Value="Create Account,"/>
+                                                </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Run.Style>
+                                    </Run>
+                                    <Run Text="you agree that you have read our"/>
+                                    <Run Text="Privacy Policy." Foreground="#0080ff"/>
+                                </TextBlock>
 
+                            </Grid>
+
+                            <!--Apply / Create Button-->
+                            <Grid>
+
+                                <!--Button-->
+                                <th_wpf:Button_01 AlternateStyle="True" Clicked="Apply_Clicked" Height="40" >
+                                    <th_wpf:Button_01.Style>
+                                        <Style TargetType="th_wpf:Button_01">
+                                            <Setter Property="Text" Value="Apply Changes"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                                    <Setter Property="Text" Value="Create Account"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </th_wpf:Button_01.Style>
+                                </th_wpf:Button_01>
+
+                                <!--Disabled Shade-->
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
                                             <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                    <Grid>
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Background" Value="#88000000"/>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding UsernameVerified}" Value="true"/>
+                                                            <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                                            <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                                            <Condition Binding="{Binding PasswordVerified}" Value="true"/>
+                                                        </MultiDataTrigger.Conditions>
 
-                                        </MultiDataTrigger>
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
 
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
+                                                    </MultiDataTrigger>
 
-                        </Grid>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+
+                                    </Grid>
+
+                                </Grid>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!--Saving-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Saving}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+
+                            <!--Loading Wheel-->
+                            <loadinganimation:Wheel Height="30" Width="30" Foreground="#0080ff" Margin="0,0,20,0"/>
+                            
+                            <!--Saving Text-->
+                            <StackPanel>
+
+                                <TextBlock Text="Saving" Foreground="#333"/>
+                                <TextBlock Text="Please wait.." Foreground="#666666"/>
+
+                            </StackPanel>
+
+                        </StackPanel>
                         
                     </Grid>
+                    
+                </StackPanel>
 
-                </Grid>
+            </Grid>
 
-            </StackPanel>
-            
-            
-        </Grid>
+        </StackPanel>
 
     </ScrollViewer>
       

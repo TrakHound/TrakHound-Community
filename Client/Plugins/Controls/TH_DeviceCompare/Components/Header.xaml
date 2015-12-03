@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="Main_GRID" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown" Height="30">
+    <Grid x:Name="Main_GRID" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown" Height="150">
         <Grid.Style>
             <Style TargetType="Grid">
                 <!--<Setter Property="Height" Value="30"/>-->

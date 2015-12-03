@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("configuration.xml")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("license.txt")]
 
 

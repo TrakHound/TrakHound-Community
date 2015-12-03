@@ -43,56 +43,59 @@ namespace TH_Global
         {
             string result = null;
 
-            // If standard US number
-            if (s.Length >= 10 && s.Length <= 12)
+            if (s != null)
             {
-                s = s.Replace(" ","");
-
-                string areaCode;
-                string first;
-                string last;
-
-                // No Country Code, all numbers
-                if (s.Length == 10)
+                // If standard US number
+                if (s.Length >= 10 && s.Length <= 12)
                 {
-                    areaCode = s.Substring(0, 3);
-                    first = s.Substring(3, 3);
-                    last = s.Substring(6, 4);
-                }
-                else
-                {
-                    int areaEnd = 0;
+                    s = s.Replace(" ", "");
 
-                    // Get area code
-                    if ((s[0] == '(' || s[0] == '[') && (s[4] == ')' || s[4] == ']'))
+                    string areaCode;
+                    string first;
+                    string last;
+
+                    // No Country Code, all numbers
+                    if (s.Length == 10)
                     {
-                        areaCode = s.Substring(1, 3);
-                        areaEnd = 4;
+                        areaCode = s.Substring(0, 3);
+                        first = s.Substring(3, 3);
+                        last = s.Substring(6, 4);
                     }
                     else
                     {
-                        areaCode = s.Substring(0, 3);
-                        areaEnd = 2;
+                        int areaEnd = 0;
+
+                        // Get area code
+                        if ((s[0] == '(' || s[0] == '[') && (s[4] == ')' || s[4] == ']'))
+                        {
+                            areaCode = s.Substring(1, 3);
+                            areaEnd = 4;
+                        }
+                        else
+                        {
+                            areaCode = s.Substring(0, 3);
+                            areaEnd = 2;
+                        }
+
+                        // If 123-456...
+                        if (s[areaEnd + 1] == '-') areaEnd += 1;
+
+                        // Get First three digits
+                        first = s.Substring(areaEnd + 1, 3);
+
+                        int firstEnd = areaEnd + 3;
+
+                        // If ..456-7891
+                        if (s[firstEnd + 1] == '-') firstEnd += 1;
+
+                        // Get Last Four Digits
+                        last = s.Substring(firstEnd + 1);
                     }
 
-                    // If 123-456...
-                    if (s[areaEnd + 1] == '-') areaEnd += 1;
-
-                    // Get First three digits
-                    first = s.Substring(areaEnd + 1, 3);
-
-                    int firstEnd = areaEnd + 3;
-
-                    // If ..456-7891
-                    if (s[firstEnd + 1] == '-') firstEnd += 1;
-
-                    // Get Last Four Digits
-                    last = s.Substring(firstEnd + 1);
+                    result = "(" + areaCode + ") " + first + "-" + last;
                 }
-
-                result = "(" + areaCode + ") " + first + "-" + last;
+                else result = s;
             }
-            else result = s;
 
             return result;
         }

@@ -223,7 +223,7 @@ namespace TH_DeviceCompare.Components
         }
 
         public static readonly DependencyProperty CollapsedProperty =
-            DependencyProperty.Register("Collapsed", typeof(bool), typeof(Header), new PropertyMetadata(true));
+            DependencyProperty.Register("Collapsed", typeof(bool), typeof(Header), new PropertyMetadata(false));
 
         
 

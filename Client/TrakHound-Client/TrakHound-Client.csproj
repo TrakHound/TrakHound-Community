@@ -401,10 +401,6 @@
     <Resource Include="Resources\About_01.png" />
     <Resource Include="Options\Pages\General\Home_01.png" />
     <Resource Include="Resources\options_gear_30px.png" />
-    <Content Include="Configuration.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="Images\TrakHound_Splash_05.png" />
     <Resource Include="About\Pages\Information\Information_01.png" />
     <Resource Include="About\Pages\License\Key_01.png" />

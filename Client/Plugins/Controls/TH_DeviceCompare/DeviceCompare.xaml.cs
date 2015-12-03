@@ -1558,7 +1558,7 @@ namespace TH_DeviceCompare
 
         #endregion
 
-        bool collapsed = true;
+        bool collapsed = false;
         bool minimized = true;
 
         private void ColumnHeaderMinimize_Clicked(TH_WPF.Button_02 bt)

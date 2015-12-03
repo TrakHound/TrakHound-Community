@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 using System.IO;
 using System.Threading;
+using System.Windows.Media.Animation;
 
 using TH_Configuration;
 using TH_Global;
@@ -73,6 +74,10 @@ namespace TH_UserManagement
             set
             {
                 SetValue(ShownProperty, value);
+
+                if (Shown) ShowMenu();
+                else HideMenu();
+             
                 if (ShownChanged != null) ShownChanged(value);
             }
         }
@@ -86,11 +91,16 @@ namespace TH_UserManagement
         }
 
 
-
         public bool LoggedIn
         {
             get { return (bool)GetValue(LoggedInProperty); }
-            set { SetValue(LoggedInProperty, value); }
+            set 
+            {
+                SetValue(LoggedInProperty, value);
+
+                if (LoggedIn) Minimize();
+                else Expand();
+            }
         }
 
         public static readonly DependencyProperty LoggedInProperty =
@@ -224,6 +234,54 @@ namespace TH_UserManagement
 
         #endregion
 
+        #region "Animations"
+
+        const double LoggedInHeight = 215;
+        const double LoggedOutHeight = 275;
+
+        void HideMenu()
+        {
+
+        }
+
+        void ShowMenu()
+        {
+            DoubleAnimation width = new DoubleAnimation();
+            width.From = 0;
+            width.To = 315;
+            width.Duration = new Duration(TimeSpan.FromMilliseconds(150));
+
+            DoubleAnimation height = new DoubleAnimation();
+            height.From = 0;
+            if (LoggedIn) height.To = LoggedInHeight;
+            else height.To = LoggedOutHeight;
+            height.Duration = new Duration(TimeSpan.FromMilliseconds(150));
+
+            Root_GRID.BeginAnimation(HeightProperty, height);
+            Root_GRID.BeginAnimation(WidthProperty, width);
+        }
+
+        public void Minimize()
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = Root_GRID.RenderSize.Height;
+            animation.To = LoggedInHeight;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+            Root_GRID.BeginAnimation(HeightProperty, animation);
+        }
+
+        public void Expand()
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = Root_GRID.RenderSize.Height;
+            animation.To = LoggedOutHeight;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+            Root_GRID.BeginAnimation(HeightProperty, animation);
+        }
+
+        #endregion
 
         private void Login_Clicked(Button_01 bt)
         {
@@ -259,6 +317,30 @@ namespace TH_UserManagement
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+
+        public void LoadUserConfiguration(UserConfiguration userConfig)
+        {
+            if (userConfig != null)
+            {
+                Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+                Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
+                Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+
+                Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+                EmailAddress = userConfig.email;
+
+                username_TXT.Clear();
+                password_TXT.Clear();
+
+                LoadProfileImage(userConfig);
+                LoggedIn = true;
+            }
+            else
+            {
+                LoggedIn = false;
+            }
+        }
 
         #region "Login"
 
@@ -314,18 +396,7 @@ namespace TH_UserManagement
         {
             if (RememberMe) Remote.Users.RememberMe.Set(userConfig, rememberMeType);
 
-            Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-            Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-            Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-
-            Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-            EmailAddress = userConfig.email;
-
-            username_TXT.Clear();
-            password_TXT.Clear();
-
-            LoadProfileImage(userConfig);
-            LoggedIn = true;
+            LoadUserConfiguration(userConfig);
         }
 
         void Login_Finished(UserConfiguration userConfig)
@@ -466,28 +537,30 @@ namespace TH_UserManagement
             this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
         }
 
-        void LoadRememberMe_GUI(UserConfiguration userConfig)
-        {
-            Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-            Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-            Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+        //void LoadRememberMe_GUI(UserConfiguration userConfig)
+        //{
+        //    Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+        //    Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
+        //    Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
 
-            Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
-            EmailAddress = userConfig.email;
+        //    Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+        //    EmailAddress = userConfig.email;
 
-            username_TXT.Clear();
-            password_TXT.Clear();
+        //    username_TXT.Clear();
+        //    password_TXT.Clear();
 
-            LoadProfileImage(userConfig);
-            LoggedIn = true;
-        }
+        //    LoadProfileImage(userConfig);
+        //    LoggedIn = true;
+        //}
 
         void LoadRememberMe_Finished(UserConfiguration userConfig)
         {
             // If login was successful
             if (userConfig != null)
             {
-                LoadRememberMe_GUI(userConfig);
+                LoadUserConfiguration(userConfig);
+
+                //LoadRememberMe_GUI(userConfig);
             }
             else
             {
@@ -581,7 +654,7 @@ namespace TH_UserManagement
                 if (imagePath != null)
                 {
                     // Crop and Resize image
-                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath, userDatabaseSettings);
+                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath);
                     if (img != null)
                     {
                         string filename = String_Functions.RandomString(20);
@@ -598,6 +671,8 @@ namespace TH_UserManagement
                             Remote.Users.UpdateImageURL(filename, CurrentUser);
 
                             LoadProfileImage(CurrentUser);
+
+                            CurrentUser = CurrentUser;
                         }
                     }
                 }
@@ -605,7 +680,6 @@ namespace TH_UserManagement
         }
 
         #endregion
-
 
         public event Clicked_Handler CreateClicked;
 
@@ -648,7 +722,6 @@ namespace TH_UserManagement
         {
             password_TXT.Password = null;
         }
-
 
 
         private void ManageDevices_PreviewMouseDown(object sender, MouseButtonEventArgs e)

@@ -373,18 +373,27 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static System.Drawing.Image ProcessImage(string path, Database_Settings userDatabaseSettings)
+        public static System.Drawing.Image ProcessImage(string path)
         {
             System.Drawing.Image result = null;
 
-            if (userDatabaseSettings == null)
+            if (File.Exists(path))
             {
-                result = Remote.ProfileImages.ProcessImage(path);
+                System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
+
+                result = Image_Functions.SetImageSize(img, 200, 200);
             }
-            else
-            {
-                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
-            }
+
+            return result;
+        }
+
+        public static System.Drawing.Image ProcessImage(System.Drawing.Image image)
+        {
+            System.Drawing.Image result = null;
+
+            System.Drawing.Image img = Image_Functions.CropImageToCenter(image);
+
+            result = Image_Functions.SetImageSize(img, 200, 200);
 
             return result;
         }

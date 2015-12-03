@@ -84,21 +84,14 @@ namespace TrakHound_Client
             devicemangager.userDatabaseSettings = UserDatabaseSettings;
 
             LoginMenu.rememberMeType = RememberMeType.Client;
-            //LoginMenu.LoadRememberMe();
+            LoginMenu.LoadRememberMe();
 
 
             Splash_UpdateStatus("...Loading Plugins");
             LoadPlugIns();
 
             Splash_UpdateStatus("...Reading Devices");
-            LoadDevices();
-            //ReadConfigurations();
-
-            //ReadConfigurationFile();
-
-            //Splash_UpdateStatus("...Loading Plugins");
-            //LoadPlugIns();
-
+            //LoadDevices();
 
 
             // Wait for the minimum splash time to elapse, then close the splash dialog
@@ -934,7 +927,6 @@ namespace TrakHound_Client
 
         #endregion
 
-
         #region "Account Manager"
 
         public Account_Management.Manager accountManager;
@@ -946,6 +938,12 @@ namespace TrakHound_Client
             {
                 ParentPage = new TH_UserManagement.Create.Page();
                 PageContent = ParentPage;
+                ParentPage.UserChanged += ParentPage_UserChanged;
+            }
+
+            void ParentPage_UserChanged(UserConfiguration userConfig)
+            {
+                if (UserChanged != null) UserChanged(userConfig);
             }
 
             public void LoadUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
@@ -960,26 +958,29 @@ namespace TrakHound_Client
             public ImageSource Image { get { return ParentPage.Image; } }
 
             public object PageContent { get; set; }
+
+            public delegate void UserChanged_Handler(UserConfiguration userConfig);
+            public event UserChanged_Handler UserChanged;
         }
 
         void AccountManager_Initialize()
         {
             accountManager = new Account_Management.Manager();
 
+            accountpage = new CreateAccountPage();
+            accountpage.UserChanged += accountpage_UserChanged;
+        }
 
-            //accountManager.AddPage(accountpage);
+        void accountpage_UserChanged(UserConfiguration userConfig)
+        {
+            if (LoginMenu != null) LoginMenu.LoadUserConfiguration(userConfig);
         }
 
         public void AccountManager_Open()
         {
             accountManager.ClearPages();
-            accountpage = new CreateAccountPage();
-            
-
-            accountpage.LoadUser(currentuser, UserDatabaseSettings);
 
             accountManager.AddPage(accountpage);
-
             accountManager.currentUser = currentuser;
 
             AddPageAsTab(accountManager, "Acount Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
@@ -1112,6 +1113,8 @@ namespace TrakHound_Client
 
                 devicemangager.CurrentUser = currentuser;
 
+                
+
                 if (currentuser != null)
                 {
                     CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
@@ -1124,10 +1127,12 @@ namespace TrakHound_Client
                     CurrentUsername = null;
                 }
 
-                LoadDevices();
-                //ReadConfigurations();
+                //LoadDevices();
 
-                UpdatePlugInUser(currentuser, UserDatabaseSettings);
+
+                if (accountpage != null) accountpage.LoadUser(currentuser, UserDatabaseSettings);
+
+                //UpdatePlugInUser(currentuser, UserDatabaseSettings);
 
                 if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }

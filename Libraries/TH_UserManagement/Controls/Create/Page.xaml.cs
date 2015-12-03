@@ -55,16 +55,16 @@ namespace TH_UserManagement.Create
             {               
                 SetValue(CurrentUserProperty, value);
 
-                if (CurrentUser == null) 
-                {
-                    PageName = "Create Account";
-                    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
-                }
-                else 
-                {
-                    PageName = "Edit Account";
-                    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
-                }
+                //if (CurrentUser == null) 
+                //{
+                //    PageName = "Create Account";
+                //    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
+                //}
+                //else 
+                //{
+                //    PageName = "Edit Account";
+                //    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
+                //}
             }
         }
 
@@ -72,10 +72,15 @@ namespace TH_UserManagement.Create
             DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(Page), new PropertyMetadata(null));
 
 
+        public delegate void UserChanged_Handler(UserConfiguration userConfig);
+        public event UserChanged_Handler UserChanged;
+
+
         public string PageName { get; set; }
 
         public ImageSource Image { get; set; }
 
+        BitmapImage NoProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
 
         public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
@@ -84,6 +89,9 @@ namespace TH_UserManagement.Create
 
             if (userConfig != null)
             {
+                PageName = "Edit Account";
+                Image = NoProfileImage;
+
                 FirstName = Formatting.UppercaseFirst(userConfig.first_name);
                 LastName = Formatting.UppercaseFirst(userConfig.last_name);
 
@@ -106,10 +114,22 @@ namespace TH_UserManagement.Create
 
                 LoadProfileImage(userConfig);
             }
+            else
+            {
+                PageName = "Create Account";
+                Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
+
+                CleanForm();
+            }
         }
 
         public void CleanForm()
         {
+
+            UsernameVerified = false;
+            PasswordEntered = false;
+            ConfirmPasswordEntered = false;
+
             FirstName = null;
             LastName = null;
             Username = null;
@@ -124,6 +144,9 @@ namespace TH_UserManagement.Create
             if (US >= 0) country_COMBO.SelectedIndex = US;
 
             state_COMBO.SelectedIndex = -1;
+
+            ClearProfileImage();
+
         }
 
 
@@ -348,6 +371,16 @@ namespace TH_UserManagement.Create
 
         #region "Apply / Create"
 
+        public bool Saving
+        {
+            get { return (bool)GetValue(SavingProperty); }
+            set { SetValue(SavingProperty, value); }
+        }
+
+        public static readonly DependencyProperty SavingProperty =
+            DependencyProperty.Register("Saving", typeof(bool), typeof(Page), new PropertyMetadata(false));
+      
+
         private void Apply_Clicked(Button_01 bt)
         {
             UpdateUser(CreateUserConfiguration());
@@ -377,6 +410,8 @@ namespace TH_UserManagement.Create
 
             userConfig.zipcode = ZipCode;
 
+            //UploadProfileImage(profileImageFilename, UserDatabaseSettings);
+
             return userConfig;
         }
 
@@ -388,6 +423,12 @@ namespace TH_UserManagement.Create
             public string password { get; set; }
         }
 
+        class UpdateUser_Return
+        {
+            public bool success { get; set; }
+            public UserConfiguration userConfig { get; set; }
+        }
+
         Thread updateuser_THREAD;
 
         void UpdateUser(UserConfiguration userConfig)
@@ -397,6 +438,7 @@ namespace TH_UserManagement.Create
             info.userDatabaseSettings = UserDatabaseSettings;
             info.password = password_TXT.PasswordText;
 
+            Saving = true;
 
             if (updateuser_THREAD != null) updateuser_THREAD.Abort();
 
@@ -406,24 +448,42 @@ namespace TH_UserManagement.Create
 
         void UpdateUser_Worker(object o)
         {
+            UpdateUser_Return result = new UpdateUser_Return();
+
             if (o != null)
             {
                 UpdateUser_Info info = (UpdateUser_Info)o;
 
                 if (info.userConfig != null)
                 {
-                    bool result = Users.CreateUser(info.userConfig, info.password, info.userDatabaseSettings);
+                    bool success = Users.CreateUser(info.userConfig, info.password, info.userDatabaseSettings);
 
-                    this.Dispatcher.BeginInvoke(new Action<bool>(UpdateUser_GUI), priority, new object[] { result });
+                    // Upload Profile Image
+                    if (profileImageChanged)
+                    {
+                        if (success) success = UploadProfileImage(profileImage, info.userDatabaseSettings);
+                        if (success) success = Users.UpdateImageURL(profileImageFilename, info.userConfig, info.userDatabaseSettings);
+                    }
+
+                                
+                    result.success = success;
+                    result.userConfig = info.userConfig;
+
+                    this.Dispatcher.BeginInvoke(new Action<UpdateUser_Return>(UpdateUser_GUI), priority, new object[] { result });
                 }
-                else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateUser_GUI), priority, new object[] { false });
             }
+
+            this.Dispatcher.BeginInvoke(new Action<UpdateUser_Return>(UpdateUser_GUI), priority, new object[] { result });
         }
 
-        void UpdateUser_GUI(bool result)
+        void UpdateUser_GUI(UpdateUser_Return result)
         {
-            if (result) MessageBox.Show("User Created / Updated Successfully!");
-            else MessageBox.Show("Error during User Creation!");
+            //if (result) MessageBox.Show("User Created / Updated Successfully!");
+            //else MessageBox.Show("Error during User Creation!");
+
+            if (UserChanged != null) UserChanged(result.userConfig);
+
+            Saving = false;
         }
 
         void UpdateUser_Finished()
@@ -496,6 +556,20 @@ namespace TH_UserManagement.Create
         #endregion
 
         #region "Password"
+
+        public bool ShowChangePassword
+        {
+            get { return (bool)GetValue(ShowChangePasswordProperty); }
+            set { SetValue(ShowChangePasswordProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowChangePasswordProperty =
+            DependencyProperty.Register("ShowChangePassword", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+        private void ChangePassword_Clicked(Button_01 bt)
+        {
+            ShowChangePassword = true;
+        }
 
         public bool PasswordVerified
         {
@@ -624,7 +698,8 @@ namespace TH_UserManagement.Create
             ProfileImageLoading = true;
             ProfileImageSet = false;
 
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
+            ProfileImage = NoProfileImage;
+            ProfileImageSet = true;
 
             if (profileimage_THREAD != null) profileimage_THREAD.Abort();
 
@@ -660,7 +735,7 @@ namespace TH_UserManagement.Create
 
                 bmpSource.Freeze();
 
-                ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+                ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 200, 200);
 
                 ProfileImageSet = true;
             }
@@ -671,47 +746,84 @@ namespace TH_UserManagement.Create
             ProfileImageLoading = false;
         }
 
-        void ChangeProfileImage()
+        string profileImageFilename;
+
+        System.Drawing.Image profileImage;
+
+        bool profileImageChanged;
+
+        void SetProfileImage()
         {
-            if (CurrentUser != null)
+            // Show OpenFileDialog for selecting new Profile Image
+            string imagePath = ProfileImages.OpenImageBrowse();
+            if (imagePath != null)
             {
-
-                // Show OpenFileDialog for selecting new Profile Image
-                string imagePath = ProfileImages.OpenImageBrowse();
-                if (imagePath != null)
+                // Crop and Resize image
+                System.Drawing.Image img = ProfileImages.ProcessImage(imagePath);
+                if (img != null)
                 {
-                    // Crop and Resize image
-                    System.Drawing.Image img = ProfileImages.ProcessImage(imagePath, UserDatabaseSettings);
-                    if (img != null)
-                    {
-                        string filename = String_Functions.RandomString(20);
+                    profileImageFilename = imagePath;
+                    profileImageChanged = true;
 
-                        string tempdir = FileLocations.TrakHound + @"\temp";
-                        if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+                    img = TH_Global.Functions.Image_Functions.CropImageToCenter(img);
 
-                        string localPath = tempdir + @"\" + filename;
+                    profileImage = img;
 
-                        img.Save(localPath);
+                    ProfileImage = TH_Global.Functions.Image_Functions.SourceFromImage(img);
 
-                        if (ProfileImages.UploadProfileImage(filename, localPath, UserDatabaseSettings))
-                        {
-                            Remote.Users.UpdateImageURL(filename, CurrentUser);
-
-                            LoadProfileImage(CurrentUser);
-                        }
-                    }
+                    if (ProfileImage != null) ProfileImageSet = true;
+                    else ProfileImageSet = false;
                 }
             }
         }
 
+        bool UploadProfileImage(System.Drawing.Image profileImg, Database_Settings userDatabaseSettings)
+        {
+            bool result = false;
+
+            if (profileImage != null)
+            {
+                // Crop and Resize image
+                System.Drawing.Image img = ProfileImages.ProcessImage(profileImg);
+                if (img != null)
+                {
+                    string newFilename = String_Functions.RandomString(20);
+
+                    profileImageFilename = newFilename;
+
+                    string tempdir = FileLocations.TrakHound + @"\temp";
+                    if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+
+                    string localPath = tempdir + @"\" + newFilename;
+
+                    img.Save(localPath);
+
+                    result = ProfileImages.UploadProfileImage(newFilename, localPath, userDatabaseSettings);
+                }
+            }
+
+            return result;
+        }
+
+        void ClearProfileImage()
+        {
+            ProfileImage = null;
+            ProfileImageSet = false;
+            ProfileImageLoading = false;
+
+            profileImage = null;
+            profileImageFilename = null;
+            profileImageChanged = true;
+        }
+
         private void ProfileImage_UploadClicked(ImageBox sender)
         {
-
+            SetProfileImage();
         }
 
         private void ProfileImage_ClearClicked(ImageBox sender)
         {
-
+            ClearProfileImage();
         }
 
         #endregion

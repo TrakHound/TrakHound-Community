@@ -62,7 +62,7 @@ namespace TH_Global.Functions
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns></returns>
-        public static Bitmap SetImageSize(Image image, int width, int height)
+        public static Image SetImageSize(Image image, int width, int height)
         {
             // Make sure the image stays in proportion
             if (image.Width != image.Height)
@@ -103,12 +103,21 @@ namespace TH_Global.Functions
 
         public static BitmapImage SourceFromImage(System.Drawing.Image img)
         {
-            using (MemoryStream stream = new MemoryStream())
+            try
             {
-                img.Save(stream, img.RawFormat);
+                using (MemoryStream stream = new MemoryStream())
+                {
+                    ImageFormat format = ImageFormat.Png;
 
-                return ImageFromBuffer(stream.ToArray());
+                    img.Save(stream, format);
+
+                    return ImageFromBuffer(stream.ToArray());
+                }
             }
+            catch (Exception ex) { }
+
+            return null;
+
         }
 
         public static BitmapImage ImageFromBuffer(Byte[] bytes)
