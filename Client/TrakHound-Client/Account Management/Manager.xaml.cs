@@ -21,7 +21,6 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
 using TH_Configuration;
-using TH_PlugIns_Client_Control;
 using TH_UserManagement.Management;
 using TH_WPF;
 
@@ -80,19 +79,19 @@ namespace TrakHound_Client.Account_Management
 
 
 
-        public void AddPage(AboutPage page)
+        public void AddPage(TH_Global.Page page)
         {
             ListButton lb = new ListButton();
             lb.Image = TH_Functions.Image_Functions.SetImageSize(page.Image, 20);
             lb.Text = page.PageName;
             lb.Selected += ListButton_Selected;
-            lb.DataObject = page.PageContent;
+            lb.DataObject = page;
 
             Pages.Add(lb);
             //Pages_STACK.Children.Add(lb);
         }
 
-        public void RemovePage(AboutPage page)
+        public void RemovePage(TH_Global.Page page)
         {
             foreach (ListButton lb in Pages)
             {

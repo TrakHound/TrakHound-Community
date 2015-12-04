@@ -7,8 +7,11 @@
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
+             Loaded="UserControl_Loaded"
+             
              mc:Ignorable="d" 
-             d:DesignWidth="800" Background="#eee">
+             d:DesignWidth="800" Background="#eee"
+             >
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         
@@ -342,7 +345,7 @@
                                  />
 
                     <!--Legend-->
-                    <StackPanel Margin="0,20,0,0">
+                    <StackPanel Margin="0,10,0,0">
 
                         <!--Required-->
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -356,7 +359,7 @@
                     </StackPanel>
 
                     <!--Apply Button-->
-                    <Grid Margin="10,30,10,0">
+                    <Grid Margin="10,10,10,0">
 
                         <StackPanel>
 
@@ -378,7 +381,9 @@
                                         </Run.Style>
                                     </Run>
                                     <Run Text="you agree that you have read our"/>
-                                    <Run Text="Privacy Policy." Foreground="#0080ff"/>
+                                    <Hyperlink NavigateUri="http://www.feenux.com/trakhound/docs/privacypolicy_desktopapp.html" RequestNavigate="PrivacyPolicy_RequestNavigate">
+                                        Privacy Policy
+                                    </Hyperlink>
                                 </TextBlock>
 
                             </Grid>

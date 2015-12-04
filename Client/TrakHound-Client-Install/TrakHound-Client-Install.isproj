@@ -45,13 +45,9 @@
 			<Name>TH_DeviceCompare</Name>
 			<Project>{BEC8D2ED-3087-46FB-A552-619412472F6C}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\Plugins\Data\TH_DeviceStatus\TH_DeviceStatus.csproj">
-			<Name>TH_DeviceStatus</Name>
-			<Project>{7D7B5FF2-0379-4BCB-A623-D2F843E779DC}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
-			<Name>TH_Device_Client</Name>
-			<Project>{E188CB92-C3E0-4069-8731-94815CA30922}</Project>
+		<ProjectReference Include="..\..\Libraries\TH_ControlPanel\TH_DeviceManager.csproj">
+			<Name>TH_DeviceManager</Name>
+			<Project>{B5F883CC-0E97-468C-9CA4-84031F446EDF}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Functions\TH_Functions.csproj">
 			<Name>TH_Functions</Name>
@@ -77,13 +73,13 @@
 			<Name>TH_PlugIns_Client_Control</Name>
 			<Project>{4DA60983-505E-463C-AB96-0A80D0CD1330}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Data\TH_PlugIns_Client_Data.csproj">
-			<Name>TH_PlugIns_Client_Data</Name>
-			<Project>{62109EC3-E65A-493F-8120-2E4EA2EF30A1}</Project>
-		</ProjectReference>
 		<ProjectReference Include="..\TH_Startup\TH_Startup.csproj">
 			<Name>TH_Startup</Name>
 			<Project>{2F57AA7E-C892-4FA1-A8F5-55AE3412BC23}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\Plugins\Controls\TH_StatusData\TH_StatusData.csproj">
+			<Name>TH_StatusData</Name>
+			<Project>{CB42CE42-E942-49CA-9F3A-CBD768107434}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Styles\TH_Styles.csproj">
 			<Name>TH_Styles</Name>
@@ -96,6 +92,10 @@
 		<ProjectReference Include="..\..\Libraries\TH_Updater\TH_Updater.csproj">
 			<Name>TH_Updater</Name>
 			<Project>{908A68DA-2BA5-49B5-AFC0-044E37D8D92A}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+			<Name>TH_UserManagement</Name>
+			<Project>{85F2C2A8-CD43-486B-9918-2A1F11CFC15F}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_WPF\TH_WPF.csproj">
 			<Name>TH_WPF</Name>

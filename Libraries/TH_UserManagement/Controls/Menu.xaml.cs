@@ -451,16 +451,6 @@ namespace TH_UserManagement
             Loading = true;
             LoadingMessage = "Signing Out..";
 
-            LoggedIn = false;
-
-            Fullname = null;
-            Firstname = null;
-            Lastname = null;
-
-            Username = null;
-            CurrentUser = null;
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
-
             if (logout_THREAD != null) logout_THREAD.Abort();
 
             logout_THREAD = new Thread(new ThreadStart(Logout_Worker));
@@ -476,6 +466,16 @@ namespace TH_UserManagement
 
         void Logout_Finished()
         {
+            LoggedIn = false;
+
+            Fullname = null;
+            Firstname = null;
+            Lastname = null;
+
+            Username = null;
+            CurrentUser = null;
+            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
+
             Loading = false;
             LoadingMessage = null;
         }

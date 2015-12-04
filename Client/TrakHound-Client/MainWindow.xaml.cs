@@ -926,45 +926,51 @@ namespace TrakHound_Client
         #region "Account Manager"
 
         public Account_Management.Manager accountManager;
-        CreateAccountPage accountpage;
 
-        class CreateAccountPage : AboutPage
-        {
-            public CreateAccountPage()
-            {
-                ParentPage = new TH_UserManagement.Create.Page();
-                PageContent = ParentPage;
-                ParentPage.UserChanged += ParentPage_UserChanged;
-            }
+        TH_UserManagement.Create.Page accountpage;
 
-            void ParentPage_UserChanged(UserConfiguration userConfig)
-            {
-                if (UserChanged != null) UserChanged(userConfig);
-            }
+        //CreateAccountPage accountpage;
 
-            public void LoadUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
-            {
-                ParentPage.LoadUserConfiguration(userConfig, userDatabaseSettings);
-            }
+        //class CreateAccountPage : AboutPage
+        //{
+        //    public CreateAccountPage()
+        //    {
+        //        ParentPage = new TH_UserManagement.Create.Page();
+        //        PageContent = ParentPage;
+        //        ParentPage.UserChanged += ParentPage_UserChanged;
+        //    }
 
-            public TH_UserManagement.Create.Page ParentPage;
+        //    void ParentPage_UserChanged(UserConfiguration userConfig)
+        //    {
+        //        if (UserChanged != null) UserChanged(userConfig);
+        //    }
 
-            public string PageName { get { return ParentPage.PageName; } }
+        //    public void LoadUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        //    {
+        //        ParentPage.LoadUserConfiguration(userConfig, userDatabaseSettings);
+        //    }
 
-            public ImageSource Image { get { return ParentPage.Image; } }
+        //    public TH_UserManagement.Create.Page ParentPage;
 
-            public object PageContent { get; set; }
+        //    public string PageName { get { return ParentPage.PageName; } }
 
-            public delegate void UserChanged_Handler(UserConfiguration userConfig);
-            public event UserChanged_Handler UserChanged;
-        }
+        //    public ImageSource Image { get { return ParentPage.Image; } }
+
+        //    public object PageContent { get; set; }
+
+        //    public delegate void UserChanged_Handler(UserConfiguration userConfig);
+        //    public event UserChanged_Handler UserChanged;
+        //}
 
         void AccountManager_Initialize()
         {
             accountManager = new Account_Management.Manager();
 
-            accountpage = new CreateAccountPage();
+            accountpage = new TH_UserManagement.Create.Page();
             accountpage.UserChanged += accountpage_UserChanged;
+
+            //accountpage = new CreateAccountPage();
+            //accountpage.UserChanged += accountpage_UserChanged;
         }
 
         void accountpage_UserChanged(UserConfiguration userConfig)
@@ -977,6 +983,7 @@ namespace TrakHound_Client
             accountManager.ClearPages();
 
             accountManager.AddPage(accountpage);
+            //accountManager.AddPage(accountpage);
             accountManager.currentUser = currentuser;
 
             AddPageAsTab(accountManager, "Acount Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
@@ -1114,8 +1121,7 @@ namespace TrakHound_Client
 
                 LoadDevices();
 
-
-                if (accountpage != null) accountpage.LoadUser(currentuser, UserDatabaseSettings);
+                if (accountpage != null) accountpage.LoadUserConfiguration(currentuser, UserDatabaseSettings);
 
                 UpdatePlugInUser(currentuser, UserDatabaseSettings);
 
@@ -1377,7 +1383,7 @@ namespace TrakHound_Client
 
         }
 
-        List<string> DefaultEnablePlugins = new List<string> { "dashboard", "device compare", "table manager" };
+        List<string> DefaultEnablePlugins = new List<string> { "dashboard", "device compare", "table manager", "status data" };
 
         void PagePlugIns_Find_Recursive(string Path)
         {
@@ -1827,7 +1833,7 @@ namespace TrakHound_Client
                 {
                     config.Index = index;
 
-                    if (config.Remote) { StartMonitor(config); }
+                    //if (config.Remote) { StartMonitor(config); }
 
                     if (config.Enabled)
                     {
@@ -1851,6 +1857,7 @@ namespace TrakHound_Client
 
             UpdatePlugInDevices();
 
+            DevicesMonitor_Initialize();
         }
 
         void StartMonitor(Configuration config)
@@ -2417,6 +2424,90 @@ namespace TrakHound_Client
         //}
 
         //#endregion
+
+        #endregion
+
+        #region "Devices Monitor"
+
+        System.Timers.Timer devicesMonitor_TIMER;
+
+        void DevicesMonitor_Initialize()
+        {
+            if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+
+            devicesMonitor_TIMER = new System.Timers.Timer();
+            devicesMonitor_TIMER.Interval = 5000;
+            devicesMonitor_TIMER.Elapsed += devicesMonitor_TIMER_Elapsed;
+            devicesMonitor_TIMER.Enabled = true;
+        }
+
+        void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            DevicesMonitor_Start();
+        }
+
+        Thread devicesMonitor_THREAD;
+
+        void DevicesMonitor_Start()
+        {
+            if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
+
+            devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
+            devicesMonitor_THREAD.Start(Devices.ToList());
+        }
+
+        void DevicesMonitor_Worker(object o)
+        {
+            bool changed = false;
+
+            if (o != null)
+            {
+                List<Configuration> devs = (List<Configuration>)o;
+
+                if (currentuser != null)
+                {
+                    List<Configuration> userConfigs = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+                    if (userConfigs != null)
+                    {
+                        foreach (Configuration userConfig in userConfigs)
+                        {
+                            Configuration match = devs.Find(x => x.UniqueId == userConfig.UniqueId);
+                            if (match != null)
+                            {
+                                bool update = userConfig.UpdateId == match.UpdateId;
+                                if (!update)
+                                {
+                                    // Configuration has been updated / changed
+                                    changed = true;
+                                    break;
+                                }
+                            }
+                            else if (userConfig.Enabled)
+                            {
+                                // Configuration has been added or removed
+                                changed = true;
+                                break;
+                            }
+                        }
+                    }
+                    else if (devs.Count > 0) changed = true;
+                }
+            }
+
+            this.Dispatcher.BeginInvoke(new Action<bool>(DevicesMonitor_Finished), priority, new object[] { changed });
+        }
+
+        void DevicesMonitor_Finished(bool changed)
+        {
+            if (changed)
+            {
+                if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+
+                LoadDevices();
+            }
+        }
+
+
 
         #endregion
 

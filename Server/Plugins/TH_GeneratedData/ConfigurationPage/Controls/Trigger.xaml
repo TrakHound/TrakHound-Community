@@ -24,7 +24,7 @@
                     <ComboBox x:Name="link_COMBO" Padding="10,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" TextBoxBase.TextChanged="Link_TextChanged" SelectionChanged="Link_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
 
                     <!--Instructions-->
-                    <TextBlock Text="Data Link" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" TextAlignment="Center" Margin="10,0" >
+                    <TextBlock Text="Data Link" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" TextAlignment="Center" Margin="20,0,30,0" >
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>

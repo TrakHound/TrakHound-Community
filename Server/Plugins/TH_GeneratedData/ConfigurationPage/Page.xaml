@@ -200,7 +200,7 @@
                         </StackPanel>
                                                 
                         <Rectangle Grid.Row="4" Height="1" Fill="#ccc" Margin="0,15,0,20"/>
-                        
+
                         <Grid Grid.Row="5">
 
                             <!--Items List-->
@@ -211,7 +211,6 @@
                                     </Style>
                                 </ItemsControl.Resources>
                             </ItemsControl>
-
 
                             <!--No Items Text-->
                             <TextBlock FontSize="18pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -230,7 +229,7 @@
                             </TextBlock>
 
                         </Grid>
-                                          
+
                     </Grid>
 
                 </TabItem>

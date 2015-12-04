@@ -1,7 +1,5 @@
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TrakHound-Client.exe.config
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TrakHound-Client.exe.config
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TrakHound-Client.pdb
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_Configuration.dll
@@ -117,3 +115,5 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Styles\ToolBars.
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.g.resources
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb

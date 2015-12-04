@@ -373,7 +373,7 @@ namespace TH_GeneratedData.ConfigurationPage
                 snapshot.type = Table_Functions.GetLastNode(row);
                 snapshot.link = Table_Functions.GetAttribute("link", row);
 
-                SnapshotItem_Add(snapshot);
+                this.Dispatcher.BeginInvoke(new Action<Snapshot>(SnapshotItem_Add), priority, new object[] { snapshot });
             }
 
             if (SnapshotItems.Count > 0) DisplaySnapshots = true;
@@ -1421,7 +1421,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
     }

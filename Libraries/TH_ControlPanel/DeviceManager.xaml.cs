@@ -894,28 +894,33 @@ namespace TH_DeviceManager
             // Create PageItem and add to PageList
             foreach (ConfigurationPage page in ConfigurationPages)
             {
-                page.SettingChanged += page_SettingChanged;
-
-                PageItem item = new PageItem();
-                item.Text = page.PageName;
-                item.Clicked += item_Clicked;
-
-                if (page.Image != null) item.Image = page.Image;
-                else item.Image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Plug_01.png"));
-
-                ListButton bt = new ListButton();
-                bt.ButtonContent = item;
-                bt.ShowImage = false;
-                bt.Selected += Page_Selected;
-                bt.DataObject = page;
-                bt.Height = 100;
-                bt.Width = 100;
-                bt.MinWidth = 100;
-
-                item.Parent = bt;
-
-                PageList.Add(bt);
+                this.Dispatcher.BeginInvoke(new Action<ConfigurationPage>(AddPageButton), priority, new object[] { page });
             }
+        }
+
+        void AddPageButton(ConfigurationPage page)
+        {
+            page.SettingChanged += page_SettingChanged;
+
+            PageItem item = new PageItem();
+            item.Text = page.PageName;
+            item.Clicked += item_Clicked;
+
+            if (page.Image != null) item.Image = page.Image;
+            else item.Image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Plug_01.png"));
+
+            ListButton bt = new ListButton();
+            bt.ButtonContent = item;
+            bt.ShowImage = false;
+            bt.Selected += Page_Selected;
+            bt.DataObject = page;
+            bt.Height = 100;
+            bt.Width = 100;
+            bt.MinWidth = 100;
+
+            item.Parent = bt;
+
+            PageList.Add(bt);
         }
 
         void item_Clicked(PageItem item)

@@ -134,7 +134,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Page Content-->
-            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="#eee">
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="#eee" CanContentScroll="True">
 
                 <Grid>
 

@@ -31,7 +31,7 @@ namespace TH_UserManagement.Create
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl
+    public partial class Page : UserControl, TH_Global.Page
     {
         public Page()
         {
@@ -74,9 +74,13 @@ namespace TH_UserManagement.Create
 
         BitmapImage NoProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadUserConfiguration(CurrentUser, UserDatabaseSettings);
+        }
+
         public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
-            Console.WriteLine("LoadUserConfiguration()");
 
             CurrentUser = userConfig;
             UserDatabaseSettings = userDatabaseSettings;
@@ -85,35 +89,45 @@ namespace TH_UserManagement.Create
             {
                 PageName = "Edit Account";
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
-
-                FirstName = Formatting.UppercaseFirst(userConfig.first_name);
-                LastName = Formatting.UppercaseFirst(userConfig.last_name);
-
-                Username = Formatting.UppercaseFirst(userConfig.username);
-                Email = userConfig.email;
-
-                Company = Formatting.UppercaseFirst(userConfig.company);
-                Phone = userConfig.phone;
-                Address1 = userConfig.address1;
-                Address2 = userConfig.address2;
-                City = Formatting.UppercaseFirst(userConfig.city);
-
-                int country = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.country));
-                if (country >= 0) country_COMBO.SelectedIndex = country;
-
-                int state = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.state));
-                if (state >= 0) state_COMBO.SelectedIndex = state;
-
-                ZipCode = userConfig.zipcode;
-
-                LoadProfileImage(userConfig);
             }
             else
             {
                 PageName = "Create Account";
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
 
-                CleanForm();
+            }
+
+                
+            if (this.IsLoaded)
+            {
+                if (userConfig != null)
+                {
+                    FirstName = Formatting.UppercaseFirst(userConfig.first_name);
+                    LastName = Formatting.UppercaseFirst(userConfig.last_name);
+
+                    Username = Formatting.UppercaseFirst(userConfig.username);
+                    Email = userConfig.email;
+
+                    Company = Formatting.UppercaseFirst(userConfig.company);
+                    Phone = userConfig.phone;
+                    Address1 = userConfig.address1;
+                    Address2 = userConfig.address2;
+                    City = Formatting.UppercaseFirst(userConfig.city);
+
+                    int country = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.country));
+                    if (country >= 0) country_COMBO.SelectedIndex = country;
+
+                    int state = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.state));
+                    if (state >= 0) state_COMBO.SelectedIndex = state;
+
+                    ZipCode = userConfig.zipcode;
+
+                    LoadProfileImage(userConfig);
+                }
+                else
+                {
+                    CleanForm();
+                }
             }
         }
 
@@ -455,15 +469,14 @@ namespace TH_UserManagement.Create
                     // Upload Profile Image
                     if (profileImageChanged)
                     {
+                        Console.WriteLine("Updating Profile Image");
+
                         if (success) success = UploadProfileImage(profileImage, info.userDatabaseSettings);
                         if (success) success = Users.UpdateImageURL(profileImageFilename, info.userConfig, info.userDatabaseSettings);
                     }
-
-                                
+                             
                     result.success = success;
                     result.userConfig = info.userConfig;
-
-                    this.Dispatcher.BeginInvoke(new Action<UpdateUser_Return>(UpdateUser_GUI), priority, new object[] { result });
                 }
             }
 
@@ -475,7 +488,14 @@ namespace TH_UserManagement.Create
             //if (result) MessageBox.Show("User Created / Updated Successfully!");
             //else MessageBox.Show("Error during User Creation!");
 
-            if (UserChanged != null) UserChanged(result.userConfig);
+            if (result.success)
+            {
+                if (UserChanged != null) UserChanged(result.userConfig);
+            }
+            else
+            {
+                MessageBox.Show("Error during User Creation! Try Again.");
+            }
 
             Saving = false;
         }
@@ -744,7 +764,7 @@ namespace TH_UserManagement.Create
 
         System.Drawing.Image profileImage;
 
-        bool profileImageChanged;
+        bool profileImageChanged = false;
 
         void SetProfileImage()
         {
@@ -807,7 +827,6 @@ namespace TH_UserManagement.Create
 
             profileImage = null;
             profileImageFilename = null;
-            profileImageChanged = true;
         }
 
         private void ProfileImage_UploadClicked(ImageBox sender)
@@ -817,10 +836,22 @@ namespace TH_UserManagement.Create
 
         private void ProfileImage_ClearClicked(ImageBox sender)
         {
+            profileImageChanged = true;
+
             ClearProfileImage();
         }
 
         #endregion
+
+        private void PrivacyPolicy_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(e.Uri.ToString());
+            }
+            catch (Exception ex) { MessageBox.Show("Error Opening Privacy Policy. Please try again or open a browser and navigate to 'http://www.feenux.com/trakhound/docs/privacypolicy_desktopapp.html'"); }
+        }
+
 
     }
 }

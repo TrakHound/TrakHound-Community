@@ -111,7 +111,7 @@
                 </ItemsControl>
 
                 <!--Add Button-->
-                <th_wpf:Button_04 Image="/TH_GeneratedData;component/Resources/Add_01.png" VerticalAlignment="Center" Height="40" Margin="20,5" Clicked="AddTrigger_Clicked"/>
+                <th_wpf:Button_04 Image="/TH_GeneratedData;component/Resources/Add_01.png" VerticalAlignment="Center" Height="40" Margin="20,5" Clicked="AddTrigger_Clicked" ToolTip="Add Trigger"/>
 
             </WrapPanel>
 

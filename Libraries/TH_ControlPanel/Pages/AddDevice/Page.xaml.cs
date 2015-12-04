@@ -51,34 +51,6 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         public DeviceManager deviceManager;
 
-        #region "Shared Configurations"
-
-        ObservableCollection<Controls.SharedItem> sharedlist;
-        public ObservableCollection<Controls.SharedItem> SharedList
-        {
-            get
-            {
-                if (sharedlist == null)
-                    sharedlist = new ObservableCollection<Controls.SharedItem>();
-                return sharedlist;
-            }
-
-            set
-            {
-                sharedlist = value;
-            }
-        }
-
-        //public void LoadCatalog()
-        //{
-        //    List<Shared.SharedListItem> listitems = Shared.GetSharedList();
-
-        //    shareditems = listitems;
-
-        //    LoadSharedItems(listitems);
-        //}
-
-        #endregion
 
         #region "Buttons"
 
@@ -196,6 +168,22 @@ namespace TH_DeviceManager.Pages.AddDevice
         #endregion
 
         #region "Shared Items"
+
+        ObservableCollection<Controls.SharedItem> sharedlist;
+        public ObservableCollection<Controls.SharedItem> SharedList
+        {
+            get
+            {
+                if (sharedlist == null)
+                    sharedlist = new ObservableCollection<Controls.SharedItem>();
+                return sharedlist;
+            }
+
+            set
+            {
+                sharedlist = value;
+            }
+        }
 
         Thread LoadShared_THREAD;
 

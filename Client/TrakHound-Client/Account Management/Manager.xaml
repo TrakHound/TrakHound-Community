@@ -44,7 +44,7 @@
 
             <Border Grid.Column="1" BorderBrush="{StaticResource DWBlue}" BorderThickness="1" Background="#eee">
 
-                <Grid Margin="60,50">
+                <Grid Margin="40,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
