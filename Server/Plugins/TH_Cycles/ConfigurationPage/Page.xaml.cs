@@ -66,9 +66,9 @@ namespace TH_Cycles.ConfigurationPage
             string eventName = event_COMBO.Text;
             string capturelink = capturelink_COMBO.Text;
 
-            Table_Functions.UpdateTableValue(eventName.Replace(' ', '_').ToLower(), "/Cycles/Event", dt);
+            if (eventName != null) Table_Functions.UpdateTableValue(eventName.Replace(' ', '_').ToLower(), "/Cycles/Event", dt);
 
-            Table_Functions.UpdateTableValue(capturelink.Replace(' ', '_').ToLower(), "/Cycles/CycleIdLink", dt);
+            if (capturelink != null) Table_Functions.UpdateTableValue(capturelink.Replace(' ', '_').ToLower(), "/Cycles/CycleIdLink", dt);
         }
 
         DataTable configurationTable;

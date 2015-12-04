@@ -136,8 +136,29 @@
             <!--Page Content-->
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="#eee">
 
-                <ContentControl Margin="40,40,20,20" Content="{Binding CurrentPage}"/>
+                <Grid>
 
+                    <!--Page Content-->
+                    <ContentControl Margin="40,40,20,20" Content="{Binding CurrentPage}"/>
+
+                    <!--No Device Selected Text-->
+                    <TextBlock FontSize="14pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPage}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>             
+                                No Device Selected <LineBreak/>
+                                Select a device to the left or click the Add Device button
+                    </TextBlock>
+
+                </Grid>
+                
             </ScrollViewer>
 
             <!--Loading Device-->

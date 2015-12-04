@@ -468,7 +468,17 @@ namespace TrakHound_Client.Options.Pages.Updates
 
         #endregion
 
-        private void CheckForUpdates_Button_Clicked(Controls.TH_Button bt)
+        //private void CheckForUpdates_Button_Clicked(Controls.TH_Button bt)
+        //{
+        //    ManualUpdater_Start();
+
+        //    foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
+        //    {
+        //        ui.CheckUpdateVersion();
+        //    }
+        //}
+
+        private void CheckForUpdates_Clicked(TH_WPF.Button_01 bt)
         {
             ManualUpdater_Start();
 
@@ -477,6 +487,7 @@ namespace TrakHound_Client.Options.Pages.Updates
                 ui.CheckUpdateVersion();
             }
         }
+
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {

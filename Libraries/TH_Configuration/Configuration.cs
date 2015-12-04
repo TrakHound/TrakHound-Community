@@ -51,15 +51,18 @@ namespace TH_Configuration
 
         public bool Remote { get; set; }
 
-        public bool Shared { get; set; }
-
         public string UpdateId { get; set; }
 
         public string TableName { get; set; }
 
-        public string SharedTableName { get; set; }
-
         public string Version { get; set; }
+
+
+        //public bool Shared { get; set; }
+
+        public string SharedId { get; set; }
+
+        public string SharedTableName { get; set; }
 
         #endregion
 

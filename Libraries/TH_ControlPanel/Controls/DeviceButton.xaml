@@ -51,7 +51,7 @@
                 <TextBlock Text="{Binding Serial}" FontSize="8pt"/>
                
                 <!--Device Id-->
-                <TextBlock Text="{Binding Id}" FontSize="20pt" VerticalAlignment="Bottom" Margin="5,0,0,0"/>
+                <TextBlock Text="{Binding Id}" FontSize="16pt" Foreground="#33ffffff" VerticalAlignment="Bottom"/>
                 
             </StackPanel>
 
@@ -81,44 +81,52 @@
 
             </Grid>
 
-            <!--Share Button-->
-            <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" >
-                
-                <!--Not Shared-->
-                <Grid>
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Shared}" Value="true">
-                                    <Setter Property="Visibility" Value="Hidden"/>
-                                </DataTrigger>            
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
+            <!--Buttons-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
 
-                    <th_wpf:Button_02 Grid.Row="1" Text="Share" ToolTip="Share this Device configuration with other TrakHound users" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked"/>
+                <!--Copy-->
+                <th_wpf:Button_02 ToolTip="Add a Copy of this device" Image="/TH_DeviceManager;component/Resources/Copy_01.png" Clicked="Copy_Clicked"/>
+
+                <!--Share-->
+                <Grid>
+
+                    <!--Not Shared-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Shared}" Value="true">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <th_wpf:Button_02 Grid.Row="1" Text="Share" ToolTip="Share this Device configuration with other TrakHound users" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked"/>
+
+                    </Grid>
+
+                    <!--Shared-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Shared}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <TextBlock Text="Shared" Foreground="#aaffffff" FontSize="10pt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                    </Grid>
 
                 </Grid>
-
-                <!--Shared-->
-                <Grid>
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Hidden"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Shared}" Value="true">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-
-                    <TextBlock Text="Shared" Foreground="#aaffffff" FontSize="10pt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    
-                </Grid>
-
-            </Grid>
+              
+            </StackPanel>            
                     
         </Grid>
 

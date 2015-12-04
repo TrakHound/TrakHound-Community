@@ -123,6 +123,16 @@ namespace TH_DeviceManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Copy_01 {
+            get {
+                object obj = ResourceManager.GetObject("Copy_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DatabaseConfig_01 {
             get {
                 object obj = ResourceManager.GetObject("DatabaseConfig_01", resourceCulture);

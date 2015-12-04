@@ -65,10 +65,12 @@ namespace TH_DeviceManager
             {
                 currentuser = value;
 
-                if (currentuser != null)
-                {
-                    LoadDevices();
-                }
+                LoadDevices();
+
+                //if (currentuser != null)
+                //{
+                //    LoadDevices();
+                //}
             }
         }
 
@@ -384,43 +386,43 @@ namespace TH_DeviceManager
             {
                 SaveConfiguration(dt);
 
-                if (SelectedDevice.Shared && SelectedDevice.SharedTableName != null && dt != null)
-                {
-                    MessageBoxResult result = MessageBox.Show("This configuration is Shared. Do you want to Update the Shared Configuration as well?", "Update Shared Configuration", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        if (Configurations.UpdateConfigurationTable(SelectedDevice.TableName, dt, userDatabaseSettings))
-                        {
-                            Shared.SharedListItem item = new Shared.SharedListItem();
+                //if (SelectedDevice.Shared && SelectedDevice.SharedTableName != null && dt != null)
+                //{
+                //    MessageBoxResult result = MessageBox.Show("This configuration is Shared. Do you want to Update the Shared Configuration as well?", "Update Shared Configuration", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                //    if (result == MessageBoxResult.Yes)
+                //    {
+                //        if (Configurations.UpdateConfigurationTable(SelectedDevice.TableName, dt, userDatabaseSettings))
+                //        {
+                //            Shared.SharedListItem item = new Shared.SharedListItem();
 
-                            item.upload_date = DateTime.Now;
+                //            item.upload_date = DateTime.Now;
 
-                            if (SelectedDevice.Version != null)
-                            {
-                                Version version;
-                                if (Version.TryParse(SelectedDevice.Version, out version))
-                                {
-                                    int major = version.Major;
-                                    int minor = version.Minor;
-                                    int build = version.Build;
-                                    int revision = version.Revision;
+                //            if (SelectedDevice.Version != null)
+                //            {
+                //                Version version;
+                //                if (Version.TryParse(SelectedDevice.Version, out version))
+                //                {
+                //                    int major = version.Major;
+                //                    int minor = version.Minor;
+                //                    int build = version.Build;
+                //                    int revision = version.Revision;
 
-                                    if (minor < 10) minor += 1;
-                                    else
-                                    {
-                                        major += 1;
-                                        minor = 0;
-                                    }
+                //                    if (minor < 10) minor += 1;
+                //                    else
+                //                    {
+                //                        major += 1;
+                //                        minor = 0;
+                //                    }
 
-                                    item.version = major.ToString() + "." + minor.ToString() + "." + build.ToString() + "." + revision.ToString();
-                                }
-                            }
+                //                    item.version = major.ToString() + "." + minor.ToString() + "." + build.ToString() + "." + revision.ToString();
+                //                }
+                //            }
 
-                            Shared.UpdateSharedConfiguration_ToList(CurrentUser, item);
-                            Configurations.UpdateConfigurationTable(SelectedDevice.SharedTableName, dt, null);
-                        }
-                    }
-                }
+                //            Shared.UpdateSharedConfiguration_ToList(CurrentUser, item);
+                //            Configurations.UpdateConfigurationTable(SelectedDevice.SharedTableName, dt, null);
+                //        }
+                //    }
+                //}
             }
 
             this.Dispatcher.BeginInvoke(new Action(Save_Finished), background, null);
@@ -474,7 +476,12 @@ namespace TH_DeviceManager
                 SelectedDevice = Configuration.ReadConfigFile(xml);
                 SelectedDevice.TableName = tablename;
 
-                SelectedDeviceButton.Config = SelectedDevice;
+                if (SelectedDeviceButton != null)
+                {
+                    SelectedDeviceButton.Config = SelectedDevice;
+                }
+
+                
             }
         }
       
@@ -550,6 +557,7 @@ namespace TH_DeviceManager
             db.Disabled += db_Disabled;
             db.RemoveClicked += db_RemoveClicked;
             db.ShareClicked += db_ShareClicked;
+            db.CopyClicked += db_CopyClicked;
             db.Clicked += db_Clicked;
 
             ListButton lb = new ListButton();
@@ -562,6 +570,7 @@ namespace TH_DeviceManager
 
             DeviceList.Add(lb);
         }
+
 
         void db_Enabled(DeviceButton bt)
         {
@@ -612,21 +621,19 @@ namespace TH_DeviceManager
         {
             PageListShown = false;
 
-            //if (CurrentPage != null)
-            //{
-            //    if (CurrentPage.GetType() != typeof(Pages.AddShare.Page))
-            //    {
-            //        LoadAddSharePage(bt);
-            //    }
-            //}
-            //else
-            //{
-            //    LoadAddSharePage(bt);
-            //}
-
             LoadAddSharePage(bt);
 
             ToolbarShown = false;
+        }
+
+        void db_CopyClicked(DeviceButton bt)
+        {
+            if (bt.Config != null)
+            {
+                CopyDevice(bt.Config);
+            }
+
+            db_Clicked(bt);
         }
 
         void db_Clicked(DeviceButton bt)
@@ -1180,6 +1187,9 @@ namespace TH_DeviceManager
         }
 
 
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+
         #region "Add Device"
 
         private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -1192,7 +1202,7 @@ namespace TH_DeviceManager
             AddDevice();
         }
 
-        void AddDevice()
+        public void AddDevice()
         {
             PageListShown = false;
             ToolbarShown = false;
@@ -1223,19 +1233,65 @@ namespace TH_DeviceManager
 
             LoadDevices();
 
-
         }
 
         #endregion
+
+        #region "Copy Device"
+
+        Thread CopyDevice_THREAD;
+
+        void CopyDevice(Configuration config)
+        {
+
+            if (CopyDevice_THREAD != null) CopyDevice_THREAD.Abort();
+
+            CopyDevice_THREAD = new Thread(new ParameterizedThreadStart(CopyDevice_Worker));
+            CopyDevice_THREAD.Start(config);
+        }
+
+        void CopyDevice_Worker(object o)
+        {
+            bool success = false;
+
+            if (o != null)
+            {
+                Configuration config = (Configuration)o;
+
+                if (currentuser != null)
+                {
+                    success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+
+            this.Dispatcher.BeginInvoke(new Action<bool>(CopyDevice_GUI), priority, new object[] { success });
+        }
+
+        void CopyDevice_GUI(bool success)
+        {
+
+            if (success) LoadDevices();
+            else
+            {
+                MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
+        }
+
+
+
+
+        #endregion
+
 
         private void RefreshDevices_Clicked(Button_02 bt)
         {
             LoadDevices();
         }
-
-
-
-       
 
     }
 }

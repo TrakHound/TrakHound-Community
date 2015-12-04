@@ -153,7 +153,7 @@ namespace TH_Device_Server
 
         #region "Connection"
 
-        bool connected;
+        bool connected = false;
         public bool Connected 
         {
             get { return connected; }
@@ -163,13 +163,10 @@ namespace TH_Device_Server
 
                 connected = value;
 
-                //if (connected) AgentConnected(this);
-                //else AgentDisconnected(this);
-
                 if (prev_val != connected)
                 {
-                    if (connected) AgentConnected(this);
-                    else AgentDisconnected(this);
+                    if (connected && AgentConnected != null) AgentConnected(this);
+                    else if (AgentDisconnected != null) AgentDisconnected(this);
                 }
             }
         }

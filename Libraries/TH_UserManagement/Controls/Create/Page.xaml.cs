@@ -57,17 +57,6 @@ namespace TH_UserManagement.Create
             set 
             {               
                 SetValue(CurrentUserProperty, value);
-
-                //if (CurrentUser == null) 
-                //{
-                //    PageName = "Create Account";
-                //    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
-                //}
-                //else 
-                //{
-                //    PageName = "Edit Account";
-                //    Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
-                //}
             }
         }
 
@@ -87,6 +76,8 @@ namespace TH_UserManagement.Create
 
         public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
+            Console.WriteLine("LoadUserConfiguration()");
+
             CurrentUser = userConfig;
             UserDatabaseSettings = userDatabaseSettings;
 

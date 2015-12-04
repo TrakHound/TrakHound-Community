@@ -49,6 +49,7 @@ using TrakHound_Client.Controls;
 
 namespace TrakHound_Client
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -61,7 +62,7 @@ namespace TrakHound_Client
 
             Splash_Initialize();
 
-            devicemangager = new DeviceManager();
+            devicemanager = new DeviceManager();
 
             InitializeComponent();
             DataContext = this;
@@ -81,18 +82,13 @@ namespace TrakHound_Client
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User");
             ReadUserManagementSettings();
-            devicemangager.userDatabaseSettings = UserDatabaseSettings;
+            devicemanager.userDatabaseSettings = UserDatabaseSettings;
 
             LoginMenu.rememberMeType = RememberMeType.Client;
             LoginMenu.LoadRememberMe();
 
-
             Splash_UpdateStatus("...Loading Plugins");
             LoadPlugIns();
-
-            Splash_UpdateStatus("...Reading Devices");
-            //LoadDevices();
-
 
             // Wait for the minimum splash time to elapse, then close the splash dialog
             while (SplashWait) { System.Threading.Thread.Sleep(200); }
@@ -913,7 +909,7 @@ namespace TrakHound_Client
 
         #region "Device Manager"
 
-        public DeviceManager devicemangager;
+        public DeviceManager devicemanager;
 
         void DeviceManager_Initialize()
         {
@@ -922,7 +918,7 @@ namespace TrakHound_Client
 
         public void DeviceManager_Open()
         {
-            AddPageAsTab(devicemangager, "Device Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
+            AddPageAsTab(devicemanager, "Device Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
         }
 
         #endregion
@@ -996,7 +992,7 @@ namespace TrakHound_Client
         {
             optionsManager = new Options.Manager();
 
-            optionsManager.AddPage(new Options.Pages.General.Page());
+            //optionsManager.AddPage(new Options.Pages.General.Page());
             optionsManager.AddPage(new Options.Pages.Updates.Page());
         }
 
@@ -1071,16 +1067,6 @@ namespace TrakHound_Client
         private void Login_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             LoginMenu.Shown = true;
-
-            //if (sender.GetType() == typeof(Grid))
-            //{
-            //    Grid grid = (Grid)sender;
-
-            //    Point point = grid.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
-            //    //LoginMenu.Margin = new Thickness(0, point.Y + grid.RenderSize.Height, Main_GRID.RenderSize.Width - point.X - grid.RenderSize.Width, 0);
-
-            //    //LoginMenu.Shown = true;
-            //}
         }
 
         private void LoginMenu_CurrentUserChanged(UserConfiguration userConfig)
@@ -1111,7 +1097,7 @@ namespace TrakHound_Client
             {
                 currentuser = value;
 
-                devicemangager.CurrentUser = currentuser;
+                devicemanager.CurrentUser = currentuser;
 
                 
                 if (currentuser != null)
@@ -1828,13 +1814,11 @@ namespace TrakHound_Client
 
         void LoadDevices_GUI(List<Configuration> configs)
         {
+            Devices.Clear();
+
             if (configs != null)
             {
                 int index = 0;
-
-                Devices.Clear();
-
-                //if (monitors != null) { monitors.Clear(); }
 
                 DatabasePluginReader dpr = new DatabasePluginReader();
 
@@ -1857,7 +1841,13 @@ namespace TrakHound_Client
                 }
             }
 
-            //configurations = configs;
+            // If a user is logged in but no Devices are found then open up Device Manager and Add Device page
+            if (CurrentUser != null && Devices.Count == 0)
+            {
+                if (devicemanager != null) devicemanager.AddDevice();
+
+                DeviceManager_Open();
+            }
 
             UpdatePlugInDevices();
 
@@ -2508,7 +2498,5 @@ namespace TrakHound_Client
         public event Clicked_Handler Clicked;
 
     }
-
-
 
 }

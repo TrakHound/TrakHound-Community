@@ -338,6 +338,7 @@
                                  Image="{Binding ProfileImage}"
                                  ImageSet="{Binding ProfileImageSet}"
                                  Loading="{Binding ProfileImageLoading}"
+                                 ShowBorder="True"
                                  />
 
                     <!--Legend-->

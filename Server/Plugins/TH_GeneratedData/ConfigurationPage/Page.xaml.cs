@@ -241,6 +241,8 @@ namespace TH_GeneratedData.ConfigurationPage
         void probe_ProbeError(Probe.ErrorData errorData)
         {
 
+            Console.WriteLine("TH_GeneratedData :: ConfigurationPage :: Probe Error :: " + errorData.message);
+
             // Set 'Loading' to false
             this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
 
@@ -414,7 +416,8 @@ namespace TH_GeneratedData.ConfigurationPage
 
             item.Loading = false;
 
-            SnapshotItems.Add(item);
+            SnapshotItems.Insert(0, item);
+            //SnapshotItems.Add(item);
 
             DisplaySnapshots = true;
         }
@@ -1019,8 +1022,8 @@ namespace TH_GeneratedData.ConfigurationPage
             TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
             bt.ButtonContent = event_bt;
 
-            if (first) bt.IsExpanded = true;
-            first = false;
+            //if (first) bt.IsExpanded = true;
+            //first = false;
 
             bt.PageContent = ev;
 
@@ -1316,15 +1319,15 @@ namespace TH_GeneratedData.ConfigurationPage
             AddEvent(e);
             //LoadGeneratedEvents_GUI(e);
 
-            if (EventButtons.Count > 0)
-            {
-                TH_WPF.CollapseButton cbt = EventButtons[EventButtons.Count - 1];
+            //if (EventButtons.Count > 0)
+            //{
+            //    TH_WPF.CollapseButton cbt = EventButtons[EventButtons.Count - 1];
 
-                foreach (TH_WPF.CollapseButton ocbt in EventButtons.OfType<TH_WPF.CollapseButton>().ToList()) if (ocbt != cbt) ocbt.IsExpanded = false;
-                cbt.IsExpanded = true;
+            //    foreach (TH_WPF.CollapseButton ocbt in EventButtons.OfType<TH_WPF.CollapseButton>().ToList()) if (ocbt != cbt) ocbt.IsExpanded = false;
+            //    cbt.IsExpanded = true;
 
-                cbt.BringIntoView();
-            }
+            //    cbt.BringIntoView();
+            //}
 
             DisplayEvents = true;
 
@@ -1414,6 +1417,7 @@ namespace TH_GeneratedData.ConfigurationPage
         }
 
         #endregion
+
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

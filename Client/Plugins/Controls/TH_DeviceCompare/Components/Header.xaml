@@ -30,16 +30,16 @@
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
 
-                    <DataTrigger Binding="{Binding Alert}" Value="true">
-                        <Setter Property="Background" Value="Red"/>
+                    <DataTrigger Binding="{Binding Production}" Value="true">
+                        <Setter Property="Background" Value="#FF19B419"/>
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Idle}" Value="true">
                         <Setter Property="Background" Value="#FFEA7602"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Production}" Value="true">
-                        <Setter Property="Background" Value="#FF19B419"/>
+                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                        <Setter Property="Background" Value="Red"/>
                     </DataTrigger>
 
                 </Style.Triggers>

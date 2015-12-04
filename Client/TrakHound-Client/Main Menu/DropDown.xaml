@@ -309,7 +309,7 @@
                     <Rectangle Grid.Row="1" Height="1" Margin="5,0" Fill="#22000000" Visibility="Collapsed"/>
                     
                     <!--MenuItem List-->
-                    <ItemsControl Grid.Row="2" ItemsSource="{Binding MenuItems}" HorizontalAlignment="Center">
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding MenuItems}" HorizontalAlignment="Center" Margin="0,10,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel Orientation="Horizontal"/>

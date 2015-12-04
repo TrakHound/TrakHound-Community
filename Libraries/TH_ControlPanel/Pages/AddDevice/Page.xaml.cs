@@ -69,14 +69,14 @@ namespace TH_DeviceManager.Pages.AddDevice
             }
         }
 
-        public void LoadCatalog()
-        {
-            List<Shared.SharedListItem> listitems = Shared.GetSharedList();
+        //public void LoadCatalog()
+        //{
+        //    List<Shared.SharedListItem> listitems = Shared.GetSharedList();
 
-            shareditems = listitems;
+        //    shareditems = listitems;
 
-            LoadSharedItems(listitems);
-        }
+        //    LoadSharedItems(listitems);
+        //}
 
         #endregion
 
@@ -151,7 +151,7 @@ namespace TH_DeviceManager.Pages.AddDevice
         List<Shared.SharedListItem> shareditems;
         List<Shared.SharedListItem> shareditems_search;
 
-        #region "Shared Items"
+        #region "Catalog"
 
         public bool CatalogLoading
         {
@@ -162,8 +162,42 @@ namespace TH_DeviceManager.Pages.AddDevice
         public static readonly DependencyProperty CatalogLoadingProperty =
             DependencyProperty.Register("CatalogLoading", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
+        Thread LoadCatalog_THREAD;
 
-        Thread LoadImage_THREAD;
+        public void LoadCatalog()
+        {
+            CatalogLoading = true;
+
+            if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
+
+            LoadCatalog_THREAD = new Thread(new ThreadStart(LoadCatalog_Worker));
+            LoadCatalog_THREAD.Start();
+        }
+
+        void LoadCatalog_Worker()
+        {
+
+            List<Shared.SharedListItem> items = Shared.GetSharedList();
+
+            this.Dispatcher.BeginInvoke(new Action<List<Shared.SharedListItem>>(LoadCatalog_GUI), priority, new object[] { items });
+
+        }
+
+        void LoadCatalog_GUI(List<Shared.SharedListItem> items)
+        {
+            CatalogLoading = false;
+
+            shareditems = items;
+
+            LoadSharedItems(items);
+        }
+
+
+        #endregion
+
+        #region "Shared Items"
+
+        Thread LoadShared_THREAD;
 
         void LoadSharedItems(List<Shared.SharedListItem> items)
         {
@@ -172,10 +206,10 @@ namespace TH_DeviceManager.Pages.AddDevice
             shareditems_search = new List<Shared.SharedListItem>();
             SharedList.Clear();
 
-            if (LoadImage_THREAD != null) LoadImage_THREAD.Abort();
+            if (LoadShared_THREAD != null) LoadShared_THREAD.Abort();
 
-            LoadImage_THREAD = new Thread(new ParameterizedThreadStart(LoadSharedItems_Worker));
-            LoadImage_THREAD.Start(items);
+            LoadShared_THREAD = new Thread(new ParameterizedThreadStart(LoadSharedItems_Worker));
+            LoadShared_THREAD.Start(items);
         }
 
         void LoadSharedItems_Worker(object o)
@@ -263,6 +297,50 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             if (item.listitem != null)
             {
+                //string tablename = item.listitem.tablename;
+                AddSharedItem(item);
+            }
+        }
+
+        void LoadSharedItems_Finish()
+        {
+            CatalogLoading = false;
+        }
+
+        #endregion
+
+        #region "Add Shared Configuration to User"
+
+        class AddShared_Return
+        {
+            public Controls.SharedItem item { get; set; }
+            public bool success { get; set; }
+        }
+
+        Thread AddShared_THREAD;
+
+        void AddSharedItem(Controls.SharedItem item)
+        {
+            item.Loading = true;
+
+            if (AddShared_THREAD != null) AddShared_THREAD.Abort();
+
+            AddShared_THREAD = new Thread(new ParameterizedThreadStart(AddSharedItem_Worker));
+            AddShared_THREAD.Start(item);
+        }
+
+        void AddSharedItem_Worker(object o)
+        {
+
+            AddShared_Return result = new AddShared_Return();
+            result.success = false;
+
+            if (o != null)
+            {
+                Controls.SharedItem item = (Controls.SharedItem)o;
+
+                result.item = item;
+
                 string tablename = item.listitem.tablename;
 
                 if (tablename != null)
@@ -278,24 +356,34 @@ namespace TH_DeviceManager.Pages.AddDevice
                             {
                                 if (currentuser != null)
                                 {
-                                    Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+                                    result.success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
                                 }
                                 else
                                 {
 
                                 }
-
-                                if (DeviceAdded != null) DeviceAdded();
                             }
-                        }   
+                        }
                     }
                 }
             }
+
+            this.Dispatcher.BeginInvoke(new Action<AddShared_Return>(AddSharedItem_GUI), priority, new object[] { result });
         }
 
-        void LoadSharedItems_Finish()
+        void AddSharedItem_GUI(AddShared_Return result)
         {
-            CatalogLoading = false;
+            if (result.item != null) result.item.Loading = false;
+
+            if (result.success)
+            {
+                if (DeviceAdded != null) DeviceAdded();
+            }
+            else
+            {
+                MessageBox.Show("Add device failed. Try Again.", "Add device failed", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
         }
 
         #endregion

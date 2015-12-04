@@ -116,12 +116,15 @@
                     <Grid>
 
                         <!--Image-->
-                        <Border BorderBrush="#ccc" BorderThickness="1" CornerRadius="1">
+                        <Border CornerRadius="1">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Opacity" Value="0.0"/>
                                     <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="BorderBrush" Value="#ccc"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
                                     <Style.Triggers>
+                                        
                                         <DataTrigger Binding="{Binding ImageSet}" Value="true">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
@@ -146,9 +149,15 @@
                                                 </BeginStoryboard>
                                             </DataTrigger.ExitActions>
                                         </DataTrigger>
+                                        
                                         <Trigger Property="Opacity" Value="0.0">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </Trigger>
+                                        
+                                        <DataTrigger Binding="{Binding ShowBorder}" Value="false">
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                        </DataTrigger>
+                                        
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>

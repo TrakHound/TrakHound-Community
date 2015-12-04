@@ -54,13 +54,13 @@ namespace TH_DeviceManager.Controls
                 DeviceEnabled = config.Enabled;
                 enabled_CHK.IsChecked = config.Enabled;
 
-                Shared = config.Shared;
+                //Shared = config.Shared;
 
                 Description = config.Description.Description;
                 Manufacturer = config.Description.Manufacturer;
                 Model = config.Description.Model;
                 Serial = config.Description.Serial;
-                Id = config.Description.Machine_ID;
+                Id = config.Description.Device_ID;
             }
         }
 
@@ -180,6 +180,13 @@ namespace TH_DeviceManager.Controls
             {
                 if (Disabled != null) Disabled(this);
             }
+        }
+
+        public event Clicked_Handler CopyClicked;
+
+        private void Copy_Clicked(TH_WPF.Button_02 bt)
+        {
+            if (CopyClicked != null) CopyClicked(this);
         }
 
 

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
              Height="80" d:DesignWidth="300">
@@ -101,22 +102,50 @@
         <Grid Background="#00000000" Grid.ColumnSpan="2" MouseDown="Grid_MouseDown"/>
 
         
-        <!--Add Button-->
+        <!--Add Device-->
         <Grid Grid.Column="1">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Hidden"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Main_GRID}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
 
-            <th_wpf:Button_01 AlternateStyle="True" Text="Add" Margin="10" Height="30" Clicked="Add_Clicked"/>
+            <!--Add Button-->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=Main_GRID}" Value="true">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Loading}" Value="true">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <th_wpf:Button_01 AlternateStyle="True" Text="Add" Margin="10" Height="30" Clicked="Add_Clicked"/>
+
+            </Grid>
             
+            <!--Loading Animation-->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Loading}" Value="true">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <loadinganimation:Wheel Height="30" Width="30" Foreground="#0080ff"/>
+                
+            </Grid>
+
+
         </Grid>
+        
+        
                  
     </Grid>
     

@@ -129,7 +129,15 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
 
 
 
-        
-        
+        public bool Loading
+        {
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(SharedItem), new PropertyMetadata(false));
+
+ 
     }
 }

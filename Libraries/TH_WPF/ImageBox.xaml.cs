@@ -83,8 +83,17 @@ namespace TH_WPF
         public static readonly DependencyProperty ImageSetProperty =
             DependencyProperty.Register("ImageSet", typeof(bool), typeof(ImageBox), new PropertyMetadata(false));
 
-        
-        
+
+
+        public bool ShowBorder
+        {
+            get { return (bool)GetValue(ShowBorderProperty); }
+            set { SetValue(ShowBorderProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowBorderProperty =
+            DependencyProperty.Register("ShowBorder", typeof(bool), typeof(ImageBox), new PropertyMetadata(false));
+
 
         #endregion
 

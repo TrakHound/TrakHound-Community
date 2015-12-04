@@ -137,7 +137,7 @@ namespace TH_StatusData
         {
             if (Devices != null)
             {
-                foreach (Configuration device in Devices)
+                foreach (Configuration device in Devices.ToList())
                 {
                     if (DataEvent != null)
                     {

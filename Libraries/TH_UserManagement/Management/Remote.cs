@@ -387,6 +387,9 @@ namespace TH_UserManagement.Management
                 {
                     DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
 
+                    // Set new Unique Id
+                    Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UniqueId", dt);
+
                     result = UpdateConfigurationTable(tableName, dt);
                 }
 
