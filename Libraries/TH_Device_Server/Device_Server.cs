@@ -77,7 +77,7 @@ namespace TH_Device_Server
         {
             PrintDeviceHeader(configuration);
 
-            if (UseDatabases) Database.Create(configuration.Databases);
+            if (UseDatabases) Database.Create(configuration.Databases_Server);
 
             worker = new Thread(new ThreadStart(Worker_Start));
             worker.Start();
@@ -610,7 +610,7 @@ namespace TH_Device_Server
 
         void InitializeTables()
         {
-            if (UseDatabases) Variables.CreateTable(configuration.Databases);
+            if (UseDatabases) Variables.CreateTable(configuration.Databases_Server);
         }
 
         #endregion

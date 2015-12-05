@@ -180,6 +180,14 @@ namespace TH_Database
 
         void SaveConfiguration(DataTable dt);
 
+        Page_Type PageType { get; set; }
+
+    }
+
+    public enum Page_Type
+    {
+        Client = 0,
+        Server = 1
     }
 
     public delegate void SettingChanged_Handler(string name, string oldVal, string newVal);

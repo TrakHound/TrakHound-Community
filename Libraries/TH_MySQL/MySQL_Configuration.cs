@@ -21,6 +21,8 @@ namespace TH_MySQL
         public string PHP_Server { get; set; }
         public string PHP_Directory { get; set; }
 
+        public bool UseTrakHoundCloudServer { get; set; }
+
         public static MySQL_Configuration ReadXML(XmlNode node)
         {
             MySQL_Configuration result = new MySQL_Configuration();

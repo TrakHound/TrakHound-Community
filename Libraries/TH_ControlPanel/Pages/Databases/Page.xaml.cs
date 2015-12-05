@@ -54,8 +54,6 @@ namespace TH_DeviceManager.Pages.Databases
 
         public UserConfiguration currentUser { get; set; }
 
-        public event SaveRequest_Handler SaveRequest;
-
         public event SettingChanged_Handler SettingChanged;
 
         public void LoadConfiguration(DataTable dt)
@@ -103,6 +101,8 @@ namespace TH_DeviceManager.Pages.Databases
 
             LoadConfiguration(dt);
         }
+
+        public Page_Type PageType { get; set; }
 
         #endregion
 
@@ -197,7 +197,12 @@ namespace TH_DeviceManager.Pages.Databases
                 TH_Database.Database_Plugin plugin = (TH_Database.Database_Plugin)bt.DataObject;
 
                 // Find Id that is not used
-                string test = "/Databases/" + plugin.Type + "||";
+                //string test = "/Databases/" + plugin.Type + "||";
+
+                string test = null;
+                if (PageType == Page_Type.Client) test = "/Databases_Client/" + plugin.Type + "||";
+                else if (PageType == Page_Type.Server) test = "/Databases_Server/" + plugin.Type + "||";
+
                 int i = 0;
                 string address = test + i.ToString("00");
                 while (Table_Functions.GetTableValue(address, configurationTable) != null || AddRootList.Find(x => x.Item1 == address) != null)
@@ -220,6 +225,10 @@ namespace TH_DeviceManager.Pages.Databases
                     object o = Activator.CreateInstance(config_type);
 
                     TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)o;
+
+                    if (PageType == Page_Type.Client) page.PageType = TH_Database.Page_Type.Client;
+                    else if (PageType == Page_Type.Server) page.PageType = TH_Database.Page_Type.Server;
+
                     page.prefix = address;
                     page.SettingChanged += Configuration_Page_SettingChanged;
                     databaseConfigurationPages.Add(page);
@@ -259,7 +268,9 @@ namespace TH_DeviceManager.Pages.Databases
 
             foreach (TH_Database.Database_Plugin plugin in plugins)
             {
-                string prefix = "/Databases/" + plugin.Type + "||";
+                string prefix = null;
+                if (PageType == Page_Type.Client) prefix = "/Databases_Client/" + plugin.Type + "||";
+                else if (PageType == Page_Type.Server) prefix = "/Databases_Server/" + plugin.Type + "||";
 
                 List<string> addresses = GetAddressesForDatabase(prefix, dt);
 

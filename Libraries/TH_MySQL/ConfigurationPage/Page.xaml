@@ -17,317 +17,28 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <StackPanel Width="300">
-            <StackPanel.Resources>
-                <Style TargetType="StackPanel">
-                    <Setter Property="Margin" Value="0,5"/>
-                </Style>
-            </StackPanel.Resources>
-
-            <!--Database Name-->
-            <th_wpf:TextBox Text="{Binding DatabaseName, Mode=TwoWay}" Title="Database Name" Instructions="Enter name of database" TextChanged="TXT_TextChanged">
-                <th_wpf:TextBox.HelpText>
-                    Enter the name of the Database to connect to
-                </th_wpf:TextBox.HelpText>
-            </th_wpf:TextBox>
-            
-            <!--Server Address-->
-            <th_wpf:TextBox Text="{Binding Server, Mode=TwoWay}" Title="Server" Instructions="Enter the server URL" TextChanged="TXT_TextChanged">
-                <th_wpf:TextBox.HelpText>
-                    Enter the URL of the database connection
-                </th_wpf:TextBox.HelpText>
-            </th_wpf:TextBox>
-            
-            <!--Port-->
-            <th_wpf:TextBox Text="{Binding Port, Mode=TwoWay}" Title="Port" Instructions="Enter the server port" TextChanged="TXT_TextChanged">
-                <th_wpf:TextBox.HelpText>
-                    Enter the port used for the database connection
-                </th_wpf:TextBox.HelpText>
-            </th_wpf:TextBox>
-
-            <!--Username-->
-            <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Username" Instructions="Enter the username" TextChanged="TXT_TextChanged">
-                <th_wpf:TextBox.HelpText>
-                    Enter the username used for the database connection
-                </th_wpf:TextBox.HelpText>
-            </th_wpf:TextBox> 
-
-            <!--Password-->
-            <StackPanel>
-
-                <!--Title and Help
-                <StackPanel Orientation="Horizontal">
-
-                    Title
-                    <TextBlock Text="Password" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                    Help
-                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                        <Rectangle.ToolTip>
-                            <ToolTip MaxWidth="400">
-                                <StackPanel>
-                                    <TextBlock Text="Password" FontWeight="Bold"/>
-                                    <TextBlock TextWrapping="Wrap">
-                                            Enter the password used for the database connection
-                                    </TextBlock>
-                                </StackPanel>
-                            </ToolTip>
-                        </Rectangle.ToolTip>
-
-
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#0080ff"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-
-                    </Rectangle>
-
-                </StackPanel>
-
-                Password
-                <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="BorderBrush" Value="#aaa"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
-                                    <Setter Property="BorderBrush" Value="#0080ff"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-                    <Grid Margin="10,0">
-
-                        Instructions
-                        <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        User Input
-                        <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged"/>
-
-                    </Grid>
-
-                </Border>-->
-
-                <th_wpf:PasswordBox x:Name="password_TXT" PasswordChanged="password_TXT_PasswordChanged" Title="Password" HelpText="Enter the password used for the database connection"/>
-
-                <!--Verify Password -->
-                <Grid Margin="10,0,10,10">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-
-                    <!--Too Short-->
-                    <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PasswordShort}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                    <!--Too Long-->
-                    <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PasswordLong}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                </Grid>
-
-            </StackPanel>
-
-            <!--Confirm Password-->
-            <StackPanel>
-
-                <!--Confirm Password--><!--
-                <TextBlock Text="Confirm your password" Foreground="#333" Margin="10,0" FontSize="12pt"/>
-
-                --><!--Confirm Password--><!--
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border BorderThickness="1" CornerRadius="1" Margin="10,5" Background="#fff">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="#aaa"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused, ElementName=confirmpassword_TXT}" Value="true">
-                                        <Setter Property="BorderBrush" Value="#0080ff"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid Margin="10,0">
-
-                            --><!--Instructions--><!--
-                            <TextBlock FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                            --><!--User Input--><!--
-                            <PasswordBox x:Name="confirmpassword_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="confirmpassword_TXT_PasswordChanged"/>
-
-                        </Grid>
-
-                    </Border>
-
-                    --><!--Password Confirmed--><!--
-                    <Rectangle x:Name="confirmpassword_image" Grid.Column="2" Height="20"  Width="20" Margin="5,0,0,0">
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/CheckMark_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Setter Property="Fill" Value="Green"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding PasswordVerified}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                </Grid>-->
-
-                <th_wpf:PasswordBox x:Name="confirmpassword_TXT" PasswordChanged="confirmpassword_TXT_PasswordChanged" Title="Confirm your password" HelpText="Enter the password used for the database connection"/>
-
-                <!--Verify Confirm Password -->
-                <Grid Margin="10,0,10,10">
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                            <Style.Triggers>
-
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                        <Condition Binding="{Binding PasswordVerified}" Value="false"/>
-                                    </MultiDataTrigger.Conditions>
-
-                                    <Setter Property="Visibility" Value="Visible"/>
-
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-
-                    <!--Don't Match-->
-                    <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
-
-                </Grid>
-
-            </StackPanel>
-
-        </StackPanel>
         
-        <StackPanel Grid.Column="1" Width="300" Margin="40,10,20,20">
-            
+        <StackPanel>
+
             <StackPanel Orientation="Horizontal">
 
                 <!--CheckBox-->
-                <CheckBox x:Name="usephp_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                
+                <CheckBox x:Name="trakhoundserver_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="trakhoundserver_CHK_Checked" Unchecked="trakhoundserver_CHK_Unchecked"/>
+
                 <!--Title and Help-->
                 <StackPanel Orientation="Horizontal">
 
                     <!--Title-->
-                    <TextBlock Text="Use PHP for Connection" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                    <TextBlock Text="Use TrakHound Cloud Server" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                     <!--Help-->
                     <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
                         <Rectangle.ToolTip>
                             <ToolTip MaxWidth="400">
                                 <StackPanel>
-                                    <TextBlock Text="Use PHP for Connection" FontWeight="Bold"/>
+                                    <TextBlock Text="Use TrakHound Cloud Server" FontWeight="Bold"/>
                                     <TextBlock TextWrapping="Wrap">
-                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
+                                            Used to toggle between using the TrakHound Cloud Servers or Manual configuration
                                     </TextBlock>
                                 </StackPanel>
                             </ToolTip>
@@ -377,41 +88,287 @@
 
             </StackPanel>
             
-            <StackPanel>
-                <StackPanel.Resources>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Margin" Value="0,5"/>
-                    </Style>
-                </StackPanel.Resources>
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="IsEnabled" Value="false"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding UsePHPServer}" Value="true">
-                                <Setter Property="IsEnabled" Value="True"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
+            <Grid>
 
-                <!--PHP Server-->
-                <th_wpf:TextBox Text="{Binding PhpServer, Mode=TwoWay}" Title="PHP Server" Instructions="Enter the php server url" TextChanged="TXT_TextChanged">
-                    <th_wpf:TextBox.HelpText>
-                        Enter the URL used for the PHP Server
-                    </th_wpf:TextBox.HelpText>
-                </th_wpf:TextBox>
-                
-                <!--PHP Directory-->
-                <th_wpf:TextBox Text="{Binding PhpDirectory, Mode=TwoWay}" Title="PHP Directory" Instructions="Enter the php directory" TextChanged="TXT_TextChanged">
-                    <th_wpf:TextBox.HelpText>
-                        Enter the directory on the PHP server that the script files are stored in
-                    </th_wpf:TextBox.HelpText>
-                </th_wpf:TextBox>
-                
-            </StackPanel>
+                <!--Manual Configuration-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UseTrakHoundCloudServer}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
+                    <StackPanel Width="400">
+                        <StackPanel.Resources>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Margin" Value="0,5"/>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <!--Database Name-->
+                        <th_wpf:TextBox Text="{Binding DatabaseName, Mode=TwoWay}" Title="Database Name" Instructions="Enter name of database" TextChanged="TXT_TextChanged">
+                            <th_wpf:TextBox.HelpText>
+                                Enter the name of the Database to connect to
+                            </th_wpf:TextBox.HelpText>
+                        </th_wpf:TextBox>
+
+                        <!--Server Address-->
+                        <th_wpf:TextBox Text="{Binding Server, Mode=TwoWay}" Title="Server" Instructions="Enter the server URL" TextChanged="TXT_TextChanged">
+                            <th_wpf:TextBox.HelpText>
+                                Enter the URL of the database connection
+                            </th_wpf:TextBox.HelpText>
+                        </th_wpf:TextBox>
+
+                        <!--Port-->
+                        <th_wpf:TextBox Text="{Binding Port, Mode=TwoWay}" Title="Port" Instructions="Enter the server port" TextChanged="TXT_TextChanged">
+                            <th_wpf:TextBox.HelpText>
+                                Enter the port used for the database connection
+                            </th_wpf:TextBox.HelpText>
+                        </th_wpf:TextBox>
+
+                        <!--Username-->
+                        <th_wpf:TextBox Text="{Binding Username, Mode=TwoWay}" Title="Username" Instructions="Enter the username" TextChanged="TXT_TextChanged">
+                            <th_wpf:TextBox.HelpText>
+                                Enter the username used for the database connection
+                            </th_wpf:TextBox.HelpText>
+                        </th_wpf:TextBox>
+
+                        <!--Password-->
+                        <StackPanel>
+
+                            <th_wpf:PasswordBox x:Name="password_TXT" PasswordChanged="password_TXT_PasswordChanged" Title="Password" HelpText="Enter the password used for the database connection"/>
+
+                            <!--Verify Password -->
+                            <Grid Margin="10,0,10,10">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <!--Too Short-->
+                                <TextBlock Text="Password must have at least 8 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PasswordShort}" Value="true">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <!--Too Long-->
+                                <TextBlock Text="Password must have at most 100 characters. Try another?" Foreground="Red" TextWrapping="Wrap">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PasswordLong}" Value="true">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                        <!--Confirm Password-->
+                        <StackPanel>
+
+                            <th_wpf:PasswordBox x:Name="confirmpassword_TXT" PasswordChanged="confirmpassword_TXT_PasswordChanged" Title="Confirm your password" HelpText="Enter the password used for the database connection"/>
+
+                            <!--Verify Confirm Password -->
+                            <Grid Margin="10,0,10,10">
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                                    <Condition Binding="{Binding PasswordVerified}" Value="false"/>
+                                                </MultiDataTrigger.Conditions>
+
+                                                <Setter Property="Visibility" Value="Visible"/>
+
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+
+                                <!--Don't Match-->
+                                <TextBlock Text="These passwords don't match. Try again?" Foreground="Red" TextWrapping="Wrap"/>
+
+                            </Grid>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Width="300" Margin="40,10,20,20">
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <!--CheckBox-->
+                            <CheckBox x:Name="usephp_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+
+                            <!--Title and Help-->
+                            <StackPanel Orientation="Horizontal">
+
+                                <!--Title-->
+                                <TextBlock Text="Use PHP for Connection" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                                <!--Help-->
+                                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                                    <Rectangle.ToolTip>
+                                        <ToolTip MaxWidth="400">
+                                            <StackPanel>
+                                                <TextBlock Text="Use PHP for Connection" FontWeight="Bold"/>
+                                                <TextBlock TextWrapping="Wrap">
+                                            Used to enabled the use of a PHP server for database connection. This allows for secure connections to remote database servers.
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ToolTip>
+                                    </Rectangle.ToolTip>
+
+
+                                    <Rectangle.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_MySQL;component/Resources/Help_01.png" />
+                                    </Rectangle.Resources>
+
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Fill" Value="#0080ff"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard FillBehavior="Stop">
+                                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                                    <ColorAnimation.EasingFunction>
+                                                                        <CubicEase EasingMode="EaseOut"/>
+                                                                    </ColorAnimation.EasingFunction>
+                                                                </ColorAnimation>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+
+                                </Rectangle>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Margin" Value="0,5"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding UsePHPServer}" Value="true">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <!--PHP Server-->
+                            <th_wpf:TextBox Text="{Binding PhpServer, Mode=TwoWay}" Title="PHP Server" Instructions="Enter the php server url" TextChanged="TXT_TextChanged">
+                                <th_wpf:TextBox.HelpText>
+                                    Enter the URL used for the PHP Server
+                                </th_wpf:TextBox.HelpText>
+                            </th_wpf:TextBox>
+
+                            <!--PHP Directory-->
+                            <th_wpf:TextBox Text="{Binding PhpDirectory, Mode=TwoWay}" Title="PHP Directory" Instructions="Enter the php directory" TextChanged="TXT_TextChanged">
+                                <th_wpf:TextBox.HelpText>
+                                    Enter the directory on the PHP server that the script files are stored in
+                                </th_wpf:TextBox.HelpText>
+                            </th_wpf:TextBox>
+
+                        </StackPanel>
+
+                    </StackPanel>
+
+                </Grid>
+
+                <!--TrakHound Cloud Server-->
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UseTrakHoundCloudServer}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <StackPanel Margin="0,5" Width="400" HorizontalAlignment="Left">
+                        <StackPanel.Resources>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Margin" Value="0,5"/>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <!--Database Name-->
+                        <th_wpf:TextBox Text="{Binding DatabaseName, Mode=TwoWay}" Title="Database Name" Instructions="Enter name of database" TextChanged="TXT_TextChanged">
+                            <th_wpf:TextBox.HelpText>
+                                Enter the name of the Database to connect to
+                            </th_wpf:TextBox.HelpText>
+                        </th_wpf:TextBox>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Grid>
+            
         </StackPanel>
-
+        
     </Grid>
 
 </UserControl>

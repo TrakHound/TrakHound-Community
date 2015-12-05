@@ -23,7 +23,8 @@ namespace TH_Configuration
             Description = new Description_Settings();
             Server = new Server_Settings();
 
-            Databases = new Database_Settings();
+            Databases_Client = new Database_Settings();
+            Databases_Server = new Database_Settings();
 
             CustomClasses = new List<object>();
         }
@@ -32,8 +33,9 @@ namespace TH_Configuration
 
         public Agent_Settings Agent;
 
-        public SQL_Settings SQL;
-        public Database_Settings Databases;
+        //public SQL_Settings SQL;
+        public Database_Settings Databases_Client;
+        public Database_Settings Databases_Server;
 
         public FileLocation_Settings FileLocations;
         public Description_Settings Description;
@@ -45,13 +47,17 @@ namespace TH_Configuration
 
         #region "Properties"
 
-        public bool Enabled { get; set; }
+        public bool ClientEnabled { get; set; }
+
+        public bool ServerEnabled { get; set; }
 
         #region "Remote Configurations"
 
         public bool Remote { get; set; }
 
-        public string UpdateId { get; set; }
+        public string ClientUpdateId { get; set; }
+
+        public string ServerUpdateId { get; set; }
 
         public string TableName { get; set; }
 
@@ -96,14 +102,6 @@ namespace TH_Configuration
         /// </summary>
         public string SettingsRootPath { get; set; }
 
-        /// <summary>
-        /// Full SQL database name that is used universally
-        /// </summary>
-        public string DataBaseName
-        {
-            get { return GetDatabaseName(SQL); }
-        }
-
         #endregion
 
         #region "Methods"
@@ -125,54 +123,6 @@ namespace TH_Configuration
         static string GetUniqueID()
         {
             return RandomString(80);
-        }
-
-        //public string GetDatabaseName(Database_Settings db)
-        //{
-        //    string Result = "";
-
-
-
-        //    return Result;
-        //}
-
-        // OBSOLETE
-        static string GetUniqueID(Configuration config)
-        {
-            return config.DataBaseName + ";" + config.SQL.Server + ";" + config.SQL.Port.ToString();
-        }
-
-        // OBSOLETE
-        public string GetDatabaseName(SQL_Settings sql)
-        {
-            string Result = "";
-
-
-
-
-
-
-            // Generate Database name if NOT specified in Device_Configuration file
-            //if (sql.Database == null)
-            //{
-            //    List<string> Items = new List<string>();
-
-            //    if (sql.Database_Prefix != null) Items.Add(sql.Database_Prefix.ToLower());
-            //    if (Description.Customer_Name != null) Items.Add(Description.Customer_Name.ToLower());
-            //    if (Description.Machine_Type != null) Items.Add(Description.Machine_Type.ToLower());
-            //    if (Description.Control_Type != null) Items.Add(Description.Control_Type.ToLower());
-            //    if (Description.Manufacturer != null) Items.Add(Description.Manufacturer.ToLower());
-            //    if (Description.Machine_ID != null) Items.Add(Description.Machine_ID.ToLower());
-
-            //    for (int x = 0; x <= Items.Count - 1; x++)
-            //    {
-            //        if (x > 0) Result += "_";
-            //        Result += Items[x];
-            //    }
-            //}
-            //else Result = sql.Database;
-
-            return Result;
         }
 
 
@@ -222,10 +172,8 @@ namespace TH_Configuration
                                 {
                                     case "agent": Result.Agent = Process_Agent(node); break;
 
-                                    // OBSOLETE 10-19-15
-                                    case "sql": Result.SQL = Process_SQL(node); break;
-
-                                    case "databases": Result.Databases = Process_Databases(node); break;
+                                    case "databases_client": Result.Databases_Client = Process_Databases(node); break;
+                                    case "databases_server": Result.Databases_Server = Process_Databases(node); break;
                                     case "description": Result.Description = Process_Description(node); break;
                                     case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
                                     case "server": Result.Server = Process_Server(node); break;
@@ -278,10 +226,8 @@ namespace TH_Configuration
                             {
                                 case "agent": Result.Agent = Process_Agent(node); break;
 
-                                // OBSOLETE 10-19-15
-                                case "sql": Result.SQL = Process_SQL(node); break;
-
-                                case "databases": Result.Databases = Process_Databases(node); break;
+                                case "databases_client": Result.Databases_Client = Process_Databases(node); break;
+                                case "databases_server": Result.Databases_Server = Process_Databases(node); break;
                                 case "description": Result.Description = Process_Description(node); break;
                                 case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
                                 case "server": Result.Server = Process_Server(node); break;

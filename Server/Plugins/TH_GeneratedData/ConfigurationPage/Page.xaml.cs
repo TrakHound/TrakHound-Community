@@ -77,6 +77,8 @@ namespace TH_GeneratedData.ConfigurationPage
 
         }
 
+        public Page_Type PageType { get; set; }
+
         bool loading = false;
 
         void ChangeSetting(string address, string name, string val)

@@ -70,37 +70,37 @@ namespace TH_ShiftTable
             {
                 if (shiftInfo != null)
                 {
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_name", shiftInfo.name, returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_id", shiftInfo.id, returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_type", shiftInfo.type, returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_date", shiftInfo.date, returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_name", shiftInfo.name, returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_id", shiftInfo.id, returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_type", shiftInfo.type, returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_date", shiftInfo.date, returnData.header.creationTime);
 
                     // Local
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime);
 
                     // UTC
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime_utc", shiftInfo.shiftStartUTC.ToString(), returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime_utc", shiftInfo.shiftEndUTC.ToString(), returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime_utc", shiftInfo.currentTimeUTC.ToString(), returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime_utc", shiftInfo.shiftStartUTC.ToString(), returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime_utc", shiftInfo.shiftEndUTC.ToString(), returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime_utc", shiftInfo.currentTimeUTC.ToString(), returnData.header.creationTime);
                 }
                 else
                 {
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_name", "", returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_id", "", returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_type", "", returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_date", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_name", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_id", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_type", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_date", "", returnData.header.creationTime);
 
                     // Local
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime", "", returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime", "", returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime", "", returnData.header.creationTime);
 
                     // UTC
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_begintime_utc", "", returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_endtime_utc", "", returnData.header.creationTime);
-                    TH_Database.Tables.Variables.Update(config.Databases, "shift_currenttime_utc", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime_utc", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime_utc", "", returnData.header.creationTime);
+                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime_utc", "", returnData.header.creationTime);
                 }
             }         
 
@@ -180,12 +180,12 @@ namespace TH_ShiftTable
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases, TableName, ColArray, "ID");  
+            Table.Create(config.Databases_Server, TableName, ColArray, "ID");  
         }
 
         void GetTableColumns()
         {
-            ShiftTableColumns = Column.Get(config.Databases, TableName);
+            ShiftTableColumns = Column.Get(config.Databases_Server, TableName);
         }
 
         void AddGeneratedEventColumns()
@@ -210,7 +210,7 @@ namespace TH_ShiftTable
 
                                 if (!ShiftTableColumns.Contains(columnName))
                                 {
-                                    Column.Add(config.Databases, TableName, new ColumnDefinition(columnName, DataType.Long));
+                                    Column.Add(config.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
                                 }
 
                                 GenEventColumns.Add(columnName);
@@ -221,7 +221,7 @@ namespace TH_ShiftTable
 
                             if (!ShiftTableColumns.Contains(columnName))
                             {
-                                Column.Add(config.Databases, TableName, new ColumnDefinition(columnName, DataType.Long));
+                                Column.Add(config.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
                             }
 
                             GenEventColumns.Add(columnName);
@@ -237,7 +237,7 @@ namespace TH_ShiftTable
 
             if (UseDatabases)
             {
-                DataTable dt = Table.Get(config.Databases, TableName);
+                DataTable dt = Table.Get(config.Databases_Server, TableName);
                 if (dt != null)
                 {
                     foreach (DataRow row in dt.Rows)
@@ -343,7 +343,7 @@ namespace TH_ShiftTable
 
             }
 
-            Row.Insert(config.Databases, TableName, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, true);
         }
 
         #endregion

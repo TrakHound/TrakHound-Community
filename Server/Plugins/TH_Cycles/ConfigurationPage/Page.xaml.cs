@@ -71,6 +71,8 @@ namespace TH_Cycles.ConfigurationPage
             if (capturelink != null) Table_Functions.UpdateTableValue(capturelink.Replace(' ', '_').ToLower(), "/Cycles/CycleIdLink", dt);
         }
 
+        public Page_Type PageType { get; set; }
+
         DataTable configurationTable;
 
 

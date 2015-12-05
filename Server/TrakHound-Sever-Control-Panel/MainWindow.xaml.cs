@@ -45,7 +45,7 @@ namespace TrakHound_Server_Control_Panel
     {
         public MainWindow()
         {
-            devicemanager = new DeviceManager();
+            devicemanager = new DeviceManager(DeviceManagerType.Server);
 
             InitializeComponent();
             DataContext = this;

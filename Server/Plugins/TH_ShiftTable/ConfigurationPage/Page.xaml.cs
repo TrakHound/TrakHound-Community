@@ -39,6 +39,8 @@ namespace TH_ShiftTable.ConfigurationPage
 
         public event SettingChanged_Handler SettingChanged;
 
+        public Page_Type PageType { get; set; }
+
         #region "Load Configuration"
 
         public void LoadConfiguration(DataTable dt)
@@ -354,6 +356,7 @@ namespace TH_ShiftTable.ConfigurationPage
         }
 
         #endregion
+
 
 
         #region "ShiftListItems"

@@ -48,7 +48,17 @@ namespace TH_MySQL.ConfigurationPage
 
             configurationTable = dt;
 
-            
+            // Load UseTrakHoundCloudServer
+            bool useTrakHoundCloudServer = false;
+            string strUseTrakHoundCloudServer = Table_Functions.GetTableValue(prefix + "UseTrakHoundCloudServer", dt);
+            if (strUseTrakHoundCloudServer != null)
+            {
+                bool.TryParse(strUseTrakHoundCloudServer, out useTrakHoundCloudServer);
+                trakhoundserver_CHK.IsChecked = useTrakHoundCloudServer;
+            }
+
+            // Load UseTrakHoundCloudServer
+            DatabaseName = Table_Functions.GetTableValue(prefix + "UseTrakHoundCloudServer", dt);
 
             // Load Database Name
             DatabaseName = Table_Functions.GetTableValue(prefix + "Database", dt);
@@ -69,20 +79,9 @@ namespace TH_MySQL.ConfigurationPage
             // Load PHP Directory
             PhpDirectory = Table_Functions.GetTableValue(prefix + "PHP_Directory", dt);
 
+            password_TXT.PasswordText = Table_Functions.GetTableValue(prefix + "Password", dt);
+            confirmpassword_TXT.PasswordText = Table_Functions.GetTableValue(prefix + "Password", dt);
 
-
-
-            //// Load Database Name
-            //databasename_TXT.Text = Table_Functions.GetTableValue(prefix + "Database", dt);
-
-            //// Load Server
-            //server_TXT.Text = Table_Functions.GetTableValue(prefix + "Server", dt);
-
-            //// Load Port
-            //port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
-
-            //// Load Username
-            //username_TXT.Text = Table_Functions.GetTableValue(prefix + "Username", dt);
 
             // Load UsePHP
             bool usePHP = false;
@@ -91,20 +90,16 @@ namespace TH_MySQL.ConfigurationPage
             {
                 bool.TryParse(strUsePHP, out usePHP);
                 usephp_CHK.IsChecked = usePHP;
-                //UsePHPServer = usePHP;
             }
-
-            //// Load PHP Server
-            //phpserver_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Server", dt);
-
-            //// Load PHP Directory
-            //phpdirectory_TXT.Text = Table_Functions.GetTableValue(prefix + "PHP_Directory", dt);
 
             Loading = false;
         }
 
         public void SaveConfiguration(DataTable dt)
         {
+            // Save TrakHound Cloud Server
+            Table_Functions.UpdateTableValue(UseTrakHoundCloudServer.ToString(), prefix + "UseTrakHoundCloudServer", dt);
+
             // Save Database Name
             Table_Functions.UpdateTableValue(DatabaseName, prefix + "Database", dt);
 
@@ -117,6 +112,11 @@ namespace TH_MySQL.ConfigurationPage
             // Save Username
             Table_Functions.UpdateTableValue(Username, prefix + "Username", dt);
 
+            // Save Password
+            if (PasswordVerified || UseTrakHoundCloudServer)
+            {
+                Table_Functions.UpdateTableValue(password_TXT.PasswordText, prefix + "Password", dt);
+            }
 
             // Save PHP Server
             Table_Functions.UpdateTableValue(PhpServer, prefix + "PHP_Server", dt);
@@ -124,34 +124,11 @@ namespace TH_MySQL.ConfigurationPage
             // Save PHP Directory
             Table_Functions.UpdateTableValue(PhpDirectory, prefix + "PHP_Directory", dt);
 
-            //// Save Database Name
-            //Table_Functions.UpdateTableValue(databasename_TXT.Text, prefix + "Database", dt);
-
-            //// Save Server
-            //Table_Functions.UpdateTableValue(server_TXT.Text, prefix + "Server", dt);
-
-            //// Save Port
-            //Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
-
-            //// Save Username
-            //Table_Functions.UpdateTableValue(username_TXT.Text, prefix + "Username", dt);
-
-            // Save Password
-            if (PasswordVerified)
-            {
-                Table_Functions.UpdateTableValue(password_TXT.PasswordText, prefix + "Password", dt);
-            }
-
             // Save UsePHP
             Table_Functions.UpdateTableValue(UsePHPServer.ToString(), prefix + "UsePHP", dt);
-
-            //// Save PHP Server
-            //Table_Functions.UpdateTableValue(phpserver_TXT.Text, prefix + "PHP_Server", dt);
-
-            //// Save PHP Directory
-            //Table_Functions.UpdateTableValue(phpdirectory_TXT.Text, prefix + "PHP_Directory", dt);
-            
         }
+
+        public Page_Type PageType { get; set; }
 
 
         private void TXT_TextChanged(object sender, TextChangedEventArgs e)
@@ -331,19 +308,7 @@ namespace TH_MySQL.ConfigurationPage
 
         #endregion
 
-
         #region "Password"
-
-
-        //private void confirmpassword_TXT_PasswordChanged_1(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void password_TXT_PasswordChanged_1(object sender, EventArgs e)
-        //{
-
-        //}
 
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
@@ -355,7 +320,6 @@ namespace TH_MySQL.ConfigurationPage
                 PasswordShort = false;
                 PasswordLong = false;
 
-                //VerifyPassword();
                 ConfirmPassword(); 
             }
         }
@@ -519,7 +483,65 @@ namespace TH_MySQL.ConfigurationPage
 
         #endregion
 
-        
+        #region "TrakHound Cloud Server"
+
+        public bool UseTrakHoundCloudServer
+        {
+            get { return (bool)GetValue(UseTrakHoundCloudServerProperty); }
+            set { SetValue(UseTrakHoundCloudServerProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseTrakHoundCloudServerProperty =
+            DependencyProperty.Register("UseTrakHoundCloudServer", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
+        private void trakhoundserver_CHK_Checked(object sender, RoutedEventArgs e)
+        {
+            UseTrakHoundCloudServer = true;
+
+            Server = "localhost";
+            Port = null;
+
+            if (PageType == Page_Type.Client)
+            {
+                Username = "feenuxco_reader";
+                password_TXT.PasswordText = "#reader";
+                confirmpassword_TXT.PasswordText = "#reader";
+            }
+            else
+            {
+                Username = "feenuxco_th";
+                password_TXT.PasswordText = "#mtconnect";
+                confirmpassword_TXT.PasswordText = "#mtconnect";
+            }
+
+            UsePHPServer = true;
+            PhpServer = "www.feenux.com";
+            PhpDirectory = "php";
+
+            ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
+
+        }
+
+        private void trakhoundserver_CHK_Unchecked(object sender, RoutedEventArgs e)
+        {
+            UseTrakHoundCloudServer = false;
+
+            Server = null;
+            Port = null;
+
+            Username = null;
+            password_TXT.PasswordText = null;
+            confirmpassword_TXT.PasswordText = null;
+
+            UsePHPServer = false;
+            PhpServer = null;
+            PhpDirectory = null;
+
+            ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
+        }
+
+        #endregion
 
     }
 }

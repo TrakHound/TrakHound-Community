@@ -31,6 +31,8 @@ namespace TH_DeviceManager.Controls
             DataContext = this;
         }
 
+        public DeviceManager devicemanager;
+
         public object Parent { get; set; }
 
         const System.Windows.Threading.DispatcherPriority contextidle = System.Windows.Threading.DispatcherPriority.ContextIdle;
@@ -51,8 +53,13 @@ namespace TH_DeviceManager.Controls
         {
             if (config != null)
             {
-                DeviceEnabled = config.Enabled;
-                enabled_CHK.IsChecked = config.Enabled;
+                if (devicemanager != null)
+                {
+                    if (devicemanager.ManagerType == DeviceManagerType.Client) DeviceEnabled = config.ClientEnabled;
+                    else if (devicemanager.ManagerType == DeviceManagerType.Server) DeviceEnabled = config.ServerEnabled;
+                }
+                //DeviceEnabled = config.Enabled;
+                enabled_CHK.IsChecked = DeviceEnabled;
 
                 //Shared = config.Shared;
 

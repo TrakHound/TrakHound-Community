@@ -134,7 +134,7 @@ namespace TH_TableManager
                 {
 
                     // Initialize Database Configurations
-                    Global.Initialize(device.Databases);
+                    Global.Initialize(device.Databases_Client);
 
                     Controls.DeviceButton db = new DeviceButton();
                     db.Description = device.Description.Description;
@@ -319,7 +319,7 @@ namespace TH_TableManager
         {
             Configuration config = (Configuration)o;
 
-            string[] tableNames = TH_Database.Table.List(config.Databases);
+            string[] tableNames = TH_Database.Table.List(config.Databases_Client);
 
             this.Dispatcher.BeginInvoke(new Action<string[]>(LoadTableList_Finished), Priority, new object[] { tableNames });
         }
@@ -499,9 +499,9 @@ namespace TH_TableManager
         {
             LoadTableParameters ltp = (LoadTableParameters)loadTableParameters;
 
-            Int64 rowCount = TH_Database.Table.GetRowCount(ltp.config.Databases, ltp.tablename);
+            Int64 rowCount = TH_Database.Table.GetRowCount(ltp.config.Databases_Client, ltp.tablename);
 
-            Int64 tablesize = TH_Database.Table.GetSize(ltp.config.Databases, ltp.tablename);
+            Int64 tablesize = TH_Database.Table.GetSize(ltp.config.Databases_Client, ltp.tablename);
 
             this.Dispatcher.BeginInvoke(new Action<Int64, Int64>(LoadInfo_Finished), Priority, new object[] { rowCount, tablesize });
         }
@@ -752,7 +752,7 @@ namespace TH_TableManager
             }
                 
             // Get MySQL table
-            DataTable dt = TH_Database.Table.Get(ltp.config.Databases, ltp.tablename, "LIMIT " + limit.ToString() + offset);
+            DataTable dt = TH_Database.Table.Get(ltp.config.Databases_Client, ltp.tablename, "LIMIT " + limit.ToString() + offset);
 
             this.Dispatcher.BeginInvoke(new Action<DataTable>(LoadTable_Finished), Priority, new object[] { dt });
         }
@@ -816,7 +816,7 @@ namespace TH_TableManager
             {
                 string[] tablenames = SelectedTables.Select(x => x.Text).Distinct().ToArray();
 
-                TH_Database.Table.Drop(selectedDevice.Databases, tablenames);
+                TH_Database.Table.Drop(selectedDevice.Databases_Client, tablenames);
 
                 LoadTableList(selectedDevice);
             }

@@ -290,7 +290,7 @@ namespace TH_InstanceTable
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases, TableName, ColArray, null);  
+            Table.Create(config.Databases_Server, TableName, ColArray, null);  
 
         }
 
@@ -441,7 +441,7 @@ namespace TH_InstanceTable
 
                     countLeft -= interval;
 
-                    Row.Insert(config.Databases, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), false);
+                    Row.Insert(config.Databases_Server, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), false);
 
                     //ThreadInfo threadInfo = new ThreadInfo();
                     //threadInfo.tableName = TableName;

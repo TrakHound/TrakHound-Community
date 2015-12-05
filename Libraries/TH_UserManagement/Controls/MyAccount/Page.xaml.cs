@@ -37,7 +37,7 @@ namespace TH_UserManagement.MyAccount
 
         public string PageName { get { return "Profile"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/About_01.png")); } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/About_01.png")); } }
 
 
         public ImageSource ProfileImage

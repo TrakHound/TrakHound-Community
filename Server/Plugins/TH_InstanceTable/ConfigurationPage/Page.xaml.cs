@@ -118,7 +118,7 @@ namespace TH_InstanceTable.ConfigurationPage
 
         }
 
-
+        public Page_Type PageType { get; set; }
 
 
         ObservableCollection<object> exampletableitems;

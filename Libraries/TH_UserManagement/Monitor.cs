@@ -89,14 +89,14 @@ namespace TH_UserManagement
                         Configuration config = Configuration.ReadConfigFile(xml);
                         if (config != null)
                         {
-                            if (config.UpdateId != CurrentConfiguration.UpdateId)
-                            {
+                            //if (config.UpdateId != CurrentConfiguration.UpdateId)
+                            //{
                                 config.Index = CurrentConfiguration.Index;
 
                                 monitor_TIMER.Enabled = false;
 
                                 if (ConfigurationChanged != null) ConfigurationChanged(config);
-                            }
+                            //}
                         }
                     }
                 }

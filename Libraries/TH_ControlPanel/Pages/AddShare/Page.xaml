@@ -907,8 +907,45 @@
 
                     </StackPanel>
 
-                    <th_wpf:Button_01 AlternateStyle="True" Text="Share" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked" Height="40" Width="100" HorizontalAlignment="Right" Margin="20"/>
+                    <Grid HorizontalAlignment="Right" Margin="20">
 
+                        <!--Share Button-->
+                        <th_wpf:Button_01 AlternateStyle="True" Text="Share" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked" Height="40" Width="100">
+                            <th_wpf:Button_01.Style>
+                                <Style TargetType="th_wpf:Button_01">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button_01.Style>
+                        </th_wpf:Button_01>
+
+                        <!--Sharing in Progress-->
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <!--Loading Animation-->
+                            <loadinganimation:Wheel Height="40" Width="40" Foreground="#0080ff"/>
+                            
+                            <!--Text-->
+                            <TextBlock Text="Sharing.." Foreground="#666666" FontSize="12pt" Margin="10,0,0,0" VerticalAlignment="Center"/>
+
+                        </StackPanel>
+                        
+                    </Grid>
+                                   
                 </StackPanel>
 
                 <!--Image-->

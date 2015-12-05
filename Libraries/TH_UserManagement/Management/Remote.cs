@@ -174,7 +174,7 @@ namespace TH_UserManagement.Management
 
 
                 string responseString = HTTP.SendData(url, values);
-                if (responseString.ToLower().Trim() == "true") result = true;
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
 
@@ -232,7 +232,7 @@ namespace TH_UserManagement.Management
 
                 string responseString = HTTP.SendData(url, values);
 
-                if (responseString.ToLower().Trim() == "true") result = true;
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -252,7 +252,7 @@ namespace TH_UserManagement.Management
 
                 string responseString = HTTP.SendData(url, values);
 
-                if (responseString.ToLower().Trim() == "true") result = true;
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
 
@@ -278,7 +278,7 @@ namespace TH_UserManagement.Management
 
                     string responseString = HTTP.SendData(url, values);
 
-                    if (responseString.Trim() != "")
+                    if (responseString != null) if (responseString.Trim() != "")
                     {
                         string hash = responseString.Trim();
 
@@ -359,7 +359,7 @@ namespace TH_UserManagement.Management
 
                         string responseString = HTTP.SendData(url, values);
 
-                        if (responseString.ToLower().Trim() == "true") result = true;
+                        if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
                     }
 
                     TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "_id");
@@ -560,7 +560,7 @@ namespace TH_UserManagement.Management
 
                     string responseString = HTTP.SendData(url, postValues);
 
-                    if (responseString.ToLower().Trim() == "true") result = true;
+                    if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 }
 
@@ -591,7 +591,7 @@ namespace TH_UserManagement.Management
 
                     string responseString = HTTP.SendData(url, values);
 
-                    if (responseString.ToLower().Trim() == "true") result = true;
+                    if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 }
 
@@ -621,7 +621,7 @@ namespace TH_UserManagement.Management
 
                     string responseString = HTTP.SendData(url, values);
 
-                    if (responseString.ToLower().Trim() == "true") result = true;
+                    if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 }
 
@@ -640,8 +640,7 @@ namespace TH_UserManagement.Management
 
 
                 string responseString = HTTP.SendData(url, values);
-
-                if (responseString.ToLower().Trim() == "true") result = true;
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -681,7 +680,7 @@ namespace TH_UserManagement.Management
 
                 string responseString = HTTP.SendData(url, values);
 
-                if (responseString.ToLower().Trim() == "true") result = true;
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -723,7 +722,7 @@ namespace TH_UserManagement.Management
 
                 string responseString = HTTP.SendData(url, values);
 
-                if (responseString.ToLower().Trim() == "true") result = true;
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }
@@ -754,7 +753,7 @@ namespace TH_UserManagement.Management
 
                 string responseString = HTTP.SendData(url, values);
 
-                if (responseString.ToLower().Trim() == "true") result = true;
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
                 return result;
             }

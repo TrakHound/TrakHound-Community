@@ -283,7 +283,7 @@ namespace TH_OEE
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases, TableNames.OEE, ColArray, "SHIFT_ID");  
+            Table.Create(config.Databases_Server, TableNames.OEE, ColArray, "SHIFT_ID");  
 
 
             //List<string> columns = new List<string>();
@@ -350,7 +350,7 @@ namespace TH_OEE
             }
 
 
-            Row.Insert(config.Databases, TableNames.OEE, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, TableNames.OEE, columns.ToArray(), rowValues, true);
 
 
             //Global.Row_Insert(config.SQL, TableNames.OEE, columns.ToArray(), rowValues);
@@ -488,7 +488,7 @@ namespace TH_OEE
         {
             List<CycleInfo> Result = new List<CycleInfo>();
 
-            DataTable dt = Table.Get(config.Databases, TableNames.Cycles, "WHERE Date='" + date.ToString() + "'");
+            DataTable dt = Table.Get(config.Databases_Server, TableNames.Cycles, "WHERE Date='" + date.ToString() + "'");
 
             if (dt != null)
             {

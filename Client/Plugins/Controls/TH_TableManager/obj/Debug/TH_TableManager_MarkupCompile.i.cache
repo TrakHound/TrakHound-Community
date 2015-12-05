@@ -16,5 +16,5 @@ DEBUG;TRACE
 21669476569
 Controls\DeviceButton.xaml;TableManager.xaml;Controls\Button.xaml;
 
-True
+False
 

@@ -24,7 +24,7 @@ namespace TH_Device_Server
 
             if (UseDatabases)
             {
-                foreach (Database_Configuration db_config in config.Databases.Databases)
+                foreach (Database_Configuration db_config in config.Databases_Server.Databases)
                 {
                     if (!TH_Database.Global.Ping(db_config)) { result = false; break; }
                 }

@@ -829,7 +829,7 @@ namespace TH_GeneratedData
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases, SnapshotsTableName, ColArray, "NAME");
+            Table.Create(config.Databases_Server, SnapshotsTableName, ColArray, "NAME");
         }
 
         void IntializeRows()
@@ -856,7 +856,7 @@ namespace TH_GeneratedData
 
                 }
 
-                Row.Insert(config.Databases, SnapshotsTableName, Columns.ToArray(), rowValues, true);
+                Row.Insert(config.Databases_Server, SnapshotsTableName, Columns.ToArray(), rowValues, true);
 
             }
 
@@ -887,7 +887,7 @@ namespace TH_GeneratedData
                 if (ssi.value != ssi.previous_value) rowValues.Add(values);
             }
 
-            Row.Insert(config.Databases, SnapshotsTableName, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, SnapshotsTableName, columns.ToArray(), rowValues, true);
 
         }
 
@@ -910,7 +910,7 @@ namespace TH_GeneratedData
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases, TablePrefix + e.Name, ColArray, "TIMESTAMP");
+            Table.Create(config.Databases_Server, TablePrefix + e.Name, ColArray, "TIMESTAMP");
         }
 
         void InsertGeneratedEventItems(List<GeneratedEventItem> generatedEventItems)
@@ -959,7 +959,7 @@ namespace TH_GeneratedData
 
                     }
 
-                    Row.Insert(config.Databases, TablePrefix + eventName, columns.ToArray(), rowValues, true);
+                    Row.Insert(config.Databases_Server, TablePrefix + eventName, columns.ToArray(), rowValues, true);
 
                 }
 
@@ -1094,7 +1094,7 @@ namespace TH_GeneratedData
                     // Get Variables Table from MySQL (if any snapshots are set to "Variable")
                     if (gdc.snapshots.Items.FindAll(x => x.type.ToLower() == "variable").Count > 0)
                     {
-                        variables_DT = Table.Get(config.Databases, TableNames.Variables);
+                        variables_DT = Table.Get(config.Databases_Server, TableNames.Variables);
                     }
 
 

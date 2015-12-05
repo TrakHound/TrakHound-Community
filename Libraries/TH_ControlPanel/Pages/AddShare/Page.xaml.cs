@@ -78,6 +78,16 @@ namespace TH_DeviceManager.Pages.AddShare
             }
         }
 
+        public bool Loading
+        {
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender.GetType() == typeof(Rectangle))
@@ -199,34 +209,56 @@ namespace TH_DeviceManager.Pages.AddShare
             {
                 item.id = configuration.UniqueId;
 
+                Share(item);    
+            }
+        }
+        
+
+        Thread share_THREAD;
+
+        public void Share(Shared.SharedListItem item)
+        {
+            Loading = true;
+
+            if (share_THREAD != null) share_THREAD.Abort();
+
+            share_THREAD = new Thread(new ParameterizedThreadStart(Share_Worker));
+            share_THREAD.Start(item);
+        }
+
+        void Share_Worker(object o)
+        {
+            bool success = false;
+
+            if (o != null)
+            {
+                Shared.SharedListItem item = (Shared.SharedListItem)o;
+
                 string tablename = "shared_" + String_Functions.RandomString(20);
 
-                // Save Shared
-                Table_Functions.UpdateTableValue("True", "/Shared", configurationtable);
+            // Save Shared
+            Table_Functions.UpdateTableValue("True", "/Shared", configurationtable);
 
-                // Save Shared Tablename
-                Table_Functions.UpdateTableValue(tablename, "/SharedTableName", configurationtable);
+            // Save Shared Tablename
+            Table_Functions.UpdateTableValue(tablename, "/SharedTableName", configurationtable);
 
-                if (Shared.CreateSharedConfiguration(currentuser, tablename, configurationtable, item))
-                {
+            success = Shared.CreateSharedConfiguration(currentuser, tablename, configurationtable, item);
 
-                }
-                else
-                {
-
-                }
-
-                if (devicemanager != null)
-                {
-                    devicemanager.ConfigurationTable = configurationtable;
-
-                    devicemanager.SaveConfiguration(configurationtable);
-                }
-                    
-                    
-                    
             }
 
+            this.Dispatcher.BeginInvoke(new Action<bool>(Share_Finished), priority, new object[] { success });
+        }
+
+        void Share_Finished(bool success)
+        {
+            if (devicemanager != null)
+            {
+                devicemanager.ConfigurationTable = configurationtable;
+
+                devicemanager.Save(configurationtable);
+            }
+
+            Loading = false;
         }
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;

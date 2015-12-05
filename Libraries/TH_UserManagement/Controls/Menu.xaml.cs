@@ -81,6 +81,12 @@ namespace TH_UserManagement
                     if (Shown) ShowMenu();
                     else HideMenu();
 
+                    if (!LoggedIn)
+                    {
+                        username_TXT.Focus();
+                        username_TXT.Select(0, 0);
+                    }
+
                     if (ShownChanged != null) ShownChanged(value);
                 }
             }

@@ -217,7 +217,7 @@ namespace TH_StatusData
         {
             bool result = false;
 
-            foreach (Database_Configuration db_config in config.Databases.Databases)
+            foreach (Database_Configuration db_config in config.Databases_Client.Databases)
             {
                 if (TH_Database.Global.Ping(db_config)) { result = true; break; }
             }
@@ -230,7 +230,7 @@ namespace TH_StatusData
         {
             Snapshot_Return result = new Snapshot_Return();
 
-            DataTable dt = Table.Get(config.Databases, TableNames.SnapShots);
+            DataTable dt = Table.Get(config.Databases_Client, TableNames.SnapShots);
             if (dt != null)
             {
                 result.shiftData.shiftName = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
@@ -258,7 +258,7 @@ namespace TH_StatusData
 
             if (shiftData.shiftDate != null && shiftData.shiftName != null)
             {
-                DataTable shifts_DT = Table.Get(config.Databases, TableNames.Shifts, "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
+                DataTable shifts_DT = Table.Get(config.Databases_Client, TableNames.Shifts, "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
                 if (shifts_DT != null)
                 {
                     DataEvent_Data de_d = new DataEvent_Data();
@@ -314,7 +314,7 @@ namespace TH_StatusData
                 string tableName = TableNames.Gen_Events_TablePrefix + "production_status";
 
 
-                DataTable dt = Table.Get(config.Databases, tableName, filter);
+                DataTable dt = Table.Get(config.Databases_Client, tableName, filter);
                 if (dt != null)
                 {
                     //List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
@@ -356,38 +356,13 @@ namespace TH_StatusData
                 {
                     string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_'));
 
-                    DataTable dt = Table.Get(config.Databases, TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+                    DataTable dt = Table.Get(config.Databases_Client, TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
                         DataEvent_Data de_d = new DataEvent_Data();
                         de_d.id = "StatusData_OEE";
                         de_d.data01 = config;
                         de_d.data02 = dt;
-
-                        //List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
-
-                        //foreach (DataRow row in dt.Rows)
-                        //{
-                        //    Dictionary<string, string> rowdata = new Dictionary<string, string>();
-
-                        //    foreach (DataColumn column in row.Table.Columns)
-                        //    {
-                        //        string key = column.ColumnName;
-                        //        string value = row[column].ToString();
-
-                        //        rowdata.Add(key, value);
-                        //    }
-
-                        //    string shiftname = "";
-                        //    if (row.Table.Columns.Contains("shift_id")) shiftname = row["shift_id"].ToString();
-
-                        //    data.Add(rowdata);
-                        //}
-
-                        //DataEvent_Data de_d = new DataEvent_Data();
-                        //de_d.id = "DeviceStatus_OEE";
-                        //de_d.data01 = config;
-                        //de_d.data02 = data;
 
                         result = de_d;
                     }

@@ -118,6 +118,8 @@ namespace TH_DeviceManager.Pages.Agent
             Table_Functions.UpdateTableValue(SampleHeartbeat.ToString(), prefix + "Sample_Heartbeat", dt);
         }
 
+        public Page_Type PageType { get; set; }
+
         #endregion
 
 

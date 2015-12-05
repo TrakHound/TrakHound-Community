@@ -29,7 +29,7 @@ namespace TH_Device_Server.TableManagement
                 new ColumnDefinition("Seconds", DataType.Long)
             };
 
-            Table.Create(lSettings.Databases, TableName, Columns, "Agent_Instance_ID");
+            Table.Create(lSettings.Databases_Server, TableName, Columns, "Agent_Instance_ID");
 
             //Table.Create(lSettings.Databases, TableName,
             //    new object[] 
@@ -49,7 +49,7 @@ namespace TH_Device_Server.TableManagement
 
             List<Tuple<string, object>> Changed = new List<Tuple<string, object>>();
 
-            DataRow PreviousRow = Row.Get(lSettings.Databases, TableName, "Agent_Instance_ID", AgentInstanceID.ToString());
+            DataRow PreviousRow = Row.Get(lSettings.Databases_Server, TableName, "Agent_Instance_ID", AgentInstanceID.ToString());
 
             DateTime PreviousFirst = DateTime.MinValue;
             DateTime PreviousLast = DateTime.MinValue;
@@ -100,7 +100,7 @@ namespace TH_Device_Server.TableManagement
             object[] Values = Vals.ToArray();
 
             if (Columns.Length > 1 && Values.Length > 1)
-                Row.Insert(lSettings.Databases, TableName, Columns, Values, true);
+                Row.Insert(lSettings.Databases_Server, TableName, Columns, Values, true);
 
         }
 

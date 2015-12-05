@@ -243,7 +243,7 @@ namespace TH_Device_Server
         {
             Int64 Result = -1;
 
-            Variables.VariableData vd = Variables.Get(configuration.Databases, "last_sequence_sampled");
+            Variables.VariableData vd = Variables.Get(configuration.Databases_Server, "last_sequence_sampled");
             if (vd != null)
             {
                 Int64.TryParse(vd.value, out Result);
@@ -256,7 +256,7 @@ namespace TH_Device_Server
         {
             Int64 Result = -1;
 
-            Variables.VariableData vd = Variables.Get(configuration.Databases, "agent_instanceid");
+            Variables.VariableData vd = Variables.Get(configuration.Databases_Server, "agent_instanceid");
             if (vd != null)
             {
                 Int64.TryParse(vd.value, out Result);
@@ -281,7 +281,7 @@ namespace TH_Device_Server
                 // Check/Update Agent Instance Id -------------------
                 Int64 lastInstanceId = agentInstanceId;
                 agentInstanceId = header.instanceId;
-                Variables.Update(configuration.Databases, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime);
+                Variables.Update(configuration.Databases_Server, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime);
                 // --------------------------------------------------
 
                 // Get Sequence Number to use -----------------------
@@ -320,7 +320,7 @@ namespace TH_Device_Server
                 // Update Last Sequence Sampled for the subsequent samples
                 // lastSequenceSampled_temp = Last;
                 lastSequenceSampled = Last;
-                Variables.Update(configuration.Databases, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
+                Variables.Update(configuration.Databases_Server, "Last_Sequence_Sampled", Last.ToString(), header.creationTime);
 
 
                 //if (configuration.Agent.Simulation_Sample_Path != null)

@@ -62,7 +62,7 @@ namespace TrakHound_Client
 
             Splash_Initialize();
 
-            devicemanager = new DeviceManager();
+            devicemanager = new DeviceManager(DeviceManagerType.Client);
 
             InitializeComponent();
             DataContext = this;
@@ -1835,12 +1835,12 @@ namespace TrakHound_Client
 
                     //if (config.Remote) { StartMonitor(config); }
 
-                    if (config.Enabled)
+                    if (config.ClientEnabled)
                     {
                         Devices.Add(config);
 
                         // Initialize Database Configurations
-                        Global.Initialize(config.Databases);
+                        Global.Initialize(config.Databases_Client);
                     }
 
                     index += 1;
@@ -2474,7 +2474,7 @@ namespace TrakHound_Client
                             Configuration match = devs.Find(x => x.UniqueId == userConfig.UniqueId);
                             if (match != null)
                             {
-                                bool update = userConfig.UpdateId == match.UpdateId;
+                                bool update = userConfig.ClientUpdateId == match.ClientUpdateId;
                                 if (!update)
                                 {
                                     // Configuration has been updated / changed
@@ -2482,7 +2482,7 @@ namespace TrakHound_Client
                                     break;
                                 }
                             }
-                            else if (userConfig.Enabled)
+                            else if (userConfig.ClientEnabled)
                             {
                                 // Configuration has been added or removed
                                 changed = true;

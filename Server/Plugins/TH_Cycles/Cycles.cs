@@ -194,7 +194,7 @@ namespace TH_Cycles
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases, TableNames.Cycles, ColArray, "Shift_Id, Cycle_Id");  
+            Table.Create(config.Databases_Server, TableNames.Cycles, ColArray, "Shift_Id, Cycle_Id");  
 
         }
 
@@ -232,7 +232,7 @@ namespace TH_Cycles
                 rowValues.Add(values);
             }
 
-            Row.Insert(config.Databases, TableNames.Cycles, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, TableNames.Cycles, columns.ToArray(), rowValues, true);
 
         }
 
@@ -249,7 +249,7 @@ namespace TH_Cycles
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases, TableNames.Cycles_Setup, ColArray, "Cycle_Id");  
+            Table.Create(config.Databases_Server, TableNames.Cycles_Setup, ColArray, "Cycle_Id");  
         }
 
         void DEBUG_AddSetupRows()
@@ -281,7 +281,7 @@ namespace TH_Cycles
             values.Add(1);
             rowValues.Add(values);
 
-            Row.Insert(config.Databases, TableNames.Cycles_Setup, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, TableNames.Cycles_Setup, columns.ToArray(), rowValues, true);
 
         }
 
@@ -322,7 +322,7 @@ namespace TH_Cycles
         {
             // Get Setup Info
             List<CycleSetupRowInfo> SetupInfos = new List<CycleSetupRowInfo>();
-            DataTable cycle_setup = Table.Get(config.Databases, TableNames.Cycles_Setup);
+            DataTable cycle_setup = Table.Get(config.Databases_Server, TableNames.Cycles_Setup);
             if (cycle_setup != null)
             {
                 foreach (DataRow row in cycle_setup.Rows)

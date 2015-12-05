@@ -67,6 +67,8 @@ namespace TH_OEE.ConfigurationPage
             configurationTable = dt;
         }
 
+        public Page_Type PageType { get; set; }
+
         DataTable configurationTable;
 
 

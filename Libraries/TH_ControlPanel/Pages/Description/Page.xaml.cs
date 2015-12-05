@@ -188,6 +188,8 @@ namespace TH_DeviceManager.Pages.Description
             //Table_Functions.UpdateTableValue(deviceImageFileName, fprefix + "Image_Path", dt);
         }
 
+        public Page_Type PageType { get; set; }
+
         #endregion
 
 

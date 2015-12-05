@@ -23,16 +23,14 @@ namespace TH_PlugIns_Server
 
         void SaveConfiguration(DataTable dt);
 
-        //string PageName { get; }
+        Page_Type PageType { get; set; }
 
-        //ImageSource Image { get; }
+    }
 
-        //event SettingChanged_Handler SettingChanged;
-
-        //void LoadConfiguration(DataTable dt);
-
-        //void SaveConfiguration(DataTable dt);
-
+    public enum Page_Type
+    {
+        Client = 0,
+        Server = 1
     }
 
     public delegate void SaveRequest_Handler();
