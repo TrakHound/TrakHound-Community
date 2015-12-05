@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using WinInterop = System.Windows.Interop;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
-
+using System.Windows.Media.Animation;
 using System.Threading;
 
 using System.ComponentModel.Composition;
@@ -508,6 +508,23 @@ namespace TrakHound_Server_Control_Panel
 
 
 
+        public object TempPage
+        {
+            get { return (object)GetValue(TempPageProperty); }
+            set 
+            {
+                SetValue(TempPageProperty, value);
+
+                //if (TempPage != null) ShowTempPage();
+                //else HideTempPage();
+            }
+        }
+
+        public static readonly DependencyProperty TempPageProperty =
+            DependencyProperty.Register("TempPage", typeof(object), typeof(MainWindow), new PropertyMetadata(null));
+
+        
+
         #region "User Login"
 
         private void LoginMenu_CurrentUserChanged(UserConfiguration userConfig)
@@ -632,14 +649,53 @@ namespace TrakHound_Server_Control_Panel
         void LoginMenu_MyAccountClicked()
         {
 
-            TH_UserManagement.MyAccount.Page page = new TH_UserManagement.MyAccount.Page();
-            page.ProfileImage = LoginMenu.ProfileImage;
-            page.LoadProfile(CurrentUser);
+            TH_UserManagement.Create.Page page = new TH_UserManagement.Create.Page();
+            page.LoadUserConfiguration(CurrentUser, userDatabaseSettings);
 
-            CurrentPage = page;
+            TempPage = page;
+
+
+            //TH_UserManagement.MyAccount.Page page = new TH_UserManagement.MyAccount.Page();
+            //page.ProfileImage = LoginMenu.ProfileImage;
+            //page.LoadProfile(CurrentUser);
+
+            //CurrentPage = page;
 
         }
 
+        private void Back_Clicked(Button_04 bt)
+        {
+            TempPage = null;
+        }
+
+        #region "TempPage"
+
+        //private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    TempPage = null;
+        //}
+
+        //void ShowTempPage()
+        //{
+        //    DoubleAnimation width = new DoubleAnimation();
+        //    width.From = 0;
+        //    width.To = this.RenderSize.Width;
+        //    width.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+
+        //    temppage_GRID.BeginAnimation(WidthProperty, width);
+        //}
+
+        //void HideTempPage()
+        //{
+        //    DoubleAnimation width = new DoubleAnimation();
+        //    width.From = temppage_GRID.RenderSize.Width;
+        //    width.To = 0;
+        //    width.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+
+        //    temppage_GRID.BeginAnimation(WidthProperty, width);
+        //}
+
+        #endregion
 
     }
 

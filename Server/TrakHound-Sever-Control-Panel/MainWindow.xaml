@@ -32,7 +32,7 @@
         
         x:Name="Main_Window" WindowState="Maximized" 
         >
-    
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -191,9 +191,9 @@
 
                     <!--Title Bar-->
                     <Border DockPanel.Dock="Top" >
-                        
+
                         <Border MouseDown="TitleBar_MouseDown" Background="#FFEEEEEE" Height="28" >
-                            
+
                             <DockPanel x:Name="TitleBar">
 
                                 <!--Close Button-->
@@ -553,7 +553,7 @@
                                                             </BeginStoryboard>
                                                         </DataTrigger.ExitActions>
                                                     </DataTrigger>
-                                                
+
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
@@ -693,7 +693,7 @@
                                 <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0" Foreground="#FF323232"/>
 
                             </DockPanel>
-                            
+
                         </Border>
 
                     </Border>
@@ -702,10 +702,10 @@
                     <Grid Height="auto" Width="auto" Background="#eee">
 
                         <DockPanel x:Name="Root_DOCK">
-                            
+
                             <!--Bottom Panel-->
                             <Grid DockPanel.Dock="Bottom" Height="25">
-                                
+
                                 <Grid HorizontalAlignment="Right">
 
                                     <!--Resize Grip Lines-->
@@ -748,13 +748,69 @@
                                     <Rectangle x:Name="Corner_BottomRight_RECT" Fill="#00000000" MouseEnter="Rectangle_BottomRight_MouseEnter"  MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
 
                                 </Grid>
-                                
+
                             </Grid>
 
                             <Border CornerRadius="0" Background="#eee">
-                                
-                                <ContentControl Content="{Binding CurrentPage}"/>
-                                
+
+                                <Grid>
+
+                                    <ContentControl Content="{Binding CurrentPage}"/>
+
+                                    <!--Temp Page-->
+                                    <Grid Background="#eee">
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding TempPage}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            
+                                            <!--Back to Device Manager-->
+                                            <th_wpf:Button_04 Image="Resources/Back_01.png" Text="Back to Device Manager" Clicked="Back_Clicked"/>
+                                            
+                                        </StackPanel>
+
+                                        <Grid Grid.Row="1" Margin="40,0,0,0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Margin="0,20">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Text="{Binding TempPage.PageName}" Foreground="#333" FontSize="30" Margin="0,10"/>
+
+                                                <Rectangle Grid.Row="1" Fill="#aaa" Height="0.5" Margin="0,5"/>
+
+                                            </Grid>
+
+                                            <!--<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="40,40,0,0">-->
+
+                                                <ContentControl Margin="0,40,0,0" Grid.Row="1" Content="{Binding TempPage}"/>
+
+                                            <!--</ScrollViewer>-->
+
+                                        </Grid>
+
+                                    </Grid>
+
+                                </Grid>
+
                             </Border>
 
                         </DockPanel>

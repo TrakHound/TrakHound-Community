@@ -9,65 +9,12 @@
              >
 
     <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Background="#00000000" Cursor="Hand">
-
-        <!--<Border.Style>
-            <Style TargetType="Border">
-                <Setter Property="Background" Value="#00000000"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Trigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#10000000">
-                                        <ColorAnimation.EasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
-                                        </ColorAnimation.EasingFunction>
-                                    </ColorAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </Trigger.EnterActions>
-                        <Trigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                        <ColorAnimation.EasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
-                                        </ColorAnimation.EasingFunction>
-                                    </ColorAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </Trigger.ExitActions>
-                    </Trigger>
-                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#33ffffff">
-                                        <ColorAnimation.EasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
-                                        </ColorAnimation.EasingFunction>
-                                    </ColorAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                        <ColorAnimation.EasingFunction>
-                                            <CubicEase EasingMode="EaseOut"/>
-                                        </ColorAnimation.EasingFunction>
-                                    </ColorAnimation>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>
-                    </DataTrigger>
-
-                </Style.Triggers>
-            </Style>
-        </Border.Style>-->
-
+       
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
             <!--Image-->
             <Grid Margin="2,0" >
@@ -148,7 +95,7 @@
             </Grid>
 
             <!--Text Label-->
-            <!--<TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="10" Margin="5,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="10pt" Margin="5,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="#0080ff"/>
@@ -207,7 +154,7 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
-            </TextBlock>-->
+            </TextBlock>
 
         </Grid>
 

@@ -39,6 +39,10 @@ namespace TrakHound_Server_Core
 
                 Console.Write(" Logged in Successfully" + Environment.NewLine);
             }
+            else
+            {
+                Console.WriteLine("Login failed : Login through Control Panel and set 'Remember Me'");
+            }
         }
 
         void ReadUserManagementSettings()

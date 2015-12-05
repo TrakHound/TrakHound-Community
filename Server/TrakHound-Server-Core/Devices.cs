@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Threading;
 using System.IO;
 using System.Xml;
 
@@ -43,21 +43,23 @@ namespace TrakHound_Server_Core
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in configurations)
                 {
-                    if (config.Remote) StartMonitor(config);
+                    //if (config.Remote) StartMonitor(config);
 
-                    if (config.Enabled)
+                    if (config.ServerEnabled)
                     {
                         config.Index = Devices.Count;
 
                         Device_Server server = new Device_Server(config);
 
                         // Initialize Database Configurations
-                        Global.Initialize(server.configuration.Databases);
+                        Global.Initialize(server.configuration.Databases_Server);
 
                         Devices.Add(server);
-                    }
+                    }  
                 }
             }
+
+            DevicesMonitor_Initialize();
 
         }
 
@@ -96,12 +98,12 @@ namespace TrakHound_Server_Core
                 else c.Index = Devices.Count;
                 
 
-                if (c.Enabled)
+                if (c.ServerEnabled)
                 {
                     Device_Server device = new Device_Server(c);
 
                     // Initialize Database Configurations
-                    Global.Initialize(device.configuration.Databases);
+                    Global.Initialize(device.configuration.Databases_Server);
 
                     device.Start();
 
@@ -113,6 +115,84 @@ namespace TrakHound_Server_Core
 
             }
         }
+
+
+        #region "Devices Monitor"
+
+        System.Timers.Timer devicesMonitor_TIMER;
+
+        void DevicesMonitor_Initialize()
+        {
+            if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+
+            devicesMonitor_TIMER = new System.Timers.Timer();
+            devicesMonitor_TIMER.Interval = 5000;
+            devicesMonitor_TIMER.Elapsed += devicesMonitor_TIMER_Elapsed;
+            devicesMonitor_TIMER.Enabled = true;
+        }
+
+        void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            DevicesMonitor_Start();
+        }
+
+        Thread devicesMonitor_THREAD;
+
+        void DevicesMonitor_Start()
+        {
+            if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
+
+            devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
+            devicesMonitor_THREAD.Start(Devices.ToList());
+        }
+
+        void DevicesMonitor_Worker(object o)
+        {
+            bool changed = false;
+
+            if (o != null)
+            {
+                List<Device_Server> devs = (List<Device_Server>)o;
+
+                if (currentuser != null)
+                {
+                    List<Configuration> userConfigs = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                    if (userConfigs != null)
+                    {
+                        foreach (Configuration userConfig in userConfigs)
+                        {
+                            Device_Server match = devs.Find(x => x.configuration.UniqueId == userConfig.UniqueId);
+                            if (match != null)
+                            {
+                                bool update = userConfig.ServerUpdateId == match.configuration.ServerUpdateId;
+                                if (!update)
+                                {
+                                    // Configuration has been updated / changed
+                                    changed = true;
+                                    break;
+                                }
+                            }
+                            else if (userConfig.ServerEnabled)
+                            {
+                                // Configuration has been added or removed
+                                changed = true;
+                                break;
+                            }
+                        }
+                    }
+                    else if (devs.Count > 0) changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+
+                LoadDevices();
+            }
+        }
+
+        #endregion
 
         #region "Xml File"
 
@@ -230,7 +310,7 @@ namespace TrakHound_Server_Core
                         server.updateConfigurationFile = false;
 
                         // Initialize Database Configurations
-                        Global.Initialize(server.configuration.Databases);
+                        Global.Initialize(server.configuration.Databases_Server);
 
                         Result = server;
                     }

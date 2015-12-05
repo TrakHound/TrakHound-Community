@@ -63,6 +63,16 @@ namespace TrakHound_Server_Control_Panel.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Back_01 {
+            get {
+                object obj = ResourceManager.GetObject("Back_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap blank_profile_01 {
             get {
                 object obj = ResourceManager.GetObject("blank_profile_01", resourceCulture);
@@ -76,6 +86,16 @@ namespace TrakHound_Server_Control_Panel.Properties {
         internal static System.Drawing.Bitmap Camera_01 {
             get {
                 object obj = ResourceManager.GetObject("Camera_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Collapse_01 {
+            get {
+                object obj = ResourceManager.GetObject("Collapse_01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
