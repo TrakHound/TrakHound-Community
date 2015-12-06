@@ -60,6 +60,17 @@ namespace TH_DeviceManager.Pages.Agent
 
             configurationTable = dt;
 
+            // Load Cloud Settings
+            bool cloud = false;
+            string cloud_str = Table_Functions.GetTableValue("/UseTrakHoundCloud", dt);
+            if (cloud_str != null)
+            {
+                bool.TryParse(cloud_str, out cloud);
+            }
+
+            UseTrakHoundCloud = cloud;
+
+
             // Load IP Address
             IpAddress = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
 
@@ -68,15 +79,6 @@ namespace TH_DeviceManager.Pages.Agent
 
             // Load Device Name
             DeviceName = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
-
-            //// Load IP Address
-            //ipaddress_TXT.Text = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
-
-            //// Load Port
-            //port_TXT.Text = Table_Functions.GetTableValue(prefix + "Port", dt);
-
-            //// Load Device Name
-            //devicename_TXT.Text = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
             // Load Current Heartbeat
             int currentHeartbeat;
@@ -126,6 +128,18 @@ namespace TH_DeviceManager.Pages.Agent
         string prefix = "/Agent/";
 
         DataTable configurationTable;
+
+
+        public bool UseTrakHoundCloud
+        {
+            get { return (bool)GetValue(UseTrakHoundCloudProperty); }
+            set { SetValue(UseTrakHoundCloudProperty, value); }
+        }
+
+        public static readonly DependencyProperty UseTrakHoundCloudProperty =
+            DependencyProperty.Register("UseTrakHoundCloud", typeof(bool), typeof(Page), new PropertyMetadata(false));
+
+
 
         public bool Loading
         {

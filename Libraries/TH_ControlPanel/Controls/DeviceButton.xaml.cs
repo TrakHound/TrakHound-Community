@@ -198,6 +198,15 @@ namespace TH_DeviceManager.Controls
 
 
 
+        public bool EnableLoading
+        {
+            get { return (bool)GetValue(EnableLoadingProperty); }
+            set { SetValue(EnableLoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty EnableLoadingProperty =
+            DependencyProperty.Register("EnableLoading", typeof(bool), typeof(DeviceButton), new PropertyMetadata(false));
+
 
     }
 }

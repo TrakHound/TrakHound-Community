@@ -3953,6 +3953,7 @@
 		<row><td>ID_STRING1</td><td>1033</td><td>http://www.TrakHound.org</td><td>0</td><td/><td>1554190101</td></row>
 		<row><td>ID_STRING10</td><td>1033</td><td>TRAKHO~1|TrakHound Server Controller</td><td>0</td><td/><td>1956863434</td></row>
 		<row><td>ID_STRING11</td><td>1033</td><td>TRAKHO~1|TrakHound Server [Console]</td><td>0</td><td/><td>1956872303</td></row>
+		<row><td>ID_STRING12</td><td>1033</td><td>TRAKHO~1|TrakHound Server Control Panel</td><td>0</td><td/><td>774068464</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>TrakHound</td><td>0</td><td/><td>1554218741</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>TrakHound-Server</td><td>0</td><td/><td>1554191286</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>TRAKHO~1|TrakHound Server Controller</td><td>0</td><td/><td>1956846986</td></row>
@@ -4073,6 +4074,7 @@
 		<row><td>NewShortcut1_FED7C0F0D1794B84873937A32725C0E2.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
 		<row><td>NewShortcut2_AB89B20ED22D4858AA1E53424980D823.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
 		<row><td>NewShortcut3_08A90AF991894A1D87D29D396DB40184.exe</td><td/><td>C:\Program Files (x86)\InstallShield\2013LE\Redist\Language Independent\OS Independent\uninstall.ico</td><td>0</td></row>
+		<row><td>NewShortcut4_1D1D418C4B144F2C8977314975B12E28.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4447,6 +4449,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ShortcutProperty2</td><td>NewShortcut3</td><td>{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 12</td><td>1</td></row>
 		<row><td>ShortcutProperty3</td><td>NewShortcut11</td><td>{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 12</td><td>1</td></row>
 		<row><td>ShortcutProperty4</td><td>NewShortcut2</td><td>{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 12</td><td>1</td></row>
+		<row><td>ShortcutProperty5</td><td>NewShortcut4</td><td>{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 12</td><td>1</td></row>
 	</table>
 
 	<table name="ODBCAttribute">
@@ -4584,7 +4587,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{48C262CF-7EDE-43DB-B4FF-4D3D30A754F3}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Server</td><td/></row>
-		<row><td>ProductVersion</td><td>1.0.1</td><td/></row>
+		<row><td>ProductVersion</td><td>1.2.0.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4663,6 +4666,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>NewShortcut11</td><td>TrakHound_Server_Controller.Primary_output</td><td/><td>newfolder2</td><td>2</td></row>
 		<row><td>NewShortcut2</td><td>TrakHound_Server_Console.Primary_output</td><td/><td>newfolder2</td><td>2</td></row>
 		<row><td>NewShortcut3</td><td>ISX_DEFAULTCOMPONENT5</td><td/><td>newfolder2</td><td>2</td></row>
+		<row><td>NewShortcut4</td><td>TrakHound_Server_Control_Panel.Primary_output</td><td/><td>newfolder2</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4754,6 +4758,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>NewShortcut11</td><td>newfolder2</td><td>##ID_STRING10##</td><td>TrakHound_Server_Controller.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING9##</td><td/><td>NewShortcut11_172D2D5F8C554E13BEB191FCAD2D336B.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>NewShortcut2</td><td>newfolder2</td><td>##ID_STRING11##</td><td>TrakHound_Server_Console.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>NewShortcut2_AB89B20ED22D4858AA1E53424980D823.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>NewShortcut3</td><td>newfolder2</td><td>##ID_STRING8##</td><td>ISX_DEFAULTCOMPONENT5</td><td>[SystemFolder]MsiExec.exe</td><td>/x [ProductCode]</td><td/><td/><td>NewShortcut3_08A90AF991894A1D87D29D396DB40184.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut4</td><td>newfolder2</td><td>##ID_STRING12##</td><td>TrakHound_Server_Control_Panel.Primary_output</td><td>AlwaysInstall</td><td/><td/><td/><td>NewShortcut4_1D1D418C4B144F2C8977314975B12E28.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

@@ -51,3 +51,5 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManag
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\Overview\Page.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\Overview\Page.g.cs

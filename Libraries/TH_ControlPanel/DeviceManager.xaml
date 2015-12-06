@@ -260,7 +260,7 @@
                             <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="Devices" FontSize="12pt" Foreground="#aaffffff"  Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                             <!--Device Index Up / Down Buttons-->
-                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                            <!--<StackPanel Grid.Column="2" VerticalAlignment="Center">
                                 <StackPanel.Style>
                                     <Style TargetType="StackPanel">
                                         <Setter Property="IsEnabled" Value="true"/>
@@ -276,7 +276,7 @@
 
                                 <th_wpf:Button_02 Image="Resources/Arrow_Down_01.png" ToolTip="Move Device Down in List" Clicked="IndexDown_Clicked"/>
 
-                            </StackPanel>
+                            </StackPanel>-->
 
                         </Grid>
 
@@ -589,13 +589,13 @@
 
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="MaxWidth" Value="0"/>
+                                <Setter Property="Width" Value="0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding PageListShown}" Value="true">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="MaxWidth" From="0" To="130">
+                                                    <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Width" From="0" To="130">
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseOut"/>
                                                         </DoubleAnimation.EasingFunction>
@@ -606,7 +606,7 @@
                                         <DataTrigger.ExitActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="MaxWidth" From="130" To="0" >
+                                                    <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Width" From="130" To="0" >
                                                         <DoubleAnimation.EasingFunction>
                                                             <CubicEase EasingMode="EaseIn"/>
                                                         </DoubleAnimation.EasingFunction>

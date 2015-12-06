@@ -53,6 +53,8 @@ namespace TH_Configuration
 
         #region "Remote Configurations"
 
+        public bool UseTrakHoundCloud { get; set; }
+
         public bool Remote { get; set; }
 
         public string ClientUpdateId { get; set; }

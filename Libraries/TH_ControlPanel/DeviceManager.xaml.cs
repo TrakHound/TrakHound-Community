@@ -616,11 +616,7 @@ namespace TH_DeviceManager
         {
             if (bt.Config != null)
             {
-                if (bt.Config.TableName != null) EnableDevice(bt.Config.TableName);
-
-                if (ManagerType == DeviceManagerType.Client) bt.Config.ClientEnabled = true;
-                if (ManagerType == DeviceManagerType.Server) bt.Config.ServerEnabled = true;
-                bt.DeviceEnabled = true;
+                if (bt.Config.TableName != null) EnableDevice(bt, bt.Config.TableName);
             }
         }
 
@@ -628,11 +624,7 @@ namespace TH_DeviceManager
         {
             if (bt.Config != null)
             {
-                if (bt.Config.TableName != null) DisableDevice(bt.Config.TableName);
-
-                if (ManagerType == DeviceManagerType.Client) bt.Config.ClientEnabled = false;
-                if (ManagerType == DeviceManagerType.Server) bt.Config.ServerEnabled = false;
-                bt.DeviceEnabled = false;
+                if (bt.Config.TableName != null) DisableDevice(bt, bt.Config.TableName);
             }
         }
 
@@ -696,28 +688,61 @@ namespace TH_DeviceManager
 
         #region "Enable Device"
 
+        class EnableDevice_Info
+        {
+            public DeviceButton bt { get; set; }
+            public string tablename { get; set; }
+            public bool success { get; set; }
+        }
+
         Thread enable_THREAD;
 
-        void EnableDevice(string tableName)
+        void EnableDevice(DeviceButton bt, string tableName)
         {
+            bt.EnableLoading = true;
+
+            EnableDevice_Info info = new EnableDevice_Info();
+            info.bt = bt;
+            info.tablename = tableName;
+
             if (enable_THREAD != null) enable_THREAD.Abort();
 
             enable_THREAD = new Thread(new ParameterizedThreadStart(EnableDevice_Worker));
-            enable_THREAD.Start(tableName);
+            enable_THREAD.Start(info);
         }
 
         void EnableDevice_Worker(object o)
         {
             if (o != null)
             {
-                string tableName = o.ToString();
+                EnableDevice_Info info = (EnableDevice_Info)o;
 
-                if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "True", tableName);
-                else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "True", tableName);
+                if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "True", info.tablename);
+                else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "True", info.tablename);
 
                 // Reset Update ID
-                if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), tableName);
-                else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), tableName);
+                if (info.success)
+                {
+                    if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename);
+                    else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename);
+                }
+
+                this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), priority, new object[] { info });
+            }
+        }
+
+        void EnableDevice_Finished(EnableDevice_Info info)
+        {
+            if (info.bt != null)
+            {
+                if (info.success)
+                {
+                    if (ManagerType == DeviceManagerType.Client) info.bt.Config.ClientEnabled = true;
+                    if (ManagerType == DeviceManagerType.Server) info.bt.Config.ServerEnabled = true;
+                    info.bt.DeviceEnabled = true;
+                }
+
+                info.bt.EnableLoading = false;
             }
         }
 
@@ -727,28 +752,65 @@ namespace TH_DeviceManager
 
         Thread disable_THREAD;
 
-        void DisableDevice(string tableName)
+        void DisableDevice(DeviceButton bt, string tableName)
         {
+            bt.EnableLoading = true;
+
+            EnableDevice_Info info = new EnableDevice_Info();
+            info.bt = bt;
+            info.tablename = tableName;
+
             if (disable_THREAD != null) disable_THREAD.Abort();
 
             disable_THREAD = new Thread(new ParameterizedThreadStart(DisableDevice_Worker));
-            disable_THREAD.Start(tableName);
+            disable_THREAD.Start(info);
         }
 
         void DisableDevice_Worker(object o)
         {
             if (o != null)
             {
-                string tableName = o.ToString();
+                EnableDevice_Info info = (EnableDevice_Info)o;
 
-                if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "False", tableName);
-                else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "False", tableName);
-
-                //Remote.Configurations.UpdateConfigurationTable("/Enabled", "False", tableName);
+                if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "False", info.tablename);
+                else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "False", info.tablename);
 
                 // Reset Update ID
-                if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), tableName);
-                else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), tableName);
+                if (info.success)
+                {
+                    if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename);
+                    else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename);
+                }
+
+                this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), priority, new object[] { info });
+
+
+
+                //string tableName = o.ToString();
+
+                //if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "False", tableName);
+                //else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "False", tableName);
+
+                ////Remote.Configurations.UpdateConfigurationTable("/Enabled", "False", tableName);
+
+                //// Reset Update ID
+                //if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), tableName);
+                //else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), tableName);
+            }
+        }
+
+        void DisableDevice_Finished(EnableDevice_Info info)
+        {
+            if (info.bt != null)
+            {
+                if (info.success && info.bt != null)
+                {
+                    if (ManagerType == DeviceManagerType.Client) info.bt.Config.ClientEnabled = false;
+                    if (ManagerType == DeviceManagerType.Server) info.bt.Config.ServerEnabled = false;
+                    info.bt.DeviceEnabled = false;
+                }
+
+                info.bt.EnableLoading = false;
             }
         }
 
@@ -781,6 +843,8 @@ namespace TH_DeviceManager
                     if (SelectedDevice != db.Config)
                     {
                         SelectedDevice = db.Config;
+
+                        InitializePages(ManagerType);
 
                         SelectDevice(db.Config);
                     }
@@ -830,8 +894,6 @@ namespace TH_DeviceManager
             this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { dt });
         }
 
-        
-
         void SelectDevice_Finished(DataTable dt)
         {
             ConfigurationTable = dt;
@@ -843,7 +905,7 @@ namespace TH_DeviceManager
             }
             
             DeviceLoading = false;
-            PageListShown = true;
+            if (!PageListShown) PageListShown = true;
             SaveNeeded = false;
         }
 
@@ -927,15 +989,23 @@ namespace TH_DeviceManager
 
         void InitializePages(DeviceManagerType type)
         {
-            PageListShown = false;
+            //PageListShown = false;
 
             PageList.Clear();
 
+            bool useTrakHoundCloud = false;
+            if (SelectedDevice != null) useTrakHoundCloud = SelectedDevice.UseTrakHoundCloud;
+
             ConfigurationPages = new List<ConfigurationPage>();
 
+            ConfigurationPages.Add(new Pages.Overview.Page());
             ConfigurationPages.Add(new Pages.Description.Page());
-            if (type == DeviceManagerType.Server) ConfigurationPages.Add(new Pages.Agent.Page());
-            ConfigurationPages.Add(new Pages.Databases.Page());
+
+            // Agent
+            if (type == DeviceManagerType.Server || useTrakHoundCloud) ConfigurationPages.Add(new Pages.Agent.Page());
+
+            // Databases
+            if (type == DeviceManagerType.Server || !useTrakHoundCloud) ConfigurationPages.Add(new Pages.Databases.Page());
 
             // Load configuration pages from plugins
             if (type == DeviceManagerType.Server) ConfigurationPages.AddRange(AddConfigurationPageButtons(Table_Plugins));

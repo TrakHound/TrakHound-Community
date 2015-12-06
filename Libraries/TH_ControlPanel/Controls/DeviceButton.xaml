@@ -6,6 +6,7 @@
              
              xmlns:local="clr-namespace:TH_DeviceManager.Controls"
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
              d:DesignWidth="300" Height="100"          
@@ -72,9 +73,45 @@
                 <Grid MouseDown="Grid_PreviewMouseDown" Background="#00000000"/>
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    
+                    <!--Enabled--> 
+                    <Grid>
 
-                    <CheckBox x:Name="enabled_CHK" Style="{StaticResource Android_CheckBoxStyle2}" Height="30" Width="30" Checked="enabled_CHK_Checked" Unchecked="enabled_CHK_Unchecked" ToolTip="Enable/Disable Device"/>
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EnableLoading}" Value="true">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
 
+                            <CheckBox x:Name="enabled_CHK" Style="{StaticResource Android_CheckBoxStyle2}" Height="30" Width="30" Checked="enabled_CHK_Checked" Unchecked="enabled_CHK_Unchecked" ToolTip="Enable/Disable Device"/>
+                            
+                        </Grid>
+                        
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EnableLoading}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <loadinganimation:Wheel Height="20" Width="20" Foreground="#fff"/>
+
+                        </Grid>
+                        
+                    </Grid>
+
+                    
                     <th_wpf:Button_05 Image="/TH_DeviceManager;component/Resources/X_01.png" ToolTip="Remove Device" Clicked="Remove_Clicked"/>
 
                 </StackPanel>

@@ -71,6 +71,7 @@
                             <Setter Property="OpacityMask" Value="{StaticResource Arrow_IMG}" />
                             <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
+                                
                                 <EventTrigger RoutedEvent="Rectangle.Loaded">
                                     <BeginStoryboard>
                                         <Storyboard RepeatBehavior="Forever" AutoReverse="True">
@@ -88,6 +89,11 @@
                                 <DataTrigger Binding="{Binding DisplayDatabases}" Value="true">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
+
+                                <DataTrigger Binding="{Binding DatabaseTypeList.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                
                             </Style.Triggers>
                         </Style>
                     </Rectangle.Style>
