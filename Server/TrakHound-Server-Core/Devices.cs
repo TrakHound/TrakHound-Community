@@ -18,6 +18,7 @@ namespace TrakHound_Server_Core
 {
     public partial class Server
     {
+        List<Device_Server> Devices = new List<Device_Server>();
 
         List<Configuration> configurations;
 
@@ -26,7 +27,14 @@ namespace TrakHound_Server_Core
 
             string configPath = null;
 
-            Devices = new List<Device_Server>();
+            // Stop Previous Devices
+            if (Devices != null)
+            {
+                foreach (Device_Server device in Devices) device.Stop();
+                Thread.Sleep(2000);
+            }
+
+            List<Device_Server> devices = new List<Device_Server>();
 
             if (currentuser != null)
             {
@@ -43,21 +51,23 @@ namespace TrakHound_Server_Core
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in configurations)
                 {
-                    //if (config.Remote) StartMonitor(config);
-
                     if (config.ServerEnabled)
                     {
-                        config.Index = Devices.Count;
+                        config.Index = devices.Count;
 
                         Device_Server server = new Device_Server(config);
 
                         // Initialize Database Configurations
                         Global.Initialize(server.configuration.Databases_Server);
 
-                        Devices.Add(server);
+                        server.Start(false);
+
+                        devices.Add(server);
                     }  
                 }
             }
+
+            Devices = devices;
 
             DevicesMonitor_Initialize();
 
@@ -136,14 +146,16 @@ namespace TrakHound_Server_Core
             DevicesMonitor_Start();
         }
 
-        Thread devicesMonitor_THREAD;
+        //Thread devicesMonitor_THREAD;
 
         void DevicesMonitor_Start()
         {
-            if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
+            //if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
 
-            devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
-            devicesMonitor_THREAD.Start(Devices.ToList());
+            ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
+
+            //devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
+            //devicesMonitor_THREAD.Start(Devices.ToList());
         }
 
         void DevicesMonitor_Worker(object o)

@@ -9,7 +9,15 @@
              
              mc:Ignorable="d" 
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="800"/>
@@ -948,7 +956,7 @@
                                    
                 </StackPanel>
 
-                <!--Image-->
+                <!--Side Panel-->
                 <StackPanel Grid.Column="1" Margin="40,0">
 
                     <!--Title and Help-->
@@ -1206,6 +1214,20 @@
                         </TextBlock.Style>
                     </TextBlock>
 
+                    
+                    
+                    <!--Export Options-->
+                    <StackPanel>
+
+                        <TextBlock Text="Export Options" Foreground="#333" FontSize="12pt" Margin="0,20,0,10"/>
+
+                        <CheckBox x:Name="export_agent_CHK" Content="Agent" Style="{StaticResource Android_CheckBoxStyle}" Height="40"/>
+
+                        <CheckBox x:Name="export_databases_CHK" Content="Databases" Style="{StaticResource Android_CheckBoxStyle}" Height="40"/>
+
+                    </StackPanel>
+                    
+                    
                 </StackPanel>
 
             </Grid>

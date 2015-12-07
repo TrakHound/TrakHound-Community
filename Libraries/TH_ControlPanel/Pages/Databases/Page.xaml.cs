@@ -177,7 +177,6 @@ namespace TH_DeviceManager.Pages.Databases
             foreach (Lazy<TH_Database.Database_Plugin> lplugin in dpr.plugins)
             {
                 TH_Database.Database_Plugin plugin = lplugin.Value;
-
                 plugins.Add(plugin);
 
                 Button_01 bt = new Button_01();
@@ -290,6 +289,10 @@ namespace TH_DeviceManager.Pages.Databases
                         object o = Activator.CreateInstance(config_type);
 
                         TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)o;
+
+                        if (PageType == Page_Type.Client) page.PageType = TH_Database.Page_Type.Client;
+                        else if (PageType == Page_Type.Server) page.PageType = TH_Database.Page_Type.Server;
+
                         page.prefix = address;
                         page.LoadConfiguration(temp_dt);
                         page.SettingChanged += Configuration_Page_SettingChanged;

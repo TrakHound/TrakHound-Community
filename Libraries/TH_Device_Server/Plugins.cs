@@ -177,6 +177,7 @@ namespace TH_Device_Server
             try
             {
                 Table_PlugIn tpi = info.tablePlugin;
+                tpi.TablePrefix = TablePrefix;
                 tpi.UseDatabases = info.useDatabases;
                 tpi.DataEvent -= TablePlugIn_Update_DataEvent;
                 tpi.DataEvent += TablePlugIn_Update_DataEvent;

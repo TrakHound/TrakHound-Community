@@ -147,7 +147,47 @@
             </Grid>
 
         </ScrollViewer>
-        
+
+        <!--No Devices-->
+        <Grid Background="#0080ff">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock FontSize="18pt" Foreground="#fff" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">     
+                No Devices Found <LineBreak/>
+                Click on the 'Main Menu' button and open 'Device Manager'
+            </TextBlock>
+
+        </Grid>
+
+        <!--Not Logged in Panel-->
+        <Grid Background="#0080ff">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock FontSize="18pt" Foreground="#fff" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
+                Not Logged In <LineBreak/>
+                Click the 'Login' button above to login
+            </TextBlock>
+
+        </Grid>
+
     </Grid>
 
 </UserControl>

@@ -20,8 +20,6 @@ namespace TrakHound_Server_Core
     public partial class Server
     {
 
-        List<Device_Server> Devices;
-
         public void Start()
         {
             PrintHeader();
@@ -35,14 +33,6 @@ namespace TrakHound_Server_Core
             Login();
 
             LoadDevices();
-
-            if (Devices != null)
-            {
-                foreach (Device_Server device in Devices)
-                {
-                    device.Start(false);
-                }
-            }
         }
 
         public void Stop()

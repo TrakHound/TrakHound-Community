@@ -32,6 +32,8 @@ namespace TH_MySQL.ConfigurationPage
         {
             InitializeComponent();
             DataContext = this;
+
+            trakhoundserver_CHK.IsChecked = true;
         }
 
         public string PageName { get { return "MySQL"; } }

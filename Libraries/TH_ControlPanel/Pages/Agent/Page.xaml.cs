@@ -211,31 +211,29 @@ namespace TH_DeviceManager.Pages.Agent
             string ip = null;
             int port = -1;
 
-            // Get IP Address or URL
-            ip = IpAddress;
-            //ip = ipaddress_TXT.Text;
-            if (ip.Length > 7)
+            if (IpAddress != null)
             {
-                if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
+                // Get IP Address or URL
+                ip = IpAddress;
+                //ip = ipaddress_TXT.Text;
+                if (ip.Length > 7)
+                {
+                    if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
+                }
+
+                // Get Port
+                if (Port != null)
+                {
+                    int.TryParse(Port, out port);
+                }
+
+                tryPortIndex = 0;
+
+                MTCDeviceList.Clear();
+                MessageList.Clear();
+
+                RunProbe(ip, port, DeviceName);
             }
-
-            // Get Port
-            if (Port != null)
-            {
-                int.TryParse(Port, out port);
-            }
-            //if (port_TXT.Text != null)
-            //{
-            //    int.TryParse(port_TXT.Text, out port);
-            //}
-
-            tryPortIndex = 0;
-
-            MTCDeviceList.Clear();
-            MessageList.Clear();
-
-            RunProbe(ip, port, DeviceName);
-            //RunProbe(ip, port, devicename_TXT.Text);
         }
 
         void RunProbe(string url, int port, string deviceName)

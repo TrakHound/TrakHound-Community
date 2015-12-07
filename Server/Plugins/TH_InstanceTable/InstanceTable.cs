@@ -50,14 +50,7 @@ namespace TH_InstanceTable
             firstPass = false;
 
             config = configuration;
-
-            //SQL_Queue = new Queue();
-            //SQL_Queue.SQL = configuration.SQL;
-
         }
-
-        //public Type Config_Page { get { return typeof(Configuration_Page); } }
-
 
         public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
         {
@@ -94,7 +87,7 @@ namespace TH_InstanceTable
         {
             List<InstanceData> instanceDatas = ProcessInstances(CurrentData, returnData);
 
-            if (UseDatabases) if (AddMySQL) AddRowsToMySQL(ColumnNames, instanceDatas);
+            if (UseDatabases) if (AddMySQL) AddRowsToDatabase(ColumnNames, instanceDatas);
 
             PreviousInstanceData_old = PreviousInstanceData_new;
 
@@ -130,7 +123,7 @@ namespace TH_InstanceTable
 
         public bool UseDatabases { get; set; }
 
-        //public ConfigurationPage ConfigPage { get { return new Configuration_Page(); } }
+        public string TablePrefix { get; set; }
 
         #endregion
 
@@ -271,14 +264,13 @@ namespace TH_InstanceTable
 
         #endregion
 
-        #region "MySQL"
+        #region "Database"
 
-        //Queue SQL_Queue;
-
-        public const string TableName = TableNames.Instance;
+        public string TableName = TableNames.Instance;
 
         void CreateInstanceTable(List<string> variablesToRecord)
         {
+            TableName = TablePrefix + TableNames.Instance;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -294,7 +286,7 @@ namespace TH_InstanceTable
 
         }
 
-        void AddRowsToMySQL(List<string> columns, List<InstanceData> instanceDatas)
+        void AddRowsToDatabase(List<string> columns, List<InstanceData> instanceDatas)
         {
             System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
             stpw.Start();

@@ -148,6 +148,8 @@ namespace TH_GeneratedData
 
         public bool UseDatabases { get; set; }
 
+        public string TablePrefix { get; set; }
+
         #endregion
 
         #region "Properties"
@@ -809,16 +811,18 @@ namespace TH_GeneratedData
 
         #endregion
 
-        #region "MySQL"
+        #region "Database"
 
         //Queue SQL_Queue;
 
         #region "Snapshot"
 
-        public const string SnapshotsTableName = TableNames.SnapShots;
+        public string SnapshotsTableName = TableNames.SnapShots;
 
         void CreateSnapShotTable()
         {
+            SnapshotsTableName = TablePrefix + TableNames.SnapShots;
+
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("TIMESTAMP", DataType.DateTime),
@@ -895,7 +899,7 @@ namespace TH_GeneratedData
 
         #region "Generated Events"
 
-        public const string TablePrefix = TableNames.Gen_Events_TablePrefix;
+        public const string GenTablePrefix = TableNames.Gen_Events_TablePrefix;
 
         void CreateGeneratedEventTable(GeneratedEvents.Event e)
         {
@@ -910,7 +914,7 @@ namespace TH_GeneratedData
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TablePrefix + e.Name, ColArray, "TIMESTAMP");
+            Table.Create(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name, ColArray, "TIMESTAMP");
         }
 
         void InsertGeneratedEventItems(List<GeneratedEventItem> generatedEventItems)
@@ -959,7 +963,7 @@ namespace TH_GeneratedData
 
                     }
 
-                    Row.Insert(config.Databases_Server, TablePrefix + eventName, columns.ToArray(), rowValues, true);
+                    Row.Insert(config.Databases_Server, TablePrefix + GenTablePrefix + eventName, columns.ToArray(), rowValues, true);
 
                 }
 

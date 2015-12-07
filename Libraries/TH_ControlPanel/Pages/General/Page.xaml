@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TH_DeviceManager.Pages.Overview.Page"
+﻿<UserControl x:Class="TH_DeviceManager.Pages.General.Page"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -21,7 +21,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Device Overview" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
+        <TextBlock Text="General Settings" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
 
         <!--<TextBlock Grid.Row="1" Text="General Device Desciption Settings" FontSize="10pt" Foreground="#888" Margin="0,10,10,20"/>-->
 

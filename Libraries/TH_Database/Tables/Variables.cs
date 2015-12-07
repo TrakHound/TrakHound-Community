@@ -18,7 +18,7 @@ namespace TH_Database.Tables
     public static class Variables
     {
 
-        public static void CreateTable(Database_Settings config)
+        public static void CreateTable(Database_Settings config, string TablePrefix = "")
         {
             ColumnDefinition[] Columns = new ColumnDefinition[]
             {
@@ -27,10 +27,10 @@ namespace TH_Database.Tables
                 new ColumnDefinition("Timestamp", DataType.DateTime)
             };
 
-            Table.Create(config, TableNames.Variables, Columns, "Variable");
+            Table.Create(config, TablePrefix + TableNames.Variables, Columns, "Variable");
         }
 
-        public static void Update(Database_Settings config, string variable, string value, DateTime timestamp)
+        public static void Update(Database_Settings config, string variable, string value, DateTime timestamp, string TablePrefix = "")
         {
             List<string> columns = new List<string>();
             columns.Add("Variable");
@@ -42,14 +42,14 @@ namespace TH_Database.Tables
             values.Add(value);
             values.Add(timestamp);
 
-            Row.Insert(config, TableNames.Variables, columns.ToArray(), values.ToArray(), true);
+            Row.Insert(config, TablePrefix + TableNames.Variables, columns.ToArray(), values.ToArray(), true);
         }
 
-        public static VariableData Get(Database_Settings config, string VariableName)
+        public static VariableData Get(Database_Settings config, string VariableName, string TablePrefix = "")
         {
             VariableData Result = null;
 
-            DataRow row = Row.Get(config, TableNames.Variables, "variable", VariableName);
+            DataRow row = Row.Get(config, TablePrefix + TableNames.Variables, "variable", VariableName);
 
             if (row != null)
             {

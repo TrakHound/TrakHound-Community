@@ -79,9 +79,24 @@ namespace TH_DeviceManager
             {
                 currentuser = value;
 
+                if (currentuser != null) LoggedIn = true;
+                else LoggedIn = false;
+
                 LoadDevices();
             }
         }
+
+        public bool LoggedIn
+        {
+            get { return (bool)GetValue(LoggedInProperty); }
+            set { SetValue(LoggedInProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoggedInProperty =
+            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+
+        
+        
 
         public Database_Settings userDatabaseSettings;
 
@@ -279,6 +294,8 @@ namespace TH_DeviceManager
 
         public void LoadDevices()
         {
+            CurrentPage = null;
+            PageListShown = false;
             DevicesLoading = true;
             DeviceListShown = false;
             DeviceList.Clear();
@@ -649,6 +666,8 @@ namespace TH_DeviceManager
                     }
                 }
             }
+
+            if (DeviceList.Count == 0) AddDevice();
         }
 
         void db_ShareClicked(DeviceButton bt)
@@ -695,7 +714,7 @@ namespace TH_DeviceManager
             public bool success { get; set; }
         }
 
-        Thread enable_THREAD;
+        //Thread enable_THREAD;
 
         void EnableDevice(DeviceButton bt, string tableName)
         {
@@ -705,10 +724,12 @@ namespace TH_DeviceManager
             info.bt = bt;
             info.tablename = tableName;
 
-            if (enable_THREAD != null) enable_THREAD.Abort();
+            //if (enable_THREAD != null) enable_THREAD.Abort();
 
-            enable_THREAD = new Thread(new ParameterizedThreadStart(EnableDevice_Worker));
-            enable_THREAD.Start(info);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(EnableDevice_Worker), info);
+
+            //enable_THREAD = new Thread(new ParameterizedThreadStart(EnableDevice_Worker));
+            //enable_THREAD.Start(info);
         }
 
         void EnableDevice_Worker(object o)
@@ -750,7 +771,7 @@ namespace TH_DeviceManager
 
         #region "Disable Device"
 
-        Thread disable_THREAD;
+        //Thread disable_THREAD;
 
         void DisableDevice(DeviceButton bt, string tableName)
         {
@@ -760,10 +781,12 @@ namespace TH_DeviceManager
             info.bt = bt;
             info.tablename = tableName;
 
-            if (disable_THREAD != null) disable_THREAD.Abort();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(DisableDevice_Worker), info);
 
-            disable_THREAD = new Thread(new ParameterizedThreadStart(DisableDevice_Worker));
-            disable_THREAD.Start(info);
+            //if (disable_THREAD != null) disable_THREAD.Abort();
+
+            //disable_THREAD = new Thread(new ParameterizedThreadStart(DisableDevice_Worker));
+            //disable_THREAD.Start(info);
         }
 
         void DisableDevice_Worker(object o)
@@ -844,7 +867,7 @@ namespace TH_DeviceManager
                     {
                         SelectedDevice = db.Config;
 
-                        InitializePages(ManagerType);
+                        //InitializePages(ManagerType);
 
                         SelectDevice(db.Config);
                     }
@@ -994,11 +1017,11 @@ namespace TH_DeviceManager
             PageList.Clear();
 
             bool useTrakHoundCloud = false;
-            if (SelectedDevice != null) useTrakHoundCloud = SelectedDevice.UseTrakHoundCloud;
+            //if (SelectedDevice != null) useTrakHoundCloud = SelectedDevice.UseTrakHoundCloud;
 
             ConfigurationPages = new List<ConfigurationPage>();
 
-            ConfigurationPages.Add(new Pages.Overview.Page());
+            //ConfigurationPages.Add(new Pages.General.Page());
             ConfigurationPages.Add(new Pages.Description.Page());
 
             // Agent

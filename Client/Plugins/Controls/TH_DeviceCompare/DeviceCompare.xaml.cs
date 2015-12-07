@@ -213,7 +213,18 @@ namespace TH_DeviceCompare
 
         #region "User"
 
-        public UserConfiguration CurrentUser { get; set; }
+        UserConfiguration currentuser = null;
+        public UserConfiguration CurrentUser 
+        {
+            get { return currentuser; }
+            set
+            {
+                currentuser = value;
+
+                if (currentuser != null) LoggedIn = true;
+                else LoggedIn = false;
+            }
+        }
 
         public Database_Settings UserDatabaseSettings { get; set; }
 
@@ -1590,6 +1601,16 @@ namespace TH_DeviceCompare
                 minimized = false;
             }
         }
+
+
+        public bool LoggedIn
+        {
+            get { return (bool)GetValue(LoggedInProperty); }
+            set { SetValue(LoggedInProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoggedInProperty =
+            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DeviceCompare), new PropertyMetadata(false));
 
         #endregion
 

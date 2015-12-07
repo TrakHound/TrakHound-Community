@@ -104,6 +104,8 @@ namespace TH_Cycles
 
         public bool UseDatabases { get; set; }
 
+        public string TablePrefix { get; set; }
+
         #endregion
 
         #region "Properties"
@@ -171,10 +173,14 @@ namespace TH_Cycles
 
         #endregion
 
-        #region "MySQL"
+        #region "Database"
+
+        string TableName = TableNames.Cycles;
 
         void CreateCycleTable()
         {
+            TableName = TablePrefix + TableNames.Cycles;
+
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
             columns.Add(new ColumnDefinition("SHIFT_ID", DataType.LargeText, true, true));
@@ -194,7 +200,7 @@ namespace TH_Cycles
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableNames.Cycles, ColArray, "Shift_Id, Cycle_Id");  
+            Table.Create(config.Databases_Server, TableName, ColArray, "Shift_Id, Cycle_Id");  
 
         }
 
@@ -232,14 +238,17 @@ namespace TH_Cycles
                 rowValues.Add(values);
             }
 
-            Row.Insert(config.Databases_Server, TableNames.Cycles, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, true);
 
         }
 
 
 
+        string SetupTableName = TableNames.Cycles_Setup;
+
         void CreateSetupTable()
         {
+            SetupTableName = TablePrefix + TableNames.Cycles_Setup;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -249,7 +258,7 @@ namespace TH_Cycles
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableNames.Cycles_Setup, ColArray, "Cycle_Id");  
+            Table.Create(config.Databases_Server, SetupTableName, ColArray, "Cycle_Id");  
         }
 
         void DEBUG_AddSetupRows()
@@ -281,7 +290,7 @@ namespace TH_Cycles
             values.Add(1);
             rowValues.Add(values);
 
-            Row.Insert(config.Databases_Server, TableNames.Cycles_Setup, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, SetupTableName, columns.ToArray(), rowValues, true);
 
         }
 

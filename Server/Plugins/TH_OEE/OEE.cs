@@ -95,6 +95,8 @@ namespace TH_OEE
 
         public bool UseDatabases { get; set; }
 
+        public string TablePrefix { get; set; }
+
         #endregion
 
         #region "Properties"
@@ -258,8 +260,12 @@ namespace TH_OEE
 
         #region "Database"
 
+        string TableName = TableNames.OEE;
+
         void CreateTable()
         {
+
+            TableName = TablePrefix + TableNames.OEE;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -283,27 +289,7 @@ namespace TH_OEE
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableNames.OEE, ColArray, "SHIFT_ID");  
-
-
-            //List<string> columns = new List<string>();
-            //columns.Add("Shift_Id " + MySQL_Tools.VarChar + " UNIQUE NOT NULL");
-
-            //columns.Add("OEE " + MySQL_Tools.Double);
-
-            //columns.Add("Availability " + MySQL_Tools.Double);
-            //columns.Add("Performance " + MySQL_Tools.Double);
-            //columns.Add("Quality " + MySQL_Tools.Double);
-            
-            //columns.Add("Operating_Time " + MySQL_Tools.BigInt);
-            //columns.Add("Planned_Production_Time " + MySQL_Tools.BigInt);
-
-            //columns.Add("Ideal_Cycle_Time " + MySQL_Tools.BigInt);
-            //columns.Add("Total_Pieces " + MySQL_Tools.BigInt);
-
-            //columns.Add("Good_Pieces " + MySQL_Tools.BigInt);
-
-            //Global.Table_Create(config.SQL, TableNames.OEE, columns.ToArray(), "Shift_Id");
+            Table.Create(config.Databases_Server, TableName, ColArray, "SHIFT_ID");  
         }
 
         void UpdateRows(List<OeeRowInfo> infos)
@@ -350,10 +336,7 @@ namespace TH_OEE
             }
 
 
-            Row.Insert(config.Databases_Server, TableNames.OEE, columns.ToArray(), rowValues, true);
-
-
-            //Global.Row_Insert(config.SQL, TableNames.OEE, columns.ToArray(), rowValues);
+            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, true);
         }
 
         #endregion

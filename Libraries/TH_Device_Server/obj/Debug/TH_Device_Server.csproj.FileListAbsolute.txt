@@ -20,3 +20,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\obj\Debug\TH_Device_Ser
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\obj\Debug\TH_Device_Server.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\obj\Debug\TH_Device_Server.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_UserManagement.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_WPF.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_UserManagement.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Device_Server\bin\Debug\TH_WPF.pdb

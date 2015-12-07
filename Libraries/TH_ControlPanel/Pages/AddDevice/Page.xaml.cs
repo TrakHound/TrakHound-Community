@@ -311,10 +311,12 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             item.Loading = true;
 
-            if (AddShared_THREAD != null) AddShared_THREAD.Abort();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(AddSharedItem_Worker), item);
 
-            AddShared_THREAD = new Thread(new ParameterizedThreadStart(AddSharedItem_Worker));
-            AddShared_THREAD.Start(item);
+            //if (AddShared_THREAD != null) AddShared_THREAD.Abort();
+
+            //AddShared_THREAD = new Thread(new ParameterizedThreadStart(AddSharedItem_Worker));
+            //AddShared_THREAD.Start(item);
         }
 
         void AddSharedItem_Worker(object o)
@@ -535,6 +537,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                         Details_Image = TH_WPF.Image_Functions.SetImageSize(img, 0, Math.Min(height, 75));
                     }
                 }
+                else Details_Image = null;
                 
 
                 Details_Owner = item.Owner;
@@ -623,12 +626,12 @@ namespace TH_DeviceManager.Pages.AddDevice
                 {
                     List<Shared.SharedListItem> list = shareditems_search.FindAll(
                     x => 
-                    (x.manufacturer.ToLower().Contains(s) || x.manufacturer.ToLower() == s) ||
-                    (x.model.ToLower().Contains(s) || x.model.ToLower() == s) ||
-                    (x.author.ToLower().Contains(s) || x.author.ToLower() == s) ||
-                    (x.description.ToLower().Contains(s) || x.description.ToLower() == s) ||
-                    (x.controller.ToLower().Contains(s) || x.controller.ToLower() == s) ||
-                    (x.device_type.ToLower().Contains(s) || x.device_type.ToLower() == s)
+                    (TestFilter(x.manufacturer, s) ||
+                    TestFilter(x.model, s) ||
+                    TestFilter(x.author, s) ||
+                    TestFilter(x.description, s) ||
+                    TestFilter(x.controller, s) ||
+                    TestFilter(x.device_type, s))
                     );
 
                     foreach (Shared.SharedListItem item in list)
@@ -645,6 +648,16 @@ namespace TH_DeviceManager.Pages.AddDevice
                 LoadSharedItems(shareditems);
             }
 
+        }
+
+        static bool TestFilter(string s, string test)
+        {
+            if (s != null && test != null)
+            {
+                if (s.ToLower().Contains(test)) return true;
+                if (s.Contains(test)) return true;
+            }
+            return false;
         }
 
 

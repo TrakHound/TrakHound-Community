@@ -83,7 +83,7 @@ namespace TH_MTC_Requests
         {
             stream = new Stream();
 
-            if (configuration.Agent.IP_Address != String.Empty)
+            if (configuration.Agent.IP_Address != String.Empty && configuration.Agent.IP_Address != null)
             {
                 string url = "http://";
 

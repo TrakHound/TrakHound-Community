@@ -24,7 +24,7 @@ using TH_PlugIns_Server;
 using TH_UserManagement;
 using TH_UserManagement.Management;
 
-namespace TH_DeviceManager.Pages.Overview
+namespace TH_DeviceManager.Pages.General
 {
     /// <summary>
     /// Interaction logic for Page.xaml

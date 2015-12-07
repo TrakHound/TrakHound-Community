@@ -13,6 +13,7 @@ using TH_Configuration;
 using TH_Database;
 using TH_Database.Tables;
 using TH_Global;
+using TH_UserManagement.Management;
 
 namespace TH_Device_Server
 {
@@ -22,6 +23,18 @@ namespace TH_Device_Server
         #region "Public"
 
         public Device_Server(Configuration config, bool useDatabases = true)
+        {
+            init(config, useDatabases);
+        }
+
+        public Device_Server(UserConfiguration userConfig, Configuration config)
+        {
+            //if (userConfig != null) TablePrefix = userConfig.username.ToLower() + "_" + config.UniqueId + "_";
+
+            init(config);
+        }
+
+        void init(Configuration config, bool useDatabases = true)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -48,6 +61,8 @@ namespace TH_Device_Server
             get { return usedatabases; }
             set { usedatabases = value; }
         }
+
+        string TablePrefix { get; set; }
 
         #region "Methods"
 
@@ -610,7 +625,7 @@ namespace TH_Device_Server
 
         void InitializeTables()
         {
-            if (UseDatabases) Variables.CreateTable(configuration.Databases_Server);
+            if (UseDatabases) Variables.CreateTable(configuration.Databases_Server, TablePrefix);
         }
 
         #endregion

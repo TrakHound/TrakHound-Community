@@ -212,7 +212,13 @@ namespace TH_DeviceManager.Pages.AddShare
                 Share(item);    
             }
         }
-        
+
+
+        class Share_Info
+        {
+            public Shared.SharedListItem item { get; set; }
+            public DataTable dt { get; set; }
+        }
 
         Thread share_THREAD;
 
@@ -220,10 +226,52 @@ namespace TH_DeviceManager.Pages.AddShare
         {
             Loading = true;
 
+            DataTable dt = configurationtable.Copy();
+
+            // Set Export Options
+            if (export_agent_CHK.IsChecked != true)
+            {
+                string agentprefix = "/Agent/";
+
+                // Clear all generated event rows first (so that Ids can be sequentially assigned)
+                string filter = "address LIKE '" + agentprefix + "*'";
+                DataView dv = dt.AsDataView();
+                dv.RowFilter = filter;
+                DataTable temp_dt = dv.ToTable();
+                foreach (DataRow row in temp_dt.Rows)
+                {
+                    DataRow dbRow = dt.Rows.Find(row["address"]);
+                    if (dbRow != null) dt.Rows.Remove(dbRow);
+                }
+            }
+
+
+            if (export_agent_CHK.IsChecked != true)
+            {
+                string databaseprefix1 = "/Databases/";
+                string databaseprefix2 = "/Databases_Server/";
+                string databaseprefix3 = "/Databases_Client/";
+
+                // Clear all generated event rows first (so that Ids can be sequentially assigned)
+                string filter = "address LIKE '" + databaseprefix1 + "*' OR address LIKE '" + databaseprefix2 + "*' OR address LIKE '" + databaseprefix3 + "*'";
+                DataView dv = dt.AsDataView();
+                dv.RowFilter = filter;
+                DataTable temp_dt = dv.ToTable();
+                foreach (DataRow row in temp_dt.Rows)
+                {
+                    DataRow dbRow = dt.Rows.Find(row["address"]);
+                    if (dbRow != null) dt.Rows.Remove(dbRow);
+                }
+            }
+
+            Share_Info info = new Share_Info();
+            info.item = item;
+            info.dt = dt;
+
             if (share_THREAD != null) share_THREAD.Abort();
 
             share_THREAD = new Thread(new ParameterizedThreadStart(Share_Worker));
-            share_THREAD.Start(item);
+            share_THREAD.Start(info);
         }
 
         void Share_Worker(object o)
@@ -232,30 +280,29 @@ namespace TH_DeviceManager.Pages.AddShare
 
             if (o != null)
             {
-                Shared.SharedListItem item = (Shared.SharedListItem)o;
+                Share_Info info = (Share_Info)o;
+
+                //Shared.SharedListItem item = (Shared.SharedListItem)o;
 
                 string tablename = "shared_" + String_Functions.RandomString(20);
 
-            // Save Shared
-            Table_Functions.UpdateTableValue("True", "/Shared", configurationtable);
+                // Save Shared Tablename
+                Table_Functions.UpdateTableValue(tablename, "/SharedTableName", info.dt);
 
-            // Save Shared Tablename
-            Table_Functions.UpdateTableValue(tablename, "/SharedTableName", configurationtable);
-
-            success = Shared.CreateSharedConfiguration(currentuser, tablename, configurationtable, item);
+                success = Shared.CreateSharedConfiguration(currentuser, tablename, info.dt, info.item);
 
             }
 
             this.Dispatcher.BeginInvoke(new Action<bool>(Share_Finished), priority, new object[] { success });
         }
-
+       
         void Share_Finished(bool success)
         {
             if (devicemanager != null)
             {
-                devicemanager.ConfigurationTable = configurationtable;
+                //devicemanager.ConfigurationTable = configurationtable;
 
-                devicemanager.Save(configurationtable);
+                //devicemanager.Save(configurationtable);
             }
 
             Loading = false;

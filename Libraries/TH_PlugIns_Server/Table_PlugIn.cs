@@ -77,6 +77,8 @@ namespace TH_PlugIns_Server
 
         bool UseDatabases { get; set; }
 
+        string TablePrefix { get; set; }
+
     }
 
     public delegate void DataEvent_Handler(DataEvent_Data de_data);

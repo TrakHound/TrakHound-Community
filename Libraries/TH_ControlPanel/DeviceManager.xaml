@@ -648,6 +648,26 @@
 
         </Grid>
 
+        <!--Not Logged in Panel-->
+        <Grid Background="#eee">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock FontSize="18pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">        
+                Not Logged In <LineBreak/>
+                Click the 'Login' button above to login
+            </TextBlock>
+
+        </Grid>
+       
     </Grid>
 
 </UserControl>
