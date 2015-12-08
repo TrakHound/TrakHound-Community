@@ -1121,9 +1121,9 @@ namespace TH_GeneratedData
                        {
                            case "collected":
 
-                               if (currentData.deviceStream != null)
+                               if (currentData.deviceStreams != null)
                                {
-                                   TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStream);
+                                   TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
 
                                    bool found = false;
 

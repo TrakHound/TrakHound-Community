@@ -82,7 +82,9 @@ namespace TH_StatusData
 
         //public void Update(ReturnData rd) { }
 
-        public void Closing() { if (update_TIMER != null) update_TIMER.Enabled = false; }
+        public void Closing() { closing = true; if (update_TIMER != null) update_TIMER.Enabled = false; }
+
+        bool closing = false;
 
         #endregion
 
@@ -139,6 +141,8 @@ namespace TH_StatusData
             {
                 foreach (Configuration device in Devices.ToList())
                 {
+                    if (closing) break;
+
                     if (DataEvent != null)
                     {
                         // Get Connection Status
@@ -147,6 +151,7 @@ namespace TH_StatusData
                         // Send Connection Status
                         SendDataEvent(connected);
 
+                        if (closing) break;
 
                         // Get Snapshot Data
                         Snapshot_Return snapshotData = GetSnapShots(device);
@@ -154,6 +159,7 @@ namespace TH_StatusData
                         // Send Snapshot Data
                         SendDataEvent(snapshotData.de_data);
 
+                        if (closing) break;
 
                         // Get Shift Data
                         DataEvent_Data shiftData = GetShifts(device, snapshotData.shiftData);
@@ -161,12 +167,15 @@ namespace TH_StatusData
                         // Send Shift Data
                         SendDataEvent(shiftData);
 
+                        if (closing) break;
 
                         // Get OEE Data
                         DataEvent_Data oeeData = GetOEE(device, snapshotData.shiftData);
 
                         // Send OEE Data
                         SendDataEvent(oeeData);
+
+                        if (closing) break;
 
                         // Get Production Status Data
                         DataEvent_Data productionStatusData = GetProductionStatusList(device, snapshotData.shiftData);
@@ -177,6 +186,17 @@ namespace TH_StatusData
                 }
             }       
         }
+
+
+
+
+
+
+
+
+
+
+
 
         class Snapshot_Return
         {

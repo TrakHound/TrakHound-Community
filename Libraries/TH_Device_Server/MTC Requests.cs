@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 using TH_Database.Tables;
 using TH_MTC_Data;
@@ -22,26 +23,32 @@ namespace TH_Device_Server
         {
             if (configuration.Agent.IP_Address != null)
             {
-                Probe_Initialize();
-                Current_Initialize();
-                Sample_Initialize();
+                //Probe_Initialize();
+                //Current_Initialize();
+                //Sample_Initialize();
             }
         }
 
         void Requests_Start()
         {
-            if (configuration.Agent.IP_Address != null)
-            {
-                Probe_Start();
-                Current_Start();
-            }
+            Probe_Run();
+
+            Current_Run();
+
+            //Probe_Start();
+
+            //if (configuration.Agent.IP_Address != null)
+            //{
+            //    Probe_Start();
+            //    Current_Start();
+            //}
         }
 
         void Requests_Stop()
         {
-            Probe_Stop();
-            Current_Stop();
-            Sample_Stop();
+            //Probe_Stop();
+            //Current_Stop();
+            //Sample_Stop();
         }
 
         #region "Probe"
@@ -50,10 +57,46 @@ namespace TH_Device_Server
 
         TH_MTC_Data.Components.ReturnData ProbeData;
 
+        void Probe_Run()
+        {
+            Probe p = new Probe();
+            p.Address = configuration.Agent.IP_Address;
+            p.Port = configuration.Agent.Port;
+            p.DeviceName = configuration.Agent.Device_Name;
+
+            p.ProbeFinished += p_ProbeFinished;
+            p.ProbeError += p_ProbeError;
+
+            p.Run();
+        }
+
+        void p_ProbeFinished(TH_MTC_Data.Components.ReturnData returnData, Probe probe)
+        {
+            UpdateProcessingStatus("Probe Received");
+
+            ProbeData = returnData;
+
+            TablePlugIns_Update_Probe(returnData);
+
+            ClearProcessingStatus();
+        }
+
+        void p_ProbeError(Probe.ErrorData errorData)
+        {
+            UpdateProcessingStatus("Probe Error");
+        }
+
+
+        #region "Old 12-7-15"
+
         void Probe_Initialize()
         {
             probe = new Probe();
-            probe.configuration = configuration;
+            //probe.configuration = configuration;
+            probe.Address = configuration.Agent.IP_Address;
+            probe.Port = configuration.Agent.Port;
+            probe.DeviceName = configuration.Agent.Device_Name;
+
             probe.ProbeFinished -= probe_ProbeFinished;
             probe.ProbeFinished += probe_ProbeFinished;
         }
@@ -87,6 +130,8 @@ namespace TH_Device_Server
 
         #endregion
 
+        #endregion
+
         #region "Current"
 
         Current current;
@@ -100,58 +145,27 @@ namespace TH_Device_Server
 
         bool currentStopped;
 
-        void Current_Initialize()
+        void Current_Run()
         {
-            Agent_First = DateTime.MinValue;
-            Agent_Last = DateTime.MinValue;
+            Current c = new Current();
 
-            current = new Current();
-            current.configuration = configuration;
-            current.CurrentFinished -= current_CurrentFinished;
-            current.CurrentFinished += current_CurrentFinished;
-            current.CurrentError += current_CurrentError;
+            c.Address = configuration.Agent.IP_Address;
+            c.Port = configuration.Agent.Port;
+            c.DeviceName = configuration.Agent.Device_Name;
+
+            c.CurrentFinished += c_CurrentFinished;
+            c.CurrentError += c_CurrentError;
 
             // Calculate interval to use for when to run a Sample
             sampleInterval = configuration.Agent.Sample_Heartbeat / configuration.Agent.Current_Heartbeat;
+
+            c.Run();
         }
 
-        void current_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void c_CurrentFinished(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            throw new NotImplementedException();
-        }
-
-        void Current_Start()
-        {
-            currentStopped = false;
-
-            UpdateProcessingStatus("Running Current Request..");
-            if (current != null) current.Start(configuration.Agent.Current_Heartbeat); 
-        }
-
-        void Current_Stop()
-        {
-            if (current != null) current.Stop();
-
-            currentStopped = true;
-            Connected = false;
-
-            sampleCounter = -1;
-        }
-
-        void Current_Restart()
-        {
-            if (current != null) current.Stop();
-
-            System.Threading.Thread.Sleep(2000);
-
-            Current_Start();
-        }
-
-        void current_CurrentFinished(TH_MTC_Data.Streams.ReturnData returnData)
-        {
-            Connected = true;
-
             UpdateProcessingStatus("Current Received");
+
 
             // Check Database Connections (if any) and don't continue till connection established
             bool dbsuccess = false;
@@ -171,10 +185,6 @@ namespace TH_Device_Server
                 }
             }
 
-            // If there was an error then restart Current requests
-            if (error) current.Start(configuration.Agent.Current_Heartbeat);
-
-            
             // Update Agent_Info
             if (Agent_ID != returnData.header.instanceId)
             {
@@ -192,38 +202,155 @@ namespace TH_Device_Server
             sampleCounter += 1;
 
 
-            if (configuration.Agent.Simulation_Sample_Files.Count > 0)
+            if (sampleCounter >= sampleInterval || (sampleCounter <= 0))
             {
-                Sample_Start();
-            }
-            else
-            {
-                if (sampleCounter >= sampleInterval || (sampleCounter <= 0))
-                {
-                    if (!inProgress)
-                    {
-                        Sample_Start(returnData.header);
-                        sampleCounter = 0;
-                    }
-                }
+                Sample_Run(returnData.header);
+                //Sample_Start(returnData.header);
+                sampleCounter = 0;
             }
 
             ClearProcessingStatus();
+
+            Thread.Sleep(configuration.Agent.Current_Heartbeat);
+
+            Current_Run();
         }
 
-        void current_CurrentError(Current.ErrorData errorData)
+        void c_CurrentError(Current.ErrorData errorData)
         {
-            Connected = false;
-
-            //Log(errorData.message);
-            WriteToConsole("Error Connecting to Current", ConsoleOutputType.Error);
-
-            //Current_Restart();
-
-            //current.Stop();
-            
-            //if (!currentStopped) current.Start(configuration.Agent.Current_Heartbeat); 
+            UpdateProcessingStatus("Current Error");
         }
+
+
+
+        //void Current_Initialize()
+        //{
+        //    Agent_First = DateTime.MinValue;
+        //    Agent_Last = DateTime.MinValue;
+
+        //    current = new Current();
+        //    //current.configuration = configuration;
+        //    current.Address = configuration.Agent.IP_Address;
+        //    current.Port = configuration.Agent.Port;
+        //    current.DeviceName = configuration.Agent.Device_Name;
+
+        //    current.CurrentFinished -= current_CurrentFinished;
+        //    current.CurrentFinished += current_CurrentFinished;
+        //    current.CurrentError += current_CurrentError;
+
+        //    // Calculate interval to use for when to run a Sample
+        //    sampleInterval = configuration.Agent.Sample_Heartbeat / configuration.Agent.Current_Heartbeat;
+        //}
+
+        //void current_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //void Current_Start()
+        //{
+        //    currentStopped = false;
+
+        //    UpdateProcessingStatus("Running Current Request..");
+        //    if (current != null) current.Start(configuration.Agent.Current_Heartbeat); 
+        //}
+
+        //void Current_Stop()
+        //{
+        //    if (current != null) current.Stop();
+
+        //    currentStopped = true;
+        //    Connected = false;
+
+        //    sampleCounter = -1;
+        //}
+
+        //void Current_Restart()
+        //{
+        //    if (current != null) current.Stop();
+
+        //    System.Threading.Thread.Sleep(2000);
+
+        //    Current_Start();
+        //}
+
+        //void current_CurrentFinished(TH_MTC_Data.Streams.ReturnData returnData)
+        //{
+        //    Connected = true;
+
+        //    UpdateProcessingStatus("Current Received");
+
+        //    // Check Database Connections (if any) and don't continue till connection established
+        //    bool dbsuccess = false;
+        //    bool error = false;
+
+        //    while (!dbsuccess)
+        //    {
+        //        dbsuccess = CheckDatabaseConnections(configuration);
+
+        //        if (dbsuccess) UpdateProcessingStatus("Database Connections Established");
+        //        else
+        //        {
+        //            current.Stop();
+        //            WriteToConsole("Error in Database Connection... Retrying in 1000ms", ConsoleOutputType.Error);
+        //            System.Threading.Thread.Sleep(1000);
+        //            error = true;
+        //        }
+        //    }
+
+        //    // If there was an error then restart Current requests
+        //    if (error) current.Start(configuration.Agent.Current_Heartbeat);
+
+            
+        //    // Update Agent_Info
+        //    if (Agent_ID != returnData.header.instanceId)
+        //    {
+        //        Agent_First = returnData.header.creationTime;
+        //    }
+        //    Agent_Last = returnData.header.creationTime;
+        //    if (Agent_Last < Agent_First) Agent_Last = Agent_First;
+        //    Agent_ID = returnData.header.instanceId;
+
+
+        //    // Update all of the PlugIns with the ReturnData object
+        //    TablePlugIns_Update_Current(returnData);
+
+        //    // Run Sample if sampleCounter is over sampleInterval
+        //    sampleCounter += 1;
+
+
+        //    if (configuration.Agent.Simulation_Sample_Files.Count > 0)
+        //    {
+        //        //Sample_Start();
+        //    }
+        //    else
+        //    {
+        //        if (sampleCounter >= sampleInterval || (sampleCounter <= 0))
+        //        {
+        //            if (!inProgress)
+        //            {
+        //                Sample_Start(returnData.header);
+        //                sampleCounter = 0;
+        //            }
+        //        }
+        //    }
+
+        //    ClearProcessingStatus();
+        //}
+
+        //void current_CurrentError(Current.ErrorData errorData)
+        //{
+        //    Connected = false;
+
+        //    //Log(errorData.message);
+        //    WriteToConsole("Error Connecting to Current", ConsoleOutputType.Error);
+
+        //    //Current_Restart();
+
+        //    //current.Stop();
+            
+        //    //if (!currentStopped) current.Start(configuration.Agent.Current_Heartbeat); 
+        //}
 
         #endregion
 
@@ -273,155 +400,67 @@ namespace TH_Device_Server
 
         const Int64 MaxSampleCount = 10000;
 
-        void Sample_Start(TH_MTC_Data.Header_Streams header)
+        void Sample_Run(TH_MTC_Data.Header_Streams header)
         {
-            UpdateProcessingStatus("Running Sample Request..");
+            Sample s = new Sample();
+            s.Address = configuration.Agent.IP_Address;
+            s.Port = configuration.Agent.Port;
+            s.DeviceName = configuration.Agent.Device_Name;
 
-            sample = new Sample();
-            sample.configuration = configuration;
-            sample.SampleFinished -= sample_SampleFinished;
-            sample.SampleFinished += sample_SampleFinished;
+            s.SampleFinished += s_SampleFinished;
+            s.SampleError += s_SampleError;
 
-            if (sample != null)
+            // Check/Update Agent Instance Id -------------------
+            Int64 lastInstanceId = agentInstanceId;
+            agentInstanceId = header.instanceId;
+            Variables.Update(configuration.Databases_Server, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime, TablePrefix);
+            // --------------------------------------------------
+
+            // Get Sequence Number to use -----------------------
+            Int64 First = header.firstSequence;
+            if (!startFromFirst)
             {
-                // Check/Update Agent Instance Id -------------------
-                Int64 lastInstanceId = agentInstanceId;
-                agentInstanceId = header.instanceId;
-                Variables.Update(configuration.Databases_Server, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime, TablePrefix);
-                // --------------------------------------------------
-
-                // Get Sequence Number to use -----------------------
-                Int64 First = header.firstSequence;
-                if (!startFromFirst)
-                {
-                    First = header.lastSequence;
-                    startFromFirst = true;
-                }
-                else if (lastInstanceId == agentInstanceId && lastSequenceSampled > 0 && lastSequenceSampled >= header.firstSequence)
-                {
-                    First = lastSequenceSampled + 1;
-                }
-                else if (First > 0)
-                {
-                    Int64 first = First;
-
-                    // Increment some sequences since the Agent might change the first sequence
-                    // before the Sample request gets read
-                    // (should be fixed in Agent to automatically read the first 'available' sequence
-                    // instead of returning an error)
-                    First += 20;
-                }
-
-                // Get Last Sequence Number available from Header
-                Int64 Last = header.lastSequence;
-
-                // Calculate Sample count
-                Int64 SampleCount = Last - First;
-                if (SampleCount > MaxSampleCount)
-                {
-                    SampleCount = MaxSampleCount;
-                    Last = First + MaxSampleCount;
-                }
-
-                // Update Last Sequence Sampled for the subsequent samples
-                // lastSequenceSampled_temp = Last;
-                lastSequenceSampled = Last;
-                Variables.Update(configuration.Databases_Server, "Last_Sequence_Sampled", Last.ToString(), header.creationTime, TablePrefix);
-
-
-                //if (configuration.Agent.Simulation_Sample_Path != null)
-                //{
-                //    Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
-                //    sample.Start(null, First, SampleCount);
-                //}
-                //else if (SampleCount > 0)
-                if (SampleCount > 0 && configuration.Agent.Sample_Heartbeat >= 0)
-                {
-                    //Log("Sample_Start() : " + First.ToString() + " to " + Last.ToString());
-                    sample.Start(null, First, SampleCount);
-                }
-                else
-                {
-                    //Log("Sample Skipped : No New Data! : " + First.ToString() + " to " + Last.ToString());
-
-                    // Update all of the Table Plugins with a Null ReturnData
-                    TablePlugIns_Update_Sample(null);
-                }
-
+                First = header.lastSequence;
+                startFromFirst = true;
             }
-        }
-
-        void Sample_Start()
-        {
-            Probe_Stop();
-            Current_Stop();
-
-
-            SampleSimulation_Start();
-
-            //if (configuration.Agent.Simulation_Sample_Files.Count > 0)
-            //{
-            //    foreach (string filePath in configuration.Agent.Simulation_Sample_Files)
-            //    {
-            //        Sample simSample = new Sample();
-            //        simSample.configuration = configuration;
-            //        //simSample.SampleFinished -= sample_SampleFinished;
-            //        simSample.SampleFinished += sample_SampleFinished;
-            //        simSample.Start(filePath);
-            //    }
-            //}
-
-
-
-
-            //Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
-
-            //sample = new Sample();
-            //sample.configuration = configuration;
-            //sample.SampleFinished -= sample_SampleFinished;
-            //sample.SampleFinished += sample_SampleFinished;
-            //sample.Start(null, 0, 0);
-        }
-
-        int simulationIndex = 0;
-
-        System.Timers.Timer SampleSimulation_TIMER;
-
-        void SampleSimulation_Start()
-        {
-            SampleSimulation_TIMER = new System.Timers.Timer();
-            SampleSimulation_TIMER.Interval = 2000;
-            SampleSimulation_TIMER.Elapsed += SampleSimulation_TIMER_Elapsed;
-            SampleSimulation_TIMER.Enabled = true;
-        }
-
-        void SampleSimulation_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (configuration.Agent.Simulation_Sample_Files.Count > simulationIndex)
+            else if (lastInstanceId == agentInstanceId && lastSequenceSampled > 0 && lastSequenceSampled >= header.firstSequence)
             {
-                string filePath = configuration.Agent.Simulation_Sample_Files[simulationIndex];
-
-                Sample simSample = new Sample();
-                simSample.configuration = configuration;
-                simSample.SampleFinished += sample_SampleFinished;
-                simSample.Start(filePath);
-
-                simulationIndex += 1;
+                First = lastSequenceSampled + 1;
             }
-            else
+            else if (First > 0)
             {
-                SampleSimulation_TIMER.Enabled = false;
+                Int64 first = First;
+
+                // Increment some sequences since the Agent might change the first sequence
+                // before the Sample request gets read
+                // (should be fixed in Agent to automatically read the first 'available' sequence
+                // instead of returning an error)
+                First += 20;
             }
+
+            // Get Last Sequence Number available from Header
+            Int64 Last = header.lastSequence;
+
+            // Calculate Sample count
+            Int64 SampleCount = Last - First;
+            if (SampleCount > MaxSampleCount)
+            {
+                SampleCount = MaxSampleCount;
+                Last = First + MaxSampleCount;
+            }
+
+            // Update Last Sequence Sampled for the subsequent samples
+            lastSequenceSampled = Last;
+            Variables.Update(configuration.Databases_Server, "Last_Sequence_Sampled", Last.ToString(), header.creationTime, TablePrefix);
+
+            if (SampleCount > 0)
+            {
+                s.Run(null, First, SampleCount);
+            }
+
         }
 
-
-
-        void Sample_Stop()
-        {
-            if (sample != null) sample.Stop();
-        }
-
-        void sample_SampleFinished(TH_MTC_Data.Streams.ReturnData returnData)
+        void s_SampleFinished(TH_MTC_Data.Streams.ReturnData returnData)
         {
             UpdateProcessingStatus("Sample Received..");
 
@@ -430,6 +469,173 @@ namespace TH_Device_Server
 
             ClearProcessingStatus();
         }
+
+        void s_SampleError(Sample.ErrorData errorData)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+        //void Sample_Start(TH_MTC_Data.Header_Streams header)
+        //{
+        //    UpdateProcessingStatus("Running Sample Request..");
+
+        //    sample = new Sample();
+        //    sample.configuration = configuration;
+        //    sample.SampleFinished -= sample_SampleFinished;
+        //    sample.SampleFinished += sample_SampleFinished;
+
+        //    if (sample != null)
+        //    {
+        //        // Check/Update Agent Instance Id -------------------
+        //        Int64 lastInstanceId = agentInstanceId;
+        //        agentInstanceId = header.instanceId;
+        //        Variables.Update(configuration.Databases_Server, "Agent_InstanceID", agentInstanceId.ToString(), header.creationTime, TablePrefix);
+        //        // --------------------------------------------------
+
+        //        // Get Sequence Number to use -----------------------
+        //        Int64 First = header.firstSequence;
+        //        if (!startFromFirst)
+        //        {
+        //            First = header.lastSequence;
+        //            startFromFirst = true;
+        //        }
+        //        else if (lastInstanceId == agentInstanceId && lastSequenceSampled > 0 && lastSequenceSampled >= header.firstSequence)
+        //        {
+        //            First = lastSequenceSampled + 1;
+        //        }
+        //        else if (First > 0)
+        //        {
+        //            Int64 first = First;
+
+        //            // Increment some sequences since the Agent might change the first sequence
+        //            // before the Sample request gets read
+        //            // (should be fixed in Agent to automatically read the first 'available' sequence
+        //            // instead of returning an error)
+        //            First += 20;
+        //        }
+
+        //        // Get Last Sequence Number available from Header
+        //        Int64 Last = header.lastSequence;
+
+        //        // Calculate Sample count
+        //        Int64 SampleCount = Last - First;
+        //        if (SampleCount > MaxSampleCount)
+        //        {
+        //            SampleCount = MaxSampleCount;
+        //            Last = First + MaxSampleCount;
+        //        }
+
+        //        // Update Last Sequence Sampled for the subsequent samples
+        //        // lastSequenceSampled_temp = Last;
+        //        lastSequenceSampled = Last;
+        //        Variables.Update(configuration.Databases_Server, "Last_Sequence_Sampled", Last.ToString(), header.creationTime, TablePrefix);
+
+
+        //        //if (configuration.Agent.Simulation_Sample_Path != null)
+        //        //{
+        //        //    Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
+        //        //    sample.Start(null, First, SampleCount);
+        //        //}
+        //        //else if (SampleCount > 0)
+        //        if (SampleCount > 0 && configuration.Agent.Sample_Heartbeat >= 0)
+        //        {
+        //            //Log("Sample_Start() : " + First.ToString() + " to " + Last.ToString());
+        //            //sample.Start(null, First, SampleCount);
+        //            sample.Run(null, First, SampleCount);
+        //        }
+        //        else
+        //        {
+        //            //Log("Sample Skipped : No New Data! : " + First.ToString() + " to " + Last.ToString());
+
+        //            // Update all of the Table Plugins with a Null ReturnData
+        //            TablePlugIns_Update_Sample(null);
+        //        }
+
+        //    }
+        //}
+
+        //void Sample_Start()
+        //{
+        //    Probe_Stop();
+        //    Current_Stop();
+
+
+        //    SampleSimulation_Start();
+
+        //    //if (configuration.Agent.Simulation_Sample_Files.Count > 0)
+        //    //{
+        //    //    foreach (string filePath in configuration.Agent.Simulation_Sample_Files)
+        //    //    {
+        //    //        Sample simSample = new Sample();
+        //    //        simSample.configuration = configuration;
+        //    //        //simSample.SampleFinished -= sample_SampleFinished;
+        //    //        simSample.SampleFinished += sample_SampleFinished;
+        //    //        simSample.Start(filePath);
+        //    //    }
+        //    //}
+
+
+
+
+        //    //Log("Sample_Start() : Simulation File : " + configuration.Agent.Simulation_Sample_Path);
+
+        //    //sample = new Sample();
+        //    //sample.configuration = configuration;
+        //    //sample.SampleFinished -= sample_SampleFinished;
+        //    //sample.SampleFinished += sample_SampleFinished;
+        //    //sample.Start(null, 0, 0);
+        //}
+
+        //int simulationIndex = 0;
+
+        //System.Timers.Timer SampleSimulation_TIMER;
+
+        //void SampleSimulation_Start()
+        //{
+        //    SampleSimulation_TIMER = new System.Timers.Timer();
+        //    SampleSimulation_TIMER.Interval = 2000;
+        //    SampleSimulation_TIMER.Elapsed += SampleSimulation_TIMER_Elapsed;
+        //    SampleSimulation_TIMER.Enabled = true;
+        //}
+
+        //void SampleSimulation_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    if (configuration.Agent.Simulation_Sample_Files.Count > simulationIndex)
+        //    {
+        //        string filePath = configuration.Agent.Simulation_Sample_Files[simulationIndex];
+
+        //        Sample simSample = new Sample();
+        //        simSample.configuration = configuration;
+        //        simSample.SampleFinished += sample_SampleFinished;
+        //        //simSample.Start(filePath);
+
+        //        simulationIndex += 1;
+        //    }
+        //    else
+        //    {
+        //        SampleSimulation_TIMER.Enabled = false;
+        //    }
+        //}
+
+
+
+        //void Sample_Stop()
+        //{
+        //    if (sample != null) sample.Stop();
+        //}
+
+        //void sample_SampleFinished(TH_MTC_Data.Streams.ReturnData returnData)
+        //{
+        //    UpdateProcessingStatus("Sample Received..");
+
+        //    // Update all of the Table Plugins with the ReturnData
+        //    TablePlugIns_Update_Sample(returnData);
+
+        //    ClearProcessingStatus();
+        //}
 
         #endregion
 

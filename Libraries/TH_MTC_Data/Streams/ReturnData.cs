@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Xml;
+using System.Collections.Generic;
 
 namespace TH_MTC_Data.Streams
 {
@@ -9,14 +10,8 @@ namespace TH_MTC_Data.Streams
     /// </summary>
     public class ReturnData
     {
-        // Dataset with DataTables containing Current values
-        //public DataSet DS;
-
         // Device object with heirarchy of values and xml structure
-        public DeviceStream deviceStream;
-
-        // Raw XML document
-        //public XmlDocument xmlDocument;
+        public List<DeviceStream> deviceStreams;
 
         // Header Information
         public Header_Streams header;

@@ -157,15 +157,13 @@ namespace TH_Device_Server
             {
                 foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
                 {
-                    //if (tp.IsValueCreated)
-                    //{
                     InitializeWorkerInfo info = new InitializeWorkerInfo();
                     info.config = Config;
                     info.useDatabases = useDatabases;
                     info.tablePlugin = tp.Value;
 
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
-                    //}
+                    TablePlugIn_Initialize_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
                 }
             }
         }
@@ -208,7 +206,8 @@ namespace TH_Device_Server
                         info.returnData = returnData;
                         info.tablePlugin = tp.Value;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
+                        TablePlugIns_Update_Probe_Worker(info);
+                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
                     }
                 }
             }
@@ -242,7 +241,8 @@ namespace TH_Device_Server
                         info.returnData = returnData;
                         info.tablePlugin = tp.Value;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
+                        TablePlugIns_Update_Current_Worker(info);
+                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
                     }
                 }
             }
@@ -276,7 +276,8 @@ namespace TH_Device_Server
                         info.returnData = returnData;
                         info.tablePlugin = tp.Value;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
+                        TablePlugIns_Update_Sample_Worker(info);
+                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
                     }
                 }
             }
@@ -310,7 +311,8 @@ namespace TH_Device_Server
                         info.de_data = de_data;
                         info.tablePlugin = tp.Value;
 
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
+                        TablePlugIn_Update_DataEvent_Worker(info);
+                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
                     }
                 }
             }
@@ -338,12 +340,16 @@ namespace TH_Device_Server
         {
             if (TablePlugIns != null)
             {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
                 {
-                    if (tp.IsValueCreated)
-                    {
-                        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Closing_Worker), tp.Value);
-                    }
+                    Table_PlugIn tp = ltp.Value;
+                    TablePlugIn_Closing_Worker(tp);
+
+                    //if (tp.IsValueCreated)
+                    //{
+                    //    TablePlugIn_Closing_Worker
+                    //    ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Closing_Worker), tp.Value);
+                    //}
                 }
             }
         }

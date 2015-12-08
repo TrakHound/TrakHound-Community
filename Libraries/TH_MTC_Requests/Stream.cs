@@ -44,7 +44,7 @@ namespace TH_MTC_Requests
 
         public string url { get; set; }
 
-        public int interval { get; set; }
+        //public int interval { get; set; }
 
         public int failureAttempts { get; set; }
         public int failureRetryInterval { get; set; }
@@ -61,7 +61,7 @@ namespace TH_MTC_Requests
 
             if (Started != null) Started();
 
-            stream_Start();
+            //stream_Start();
 
             //heartBeat_TIMER = new System.Timers.Timer();
             //heartBeat_TIMER.AutoReset = false;
@@ -72,8 +72,7 @@ namespace TH_MTC_Requests
 
         public void Stop()
         {
-            stop.Set();
-
+            //stop.Set();
 
             //if (heartBeat_TIMER != null) heartBeat_TIMER.Enabled = false;
 
@@ -83,6 +82,28 @@ namespace TH_MTC_Requests
         #endregion
 
         #region "Methods"
+
+        public void Run()
+        {
+            string response = HTTP.GetData(url, InsureDelivery);
+
+            if (response != null)
+            {
+                if (ResponseReceived != null) ResponseReceived(response);
+            }
+            else
+            {
+                Error error = new Error();
+                error.message = "Stream Connection Failed @ " + url;
+
+                if (ResponseError != null) ResponseError(error);
+            }
+        }
+
+
+
+
+
 
         void Free()
         {
@@ -121,16 +142,31 @@ namespace TH_MTC_Requests
                 //    else break;
                 //}
 
-                string response = HTTP.GetData(url, InsureDelivery);
+                //string response = HTTP.GetData(url, InsureDelivery);
 
-                if (response != null)
-                {
-                    if (ResponseReceived != null) ResponseReceived(response);
+                //if (response != null)
+                //{
+                //    if (ResponseReceived != null) ResponseReceived(response);
 
-                    if (interval > 0) Thread.Sleep(interval);
-                    else break;
-                }
-                else Thread.Sleep(interval);
+                //    if (interval > 0) Thread.Sleep(interval);
+                //    else stop.Set();
+                //}
+                //else if (interval < 1)
+                //{
+                //    Error error = new Error();
+                //    error.message = "Stream Connection Failed";
+                //    if (ResponseError != null) ResponseError(error);
+
+                //    stop.Set();
+                //}
+                //else
+                //{
+                //    Error error = new Error();
+                //    error.message = "Stream Connection Failed";
+                //    if (ResponseError != null) ResponseError(error);
+
+                //    Thread.Sleep(interval);
+                //}
             } 
         }
 

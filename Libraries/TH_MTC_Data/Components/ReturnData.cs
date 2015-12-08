@@ -8,19 +8,18 @@ namespace TH_MTC_Data.Components
     // <summary>
     // Object class to return all data associated with Probe command results
     // </summary>
-    public class ReturnData
+    public class ReturnData : IDisposable
     {
-         //Dataset with DataTables containing Probe values
-        //public DataSet DS;
-
          //Device object with heirarchy of values and xml structure
-        //public Device device;
         public List<Device> devices;
-
-         //Raw XML document
-        //public XmlDocument xmlDocument;
 
          //Header Information
         public Header_Devices header;
+
+        public void Dispose()
+        {
+            devices.Clear();
+            devices = null;
+        }
     }
 }

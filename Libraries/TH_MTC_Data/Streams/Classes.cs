@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace TH_MTC_Data.Streams
 {
-    public class DeviceStream
+    public class DeviceStream : IDisposable
     {
         public DeviceStream()
         {
@@ -34,9 +34,18 @@ namespace TH_MTC_Data.Streams
         public List<ComponentStream> ComponentStreams;
 
         public DataItemCollection dataItems;
+
+        public void Dispose()
+        {
+            ComponentStreams.Clear();
+            ComponentStreams = null;
+
+            dataItems.Dispose();
+            dataItems = null;
+        }
     }
 
-    public class ComponentStream
+    public class ComponentStream : IDisposable
     {
         public ComponentStream()
         {
@@ -63,11 +72,17 @@ namespace TH_MTC_Data.Streams
         public DataItemCollection dataItems;
 
         public string fullAddress { get; set; }
+
+        public void Dispose()
+        {
+            dataItems.Dispose();
+            dataItems = null;
+        }
     }
 
     // Data Items
 
-    public class DataItemCollection
+    public class DataItemCollection : IDisposable
     {
         public DataItemCollection()
         {
@@ -79,6 +94,16 @@ namespace TH_MTC_Data.Streams
         public List<Condition> Conditions;
         public List<Event> Events;
         public List<Sample> Samples;
+
+        public void Dispose()
+        {
+            Conditions.Clear();
+            Events.Clear();
+            Samples.Clear();
+            Conditions = null;
+            Events = null;
+            Samples = null;
+        }
     }
 
     public class Condition

@@ -284,6 +284,9 @@ namespace TH_DeviceCompare
                             // Shift Info
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_Snapshots), Priority_Context, new object[] { dd, de_d.data02 });
 
+                            // OEE Timeline / Histogram
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Timeline_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
+
                             // Production Status Times
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
 

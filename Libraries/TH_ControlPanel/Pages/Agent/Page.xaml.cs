@@ -281,7 +281,7 @@ namespace TH_DeviceManager.Pages.Agent
         {
             Console.WriteLine("Probe Error :: " + errorData.message);
 
-            this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { errorData.probe.URL });
+            //this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { errorData.probe.URL });
 
             if (errorData.probe != null)
             {

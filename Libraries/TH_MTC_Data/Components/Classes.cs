@@ -11,7 +11,7 @@ using System.Xml;
 namespace TH_MTC_Data.Components
 {
 
-    public class Device
+    public class Device : IDisposable
     {
         public Device()
         {
@@ -42,9 +42,18 @@ namespace TH_MTC_Data.Components
         public List<Component> components;
 
         public DataItemCollection dataItems { get; set; }
+
+        public void Dispose()
+        {
+            components.Clear();
+            components = null;
+
+            dataItems.Dispose();
+            dataItems = null;
+        }
     }
 
-    public class Component
+    public class Component : IDisposable
     {
         public Component() 
         { 
@@ -80,9 +89,18 @@ namespace TH_MTC_Data.Components
         public DataItemCollection dataItems { get; set; }
 
         public string fullAddress { get; set; }
+
+        public void Dispose()
+        {
+            components.Clear();
+            components = null;
+
+            dataItems.Dispose();
+            dataItems = null;
+        }
     }
 
-    public class DataItemCollection
+    public class DataItemCollection : IDisposable
     {
         public DataItemCollection()
         {
@@ -94,6 +112,16 @@ namespace TH_MTC_Data.Components
         public List<DataItem> Conditions;
         public List<DataItem> Events;
         public List<DataItem> Samples;
+
+        public void Dispose()
+        {
+            Conditions.Clear();
+            Events.Clear();
+            Samples.Clear();
+            Conditions = null;
+            Events = null;
+            Samples = null;
+        }
     }
 
     public class Description
@@ -181,7 +209,6 @@ namespace TH_MTC_Data.Components
 
             public class Filter
             {
-
                 public Filter() { }
 
                 public Filter(XmlNode FilterNode)

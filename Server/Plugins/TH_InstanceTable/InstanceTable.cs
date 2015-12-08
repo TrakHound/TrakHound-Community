@@ -548,10 +548,8 @@ namespace TH_InstanceTable
 
         public class CurrentInstanceData
         {
-
             public TH_MTC_Data.Streams.ReturnData currentData { get; set; }
             public InstanceData data { get; set; }
-
         }
 
         // Process instance table after receiving Sample Data
@@ -564,10 +562,10 @@ namespace TH_InstanceTable
             {
                 InstanceData previousData = PreviousInstanceData_old;
 
-                if (sampleData.deviceStream != null && currentData.deviceStream != null)
+                if (sampleData.deviceStreams != null && currentData.deviceStreams != null)
                 {
                     // Get all of the DataItems from the DeviceStream object
-                    TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(sampleData.deviceStream);
+                    TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(sampleData.deviceStreams[0]);
 
                     // Convert the DataItems to a List of InstanceVariableData objects
                     List<InstanceVariableData> values = GetVariableDataFromDataItemCollection(dataItems);
@@ -667,7 +665,7 @@ namespace TH_InstanceTable
         {
 
             // Get all of the DataItems from the DeviceStream object
-            TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStream);
+            TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
 
             // Set Conditions
             foreach (TH_MTC_Data.Streams.Condition condition_DI in dataItems.Conditions)
