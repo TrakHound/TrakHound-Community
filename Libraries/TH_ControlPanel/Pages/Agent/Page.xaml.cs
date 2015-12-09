@@ -238,19 +238,13 @@ namespace TH_DeviceManager.Pages.Agent
 
         void RunProbe(string url, int port, string deviceName)
         {
-            // Create Configuration with agent settings
-            Configuration config = new Configuration();
-            Agent_Settings agentSettings = new Agent_Settings();
-
-            agentSettings.IP_Address = url;
-            agentSettings.Port = port;
-            agentSettings.Device_Name = deviceName;
-
-            config.Agent = agentSettings;
-
             // Run a Probe request
             Probe probe = new Probe();
-            probe.configuration = config;
+
+            probe.Address = url;
+            probe.Port = port;
+            probe.DeviceName = deviceName;
+
             probe.ProbeFinished += probe_ProbeFinished;
             probe.ProbeError += probe_ProbeError;
             probe.Start();
@@ -259,9 +253,9 @@ namespace TH_DeviceManager.Pages.Agent
         void probe_ProbeFinished(ReturnData returnData, Probe sender)
         {
             // Update port
-            if (sender.configuration.Agent.Port > 0)
+            if (sender.Port > 0)
             {
-                this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { sender.configuration.Agent.Port });
+                this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { sender.Port });
             }
 
             this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
@@ -288,7 +282,7 @@ namespace TH_DeviceManager.Pages.Agent
                 // Run Probe again using other ports
                 if (tryPortIndex < tryPorts.Length - 1)
                 {
-                    RunProbe(errorData.probe.configuration.Agent.IP_Address, tryPorts[tryPortIndex], errorData.probe.configuration.Agent.Device_Name);
+                    RunProbe(errorData.probe.Address, tryPorts[tryPortIndex], errorData.probe.DeviceName);
                     tryPortIndex += 1;
                 }
                 else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });

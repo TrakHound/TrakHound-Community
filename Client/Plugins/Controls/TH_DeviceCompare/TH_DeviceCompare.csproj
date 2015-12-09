@@ -38,15 +38,6 @@
     <OutputPath>bin\Server\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OxyPlot">
-      <HintPath>..\..\..\..\packages\OxyPlot.Core.2014.1.546\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot.Wpf">
-      <HintPath>..\..\..\..\packages\OxyPlot.Wpf.2014.1.546\lib\net45\OxyPlot.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="OxyPlot.Xps">
-      <HintPath>..\..\..\..\packages\OxyPlot.Wpf.2014.1.546\lib\net45\OxyPlot.Xps.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -92,10 +83,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PieChartDisplay.xaml">
+    <None Include="Controls\PieChartDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="Controls\ShiftDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,9 +112,9 @@
     <Compile Include="Controls\NumberDisplay.xaml.cs">
       <DependentUpon>NumberDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PieChartDisplay.xaml.cs">
+    <None Include="Controls\PieChartDisplay.xaml.cs">
       <DependentUpon>PieChartDisplay.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Controls\ShiftDisplay.xaml.cs">
       <DependentUpon>ShiftDisplay.xaml</DependentUpon>
     </Compile>
@@ -139,10 +130,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TimeLineDisplay.xaml">
+    <None Include="Controls\TimeLineDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="DeviceCompare.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -158,9 +149,9 @@
     <Compile Include="Controls\TimeDisplay.xaml.cs">
       <DependentUpon>TimeDisplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TimeLineDisplay.xaml.cs">
+    <None Include="Controls\TimeLineDisplay.xaml.cs">
       <DependentUpon>TimeLineDisplay.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="DeviceCompare.xaml.cs">
       <DependentUpon>DeviceCompare.xaml</DependentUpon>
     </Compile>
@@ -186,7 +177,6 @@
     <Resource Include="Fonts\DS-DIGIB.TTF" />
     <Resource Include="Fonts\DS-DIGII.TTF" />
     <Resource Include="Fonts\DS-DIGIT.TTF" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -230,6 +220,7 @@
     <ProjectReference Include="..\..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
       <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
       <Name>TH_UserManagement</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>

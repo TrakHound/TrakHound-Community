@@ -463,23 +463,18 @@ namespace TH_InstanceTable.ConfigurationPage
             RunProbe(ip, port, devicename);
         }
 
-        void RunProbe(string url, int port, string deviceName)
+        void RunProbe(string address, int port, string deviceName)
         {
-            // Create Configuration with agent settings
-            Configuration config = new Configuration();
-            Agent_Settings agentSettings = new Agent_Settings();
-
-            agentSettings.IP_Address = url;
-            agentSettings.Port = port;
-            agentSettings.Device_Name = deviceName;
-
-            config.Agent = agentSettings;
-
             // Run a Probe request
             Probe probe = new Probe();
-            probe.configuration = config;
+
+            probe.Address = address;
+            probe.Port = port;
+            probe.DeviceName = deviceName;
+
             probe.ProbeFinished += probe_ProbeFinished;
             probe.ProbeError += probe_ProbeError;
+
             probe.Start();
         }
 

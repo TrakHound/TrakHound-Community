@@ -147,23 +147,18 @@ namespace TH_GeneratedData.ConfigurationPage
             RunProbe(ip, port, devicename);
         }
 
-        void RunProbe(string url, int port, string deviceName)
+        void RunProbe(string address, int port, string deviceName)
         {
-            // Create Configuration with agent settings
-            Configuration config = new Configuration();
-            Agent_Settings agentSettings = new Agent_Settings();
-
-            agentSettings.IP_Address = url;
-            agentSettings.Port = port;
-            agentSettings.Device_Name = deviceName;
-
-            config.Agent = agentSettings;
-
             // Run a Probe request
             Probe probe = new Probe();
-            probe.configuration = config;
+
+            probe.Address = address;
+            probe.Port = port;
+            probe.DeviceName = deviceName;
+
             probe.ProbeFinished += probe_ProbeFinished;
             probe.ProbeError += probe_ProbeError;
+
             probe.Start();
         }
 
@@ -588,7 +583,16 @@ namespace TH_GeneratedData.ConfigurationPage
 
             Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
-            foreach (Value v in e.values) SaveValue(v, e, dt);
+            int numval = e.values.Count;
+            foreach (Value v in e.values)
+            {
+                if (v.result != null)
+                {
+                    v.result.numval = numval;
+                    numval -= 1;
+                }
+                SaveValue(v, e, dt);
+            }
 
             foreach (CaptureItem ci in e.captureItems) SaveCaptureItems(ci, e, dt);
 
@@ -645,7 +649,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
         void SaveTrigger(Trigger t, Value v, Event e, DataTable dt)
         {
-            if (t.link != null && t.modifier != null && t.value != null)
+            if (t.link != null && t.modifier != null)
             {
                 int id = 0;
                 string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
@@ -1005,13 +1009,13 @@ namespace TH_GeneratedData.ConfigurationPage
 
             foreach (Event e in genEvents)
             {
-                this.Dispatcher.BeginInvoke(new Action<Event>(AddEvent), priority, new object[] { e });
+                this.Dispatcher.BeginInvoke(new Action<Event, bool>(AddEvent), priority, new object[] { e, false });
             }
         }
 
         bool first = true;
 
-        void AddEvent(Event e)
+        void AddEvent(Event e, bool select = false)
         {
             Controls.Event ev = CreateEvent(e);
 
@@ -1024,8 +1028,11 @@ namespace TH_GeneratedData.ConfigurationPage
             TH_WPF.CollapseButton bt = new TH_WPF.CollapseButton();
             bt.ButtonContent = event_bt;
 
-            //if (first) bt.IsExpanded = true;
-            //first = false;
+            if (select)
+            {
+                event_bt.eventname_TXT.Focus();
+                event_bt.eventname_TXT.SelectAll();
+            }
 
             bt.PageContent = ev;
 
@@ -1270,7 +1277,11 @@ namespace TH_GeneratedData.ConfigurationPage
             result.SettingChanged += CaptureItem_SettingChanged;
             result.RemoveClicked += CaptureItem_RemoveClicked;
 
-            result.CaptureName = TH_Global.Formatting.UppercaseFirst(ci.name.Replace('_',' '));
+            if (ci.name != null)
+            {
+                result.CaptureName = TH_Global.Formatting.UppercaseFirst(ci.name.Replace('_', ' '));
+            }
+            
 
             result.link_COMBO.Text = ci.link;
 
@@ -1318,7 +1329,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
             GeneratedEvents.Add(e);
 
-            AddEvent(e);
+            AddEvent(e, true);
             //LoadGeneratedEvents_GUI(e);
 
             //if (EventButtons.Count > 0)

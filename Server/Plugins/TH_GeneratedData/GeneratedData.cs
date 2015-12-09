@@ -52,6 +52,8 @@ namespace TH_GeneratedData
                 if (UseDatabases)
                 if (gdc.generatedEvents.UploadToMySQL)
                 {
+                    CreateValueTable(gdc.generatedEvents.events);
+
                     foreach (GeneratedEvents.Event e in gdc.generatedEvents.events) CreateGeneratedEventTable(e);
                 }  
             }
@@ -260,12 +262,12 @@ namespace TH_GeneratedData
                         foreach (Trigger Trigger in Value.Triggers)
                         {
 
-                            InstanceTable.InstanceData.Value instanceValue = instanceData.values.Find(x => x.id.ToLower() == Trigger.Link.ToLower());
+                            InstanceTable.InstanceData.Value instanceValue = instanceData.values.Find(x => GetValue(x, "id") == GetValue(Trigger, "Link"));
                             if (instanceValue != null)
                             {
                                 if (Trigger.Modifier == TriggerModifier.NOT)
                                 {
-                                    if (instanceValue.value.ToLower() != Trigger.Value.ToLower()) ConditionsMet = true;
+                                    if (GetValue(instanceValue, "value") != GetValue(Trigger, "Value")) ConditionsMet = true;
                                     else ConditionsMet = false;
                                 }
                                 else if (Trigger.Modifier == TriggerModifier.GREATER_THAN)
@@ -312,7 +314,7 @@ namespace TH_GeneratedData
                                 }               
                                 else
                                 {
-                                    if (instanceValue.value.ToLower() == Trigger.Value.ToLower()) ConditionsMet = true;
+                                    if (GetValue(instanceValue, "value") == GetValue(Trigger, "Value")) ConditionsMet = true;
                                     else ConditionsMet = false;
                                 }
                             }
@@ -336,7 +338,7 @@ namespace TH_GeneratedData
                                     {
                                         if (MultiTrigger_Trigger.Modifier == TriggerModifier.NOT)
                                         {
-                                            if (instanceValue.value.ToLower() != MultiTrigger_Trigger.Value.ToLower()) ConditionsMet = true;
+                                            if (GetValue(instanceValue, "value") != GetValue(MultiTrigger_Trigger, "Value")) ConditionsMet = true;
                                             else ConditionsMet = false;
                                         }
                                         else if (MultiTrigger_Trigger.Modifier == TriggerModifier.GREATER_THAN)
@@ -383,7 +385,7 @@ namespace TH_GeneratedData
                                         }    
                                         else
                                         {
-                                            if (instanceValue.value.ToLower() == MultiTrigger_Trigger.Value.ToLower()) ConditionsMet = true;
+                                            if (GetValue(instanceValue, "value") == GetValue(MultiTrigger_Trigger, "Value")) ConditionsMet = true;
                                             else ConditionsMet = false;
                                         }
                                     }
@@ -418,7 +420,7 @@ namespace TH_GeneratedData
                         i.name = item.name;
                         i.link = item.link;
 
-                        InstanceTable.InstanceData.Value instanceValue = instanceData.values.ToList().Find(x => x.id.ToLower() == item.link.ToLower());
+                        InstanceTable.InstanceData.Value instanceValue = instanceData.values.ToList().Find(x => GetValue(x,"id") == GetValue(item, "link"));
                         if (instanceValue != null) i.value = instanceValue.value;
                         else i.value = "";
 
@@ -431,6 +433,25 @@ namespace TH_GeneratedData
 
                 }
 
+            }
+
+            static string GetValue(object obj, string prop)
+            {
+                if (obj != null)
+                {
+                    foreach (PropertyInfo info in obj.GetType().GetProperties())
+                    {
+                        if (info.Name == prop)
+                        {
+                            object val = info.GetValue(obj);
+                            if (val != null)
+                            {
+                                return val.ToString().ToLower();
+                            }
+                        }
+                    }
+                }
+                return "";
             }
 
             public class Value
@@ -898,6 +919,53 @@ namespace TH_GeneratedData
         #endregion
 
         #region "Generated Events"
+
+        void CreateValueTable(List<GeneratedEvents.Event> events)
+        {
+            Table.Truncate(config.Databases_Server, TableNames.GenEventValues);
+
+            List<ColumnDefinition> columns = new List<ColumnDefinition>()
+            {
+                new ColumnDefinition("EVENT", DataType.LargeText),
+                new ColumnDefinition("VALUE", DataType.LargeText),
+                new ColumnDefinition("NUMVAL", DataType.Long)
+            };
+
+            Table.Create(config.Databases_Server, TableNames.GenEventValues, columns.ToArray(), null);
+
+            if (events != null)
+            {
+                List<string> insertColumns = new List<string>();
+                insertColumns.Add("EVENT");
+                insertColumns.Add("VALUE");
+                insertColumns.Add("NUMVAL");
+
+                List<List<object>> rowValues = new List<List<object>>();
+
+                foreach (GeneratedEvents.Event e in events)
+                {
+                    foreach (GeneratedEvents.Value v in e.Values)
+                    {
+                        List<object> values = new List<object>();
+                        values.Add(e.Name);
+                        values.Add(v.Result.Value);
+                        values.Add(v.Result.NumVal);
+                        rowValues.Add(values);
+                    }
+
+                    // Add Default Value
+                    List<object> defaultValues = new List<object>();
+                    defaultValues.Add(e.Name);
+                    defaultValues.Add(e.Default.Value);
+                    defaultValues.Add(e.Default.NumVal);
+                    rowValues.Add(defaultValues);
+                }
+
+                Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, true);
+            }
+        }
+
+
 
         public const string GenTablePrefix = TableNames.Gen_Events_TablePrefix;
 

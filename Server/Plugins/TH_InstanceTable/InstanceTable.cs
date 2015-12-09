@@ -97,9 +97,18 @@ namespace TH_InstanceTable
             de_d.data01 = config;
             de_d.data02 = instanceDatas;
 
-            if (DataEvent != null) DataEvent(de_d);
+            //if (DataEvent != null) DataEvent(de_d);
+
+            SendDataEvent(de_d);
+
+            instanceDatas.Clear();
             // --------------------------------------------
 
+        }
+
+        void SendDataEvent(DataEvent_Data de_d)
+        {
+            if (DataEvent != null) DataEvent(de_d);
         }
 
         public void Update_DataEvent(DataEvent_Data de_data)
@@ -521,7 +530,7 @@ namespace TH_InstanceTable
         // After ProcessInstances()
         InstanceData PreviousInstanceData_new;
 
-        public class InstanceData
+        public class InstanceData : IDisposable
         {
             public InstanceData() { values = new List<Value>(); }
 
@@ -536,6 +545,17 @@ namespace TH_InstanceTable
             }
 
             public List<Value> values;
+
+            public void Dispose()
+            {
+                values.Clear();
+                values = null;
+            }
+
+            ~InstanceData()
+            {
+                Dispose();
+            }
         }
 
         class InstanceVariableData
@@ -625,12 +645,15 @@ namespace TH_InstanceTable
                         previousData.sequence = data.sequence;
                         previousData.agentInstanceId = data.agentInstanceId;                     
 
-                        foreach (InstanceData.Value val in data.values)
+                        foreach (InstanceData.Value val in data.values.ToList())
                         {
-                            InstanceData.Value newval = new InstanceData.Value();
-                            newval.id = val.id;
-                            newval.value = val.value;
-                            previousData.values.Add(newval);
+                            if (val != null)
+                            {
+                                InstanceData.Value newval = new InstanceData.Value();
+                                newval.id = val.id;
+                                newval.value = val.value;
+                                previousData.values.Add(newval);
+                            }
                         }
                     }
 

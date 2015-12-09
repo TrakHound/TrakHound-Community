@@ -101,7 +101,9 @@ namespace TH_MySQL.PHP
             values["password"] = config.Password;
             values["db"] = config.Database;
 
-            values["query"] = MySQL_Tools.Row_Insert_CreateQuery(tablename, Columns, Values, Update);
+            string query = MySQL_Tools.Row_Insert_CreateQuery(tablename, Columns, Values, Update);
+
+            values["query"] = query;
 
             string PHP_Directory = "";
             if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;

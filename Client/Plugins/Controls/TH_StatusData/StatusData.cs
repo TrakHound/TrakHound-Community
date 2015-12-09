@@ -80,8 +80,6 @@ namespace TH_StatusData
 
         public void Initialize() { }
 
-        //public void Update(ReturnData rd) { }
-
         public void Closing() { closing = true; if (update_TIMER != null) update_TIMER.Enabled = false; }
 
         bool closing = false;
@@ -153,6 +151,7 @@ namespace TH_StatusData
 
                         if (closing) break;
 
+
                         // Get Snapshot Data
                         Snapshot_Return snapshotData = GetSnapShots(device);
 
@@ -160,6 +159,16 @@ namespace TH_StatusData
                         SendDataEvent(snapshotData.de_data);
 
                         if (closing) break;
+
+
+                        // Get Gen Event Values
+                        DataEvent_Data genEventData = GetGenEventValues(device);
+
+                        // Send Gen Event Values
+                        SendDataEvent(genEventData);
+
+                        if (closing) break;
+
 
                         // Get Shift Data
                         DataEvent_Data shiftData = GetShifts(device, snapshotData.shiftData);
@@ -169,6 +178,7 @@ namespace TH_StatusData
 
                         if (closing) break;
 
+
                         // Get OEE Data
                         DataEvent_Data oeeData = GetOEE(device, snapshotData.shiftData);
 
@@ -176,6 +186,7 @@ namespace TH_StatusData
                         SendDataEvent(oeeData);
 
                         if (closing) break;
+
 
                         // Get Production Status Data
                         DataEvent_Data productionStatusData = GetProductionStatusList(device, snapshotData.shiftData);
@@ -186,15 +197,6 @@ namespace TH_StatusData
                 }
             }       
         }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -397,6 +399,24 @@ namespace TH_StatusData
                         result = de_d;
                     }
                 }
+            }
+
+            return result;
+        }
+
+        static DataEvent_Data GetGenEventValues(Configuration config)
+        {
+            DataEvent_Data result = new DataEvent_Data();
+
+            DataTable shifts_DT = Table.Get(config.Databases_Client, TableNames.GenEventValues);
+            if (shifts_DT != null)
+            {
+                DataEvent_Data de_d = new DataEvent_Data();
+                de_d.id = "StatusData_GenEventValues";
+                de_d.data01 = config;
+                de_d.data02 = shifts_DT;
+
+                result = de_d;
             }
 
             return result;

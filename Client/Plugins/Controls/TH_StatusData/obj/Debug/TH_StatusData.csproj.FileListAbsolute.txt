@@ -10,7 +10,6 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_StatusData\bin\Debug\TH
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_StatusData\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_StatusData\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_StatusData\bin\Debug\TH_PlugIns_Client_Control.pdb
-C:\TrakHound\Plugins\Pages\LICENSE.txt
 C:\TrakHound\Plugins\Pages\TH_StatusData.dll
 C:\TrakHound\Plugins\Pages\TH_StatusData.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_StatusData\obj\Debug\TH_StatusData.csprojResolveAssemblyReference.cache

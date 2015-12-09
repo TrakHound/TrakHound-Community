@@ -19,7 +19,7 @@
         <TextBlock Text="Default Value" FontSize="8pt" Foreground="#aaa" Margin="10,5"/>
 
         <!--Value Header-->
-        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" Width="200">
+        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" MinWidth="200">
 
             <StackPanel Margin="20,10" VerticalAlignment="Center">
 

@@ -65,28 +65,28 @@ namespace TH_DeviceCompare.Components
 
 
 
-        #region "Mouse Over"
+        //#region "Mouse Over"
 
-        public bool MouseOver
-        {
-            get { return (bool)GetValue(MouseOverProperty); }
-            set { SetValue(MouseOverProperty, value); }
-        }
+        //public bool MouseOver
+        //{
+        //    get { return (bool)GetValue(MouseOverProperty); }
+        //    set { SetValue(MouseOverProperty, value); }
+        //}
 
-        public static readonly DependencyProperty MouseOverProperty =
-            DependencyProperty.Register("MouseOver", typeof(bool), typeof(Cell), new PropertyMetadata(false));
+        //public static readonly DependencyProperty MouseOverProperty =
+        //    DependencyProperty.Register("MouseOver", typeof(bool), typeof(Cell), new PropertyMetadata(false));
 
-        private void Control_MouseEnter(object sender, MouseEventArgs e)
-        {
-            MouseOver = true;
-        }
+        //private void Control_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    MouseOver = true;
+        //}
 
-        private void Control_MouseLeave(object sender, MouseEventArgs e)
-        {
-            MouseOver = false;
-        }
+        //private void Control_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    MouseOver = false;
+        //}
 
-        #endregion
+        //#endregion
 
         #region "IsSelected"
 

@@ -155,12 +155,14 @@ namespace TH_Device_Server
         {
             if (TablePlugIns != null && Config != null)
             {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
                 {
+                    Table_PlugIn tp = ltp.Value;
+
                     InitializeWorkerInfo info = new InitializeWorkerInfo();
                     info.config = Config;
                     info.useDatabases = useDatabases;
-                    info.tablePlugin = tp.Value;
+                    info.tablePlugin = tp;
 
                     TablePlugIn_Initialize_Worker(info);
                     //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
@@ -198,17 +200,16 @@ namespace TH_Device_Server
         {
             if (TablePlugIns != null)
             {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
                 {
-                    if (tp.IsValueCreated)
-                    {
-                        ComponentWorkerInfo info = new ComponentWorkerInfo();
-                        info.returnData = returnData;
-                        info.tablePlugin = tp.Value;
+                    Table_PlugIn tp = ltp.Value;
 
-                        TablePlugIns_Update_Probe_Worker(info);
-                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
-                    }
+                    ComponentWorkerInfo info = new ComponentWorkerInfo();
+                    info.returnData = returnData;
+                    info.tablePlugin = tp;
+
+                    TablePlugIns_Update_Probe_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
                 }
             }
         }
@@ -217,14 +218,20 @@ namespace TH_Device_Server
         {
             ComponentWorkerInfo info = (ComponentWorkerInfo)o;
 
-            try
+            if (info != null)
             {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_Probe(info.returnData);
-            }
-            catch (Exception ex)
-            {
-                Log("Plugin Exception! : " + ex.Message);
+                if (info.tablePlugin != null)
+                {
+                    try
+                    {
+                        Table_PlugIn tpi = info.tablePlugin;
+                        tpi.Update_Probe(info.returnData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Plugin Exception : Probe : " + info.tablePlugin.Name + " : " + ex.Message);
+                    }
+                }
             }
         }
 
@@ -233,17 +240,16 @@ namespace TH_Device_Server
         {
             if (TablePlugIns != null)
             {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
                 {
-                    if (tp.IsValueCreated)
-                    {
-                        StreamWorkerInfo info = new StreamWorkerInfo();
-                        info.returnData = returnData;
-                        info.tablePlugin = tp.Value;
+                    Table_PlugIn tp = ltp.Value;
 
-                        TablePlugIns_Update_Current_Worker(info);
-                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
-                    }
+                    StreamWorkerInfo info = new StreamWorkerInfo();
+                    info.returnData = returnData;
+                    info.tablePlugin = tp;
+
+                    TablePlugIns_Update_Current_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
                 }
             }
         }
@@ -252,14 +258,20 @@ namespace TH_Device_Server
         {
             StreamWorkerInfo info = (StreamWorkerInfo)o;
 
-            try
+            if (info != null)
             {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_Current(info.returnData);
-            }
-            catch (Exception ex)
-            {
-                Log("Plugin Exception! : " + ex.Message);
+                if (info.tablePlugin != null)
+                {
+                    try
+                    {
+                        Table_PlugIn tpi = info.tablePlugin;
+                        tpi.Update_Current(info.returnData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Plugin Exception : Current : " + info.tablePlugin.Name + " : " + ex.Message);
+                    }
+                }
             }
         }
 
@@ -268,17 +280,16 @@ namespace TH_Device_Server
         {
             if (TablePlugIns != null)
             {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
                 {
-                    if (tp.IsValueCreated)
-                    {
-                        StreamWorkerInfo info = new StreamWorkerInfo();
-                        info.returnData = returnData;
-                        info.tablePlugin = tp.Value;
+                    Table_PlugIn tp = ltp.Value;
 
-                        TablePlugIns_Update_Sample_Worker(info);
-                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
-                    }
+                    StreamWorkerInfo info = new StreamWorkerInfo();
+                    info.returnData = returnData;
+                    info.tablePlugin = tp;
+
+                    TablePlugIns_Update_Sample_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
                 }
             }
         }
@@ -287,14 +298,20 @@ namespace TH_Device_Server
         {
             StreamWorkerInfo info = (StreamWorkerInfo)o;
 
-            try
+            if (info != null)
             {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_Sample(info.returnData);
-            }
-            catch (Exception ex)
-            {
-                Log("Plugin Exception! : " + ex.Message);
+                if (info.tablePlugin != null)
+                {
+                    try
+                    {
+                        Table_PlugIn tpi = info.tablePlugin;
+                        tpi.Update_Sample(info.returnData);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Plugin Exception : Sample : " + info.tablePlugin.Name + " : " + ex.Message);
+                    }
+                }
             }
         }
 
@@ -303,17 +320,16 @@ namespace TH_Device_Server
         {
             if (TablePlugIns != null)
             {
-                foreach (Lazy<Table_PlugIn> tp in TablePlugIns.ToList())
+                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
                 {
-                    if (tp.IsValueCreated)
-                    {
-                        DataEventWorkerInfo info = new DataEventWorkerInfo();
-                        info.de_data = de_data;
-                        info.tablePlugin = tp.Value;
+                    Table_PlugIn tp = ltp.Value;
 
-                        TablePlugIn_Update_DataEvent_Worker(info);
-                        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
-                    }
+                    DataEventWorkerInfo info = new DataEventWorkerInfo();
+                    info.de_data = de_data;
+                    info.tablePlugin = tp;
+
+                    TablePlugIn_Update_DataEvent_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
                 }
             }
 
@@ -324,14 +340,20 @@ namespace TH_Device_Server
         {
             DataEventWorkerInfo info = (DataEventWorkerInfo)o;
 
-            try
+            if (info != null)
             {
-                Table_PlugIn tpi = info.tablePlugin;
-                tpi.Update_DataEvent(info.de_data);
-            }
-            catch (Exception ex)
-            {
-                Log("Plugin Exception! : " + ex.Message);
+                if (info.tablePlugin != null)
+                {
+                    try
+                    {
+                        Table_PlugIn tpi = info.tablePlugin;
+                        tpi.Update_DataEvent(info.de_data);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Plugin Exception : DataEvent : " + info.tablePlugin.Name + " : " + ex.Message);
+                    }
+                }
             }
         }
 

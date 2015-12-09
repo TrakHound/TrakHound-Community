@@ -328,8 +328,6 @@ namespace TH_DeviceManager
             }
 
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), background, new object[] { configs });
-
-
         }
 
         void LoadDevices_GUI(List<Configuration> configs)

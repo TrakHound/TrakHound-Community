@@ -14,7 +14,7 @@
              MinHeight="50"
              >
     
-    <Grid PreviewMouseDown="Control_MouseDown" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave">
+    <Grid PreviewMouseDown="Control_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -23,39 +23,11 @@
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding MouseOver}" Value="true">
+                    <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
                         <Setter Property="Background" Value="#10ffffff"/>
-                        <!--<DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10ffffff"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
                         <Setter Property="Background" Value="#18ffffff"/>
-                        <!--<DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#18ffffff"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                 </Style.Triggers>
             </Style>

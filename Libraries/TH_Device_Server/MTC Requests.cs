@@ -178,7 +178,6 @@ namespace TH_Device_Server
                 if (dbsuccess) UpdateProcessingStatus("Database Connections Established");
                 else
                 {
-                    current.Stop();
                     WriteToConsole("Error in Database Connection... Retrying in 1000ms", ConsoleOutputType.Error);
                     System.Threading.Thread.Sleep(1000);
                     error = true;
@@ -210,6 +209,8 @@ namespace TH_Device_Server
             }
 
             ClearProcessingStatus();
+
+            returnData.Dispose();
 
             Thread.Sleep(configuration.Agent.Current_Heartbeat);
 
@@ -457,6 +458,11 @@ namespace TH_Device_Server
             {
                 s.Run(null, First, SampleCount);
             }
+            else
+            {
+                // Update all of the Table Plugins with a Null ReturnData
+                TablePlugIns_Update_Sample(null);
+            }
 
         }
 
@@ -468,11 +474,13 @@ namespace TH_Device_Server
             TablePlugIns_Update_Sample(returnData);
 
             ClearProcessingStatus();
+
+            returnData.Dispose();
         }
 
         void s_SampleError(Sample.ErrorData errorData)
         {
-            throw new NotImplementedException();
+            
         }
 
 

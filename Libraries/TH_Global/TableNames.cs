@@ -27,6 +27,7 @@ namespace TH_Global
 
         // GeneratedData ----------------------------------
         public const string SnapShots = "snapshots";
+        public const string GenEventValues = "geneventvalues";
         // ------------------------------------------------
 
         // Cycles -----------------------------------------

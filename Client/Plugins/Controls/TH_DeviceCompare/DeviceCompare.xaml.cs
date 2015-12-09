@@ -308,6 +308,13 @@ namespace TH_DeviceCompare
                         }
 
                         // OEE Table Data
+                        if (de_d.id.ToLower() == "statusdata_geneventvalues")
+                        {
+                            // OEE Average
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_GenEventValues), Priority_Context, new object[] { dd, de_d.data02 });
+                        }
+
+                        // OEE Table Data
                         if (de_d.id.ToLower() == "statusdata_oee")
                         {
                             // OEE Average
@@ -662,17 +669,70 @@ namespace TH_DeviceCompare
 
         #region "Production Status Times"
 
-        class ProductionStatus_Return
+        void UpdateProductionStatusTimes_GenEventValues(DeviceDisplay dd, object geneventvalues)
         {
-            public ProductionStatus_Return()
+            StackPanel stack;
+
+            int cellIndex = -1;
+            cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimes");
+
+            if (cellIndex >= 0)
             {
-                variables = new List<ProductionStatus_Variable>();
+                object data = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+                if (data == null)
+                {
+                    stack = new StackPanel();
+                    stack.Background = new SolidColorBrush(Colors.Transparent);
+                    dd.ComparisonGroup.column.Cells[cellIndex].Data = stack;
+
+                    DataTable dt = geneventvalues as DataTable;
+                    if (dt != null)
+                    {
+                        DataView dv = dt.AsDataView();
+                        dv.RowFilter = "EVENT = 'production_status'";
+                        DataTable temp_dt = dv.ToTable(false, "VALUE");
+
+                        List<Color> colors = TH_Styles.IndicatorColors.GetIndicatorColors(temp_dt.Rows.Count);
+                        int colorIndex = 0;
+
+                        foreach (DataRow row in temp_dt.Rows)
+                        {
+                            Controls.TimeDisplay td = new Controls.TimeDisplay();
+
+                            // Set Text
+                            td.Text = row[0].ToString();
+
+                            // Set Bar Color
+                            Color color = colors[colorIndex];
+                            td.BarBrush = new SolidColorBrush(Color.FromArgb(221, color.R, color.G, color.B));
+                            colorIndex += 1;
+
+                            td.BarValue = 0;
+                            td.BarMaximum = 1;
+
+                            stack.Children.Add(td);
+                        }
+                    }
+                }
             }
-
-            public List<ProductionStatus_Variable> variables;
-
-            public int totalSeconds { get; set; }
         }
+
+
+
+
+
+
+        //class ProductionStatus_Return
+        //{
+        //    public ProductionStatus_Return()
+        //    {
+        //        variables = new List<ProductionStatus_Variable>();
+        //    }
+
+        //    public List<ProductionStatus_Variable> variables;
+
+        //    public int totalSeconds { get; set; }
+        //}
 
         class ProductionStatus_Variable
         {
@@ -680,27 +740,21 @@ namespace TH_DeviceCompare
             public int seconds { get; set; }
         }
 
-        class ProductionStatus_UpdateData
-        {
-            public ProductionStatus_Return statusReturn { get; set; }
-            public object shiftdata { get; set; }
-            public object snapshotdata { get; set; }
+        //class ProductionStatus_UpdateData
+        //{
+        //    public ProductionStatus_Return statusReturn { get; set; }
+        //    public object shiftdata { get; set; }
+        //    public object snapshotdata { get; set; }
 
-            public ProductionStatus_Variable variable { get; set; }
-            public StackPanel stack { get; set; }
-            public Color color { get; set; }
-        }
+        //    public ProductionStatus_Variable variable { get; set; }
+        //    public StackPanel stack { get; set; }
+        //    public Color color { get; set; }
+        //}
 
 
         void UpdateProductionStatusTimes_ShiftData(DeviceDisplay dd, object shiftData)
         {
             StackPanel stack;
-
-            ProductionStatus_Return statusReturn = GetProductionStatusTimes(shiftData);
-
-            List<Color> colors = TH_Styles.IndicatorColors.GetIndicatorColors(statusReturn.variables.Count);
-
-            int colorIndex = 0;
 
             int cellIndex = -1;
             cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimes");
@@ -710,28 +764,81 @@ namespace TH_DeviceCompare
                 object data = dd.ComparisonGroup.column.Cells[cellIndex].Data;
                 if (data != null)
                 {
-                    if (data.GetType() == typeof(StackPanel)) stack = (StackPanel)data;
-                    else { stack = new StackPanel(); dd.ComparisonGroup.column.Cells[cellIndex].Data = stack; }
-                }
-                else { stack = new StackPanel(); dd.ComparisonGroup.column.Cells[cellIndex].Data = stack; }
+                    if (data.GetType() == typeof(StackPanel))
+                    {
+                        stack = (StackPanel)data;
 
-                foreach (ProductionStatus_Variable variable in statusReturn.variables)
-                {
-                    Color color = colors[colorIndex];
+                        DataTable dt = shiftData as DataTable;
+                        if (dt != null)
+                        {
+                            int totalSeconds = 0;
+                            List<ProductionStatus_Variable> variables = new List<ProductionStatus_Variable>();
 
-                    ProductionStatus_UpdateData updateData = new ProductionStatus_UpdateData();
-                    updateData.statusReturn = statusReturn;
-                    updateData.shiftdata = shiftData;
+                            // Get List of variables from 'Shifts' table and collect the total number of seconds
+                            foreach (DataColumn column in dt.Columns)
+                            {
+                                if (column.ColumnName.Contains("PRODUCTION_STATUS") || column.ColumnName.Contains("Production_Status") || column.ColumnName.Contains("production_status"))
+                                {
+                                    ProductionStatus_Variable variable = new ProductionStatus_Variable();
 
-                    updateData.variable = variable;
-                    updateData.stack = stack;
-                    updateData.color = color;
+                                    // Get Variable name from Column Name
+                                    if (column.ColumnName.Contains("__"))
+                                    {
+                                        int i = column.ColumnName.IndexOf("__") + 2;
+                                        if (i < column.ColumnName.Length)
+                                        {
+                                            string name = column.ColumnName.Substring(i);
+                                            name = name.Replace('_', ' ');
 
-                    this.Dispatcher.BeginInvoke(new Action<ProductionStatus_UpdateData>(AddProductionStatusTime), Priority_Context, new object[] { updateData });
+                                            variable.name = name;
+                                        }
+                                    }
 
-                    colorIndex += 1;
+                                    // Get Total Seconds for Variable
+                                    DataView dv = dt.AsDataView();
+                                    DataTable temp_dt = dv.ToTable(false, column.ColumnName);
+
+                                    foreach (DataRow row in temp_dt.Rows)
+                                    {
+                                        string value = row[0].ToString();
+
+                                        int seconds = 0;
+                                        int.TryParse(value, out seconds);
+                                        variable.seconds += seconds;
+                                        totalSeconds += seconds;
+                                    }
+
+                                    variables.Add(variable);
+                                }
+                            }
+
+                            // Loop through variables and update TimeDisplay controls
+                            foreach (ProductionStatus_Variable var in variables)
+                            {
+                                Console.WriteLine(var.name + " :: " + var.seconds.ToString() + " seconds");
+
+                                foreach (Controls.TimeDisplay td in stack.Children.OfType<Controls.TimeDisplay>())
+                                {
+                                    if (td.Text != null)
+                                    {
+                                        if (td.Text.ToLower() == var.name.ToLower())
+                                        {
+                                            this.Dispatcher.BeginInvoke(new Action<Controls.TimeDisplay, int, int>(UpdateProductionStatusTimes_ShiftData_GUI), Priority_Context, new object[] { td, var.seconds, totalSeconds });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        }
+
+        void UpdateProductionStatusTimes_ShiftData_GUI(Controls.TimeDisplay td, int barvalue, int barmaximum)
+        {
+            td.Time = TimeSpan.FromSeconds(barvalue).ToString();
+            td.BarValue = barvalue;
+            td.BarMaximum = barmaximum;
         }
 
         void UpdateProductionStatusTimes_SnapshotData(DeviceDisplay dd, object snapshotData)
@@ -764,97 +871,97 @@ namespace TH_DeviceCompare
             }
         }
 
-        void AddProductionStatusTime(ProductionStatus_UpdateData updateData)
-        {
-            Controls.TimeDisplay td;
+        //void AddProductionStatusTime(ProductionStatus_UpdateData updateData)
+        //{
+        //    Controls.TimeDisplay td;
 
-            string text = updateData.variable.name;
-            if (updateData.variable.name.Contains("PRODUCTION_STATUS__")) text = updateData.variable.name.Replace("PRODUCTION_STATUS__", "");
-            if (updateData.variable.name.Contains("Production_Status__")) text = updateData.variable.name.Replace("Production_Status__", "");
-            if (updateData.variable.name.Contains("production_status__")) text = updateData.variable.name.Replace("production_status__", "");
-            text = text.Replace('_', ' ');
+        //    string text = updateData.variable.name;
+        //    if (updateData.variable.name.Contains("PRODUCTION_STATUS__")) text = updateData.variable.name.Replace("PRODUCTION_STATUS__", "");
+        //    if (updateData.variable.name.Contains("Production_Status__")) text = updateData.variable.name.Replace("Production_Status__", "");
+        //    if (updateData.variable.name.Contains("production_status__")) text = updateData.variable.name.Replace("production_status__", "");
+        //    text = text.Replace('_', ' ');
 
-            int index = -1;
-            index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
-            if (index < 0)
-            {
-                td = new Controls.TimeDisplay();
-                td.Text = Formatting.UppercaseFirst(text);
-                td.BarBrush = new SolidColorBrush(Color.FromArgb(221, updateData.color.R, updateData.color.G, updateData.color.B));
-                updateData.stack.Children.Add(td);
-                index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
-            }
+        //    int index = -1;
+        //    index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
+        //    if (index < 0)
+        //    {
+        //        td = new Controls.TimeDisplay();
+        //        td.Text = Formatting.UppercaseFirst(text);
+        //        td.BarBrush = new SolidColorBrush(Color.FromArgb(221, updateData.color.R, updateData.color.G, updateData.color.B));
+        //        updateData.stack.Children.Add(td);
+        //        index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
+        //    }
 
-            td = (Controls.TimeDisplay)updateData.stack.Children[index];
-            td.Text = Formatting.UppercaseFirst(text); ;
+        //    td = (Controls.TimeDisplay)updateData.stack.Children[index];
+        //    td.Text = Formatting.UppercaseFirst(text); ;
 
-            // Set Time (seconds)
-            td.Time = TimeSpan.FromSeconds(updateData.variable.seconds).ToString(@"hh\:mm\:ss");
+        //    // Set Time (seconds)
+        //    td.Time = TimeSpan.FromSeconds(updateData.variable.seconds).ToString(@"hh\:mm\:ss");
 
-            // Set Percentage (seconds / totalseconds)
-            double percentage = (double)updateData.variable.seconds / updateData.statusReturn.totalSeconds;
-            td.Percentage = percentage.ToString("P1");
+        //    // Set Percentage (seconds / totalseconds)
+        //    double percentage = (double)updateData.variable.seconds / updateData.statusReturn.totalSeconds;
+        //    td.Percentage = percentage.ToString("P1");
 
-            // Set Bar Values 
-            td.BarMaximum = updateData.statusReturn.totalSeconds;
-            td.BarValue = updateData.variable.seconds;
-        }
+        //    // Set Bar Values 
+        //    td.BarMaximum = updateData.statusReturn.totalSeconds;
+        //    td.BarValue = updateData.variable.seconds;
+        //}
 
 
-        ProductionStatus_Return GetProductionStatusTimes(object shiftData)
-        {
-            ProductionStatus_Return result = new ProductionStatus_Return();
+        //ProductionStatus_Return GetProductionStatusTimes(object shiftData)
+        //{
+        //    ProductionStatus_Return result = new ProductionStatus_Return();
 
-            DataTable dt = shiftData as DataTable;
-            if (dt != null)
-            {
-                int totalSeconds = 0;
-                List<ProductionStatus_Variable> variables = new List<ProductionStatus_Variable>();
+        //    DataTable dt = shiftData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        int totalSeconds = 0;
+        //        List<ProductionStatus_Variable> variables = new List<ProductionStatus_Variable>();
 
-                foreach (DataRow row in dt.Rows)
-                {
-                    string segmentTotal_str = DataTable_Functions.GetRowValue("totaltime", row);
-                    if (segmentTotal_str != null)
-                    {
-                        int seconds = 0;
-                        int.TryParse(segmentTotal_str, out seconds);
-                        totalSeconds += seconds;
-                    }
+        //        foreach (DataRow row in dt.Rows)
+        //        {
+        //            string segmentTotal_str = DataTable_Functions.GetRowValue("totaltime", row);
+        //            if (segmentTotal_str != null)
+        //            {
+        //                int seconds = 0;
+        //                int.TryParse(segmentTotal_str, out seconds);
+        //                totalSeconds += seconds;
+        //            }
 
-                    // Get Production Status Variables
-                    foreach (DataColumn column in dt.Columns)
-                    {
-                        if (column.ColumnName.Contains("PRODUCTION_STATUS") || column.ColumnName.Contains("Production_Status") || column.ColumnName.Contains("production_status"))
-                        {
-                            string name = column.ColumnName;
-                            string value = row[column].ToString();
+        //            // Get Production Status Variables
+        //            foreach (DataColumn column in dt.Columns)
+        //            {
+        //                if (column.ColumnName.Contains("PRODUCTION_STATUS") || column.ColumnName.Contains("Production_Status") || column.ColumnName.Contains("production_status"))
+        //                {
+        //                    string name = column.ColumnName;
+        //                    string value = row[column].ToString();
 
-                            ProductionStatus_Variable variable;
-                            int index = variables.FindIndex(x => x.name.ToLower() == name.ToLower());
-                            if (index < 0)
-                            {
-                                variable = new ProductionStatus_Variable();
-                                variable.name = name;
-                                variables.Add(variable);
-                                index = variables.FindIndex(x => x.name.ToLower() == name.ToLower());
-                            }
+        //                    ProductionStatus_Variable variable;
+        //                    int index = variables.FindIndex(x => x.name.ToLower() == name.ToLower());
+        //                    if (index < 0)
+        //                    {
+        //                        variable = new ProductionStatus_Variable();
+        //                        variable.name = name;
+        //                        variables.Add(variable);
+        //                        index = variables.FindIndex(x => x.name.ToLower() == name.ToLower());
+        //                    }
 
-                            variable = variables[index];
+        //                    variable = variables[index];
 
-                            int seconds = 0;
-                            int.TryParse(value, out seconds);
-                            variable.seconds += seconds;
-                        }
-                    }
-                }
+        //                    int seconds = 0;
+        //                    int.TryParse(value, out seconds);
+        //                    variable.seconds += seconds;
+        //                }
+        //            }
+        //        }
 
-                result.totalSeconds = totalSeconds;
-                result.variables = variables;
-            }
+        //        result.totalSeconds = totalSeconds;
+        //        result.variables = variables;
+        //    }
 
-            return result;
+        //    return result;
 
-        }
+        //}
 
         #endregion
 

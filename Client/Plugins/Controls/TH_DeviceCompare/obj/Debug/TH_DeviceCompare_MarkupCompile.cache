@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-14-1436341842
+121295140436
 
-18-443976343
-24-168404798
-Components\Cell.xaml;Components\Column.xaml;Components\Header.xaml;Components\Row_Header.xaml;Controls\CNC_Display.xaml;Controls\HistogramDisplay.xaml;Controls\NumberDisplay.xaml;Controls\PieChartDisplay.xaml;Controls\ShiftDisplay.xaml;Controls\ShiftSegmentIndicator.xaml;Controls\TextDisplay.xaml;Controls\TimeDisplay.xaml;Controls\TimeLineDisplay.xaml;DeviceCompare.xaml;
+16304127549
+211651681289
+Components\Cell.xaml;Components\Column.xaml;Components\Header.xaml;Components\Row_Header.xaml;Controls\CNC_Display.xaml;Controls\HistogramDisplay.xaml;Controls\NumberDisplay.xaml;Controls\ShiftDisplay.xaml;Controls\ShiftSegmentIndicator.xaml;Controls\TextDisplay.xaml;Controls\TimeDisplay.xaml;DeviceCompare.xaml;
 
 False
 

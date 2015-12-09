@@ -31,7 +31,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Value Header-->
-            <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" Width="200">
+            <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" MinWidth="200">
 
                 <Grid>
 
