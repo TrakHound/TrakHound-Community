@@ -74,6 +74,8 @@ namespace TH_ShiftTable
                             segmentEnd = segmentEnd.Subtract(new TimeSpan(24, 0, 0));
                         }
 
+                        if (segmentEnd < segmentStart) segmentEnd = segmentEnd.AddDays(1);
+
 
                         // Set Shift Times 
                         shiftStart = Tools.GetDateTimeFromShiftTime(shift.beginTime, date);

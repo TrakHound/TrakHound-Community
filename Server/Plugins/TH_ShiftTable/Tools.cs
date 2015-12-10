@@ -85,6 +85,8 @@ namespace TH_ShiftTable
             DateTime start = Tools.GetDateTimeFromShiftTime(info.start, info.date, info.start.dayOffset);
             DateTime end = Tools.GetDateTimeFromShiftTime(info.end, info.date, info.end.dayOffset);
 
+            if (end < start) end = end.AddDays(1);
+
             // If currently still within the shift segment
             if (current < end)
             {

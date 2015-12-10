@@ -242,7 +242,13 @@ namespace TH_StatusData
 
         void SendDataEvent(DataEvent_Data de_d)
         {
-            if (DataEvent != null) DataEvent(de_d);
+            if (de_d != null)
+            {
+                if (de_d.id != null)
+                {
+                    if (DataEvent != null) DataEvent(de_d);
+                }
+            }
         }
 
         static bool CheckDatabaseConnections(Configuration config)

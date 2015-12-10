@@ -3,29 +3,201 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:timeline="clr-namespace:TH_WPF.TimeLine;assembly=TH_WPF"
+             xmlns:histogram="clr-namespace:TH_WPF.Histogram;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    
-    <Grid Background="#0080ff">
+             
+             
+             >
 
-        <Grid Grid.Row="1" Background="#88000000">
+    <!--<Grid Background="#003c77">-->
+    <Grid Background="#eee">
 
-            <StackPanel>
-                <StackPanel.Background>
+        <Grid>
+            <!--<Grid.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#18000000" Offset="0"/>
                         <GradientStop Color="#11ffffff" Offset="0.4"/>
                         <GradientStop Color="#11ffffff" Offset="0.6"/>
                         <GradientStop Color="#22000000" Offset="1"/>
                     </LinearGradientBrush>
-                </StackPanel.Background>
+                </Grid.Background>-->
 
-                <TextBlock Text="Device Page"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <TextBlock Text="{Binding Device_Description}" />
+            <!--Header-->
+            <Grid Height="150" Margin="20" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <!--Manufacturer Logo-->
+                <Image Source="{Binding DeviceLogo}" VerticalAlignment="Center" MaxWidth="300" MaxHeight="100"/>
+                
+                <!--Device Info-->
+                <StackPanel Grid.Column="1" Margin="50,0,0,0" VerticalAlignment="Center">
 
-                <TextBlock Text="{Binding Connected}"/>
+                    <!--Device Description-->
+                    <TextBlock Text="{Binding Device_Description}" FontSize="16pt" Foreground="#333" />
 
+                    <!--Device Manufacturer-->
+                    <TextBlock Text="{Binding Device_Manufacturer}" FontSize="12pt" Foreground="#aaa" />
+
+                    <!--Device Model-->
+                    <TextBlock Text="{Binding Device_Model}" FontSize="12pt" Foreground="#aaa" />
+
+                    <!--Device Serial-->
+                    <TextBlock Text="{Binding Device_Serial}" FontSize="12pt" Foreground="#aaa"/>
+
+                </StackPanel>
+
+            </Grid>
+
+
+            <StackPanel Grid.Column="1" Background="#0ea700">
+
+                <!--Comparison Statistics-->
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Most Productive Shift-->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Most Productive Shift" FontSize="10pt" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text=":" FontSize="10pt" Margin="10,5" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="1st Shift" FontSize="10pt" />
+
+                    <!--Least Productive Shift-->
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Least Productive Shift" FontSize="10pt" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text=":" FontSize="10pt" Margin="10,5" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="2nd Shift" FontSize="10pt" />
+
+                </Grid>
+
+                <!--OEE Statistics-->
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="OEE Comparison" FontSize="14pt" Margin="0,10"/>
+
+                    <!--Table-->
+                    <DataGrid Grid.Row="1" ItemsSource="{Binding OEEComparisonDataView}"
+                                      Background="{x:Null}"
+                                      HeadersVisibility="Column"
+                                      BorderBrush="#33000000" BorderThickness="1,0,1,1"
+                                      IsReadOnly="True" CanUserReorderColumns="False"
+                                      HorizontalGridLinesBrush="#33000000" VerticalGridLinesBrush="#33000000">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#33000000"/>
+                                <Setter Property="MinHeight" Value="30"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="FontSize" Value="12"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                            <Border Background="{TemplateBinding Background}"
+                                                            Margin="0"
+                                                            Padding="10,0"
+                                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                                            BorderThickness="0"
+                                                            >
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="#00000000" />
+                                <Setter Property="BorderBrush" Value="#33000000" />
+                                <Setter Property="BorderThickness" Value="0,0,0,0" />
+                                <Setter Property="Foreground" Value="#fff" />
+                                <Setter Property="MinHeight" Value="30"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#22ffffff"/>
+                                        <Setter Property="BorderBrush" Value="#00000000"/>
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#33ffffff"/>
+                                        <Setter Property="BorderBrush" Value="#00000000"/>
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                            <Border Background="{TemplateBinding Background}"
+                                                            Margin="0"
+                                                            Padding="10,0"
+                                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                                            BorderThickness="0"
+                                                            >
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsFocused" Value="false">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#00000000"/>
+                                        <Setter Property="BorderBrush" Value="#00000000"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                    </DataGrid>
+
+                </Grid>
+
+                <!--Average OEE-->
+                <TextBlock FontSize="12pt" Foreground="#fff">
+                    <Run Text="Average" Foreground="#aaffffff"/>
+                     <Run Text="83.9%" Foreground="#fff"/>
+                </TextBlock>
+
+                <!--Median OEE-->
+                <TextBlock FontSize="12pt" Foreground="#fff">
+                    <Run Text="Median" Foreground="#aaffffff"/>
+                     <Run Text="80.1%" Foreground="#fff"/>
+                </TextBlock>
+
+                <!--OEE Timeline Chart-->
+                <histogram:Histogram x:Name="OEE_Timeline" Width="500" Height="400" Margin="50"/>
+
+                <!--<timeline:TimeLine x:Name="OEE_Timeline" Width="400" Height="300"/>-->
+                
             </StackPanel>
 
         </Grid>

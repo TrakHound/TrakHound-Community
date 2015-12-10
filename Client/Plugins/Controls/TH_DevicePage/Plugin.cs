@@ -14,7 +14,7 @@ using TH_WPF.TimeLine;
 
 namespace TH_DevicePage
 {
-    class Plugin : Control_PlugIn
+    public class Plugin : Control_PlugIn
     {
 
         #region "PlugIn"
@@ -112,6 +112,7 @@ namespace TH_DevicePage
                     if (page == null)
                     {
                         page = new DevicePage();
+                        page.ParentPlugin = this;
                         page.Device = config;
                         page.Load(config);
                         Pages.Add(page);
@@ -126,7 +127,7 @@ namespace TH_DevicePage
                 {
                     foreach (DevicePage page in Pages)
                     {
-                        //page.Update(de_d);
+                        page.Update(de_d);
                     }
                 }
 
