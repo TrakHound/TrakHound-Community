@@ -22,6 +22,7 @@ using Microsoft.Shell;
 
 using System.Threading;
 
+using System.Data;
 using System.Xml;
 using System.IO;
 using System.Collections.ObjectModel;
@@ -1646,7 +1647,7 @@ namespace TrakHound_Client
 
             object page = info.Page;
 
-            AddPageAsTab(CreatePage(page), title, image);
+            AddPageAsTab(page, title, image);
         }
 
         void CP_DataEvent(DataEvent_Data de_d)
@@ -1789,6 +1790,15 @@ namespace TrakHound_Client
 
         #region "Load Devices"
 
+       
+
+
+
+
+
+
+
+
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
         Thread loaddevices_THREAD;
@@ -1807,7 +1817,25 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
-                configs = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+                string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+
+                foreach (string tablename in tablenames)
+                {
+                    configs = GetConfigurations();
+
+                    //DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+                    //if (dt != null)
+                    //{
+                    //    XmlDocument xml = Converter.TableToXML(dt);
+                    //    Configuration config = Configuration.ReadConfigFile(xml);
+                    //    if (config != null)
+                    //    {
+                    //        config.TableName = tablename;
+
+                    //        if (config.ClientEnabled) configs.Add(config);
+                    //    }
+                    //}
+                }
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else
@@ -1816,6 +1844,31 @@ namespace TrakHound_Client
             }
 
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
+        }
+
+        List<Configuration> GetConfigurations()
+        {
+            List<Configuration> result = new List<Configuration>();
+
+            string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+
+            foreach (string tablename in tablenames)
+            {
+                DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+                if (dt != null)
+                {
+                    XmlDocument xml = Converter.TableToXML(dt);
+                    Configuration config = Configuration.ReadConfigFile(xml);
+                    if (config != null)
+                    {
+                        config.TableName = tablename;
+
+                        if (config.ClientEnabled) result.Add(config);
+                    }
+                }
+            }
+
+            return result;
         }
 
         void LoadDevices_GUI(List<Configuration> configs)
@@ -2466,7 +2519,8 @@ namespace TrakHound_Client
 
                 if (currentuser != null)
                 {
-                    List<Configuration> userConfigs = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+                    //List<Configuration> userConfigs = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+                    List<Configuration> userConfigs = GetConfigurations();
                     if (userConfigs != null)
                     {
                         foreach (Configuration userConfig in userConfigs)

@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:TH_WPF.TimeLine"
              
              mc:Ignorable="d" 
-             Height="30" Width="5">   
+             Height="30"
+             >   
     
     <UserControl.ToolTip>
         <ToolTip>

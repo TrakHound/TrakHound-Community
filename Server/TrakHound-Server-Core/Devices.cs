@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 using System.Xml;
+using System.Data;
 
 using TH_Configuration;
 using TH_Database;
@@ -24,21 +25,14 @@ namespace TrakHound_Server_Core
 
         void LoadDevices()
         {
-
-            string configPath = null;
-
-            // Stop Previous Devices
-            if (Devices != null)
-            {
-                foreach (Device_Server device in Devices) device.Stop();
-                Thread.Sleep(2000);
-            }
-
-            List<Device_Server> devices = new List<Device_Server>();
-
             if (currentuser != null)
             {
-                configurations = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+
+                foreach (string tablename in tablenames)
+                {
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(LoadConfiguration), tablename);
+                }
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else
@@ -46,86 +40,41 @@ namespace TrakHound_Server_Core
                 configurations = ReadConfigurationFile();
             }
 
-            if (configurations != null)
-            {
-                // Create DevicesList based on Configurations
-                foreach (Configuration config in configurations)
-                {
-                    if (config.ServerEnabled)
-                    {
-                        config.Index = devices.Count;
-
-                        Device_Server server = new Device_Server(config);
-
-                        // Initialize Database Configurations
-                        Global.Initialize(server.configuration.Databases_Server);
-
-                        server.Start(false);
-
-                        devices.Add(server);
-                    }  
-                }
-            }
-
-            Devices = devices;
-
             DevicesMonitor_Initialize();
-
         }
 
-        void StartMonitor(Configuration config)
+        void LoadConfiguration(object o)
         {
-            ConfigurationMonitor monitor = new ConfigurationMonitor();
-            monitor.CurrentConfiguration = config;
-            monitor.Interval = 10000;
-            monitor.TableName = config.TableName;
-            monitor.ConfigurationChanged += monitor_ConfigurationChanged;
-
-            monitor.Start();
-        }
-
-        void monitor_ConfigurationChanged(Configuration config)
-        {
-            Console.WriteLine("Configuration Changed!");
-
-            Configuration c = configurations.Find(x => x.UniqueId == config.UniqueId);
-            if (c != null)
+            if (o != null)
             {
-                string tablename = c.TableName;
+                string tablename = o.ToString();
 
-                c = config;
-                c.TableName = tablename;
-
-                c.Remote = true;
-
-                int deviceIndex = Devices.FindIndex(x => x.configuration.UniqueId == c.UniqueId);
-                if (deviceIndex >= 0)
+                DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
+                if (dt != null)
                 {
-                    c.Index = deviceIndex;
-                    Devices[deviceIndex].Stop();
-                    Devices.RemoveAt(deviceIndex);
+                    XmlDocument xml = Converter.TableToXML(dt);
+                    Configuration config = Configuration.ReadConfigFile(xml);
+                    if (config != null)
+                    {
+                        config.TableName = tablename;
+
+                        if (config.ServerEnabled)
+                        {
+                            config.Index = Devices.Count;
+
+                            Device_Server server = new Device_Server(config);
+
+                            // Initialize Database Configurations
+                            Global.Initialize(server.configuration.Databases_Server);
+
+                            server.Start(false);
+
+                            if (Devices.Find(x => x.configuration.UniqueId == config.UniqueId) == null) Devices.Add(server);
+                        }
+                    }
                 }
-                else c.Index = Devices.Count;
-                
-
-                if (c.ServerEnabled)
-                {
-                    Device_Server device = new Device_Server(c);
-
-                    // Initialize Database Configurations
-                    Global.Initialize(device.configuration.Databases_Server);
-
-                    device.Start();
-
-                    if (deviceIndex >= 0) Devices.Insert(deviceIndex, device);
-                    else Devices.Add(device);
-                }
-
-                StartMonitor(c);
-
             }
         }
-
 
         #region "Devices Monitor"
 
@@ -143,65 +92,89 @@ namespace TrakHound_Server_Core
 
         void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            DevicesMonitor_Start();
-        }
-
-        //Thread devicesMonitor_THREAD;
-
-        void DevicesMonitor_Start()
-        {
-            //if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
-
             ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
-
-            //devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
-            //devicesMonitor_THREAD.Start(Devices.ToList());
         }
 
         void DevicesMonitor_Worker(object o)
         {
-            bool changed = false;
-
             if (o != null)
             {
                 List<Device_Server> devs = (List<Device_Server>)o;
 
                 if (currentuser != null)
                 {
-                    List<Configuration> userConfigs = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-                    if (userConfigs != null)
+                    string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+
+                    foreach (string tablename in tablenames)
                     {
-                        foreach (Configuration userConfig in userConfigs)
+                        Configuration config = GetConfiguration(tablename);
+                        if (config != null)
                         {
-                            Device_Server match = devs.Find(x => x.configuration.UniqueId == userConfig.UniqueId);
-                            if (match != null)
+                            config.TableName = tablename;
+
+                            Device_Server server = Devices.Find(x => x.configuration.UniqueId == config.UniqueId);
+                            if (server != null) // Server is already part of list
                             {
-                                bool update = userConfig.ServerUpdateId == match.configuration.ServerUpdateId;
-                                if (!update)
+                                // Check if Configuration has changed
+                                if (server.configuration.ServerUpdateId != config.ServerUpdateId)
                                 {
-                                    // Configuration has been updated / changed
-                                    changed = true;
-                                    break;
+                                    server.Stop();
+
+                                    server.configuration = config;
+
+                                    if (config.ServerEnabled)
+                                    {
+                                        // Initialize Database Configurations
+                                        Global.Initialize(server.configuration.Databases_Server);
+
+                                        server.Start(false);
+                                    }
                                 }
                             }
-                            else if (userConfig.ServerEnabled)
+                            else // Create & Add Device Server
                             {
-                                // Configuration has been added or removed
-                                changed = true;
-                                break;
+                                LoadConfiguration(tablename);
                             }
                         }
                     }
-                    else if (devs.Count > 0) changed = true;
+
+                    if (tablenames != null)
+                    {
+                        // Remove any server that was removed from user
+                        foreach (Device_Server server in Devices.ToList())
+                        {
+                            string ExistingTable = tablenames.ToList().Find(x => x == server.configuration.TableName);
+                            if (ExistingTable == null)
+                            {
+                                server.Stop();
+                                int index = Devices.FindIndex(x => x.configuration.UniqueId == server.configuration.UniqueId);
+                                if (index >= 0) Devices.RemoveAt(index);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Device_Server server in Devices) server.Stop();
+                        Devices.Clear();
+                    }  
+                }
+            }
+        }
+
+        Configuration GetConfiguration(string tablename)
+        {
+            if (tablename != null)
+            {
+                DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
+                if (dt != null)
+                {
+                    XmlDocument xml = Converter.TableToXML(dt);
+                    Configuration config = Configuration.ReadConfigFile(xml);
+                    if (config != null) return config;
                 }
             }
 
-            if (changed)
-            {
-                if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
-
-                LoadDevices();
-            }
+            return null;
         }
 
         #endregion

@@ -127,9 +127,9 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        public static string[] GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
-            List<Configuration> result = null;
+            string[] result = null;
 
             if (userDatabaseSettings == null)
             {
@@ -142,6 +142,22 @@ namespace TH_UserManagement.Management
 
             return result;
         }
+
+        //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        //{
+        //    List<Configuration> result = null;
+
+        //    if (userDatabaseSettings == null)
+        //    {
+        //        result = Remote.Configurations.GetConfigurationsForUser(userConfig);
+        //    }
+        //    else
+        //    {
+        //        //result = Local.Configurations.GetConfigurationsForUser(userConfig, userDatabaseSettings);
+        //    }
+
+        //    return result;
+        //}
 
         public static DataTable GetConfigurationTable(string table, Database_Settings userDatabaseSettings)
         {

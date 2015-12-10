@@ -396,64 +396,92 @@ namespace TH_UserManagement.Management
                 return result;
             }
 
-            public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig)
+            public static string[] GetConfigurationsForUser(UserConfiguration userConfig)
             {
-                List<Configuration> result = null;
-
                 NameValueCollection values = new NameValueCollection();
 
                 values["username"] = userConfig.username;
 
                 string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
-
-
                 string responseString = HTTP.SendData(url, values);
 
-                DataTable DT = JSON.ToTable(responseString);
 
+                DataTable DT = JSON.ToTable(responseString);
                 if (DT != null)
                 {
-                    result = new List<Configuration>();
+                    List<string> result = new List<string>();
 
                     foreach (DataRow Row in DT.Rows)
                     {
                         string tablename = Row[0].ToString();
 
-                        DataTable dt = GetConfigurationTable(tablename);
-                        if (dt != null)
-                        {
-                            XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
-                            if (xml != null)
-                            {
-                                Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
-                                if (config != null)
-                                {
-                                    //if (getImages)
-                                    //{
-                                    //    if (config.FileLocations.Manufacturer_Logo_Path != null)
-                                    //    {
-                                    //        System.Drawing.Image manufacturer_logo = Images.GetImage(config.FileLocations.Manufacturer_Logo_Path);
-                                    //        if (manufacturer_logo != null) config.Manufacturer_Logo = manufacturer_logo;
-                                    //    }
-
-                                    //    if (config.FileLocations.Image_Path != null)
-                                    //    {
-                                    //        System.Drawing.Image device_image = Images.GetImage(config.FileLocations.Image_Path);
-                                    //        if (device_image != null) config.Device_Image = device_image;
-                                    //    }
-                                    //}
-
-                                    config.Remote = true;
-                                    config.TableName = tablename;
-                                    result.Add(config);
-                                }
-                            }
-                        }
+                        result.Add(tablename);
                     }
+
+                    return result.ToArray();
                 }
 
-                return result;
+                return null;
             }
+
+            //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig)
+            //{
+            //    List<Configuration> result = null;
+
+            //    NameValueCollection values = new NameValueCollection();
+
+            //    values["username"] = userConfig.username;
+
+            //    string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
+
+
+            //    string responseString = HTTP.SendData(url, values);
+
+            //    DataTable DT = JSON.ToTable(responseString);
+
+            //    if (DT != null)
+            //    {
+            //        result = new List<Configuration>();
+
+            //        foreach (DataRow Row in DT.Rows)
+            //        {
+            //            string tablename = Row[0].ToString();
+
+            //            DataTable dt = GetConfigurationTable(tablename);
+            //            if (dt != null)
+            //            {
+            //                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+            //                if (xml != null)
+            //                {
+            //                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+            //                    if (config != null)
+            //                    {
+            //                        //if (getImages)
+            //                        //{
+            //                        //    if (config.FileLocations.Manufacturer_Logo_Path != null)
+            //                        //    {
+            //                        //        System.Drawing.Image manufacturer_logo = Images.GetImage(config.FileLocations.Manufacturer_Logo_Path);
+            //                        //        if (manufacturer_logo != null) config.Manufacturer_Logo = manufacturer_logo;
+            //                        //    }
+
+            //                        //    if (config.FileLocations.Image_Path != null)
+            //                        //    {
+            //                        //        System.Drawing.Image device_image = Images.GetImage(config.FileLocations.Image_Path);
+            //                        //        if (device_image != null) config.Device_Image = device_image;
+            //                        //    }
+            //                        //}
+
+            //                        config.Remote = true;
+            //                        config.TableName = tablename;
+            //                        result.Add(config);
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //    return result;
+            //}
 
             public static DataTable GetConfigurationTable(string table)
             {

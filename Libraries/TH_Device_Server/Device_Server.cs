@@ -103,11 +103,14 @@ namespace TH_Device_Server
             RunningTimeSTPW.Stop();
             RunningTime_TIMER.Enabled = false;
 
-            Worker_Stop();
+            Requests_Stop();
 
-            if (worker != null) worker.Abort();
-
-            //Status = ConnectionStatus.Stopped;
+            if (worker != null)
+            {
+                worker.Join(3000);
+                if (worker != null) worker.Abort();
+                worker = null;
+            }
 
             Log("Device Server (" + configuration.Index.ToString() + ") Stopped");
         }
@@ -161,7 +164,7 @@ namespace TH_Device_Server
 
             Requests_Stop();
 
-            Log("Device Server (" + configuration.Index.ToString() + ") Stopped");
+            //Log("Device Server (" + configuration.Index.ToString() + ") Stopped");
         }
 
         #endregion
@@ -448,18 +451,18 @@ namespace TH_Device_Server
                     }
                     //else previousRow = Console.CursorTop;
 
-                    Console.BackgroundColor = ConsoleColor.White;
-                    Console.ForegroundColor = ConsoleColor.Black;
-                    Console.Write("[Status]");
-                    Console.ResetColor();
+                    //Console.BackgroundColor = ConsoleColor.White;
+                    //Console.ForegroundColor = ConsoleColor.Black;
+                    //Console.Write("[Status]");
+                    //Console.ResetColor();
 
                     if (configuration != null)
                     {
-                        Console.Write(" [" + configuration.Index.ToString() + "] " + line + Environment.NewLine);
+                        //Console.Write("[Status] [" + configuration.Index.ToString() + "] " + line + Environment.NewLine);
                     }
                     else
                     {
-                        Console.Write(" " + line + Environment.NewLine);
+                        //Console.Write(" " + line + Environment.NewLine);
                     }
                     
 

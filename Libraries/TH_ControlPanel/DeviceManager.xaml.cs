@@ -312,13 +312,21 @@ namespace TH_DeviceManager
 
             if (currentuser != null)
             {
-                if (userDatabaseSettings == null)
+                string[] tablenames = Remote.Configurations.GetConfigurationsForUser(currentuser);
+
+                foreach (string tablename in tablenames)
                 {
-                    configs = Remote.Configurations.GetConfigurationsForUser(currentuser);
-                }
-                else
-                {
-                    //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                    DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
+                    if (dt != null)
+                    {
+                        XmlDocument xml = Converter.TableToXML(dt);
+                        Configuration config = Configuration.ReadConfigFile(xml);
+                        if (config != null)
+                        {
+                            config.TableName = tablename;
+                            configs.Add(config);
+                        }
+                    }
                 }
             }
             // If not logged in Read from File in 'C:\TrakHound\'

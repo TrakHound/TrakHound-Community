@@ -25,12 +25,10 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 
 using TH_Configuration;
-//using TH_Device_Client;
 using TH_Global;
 using TH_Global.Functions;
 using TH_PlugIns_Client_Control;
 using TH_UserManagement.Management;
-//using TH_Functions;
 using TH_WPF.TimeLine;
 
 using TH_DeviceCompare.Components;
@@ -291,7 +289,7 @@ namespace TH_DeviceCompare
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
 
                             // Production Status Timeline
-                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_ProductionStatusTimeline_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimeline_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
                         }
 
                         // Shifts Table Data
@@ -307,11 +305,14 @@ namespace TH_DeviceCompare
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { dd, de_d.data02 });
                         }
 
-                        // OEE Table Data
+                        // GenEvent Values
                         if (de_d.id.ToLower() == "statusdata_geneventvalues")
                         {
-                            // OEE Average
+                            // Production Status Times
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_GenEventValues), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Production Status Timeline
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimeline_GenEventValues), Priority_Context, new object[] { dd, de_d.data02 });
                         }
 
                         // OEE Table Data
@@ -330,7 +331,7 @@ namespace TH_DeviceCompare
                         // Production Status (Generated Event) Table Data
                         if (de_d.id.ToLower() == "statusdata_productionstatus")
                         {
-                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_ProductionStatusTimeline_ProductionStatusData), Priority_Context, new object[] { dd, de_d.data02 });
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimeline_ProductionStatusData), Priority_Context, new object[] { dd, de_d.data02 });
                         }
 
                     }
@@ -342,7 +343,7 @@ namespace TH_DeviceCompare
         {
             DataEvent_Data de_d = new DataEvent_Data();
             de_d.id = "DeviceSelected";
-            de_d.data02 = index;
+            de_d.data01 = Devices[index];
             if (DataEvent != null) DataEvent(de_d);
         }
 
@@ -669,6 +670,7 @@ namespace TH_DeviceCompare
 
         #region "Production Status Times"
 
+        // Get list of Production Status variables and create TimeDisplay controls for each 
         void UpdateProductionStatusTimes_GenEventValues(DeviceDisplay dd, object geneventvalues)
         {
             StackPanel stack;
@@ -707,6 +709,8 @@ namespace TH_DeviceCompare
                             td.BarBrush = new SolidColorBrush(Color.FromArgb(221, color.R, color.G, color.B));
                             colorIndex += 1;
 
+                            // Initialize values
+                            td.Percentage = "0%";
                             td.BarValue = 0;
                             td.BarMaximum = 1;
 
@@ -717,41 +721,13 @@ namespace TH_DeviceCompare
             }
         }
 
-
-
-
-
-
-        //class ProductionStatus_Return
-        //{
-        //    public ProductionStatus_Return()
-        //    {
-        //        variables = new List<ProductionStatus_Variable>();
-        //    }
-
-        //    public List<ProductionStatus_Variable> variables;
-
-        //    public int totalSeconds { get; set; }
-        //}
-
         class ProductionStatus_Variable
         {
             public string name { get; set; }
             public int seconds { get; set; }
         }
 
-        //class ProductionStatus_UpdateData
-        //{
-        //    public ProductionStatus_Return statusReturn { get; set; }
-        //    public object shiftdata { get; set; }
-        //    public object snapshotdata { get; set; }
-
-        //    public ProductionStatus_Variable variable { get; set; }
-        //    public StackPanel stack { get; set; }
-        //    public Color color { get; set; }
-        //}
-
-
+        // Get the Times for each Production Status variable from the 'Shifts' table
         void UpdateProductionStatusTimes_ShiftData(DeviceDisplay dd, object shiftData)
         {
             StackPanel stack;
@@ -815,8 +791,6 @@ namespace TH_DeviceCompare
                             // Loop through variables and update TimeDisplay controls
                             foreach (ProductionStatus_Variable var in variables)
                             {
-                                Console.WriteLine(var.name + " :: " + var.seconds.ToString() + " seconds");
-
                                 foreach (Controls.TimeDisplay td in stack.Children.OfType<Controls.TimeDisplay>())
                                 {
                                     if (td.Text != null)
@@ -834,13 +808,19 @@ namespace TH_DeviceCompare
             }
         }
 
+        // Assign the TimeDisplay control changes
         void UpdateProductionStatusTimes_ShiftData_GUI(Controls.TimeDisplay td, int barvalue, int barmaximum)
         {
             td.Time = TimeSpan.FromSeconds(barvalue).ToString();
+
+            double percentage = (double)barvalue / barmaximum;
+            td.Percentage = percentage.ToString("P1");
+
             td.BarValue = barvalue;
             td.BarMaximum = barmaximum;
         }
 
+        // Highlight the Current Production Status
         void UpdateProductionStatusTimes_SnapshotData(DeviceDisplay dd, object snapshotData)
         {
             StackPanel stack;
@@ -870,98 +850,6 @@ namespace TH_DeviceCompare
                 }
             }
         }
-
-        //void AddProductionStatusTime(ProductionStatus_UpdateData updateData)
-        //{
-        //    Controls.TimeDisplay td;
-
-        //    string text = updateData.variable.name;
-        //    if (updateData.variable.name.Contains("PRODUCTION_STATUS__")) text = updateData.variable.name.Replace("PRODUCTION_STATUS__", "");
-        //    if (updateData.variable.name.Contains("Production_Status__")) text = updateData.variable.name.Replace("Production_Status__", "");
-        //    if (updateData.variable.name.Contains("production_status__")) text = updateData.variable.name.Replace("production_status__", "");
-        //    text = text.Replace('_', ' ');
-
-        //    int index = -1;
-        //    index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
-        //    if (index < 0)
-        //    {
-        //        td = new Controls.TimeDisplay();
-        //        td.Text = Formatting.UppercaseFirst(text);
-        //        td.BarBrush = new SolidColorBrush(Color.FromArgb(221, updateData.color.R, updateData.color.G, updateData.color.B));
-        //        updateData.stack.Children.Add(td);
-        //        index = updateData.stack.Children.OfType<Controls.TimeDisplay>().ToList().FindIndex(x => x.Text.ToLower() == text.ToLower());
-        //    }
-
-        //    td = (Controls.TimeDisplay)updateData.stack.Children[index];
-        //    td.Text = Formatting.UppercaseFirst(text); ;
-
-        //    // Set Time (seconds)
-        //    td.Time = TimeSpan.FromSeconds(updateData.variable.seconds).ToString(@"hh\:mm\:ss");
-
-        //    // Set Percentage (seconds / totalseconds)
-        //    double percentage = (double)updateData.variable.seconds / updateData.statusReturn.totalSeconds;
-        //    td.Percentage = percentage.ToString("P1");
-
-        //    // Set Bar Values 
-        //    td.BarMaximum = updateData.statusReturn.totalSeconds;
-        //    td.BarValue = updateData.variable.seconds;
-        //}
-
-
-        //ProductionStatus_Return GetProductionStatusTimes(object shiftData)
-        //{
-        //    ProductionStatus_Return result = new ProductionStatus_Return();
-
-        //    DataTable dt = shiftData as DataTable;
-        //    if (dt != null)
-        //    {
-        //        int totalSeconds = 0;
-        //        List<ProductionStatus_Variable> variables = new List<ProductionStatus_Variable>();
-
-        //        foreach (DataRow row in dt.Rows)
-        //        {
-        //            string segmentTotal_str = DataTable_Functions.GetRowValue("totaltime", row);
-        //            if (segmentTotal_str != null)
-        //            {
-        //                int seconds = 0;
-        //                int.TryParse(segmentTotal_str, out seconds);
-        //                totalSeconds += seconds;
-        //            }
-
-        //            // Get Production Status Variables
-        //            foreach (DataColumn column in dt.Columns)
-        //            {
-        //                if (column.ColumnName.Contains("PRODUCTION_STATUS") || column.ColumnName.Contains("Production_Status") || column.ColumnName.Contains("production_status"))
-        //                {
-        //                    string name = column.ColumnName;
-        //                    string value = row[column].ToString();
-
-        //                    ProductionStatus_Variable variable;
-        //                    int index = variables.FindIndex(x => x.name.ToLower() == name.ToLower());
-        //                    if (index < 0)
-        //                    {
-        //                        variable = new ProductionStatus_Variable();
-        //                        variable.name = name;
-        //                        variables.Add(variable);
-        //                        index = variables.FindIndex(x => x.name.ToLower() == name.ToLower());
-        //                    }
-
-        //                    variable = variables[index];
-
-        //                    int seconds = 0;
-        //                    int.TryParse(value, out seconds);
-        //                    variable.seconds += seconds;
-        //                }
-        //            }
-        //        }
-
-        //        result.totalSeconds = totalSeconds;
-        //        result.variables = variables;
-        //    }
-
-        //    return result;
-
-        //}
 
         #endregion
 
@@ -1247,7 +1135,53 @@ namespace TH_DeviceCompare
 
         #region "Production Status Timeline"
 
-        void Update_ProductionStatusTimeline_ProductionStatusData(DeviceDisplay dd, object productionStatusData)
+        // Get list of Production Status variables
+        void UpdateProductionStatusTimeline_GenEventValues(DeviceDisplay dd, object geneventvalues)
+        {
+            int cellIndex = -1;
+            cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatustimeline");
+
+            if (cellIndex >= 0)
+            {
+                object data = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+                if (data == null)
+                {
+                    TimeLine timeline = new TimeLine();
+                    dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
+
+                    DataTable dt = geneventvalues as DataTable;
+                    if (dt != null)
+                    {
+                        DataView dv = dt.AsDataView();
+                        dv.RowFilter = "EVENT = 'production_status'";
+                        DataTable temp_dt = dv.ToTable(false, "NUMVAL");
+
+                        List<Color> colors = TH_Styles.IndicatorColors.GetIndicatorColors(temp_dt.Rows.Count);
+
+                        timeline.SeriesCount = temp_dt.Rows.Count;
+
+                        List<Tuple<Color, string>> colorList = new List<Tuple<Color, string>>();
+
+                        int colorIndex = 0;
+
+                        foreach (DataRow row in temp_dt.Rows)
+                        {
+                            string val = row[0].ToString();
+
+                            Tuple<Color, string> colorItem = new Tuple<Color,string>(colors[colorIndex], val);
+                            
+                            colorList.Add(colorItem);
+
+                            colorIndex += 1;
+                        }
+
+                        timeline.Colors = colorList;
+                    }
+                }
+            }
+        }
+
+        void UpdateProductionStatusTimeline_ProductionStatusData(DeviceDisplay dd, object productionStatusData)
         {
             DataTable dt = productionStatusData as DataTable;
             if (dt != null)
@@ -1259,60 +1193,109 @@ namespace TH_DeviceCompare
                     TH_WPF.TimeLine.TimeLine timeline;
 
                     object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
-                    if (ddData == null)
+                    if (ddData != null)
                     {
-                        timeline = new TH_WPF.TimeLine.TimeLine();
-                        dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
-                    }
-                    else timeline = (TH_WPF.TimeLine.TimeLine)ddData;
+                        timeline = (TH_WPF.TimeLine.TimeLine)ddData;
 
 
+                        List<Tuple<DateTime, string, string>> data_forShift = new List<Tuple<DateTime, string, string>>();
 
-                    List<Tuple<DateTime, string, string>> data_forShift = new List<Tuple<DateTime, string, string>>();
-
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        string val = DataTable_Functions.GetRowValue("Timestamp", row);
-                        if (val != null)
+                        foreach (DataRow row in dt.Rows)
                         {
-                            DateTime timestamp = DateTime.MinValue;
-                            DateTime.TryParse(val, out timestamp);
-
-                            if (timestamp > DateTime.MinValue)
+                            string val = DataTable_Functions.GetRowValue("Timestamp", row);
+                            if (val != null)
                             {
-                                if (timestamp > timeline.previousTimestamp)
-                                {
-                                    string value = DataTable_Functions.GetRowValue("Value", row);
+                                DateTime timestamp = DateTime.MinValue;
+                                DateTime.TryParse(val, out timestamp);
 
-                                    val = DataTable_Functions.GetRowValue("Numval", row);
-                                    if (val != null)
+                                if (timestamp > DateTime.MinValue)
+                                {
+                                    if (timestamp > timeline.previousTimestamp)
                                     {
-                                        int numval;
-                                        if (int.TryParse(val, out numval))
+                                        string value = DataTable_Functions.GetRowValue("Value", row);
+
+                                        val = DataTable_Functions.GetRowValue("Numval", row);
+                                        if (val != null)
                                         {
-                                            if (!timeline.Series.Contains(numval))
+                                            int numval;
+                                            if (int.TryParse(val, out numval))
                                             {
-                                                timeline.Series.Add(numval);
-                                                timeline.SeriesCount = timeline.Series.Count;
+                                                if (!timeline.Series.Contains(numval))
+                                                {
+                                                    timeline.Series.Add(numval);
+                                                    timeline.SeriesCount = timeline.Series.Count;
+                                                }
                                             }
+
+                                            data_forShift.Add(new Tuple<DateTime, string, string>(timestamp, val, value));
                                         }
 
-                                        data_forShift.Add(new Tuple<DateTime, string, string>(timestamp, val, value));
+                                        timeline.previousTimestamp = timestamp;
                                     }
-
-                                    timeline.previousTimestamp = timestamp;
                                 }
                             }
                         }
+
+                        timeline.AddData(data_forShift);
+
                     }
 
-                    timeline.AddData(data_forShift);
+                    //object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+                    //if (ddData == null)
+                    //{
+                    //    timeline = new TH_WPF.TimeLine.TimeLine();
+                    //    dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
+                    //}
+                    //else timeline = (TH_WPF.TimeLine.TimeLine)ddData;
+
+
+
+                    //List<Tuple<DateTime, string, string>> data_forShift = new List<Tuple<DateTime, string, string>>();
+
+                    //foreach (DataRow row in dt.Rows)
+                    //{
+                    //    string val = DataTable_Functions.GetRowValue("Timestamp", row);
+                    //    if (val != null)
+                    //    {
+                    //        DateTime timestamp = DateTime.MinValue;
+                    //        DateTime.TryParse(val, out timestamp);
+
+                    //        if (timestamp > DateTime.MinValue)
+                    //        {
+                    //            if (timestamp > timeline.previousTimestamp)
+                    //            {
+                    //                string value = DataTable_Functions.GetRowValue("Value", row);
+
+                    //                val = DataTable_Functions.GetRowValue("Numval", row);
+                    //                if (val != null)
+                    //                {
+                    //                    int numval;
+                    //                    if (int.TryParse(val, out numval))
+                    //                    {
+                    //                        if (!timeline.Series.Contains(numval))
+                    //                        {
+                    //                            timeline.Series.Add(numval);
+                    //                            timeline.SeriesCount = timeline.Series.Count;
+                    //                        }
+                    //                    }
+
+                    //                    data_forShift.Add(new Tuple<DateTime, string, string>(timestamp, val, value));
+                    //                }
+
+                    //                timeline.previousTimestamp = timestamp;
+                    //            }
+                    //        }
+                    //    }
+                    //}
+
+                    //timeline.AddData(data_forShift);
 
                 }
             }
         }
 
-        void Update_ProductionStatusTimeline_SnapshotData(DeviceDisplay dd, object snapshotData)
+        // Set Shift time from 'Snapshots' table
+        void UpdateProductionStatusTimeline_SnapshotData(DeviceDisplay dd, object snapshotData)
         {
             DataTable dt = snapshotData as DataTable;
             if (dt != null)
@@ -1325,49 +1308,71 @@ namespace TH_DeviceCompare
                     DateTime shift_begin = DateTime.MinValue;
                     DateTime.TryParse(begin, out shift_begin);
 
-                    string end = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End", "value");
+                    string end = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Time", "value");
                     DateTime shift_end = DateTime.MinValue;
                     DateTime.TryParse(end, out shift_end);
+
+                    //string end = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End", "value");
+                    //DateTime shift_end = DateTime.MinValue;
+                    //DateTime.TryParse(end, out shift_end);
 
                     // Get / Create TimeLineDisplay
                     TH_WPF.TimeLine.TimeLine timeline;
 
                     object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
-                    if (ddData == null)
+                    if (ddData != null)
                     {
-                        timeline = new TH_WPF.TimeLine.TimeLine();
-                        dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
-                    }
-                    else timeline = (TH_WPF.TimeLine.TimeLine)ddData;
+                        timeline = (TH_WPF.TimeLine.TimeLine)ddData;
 
-
-
-                    if (timeline.prev_SeriesCount != timeline.Series.Count)
-                    {
-                        List<Color> rawColors = TH_Styles.IndicatorColors.GetIndicatorColors(timeline.Series.Count);
-
-                        List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
-                        var levels = timeline.Series.OrderByDescending(i => i).ToList();
-                        //var levels = timeline.Series.OrderBy(i => i);
-                        for (int x = 0; x <= levels.Count - 1; x++)
-                        {
-                            colors.Add(new Tuple<Color, string>(rawColors[x], levels[x].ToString()));
-                        }
-
-                        timeline.Colors = colors;
-                    }
-
-                    timeline.prev_SeriesCount = timeline.Series.Count;
-
-
-                    // Get Shift Name to check if still in the same shift as last update
-                    string prev_shiftName = timeline.Title;
-                    timeline.Title = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
-                    if (prev_shiftName != timeline.Title)
-                    {
                         timeline.StartTime = shift_begin;
                         timeline.EndTime = shift_end;
+
+                        //// Get Shift Name to check if still in the same shift as last update
+                        //string prev_shiftName = timeline.Title;
+                        //timeline.Title = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
+                        //if (prev_shiftName != timeline.Title)
+                        //{
+                        //    timeline.StartTime = shift_begin;
+                        //    timeline.EndTime = shift_end;
+                        //}
                     }
+
+                    //if (ddData == null)
+                    //{
+                    //    timeline = new TH_WPF.TimeLine.TimeLine();
+                    //    dd.ComparisonGroup.column.Cells[cellIndex].Data = timeline;
+                    //}
+                    //else timeline = (TH_WPF.TimeLine.TimeLine)ddData;
+
+                    
+
+
+                    //if (timeline.prev_SeriesCount != timeline.Series.Count)
+                    //{
+                    //    List<Color> rawColors = TH_Styles.IndicatorColors.GetIndicatorColors(timeline.Series.Count);
+
+                    //    List<Tuple<Color, string>> colors = new List<Tuple<Color, string>>();
+                    //    var levels = timeline.Series.OrderByDescending(i => i).ToList();
+                    //    //var levels = timeline.Series.OrderBy(i => i);
+                    //    for (int x = 0; x <= levels.Count - 1; x++)
+                    //    {
+                    //        colors.Add(new Tuple<Color, string>(rawColors[x], levels[x].ToString()));
+                    //    }
+
+                    //    timeline.Colors = colors;
+                    //}
+
+                    //timeline.prev_SeriesCount = timeline.Series.Count;
+
+
+                    //// Get Shift Name to check if still in the same shift as last update
+                    //string prev_shiftName = timeline.Title;
+                    //timeline.Title = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
+                    //if (prev_shiftName != timeline.Title)
+                    //{
+                    //    timeline.StartTime = shift_begin;
+                    //    timeline.EndTime = shift_end;
+                    //}
                 }
             }
         }
