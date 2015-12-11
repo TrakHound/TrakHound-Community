@@ -1819,22 +1819,25 @@ namespace TrakHound_Client
             {
                 string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
 
-                foreach (string tablename in tablenames)
+                if (tablenames != null)
                 {
-                    configs = GetConfigurations();
+                    foreach (string tablename in tablenames)
+                    {
+                        configs = GetConfigurations();
 
-                    //DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
-                    //if (dt != null)
-                    //{
-                    //    XmlDocument xml = Converter.TableToXML(dt);
-                    //    Configuration config = Configuration.ReadConfigFile(xml);
-                    //    if (config != null)
-                    //    {
-                    //        config.TableName = tablename;
+                        //DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+                        //if (dt != null)
+                        //{
+                        //    XmlDocument xml = Converter.TableToXML(dt);
+                        //    Configuration config = Configuration.ReadConfigFile(xml);
+                        //    if (config != null)
+                        //    {
+                        //        config.TableName = tablename;
 
-                    //        if (config.ClientEnabled) configs.Add(config);
-                    //    }
-                    //}
+                        //        if (config.ClientEnabled) configs.Add(config);
+                        //    }
+                        //}
+                    }
                 }
             }
             // If not logged in Read from File in 'C:\TrakHound\'

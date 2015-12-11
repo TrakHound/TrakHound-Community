@@ -83,6 +83,8 @@ namespace TH_DeviceManager
                 else LoggedIn = false;
 
                 LoadDevices();
+
+                AddDevice_Initialize();
             }
         }
 
@@ -95,8 +97,6 @@ namespace TH_DeviceManager
         public static readonly DependencyProperty LoggedInProperty =
             DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
-        
-        
 
         public Database_Settings userDatabaseSettings;
 
@@ -563,21 +563,159 @@ namespace TH_DeviceManager
 
         #region "Remove Device"
 
-        bool RemoveDevice(Configuration config)
+        class RemoveDevice_Info
         {
-            bool result = false;
+            public DeviceButton bt { get; set; }
+            public bool success { get; set; }
+        }
 
-            if (config != null)
+        void RemoveDevice(DeviceButton bt)
+        {
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (result == MessageBoxResult.Yes)
             {
-                if (config.TableName != null)
+                ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevice_Worker), bt);
+            }
+        }
+
+        void RemoveDevice_Worker(object o)
+        {
+            RemoveDevice_Info info = new RemoveDevice_Info();
+
+            if (o != null)
+            {
+                DeviceButton bt = (DeviceButton)o;
+
+                info.bt = bt;
+
+                if (bt.Config != null)
                 {
-                    this.Cursor = Cursors.Wait;
-                    if (Configurations.RemoveConfigurationTable(config.TableName, userDatabaseSettings)) result = true;
-                    this.Cursor = Cursors.Arrow;
+                    if (bt.Config.TableName != null)
+                    {
+                        info.success = Configurations.RemoveConfigurationTable(bt.Config.TableName, userDatabaseSettings);
+                    }
                 }
             }
 
-            return result;
+            this.Dispatcher.BeginInvoke(new Action<RemoveDevice_Info>(RemoveDevice_Finshed), priority, new object[] { info });
+        }
+
+        void RemoveDevice_Finshed(RemoveDevice_Info info)
+        {
+            if (info.success)
+            {
+                if (info.bt != null)
+                {
+                    DeviceButton bt = info.bt;
+
+                    if (bt.Parent != null)
+                    {
+                        if (bt.Parent.GetType() == typeof(ListButton))
+                        {
+                            ListButton lb = (ListButton)bt.Parent;
+
+                            if (DeviceList.Contains(lb)) DeviceList.Remove(lb);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("An error occured while attempting to Remove Device. Please try again.", "Remove Device Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                LoadDevices();
+            }
+        }
+
+        #endregion
+
+        #region "Add Device"
+
+        private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (TH_WPF.ListButton lb in DeviceList.OfType<TH_WPF.ListButton>()) lb.IsSelected = false;
+
+            SelectedDevice = null;
+            selectedPageIndex = 0;
+
+            AddDevice();
+        }
+
+        Pages.AddDevice.Page page;
+
+        void AddDevice_Initialize()
+        {
+            page = new Pages.AddDevice.Page();
+            page.deviceManager = this;
+            page.DeviceAdded += page_DeviceAdded;
+            page.currentuser = CurrentUser;
+            page.LoadCatalog();
+        }
+
+        public void AddDevice()
+        {
+            PageListShown = false;
+            ToolbarShown = false;
+
+            if (CurrentPage != null)
+            {
+                if (CurrentPage.GetType() != typeof(Pages.AddDevice.Page))
+                {
+                    CurrentPage = page;
+                }
+            }
+            else CurrentPage = page;
+        }
+
+        void page_DeviceAdded(Configuration config)
+        {
+            CreateDeviceButton(config);
+        }
+
+        #endregion
+
+        #region "Copy Device"
+
+        Thread CopyDevice_THREAD;
+
+        void CopyDevice(Configuration config)
+        {
+
+            if (CopyDevice_THREAD != null) CopyDevice_THREAD.Abort();
+
+            CopyDevice_THREAD = new Thread(new ParameterizedThreadStart(CopyDevice_Worker));
+            CopyDevice_THREAD.Start(config);
+        }
+
+        void CopyDevice_Worker(object o)
+        {
+            bool success = false;
+
+            if (o != null)
+            {
+                Configuration config = (Configuration)o;
+
+                if (currentuser != null)
+                {
+                    success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+                }
+                else
+                {
+                    success = false;
+                }
+            }
+
+            this.Dispatcher.BeginInvoke(new Action<bool>(CopyDevice_GUI), priority, new object[] { success });
+        }
+
+        void CopyDevice_GUI(bool success)
+        {
+
+            if (success) LoadDevices();
+            else
+            {
+                MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
         }
 
         #endregion
@@ -655,22 +793,7 @@ namespace TH_DeviceManager
         {
             if (bt.Config != null)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                if (result == MessageBoxResult.Yes)
-                {
-                    if (RemoveDevice(bt.Config))
-                    {
-                        if (bt.Parent != null)
-                        {
-                            if (bt.Parent.GetType() == typeof(ListButton))
-                            {
-                                ListButton lb = (ListButton)bt.Parent;
-
-                                if (DeviceList.Contains(lb)) DeviceList.Remove(lb);
-                            }
-                        } 
-                    }
-                }
+                RemoveDevice(bt);
             }
 
             if (DeviceList.Count == 0) AddDevice();
@@ -719,8 +842,6 @@ namespace TH_DeviceManager
             public string tablename { get; set; }
             public bool success { get; set; }
         }
-
-        //Thread enable_THREAD;
 
         void EnableDevice(DeviceButton bt, string tableName)
         {
@@ -1344,105 +1465,6 @@ namespace TH_DeviceManager
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
-
-        #region "Add Device"
-
-        private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            foreach (TH_WPF.ListButton lb in DeviceList.OfType<TH_WPF.ListButton>()) lb.IsSelected = false;
-
-            SelectedDevice = null;
-            selectedPageIndex = 0;
-
-            AddDevice();
-        }
-
-        public void AddDevice()
-        {
-            PageListShown = false;
-            ToolbarShown = false;
-
-            if (CurrentPage != null)
-            {
-                if (CurrentPage.GetType() != typeof(Pages.AddDevice.Page))
-                {
-                    AddDevice_Page();
-                }
-            }
-            else AddDevice_Page();
-        }
-
-        void AddDevice_Page()
-        {
-            Pages.AddDevice.Page page = new Pages.AddDevice.Page();
-            page.deviceManager = this;
-            page.DeviceAdded += page_DeviceAdded;
-            page.currentuser = CurrentUser;
-            page.LoadCatalog();
-
-            CurrentPage = page;
-        }
-
-        void page_DeviceAdded()
-        {
-
-            LoadDevices();
-
-        }
-
-        #endregion
-
-        #region "Copy Device"
-
-        Thread CopyDevice_THREAD;
-
-        void CopyDevice(Configuration config)
-        {
-
-            if (CopyDevice_THREAD != null) CopyDevice_THREAD.Abort();
-
-            CopyDevice_THREAD = new Thread(new ParameterizedThreadStart(CopyDevice_Worker));
-            CopyDevice_THREAD.Start(config);
-        }
-
-        void CopyDevice_Worker(object o)
-        {
-            bool success = false;
-
-            if (o != null)
-            {
-                Configuration config = (Configuration)o;
-
-                if (currentuser != null)
-                {
-                    success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
-                }
-                else
-                {
-                    success = false;
-                }
-            }
-
-            this.Dispatcher.BeginInvoke(new Action<bool>(CopyDevice_GUI), priority, new object[] { success });
-        }
-
-        void CopyDevice_GUI(bool success)
-        {
-
-            if (success) LoadDevices();
-            else
-            {
-                MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            
-        }
-
-
-
-
-        #endregion
-
 
         private void RefreshDevices_Clicked(Button_02 bt)
         {

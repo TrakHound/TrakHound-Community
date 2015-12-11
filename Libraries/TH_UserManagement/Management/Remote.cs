@@ -382,6 +382,8 @@ namespace TH_UserManagement.Management
 
                 string tableName = CreateConfigurationTableName(userConfig);
 
+                configuration.TableName = tableName;
+
                 result = CreateConfigurationTable(tableName);
                 if (result)
                 {

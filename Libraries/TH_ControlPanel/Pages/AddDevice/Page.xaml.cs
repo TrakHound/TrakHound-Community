@@ -46,7 +46,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         public Database_Settings userDatabaseSettings;
 
-        public delegate void DeviceAdded_Handler();
+        public delegate void DeviceAdded_Handler(Configuration config);
         public event DeviceAdded_Handler DeviceAdded;
 
         public DeviceManager deviceManager;
@@ -89,16 +89,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
                     if (deviceManager.CurrentUser != null)
                     {
-                        if (deviceManager.userDatabaseSettings == null)
-                        {
-                            Configurations.AddConfigurationToUser(deviceManager.CurrentUser, config, userDatabaseSettings);
-
-                            //Configurations = TH_Configuration.User.Management.GetConfigurationsForUser(currentuser);
-                        }
-                        else
-                        {
-                            //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, mw.userDatabaseSettings);
-                        }
+                        Configurations.AddConfigurationToUser(deviceManager.CurrentUser, config, userDatabaseSettings);
                     }
                     // If not logged in Read from File in 'C:\TrakHound\'
                     else
@@ -139,6 +130,7 @@ namespace TH_DeviceManager.Pages.AddDevice
         public void LoadCatalog()
         {
             CatalogLoading = true;
+            SharedList.Clear();
 
             if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
 
@@ -148,11 +140,9 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         void LoadCatalog_Worker()
         {
-
             List<Shared.SharedListItem> items = Shared.GetSharedList();
 
             this.Dispatcher.BeginInvoke(new Action<List<Shared.SharedListItem>>(LoadCatalog_GUI), priority, new object[] { items });
-
         }
 
         void LoadCatalog_GUI(List<Shared.SharedListItem> items)
@@ -285,7 +275,6 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             if (item.listitem != null)
             {
-                //string tablename = item.listitem.tablename;
                 AddSharedItem(item);
             }
         }
@@ -302,26 +291,19 @@ namespace TH_DeviceManager.Pages.AddDevice
         class AddShared_Return
         {
             public Controls.SharedItem item { get; set; }
+            public Configuration config { get; set; }
             public bool success { get; set; }
         }
-
-        Thread AddShared_THREAD;
 
         void AddSharedItem(Controls.SharedItem item)
         {
             item.Loading = true;
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(AddSharedItem_Worker), item);
-
-            //if (AddShared_THREAD != null) AddShared_THREAD.Abort();
-
-            //AddShared_THREAD = new Thread(new ParameterizedThreadStart(AddSharedItem_Worker));
-            //AddShared_THREAD.Start(item);
         }
 
         void AddSharedItem_Worker(object o)
         {
-
             AddShared_Return result = new AddShared_Return();
             result.success = false;
 
@@ -330,27 +312,36 @@ namespace TH_DeviceManager.Pages.AddDevice
                 Controls.SharedItem item = (Controls.SharedItem)o;
 
                 result.item = item;
-
-                string tablename = item.listitem.tablename;
-
-                if (tablename != null)
+                
+                if (item.listitem != null)
                 {
-                    DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
-                    if (dt != null)
-                    {
-                        XmlDocument xml = Converter.TableToXML(dt);
-                        if (xml != null)
-                        {
-                            Configuration config = Configuration.ReadConfigFile(xml);
-                            if (config != null)
-                            {
-                                if (currentuser != null)
-                                {
-                                    result.success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
-                                }
-                                else
-                                {
+                    string tablename = item.listitem.tablename;
 
+                    if (tablename != null)
+                    {
+                        Shared.UpdateDownloads(item.listitem);
+
+                        DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
+                        if (dt != null)
+                        {
+                            XmlDocument xml = Converter.TableToXML(dt);
+                            if (xml != null)
+                            {
+                                Configuration config = Configuration.ReadConfigFile(xml);
+                                if (config != null)
+                                {
+                                    result.config = config;
+
+                                    if (currentuser != null)
+                                    {
+                                        result.success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+
+                                        result.config.TableName = config.TableName;
+                                    }
+                                    else
+                                    {
+
+                                    }
                                 }
                             }
                         }
@@ -365,9 +356,9 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             if (result.item != null) result.item.Loading = false;
 
-            if (result.success)
+            if (result.success && result.config != null)
             {
-                if (DeviceAdded != null) DeviceAdded();
+                if (DeviceAdded != null) DeviceAdded(result.config);
             }
             else
             {

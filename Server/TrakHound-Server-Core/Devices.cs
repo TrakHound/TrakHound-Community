@@ -104,42 +104,41 @@ namespace TrakHound_Server_Core
                 if (currentuser != null)
                 {
                     string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-
-                    foreach (string tablename in tablenames)
-                    {
-                        Configuration config = GetConfiguration(tablename);
-                        if (config != null)
-                        {
-                            config.TableName = tablename;
-
-                            Device_Server server = Devices.Find(x => x.configuration.UniqueId == config.UniqueId);
-                            if (server != null) // Server is already part of list
-                            {
-                                // Check if Configuration has changed
-                                if (server.configuration.ServerUpdateId != config.ServerUpdateId)
-                                {
-                                    server.Stop();
-
-                                    server.configuration = config;
-
-                                    if (config.ServerEnabled)
-                                    {
-                                        // Initialize Database Configurations
-                                        Global.Initialize(server.configuration.Databases_Server);
-
-                                        server.Start(false);
-                                    }
-                                }
-                            }
-                            else // Create & Add Device Server
-                            {
-                                LoadConfiguration(tablename);
-                            }
-                        }
-                    }
-
                     if (tablenames != null)
                     {
+                        foreach (string tablename in tablenames)
+                        {
+                            Configuration config = GetConfiguration(tablename);
+                            if (config != null)
+                            {
+                                config.TableName = tablename;
+
+                                Device_Server server = Devices.Find(x => x.configuration.UniqueId == config.UniqueId);
+                                if (server != null) // Server is already part of list
+                                {
+                                    // Check if Configuration has changed
+                                    if (server.configuration.ServerUpdateId != config.ServerUpdateId)
+                                    {
+                                        server.Stop();
+
+                                        server.configuration = config;
+
+                                        if (config.ServerEnabled)
+                                        {
+                                            // Initialize Database Configurations
+                                            Global.Initialize(server.configuration.Databases_Server);
+
+                                            server.Start(false);
+                                        }
+                                    }
+                                }
+                                else // Create & Add Device Server
+                                {
+                                    LoadConfiguration(tablename);
+                                }
+                            }
+                        }
+
                         // Remove any server that was removed from user
                         foreach (Device_Server server in Devices.ToList())
                         {

@@ -319,23 +319,45 @@ namespace TH_DevicePage
 
         #endregion
 
+        #region "Device Status"
+
+
+
+
+        #endregion
+
+
         #region "OEE Comparison"
 
         void LoadOEEComparisonTable(Configuration config)
         {
             DataTable table = new DataTable();
             table.Columns.Add("Shift Name");
-            table.Columns.Add("Average OEE");
-            table.Columns.Add("Median OEE");
-            table.Columns.Add("Max OEE");
-            table.Columns.Add("Min OEE");
+
+            table.Columns.Add("Average");
+            table.Columns.Add("Median");
+            table.Columns.Add("Max");
+            table.Columns.Add("Min");
+
+
+            //table.Columns.Add("Average OEE");
+            //table.Columns.Add("Median OEE");
+            //table.Columns.Add("Max OEE");
+            //table.Columns.Add("Min OEE");
+
+            //table.Columns.Add("Availability");
+            //table.Columns.Add("Performance");
+            //table.Columns.Add("Quality");
+
 
             // Get entire table (may need to be sorted using user input)
             DataTable oeeTable = TH_Database.Table.Get(config.Databases_Client, "oee");
             if (oeeTable != null)
             {
                 DataView dv = oeeTable.AsDataView();
-                string filter = "Shift_Id LIKE '20151012*'";
+
+                string today = String.Format("{0:yyyyMMdd}", DateTime.Now);
+                string filter = "Shift_Id LIKE '" + today + "*'";
                 //string filter = "Shift_Id LIKE '%00%'";
                 dv.RowFilter = filter;
                 oeeTable = dv.ToTable();

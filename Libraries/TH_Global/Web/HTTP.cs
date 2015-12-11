@@ -107,7 +107,7 @@ namespace TH_Global.Web
         /// <param name="url"></param>
         /// <param name="nvc"></param>
         /// <returns></returns>
-        public static string SendData(string url, NameValueCollection nvc, bool insureDelivery = false)
+        public static string SendData(string url, NameValueCollection nvc)
         {
 
             string result = null;
@@ -116,8 +116,8 @@ namespace TH_Global.Web
             bool success = false;
             string message = null;
 
-            // Try to send & receive data for number of connectionAttempts or infinitely if insureDelivery is set
-            while ((attempts < connectionAttempts || insureDelivery) && !success)
+            // Try to send data for number of connectionAttempts
+            while (attempts < connectionAttempts && !success)
             {
                 attempts += 1;
 
@@ -177,8 +177,78 @@ namespace TH_Global.Web
 
             return result;
         }
+        //public static string SendData(string url, NameValueCollection nvc, bool insureDelivery = false)
+        //{
 
-        public static string GetData(string url, bool insureDelivery = false)
+        //    string result = null;
+
+        //    int attempts = 0;
+        //    bool success = false;
+        //    string message = null;
+
+        //    // Try to send & receive data for number of connectionAttempts or infinitely if insureDelivery is set
+        //    while ((attempts < connectionAttempts || insureDelivery) && !success)
+        //    {
+        //        attempts += 1;
+
+        //        try
+        //        {
+        //            // Create POST data string
+        //            StringBuilder postData = new StringBuilder();
+        //            for (int x = 0; x <= nvc.AllKeys.Length - 1; x++)
+        //            {
+        //                string key = nvc.AllKeys[x];
+        //                string vals = "";
+        //                foreach (string value in nvc.GetValues(key))
+        //                {
+        //                    vals += value;
+        //                }
+        //                postData.Append(HttpUtility.UrlEncode(key));
+        //                postData.Append("=");
+        //                postData.Append(HttpUtility.UrlEncode(vals));
+
+        //                if (x < nvc.AllKeys.Length) postData.Append("&");
+        //            }
+
+        //            // Convert POST data to byte array
+        //            ASCIIEncoding ascii = new ASCIIEncoding();
+        //            byte[] postBytes = ascii.GetBytes(postData.ToString());
+
+        //            // Create HTTP request and define Header info
+        //            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        //            request.Timeout = timeout;
+        //            request.Method = "POST";
+        //            request.ContentType = "application/x-www-form-urlencoded";
+        //            request.ContentLength = postBytes.Length;
+        //            request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+
+        //            // Add POST data to request stream
+        //            Stream postStream = request.GetRequestStream();
+        //            postStream.Write(postBytes, 0, postBytes.Length);
+        //            postStream.Flush();
+        //            postStream.Close();
+
+        //            // Get HTTP resonse and return as string
+        //            using (var response = (HttpWebResponse)request.GetResponse())
+        //            using (var s = response.GetResponseStream())
+        //            using (var reader = new StreamReader(s))
+        //            {
+        //                result = reader.ReadToEnd();
+        //                success = true;
+        //            }
+        //        }
+        //        catch (WebException wex) { message = wex.Message; }
+        //        catch (Exception ex) { message = ex.Message; }
+
+        //        if (!success) System.Threading.Thread.Sleep(1000);
+        //    }
+
+        //    if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+
+        //    return result;
+        //}
+
+        public static string GetData(string url)
         {
 
             string result = null;
@@ -187,8 +257,8 @@ namespace TH_Global.Web
             bool success = false;
             string message = null;
 
-            // Try to send & receive data for number of connectionAttempts or infinitely if insureDelivery is set
-            while ((attempts < connectionAttempts || insureDelivery) && !success)
+            // Try to receive data for number of connectionAttempts
+            while (attempts < connectionAttempts && !success)
             {
                 attempts += 1;
 
@@ -217,6 +287,46 @@ namespace TH_Global.Web
 
             return result;
         }
+
+        //public static string GetData(string url, bool insureDelivery = false)
+        //{
+
+        //    string result = null;
+
+        //    int attempts = 0;
+        //    bool success = false;
+        //    string message = null;
+
+        //    // Try to send & receive data for number of connectionAttempts or infinitely if insureDelivery is set
+        //    while ((attempts < connectionAttempts || insureDelivery) && !success)
+        //    {
+        //        attempts += 1;
+
+        //        try
+        //        {
+        //            // Create HTTP request and define Header info
+        //            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+        //            request.Timeout = timeout;
+
+        //            // Get HTTP resonse and return as string
+        //            using (var response = (HttpWebResponse)request.GetResponse())
+        //            using (var s = response.GetResponseStream())
+        //            using (var reader = new StreamReader(s))
+        //            {
+        //                result = reader.ReadToEnd();
+        //                success = true;
+        //            }
+        //        }
+        //        catch (WebException wex) { message = wex.Message; }
+        //        catch (Exception ex) { message = ex.Message; }
+
+        //        if (!success) System.Threading.Thread.Sleep(1000);
+        //    }
+
+        //    if (!success) Logger.Log("Get :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+
+        //    return result;
+        //}
     }
 }
 

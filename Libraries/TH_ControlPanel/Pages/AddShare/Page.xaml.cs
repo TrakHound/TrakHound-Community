@@ -246,7 +246,7 @@ namespace TH_DeviceManager.Pages.AddShare
             }
 
 
-            if (export_agent_CHK.IsChecked != true)
+            if (export_databases_CHK.IsChecked != true)
             {
                 string databaseprefix1 = "/Databases/";
                 string databaseprefix2 = "/Databases_Server/";

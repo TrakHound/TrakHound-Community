@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
+using TH_Global.Web;
 
 namespace TH_UserManagement.Management
 {
@@ -149,6 +150,27 @@ namespace TH_UserManagement.Management
                         if (Remote.Configurations.UpdateConfigurationTable(tablename, dt)) return true;
                     }
                 }
+            }
+
+            return result;
+        }
+
+        public static bool UpdateDownloads(SharedListItem item)
+        {
+            bool result = false;
+
+            if (item != null)
+            {
+                NameValueCollection values = new NameValueCollection();
+
+                values["id"] = item.id;
+
+                string url = "https://www.feenux.com/php/configurations/updateshareddownloads.php";
+
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
             }
 
             return result;

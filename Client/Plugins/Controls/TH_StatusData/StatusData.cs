@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,13 +22,13 @@ namespace TH_StatusData
     public class StatusData : Control_PlugIn
     {
 
-        public StatusData()
-        {
-            update_TIMER = new System.Timers.Timer();
-            update_TIMER.Interval = 2000;
-            update_TIMER.Elapsed += update_TIMER_Elapsed;
-            update_TIMER.Enabled = true;
-        }
+        //public StatusData()
+        //{
+        //    //update_TIMER = new System.Timers.Timer();
+        //    //update_TIMER.Interval = 2000;
+        //    //update_TIMER.Elapsed += update_TIMER_Elapsed;
+        //    //update_TIMER.Enabled = true;
+        //}
 
         #region "PlugIn"
 
@@ -108,6 +109,8 @@ namespace TH_StatusData
             set
             {
                 lDevices = value;
+
+                Update_Start();
             }
         }
 
@@ -196,6 +199,74 @@ namespace TH_StatusData
                     }
                 }
             }       
+        }
+
+
+        ManualResetEvent stop = null;
+
+        void Update_Start()
+        {
+            Update_Stop();
+
+            if (Devices != null)
+            {
+                stop = new ManualResetEvent(false);
+
+                foreach (Configuration device in Devices.ToList())
+                {
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), device);
+                }
+            }
+        }
+
+        void Update_Stop()
+        {
+            // Set Update thread to stop
+            if (stop != null) stop.Set();
+        }
+
+        void Update_Worker(object o)
+        {
+            if (o != null)
+            {
+                Configuration config = (Configuration)o;
+
+                while (!stop.WaitOne(0, true))
+                {
+                    // Get Connection Status
+                    DataEvent_Data connected = GetConnectionData(config);
+                    // Send Connection Status
+                    SendDataEvent(connected);
+
+                    // Get Snapshot Data
+                    Snapshot_Return snapshotData = GetSnapShots(config);
+                    // Send Snapshot Data
+                    SendDataEvent(snapshotData.de_data);
+
+                    // Get Gen Event Values
+                    DataEvent_Data genEventData = GetGenEventValues(config);
+                    // Send Gen Event Values
+                    SendDataEvent(genEventData);
+
+                    // Get Shift Data
+                    DataEvent_Data shiftData = GetShifts(config, snapshotData.shiftData);
+                    // Send Shift Data
+                    SendDataEvent(shiftData);
+
+                    // Get OEE Data
+                    DataEvent_Data oeeData = GetOEE(config, snapshotData.shiftData);
+                    // Send OEE Data
+                    SendDataEvent(oeeData);
+
+                    // Get Production Status Data
+                    DataEvent_Data productionStatusData = GetProductionStatusList(config, snapshotData.shiftData);
+                    // Send Production Status Data
+                    SendDataEvent(productionStatusData);
+
+
+                    Thread.Sleep(5000);
+                }
+            }
         }
 
 

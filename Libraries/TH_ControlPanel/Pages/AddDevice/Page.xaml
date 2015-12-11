@@ -234,7 +234,7 @@
                     </StackPanel>-->
 
                     <!--Details-->
-                    <Border Grid.Row="1" BorderBrush="#ccc" BorderThickness="0,1,0,0">
+                    <Border Grid.Row="1">
 
                         <Grid Margin="0,10,0,0">
                             <Grid.RowDefinitions>

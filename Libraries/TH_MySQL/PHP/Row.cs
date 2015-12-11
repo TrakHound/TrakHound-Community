@@ -110,7 +110,7 @@ namespace TH_MySQL.PHP
 
             string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
 
-            HTTP.SendData(url, values, true);
+            HTTP.SendData(url, values);
         }
 
         #endregion

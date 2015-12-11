@@ -456,6 +456,7 @@ namespace TH_Device_Server
 
             if (SampleCount > 0)
             {
+                UpdateProcessingStatus("Running Sample @ " + s.Address + ":" + s.Port.ToString() + " Count = " + SampleCount.ToString());
                 s.Run(null, First, SampleCount);
             }
             else

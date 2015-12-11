@@ -458,7 +458,7 @@ namespace TH_Device_Server
 
                     if (configuration != null)
                     {
-                        //Console.Write("[Status] [" + configuration.Index.ToString() + "] " + line + Environment.NewLine);
+                        if (DEBUG) Console.Write("[Status] [" + configuration.Index.ToString() + "] " + line + Environment.NewLine);
                     }
                     else
                     {

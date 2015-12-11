@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Database;
@@ -28,21 +29,27 @@ namespace TrakHound_Server_Core
             UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, userDatabaseSettings);
             if (rememberUser != null)
             {
-                RememberMe.Set(rememberUser, RememberMeType.Server, userDatabaseSettings);
-
-                currentuser = rememberUser;
-
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.Write(TH_Global.Formatting.UppercaseFirst(rememberUser.username));
-                Console.ResetColor();
-
-                Console.Write(" Logged in Successfully" + Environment.NewLine);
+                LoginUser(rememberUser);
             }
             else
             {
+                RememberMeMonitor_Start();
                 Console.WriteLine("Login failed : Login through Control Panel and set 'Remember Me'");
             }
+        }
+
+        void LoginUser(UserConfiguration userConfig)
+        {
+            RememberMe.Set(userConfig, RememberMeType.Server, userDatabaseSettings);
+
+            currentuser = userConfig;
+
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(TH_Global.Formatting.UppercaseFirst(userConfig.username));
+            Console.ResetColor();
+
+            Console.Write(" Logged in Successfully" + Environment.NewLine);
         }
 
         void ReadUserManagementSettings()
@@ -71,6 +78,35 @@ namespace TrakHound_Server_Core
                 }
             }
         }
+
+        #region "Remember Me Monitor"
+
+        System.Timers.Timer rememberMe_TIMER;
+
+        void RememberMeMonitor_Start()
+        {
+            rememberMe_TIMER = new System.Timers.Timer();
+            rememberMe_TIMER.Interval = 5000;
+            rememberMe_TIMER.Elapsed += rememberMe_TIMER_Elapsed;
+            rememberMe_TIMER.Enabled = true;
+        }
+
+        void rememberMe_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(new WaitCallback(RememberMeMonitor_Worker));
+        }
+
+        void RememberMeMonitor_Worker(object o)
+        {
+           UserConfiguration rememberMe = RememberMe.Get(RememberMeType.Server, userDatabaseSettings);
+            if (rememberMe != null && currentuser == null)
+            {
+                if (rememberMe_TIMER != null) rememberMe_TIMER.Enabled = false;
+                LoginUser(rememberMe);
+            }
+        }
+
+        #endregion
 
     }
 }

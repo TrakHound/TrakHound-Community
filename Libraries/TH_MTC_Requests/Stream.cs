@@ -85,7 +85,7 @@ namespace TH_MTC_Requests
 
         public void Run()
         {
-            string response = HTTP.GetData(url, InsureDelivery);
+            string response = HTTP.GetData(url);
 
             if (response != null)
             {
