@@ -120,43 +120,92 @@ namespace TH_TableManager
 
         #region "Device Properties"
 
-        private List<Configuration> lDevices;
-        public List<Configuration> Devices
+        //private List<Configuration> lDevices;
+        //public List<Configuration> Devices
+        //{
+        //    get { return lDevices; }
+        //    set
+        //    {
+        //        lDevices = value;
+
+        //        DeviceList.Clear();
+
+        //        foreach (Configuration device in lDevices)
+        //        {
+
+        //            // Initialize Database Configurations
+        //            Global.Initialize(device.Databases_Client);
+
+        //            Controls.DeviceButton db = new DeviceButton();
+        //            db.Description = device.Description.Description;
+        //            db.Manufacturer = device.Description.Manufacturer;
+        //            db.Model = device.Description.Model;
+        //            db.Serial = device.Description.Serial;
+        //            db.Id = device.Description.Machine_ID;
+
+        //            db.Clicked += db_Clicked;
+
+        //            ListButton lb = new ListButton();
+        //            lb.ButtonContent = db;
+        //            lb.ShowImage = false;
+        //            lb.Selected += lb_Device_Selected;
+        //            lb.DataObject = device;
+
+        //            db.Parent = lb;
+
+        //            DeviceList.Add(lb);
+        //        }
+        //    }
+        //}
+
+        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
+
+        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            get { return lDevices; }
-            set
+            Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
+
+            if (e.NewItems != null)
             {
-                lDevices = value;
-
-                DeviceList.Clear();
-
-                foreach (Configuration device in lDevices)
+                foreach (Configuration newConfig in e.NewItems)
                 {
+                    Devices.Add(newConfig);
 
-                    // Initialize Database Configurations
-                    Global.Initialize(device.Databases_Client);
+                    if (newConfig != null)
+                    {
+                        // Initialize Database Configurations
+                        Global.Initialize(newConfig.Databases_Client);
 
-                    Controls.DeviceButton db = new DeviceButton();
-                    db.Description = device.Description.Description;
-                    db.Manufacturer = device.Description.Manufacturer;
-                    db.Model = device.Description.Model;
-                    db.Serial = device.Description.Serial;
-                    db.Id = device.Description.Machine_ID;
+                        Controls.DeviceButton db = new DeviceButton();
+                        db.Description = newConfig.Description.Description;
+                        db.Manufacturer = newConfig.Description.Manufacturer;
+                        db.Model = newConfig.Description.Model;
+                        db.Serial = newConfig.Description.Serial;
+                        db.Id = newConfig.Description.Machine_ID;
 
-                    db.Clicked += db_Clicked;
+                        db.Clicked += db_Clicked;
 
-                    ListButton lb = new ListButton();
-                    lb.ButtonContent = db;
-                    lb.ShowImage = false;
-                    lb.Selected += lb_Device_Selected;
-                    lb.DataObject = device;
+                        ListButton lb = new ListButton();
+                        lb.ButtonContent = db;
+                        lb.ShowImage = false;
+                        lb.Selected += lb_Device_Selected;
+                        lb.DataObject = newConfig;
 
-                    db.Parent = lb;
+                        db.Parent = lb;
 
-                    DeviceList.Add(lb);
+                        DeviceList.Add(lb);
+                    }
+                }
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (Configuration oldConfig in e.OldItems)
+                {
+                    Devices.Add(oldConfig);
                 }
             }
         }
+
 
         //private List<Device_Client> lDevices;
         //public List<Device_Client> Devices 

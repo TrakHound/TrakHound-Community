@@ -334,16 +334,16 @@ namespace TH_DevicePage
             DataTable table = new DataTable();
             table.Columns.Add("Shift Name");
 
-            table.Columns.Add("Average");
-            table.Columns.Add("Median");
-            table.Columns.Add("Max");
-            table.Columns.Add("Min");
+            //table.Columns.Add("Average");
+            //table.Columns.Add("Median");
+            //table.Columns.Add("Max");
+            //table.Columns.Add("Min");
 
 
-            //table.Columns.Add("Average OEE");
-            //table.Columns.Add("Median OEE");
-            //table.Columns.Add("Max OEE");
-            //table.Columns.Add("Min OEE");
+            table.Columns.Add("Average OEE");
+            table.Columns.Add("Median OEE");
+            table.Columns.Add("Max OEE");
+            table.Columns.Add("Min OEE");
 
             //table.Columns.Add("Availability");
             //table.Columns.Add("Performance");

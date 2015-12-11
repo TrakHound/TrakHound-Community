@@ -104,7 +104,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         private void NewDevice_Clicked(TH_DeviceManager.Controls.PageItem item)
         {
-
+            AddBlankConfiguration();
         }
 
         #endregion
@@ -366,6 +366,30 @@ namespace TH_DeviceManager.Pages.AddDevice
             }
             
         }
+
+        #endregion
+
+        #region "Add Blank Configuration to User"
+
+        void AddBlankConfiguration()
+        {
+
+            Configuration config = CreateBlankConfiguration();
+
+            Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+
+        }
+
+        Configuration CreateBlankConfiguration()
+        {
+            Configuration result = Configuration.CreateBlank();
+
+            return result;
+        }
+
+
+
+
 
         #endregion
 

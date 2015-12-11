@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Data;
+using System.Collections.ObjectModel;
 
 using TH_Configuration;
 using TH_Database;
@@ -21,14 +22,6 @@ namespace TH_StatusData
 {
     public class StatusData : Control_PlugIn
     {
-
-        //public StatusData()
-        //{
-        //    //update_TIMER = new System.Timers.Timer();
-        //    //update_TIMER.Interval = 2000;
-        //    //update_TIMER.Elapsed += update_TIMER_Elapsed;
-        //    //update_TIMER.Enabled = true;
-        //}
 
         #region "PlugIn"
 
@@ -81,7 +74,7 @@ namespace TH_StatusData
 
         public void Initialize() { }
 
-        public void Closing() { closing = true; if (update_TIMER != null) update_TIMER.Enabled = false; }
+        public void Closing() { Update_Stop(); }
 
         bool closing = false;
 
@@ -102,16 +95,29 @@ namespace TH_StatusData
 
         #region "Devices"
 
-        private List<Configuration> lDevices;
-        public List<Configuration> Devices
-        {
-            get { return lDevices; }
-            set
-            {
-                lDevices = value;
+        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
 
-                Update_Start();
+        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Console.WriteLine("StatusData :: Devices :: " + e.Action.ToString());
+
+            if (e.NewItems != null)
+            {
+                foreach (Configuration newConfig in e.NewItems)
+                {
+                    Devices.Add(newConfig);
+                }
             }
+
+            if (e.OldItems != null)
+            {
+                foreach (Configuration oldConfig in e.OldItems)
+                {
+                    Devices.Add(oldConfig);
+                }
+            }
+
+            Update_Start();
         }
 
         #endregion
@@ -134,73 +140,7 @@ namespace TH_StatusData
 
         #endregion
 
-        System.Timers.Timer update_TIMER;
-
-        void update_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (Devices != null)
-            {
-                foreach (Configuration device in Devices.ToList())
-                {
-                    if (closing) break;
-
-                    if (DataEvent != null)
-                    {
-                        // Get Connection Status
-                        DataEvent_Data connected = GetConnectionData(device);
-
-                        // Send Connection Status
-                        SendDataEvent(connected);
-
-                        if (closing) break;
-
-
-                        // Get Snapshot Data
-                        Snapshot_Return snapshotData = GetSnapShots(device);
-
-                        // Send Snapshot Data
-                        SendDataEvent(snapshotData.de_data);
-
-                        if (closing) break;
-
-
-                        // Get Gen Event Values
-                        DataEvent_Data genEventData = GetGenEventValues(device);
-
-                        // Send Gen Event Values
-                        SendDataEvent(genEventData);
-
-                        if (closing) break;
-
-
-                        // Get Shift Data
-                        DataEvent_Data shiftData = GetShifts(device, snapshotData.shiftData);
-                        
-                        // Send Shift Data
-                        SendDataEvent(shiftData);
-
-                        if (closing) break;
-
-
-                        // Get OEE Data
-                        DataEvent_Data oeeData = GetOEE(device, snapshotData.shiftData);
-
-                        // Send OEE Data
-                        SendDataEvent(oeeData);
-
-                        if (closing) break;
-
-
-                        // Get Production Status Data
-                        DataEvent_Data productionStatusData = GetProductionStatusList(device, snapshotData.shiftData);
-
-                        // Send Production Status Data
-                        SendDataEvent(productionStatusData);
-                    }
-                }
-            }       
-        }
-
+        int interval = 5000;
 
         ManualResetEvent stop = null;
 
@@ -264,7 +204,7 @@ namespace TH_StatusData
                     SendDataEvent(productionStatusData);
 
 
-                    Thread.Sleep(5000);
+                    Thread.Sleep(interval);
                 }
             }
         }
@@ -375,28 +315,6 @@ namespace TH_StatusData
                     de_d.data01 = config;
                     de_d.data02 = shifts_DT;
 
-                    //List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
-
-                    //foreach (DataRow row in shifts_DT.Rows)
-                    //{
-                    //    Dictionary<string, string> rowdata = new Dictionary<string, string>();
-
-                    //    foreach (DataColumn column in row.Table.Columns)
-                    //    {
-                    //        string key = column.ColumnName;
-                    //        string value = row[column].ToString();
-
-                    //        rowdata.Add(key, value);
-                    //    }
-
-                    //    data.Add(rowdata);
-                    //}
-
-                    //DataEvent_Data de_d = new DataEvent_Data();
-                    //de_d.id = "DeviceStatus_Shifts";
-                    //de_d.data01 = config;
-                    //de_d.data02 = data;
-
                     result = de_d;
                 }
             }
@@ -426,23 +344,6 @@ namespace TH_StatusData
                 DataTable dt = Table.Get(config.Databases_Client, tableName, filter);
                 if (dt != null)
                 {
-                    //List<Dictionary<string, string>> data = new List<Dictionary<string, string>>();
-
-                    //foreach (DataRow row in table.Rows)
-                    //{
-                    //    Dictionary<string, string> rowdata = new Dictionary<string, string>();
-
-                    //    foreach (DataColumn column in row.Table.Columns)
-                    //    {
-                    //        string key = column.ColumnName;
-                    //        string value = row[column].ToString();
-
-                    //        rowdata.Add(key, value);
-                    //    }
-
-                    //    data.Add(rowdata);
-                    //}
-
                     DataEvent_Data de_d = new DataEvent_Data();
                     de_d.id = "StatusData_ProductionStatus";
                     de_d.data01 = config;

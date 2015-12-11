@@ -101,7 +101,7 @@ namespace TH_InstanceTable
 
             SendDataEvent(de_d);
 
-            instanceDatas.Clear();
+            //instanceDatas.Clear();
             // --------------------------------------------
 
         }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
+using System.Collections.ObjectModel;
+
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
@@ -142,27 +144,50 @@ namespace TH_DevicePage
 
         #region "Device Properties"
 
-        List<Configuration> devices;
-        public List<Configuration> Devices
+        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
+
+        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            get { return devices; }
-            set
+            Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
+
+            if (e.NewItems != null)
             {
-                devices = value;
+                foreach (Configuration newConfig in e.NewItems)
+                {
+                    Devices.Add(newConfig);
+                }
+            }
 
-                //if (devices != null)
-                //{
-                //    DeviceDisplays = new List<DeviceDisplay>();
-                //    ColumnHeaders.Clear();
-                //    Columns.Clear();
-
-                //    foreach (Configuration device in devices)
-                //    {
-                //        CreateDeviceDisplay(device);
-                //    }
-                //}
+            if (e.OldItems != null)
+            {
+                foreach (Configuration oldConfig in e.OldItems)
+                {
+                    Devices.Add(oldConfig);
+                }
             }
         }
+
+        //List<Configuration> devices;
+        //public List<Configuration> Devices
+        //{
+        //    get { return devices; }
+        //    set
+        //    {
+        //        devices = value;
+
+        //        //if (devices != null)
+        //        //{
+        //        //    DeviceDisplays = new List<DeviceDisplay>();
+        //        //    ColumnHeaders.Clear();
+        //        //    Columns.Clear();
+
+        //        //    foreach (Configuration device in devices)
+        //        //    {
+        //        //        CreateDeviceDisplay(device);
+        //        //    }
+        //        //}
+        //    }
+        //}
 
         //private int lSelectedDeviceIndex;
         //public int SelectedDeviceIndex

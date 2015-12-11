@@ -978,7 +978,7 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(new ColumnDefinition(item.name, DataType.LargeText));
+            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(new ColumnDefinition(FormatCaptureItemColumn(item.name), DataType.LargeText));
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
@@ -1005,7 +1005,7 @@ namespace TH_GeneratedData
                     GeneratedEvents.Event e = gdc.generatedEvents.events.Find(x => x.Name.ToLower() == eventName.ToLower());
                     if (e != null)
                     {
-                        foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(item.name);
+                        foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(FormatCaptureItemColumn(item.name));
                     }
                 }
 
@@ -1037,6 +1037,13 @@ namespace TH_GeneratedData
 
             }
 
+        }
+
+        string FormatCaptureItemColumn(string val)
+        {
+            string Result = val.Replace(' ','_').ToUpper();
+
+            return Result;
         }
 
         string FormatCaptureItemValue(string val)

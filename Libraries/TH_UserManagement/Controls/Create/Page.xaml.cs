@@ -138,6 +138,9 @@ namespace TH_UserManagement.Create
             PasswordEntered = false;
             ConfirmPasswordEntered = false;
 
+            password_TXT.PasswordText = null;
+            confirmpassword_TXT.PasswordText = null;
+
             FirstName = null;
             LastName = null;
             Username = null;

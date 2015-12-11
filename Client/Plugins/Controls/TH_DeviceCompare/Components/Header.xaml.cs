@@ -450,11 +450,11 @@ namespace TH_DeviceCompare.Components
 
                 if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                 {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 160);
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 140);
                 }
                 else
                 {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 160);
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 140);
                 }
 
                 //ManufacturerLogoSet = true;

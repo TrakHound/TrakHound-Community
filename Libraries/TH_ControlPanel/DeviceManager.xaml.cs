@@ -314,17 +314,20 @@ namespace TH_DeviceManager
             {
                 string[] tablenames = Remote.Configurations.GetConfigurationsForUser(currentuser);
 
-                foreach (string tablename in tablenames)
+                if (tablenames != null)
                 {
-                    DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
-                    if (dt != null)
+                    foreach (string tablename in tablenames)
                     {
-                        XmlDocument xml = Converter.TableToXML(dt);
-                        Configuration config = Configuration.ReadConfigFile(xml);
-                        if (config != null)
+                        DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
+                        if (dt != null)
                         {
-                            config.TableName = tablename;
-                            configs.Add(config);
+                            XmlDocument xml = Converter.TableToXML(dt);
+                            Configuration config = Configuration.ReadConfigFile(xml);
+                            if (config != null)
+                            {
+                                config.TableName = tablename;
+                                configs.Add(config);
+                            }
                         }
                     }
                 }

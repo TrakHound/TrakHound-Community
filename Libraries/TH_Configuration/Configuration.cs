@@ -555,6 +555,18 @@ namespace TH_Configuration
 
         }
 
+
+        public static Configuration CreateBlank()
+        {
+            XmlDocument xml = new XmlDocument();
+                   
+            xml.LoadXml(Properties.Resources.BlankConfiguration);
+
+            Configuration result = ReadConfigFile(xml);
+
+            return result;
+        }
+
         #endregion
 
     }

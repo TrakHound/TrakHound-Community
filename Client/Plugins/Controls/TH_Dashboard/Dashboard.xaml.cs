@@ -19,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using System.IO;
+using System.Collections.ObjectModel;
 
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
@@ -151,7 +152,20 @@ namespace TH_Dashboard
 
         //public List<Device_Client> Devices { get; set; }
 
-        public List<Configuration> Devices { get; set; }
+        //public List<Configuration> Devices { get; set; }
+
+        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
+
+        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            //if (PlugIns != null)
+            //{
+            //    foreach (Control_PlugIn CP in PlugIns)
+            //    {
+            //        this.Dispatcher.BeginInvoke(new Action<object, System.Collections.Specialized.NotifyCollectionChangedEventArgs>(CP.Devices_CollectionChanged), Priority, new object[] { sender, e });
+            //    }
+            //} 
+        }
 
         #endregion
 

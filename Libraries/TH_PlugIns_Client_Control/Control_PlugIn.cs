@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Windows.Media;
 
@@ -167,7 +168,10 @@ namespace TH_PlugIns_Client_Control
         /// List of Device_Client objects
         /// </summary>
         //List<Device_Client> Devices { get; set; }
-        List<Configuration> Devices { get; set; }
+        //List<Configuration> Devices { get; set; }
+        //ObservableCollection<Configuration> Devices { get; set; }
+
+        void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e);
 
         #endregion
 

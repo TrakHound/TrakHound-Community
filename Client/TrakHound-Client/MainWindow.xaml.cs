@@ -26,6 +26,7 @@ using System.Data;
 using System.Xml;
 using System.IO;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 using WinInterop = System.Windows.Interop;
 using System.Runtime.InteropServices;
@@ -79,6 +80,7 @@ namespace TrakHound_Client
             // Set border thickness (maybe make this a static resource in XAML?)
             ResizeBorderThickness = 1;
 
+            LoadDevices_Initialize();
 
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User");
@@ -1733,7 +1735,7 @@ namespace TrakHound_Client
         }
 
 
-        void UpdatePlugInDevices()
+        void UpdatePlugInDevices(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (PagePlugIns != null)
             {
@@ -1741,14 +1743,14 @@ namespace TrakHound_Client
                 {
                     Control_PlugIn cp = lcp.Value;
 
-                    this.Dispatcher.BeginInvoke(new Action<Control_PlugIn>(UpdatePluginDevices), Priority, new object[] { cp });
+                    this.Dispatcher.BeginInvoke(new Action<Control_PlugIn, object, NotifyCollectionChangedEventArgs>(UpdatePluginDevices), Priority, new object[] { cp, sender, e });
                 }
             }       
         }
 
-        void UpdatePluginDevices(Control_PlugIn cp)
+        void UpdatePluginDevices(Control_PlugIn cp, object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            cp.Devices = Devices;
+            cp.Devices_CollectionChanged(sender, e);
         }
 
 
@@ -1778,33 +1780,25 @@ namespace TrakHound_Client
 
         #region "Devices"
 
-        List<Configuration> devices = new List<Configuration>();
-        public List<Configuration> Devices
-        {
-            get { return devices; }
-            set
-            {
-                devices = value;
-            }
-        }
+        public ObservableCollection<Configuration> Devices { get; set; }
 
         #region "Load Devices"
-
-       
-
-
-
-
-
-
-
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
         Thread loaddevices_THREAD;
 
+        void LoadDevices_Initialize()
+        {
+            Devices = new ObservableCollection<Configuration>();
+            Devices.CollectionChanged += Devices_CollectionChanged;
+        }
+
+
         void LoadDevices()
         {
+            Devices.Clear();
+
             if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
 
             loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
@@ -1823,20 +1817,11 @@ namespace TrakHound_Client
                 {
                     foreach (string tablename in tablenames)
                     {
-                        configs = GetConfigurations();
+                        Configuration config = GetConfiguration(tablename);
 
-                        //DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
-                        //if (dt != null)
-                        //{
-                        //    XmlDocument xml = Converter.TableToXML(dt);
-                        //    Configuration config = Configuration.ReadConfigFile(xml);
-                        //    if (config != null)
-                        //    {
-                        //        config.TableName = tablename;
+                        this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
 
-                        //        if (config.ClientEnabled) configs.Add(config);
-                        //    }
-                        //}
+                        //ThreadPool.QueueUserWorkItem(new WaitCallback(LoadDevices_Worker_GetConfiguration), tablename);
                     }
                 }
             }
@@ -1844,19 +1829,19 @@ namespace TrakHound_Client
             else
             {
                 configs = ReadConfigurationFile();
+
+                this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
             }
 
-            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
+            this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), priority, new object[] { });
         }
 
-        List<Configuration> GetConfigurations()
+        void LoadDevices_Worker_GetConfiguration(object o)
         {
-            List<Configuration> result = new List<Configuration>();
-
-            string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
-
-            foreach (string tablename in tablenames)
+            if (o != null)
             {
+                string tablename = o.ToString();
+
                 DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
                 if (dt != null)
                 {
@@ -1866,7 +1851,90 @@ namespace TrakHound_Client
                     {
                         config.TableName = tablename;
 
-                        if (config.ClientEnabled) result.Add(config);
+                        if (config.ClientEnabled)
+                        {
+                            // Initialize Database Configurations
+                            Global.Initialize(config.Databases_Client);
+
+                            this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
+                        }
+                    }
+                }
+            }
+        }
+
+        Configuration GetConfiguration(string tablename)
+        {
+            Configuration result = null;
+
+            DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+            if (dt != null)
+            {
+                XmlDocument xml = Converter.TableToXML(dt);
+                Configuration config = Configuration.ReadConfigFile(xml);
+                if (config != null)
+                {
+                    config.TableName = tablename;
+
+                    if (config.ClientEnabled)
+                    {
+                        // Initialize Database Configurations
+                        Global.Initialize(config.Databases_Client);
+
+                        result = config;
+
+                        //this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        void LoadDevices_GUI(Configuration config)
+        {
+            if (config != null) Devices.Add(config);
+        }
+
+        void LoadDevices_Finished()
+        {
+            if (Devices.Count == 0)
+            {
+                if (devicemanager != null) devicemanager.AddDevice();
+                DeviceManager_Open();
+            }
+
+            DevicesMonitor_Initialize();
+        }
+
+        void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdatePlugInDevices(sender, e);
+        }
+
+
+
+        List<Configuration> GetConfigurations()
+        {
+            List<Configuration> result = new List<Configuration>();
+
+            string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+
+            if (tablenames != null)
+            {
+                foreach (string tablename in tablenames)
+                {
+                    DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+                    if (dt != null)
+                    {
+                        XmlDocument xml = Converter.TableToXML(dt);
+                        Configuration config = Configuration.ReadConfigFile(xml);
+                        if (config != null)
+                        {
+                            config.TableName = tablename;
+
+                            if (config.ClientEnabled) result.Add(config);
+                        }
                     }
                 }
             }
@@ -1911,10 +1979,13 @@ namespace TrakHound_Client
                 DeviceManager_Open();
             }
 
-            UpdatePlugInDevices();
+            //UpdatePlugInDevices();
 
             DevicesMonitor_Initialize();
         }
+
+
+
 
         void StartMonitor(Configuration config)
         {
@@ -2056,433 +2127,6 @@ namespace TrakHound_Client
 
         #endregion
 
-        #region "OLD 11-28-15"
-
-        //#region "Clients"
-
-        //#region "Load Devices"
-
-        //const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
-        //Thread loaddevices_THREAD;
-
-        //void LoadDevices()
-        //{
-
-        //    if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
-
-        //    loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
-        //    loaddevices_THREAD.Start();
-        //}
-
-        //void LoadDevices_Worker()
-        //{
-        //    List<Configuration> configs = new List<Configuration>();
-
-        //    if (currentuser != null)
-        //    {
-        //        if (userDatabaseSettings == null)
-        //        {
-        //            configs = Configurations.GetConfigurationsForUser(currentuser, true, userDatabaseSettings);
-        //        }
-        //        else
-        //        {
-        //            //configs = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-        //        }
-        //    }
-        //    // If not logged in Read from File in 'C:\TrakHound\'
-        //    else
-        //    {
-        //        configs = ReadConfigurationFile();
-        //    }
-
-
-        //    this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
-        //}
-
-        //void LoadDevices_GUI(List<Configuration> configs)
-        //{
-        //    if (configs != null)
-        //    {
-        //        int index = 0;
-
-        //        Devices.Clear();
-
-        //        if (monitors != null) { monitors.Clear(); }
-
-        //        // Create DevicesList based on Configurations
-        //        foreach (Configuration config in configs)
-        //        {
-        //            config.Index = index;
-
-        //            if (config.Remote) { StartMonitor(config); }
-
-        //            if (config.Enabled)
-        //            {
-        //                Device_Client device = new Device_Client(config);
-        //                device.Index = index;
-        //                device.DataUpdated += Device_DataUpdated;
-        //                Devices.Add(device);
-        //            }
-
-        //            index += 1;
-        //        }
-        //    }
-
-        //    configurations = configs;
-
-        //    UpdatePlugInDevices();
-            
-        //}
-
-
-
-        //#endregion
-
-        //// Device Update Interval
-        //public int clientUpdateInterval = 5000;
-
-        //List<Device_Client> Devices = new List<Device_Client>();
-
-        //List<ReturnData> DeviceData = new List<ReturnData>();
-
-        //List<Configuration> configurations;
-
-        //// OBSOLETE 11-23-15
-        ////void ReadConfigurations()
-        ////{
-        ////    if (currentuser != null)
-        ////    {
-        ////        if (userDatabaseSettings == null)
-        ////        {
-        ////            configurations = Management.GetConfigurationsForUser(currentuser);
-        ////        }
-        ////        else
-        ////        {
-        ////            //Configurations = TH_Database.Tables.Users.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-        ////        }
-        ////    }
-        ////    // If not logged in Read from File in 'C:\TrakHound\'
-        ////    else
-        ////    {
-        ////        configurations = ReadConfigurationFile();
-        ////    }
-
-        ////    if (configurations != null)
-        ////    {
-        ////        int index = 0;
-
-        ////        Devices.Clear();
-
-        ////        if (monitors != null)
-        ////        {
-        ////            //foreach (ConfigurationMonitor monitor in monitors) monitor.Stop();
-        ////            monitors.Clear();
-        ////        }
-
-        ////        // Create DevicesList based on Configurations
-        ////        foreach (Configuration config in configurations)
-        ////        {
-        ////            config.Index = index;
-
-        ////            if (config.Remote)
-        ////            {
-        ////                StartMonitor(config);
-        ////            }
-
-        ////            if (config.Enabled)
-        ////            {
-        ////                Device_Client device = new Device_Client(config);
-        ////                device.Index = index;
-        ////                device.DataUpdated += Device_DataUpdated;
-        ////                Devices.Add(device);  
-        ////            }
-
-        ////            index += 1;
-        ////        }
-
-        ////    }
-
-        ////    UpdatePlugInDevices();
-
-        ////}
-
-        //List<ConfigurationMonitor> monitors = new List<ConfigurationMonitor>();
-
-        //void StartMonitor(Configuration config)
-        //{
-        //    ConfigurationMonitor monitor = new ConfigurationMonitor();
-        //    monitor.CurrentConfiguration = config;
-        //    monitor.Interval = 5000;
-        //    monitor.TableName = config.TableName;
-        //    monitor.ConfigurationChanged += monitor_ConfigurationChanged;
-
-        //    monitors.Add(monitor);
-
-        //    monitor.Start();
-        //}
-
-        //void monitor_ConfigurationChanged(Configuration config)
-        //{
-        //    Logger.Log("New Configuration Found : Reading New Configurations");
-        //    LoadDevices();
-        //}
-
-        //List<Configuration> ReadConfigurationFile()
-        //{
-        //    List<Configuration> result = new List<Configuration>();
-
-        //    UpdateExceptionsThrown = new List<string>();
-
-        //    string configPath;
-
-        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
-        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
-
-        //    // systemPath takes priority (easier for user to navigate to)
-        //    if (File.Exists(systemPath)) configPath = systemPath;
-        //    else configPath = localPath;
-
-        //    if (System.IO.File.Exists(configPath))
-        //    {
-        //        XmlDocument doc = new XmlDocument();
-        //        doc.Load(configPath);
-
-        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-        //        {
-        //            if (Node.NodeType == XmlNodeType.Element)
-        //            {
-        //                switch (Node.Name.ToLower())
-        //                {
-        //                    case "devices":
-        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
-        //                        {
-        //                            if (ChildNode.NodeType == XmlNodeType.Element)
-        //                            {
-        //                                switch (ChildNode.Name.ToLower())
-        //                                {
-        //                                    case "device":
-
-        //                                        Configuration config = GetSettingsFromNode(ChildNode);
-        //                                        if (config != null) result.Add(config);
-        //                                        //{
-        //                                            //Device_Client device = new Device_Client(config);
-        //                                            //device.Index = index;
-        //                                            //device.DataUpdated += Device_DataUpdated;
-        //                                            //Devices.Add(device);
-        //                                            //index += 1;
-        //                                        //}
-        //                                        break;
-        //                                }
-        //                            }
-        //                        }
-        //                        break;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
-        ////private void ReadConfigurationFile()
-        ////{
-
-        ////    UpdateExceptionsThrown = new List<string>();
-
-        ////    string configPath;
-
-        ////    string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
-        ////    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
-
-        ////    // systemPath takes priority (easier for user to navigate to)
-        ////    if (File.Exists(systemPath)) configPath = systemPath;
-        ////    else configPath = localPath;
-
-        ////    if (System.IO.File.Exists(configPath))
-        ////    {
-        ////        XmlDocument doc = new XmlDocument();
-        ////        doc.Load(configPath);
-
-        ////        //int index = 0;
-
-        ////        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-        ////        {
-        ////            if (Node.NodeType == XmlNodeType.Element)
-        ////            {
-        ////                switch (Node.Name.ToLower())
-        ////                {
-        ////                    case "devices":
-        ////                        foreach (XmlNode ChildNode in Node.ChildNodes)
-        ////                        {
-        ////                            if (ChildNode.NodeType == XmlNodeType.Element)
-        ////                            {
-        ////                                switch (ChildNode.Name.ToLower())
-        ////                                {
-        ////                                    case "device":
-
-        ////                                        Configuration config = GetSettingsFromNode(ChildNode);
-        ////                                        if (config != null)
-        ////                                        {
-        ////                                            //Device_Client device = new Device_Client(config);
-        ////                                            //device.Index = index;
-        ////                                            //device.DataUpdated += Device_DataUpdated;
-        ////                                            //Devices.Add(device);
-        ////                                            //index += 1;
-        ////                                        }
-        ////                                        break;
-        ////                                }
-        ////                            }
-        ////                        }
-        ////                        break;
-        ////                }
-        ////            }             
-        ////        }
-        ////    }
-        ////}
-
-        //List<string> UpdateExceptionsThrown;
-
-        //void Device_DataUpdated(ReturnData rd)
-        //{
-        //    if (rd != null)
-        //    {
-        //        // Set Update Interval if changed
-        //        if (rd.index >= 0 && rd.index < Devices.Count - 1) 
-        //        {
-        //            Device_Client client = Devices[rd.index];
-        //            if (client.UpdateInterval != clientUpdateInterval)
-        //                client.UpdateInterval = clientUpdateInterval;
-        //        }
-
-        //        // Send ReturnData object to all plugins
-        //        if (Properties.Settings.Default.PagePlugIn_Configurations != null)
-        //        {
-        //            List<PlugInConfiguration> configs = Properties.Settings.Default.PagePlugIn_Configurations.ToList();
-
-        //            foreach (PlugInConfiguration config in configs)
-        //            {
-        //                if (config.enabled && PagePlugIns != null)
-        //                {
-        //                    foreach (Lazy<Control_PlugIn> lcp in PagePlugIns.ToList())
-        //                    {
-        //                        Control_PlugIn cp = lcp.Value;
-
-        //                        if (cp.Title.ToLower() == config.name.ToLower())
-        //                        {
-        //                            UpdateWorkerInfo info = new UpdateWorkerInfo();
-        //                            info.returnData = rd;
-        //                            info.controlPlugin = cp;
-        //                            info.config = config;
-
-        //                            ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), info);
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //class UpdateWorkerInfo
-        //{
-        //    public ReturnData returnData { get; set; }
-        //    public Control_PlugIn controlPlugin { get; set; }
-        //    public PlugInConfiguration config { get; set; }
-        //}
-
-        //void Update_Worker(object o)
-        //{
-        //    UpdateWorkerInfo info = (UpdateWorkerInfo)o;
-
-        //    try
-        //    {
-        //        Control_PlugIn CP = info.controlPlugin;
-        //        CP.Update(info.returnData);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        if (!UpdateExceptionsThrown.Contains(info.config.name))
-        //        {
-        //            Message_Center.Message_Data mData = new Message_Center.Message_Data();
-        //            mData.title = info.config.name + ": PlugIn Error";
-        //            mData.text = "Error during plugin update";
-        //            mData.additionalInfo = ex.Message;
-
-        //            messageCenter.AddError(mData);
-        //            UpdateExceptionsThrown.Add(info.config.name);
-        //        }
-        //    }
-        //}
-
-        //private Configuration GetSettingsFromNode(XmlNode Node)
-        //{
-
-        //    Configuration Result = null;
-
-        //    string configPath = null;
-
-        //    foreach (XmlNode ChildNode in Node.ChildNodes)
-        //    {
-        //        switch (ChildNode.Name.ToLower())
-        //        {
-        //            case "configuration_path": configPath = ChildNode.InnerText; break;
-        //        }
-        //    }
-
-        //    if (configPath != null)
-        //    {
-        //        configPath = GetConfigurationPath(configPath);
-
-        //        Result = Configuration.ReadConfigFile(configPath);
-
-        //        if (Result == null)
-        //        {
-        //            Message_Center.Message_Data mData = new Message_Center.Message_Data();
-        //            mData.title = "Device Configuration Error";
-        //            mData.text = "Could not load device configuration from " + configPath;
-        //            mData.additionalInfo = "Check to make sure the file exists at " 
-        //                + configPath 
-        //                + " and that the format is correct and restart TrakHound Client."
-        //                + Environment.NewLine
-        //                + Environment.NewLine
-        //                + "For more information please contact us at info@TrakHound.org";
-        //            if (messageCenter != null) messageCenter.AddError(mData);
-        //        }
-        //    }
-
-        //    return Result;
-
-        //}
-
-        //static string GetConfigurationPath(string path)
-        //{
-        //    // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-        //    if (!System.IO.Path.IsPathRooted(path))
-        //    {
-        //        // Remove initial Backslash if contained in "configuration_path"
-        //        if (path[0] == '\\' && path.Length > 1) path.Substring(1);
-
-        //        string original = path;
-
-        //        // Check System Path
-        //        path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-        //        if (File.Exists(path)) return path;
-
-        //        // Check local app Path
-        //        path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-        //         if (File.Exists(path)) return path;
-
-        //        // if no files exist return null
-        //        return null;
-        //    }
-        //    else return path;
-        //}
-
-        //#endregion
-
-        #endregion
-
         #region "Devices Monitor"
 
         System.Timers.Timer devicesMonitor_TIMER;
@@ -2499,7 +2143,7 @@ namespace TrakHound_Client
 
         void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            DevicesMonitor_Start();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
         }
 
         Thread devicesMonitor_THREAD;
@@ -2522,28 +2166,30 @@ namespace TrakHound_Client
 
                 if (currentuser != null)
                 {
-                    //List<Configuration> userConfigs = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
                     List<Configuration> userConfigs = GetConfigurations();
                     if (userConfigs != null)
                     {
                         foreach (Configuration userConfig in userConfigs)
                         {
-                            Configuration match = devs.Find(x => x.UniqueId == userConfig.UniqueId);
-                            if (match != null)
+                            if (userConfig != null)
                             {
-                                bool update = userConfig.ClientUpdateId == match.ClientUpdateId;
-                                if (!update)
+                                Configuration match = devs.Find(x => x.UniqueId == userConfig.UniqueId);
+                                if (match != null)
                                 {
-                                    // Configuration has been updated / changed
+                                    bool update = userConfig.ClientUpdateId == match.ClientUpdateId;
+                                    if (!update)
+                                    {
+                                        // Configuration has been updated / changed
+                                        changed = true;
+                                        break;
+                                    }
+                                }
+                                else if (userConfig.ClientEnabled)
+                                {
+                                    // Configuration has been added or removed
                                     changed = true;
                                     break;
                                 }
-                            }
-                            else if (userConfig.ClientEnabled)
-                            {
-                                // Configuration has been added or removed
-                                changed = true;
-                                break;
                             }
                         }
                     }

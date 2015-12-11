@@ -218,23 +218,23 @@
                     </Grid.RowDefinitions>
 
                     <!--Buttons-->
-                    <!--<StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
                         <StackPanel.Resources>
                             <Style TargetType="controls:PageItem">
                                 <Setter Property="Margin" Value="10"/>
                             </Style>
                         </StackPanel.Resources>
 
-                        --><!--From File--><!--
+                        <!--From File-->
                         <controls:PageItem Clicked="DeviceFromFile_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
 
-                        --><!--New--><!--
+                        <!--New-->
                         <controls:PageItem Clicked="NewDevice_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" />
 
-                    </StackPanel>-->
+                    </StackPanel>
 
                     <!--Details-->
-                    <Border Grid.Row="1">
+                    <Border Grid.Row="1" BorderBrush="#ccc" BorderThickness="0,1,0,0">
 
                         <Grid Margin="0,10,0,0">
                             <Grid.RowDefinitions>

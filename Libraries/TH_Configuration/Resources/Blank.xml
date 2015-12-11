@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+
+  <Agent>
+
+  </Agent>
+
+  <Databases>
+
+  </Databases>
+
+  <Description>
+
+  </Description>
+
+  <File_Locations>
+
+    <Log_File_Path>Logs</Log_File_Path>
+
+  </File_Locations>
+  
+  
+  <!--Configuration for TH_InstanceTable Server Plugin-->
+  <InstanceTable>
+    <!--Sets options for which DataItems to include in instance table-->
+    <DataItems>
+
+      <Conditions>false</Conditions>
+      <Events>true</Events>
+      <Samples>false</Samples>
+
+      <!--Sets any individual MTC DataItems that should not included in instance table-->
+      <Omit>
+        
+      </Omit>
+
+    </DataItems>
+
+  </InstanceTable>
+
+  <!--Configuration for TH_GeneratedData Server Plugin-->
+  <GeneratedData>
+
+    <SnapShotData>
+
+    </SnapShotData>
+
+    <GeneratedEvents>
+
+      <UploadToMySQL>true</UploadToMySQL>
+
+    </GeneratedEvents>
+
+  </GeneratedData>
+
+  <!--Configuration for TH_ShiftTable Server Plugin-->
+  <ShiftData>
+
+    <Shifts>
+
+    </Shifts>
+
+    <!--Sets the GeneratedEvents to be captured-->
+    <GeneratedEvents>
+
+    </GeneratedEvents>
+
+  </ShiftData>
+
+  <!--Configuration for TH_Cycles Server Plugin-->
+  <Cycles>
+
+
+  </Cycles>
+
+  <!--Configuration for TH_OEE Server Plugin-->
+  <OEE>
+
+    <Availability>
+
+    </Availability>
+
+  </OEE>
+
+</Settings>
