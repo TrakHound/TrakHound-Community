@@ -9,6 +9,14 @@
              mc:Ignorable="d" 
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1" MinWidth="150">
         
         <StackPanel Margin="5">
@@ -46,21 +54,38 @@
                 <!--Modifier-->
                 <ComboBox x:Name="modifier_COMBO" Margin="0,5" ItemsSource="{Binding Modifiers}" SelectionChanged="Modifier_SelectionChanged" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
-
                 <!--Value-->
                 <Grid Margin="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
-                    </Grid.ColumnDefinitions>
+
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Items.Count, ElementName=value_COMBO}" Value="0">
+                                        <!--<Setter Property="Visibility" Value="Collapsed"/>-->
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <ComboBox x:Name="value_COMBO" Padding="10,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding ValueItems}" TextBoxBase.TextChanged="Value_TextChanged" SelectionChanged="Value_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+
+                    </Grid>
+                    
+                    
 
                     <Border BorderThickness="1" CornerRadius="1" Margin="0,5" Background="#fff">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="BorderBrush" Value="#aaa"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsFocused, ElementName=value_TXT}" Value="true">
                                         <Setter Property="BorderBrush" Value="#0080ff"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Items.Count, ElementName=value_COMBO}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -86,7 +111,7 @@
                             </TextBlock>
 
                             <!--User Input-->
-                            <TextBox x:Name="value_TXT" Text="{Binding Value}" TextChanged="value_TXT_TextChanged" GotFocus="TXT_GotFocus" LostKeyboardFocus="TXT_LostKeyboardFocus" GotMouseCapture="TXT_GotMouseCapture" GotKeyboardFocus="TXT_GotKeyboardFocus" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                            <TextBox x:Name="value_TXT" Text="{Binding Value, Mode=TwoWay}" TextChanged="value_TXT_TextChanged" GotFocus="TXT_GotFocus" LostKeyboardFocus="TXT_LostKeyboardFocus" GotMouseCapture="TXT_GotMouseCapture" GotKeyboardFocus="TXT_GotKeyboardFocus" BorderThickness="0" Background="#00000000"  FontSize="14" Foreground="#333" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" TextAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                         </Grid>
 

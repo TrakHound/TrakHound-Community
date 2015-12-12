@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent>
+    <IP_Address>192.168.1.10</IP_Address>
+    <Port>5000</Port>
+    <Device_Name>OSAI-1</Device_Name>
+    <Current_Heartbeat>5000</Current_Heartbeat>
+    <Sample_Heartbeat>5000</Sample_Heartbeat>
+  </Agent>
+  <Databases />
+  <Description>
+    <Description>Local Test Agent</Description>
+    <Device_Type />
+    <Manufacturer />
+    <Device_ID />
+    <Model />
+    <Serial />
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path />
+    <Image_Path />
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>False</Conditions>
+      <Events>True</Events>
+      <Samples>False</Samples>
+      <Omit />
+    </DataItems>
+  </InstanceTable>
+  <GeneratedData>
+    <SnapShotData />
+  </GeneratedData>
+  <ShiftData>
+    <Shifts />
+    <GeneratedEvents />
+  </ShiftData>
+  <Cycles />
+  <OEE>
+    <Availability />
+  </OEE>
+  <UniqueId>OVNYNCIOMGWBBOUPVBMP</UniqueId>
+  <ServerUpdateId>JXBWPYRRYXFDHXPIIERU</ServerUpdateId>
+</Settings>

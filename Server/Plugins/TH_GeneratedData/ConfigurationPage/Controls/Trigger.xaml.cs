@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Data;
+
 using System.Collections.ObjectModel;
 
 namespace TH_GeneratedData.ConfigurationPage.Controls
@@ -120,6 +122,61 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             if (txt.IsKeyboardFocused) if (SettingChanged != null) SettingChanged();
         }
 
+        void LoadEventValues()
+        {
+            value_COMBO.Items.Clear();
+
+            Page.CollectedItem item = link_COMBO.SelectedItem as Page.CollectedItem;
+            if (item != null)
+            {
+                if (item.category == "EVENT")
+                {
+                    if (ParentPage != null)
+                    {
+                        DataTable dt = ParentPage.EventValues;
+
+                        if (dt != null)
+                        {
+                            DataView dv = ParentPage.EventValues.AsDataView();
+                            dv.RowFilter = "NAME='" + item.type + "'";
+                            DataTable temp_dt = dv.ToTable(false, "VALUE");
+
+                            foreach (DataRow row in temp_dt.Rows)
+                            {
+                                string value = row[0].ToString();
+
+                                value_COMBO.Items.Add(value);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Value_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
+
+            if (ParentTrigger != null)
+            {
+                if (combo.SelectedItem != null)
+                {
+                    ParentTrigger.value = combo.SelectedItem.ToString();
+                }
+            }
+
+            if (combo.IsKeyboardFocusWithin) if (SettingChanged != null) SettingChanged();
+        }
+
+        private void Value_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ComboBox combo = (ComboBox)sender;
+
+            if (ParentTrigger != null) ParentTrigger.value = combo.Text;
+
+            if (combo.IsKeyboardFocusWithin) if (SettingChanged != null) SettingChanged();
+        }
+
         #endregion
 
         #region "Modifier"
@@ -152,6 +209,8 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
                 if (combo.SelectedItem != null)
                 {
                     ParentTrigger.link = combo.SelectedItem.ToString();
+
+                    LoadEventValues();
                 }
             }
 

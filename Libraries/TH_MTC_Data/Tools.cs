@@ -113,6 +113,79 @@ namespace TH_MTC_Data
                 if (!DT.Columns.Contains(NewCol.ColumnName)) DT.Columns.Add(NewCol);
             }
         }
+
+        #region "Event Types"
+
+        public static DataTable GetEventTypes()
+        {
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(Properties.Resources.EventDataValues);
+
+            List<TableInfo> infos = GetData(xml);
+
+            return CreateTable(infos);
+        }
+
+        public class TableInfo
+        {
+            public TableInfo() { }
+
+            public string name { get; set; }
+            public string value { get; set; }
+
+        }
+
+        static List<TableInfo> GetData(XmlNode xml)
+        {
+            List<TableInfo> result = new List<TableInfo>();
+
+            foreach (XmlNode node in xml.ChildNodes)
+            {
+                if (node.Name.ToLower() == "eventvalues" && node.NodeType == XmlNodeType.Element)
+                {
+                    foreach (XmlNode child in node.ChildNodes)
+                    {
+                        if (child.NodeType == XmlNodeType.Element)
+                        {
+                            string name = child.Name;
+
+                            foreach (XmlNode valueNode in child.ChildNodes)
+                            {
+                                TableInfo info = new TableInfo();
+                                info.name = name;
+                                info.value = valueNode.Name;
+                                result.Add(info);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        static DataTable CreateTable(List<TableInfo> infos)
+        {
+            DataTable result = new DataTable();
+
+            result.Columns.Add("NAME");
+            result.Columns.Add("VALUE");
+
+            foreach (TableInfo info in infos)
+            {
+                DataRow row = result.NewRow();
+                row["NAME"] = info.name;
+                row["VALUE"] = info.value;
+                result.Rows.Add(row);
+            }
+
+            return result;
+        }
+
+        #endregion
+
     }
+
+    
 
 }

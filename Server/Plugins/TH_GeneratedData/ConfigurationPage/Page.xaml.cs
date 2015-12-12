@@ -35,6 +35,8 @@ namespace TH_GeneratedData.ConfigurationPage
         {
             InitializeComponent();
             DataContext = this;
+
+            LoadEventValues();
         }
 
         public string PageName { get { return "Generated Data"; } }
@@ -125,6 +127,9 @@ namespace TH_GeneratedData.ConfigurationPage
 
             public string display { get; set; }
 
+            public string category { get; set; }
+            public string type { get; set; }
+
             public override string ToString()
             {
                 return display;
@@ -198,6 +203,8 @@ namespace TH_GeneratedData.ConfigurationPage
                 CollectedItem ci = new CollectedItem();
                 ci.id = item.id;
                 ci.name = item.name;
+                ci.category = item.category;
+                ci.type = item.type;
 
                 if (ci.name != null) ci.display = ci.id + " : " + ci.name;
                 else ci.display = ci.id;
@@ -243,6 +250,14 @@ namespace TH_GeneratedData.ConfigurationPage
             // Set 'Loading' to false
             this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
 
+        }
+
+
+        public DataTable EventValues;
+
+        void LoadEventValues()
+        {
+            EventValues = TH_MTC_Data.Tables.GetEventTypes();
         }
 
         #endregion
@@ -1225,6 +1240,7 @@ namespace TH_GeneratedData.ConfigurationPage
             //result.SelectedLink = t.link;
             result.modifier_COMBO.SelectedItem = t.modifier;
 
+            result.value_COMBO.SelectedItem = t.value;
             result.Value = t.value;
 
             return result;
