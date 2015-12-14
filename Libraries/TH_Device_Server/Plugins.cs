@@ -35,7 +35,7 @@ namespace TH_Device_Server
             public IEnumerable<Lazy<Table_PlugIn>> PlugIns { get; set; }
         }
 
-        void LoadPlugins()
+        public void LoadPlugins()
         {
             //UpdateProcessingStatus("Loading Plugins...");
 

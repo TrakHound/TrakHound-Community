@@ -283,7 +283,7 @@ namespace TH_Global.Web
                 if (!success) System.Threading.Thread.Sleep(1000);
             }
 
-            if (!success) Logger.Log("Get :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+            //if (!success) Logger.Log("Get :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
 
             return result;
         }

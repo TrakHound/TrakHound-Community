@@ -205,24 +205,11 @@ namespace TH_ShiftTable
 
                     foreach (GeneratedData.GeneratedEvents.Event genEvent in gdc.generatedEvents.events)
                     {
-                        if ((sc.generatedEvents.Find(x => x.name.ToUpper() == genEvent.Name.ToUpper()) != null))
+                        string columnName;
+
+                        foreach (GeneratedData.GeneratedEvents.Value value in genEvent.Values)
                         {
-                            string columnName;
-
-                            foreach (GeneratedData.GeneratedEvents.Value value in genEvent.Values)
-                            {
-                                columnName = Tools.FormatColumnName(genEvent, value);
-
-                                if (!ShiftTableColumns.Contains(columnName))
-                                {
-                                    Column.Add(config.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
-                                }
-
-                                GenEventColumns.Add(columnName);
-                            }
-
-                            // Add GenEvent.Default column
-                            columnName = Tools.FormatColumnName(genEvent.Name, genEvent.Default.NumVal, genEvent.Default.Value);
+                            columnName = Tools.FormatColumnName(genEvent, value);
 
                             if (!ShiftTableColumns.Contains(columnName))
                             {
@@ -231,6 +218,16 @@ namespace TH_ShiftTable
 
                             GenEventColumns.Add(columnName);
                         }
+
+                        // Add GenEvent.Default column
+                        columnName = Tools.FormatColumnName(genEvent.Name, genEvent.Default.NumVal, genEvent.Default.Value);
+
+                        if (!ShiftTableColumns.Contains(columnName))
+                        {
+                            Column.Add(config.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
+                        }
+
+                        GenEventColumns.Add(columnName);
                     }
                 }
             }

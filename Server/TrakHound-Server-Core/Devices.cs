@@ -78,6 +78,12 @@ namespace TrakHound_Server_Core
 
         #region "Devices Monitor"
 
+        /// <summary>
+        /// Devices Monitor is used to monitor when devices are Changed, Added, or Removed.
+        /// 'Changed' includes whether device was Enabled or Disabled.
+        /// Monitor runs at a fixed interval of 5 seconds and compares Devices with list of tables for current user
+        /// </summary>
+
         System.Timers.Timer devicesMonitor_TIMER;
 
         void DevicesMonitor_Initialize()
@@ -92,6 +98,7 @@ namespace TrakHound_Server_Core
 
         void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            devicesMonitor_TIMER.Enabled = false;
             ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
         }
 
@@ -113,34 +120,38 @@ namespace TrakHound_Server_Core
                             {
                                 config.TableName = tablename;
 
-                                Device_Server server = Devices.Find(x => x.configuration.UniqueId == config.UniqueId);
-                                if (server != null) // Server is already part of list
-                                {
-                                    // Check if Configuration has changed
-                                    if (server.configuration.ServerUpdateId != config.ServerUpdateId)
+                                    Device_Server server = Devices.Find(x => x.configuration.UniqueId == config.UniqueId);
+                                    if (server != null) // Server is already part of list
                                     {
-                                        server.Stop();
-
-                                        server.configuration = config;
-
-                                        if (config.ServerEnabled)
+                                        // Check if Configuration has changed
+                                        if (server.configuration.ServerUpdateId != config.ServerUpdateId)
                                         {
+                                            server.Stop();
+
+                                            server.configuration = config;
+
+                                            if (config.ServerEnabled)
+                                            {
+
+                                            server.LoadPlugins();
+
                                             // Initialize Database Configurations
                                             Global.Initialize(server.configuration.Databases_Server);
 
                                             server.Start(false);
+                                            }
                                         }
                                     }
-                                }
-                                else // Create & Add Device Server
-                                {
-                                    LoadConfiguration(tablename);
-                                }
+                                    else // Create & Add Device Server
+                                    {
+                                        if (config.ServerEnabled) LoadConfiguration(tablename);
+                                    }
+                                
                             }
                         }
 
                         // Remove any server that was removed from user
-                        foreach (Device_Server server in Devices.ToList())
+                        foreach (Device_Server server in devs.ToList())
                         {
                             string ExistingTable = tablenames.ToList().Find(x => x == server.configuration.TableName);
                             if (ExistingTable == null)
@@ -158,6 +169,8 @@ namespace TrakHound_Server_Core
                     }  
                 }
             }
+
+            devicesMonitor_TIMER.Enabled = true;
         }
 
         Configuration GetConfiguration(string tablename)

@@ -9,7 +9,6 @@ using System.Xml;
 using System.Data;
 using System.Collections.Generic;
 
-using TH_Configuration;
 using TH_Global;
 using TH_Global.Web;
 using TH_MTC_Data;
@@ -32,8 +31,6 @@ namespace TH_MTC_Requests
         public string DeviceName { get; set; }
 
         public MTC_Stream_Status Status;
-
-        public Configuration configuration { get; set; }
 
         public delegate void CurrentFinishedDelly(ReturnData returnData);
         public event CurrentFinishedDelly CurrentFinished;

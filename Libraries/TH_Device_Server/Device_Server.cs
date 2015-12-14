@@ -45,14 +45,6 @@ namespace TH_Device_Server
             configuration = config;
 
             RunningTime_Initialize();
-
-            //Ping_Agent_Initialize(config);
-            //Ping_DB_Initialize(config);
-            //Ping_PHP_Initialize(config);
-
-            //Status = ConnectionStatus.Stopped;
-
-            //ConnectionStatus_Initialize();
         }
 
         bool usedatabases = true;
@@ -68,9 +60,6 @@ namespace TH_Device_Server
 
         public void Initialize()
         {
-            /// Initialize MTConnect Requests (probe, current, and sample)
-            Requests_Initialize();
-
             // Initialize any aux tables such as Agent info or variables
             InitializeTables();
 
@@ -103,11 +92,9 @@ namespace TH_Device_Server
             RunningTimeSTPW.Stop();
             RunningTime_TIMER.Enabled = false;
 
-            Requests_Stop();
-
             if (worker != null)
             {
-                worker.Join(3000);
+                worker.Join(5000);
                 if (worker != null) worker.Abort();
                 worker = null;
             }
@@ -118,19 +105,10 @@ namespace TH_Device_Server
         public void Close()
         {
             Stop();
-
             TablePlugIns_Closing();
-
-            //if (Connection_Timer != null) Connection_Timer.Enabled = false;
-
             FSW_Stop();
 
             Log("Device (" + configuration.Index.ToString() + ") Closed");
-        }
-
-        public void Restart()
-        {
-
         }
 
         #endregion
@@ -149,8 +127,6 @@ namespace TH_Device_Server
 
         #region "Worker Thread"
 
-        //void Worker_Start() { Connection_Initialize(); }
-
         void Worker_Start() 
         {
             Initialize();
@@ -161,10 +137,6 @@ namespace TH_Device_Server
         void Worker_Stop()
         {
             RunningTimeSTPW.Stop();
-
-            Requests_Stop();
-
-            //Log("Device Server (" + configuration.Index.ToString() + ") Stopped");
         }
 
         #endregion
@@ -193,177 +165,6 @@ namespace TH_Device_Server
 
         public event AgentConnection_Handler AgentConnected;
         public event AgentConnection_Handler AgentDisconnected;
-
-
-
-
-
-        //public System.Timers.Timer Connection_Timer;
-
-        //int TryCount = 1;
-        //const int ConnectionAttempts = 5;
-
-        //bool FirstAttempt = true;
-
-        //void Connection_Initialize()
-        //{
-        //    Connection_Timer = new System.Timers.Timer();
-        //    Connection_Timer.Elapsed += Connection_Timer_Elapsed;
-        //    Connection_Timer.Interval = 1000;
-        //    Connection_Timer.Enabled = true;
-        //}
-
-        //void Connection_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        //{
-        //    Connection_Check();
-        //}
-
-        //void Connection_Check()
-        //{
-
-        //    if (MTC_PingResult)
-        //    {
-        //        if (FirstAttempt) Log("Device Connected...");
-
-        //        if (TryCount > 1) Log("Connection Reestablished");
-
-        //        TryCount = 1;
-
-        //        Connection_Timer.Interval = 1000;
-
-        //        if (Status == ConnectionStatus.Stopped)
-        //        {
-        //            Status = ConnectionStatus.Started;
-
-        //            Initialize();
-
-        //            RunningTimeSTPW.Start();
-
-        //            Requests_Start();
-
-        //            Log("Device (" + configuration.Index.ToString() + ") Started...");
-        //        }
-
-        //        FirstAttempt = false;
-        //    }
-        //    else
-        //    {
-        //        if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
-
-        //        if (Status == ConnectionStatus.Started || FirstAttempt)
-        //        {
-        //            FirstAttempt = false;
-
-        //            Connection_Timer.Interval = 5000;
-
-        //            Log("Attempting to Connect...(Attempt #" + TryCount.ToString() + ")");
-
-        //            if (TryCount >= ConnectionAttempts)
-        //            {
-        //                TryCount = 1;
-
-        //                Connection_Timer.Interval = 1000;
-
-        //                Stop();
-        //            }
-
-        //            TryCount += 1;
-        //        }
-        //    }
-
-
-            //if (MTC_PingResult && SQL_PingResult && PHP_PingResult)
-            //{
-            //    if (FirstAttempt) Log("Device Connected...");
-
-            //    if (TryCount > 1) Log("Connection Reestablished");
-
-            //    TryCount = 1;
-
-            //    Connection_Timer.Interval = 1000;
-
-            //    if (Status == ConnectionStatus.Stopped)
-            //    {
-            //        Status = ConnectionStatus.Started;
-
-            //        Initialize();
-
-            //        RunningTimeSTPW.Start();
-
-            //        Requests_Start();
-
-            //        Log("Device (" + configuration.Index.ToString() + ") Started...");
-            //    }
-
-            //    FirstAttempt = false;
-            //}
-            //else
-            //{
-            //    if (!MTC_PingResult && !SQL_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC, SQL, and PHP Not Reachable!");
-            //    else if (!MTC_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and SQL Not Reachable!");
-            //    else if (!MTC_PingResult && !PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC and PHP Not Reachable!");
-            //    else if (!PHP_PingResult && !SQL_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP and SQL Not Reachable!");
-            //    else if (!MTC_PingResult) Log("Device (" + configuration.Index.ToString() + ") MTC Not Reachable!");
-            //    else if (!PHP_PingResult) Log("Device (" + configuration.Index.ToString() + ") PHP Not Reachable!");
-            //    else Log("Device (" + configuration.Index.ToString() + ") SQL Not Reachable!");
-
-            //    if (Status == ConnectionStatus.Started || FirstAttempt)
-            //    {
-            //        FirstAttempt = false;
-
-            //        Connection_Timer.Interval = 5000;
-
-            //        Log("Attempting to Connect...(Attempt #" + TryCount.ToString() + ")");
-
-            //        if (TryCount >= ConnectionAttempts)
-            //        {
-            //            TryCount = 1;
-
-            //            Connection_Timer.Interval = 1000;
-
-            //            Stop();
-            //        }
-
-            //        TryCount += 1;
-            //    }
-            //}
-        //}
-
-        #endregion
-
-        #region "Connection Status"
-
-        //public enum ConnectionStatus
-        //{
-        //    Stopped = 0,
-        //    Started = 1
-        //}
-
-        //public ConnectionStatus Status;
-
-        //public delegate void StatusDelly(int Index, ConnectionStatus Status);
-        //public event StatusDelly StatusUpdated;
-
-        //void ConnectionStatus_Initialize()
-        //{
-        //    ConnectionStatus_Timer = new System.Timers.Timer();
-        //    ConnectionStatus_Timer.Interval = 1000;
-        //    ConnectionStatus_Timer.Elapsed += ConnectionStatus_Timer_Elapsed;
-        //    ConnectionStatus_Timer.Enabled = true;
-        //}
-
-        //void ConnectionStatus_Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        //{
-        //    UpdateStatus(Status);
-        //}
-
-        //private void UpdateStatus(ConnectionStatus status)
-        //{
-        //    StatusDelly handler = StatusUpdated;
-        //    if (handler != null) handler(configuration.Index, status);
-        //}
-
-        //System.Timers.Timer ConnectionStatus_Timer;
 
         #endregion
 
@@ -412,7 +213,6 @@ namespace TH_Device_Server
         string previousLine = null;
         ConsoleOutputType previousType;
         DateTime previousErrorTimestamp;
-        int previousRow;
 
         enum ConsoleOutputType
         {
@@ -429,77 +229,32 @@ namespace TH_Device_Server
 
                     Console.WriteLine(line);
 
-                    //previousRow = Console.CursorTop;
-
                     break;
 
                 case ConsoleOutputType.Status:
-
-                    if (previousType == ConsoleOutputType.Status)
-                    {
-                        //Console.SetCursorPosition(0, previousRow);
-                        //Console.Write(new string(' ', Console.WindowWidth));
-                        //Console.SetCursorPosition(0, previousRow);
-
-                        //Console.SetCursorPosition(0, previousRow - 1);
-                        //Console.Write(new string(' ', Console.WindowWidth));
-                        //Console.SetCursorPosition(0, previousRow - 1);
-
-                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
-                        //Console.Write(new string(' ', Console.WindowWidth));
-                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
-                    }
-                    //else previousRow = Console.CursorTop;
-
-                    //Console.BackgroundColor = ConsoleColor.White;
-                    //Console.ForegroundColor = ConsoleColor.Black;
-                    //Console.Write("[Status]");
-                    //Console.ResetColor();
-
                     if (configuration != null)
                     {
-                        if (DEBUG) Console.Write("[Status] [" + configuration.Index.ToString() + "] " + line + Environment.NewLine);
+                        if (DEBUG) Console.Write("[Status] [" + configuration.Description.Description + " : " + configuration.Description.Device_ID + "] " + line + Environment.NewLine);
                     }
-                    else
-                    {
-                        //Console.Write(" " + line + Environment.NewLine);
-                    }
-                    
 
                     break;
 
                 case ConsoleOutputType.Error:
 
-                    if (line == previousLine)
-                    {
-                        //Console.SetCursorPosition(0, previousRow - 1);
-                        //Console.Write(new string(' ', Console.WindowWidth));
-                        //Console.SetCursorPosition(0, previousRow - 1);
+                    previousErrorTimestamp = DateTime.Now;
 
-                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
-                        //Console.Write(new string(' ', Console.WindowWidth));
-                        //Console.SetCursorPosition(0, Console.CursorTop - 1);
-                    }
-                    else
-                    {
-                        previousErrorTimestamp = DateTime.Now;
-                    }
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("[Error]");
+                    Console.ResetColor();
 
-                        Console.BackgroundColor = ConsoleColor.Red;
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write("[Error]");
-                        Console.ResetColor();
-
-                        Console.Write(" [" + previousErrorTimestamp.ToString() + " - " + DateTime.Now.ToString() + "] " + line + Environment.NewLine);
-                        //Log(line);
-                    
+                    Console.Write(" [" + previousErrorTimestamp.ToString() + " - " + DateTime.Now.ToString() + "] " + line + Environment.NewLine);
 
                     break;
             }
 
             previousType = type;
             previousLine = line;
-            //previousRow = Console.CursorTop;
         }
 
         public void Log(string line)
@@ -559,8 +314,6 @@ namespace TH_Device_Server
         void RunningTime_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             RunningTime = RunningTimeSTPW.Elapsed;
-
-            //Console.Title = "TrakHound Server - " + RunningTime.ToString(@"dd\.hh\:mm\:ss");
         }
 
         #endregion

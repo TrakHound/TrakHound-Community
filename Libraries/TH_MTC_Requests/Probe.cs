@@ -9,7 +9,6 @@ using System.Xml;
 using System.Data;
 using System.Collections.Generic;
 
-using TH_Configuration;
 using TH_Global;
 using TH_Global.Web;
 using TH_MTC_Data;
@@ -38,9 +37,7 @@ namespace TH_MTC_Requests
         public int Port { get; set; }
         public string DeviceName { get; set; }
 
-        public Configuration configuration { get; set; }
-
-        public string URL { get; set; }
+        public string Url { get; set; }
 
         public delegate void ProbeFinishedDelly(TH_MTC_Data.Components.ReturnData returnData, Probe sender);
         public event ProbeFinishedDelly ProbeFinished;
@@ -79,11 +76,11 @@ namespace TH_MTC_Requests
 
         public void Run()
         {
-            if (Address != null)
-            {
-                string url = GetUrl();
-                URL = url;
+            string url = GetUrl();
+            Url = url;
 
+            if (url != null)
+            {
                 string response = HTTP.GetData(url);
 
                 if (response != null)
@@ -104,49 +101,62 @@ namespace TH_MTC_Requests
 
         string GetUrl()
         {
-            string url = "http://";
-
-            // Add Ip Address
-            string ip = Address;
-
-            // Add Port
-            string port = null;
-            // If port is in ip address
-            if (ip.Contains(":"))
+            if (Url != null)
             {
-                int colonindex = ip.LastIndexOf(':');
-                int slashindex = -1;
+                if (!Url.StartsWith("http://")) Url = "http://" + Url;
 
-                // Get index of last forward slash
-                if (ip.Contains("/")) slashindex = ip.IndexOf('/', colonindex);
-
-                // Get port based on indexes
-                if (slashindex > colonindex) port = ":" + ip.Substring(colonindex + 1, slashindex - colonindex - 1) + "/";
-                else port = ":" + ip.Substring(colonindex + 1) + "/";
-
-                ip = ip.Substring(0, colonindex);
+                return Url;
             }
             else
             {
-                if (Port > 0) port = ":" + Port.ToString() + "/";
+                if (Address != null)
+                {
+                    string url = "http://";
+
+                    // Add Ip Address
+                    string ip = Address;
+
+                    // Add Port
+                    string port = null;
+                    // If port is in ip address
+                    if (ip.Contains(":"))
+                    {
+                        int colonindex = ip.LastIndexOf(':');
+                        int slashindex = -1;
+
+                        // Get index of last forward slash
+                        if (ip.Contains("/")) slashindex = ip.IndexOf('/', colonindex);
+
+                        // Get port based on indexes
+                        if (slashindex > colonindex) port = ":" + ip.Substring(colonindex + 1, slashindex - colonindex - 1) + "/";
+                        else port = ":" + ip.Substring(colonindex + 1) + "/";
+
+                        ip = ip.Substring(0, colonindex);
+                    }
+                    else
+                    {
+                        if (Port > 0) port = ":" + Port.ToString() + "/";
+                    }
+
+                    url += ip;
+                    url += port;
+
+                    // Add Device Name
+                    string deviceName = null;
+                    if (DeviceName != String.Empty)
+                    {
+                        if (port != null) deviceName = DeviceName;
+                        else deviceName = "/" + DeviceName;
+                        deviceName += "/";
+                    }
+                    url += deviceName;
+
+                    if (url[url.Length - 1] != '/') url += "/";
+
+                    return url + "probe";
+                }
+                else return null;
             }
-
-            url += ip;
-            url += port;
-
-            // Add Device Name
-            string deviceName = null;
-            if (DeviceName != String.Empty)
-            {
-                if (port != null) deviceName = DeviceName;
-                else deviceName = "/" + DeviceName;
-                deviceName += "/";
-            }
-            url += deviceName;
-
-            if (url[url.Length - 1] != '/') url += "/";
-
-            return url + "probe";
         }
 
         ReturnData ProcessData(string xml)

@@ -965,8 +965,6 @@ namespace TH_GeneratedData
             }
         }
 
-
-
         public const string GenTablePrefix = TableNames.Gen_Events_TablePrefix;
 
         void CreateGeneratedEventTable(GeneratedEvents.Event e)
@@ -978,11 +976,23 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems) columns.Add(new ColumnDefinition(FormatCaptureItemColumn(item.name), DataType.LargeText));
-
             ColumnDefinition[] ColArray = columns.ToArray();
 
             Table.Create(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name, ColArray, "TIMESTAMP");
+
+
+            // Make sure each of the CaptureItem Columns are in the table
+            List<string> existingColumns = Column.Get(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name);
+
+            foreach (GeneratedEvents.CaptureItem item in e.CaptureItems)
+            {
+                string columnName = FormatCaptureItemColumn(item.name);
+
+                if (!existingColumns.Contains(columnName))
+                {
+                    Column.Add(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name, new ColumnDefinition(columnName, DataType.LargeText));
+                }
+            }
         }
 
         void InsertGeneratedEventItems(List<GeneratedEventItem> generatedEventItems)
@@ -1331,7 +1341,6 @@ namespace TH_GeneratedData
             data.data02 = items;
             if (DataEvent != null) DataEvent(data);
         }
-
 
         #endregion
 

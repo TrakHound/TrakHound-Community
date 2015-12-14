@@ -1,3 +1,4 @@
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_DeviceManager.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_DeviceManager.pdb
@@ -41,6 +42,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\DeviceManager.
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\Databases\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\Description\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\General\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\Databases\Controls\DatabaseItemContainer.baml
@@ -50,6 +52,4 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\Agent\Pa
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.g.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.csproj.GenerateResource.Cache
-F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\GeneratedInternalTypeHelper.g.cs

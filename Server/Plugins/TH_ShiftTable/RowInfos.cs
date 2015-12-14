@@ -83,8 +83,8 @@ namespace TH_ShiftTable
                             IEnumerable<string> eventNames = genEventShiftItems.Select(x => x.eventName).Distinct();
                             foreach (string eventName in eventNames.ToList())
                             {
-                                if (sc.generatedEvents.Find(x => x.name.ToLower() == eventName.ToLower()) != null)
-                                {
+                                //if (sc.generatedEvents.Find(x => x.name.ToLower() == eventName.ToLower()) != null)
+                                //{
                                     List<GenEventShiftItem> sameNames = genEventShiftItems.FindAll(x => (x.shiftDate == shiftDate &&
                                             x.shiftName == shiftName &&
                                             x.segment == segment &&
@@ -114,7 +114,7 @@ namespace TH_ShiftTable
                                             sri.genEventRowInfos.Add(geri);
                                         }
                                     }
-                                }
+                                //}
                             }
                         }
 

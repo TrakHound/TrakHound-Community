@@ -348,7 +348,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Image-->
-                    <Grid Margin="5,0">
+                    <Grid Margin="0,0,5,0">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -424,13 +424,17 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Image-->
-                    <Grid Margin="10,0,5,0">
+                    <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Visible"/>
+                                <Setter Property="Margin" Value="5,0,0,0"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                        <Setter Property="Margin" Value="5,0"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
