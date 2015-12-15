@@ -66,19 +66,19 @@ namespace TH_InstanceTable
 
             CurrentData = returnData;
 
-            InstanceData instanceData = ProcessSingleInstance(returnData);
+            //InstanceData instanceData = ProcessSingleInstance(returnData);
 
-            CurrentInstanceData cid = new CurrentInstanceData();
-            cid.currentData = returnData;
-            cid.data = instanceData;
+            //CurrentInstanceData cid = new CurrentInstanceData();
+            //cid.currentData = returnData;
+            //cid.data = instanceData;
 
-            // Send InstanceData object to other Plugins --
-            DataEvent_Data de_d = new DataEvent_Data();
-            de_d.id = "CurrentInstanceData";
-            de_d.data01 = config;
-            de_d.data02 = cid;
+            //// Send InstanceData object to other Plugins --
+            //DataEvent_Data de_d = new DataEvent_Data();
+            //de_d.id = "CurrentInstanceData";
+            //de_d.data01 = config;
+            //de_d.data02 = cid;
 
-            if (DataEvent != null) DataEvent(de_d);
+            //if (DataEvent != null) DataEvent(de_d);
             // --------------------------------------------
           
         }
@@ -295,10 +295,12 @@ namespace TH_InstanceTable
 
         }
 
+        InstanceData previousDatabaseData = null;
+
         void AddRowsToDatabase(List<string> columns, List<InstanceData> instanceDatas)
         {
-            System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
-            stpw.Start();
+            //System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
+            //stpw.Start();
 
             List<string> reqColumns = new List<string>();
 
@@ -310,127 +312,71 @@ namespace TH_InstanceTable
 
                 List<List<object>> rowValues = new List<List<object>>();
 
-                InstanceData previousData = PreviousInstanceData_old;
+                InstanceData previousData = previousDatabaseData;
 
                 foreach (InstanceData instanceData in instanceDatas)
                 {
-                    // Get list of just Value Ids to use for Intersect with columns list
-                    List<string> valueIdsInInstanceData = new List<string>();
-                    foreach (InstanceData.Value value in instanceData.values) valueIdsInInstanceData.Add(value.id.ToUpper());
+                    List<object> values = new List<object>();
 
-                    // See if instanceData.values contains any of the Columns (set in InstanceConfiguration.DataItems)
-                    if (valueIdsInInstanceData.Intersect(columns).Any())
+                    values.Add(instanceData.timestamp);
+                    values.Add(instanceData.sequence);
+                    values.Add(instanceData.agentInstanceId);
+
+                    bool changed = false;
+
+                    string prev_output = "";
+                    string output = "";
+
+                    foreach (string column in columns)
                     {
-                        List<object> values = new List<object>();
+                        InstanceData.Value value = instanceData.values.Find(x => x.id.ToUpper() == column.ToUpper());
+                        InstanceData.Value prev_Value = null;
 
-                        values.Add(instanceData.timestamp);
-                        values.Add(instanceData.sequence);
-                        values.Add(instanceData.agentInstanceId);
-
-                        bool anyDifferent = false;
-
-                        foreach (string column in columns)
+                        if (previousData != null) prev_Value = previousData.values.Find(x => x.id.ToUpper() == column.ToUpper());
+                        else
                         {
-                            bool columnInValues = false;
-                            bool previousDataFound = false;
-                            bool columnInPreviousData = false;
-                            bool valueDifferentFromPrev = false;
-                            bool omitValue = false;
-
-                            InstanceConfiguration ic = GetConfiguration(config);
-                            if (ic != null)
-                            {
-                                if (ic.DataItems.Omit.Contains(column.ToUpper())) omitValue = true;
-                            }
-
-                            InstanceData.Value value = instanceData.values.Find(x => x.id.ToLower() == column.ToLower());
-
-                            // value for column is in instanceData.values
-                            columnInValues = value != null;
-
-                            //if a previous row has been found (either from this loop or from a different sample)
-                            previousDataFound = previousData != null;
-
-                            InstanceData.Value prevValue = null;
-
-                            if (previousDataFound)
-                            {
-                                prevValue = previousData.values.Find(x => x.id.ToLower() == column.ToLower());
-                                columnInPreviousData = prevValue != null;
-
-                                if (columnInValues && columnInPreviousData)
-                                {
-                                    valueDifferentFromPrev = value.value != prevValue.value;
-                                }
-                            }
-
-                            // Decide what to do based on previous bools
-                            if (columnInValues && previousDataFound && columnInPreviousData && valueDifferentFromPrev && omitValue)
-                            {
-                                values.Add(value.value);
-                            }
-                            else if (columnInValues && previousDataFound && columnInPreviousData && valueDifferentFromPrev)
-                            {
-                                values.Add(value.value);
-                                anyDifferent = true;
-                            }
-                            else if (columnInValues && previousDataFound)
-                            {
-                                values.Add(value.value);
-                            }
-                            else if (columnInValues)
-                            {
-                                values.Add(value.value);
-                                anyDifferent = true;
-                            }
-                            else if (previousDataFound && columnInPreviousData)
-                            {
-                                values.Add(prevValue.value);
-                            }
-                            else
-                            {
-                                values.Add("");
-                            }
+                            //Console.WriteLine("prevousData is null : " + column);
                         }
 
-                        if (anyDifferent) rowValues.Add(values);
 
+                        string val = null;
+                        string prev_val = null;
+
+                        if (value != null) val = value.value;
+                        if (prev_Value != null) prev_val = prev_Value.value;
+
+                        prev_output += column + ":" + prev_val + "|";
+                        output += column + ":" + val + "|";
+
+                        if (val != prev_val) changed = true;
+
+                        values.Add(val);
                     }
 
-                    if (previousData != null)
-                    {
-                        foreach (InstanceData.Value newval in instanceData.values)
-                        {
-                            InstanceData.Value val = previousData.values.Find(x => x.id == newval.id);
-                            if (val != null)
-                            {
-                                val.value = newval.value;
-                            }
-                            else
-                            {
-                                InstanceData.Value addVal = new InstanceData.Value();
-                                addVal.id = newval.id;
-                                addVal.value = newval.value;
-                                previousData.values.Add(addVal);
-                            }
-                        }
-                    }
-                    else previousData = instanceData;
+                    previousData = instanceData;
 
+                    //Console.WriteLine(prev_output);
+                    //Console.WriteLine(output);
+
+                    if (changed) rowValues.Add(values);
                 }
+
+                previousDatabaseData = previousData;
 
                 List<string> columnsMySQL = new List<string>();
 
                 columnsMySQL.AddRange(reqColumns);
                 columnsMySQL.AddRange(columns);
 
-                stpw.Stop();
-                UpdateStatus("InstanceTable AddRowsToMySQL() : Processing : " + stpw.ElapsedMilliseconds + "ms");
+                //foreach (string col in columnsMySQL) Console.WriteLine(col);
 
-                stpw = new System.Diagnostics.Stopwatch();
-                stpw.Start();
+                //stpw.Stop();
+                //UpdateStatus("InstanceTable AddRowsToMySQL() : Processing : " + stpw.ElapsedMilliseconds + "ms");
 
-                UpdateStatus("Adding " + rowValues.Count.ToString() + " Rows to MySQL Instance Table...");
+                //stpw = new System.Diagnostics.Stopwatch();
+                //stpw.Start();
+
+                //UpdateStatus("Adding " + rowValues.Count.ToString() + " Rows to MySQL Instance Table...");
 
                 int interval = 50;
                 int countLeft = rowValues.Count;
@@ -453,11 +399,175 @@ namespace TH_InstanceTable
                     //ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
                 }
 
-                stpw.Stop();
-                UpdateStatus("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
+                //stpw.Stop();
+                //UpdateStatus("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
             }
 
         }
+
+        //void AddRowsToDatabase(List<string> columns, List<InstanceData> instanceDatas)
+        //{
+        //    System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
+        //    stpw.Start();
+
+        //    List<string> reqColumns = new List<string>();
+
+        //    if (columns != null)
+        //    {
+        //        if (!columns.Contains("TIMESTAMP")) reqColumns.Add("TIMESTAMP");
+        //        if (!columns.Contains("SEQUENCE")) reqColumns.Add("SEQUENCE");
+        //        if (!columns.Contains("AGENTINSTANCEID")) reqColumns.Add("AGENTINSTANCEID");
+
+        //        List<List<object>> rowValues = new List<List<object>>();
+
+        //        InstanceData previousData = PreviousInstanceData_old;
+
+        //        foreach (InstanceData instanceData in instanceDatas)
+        //        {
+        //            // Get list of just Value Ids to use for Intersect with columns list
+        //            List<string> valueIdsInInstanceData = new List<string>();
+        //            foreach (InstanceData.Value value in instanceData.values) valueIdsInInstanceData.Add(value.id.ToUpper());
+
+        //            // See if instanceData.values contains any of the Columns (set in InstanceConfiguration.DataItems)
+        //            if (valueIdsInInstanceData.Intersect(columns).Any())
+        //            {
+        //                List<object> values = new List<object>();
+
+        //                values.Add(instanceData.timestamp);
+        //                values.Add(instanceData.sequence);
+        //                values.Add(instanceData.agentInstanceId);
+
+        //                bool anyDifferent = false;
+
+        //                foreach (string column in columns)
+        //                {
+        //                    bool columnInValues = false;
+        //                    bool previousDataFound = false;
+        //                    bool columnInPreviousData = false;
+        //                    bool valueDifferentFromPrev = false;
+        //                    bool omitValue = false;
+
+        //                    InstanceConfiguration ic = GetConfiguration(config);
+        //                    if (ic != null)
+        //                    {
+        //                        if (ic.DataItems.Omit.Contains(column.ToUpper())) omitValue = true;
+        //                    }
+
+        //                    InstanceData.Value value = instanceData.values.Find(x => x.id.ToLower() == column.ToLower());
+
+        //                    // value for column is in instanceData.values
+        //                    columnInValues = value != null;
+
+        //                    //if a previous row has been found (either from this loop or from a different sample)
+        //                    previousDataFound = previousData != null;
+
+        //                    InstanceData.Value prevValue = null;
+
+        //                    if (previousDataFound)
+        //                    {
+        //                        prevValue = previousData.values.Find(x => x.id.ToLower() == column.ToLower());
+        //                        columnInPreviousData = prevValue != null;
+
+        //                        if (columnInValues && columnInPreviousData)
+        //                        {
+        //                            valueDifferentFromPrev = value.value != prevValue.value;
+        //                        }
+        //                    }
+
+        //                    // Decide what to do based on previous bools
+        //                    if (columnInValues && previousDataFound && columnInPreviousData && valueDifferentFromPrev && omitValue)
+        //                    {
+        //                        values.Add(value.value);
+        //                    }
+        //                    else if (columnInValues && previousDataFound && columnInPreviousData && valueDifferentFromPrev)
+        //                    {
+        //                        values.Add(value.value);
+        //                        anyDifferent = true;
+        //                    }
+        //                    else if (columnInValues && previousDataFound)
+        //                    {
+        //                        values.Add(value.value);
+        //                    }
+        //                    else if (columnInValues)
+        //                    {
+        //                        values.Add(value.value);
+        //                        anyDifferent = true;
+        //                    }
+        //                    else if (previousDataFound && columnInPreviousData)
+        //                    {
+        //                        values.Add(prevValue.value);
+        //                    }
+        //                    else
+        //                    {
+        //                        values.Add("");
+        //                    }
+        //                }
+
+        //                if (anyDifferent) rowValues.Add(values);
+
+        //            }
+
+        //            if (previousData != null)
+        //            {
+        //                foreach (InstanceData.Value newval in instanceData.values)
+        //                {
+        //                    InstanceData.Value val = previousData.values.Find(x => x.id == newval.id);
+        //                    if (val != null)
+        //                    {
+        //                        val.value = newval.value;
+        //                    }
+        //                    else
+        //                    {
+        //                        InstanceData.Value addVal = new InstanceData.Value();
+        //                        addVal.id = newval.id;
+        //                        addVal.value = newval.value;
+        //                        previousData.values.Add(addVal);
+        //                    }
+        //                }
+        //            }
+        //            else previousData = instanceData;
+
+        //        }
+
+        //        List<string> columnsMySQL = new List<string>();
+
+        //        columnsMySQL.AddRange(reqColumns);
+        //        columnsMySQL.AddRange(columns);
+
+        //        stpw.Stop();
+        //        UpdateStatus("InstanceTable AddRowsToMySQL() : Processing : " + stpw.ElapsedMilliseconds + "ms");
+
+        //        stpw = new System.Diagnostics.Stopwatch();
+        //        stpw.Start();
+
+        //        UpdateStatus("Adding " + rowValues.Count.ToString() + " Rows to MySQL Instance Table...");
+
+        //        int interval = 50;
+        //        int countLeft = rowValues.Count;
+
+
+        //        while (countLeft > 0)
+        //        {
+        //            IEnumerable<List<object>> ValuesToAdd = rowValues.Take(interval);
+
+        //            countLeft -= interval;
+
+        //            Row.Insert(config.Databases_Server, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), false);
+
+        //            //ThreadInfo threadInfo = new ThreadInfo();
+        //            //threadInfo.tableName = TableName;
+        //            //threadInfo.columns = columnsMySQL.ToArray();
+        //            //threadInfo.values = ValuesToAdd.ToList();
+        //            //threadInfo.update = false;
+
+        //            //ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
+        //        }
+
+        //        stpw.Stop();
+        //        UpdateStatus("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
+        //    }
+
+        //}
 
         //class ThreadInfo
         //{
@@ -678,6 +788,8 @@ namespace TH_InstanceTable
             InstanceData Result = new InstanceData(); ;
 
             Result.timestamp = currentData.header.creationTime;
+            Result.agentInstanceId = currentData.header.instanceId;
+            Result.sequence = currentData.header.lastSequence;
 
             FillInstanceDataWithCurrentData(new List<string>(), Result, currentData);
 

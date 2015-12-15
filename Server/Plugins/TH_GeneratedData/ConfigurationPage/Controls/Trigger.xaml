@@ -63,7 +63,7 @@
                                 <Setter Property="Visibility" Value="Visible"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Items.Count, ElementName=value_COMBO}" Value="0">
-                                        <!--<Setter Property="Visibility" Value="Collapsed"/>-->
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -72,9 +72,7 @@
                         <ComboBox x:Name="value_COMBO" Padding="10,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding ValueItems}" TextBoxBase.TextChanged="Value_TextChanged" SelectionChanged="Value_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
 
                     </Grid>
-                    
-                    
-
+                                    
                     <Border BorderThickness="1" CornerRadius="1" Margin="0,5" Background="#fff">
                         <Border.Style>
                             <Style TargetType="Border">
