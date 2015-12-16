@@ -137,7 +137,7 @@
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="{StaticResource Window_Background}" BorderBrush="#aaa" BorderThickness="1">
+            <Border Grid.Column="0" Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1">
 
                 <Grid>
                     

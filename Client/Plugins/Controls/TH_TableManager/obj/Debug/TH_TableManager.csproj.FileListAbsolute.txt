@@ -4,7 +4,6 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\Controls\Button.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TableManager.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\Controls\Button.g.cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TableManager.baml

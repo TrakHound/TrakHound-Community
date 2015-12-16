@@ -32,7 +32,7 @@ namespace TH_WPF
 
         public event RoutedEventHandler PasswordChanged;
 
-
+        public event KeyEventHandler PreviewKeyDown;
 
         public string Title
         {
@@ -146,6 +146,11 @@ namespace TH_WPF
             PasswordText = ((System.Windows.Controls.PasswordBox)sender).Password;
 
             if (PasswordChanged != null) PasswordChanged(sender, e);
+        }
+
+        private void pswd_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (PreviewKeyDown != null) PreviewKeyDown(sender, e);
         }
     }
 }

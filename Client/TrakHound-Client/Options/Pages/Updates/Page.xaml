@@ -42,7 +42,7 @@
         <th_wpf:Button_01 Image="/TrakHound-Client;component/Resources/Refresh_01.png" Text="Check for Updates" Height="40" Margin="0,20,0,10" HorizontalAlignment="Left" Clicked="CheckForUpdates_Clicked"/>
         
         <!--TrakHound Client-->
-        <Border CornerRadius="1" BorderThickness="1" BorderBrush="#ccc" Margin="0, 20">
+        <Border CornerRadius="1" BorderThickness="1" BorderBrush="{StaticResource Shade_Normal}" Margin="0, 20">
             <Grid Margin="10, 20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
@@ -130,8 +130,8 @@
         <!--Plugins-->
 
         <TextBlock Text="Plugins" FontSize="16" Foreground="{StaticResource Foreground_Light}"/>
-        
-        <Rectangle Fill="#aaa" Height="1" Margin="0,10,0,20"/>
+
+        <Rectangle Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,10,0,20"/>
 
         <StackPanel x:Name="Plugin_STACK" Grid.Row="1"/>
 

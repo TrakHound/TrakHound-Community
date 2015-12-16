@@ -142,7 +142,7 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="#aaa" BorderThickness="1">
+            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1">
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -152,170 +152,6 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    
-                    <!--Zoom Controls--><!--
-                    <Grid Grid.Row="0" Height="35" Visibility="Collapsed">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="3*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="3*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        --><!--Zoom Out Button--><!--
-                        <Grid Grid.Column="0" x:Name="ZoomOut_GRID" PreviewMouseDown="Zoom_Out_Click" ToolTip="Zoom Out" Cursor="Hand">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="#00000000"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-
-                            <TextBlock Text="-" FontSize="14pt" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ZoomOut_GRID}" Value="true">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#0080ff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#333">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            
-                        </Grid>
-                        
-                        --><!--Separator--><!--
-                        <Rectangle Grid.Column="1" Width="1" Margin="0,5" Fill="#22000000"/>
-                        
-                        --><!--Zoom Level Display--><!--
-                        <TextBlock Grid.Column="2" Text="{Binding ZoomLevelDisplay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
-                        --><!--Separator--><!--
-                        <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#22000000"/>
-                        
-                        --><!--Zoom In Button--><!--
-                        <Grid Grid.Column="4" x:Name="ZoomIn_GRID" PreviewMouseDown="Zoom_In_Click" ToolTip="Zoom In" Cursor="Hand">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="#00000000"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-
-                            <TextBlock Text="+" FontSize="14pt" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#333"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ZoomIn_GRID}" Value="true">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#0080ff">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard FillBehavior="Stop">
-                                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#333">
-                                                                <ColorAnimation.EasingFunction>
-                                                                    <CubicEase EasingMode="EaseOut"/>
-                                                                </ColorAnimation.EasingFunction>
-                                                            </ColorAnimation>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                        </Grid>
-                        
-                    </Grid>-->
-                    
-                    <!--Seperator-->
-                    <!--<Rectangle Grid.Row="1" Height="1" Margin="5,0" Fill="#22000000" Visibility="Collapsed"/>-->
                     
                     <!--MenuItem List-->
                     <ItemsControl Grid.Row="2" ItemsSource="{Binding MenuItems}" HorizontalAlignment="Center" Margin="0,10,0,0">
@@ -332,7 +168,7 @@
                     </ItemsControl>
 
                     <!--Seperator-->
-                    <Rectangle Grid.Row="3" Height="1" Margin="5,5" Fill="#22000000"/>
+                    <Rectangle Grid.Row="3" Height="1" Margin="5,5" Fill="{StaticResource Shade_Normal}"/>
 
                     <!--Bottom Buttons-->
                     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">

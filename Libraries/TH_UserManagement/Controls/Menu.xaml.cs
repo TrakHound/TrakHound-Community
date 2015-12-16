@@ -84,7 +84,7 @@ namespace TH_UserManagement
                     if (!LoggedIn)
                     {
                         username_TXT.Focus();
-                        username_TXT.Select(0, 0);
+                        //username_TXT.Select(0, 0);
                     }
 
                     if (ShownChanged != null) ShownChanged(value);
@@ -137,9 +137,10 @@ namespace TH_UserManagement
             DependencyProperty.Register("PasswordEntered", typeof(bool), typeof(Menu), new PropertyMetadata(false));
 
 
+
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (password_TXT.Password != "") PasswordEntered = true;
+            if (password_TXT.PasswordText != "") PasswordEntered = true;
             else PasswordEntered = false;
         }
 
@@ -313,7 +314,7 @@ namespace TH_UserManagement
 
         private void Login_Clicked(Button_01 bt)
         {
-            Login(username_TXT.Text, password_TXT.Password);
+            Login(Username, password_TXT.PasswordText);
         }
 
         private void SignOut_Clicked(Button_01 bt)
@@ -356,8 +357,10 @@ namespace TH_UserManagement
                 Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
                 EmailAddress = userConfig.email;
 
-                username_TXT.Clear();
-                password_TXT.Clear();
+                Username = null;
+                //username_TXT.Clear();
+
+                password_TXT.PasswordText = "";
 
                 LoadProfileImage(userConfig);
                 LoggedIn = true;
@@ -441,6 +444,7 @@ namespace TH_UserManagement
                 Lastname = null;
 
                 Username = null;
+                password_TXT.PasswordText = null;
             }
 
             Loading = false;
@@ -479,6 +483,8 @@ namespace TH_UserManagement
             Lastname = null;
 
             Username = null;
+            password_TXT.PasswordText = null;
+
             CurrentUser = null;
             ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
 
@@ -679,7 +685,7 @@ namespace TH_UserManagement
 
                 if (password_TXT.IsFocused)
                 {
-                    Login(username_TXT.Text, password_TXT.Password);
+                    Login(Username, password_TXT.PasswordText);
                 }
             }
         }
@@ -692,7 +698,7 @@ namespace TH_UserManagement
 
         private void password_TXT_GotFocus(object sender, RoutedEventArgs e)
         {
-            password_TXT.Password = null;
+            password_TXT.PasswordText = "";
         }
 
     }

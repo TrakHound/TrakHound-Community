@@ -22,8 +22,8 @@
     </UserControl.Resources>
 
     <Grid>
-        
-        <Border BorderBrush="#888">
+
+        <Border BorderBrush="{StaticResource Shade_Normal}">
 
             <!--PlugIns-->
             <Grid Margin="0,0,0,50">

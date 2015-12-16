@@ -265,7 +265,7 @@
                             <th_wpf:Button_02 ToolTip="Refresh the Device List" Image="Resources/Refresh_01.png" VerticalAlignment="Center" Clicked="RefreshDevices_Clicked"/>
 
                             <!--Title-->
-                            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="Devices" FontSize="12pt" Foreground="{StaticResource Foreground_Light}"  Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="Devices" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}"  Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                             <!--Device Index Up / Down Buttons-->
                             <!--<StackPanel Grid.Column="2" VerticalAlignment="Center">

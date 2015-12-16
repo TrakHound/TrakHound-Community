@@ -9,8 +9,6 @@
         
         Closing="Window_Closing" WindowStyle="None"
         
-        Background="{StaticResource Accent_Normal}"
-        
         PreviewKeyDown="Window_PreviewKeyDown"
         
         ResizeMode="NoResize"
@@ -28,7 +26,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource Accent_Normal}">
 
         <ContentControl Content="{Binding WindowContent}">
             <ContentControl.LayoutTransform>

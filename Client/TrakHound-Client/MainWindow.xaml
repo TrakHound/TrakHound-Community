@@ -997,14 +997,14 @@
                                             <!--Plugin Launcher Button-->
                                             <th_wpf:Button_01 x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
                                             
-                                            <Rectangle Width="1" Fill="#22000000" Margin="5,2"/>
+                                            <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
 
                                         </StackPanel>
 
                                         <!--Main Menu, etc. Buttons-->
                                         <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,2,0">
 
-                                            <Rectangle Width="1" Fill="#22000000" Margin="5,2"/>
+                                            <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
                                             
                                             <!--MainMenu Button-->
                                             <th_wpf:Button_01 x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked" Margin="0,0,0,-2" Height="30"/>

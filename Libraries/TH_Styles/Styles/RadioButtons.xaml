@@ -22,7 +22,7 @@
                         </BulletDecorator.Bullet>
 
                         <!--Text element-->
-                        <TextBlock Margin="10,0" Foreground="#333" FontSize="12" VerticalAlignment="Center">
+                        <TextBlock Margin="10,0" Foreground="{StaticResource Foreground_Normal}" FontSize="12" VerticalAlignment="Center">
                                         <ContentPresenter />
                         </TextBlock>
                     </BulletDecorator>

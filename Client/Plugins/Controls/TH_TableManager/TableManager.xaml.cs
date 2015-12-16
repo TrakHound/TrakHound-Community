@@ -543,7 +543,7 @@ namespace TH_TableManager
             CreatePageNumbers(rowCount, 1);
         }
 
-        private void TableInfoRefresh_Button_Clicked(Controls.Button bt)
+        private void TableInfoRefresh_Button_Clicked(TH_WPF.Button_02 bt)
         {
             LoadInfo(SelectedTableName, selectedDevice);
         }
@@ -831,7 +831,7 @@ namespace TH_TableManager
 
         #endregion
 
-        private void DropTables_Button_Clicked(Controls.Button bt)
+        private void DropTables_Button_Clicked(TH_WPF.Button_02 bt)
         {
 
             if (MessageBox.Show("Delete Selected Tables?", "Drop Tables", MessageBoxButton.YesNo) == MessageBoxResult.Yes)

@@ -46,7 +46,7 @@
         </Grid>
 
         <!--Separator-->
-        <Rectangle Height="0.5" Margin="5,10" Fill="#aaa" />
+        <Rectangle Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Normal}" />
 
         <!--Designed By-->
         <TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource Foreground_Normal}" />
@@ -66,8 +66,8 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Build Information" FontSize="12" Foreground="{StaticResource Foreground_Light}"/>
-            
-            <Border Grid.Row="1" Margin="0,5" BorderBrush="#aaa" BorderThickness="1" CornerRadius="2">
+
+            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2">
 
                 <StackPanel Margin="10,10">
                     <StackPanel.Resources>
@@ -96,7 +96,7 @@
 
             <TextBlock Text="Usage Information" FontSize="12" Foreground="{StaticResource Foreground_Light}"/>
 
-            <Border Grid.Row="1" Margin="0,5" BorderBrush="#aaa" BorderThickness="1" CornerRadius="2">
+            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2">
 
                 <StackPanel Margin="10,10">
                     <StackPanel.Resources>

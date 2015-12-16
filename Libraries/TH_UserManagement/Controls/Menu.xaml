@@ -78,7 +78,7 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="#aaa" BorderThickness="1">
+            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1">
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -134,33 +134,21 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image Source="/TH_UserManagement;component/Resources/blank_profile_01.png"  Height="50"/>
+                                <!--Profile Icon-->
+                                <Rectangle Width="50" Height="50" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
+                                    <Rectangle.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_UserManagement;component/Resources/blank_profile_01.png" />
+                                    </Rectangle.Resources>
 
-                                <!--<StackPanel Grid.Column="1" Margin="10,0">-->
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
+                                        </Style>
+                                    </Rectangle.Style>
+                                </Rectangle>
 
-                                    <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="10pt" Foreground="#888" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
-
-                                    <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-
-                                        --><!--Lock Icon--><!--
-                                        <Rectangle Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
-                                            <Rectangle.Resources>
-                                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_UserManagement;component/Resources/Lock_01.png" />
-                                            </Rectangle.Resources>
-
-                                            <Rectangle.Style>
-                                                <Style TargetType="Rectangle">
-                                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                                    <Setter Property="Fill" Value="#aaa"/>
-                                                </Style>
-                                            </Rectangle.Style>
-                                        </Rectangle>
-                                        
-                                        <TextBlock Text="Secure Connection" Foreground="#aaa" FontSize="8pt" VerticalAlignment="Center" />
-
-                                    </StackPanel>-->
-
-                                <!--</StackPanel>-->
+                                <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
 
                             </Grid>
 
@@ -175,96 +163,32 @@
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
                                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Fill" Value="#aaa"/>
+                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                         </Style>
                                     </Rectangle.Style>
                                 </Rectangle>
 
-                                <TextBlock Text="Secure Connection" Foreground="#aaa" FontSize="8pt" VerticalAlignment="Center" />
+                                <TextBlock Text="Secure Connection" Foreground="{StaticResource Foreground_Light}" FontSize="8pt" VerticalAlignment="Center" />
 
                             </StackPanel>
-
+                            
+                            
                             <!--Username-->
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#aaa"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
-                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-
-                                <Grid Margin="10,0">
-
-                                    <!--Instructions-->
-                                    <TextBlock Text="Enter your username or email" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Text, ElementName=username_TXT}" Value="">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <!--User Input-->
-                                    <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black" TextChanged="username_TXT_TextChanged"/>
-
-                                </Grid>
-
-                            </Border>
-
+                            <th_wpf:TextBox x:Name="username_TXT" Instructions="Enter your username or email" Margin="10,10,0,15" TextChanged="username_TXT_TextChanged"/>
+                            
+                            
                             <!--Password-->
-                            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#aaa"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
-                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
+                            <th_wpf:PasswordBox x:Name="password_TXT" Instructions="Password" Margin="10,0,0,0" PreviewKeyDown="UserControl_PreviewKeyDown" PasswordChanged="password_TXT_PasswordChanged"/>
 
-                                <Grid Margin="10,0">
-
-                                    <!--Instructions-->
-                                    <TextBlock Text="Password" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-
-                                    <!--User Input-->
-                                    <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged" GotFocus="password_TXT_GotFocus"/>
-
-                                </Grid>
-
-                            </Border>
-
-                                <!--Remember Me
-                            Enabled Text and Checkbox-->
+                            
+                                <!--Remember Me Enabled Text and Checkbox-->
                                 <Grid Margin="10,0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="#888" />
+                                <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
 
                                     <CheckBox Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
 
@@ -455,7 +379,7 @@
                             <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}" FontWeight="Bold" Margin="0,5"/>
 
                             <!--Full Name-->
-                            <TextBlock Text="{Binding Fullname}"  FontSize="10pt" Foreground="#333">
+                            <TextBlock Text="{Binding Fullname}"  FontSize="10pt" Foreground="{StaticResource Foreground_Normal}">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Visible"/>
@@ -473,7 +397,7 @@
                             </TextBlock>
 
                             <!--Email Address-->
-                            <TextBlock Text="{Binding EmailAddress}" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                            <TextBlock Text="{Binding EmailAddress}" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
                         </StackPanel>
 
@@ -579,7 +503,7 @@
                     </Grid>
 
                     <!--Seperator-->
-                    <Rectangle Grid.Row="1" Height="1" Fill="#ddd"/>
+                    <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}"/>
 
                     <!--Bottom Bar-->
                     <Grid Grid.Row="2" Height="59" Background="{StaticResource Window_Background_Dark}">
@@ -603,7 +527,7 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Create Account-->
-                            <th_wpf:Button_01 Clicked="Create_Clicked" Text="Create Account" BorderBrush="#ccc" BorderThickness="1" Height="40" Margin="10,0" HorizontalAlignment="Left" />
+                            <th_wpf:Button_01 Clicked="Create_Clicked" Text="Create Account" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Height="40" Margin="10,0" HorizontalAlignment="Left" />
 
                             <!--Login Error -->
                             <Grid Grid.Column="1">
@@ -641,7 +565,7 @@
                                     </Style>
                                 </Grid.Style>
 
-                                <th_wpf:Button_01 Clicked="Login_Clicked" Text="Login" AlternateStyle="True" BorderBrush="#ccc" BorderThickness="1" Height="40" HorizontalAlignment="Right" />
+                                <th_wpf:Button_01 Clicked="Login_Clicked" Text="Login" AlternateStyle="True" Height="40" HorizontalAlignment="Right" />
 
 
                                 <Grid>
@@ -687,7 +611,7 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Sign Out-->
-                            <th_wpf:Button_01 Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="#ccc" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" />
+                            <th_wpf:Button_01 Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" />
 
                             <th_wpf:Button_01 Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" AlternateStyle="True" Clicked="MyAccount_Clicked"/>
 
