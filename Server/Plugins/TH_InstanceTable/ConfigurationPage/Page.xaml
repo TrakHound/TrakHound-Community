@@ -125,7 +125,7 @@
                         <StackPanel Orientation="Horizontal">
 
                             <!--CheckBox-->
-                            <CheckBox x:Name="events_CHK" Width="40" Height="40" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="events_CHK_Checked" Unchecked="events_CHK_Unchecked"/>
+                            <CheckBox x:Name="events_CHK" Width="40" Height="40" Cursor="Hand" Checked="events_CHK_Checked" Unchecked="events_CHK_Unchecked"/>
 
                             <!--Title and Help-->
                             <StackPanel Orientation="Horizontal">
@@ -194,7 +194,7 @@
                         <StackPanel Orientation="Horizontal">
 
                             <!--CheckBox-->
-                            <CheckBox x:Name="samples_CHK" Width="40" Height="40" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="samples_CHK_Checked" Unchecked="samples_CHK_Unchecked"/>
+                            <CheckBox x:Name="samples_CHK" Width="40" Height="40" Cursor="Hand" Checked="samples_CHK_Checked" Unchecked="samples_CHK_Unchecked"/>
 
                             <!--Title and Help-->
                             <StackPanel Orientation="Horizontal">
@@ -263,7 +263,7 @@
                         <StackPanel Orientation="Horizontal">
 
                             <!--CheckBox-->
-                            <CheckBox x:Name="conditions_CHK" Width="40" Height="40" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="conditions_CHK_Checked" Unchecked="conditions_CHK_Unchecked"/>
+                            <CheckBox x:Name="conditions_CHK" Width="40" Height="40" Cursor="Hand" Checked="conditions_CHK_Checked" Unchecked="conditions_CHK_Unchecked"/>
 
                             <!--Title and Help-->
                             <StackPanel Orientation="Horizontal">

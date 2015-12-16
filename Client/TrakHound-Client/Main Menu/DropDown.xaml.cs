@@ -217,7 +217,7 @@ namespace TrakHound_Client.Main_Menu
 
         #region "Bottom Buttons"
 
-        private void About_Clicked(Controls.TH_Button bt)
+        private void About_Clicked(TH_WPF.Button_01 bt)
         {
             Shown = false;
             mw.About_Open(); 

@@ -8,6 +8,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         
         xmlns:local="clr-namespace:TrakHound_Client"
+        xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
         xmlns:controls="clr-namespace:TrakHound_Client.Controls"
         xmlns:devconsole="clr-namespace:TrakHound_Client.Developer_Console"
         xmlns:message="clr-namespace:TrakHound_Client.Message_Center"
@@ -80,7 +81,7 @@
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID">
         <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">0</GridLength>
+            <GridLength x:Key="ShadowWidth">10</GridLength>
 
             <Color x:Key="inside">#22000000</Color>
             <GradientStopCollection x:Key="gradient">
@@ -200,7 +201,7 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Grid Grid.Column="1" x:Name="Main_GRID">
+            <Grid Grid.Column="1" x:Name="Main_GRID" Background="{StaticResource Window_Background}">
 
                 <DockPanel>
 
@@ -224,7 +225,7 @@
 
                     <!--Title Bar-->
                     <Border DockPanel.Dock="Top" >
-                        <Border MouseDown="TitleBar_MouseDown" Background="#FFEEEEEE" Height="28" >
+                        <Border MouseDown="TitleBar_MouseDown" Height="28" Background="{StaticResource Window_Background}">
                             <DockPanel x:Name="TitleBar">
 
                                 <!--Close Button-->
@@ -526,24 +527,11 @@
                                                 <Setter Property="Opacity" Value="0.0"/>
                                                 <Setter Property="MaxWidth" Value="200"/>
 
-                                                <Setter Property="Background" Value="#0080ff" />
+                                                <Setter Property="Background" Value="{StaticResource Accent_Normal}" />
                                                 <Style.Triggers>
 
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Trigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00aaff"/>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </Trigger.EnterActions>
-                                                        <Trigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard FillBehavior="Stop">
-                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#0080ff"/>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </Trigger.ExitActions>
+                                                        <Setter Property="Background" Value="{StaticResource Accent_Light}" />
                                                     </Trigger>
 
                                                     <DataTrigger Binding="{Binding LoggedIn}" Value="true">
@@ -584,16 +572,17 @@
                                                             </BeginStoryboard>
                                                         </DataTrigger.ExitActions>
                                                     </DataTrigger>
+                                                    
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
 
                                         <!--UserName-->
-                                        <TextBlock Text="{Binding CurrentUsername}" Foreground="#fff" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                                        <TextBlock Text="{Binding CurrentUsername}" Foreground="{StaticResource Foreground_Opposite_Normal}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
 
                                         <!--Arrow-->
                                         <Path 
-                                        Fill="#fff"
+                                        Fill="{StaticResource Foreground_Opposite_Normal}"
                                         Margin="5"
                                         Grid.Column="1"     
                                           HorizontalAlignment="Center"
@@ -682,10 +671,10 @@
                                         <TextBlock Text="Login" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="#888"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
-                                                            <Setter Property="Foreground" Value="#0080ff"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -702,10 +691,10 @@
                                           >
                                             <Path.Style>
                                                 <Style TargetType="Path">
-                                                    <Setter Property="Fill" Value="#888"/>
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
-                                                            <Setter Property="Fill" Value="#0080ff"/>
+                                                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -720,7 +709,7 @@
                                 <Image x:Name="Icon_IMG" DockPanel.Dock="Left" Width="23" Height="23" Margin="5,1,12,3" Source="Resources/TrakHound_Logo_Initials_10_30px.png"/>
 
                                 <!--Window Title-->
-                                <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0" Foreground="#FF323232"/>
+                                <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0" Foreground="{StaticResource Foreground_Normal}"/>
 
                             </DockPanel>
                         </Border>
@@ -728,15 +717,15 @@
                     </Border>
 
                     <!--Window Content-->
-                    <Grid Height="auto" Width="auto" Background="#eee">
+                    <Grid Height="auto" Width="auto" Background="{StaticResource Window_Background}">
 
                         <DockPanel x:Name="Root_DOCK">
 
-                            <Grid DockPanel.Dock="Top">
+                            <!--<Grid DockPanel.Dock="Top">
 
                                 <DockPanel>
 
-                                    <!--Main Menu-->
+                                    --><!--Main Menu--><!--
                                     <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" >
                                         <DockPanel.RenderTransform>
                                             <TranslateTransform />
@@ -776,7 +765,7 @@
                                                         <DataTrigger.EnterActions>
                                                             <BeginStoryboard>
                                                                 <Storyboard>
-                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="{StaticResource DWLightBlue_Color}">
+                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00aaff">
                                                                         <ColorAnimation.EasingFunction>
                                                                             <CubicEase EasingMode="EaseOut"/>
                                                                         </ColorAnimation.EasingFunction>
@@ -803,7 +792,7 @@
 
                                         <Menu DockPanel.Dock="Top" Height="25" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" FontSize="14">
 
-                                            <!--File-->
+                                            --><!--File--><!--
                                             <MenuItem Header="_File">
                                                 <MenuItem Header="_Exit" Click="MenuItem_Exit_Click">
                                                     <MenuItem.Icon>
@@ -821,10 +810,10 @@
                                                 </MenuItem>
                                             </MenuItem>
 
-                                            <!--View-->
+                                            --><!--View--><!--
                                             <MenuItem x:Name="View_MenuItem" Header="_View"/>
 
-                                            <!--Tools-->
+                                            --><!--Tools--><!--
                                             <MenuItem Header="_Tools">
                                                 <MenuItem Header="_Options" Click="MenuItem_Options_Click">
                                                     <MenuItem.Icon>
@@ -845,7 +834,7 @@
 
                                             </MenuItem>
 
-                                            <!--Help-->
+                                            --><!--Help--><!--
                                             <MenuItem Header="_Help">
                                                 <MenuItem Header="_About" Click="MenuItem_About_Click" >
                                                     <MenuItem.Icon>
@@ -869,10 +858,10 @@
 
                                 </DockPanel>
 
-                            </Grid>
+                            </Grid>-->
 
                             <!--Status Bar-->
-                            <Grid x:Name="StatusBar_GRID" DockPanel.Dock="Bottom" Height="25" Background="{StaticResource StatusBar}" >
+                            <Grid x:Name="StatusBar_GRID" DockPanel.Dock="Bottom" Height="25" Background="{StaticResource Accent_Normal}" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="20" />
@@ -925,7 +914,7 @@
 
                                 <!--Resize Grip Lines-->
                                 <Grid Grid.Column="1">
-                                    <Rectangle Fill="{StaticResource DWBlue}" Margin="-3,-1,0,0" Height="25" Width="1" RenderTransformOrigin="0.5,0.5" >
+                                    <Rectangle Fill="{StaticResource Accent_Dark}" Margin="-3,-1,0,0" Height="25" Width="1" RenderTransformOrigin="0.5,0.5" >
                                         <Rectangle.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -936,7 +925,7 @@
                                         </Rectangle.RenderTransform>
                                     </Rectangle>
 
-                                    <Rectangle Fill="{StaticResource DWBlue}" Margin="5,5,0,0" Height="17" Width="1" RenderTransformOrigin="0.5,0.5" >
+                                    <Rectangle Fill="{StaticResource Accent_Dark}" Margin="5,5,0,0" Height="17" Width="1" RenderTransformOrigin="0.5,0.5" >
                                         <Rectangle.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -947,7 +936,7 @@
                                         </Rectangle.RenderTransform>
                                     </Rectangle>
 
-                                    <Rectangle Fill="{StaticResource DWBlue}" Margin="11,11,0,0" Height="10" Width="1" RenderTransformOrigin="0.5,0.5" >
+                                    <Rectangle Fill="{StaticResource Accent_Dark}" Margin="11,11,0,0" Height="10" Width="1" RenderTransformOrigin="0.5,0.5" >
                                         <Rectangle.RenderTransform>
                                             <TransformGroup>
                                                 <ScaleTransform/>
@@ -965,7 +954,7 @@
 
                             </Grid>
 
-                            <Border CornerRadius="0" Background="#eee">
+                            <Border CornerRadius="0">
 
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -979,7 +968,7 @@
                                             VerticalContentAlignment="Center" TabStripPlacement="Top"
                                             BorderBrush="#00FFFFFF" BorderThickness="0"
                                             Padding="0,0,0,0" 
-                                            Background="#eee"
+                                            Background="{StaticResource Window_Background}"
                                             SelectionChanged="Pages_TABCONTROL_SelectionChanged"   
                                             />
                                     
@@ -994,7 +983,7 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <ItemsControl Grid.Column="1" ItemsSource="{Binding PageTabHeaders}" Background="#eee" Margin="0,0,0,-2">
+                                        <ItemsControl Grid.Column="1" ItemsSource="{Binding PageTabHeaders}" Background="{StaticResource Window_Background}" Margin="0,0,0,-2">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <StackPanel Orientation="Horizontal"/>
@@ -1003,10 +992,10 @@
                                         </ItemsControl>
 
                                         <!--Plugin Launcher Buttons-->
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,0,0" Background="#eee">
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,0,0">
 
                                             <!--Plugin Launcher Button-->
-                                            <controls:TH_Button x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked" Margin="0,0,0,-2"/>
+                                            <th_wpf:Button_01 x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
                                             
                                             <Rectangle Width="1" Fill="#22000000" Margin="5,2"/>
 
@@ -1018,7 +1007,7 @@
                                             <Rectangle Width="1" Fill="#22000000" Margin="5,2"/>
                                             
                                             <!--MainMenu Button-->
-                                            <controls:TH_Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked" Margin="0,0,0,-2"/>
+                                            <th_wpf:Button_01 x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
 
                                         </StackPanel>
 
@@ -1051,12 +1040,6 @@
                            MyAccountClicked="LoginMenu_MyAccountClicked"
                            CreateClicked="LoginMenu_CreateClicked"
                            />
-
-                <!--User Login Menu-->
-                <!--<login:DropDown x:Name="LoginMenu" 
-                           Shown="False"
-                            />-->
-                
 
                 <!--Message Center-->
                 <message:MessageCenter x:Name="messageCenter" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,25" Shown="False"/>

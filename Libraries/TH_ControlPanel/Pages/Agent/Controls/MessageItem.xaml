@@ -6,6 +6,14 @@
              mc:Ignorable="d" 
              >
     
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <StackPanel Orientation="Horizontal">
 
         <!--Image-->
@@ -25,10 +33,10 @@
         <StackPanel VerticalAlignment="Center" Margin="5,0,10,0">
 
             <!--Text-->
-            <TextBlock Text="No Devices Found @" FontSize="10pt" Foreground="#888"/>
+            <TextBlock Text="No Devices Found @" FontSize="10pt" Foreground="{StaticResource Foreground_Light}"/>
 
             <!--URL-->
-            <TextBlock Text="{Binding URL}" FontSize="10pt" Foreground="#333"/>
+            <TextBlock Text="{Binding URL}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}"/>
 
         </StackPanel>
 

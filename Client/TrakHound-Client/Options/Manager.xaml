@@ -36,13 +36,13 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="#0080ff">
+            <Border Grid.Column="0" Background="{StaticResource Accent_Normal}">
                 <StackPanel x:Name="Pages_STACK" Margin="0,40" />
             </Border>
 
-            <Border Grid.Column="1" BorderBrush="{StaticResource DWBlue}" BorderThickness="1">
+            <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1">
 
-                <Grid Grid.Column="1" Background="#eee" >
+                <Grid Grid.Column="1" Background="{StaticResource Window_Background}" >
 
                     <Grid Margin="40,0">
                         <Grid.RowDefinitions>
@@ -56,9 +56,9 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="{Binding CurrentPageName, ElementName=manager}" Foreground="{StaticResource DarkText}" FontSize="30" Margin="0,10"/>
+                            <TextBlock Text="{Binding CurrentPageName, ElementName=manager}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" Margin="0,10"/>
 
-                            <Rectangle Grid.Row="1" Fill="{StaticResource LightText}" Height="0.5" Margin="0,5"/>
+                            <Rectangle Grid.Row="1" Fill="{StaticResource Foreground_Light}" Height="0.5" Margin="0,5"/>
 
                         </Grid>
 

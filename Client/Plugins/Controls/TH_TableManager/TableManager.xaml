@@ -253,7 +253,7 @@
 
                         <TextBlock Text="Displaying" FontSize="8pt" Foreground="#33ffffff" Margin="10,0" VerticalAlignment="Center"/>
 
-                        <ComboBox x:Name="RowLimit_COMBO" MinWidth="60" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding RowLimits}" SelectionChanged="RowDisplayLimit_SelectionChanged" />
+                        <ComboBox x:Name="RowLimit_COMBO" MinWidth="60" ItemsSource="{Binding RowLimits}" SelectionChanged="RowDisplayLimit_SelectionChanged" />
 
                         <TextBlock Text="Rows" FontSize="8pt" Foreground="#33ffffff" Margin="5,0" VerticalAlignment="Center"/>
 

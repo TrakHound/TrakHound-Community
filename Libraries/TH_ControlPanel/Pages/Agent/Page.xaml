@@ -11,17 +11,25 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
-    
-    <Grid Background="#eee">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Agent Configuration" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
+        <TextBlock Text="Agent Configuration" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,10"/>
 
-        <TextBlock Grid.Row="1" Text="Configure the MTConnect® Agent Communication." FontSize="10pt" Foreground="#888" Margin="0,10,10,20"/>
+        <TextBlock Grid.Row="1" Text="Configure the MTConnect® Agent Communication." FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20"/>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -78,7 +86,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Current Heartbeat Interval" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Current Heartbeat Interval" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -101,10 +109,11 @@
                             <Rectangle.Style>
                                 <Style TargetType="Rectangle">
                                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
+                                            <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                            <!--<Trigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -125,7 +134,7 @@
                                                         </ColorAnimation>
                                                     </Storyboard>
                                                 </BeginStoryboard>
-                                            </Trigger.ExitActions>
+                                            </Trigger.ExitActions>-->
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -153,16 +162,16 @@
                                 VerticalAlignment="Center"
                                 />
 
-                        <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="#fff">
+                        <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="{StaticResource Window_Background}">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="#aaa"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                         </Trigger>
                                         <DataTrigger Binding="{Binding IsFocused, ElementName=currentHeartbeat_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -171,7 +180,7 @@
                             <Grid Margin="10,0">
 
                                 <!--Instructions-->
-                                <TextBlock Text="{Binding CurrentHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#333" VerticalAlignment="Center" Margin="2,0" >
+                                <TextBlock Text="{Binding CurrentHeartbeat_TimeSpan}" FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" Margin="2,0" >
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -185,7 +194,7 @@
                                 </TextBlock>
 
                                 <!--User Input-->
-                                <TextBox x:Name="currentHeartbeat_TXT" LostFocus="currentHeartbeat_TXT_LostFocus" TextChanged="currentHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                <TextBox x:Name="currentHeartbeat_TXT" LostFocus="currentHeartbeat_TXT_LostFocus" TextChanged="currentHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
@@ -212,7 +221,7 @@
                     <StackPanel Orientation="Horizontal">
 
                         <!--Title-->
-                        <TextBlock Text="Sample Heartbeat Interval" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="Sample Heartbeat Interval" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                         <!--Help-->
                         <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -238,10 +247,11 @@
                             <Rectangle.Style>
                                 <Style TargetType="Rectangle">
                                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
+                                            <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                            <!--<Trigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
                                                         <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -262,7 +272,7 @@
                                                         </ColorAnimation>
                                                     </Storyboard>
                                                 </BeginStoryboard>
-                                            </Trigger.ExitActions>
+                                            </Trigger.ExitActions>-->
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -290,16 +300,16 @@
                                 VerticalAlignment="Center"
                                 />
 
-                        <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="#fff">
+                        <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="{StaticResource Window_Background}">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="BorderBrush" Value="#aaa"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                         </Trigger>
                                         <DataTrigger Binding="{Binding IsFocused, ElementName=sampleHeartbeat_TXT}" Value="true">
-                                            <Setter Property="BorderBrush" Value="#0080ff"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -308,7 +318,7 @@
                             <Grid Margin="10,0">
 
                                 <!--Instructions-->
-                                <TextBlock Text="{Binding SampleHeartbeat_TimeSpan}" FontSize="12pt" Foreground="#333" VerticalAlignment="Center" Margin="2,0" >
+                                <TextBlock Text="{Binding SampleHeartbeat_TimeSpan}" FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" Margin="2,0" >
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -322,7 +332,7 @@
                                 </TextBlock>
 
                                 <!--User Input-->
-                                <TextBox x:Name="sampleHeartbeat_TXT" LostFocus="sampleHeartbeat_TXT_LostFocus" TextChanged="sampleHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                <TextBox x:Name="sampleHeartbeat_TXT" LostFocus="sampleHeartbeat_TXT_LostFocus" TextChanged="sampleHeartbeat_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                             </Grid>
 
@@ -422,7 +432,7 @@
                         </Style>
                     </Grid.Style>
 
-                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
+                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
 
                 </Grid>
 

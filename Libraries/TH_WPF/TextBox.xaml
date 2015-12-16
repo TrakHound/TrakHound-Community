@@ -6,14 +6,22 @@
              mc:Ignorable="d" 
              d:DesignWidth="100"
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <StackPanel x:Name="root_STACK">
 
         <!--Title and Help-->
         <StackPanel Orientation="Horizontal">
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="#333" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -44,11 +52,12 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Fill" Value="#0080ff"/>
+                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Trigger.EnterActions>
+                                <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                <!--<Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -69,7 +78,7 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </Trigger.ExitActions>
+                                </Trigger.ExitActions>-->
                             </Trigger>
                             <DataTrigger Binding="{Binding HelpText}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -88,16 +97,16 @@
                 <ColumnDefinition Width="15"/>
             </Grid.ColumnDefinitions>
 
-            <Border BorderThickness="1" CornerRadius="1" Background="#fff">
+            <Border BorderThickness="1" CornerRadius="1" Background="{StaticResource Window_Background}">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="BorderBrush" Value="#aaa"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
-                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsFocused, ElementName=txt}" Value="true">
-                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -106,7 +115,7 @@
                 <Grid Margin="10,0">
 
                     <!--Instructions-->
-                    <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="#aaa" VerticalAlignment="Center" Margin="2,0" >
+                    <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -120,7 +129,7 @@
                     </TextBlock>
 
                     <!--User Input-->
-                    <TextBox x:Name="txt" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="txt_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                    <TextBox x:Name="txt" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="txt_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                 </Grid>
 

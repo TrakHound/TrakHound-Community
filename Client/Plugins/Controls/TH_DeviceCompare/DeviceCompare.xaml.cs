@@ -50,8 +50,6 @@ namespace TH_DeviceCompare
             DeviceDisplays = new List<DeviceDisplay>();
             ColumnHeaders.Clear();
             Columns.Clear();
-
-            //CheckHeaderHeight();
         }
 
         #region "PlugIn"
@@ -139,54 +137,19 @@ namespace TH_DeviceCompare
 
         #region "Device Properties"
 
-        //private List<Device_Client> lDevices;
-        //public List<Device_Client> Devices
-        //{
-        //    get
-        //    {
-        //        return lDevices;
-        //    }
-        //    set
-        //    {
-        //        lDevices = value;
-
-        //        DeviceDisplays = new List<DeviceDisplay>();
-        //        ColumnHeaders.Clear();
-        //        Columns.Clear();
-
-        //        foreach (Device_Client device in Devices) CreateDeviceDisplay(device);
-
-        //        //CheckHeaderHeight();
-        //    }
-        //}
-
-        //List<Configuration> devices;
-        //public List<Configuration> Devices
-        //{
-        //    get { return devices; }
-        //    set
-        //    {
-        //        devices = value;
-
-        //        if (devices != null)
-        //        {
-        //            DeviceDisplays = new List<DeviceDisplay>();
-        //            ColumnHeaders.Clear();
-        //            Columns.Clear();
-
-        //            foreach (Configuration device in devices)
-        //            {
-        //                CreateDeviceDisplay(device);
-        //            }
-        //        }
-        //    }
-        //}
-
         ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
 
         public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
+                Devices.Clear();
+                DeviceDisplays.Clear();
+                ColumnHeaders.Clear();
+                Columns.Clear();
+            }
 
             if (e.NewItems != null)
             {
@@ -1701,17 +1664,8 @@ namespace TH_DeviceCompare
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            //if (e.HeightChanged)
-            //{
-            //    CheckHeaderHeight();
-            //}
-        }
 
-        //void CheckHeaderHeight()
-        //{
-        //    if (this.RenderSize.Height < 850) foreach (Header header in ColumnHeaders) header.Minimized = true;
-        //    else foreach (Header header in ColumnHeaders) header.Minimized = false;
-        //}
+        }
 
         #endregion
 

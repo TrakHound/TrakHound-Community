@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#0080ff">
+    <Grid Background="{StaticResource Accent_Normal}">
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
             <RowDefinition Height="*"/>
@@ -50,24 +50,12 @@
             </Style>
         </Grid.Style>
 
-        <Border BorderBrush="{StaticResource DWBlue}" BorderThickness="0,0,0,0"/>
+        <Border/>
 
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Disabled">
 
             <Grid>
 
-                <!--<Grid x:Name="content_GRID" Grid.Row="1" >
-                    <Grid.LayoutTransform>
-                        <TransformGroup>
-                            <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
-                            <SkewTransform/>
-                            <RotateTransform/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Grid.LayoutTransform>
-                </Grid>-->
-                             
-                
                 <ContentControl Grid.Row="1" Content="{Binding PageContent}" Opacity="1">
                     <ContentControl.LayoutTransform>
                         <TransformGroup>
@@ -123,7 +111,7 @@
                         <th_wpf:Button_02 Image="/TrakHound-Client;component/Resources/Plus_04.png" Clicked="ZoomIn_Clicked"/>
                         
                         <!--Zoom Level-->
-                        <ComboBox x:Name="zoom_COMBO" Style="{StaticResource ComboBoxStyle}" ItemsSource="{Binding ZoomLevels}" TextBoxBase.TextChanged="zoom_COMBO_TextChanged" Text="100%" Cursor="Hand" IsEditable="True" IsReadOnly="True"/>
+                        <ComboBox x:Name="zoom_COMBO" ItemsSource="{Binding ZoomLevels}" TextBoxBase.TextChanged="zoom_COMBO_TextChanged" Text="100%" Cursor="Hand" IsEditable="True" IsReadOnly="True"/>
                         
                         <Rectangle Width="1" Fill="#aaffffff" Margin="0,2"/>
                         

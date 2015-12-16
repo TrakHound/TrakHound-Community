@@ -378,8 +378,6 @@ namespace TH_InstanceTable.ConfigurationPage
             chk.Checked += Omit_Checked;
             chk.Unchecked += Omit_Unchecked;
 
-            chk.Style = (Style)TryFindResource("Android_CheckBoxStyle");
-
             ConditionItems.Add(chk);
         }
 
@@ -403,8 +401,6 @@ namespace TH_InstanceTable.ConfigurationPage
             chk.Checked += Omit_Checked;
             chk.Unchecked += Omit_Unchecked;
 
-            chk.Style = (Style)TryFindResource("Android_CheckBoxStyle");
-
             EventItems.Add(chk);
         }
 
@@ -427,8 +423,6 @@ namespace TH_InstanceTable.ConfigurationPage
 
             chk.Checked += Omit_Checked;
             chk.Unchecked += Omit_Unchecked;
-
-            chk.Style = (Style)TryFindResource("Android_CheckBoxStyle");
 
             SampleItems.Add(chk);
         }

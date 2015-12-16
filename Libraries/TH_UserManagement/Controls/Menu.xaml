@@ -78,7 +78,7 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Border Grid.Column="1" Background="#eee" BorderBrush="#aaa" BorderThickness="1">
+            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="#aaa" BorderThickness="1">
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -191,7 +191,7 @@
                                         <Setter Property="BorderBrush" Value="#aaa"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
-                                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -227,7 +227,7 @@
                                         <Setter Property="BorderBrush" Value="#aaa"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
-                                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -266,7 +266,7 @@
 
                                     <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="#888" />
 
-                                    <CheckBox Grid.Column="1" Style="{StaticResource Android_CheckBoxStyle}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
+                                    <CheckBox Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
 
                                 </Grid>
 
@@ -374,7 +374,7 @@
                                 </Grid>
 
                                 <!--Loading Animation-->
-                                <Grid Background="#eee">
+                                <Grid Background="{StaticResource Window_Background}">
                                     <Grid.Style>
                                         <Style TargetType="Grid">
                                             <Setter Property="Opacity" Value="0.0"/>
@@ -441,7 +441,7 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
+                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
 
                                 </Grid>
 
@@ -452,7 +452,7 @@
                         <StackPanel Grid.Column="1" Margin="10" VerticalAlignment="Center">
 
                             <!--Username-->
-                            <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="#0080ff" FontWeight="Bold" Margin="0,5"/>
+                            <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}" FontWeight="Bold" Margin="0,5"/>
 
                             <!--Full Name-->
                             <TextBlock Text="{Binding Fullname}"  FontSize="10pt" Foreground="#333">
@@ -480,7 +480,7 @@
                     </Grid>
 
                     <!--Loading Cover-->
-                    <Grid Background="#eee">
+                    <Grid Background="{StaticResource Window_Background}">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Opacity" Value="1"/>
@@ -569,10 +569,10 @@
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0" Orientation="Horizontal">
 
                             <!--Loading Wheel-->
-                            <loadinganimation:Wheel Width="50" Height="50" Foreground="#0080ff" />
+                            <loadinganimation:Wheel Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
 
                             <!--Loading Text-->
-                            <TextBlock Text="{Binding LoadingMessage}" FontSize="12pt" Foreground="#0080ff" HorizontalAlignment="Center" Margin="20,0" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding LoadingMessage}" FontSize="12pt" Foreground="{StaticResource Accent_Normal}" HorizontalAlignment="Center" Margin="20,0" VerticalAlignment="Center" TextAlignment="Center"/>
 
                         </StackPanel>
 
@@ -582,7 +582,7 @@
                     <Rectangle Grid.Row="1" Height="1" Fill="#ddd"/>
 
                     <!--Bottom Bar-->
-                    <Grid Grid.Row="2" Height="59" Background="#e8e8e8">
+                    <Grid Grid.Row="2" Height="59" Background="{StaticResource Window_Background_Dark}">
 
                         <!--Logged Out-->
                         <Grid>

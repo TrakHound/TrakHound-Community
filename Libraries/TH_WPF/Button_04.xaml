@@ -8,6 +8,14 @@
              MinHeight="40"
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Background="#00000000" Cursor="Hand">
        
         <Grid>
@@ -37,10 +45,11 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="#0080ff"/>
+                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
-                                    <DataTrigger.EnterActions>
+                                    <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                    <!--<DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -61,10 +70,11 @@
                                                 </ColorAnimation>
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
+                                    </DataTrigger.ExitActions>-->
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                    <DataTrigger.EnterActions>
+                                    <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                    <!--<DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -85,7 +95,7 @@
                                                 </ColorAnimation>
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
+                                    </DataTrigger.ExitActions>-->
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -98,13 +108,14 @@
             <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="10pt" Margin="5,0,10,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="#0080ff"/>
+                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
-                                <DataTrigger.EnterActions>
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#00aaff">
@@ -125,10 +136,11 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <DataTrigger.EnterActions>
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#00aaff">
@@ -149,7 +161,7 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

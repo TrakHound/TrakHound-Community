@@ -5,6 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -15,11 +24,12 @@
         <Border x:Name="bd" CornerRadius="2">
             <Border.Style>
                 <Style  TargetType="Border">
-                    <Setter Property="Background" Value="#0080ff"/>
+                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Cursor" Value="Hand"/>
-                            <Trigger.EnterActions>
+                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            <!--<Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00aaff">
@@ -40,7 +50,7 @@
                                         </ColorAnimation>
                                     </Storyboard>
                                 </BeginStoryboard>
-                            </Trigger.ExitActions>
+                            </Trigger.ExitActions>-->
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -71,9 +81,9 @@
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
                                 <Setter Property="OpacityMask" Value="{StaticResource Expand_IMG}" />
-                                <Setter Property="Fill" Value="#eeffffff"/>
+                                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
+                                    <!--<DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
@@ -96,7 +106,7 @@
                                                 </Storyboard>
                                             </BeginStoryboard>
                                         </DataTrigger.ExitActions>
-                                    </DataTrigger>
+                                    </DataTrigger>-->
                                     <DataTrigger Binding="{Binding IsExpanded}" Value="true">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>

@@ -11,7 +11,15 @@
              d:DesignWidth="200"
              d:DesignHeight="150"
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid x:Name="root_GRID">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -54,11 +62,12 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Fill" Value="#0080ff"/>
+                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Trigger.EnterActions>
+                                <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                <!--<Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -79,7 +88,7 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </Trigger.ExitActions>
+                                </Trigger.ExitActions>-->
                             </Trigger>
                             <DataTrigger Binding="{Binding HelpText}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -171,10 +180,10 @@
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Visibility" Value="Visible"/>
-                                    <Setter Property="Background" Value="#0080ff"/>
+                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="#00aaff"/>
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
                                             <Setter Property="Cursor" Value="Hand"/>
                                         </Trigger>
                                         <DataTrigger Binding="{Binding ImageSet, Mode=TwoWay}" Value="true">
@@ -248,7 +257,7 @@
             </Grid>
 
             <!--Loading Animation-->
-            <Grid Background="#eee">
+            <Grid Background="{StaticResource Window_Background}">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Opacity" Value="0.0"/>
@@ -285,7 +294,7 @@
                     </Style>
                 </Grid.Style>
 
-                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
 
             </Grid>
 
@@ -298,7 +307,7 @@
                     <Setter Property="Foreground" Value="#888"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Foreground" Value="#0080ff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Cursor" Value="Hand"/>
                         </Trigger>
                     </Style.Triggers>

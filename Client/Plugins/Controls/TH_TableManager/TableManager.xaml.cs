@@ -120,49 +120,22 @@ namespace TH_TableManager
 
         #region "Device Properties"
 
-        //private List<Configuration> lDevices;
-        //public List<Configuration> Devices
-        //{
-        //    get { return lDevices; }
-        //    set
-        //    {
-        //        lDevices = value;
-
-        //        DeviceList.Clear();
-
-        //        foreach (Configuration device in lDevices)
-        //        {
-
-        //            // Initialize Database Configurations
-        //            Global.Initialize(device.Databases_Client);
-
-        //            Controls.DeviceButton db = new DeviceButton();
-        //            db.Description = device.Description.Description;
-        //            db.Manufacturer = device.Description.Manufacturer;
-        //            db.Model = device.Description.Model;
-        //            db.Serial = device.Description.Serial;
-        //            db.Id = device.Description.Machine_ID;
-
-        //            db.Clicked += db_Clicked;
-
-        //            ListButton lb = new ListButton();
-        //            lb.ButtonContent = db;
-        //            lb.ShowImage = false;
-        //            lb.Selected += lb_Device_Selected;
-        //            lb.DataObject = device;
-
-        //            db.Parent = lb;
-
-        //            DeviceList.Add(lb);
-        //        }
-        //    }
-        //}
-
         ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
 
         public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
+                Devices.Clear();
+                DeviceList.Clear();
+            }
+
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                DeviceList.Clear();
+            }
 
             if (e.NewItems != null)
             {

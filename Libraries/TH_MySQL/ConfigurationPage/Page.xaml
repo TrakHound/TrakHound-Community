@@ -8,6 +8,7 @@
              
              mc:Ignorable="d" 
              >
+    
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,13 +24,13 @@
             <StackPanel Orientation="Horizontal">
 
                 <!--CheckBox-->
-                <CheckBox x:Name="trakhoundserver_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="trakhoundserver_CHK_Checked" Unchecked="trakhoundserver_CHK_Unchecked"/>
+                <CheckBox x:Name="trakhoundserver_CHK" Width="50" Height="50" Cursor="Hand" Checked="trakhoundserver_CHK_Checked" Unchecked="trakhoundserver_CHK_Unchecked"/>
 
                 <!--Title and Help-->
                 <StackPanel Orientation="Horizontal">
 
                     <!--Title-->
-                    <TextBlock Text="Use TrakHound Cloud Server" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                    <TextBlock Text="Use TrakHound Cloud Server" Foreground="{StaticResource Foreground_Normal}" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                     <!--Help-->
                     <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -52,10 +53,11 @@
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
                                 <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Trigger.EnterActions>
+                                        <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                        <!--<Trigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
                                                     <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -76,7 +78,7 @@
                                                     </ColorAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
-                                        </Trigger.ExitActions>
+                                        </Trigger.ExitActions>-->
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -232,13 +234,13 @@
                         <StackPanel Orientation="Horizontal">
 
                             <!--CheckBox-->
-                            <CheckBox x:Name="usephp_CHK" Width="50" Height="50" Style="{StaticResource Android_CheckBoxStyle}" Cursor="Hand" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                            <CheckBox x:Name="usephp_CHK" Width="50" Height="50" Cursor="Hand" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
                             <!--Title and Help-->
                             <StackPanel Orientation="Horizontal">
 
                                 <!--Title-->
-                                <TextBlock Text="Use PHP for Connection" Foreground="#333" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                                <TextBlock Text="Use PHP for Connection" Foreground="{StaticResource Foreground_Normal}" Margin="10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
                                 <!--Help-->
                                 <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -261,10 +263,11 @@
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
                                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Fill" Value="#0080ff"/>
+                                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <Trigger.EnterActions>
+                                                    <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
+                                                    <!--<Trigger.EnterActions>
                                                         <BeginStoryboard>
                                                             <Storyboard>
                                                                 <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
@@ -285,7 +288,7 @@
                                                                 </ColorAnimation>
                                                             </Storyboard>
                                                         </BeginStoryboard>
-                                                    </Trigger.ExitActions>
+                                                    </Trigger.ExitActions>-->
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>

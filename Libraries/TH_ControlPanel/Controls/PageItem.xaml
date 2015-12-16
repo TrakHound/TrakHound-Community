@@ -7,6 +7,14 @@
                 
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Background="#00000000">
 
         <!--Normal Style-->
@@ -37,8 +45,8 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="#eeffffff"/>
-                            <Style.Triggers>
+                            <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <!--<Style.Triggers>
                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
@@ -87,7 +95,7 @@
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
                                 </DataTrigger>
-                            </Style.Triggers>
+                            </Style.Triggers>-->
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
@@ -96,8 +104,8 @@
                 <TextBlock Grid.Row="1" Text="{Binding Text}" FontSize="10pt" TextAlignment="Center" TextWrapping="Wrap" Margin="10,0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#eeffffff"/>
-                            <Style.Triggers>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <!--<Style.Triggers>
                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
@@ -146,7 +154,7 @@
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
                                 </DataTrigger>
-                            </Style.Triggers>
+                            </Style.Triggers>-->
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
@@ -174,7 +182,8 @@
                         <Setter Property="Background" Value="#00000000"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
-                                <DataTrigger.EnterActions>
+                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#100080ff">
@@ -195,7 +204,7 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -216,10 +225,11 @@
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
                                 <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#333"/>
+                                <Setter Property="Fill" Value="{StaticResource Foreground_Normal}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
-                                        <DataTrigger.EnterActions>
+                                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                        <!--<DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
                                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
@@ -240,7 +250,7 @@
                                                     </ColorAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
+                                        </DataTrigger.ExitActions>-->
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -251,10 +261,11 @@
                     <TextBlock Grid.Row="1" Text="{Binding Text}" FontSize="10pt" TextAlignment="Center" TextWrapping="Wrap">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#333"/>
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
-                                        <DataTrigger.EnterActions>
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                        <!--<DataTrigger.EnterActions>
                                             <BeginStoryboard>
                                                 <Storyboard>
                                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Foreground.Color" To="#0080ff">
@@ -275,7 +286,7 @@
                                                     </ColorAnimation>
                                                 </Storyboard>
                                             </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
+                                        </DataTrigger.ExitActions>-->
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

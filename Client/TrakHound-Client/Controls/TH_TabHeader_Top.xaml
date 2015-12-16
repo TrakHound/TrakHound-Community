@@ -108,7 +108,7 @@
             </Rectangle>
             
             <!--Left Corner-->
-            <Path Fill="#0080ff">
+            <Path Fill="{StaticResource Accent_Normal}">
                 <Path.Style>
                     <Style TargetType="Path">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -145,10 +145,10 @@
                         <Setter Property="Background" Value="#00000000"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                <Setter Property="Background" Value="#100080ff"/>
+                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <Setter Property="Background" Value="#0080ff"/>
+                                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -173,16 +173,16 @@
                                 <Style TargetType="Rectangle">
                                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                                     <Setter Property="Visibility" Value="Visible"/>
-                                    <Setter Property="Fill" Value="#333"/>
+                                    <Setter Property="Fill" Value="{StaticResource Foreground_Normal}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                            <Setter Property="Fill" Value="#FF0080ff"/>
+                                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                            <Setter Property="Fill" Value="#fff"/>
+                                            <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -198,13 +198,13 @@
                         >
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#333"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                            <Setter Property="Foreground" Value="#FF0080ff"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                            <Setter Property="Foreground" Value="#fff"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -220,7 +220,7 @@
                                 <Setter Property="Background" Value="#00000000" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#aa0060ff"/>
+                                        <Setter Property="Background" Value="{StaticResource Accent_Dark}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -242,13 +242,13 @@
                                         <Setter Property="Fill" Value="#00000000"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                <Setter Property="Fill" Value="#0080ff"/>
+                                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
-                                                <Setter Property="Fill" Value="#fff"/>
+                                                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                <Setter Property="Fill" Value="#fff"/>
+                                                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -269,13 +269,13 @@
                                         <Setter Property="Fill" Value="#00000000"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                                <Setter Property="Fill" Value="#0080ff"/>
+                                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="true">
-                                                <Setter Property="Fill" Value="#fff"/>
+                                                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                <Setter Property="Fill" Value="#fff"/>
+                                                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -311,7 +311,7 @@
             </Rectangle>
 
             <!--Right Corner-->
-            <Path Fill="#0080ff" Grid.Column="2">
+            <Path Fill="{StaticResource Accent_Normal}" Grid.Column="2">
                 <Path.Style>
                     <Style TargetType="Path">
                         <Setter Property="Visibility" Value="Collapsed"/>

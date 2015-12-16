@@ -11,18 +11,25 @@
              Height="80" d:DesignWidth="300">
     
     <UserControl.Resources>
-        
-        <Style TargetType="TextBlock">
-            <Setter Property="Visibility" Value="Visible"/>
-            
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                </DataTrigger> 
-            </Style.Triggers>
-            
-        </Style>
-        
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="Visibility" Value="Visible"/>
+
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+
+            </Style>
+
+        </ResourceDictionary>
+
     </UserControl.Resources>
     
     <Grid x:Name="Main_GRID" Cursor="Hand">
@@ -36,7 +43,7 @@
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="#110080ff"/>
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -54,22 +61,22 @@
                 <Image Source="{Binding Image}" Margin="10,2" Height="30" MaxWidth="60" />
 
                 <!--Manufacturer-->
-                <TextBlock Text="{Binding Manufacturer}" FontSize="12pt" Foreground="#333" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Manufacturer}" FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center"/>
                 
                 <StackPanel Margin="15,0" VerticalAlignment="Center">
 
                     <!--Model-->
-                    <TextBlock Text="{Binding Model}" FontSize="8pt" Foreground="#666666" Margin="0,2"/>
+                    <TextBlock Text="{Binding Model}" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
                     <!--Controller-->
-                    <TextBlock Text="{Binding Controller}" FontSize="8pt" Foreground="#666666" Margin="0,2"/>
+                    <TextBlock Text="{Binding Controller}" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
                 </StackPanel>
 
             </StackPanel>
 
             <!--Description-->
-            <TextBlock Grid.Row="1" Text="{Binding Description}" Margin="10" FontSize="8pt" Foreground="#666666" TextWrapping="Wrap">
+            <TextBlock Grid.Row="1" Text="{Binding Description}" Margin="10" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap">
                 <TextBlock.ToolTip>
                     <StackPanel Width="400">
                         <TextBlock Text="Description" FontWeight="Bold"/>
@@ -138,7 +145,7 @@
                     </Style>
                 </Grid.Style>
 
-                <loadinganimation:Wheel Height="30" Width="30" Foreground="#0080ff"/>
+                <loadinganimation:Wheel Height="30" Width="30" Foreground="{StaticResource Accent_Normal}"/>
                 
             </Grid>
 

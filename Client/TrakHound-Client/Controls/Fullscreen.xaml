@@ -9,7 +9,7 @@
         
         Closing="Window_Closing" WindowStyle="None"
         
-        Background="#0080ff"
+        Background="{StaticResource Accent_Normal}"
         
         PreviewKeyDown="Window_PreviewKeyDown"
         

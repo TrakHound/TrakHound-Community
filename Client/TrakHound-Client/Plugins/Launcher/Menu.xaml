@@ -21,6 +21,14 @@
              
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID" >
         <Grid.Style>
@@ -129,7 +137,7 @@
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="#eee" BorderBrush="#aaa" BorderThickness="1">
+            <Border Grid.Column="0" Background="{StaticResource Window_Background}" BorderBrush="#aaa" BorderThickness="1">
 
                 <Grid>
                     
@@ -140,7 +148,7 @@
                     </Grid.RowDefinitions>
 
                     <!--Top Label-->
-                    <TextBlock Text="Plugins" Foreground="#888" HorizontalAlignment="Left" FontSize="16" Margin="10"/>
+                    <TextBlock Text="Plugins" Foreground="{StaticResource Foreground_Light}" HorizontalAlignment="Left" FontSize="16" Margin="10"/>
 
                     <!--Plugins List-->
                     <ItemsControl Grid.Row="1" ItemsSource="{Binding Plugins}"/>

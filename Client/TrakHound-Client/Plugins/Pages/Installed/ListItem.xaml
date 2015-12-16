@@ -25,11 +25,11 @@
         <Border.Style>
             <Style TargetType="Border">
                 <Setter Property="Background" Value="#00000000"/>
-                <Setter Property="BorderBrush" Value="#888"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Foreground_Light}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="#110080ff"/>
-                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -150,7 +150,7 @@
                 <!--Image-->
                 <Grid Height="50" VerticalAlignment="Top">
 
-                    <Rectangle Height="25" Width="25" Fill="#333" VerticalAlignment="Center">
+                    <Rectangle Height="25" Width="25" Fill="{StaticResource Foreground_Normal}" VerticalAlignment="Center">
                         <Rectangle.Resources>
                             <ImageBrush x:Key="IMG" ImageSource="{Binding PlugIn_Image, ElementName=listitem}" Stretch="Uniform" />
                         </Rectangle.Resources>
@@ -173,10 +173,10 @@
                     </Grid.RowDefinitions>
 
                     <!--Title-->
-                    <TextBlock Text="{Binding PlugIn_Title, ElementName=listitem}" Foreground="#333" FontSize="14pt" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding PlugIn_Title, ElementName=listitem}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center"/>
 
                     <!--Description-->
-                    <TextBlock Grid.Row="1" Margin="0,5" Text="{Binding PlugIn_Description, ElementName=listitem}" Foreground="#666666" FontSize="10pt" MaxWidth="400" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Row="1" Margin="0,5" Text="{Binding PlugIn_Description, ElementName=listitem}" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" MaxWidth="400" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
                 </Grid>     
 
@@ -188,10 +188,10 @@
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock Grid.Column="0" Text="Enabled" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="#333" />
 
-                <CheckBox Grid.Column="1" Style="{StaticResource Android_CheckBoxStyle}" IsChecked="{Binding PlugIn_Enabled, ElementName=listitem}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40" Cursor="Hand"/>
+                <TextBlock Grid.Column="0" Text="Enabled" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
+
+                <CheckBox Grid.Column="1" IsChecked="{Binding PlugIn_Enabled, ElementName=listitem}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40" Cursor="Hand"/>
 
             </Grid>
 

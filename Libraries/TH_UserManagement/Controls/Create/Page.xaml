@@ -10,8 +10,16 @@
              Loaded="UserControl_Loaded"
              
              mc:Ignorable="d" 
-             d:DesignWidth="800" Background="#eee"
+             d:DesignWidth="800"
              >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         
@@ -149,7 +157,7 @@
                             <!--Choose your username-->
                             <StackPanel Margin="0,20,0,10">
                                 <TextBlock Text="Username" Foreground="#aaa" FontSize="10pt" Margin="0,0,0,5"/>
-                                <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="#0080ff"/>
+                                <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}"/>
                             </StackPanel>
 
                             <!--Password-->
@@ -465,7 +473,7 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
 
                             <!--Loading Wheel-->
-                            <loadinganimation:Wheel Height="30" Width="30" Foreground="#0080ff" Margin="0,0,20,0"/>
+                            <loadinganimation:Wheel Height="30" Width="30" Foreground="{StaticResource Accent_Normal}" Margin="0,0,20,0"/>
                             
                             <!--Saving Text-->
                             <StackPanel>

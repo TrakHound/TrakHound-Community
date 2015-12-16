@@ -14,14 +14,23 @@
              Width="100"
              
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Cursor="Hand">
         <Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Trigger.EnterActions>
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <!--<Trigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#100080ff">
@@ -42,7 +51,7 @@
                                     </ColorAnimation>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </Trigger.ExitActions>
+                        </Trigger.ExitActions>-->
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -63,10 +72,11 @@
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Fill" Value="#333"/>
+                        <Setter Property="Fill" Value="{StaticResource Foreground_Normal}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
-                                <DataTrigger.EnterActions>
+                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
@@ -87,10 +97,11 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <DataTrigger.EnterActions>
+                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
@@ -111,7 +122,7 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -122,10 +133,11 @@
             <TextBlock Grid.Row="1" Text="{Binding Text}" FontSize="10pt" TextAlignment="Center" TextWrapping="Wrap" Margin="5,0">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="#333"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
-                                <DataTrigger.EnterActions>
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#0080ff">
@@ -146,10 +158,11 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <DataTrigger.EnterActions>
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#0080ff">
@@ -170,7 +183,7 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>
+                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

@@ -30,13 +30,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="#0080ff" BorderBrush="#20000000" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" Background="{StaticResource Accent_Normal}" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="0,0,1,0">
             
             <StackPanel x:Name="Pages_STACK" Margin="0,40" />
             
         </Border>
 
-        <Border Grid.Column="1" Background="#eee">
+        <Border Grid.Column="1" Background="{StaticResource Window_Background}">
 
             <Grid x:Name="Content_GRID" />
             

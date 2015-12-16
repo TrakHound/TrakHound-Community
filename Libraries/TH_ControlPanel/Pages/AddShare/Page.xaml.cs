@@ -61,16 +61,16 @@ namespace TH_DeviceManager.Pages.AddShare
                 {
                     Description_Settings d = config.Description;
 
-                    manufacturer_TXT.Text = d.Manufacturer;
-                    devicetype_TXT.Text = d.Device_Type; ;
-                    model_TXT.Text = d.Model;
-                    controller_TXT.Text = d.Controller;
+                    Manufacturer = d.Manufacturer;
+                    Type = d.Device_Type;
+                    Model = d.Model;
+                    Controller = d.Model;
                 }
             }
 
             if (currentuser != null)
             {
-                author_TXT.Text = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+                Author = TH_Global.Formatting.UppercaseFirst(currentuser.username);
 
                 imageFileName = currentuser.image_url;
 
@@ -88,112 +88,116 @@ namespace TH_DeviceManager.Pages.AddShare
             DependencyProperty.Register("Loading", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
 
-        private void Help_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (sender.GetType() == typeof(Rectangle))
-            {
-                Rectangle rect = (Rectangle)sender;
+        #region "Properties"
 
-                if (rect.ToolTip != null)
-                {
-                    if (rect.ToolTip.GetType() == typeof(ToolTip))
-                    {
-                        ToolTip tt = (ToolTip)rect.ToolTip;
-                        tt.IsOpen = true;
-                    }
-                }
-            }
+        public string Description
+        {
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
         }
 
-        private void Help_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (sender.GetType() == typeof(Rectangle))
-            {
-                Rectangle rect = (Rectangle)sender;
+        public static readonly DependencyProperty DescriptionProperty =
+            DependencyProperty.Register("Description", typeof(string), typeof(Page), new PropertyMetadata(null));
 
-                if (rect.ToolTip != null)
-                {
-                    if (rect.ToolTip.GetType() == typeof(ToolTip))
-                    {
-                        ToolTip tt = (ToolTip)rect.ToolTip;
-                        tt.IsOpen = true;
-                    }
-                }
-            }
+
+        public string Type
+        {
+            get { return (string)GetValue(TypeProperty); }
+            set { SetValue(TypeProperty, value); }
         }
 
-        private void Help_MouseLeave(object sender, MouseEventArgs e)
-        {
-            if (sender.GetType() == typeof(Rectangle))
-            {
-                Rectangle rect = (Rectangle)sender;
+        public static readonly DependencyProperty TypeProperty =
+            DependencyProperty.Register("Type", typeof(string), typeof(Page), new PropertyMetadata(null));
 
-                if (rect.ToolTip != null)
-                {
-                    if (rect.ToolTip.GetType() == typeof(ToolTip))
-                    {
-                        ToolTip tt = (ToolTip)rect.ToolTip;
-                        tt.IsOpen = false;
-                    }
-                }
-            }
+
+        public string Manufacturer
+        {
+            get { return (string)GetValue(ManufacturerProperty); }
+            set { SetValue(ManufacturerProperty, value); }
         }
 
-        private void description_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        public static readonly DependencyProperty ManufacturerProperty =
+            DependencyProperty.Register("Manufacturer", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Model
+        {
+            get { return (string)GetValue(ModelProperty); }
+            set { SetValue(ModelProperty, value); }
+        }
+
+        public static readonly DependencyProperty ModelProperty =
+            DependencyProperty.Register("Model", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+        
+        public string Controller
+        {
+            get { return (string)GetValue(ControllerProperty); }
+            set { SetValue(ControllerProperty, value); }
+        }
+
+        public static readonly DependencyProperty ControllerProperty =
+            DependencyProperty.Register("Controller", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Author
+        {
+            get { return (string)GetValue(AuthorProperty); }
+            set { SetValue(AuthorProperty, value); }
+        }
+
+        public static readonly DependencyProperty AuthorProperty =
+            DependencyProperty.Register("Author", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Version
+        {
+            get { return (string)GetValue(VersionProperty); }
+            set { SetValue(VersionProperty, value); }
+        }
+
+        public static readonly DependencyProperty VersionProperty =
+            DependencyProperty.Register("Version", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Tags
+        {
+            get { return (string)GetValue(TagsProperty); }
+            set { SetValue(TagsProperty, value); }
+        }
+
+        public static readonly DependencyProperty TagsProperty =
+            DependencyProperty.Register("Tags", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Dependencies
+        {
+            get { return (string)GetValue(DependenciesProperty); }
+            set { SetValue(DependenciesProperty, value); }
+        }
+
+        public static readonly DependencyProperty DependenciesProperty =
+            DependencyProperty.Register("Dependencies", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+        #endregion
+
+
+        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }
 
-        private void devicetype_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void manufacturer_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void model_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void controller_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void author_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void version_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void tags_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void dependencies_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         private void Share_Clicked(TH_WPF.Button_01 bt)
         {
             Shared.SharedListItem item = new Shared.SharedListItem();
 
-            item.description = description_TXT.Text;
-            item.device_type = devicetype_TXT.Text;
-            item.manufacturer = manufacturer_TXT.Text;
-            item.model = model_TXT.Text;
-            item.controller = controller_TXT.Text;
-            item.author = author_TXT.Text;
+            item.description = Description;
+            item.device_type = Type;
+            item.manufacturer = Manufacturer;
+            item.model = Model;
+            item.controller = Controller;
+            item.author = Author;
 
             item.upload_date = DateTime.Now;
 
@@ -201,10 +205,10 @@ namespace TH_DeviceManager.Pages.AddShare
 
             item.image_url = imageFileName;
 
-            item.version = version_TXT.Text;
-            item.tags = tags_TXT.Text;
-            item.dependencies = dependencies_TXT.Text;
-            
+            item.version = Version;
+            item.tags = Tags;
+            item.dependencies = Dependencies;
+
             if (currentuser != null && configuration != null && configurationtable != null)
             {
                 item.id = configuration.UniqueId;
@@ -282,8 +286,6 @@ namespace TH_DeviceManager.Pages.AddShare
             {
                 Share_Info info = (Share_Info)o;
 
-                //Shared.SharedListItem item = (Shared.SharedListItem)o;
-
                 string tablename = "shared_" + String_Functions.RandomString(20);
 
                 // Save Shared Tablename
@@ -298,13 +300,6 @@ namespace TH_DeviceManager.Pages.AddShare
        
         void Share_Finished(bool success)
         {
-            if (devicemanager != null)
-            {
-                //devicemanager.ConfigurationTable = configurationtable;
-
-                //devicemanager.Save(configurationtable);
-            }
-
             Loading = false;
         }
 

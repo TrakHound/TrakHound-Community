@@ -66,19 +66,19 @@ namespace TH_InstanceTable
 
             CurrentData = returnData;
 
-            //InstanceData instanceData = ProcessSingleInstance(returnData);
+            InstanceData instanceData = ProcessSingleInstance(returnData);
 
-            //CurrentInstanceData cid = new CurrentInstanceData();
-            //cid.currentData = returnData;
-            //cid.data = instanceData;
+            CurrentInstanceData cid = new CurrentInstanceData();
+            cid.currentData = returnData;
+            cid.data = instanceData;
 
-            //// Send InstanceData object to other Plugins --
-            //DataEvent_Data de_d = new DataEvent_Data();
-            //de_d.id = "CurrentInstanceData";
-            //de_d.data01 = config;
-            //de_d.data02 = cid;
+            // Send InstanceData object to other Plugins --
+            DataEvent_Data de_d = new DataEvent_Data();
+            de_d.id = "CurrentInstanceData";
+            de_d.data01 = config;
+            de_d.data02 = cid;
 
-            //if (DataEvent != null) DataEvent(de_d);
+            if (DataEvent != null) DataEvent(de_d);
             // --------------------------------------------
           
         }

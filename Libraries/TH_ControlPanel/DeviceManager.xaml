@@ -11,6 +11,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -18,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <!--Tool Bar-->
-        <Border Grid.Row="1" Background="#0080ff" BorderBrush="#0070ff" BorderThickness="0,1,0,0">
+        <Border Grid.Row="1" Background="{StaticResource Accent_Normal}" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="0,1,0,0">
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="Height" Value="0"/>
@@ -96,7 +104,7 @@
                     </Grid>
 
                     <!--Saving Animation-->
-                    <Grid Background="#0080ff">
+                    <Grid Background="{StaticResource Accent_Normal}">
                         <Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -111,10 +119,10 @@
                         <StackPanel Orientation="Horizontal" Background="#33ffffff">
 
                             <!--Animation-->
-                            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20" Foreground="#fff" Margin="5,0" />
+                            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20" Foreground="{StaticResource Foreground_Opposite_Normal}" Margin="5,0" />
 
                             <!--Text-->
-                            <TextBlock Text="Saving.." Foreground="#fff" FontSize="10pt" VerticalAlignment="Center" Margin="5,0,10,0"/>
+                            <TextBlock Text="Saving.." Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="10pt" VerticalAlignment="Center" Margin="5,0,10,0"/>
 
                         </StackPanel>
 
@@ -134,7 +142,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Page Content-->
-            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="#eee" CanContentScroll="True">
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True" Background="{StaticResource Window_Background}">
 
                 <Grid>
 
@@ -142,7 +150,7 @@
                     <ContentControl Margin="40,40,20,20" Content="{Binding CurrentPage}"/>
 
                     <!--No Device Selected Text-->
-                    <TextBlock FontSize="14pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -229,12 +237,12 @@
                     </Style>
                 </Grid.Style>
 
-                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="#0080ff" />
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="{StaticResource Accent_Normal}" />
 
             </Grid>
 
             <!--Side Bar-->
-            <Border Background="#0080ff" BorderBrush="#0070ff" BorderThickness="0,0,1,0" Margin="0,0,0,-1">
+            <Border Background="{StaticResource Accent_Normal}" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="0,0,1,0" Margin="0,0,0,-1">
 
                 <StackPanel Orientation="Horizontal">
 
@@ -257,7 +265,7 @@
                             <th_wpf:Button_02 ToolTip="Refresh the Device List" Image="Resources/Refresh_01.png" VerticalAlignment="Center" Clicked="RefreshDevices_Clicked"/>
 
                             <!--Title-->
-                            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="Devices" FontSize="12pt" Foreground="#aaffffff"  Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="Devices" FontSize="12pt" Foreground="{StaticResource Foreground_Light}"  Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                             <!--Device Index Up / Down Buttons-->
                             <!--<StackPanel Grid.Column="2" VerticalAlignment="Center">
@@ -403,7 +411,7 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#fff" Margin="0,20"/>
+                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Normal}" Margin="0,20"/>
 
                                 </Grid>
 
@@ -456,8 +464,8 @@
                                             <Rectangle.Style>
                                                 <Style TargetType="Rectangle">
                                                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                                    <Setter Property="Fill" Value="#eeffffff"/>
-                                                    <Style.Triggers>
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <!--<Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsMouseOver, ElementName=AddDevice_GRID}" Value="true">
                                                             <DataTrigger.EnterActions>
                                                                 <BeginStoryboard>
@@ -506,7 +514,7 @@
                                                                 </BeginStoryboard>
                                                             </DataTrigger.ExitActions>
                                                         </DataTrigger>
-                                                    </Style.Triggers>
+                                                    </Style.Triggers>-->
                                                 </Style>
                                             </Rectangle.Style>
                                         </Rectangle>
@@ -515,8 +523,8 @@
                                         <TextBlock Grid.Column="1" Margin="10,0" Text="Add Device" FontSize="10pt"  VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="#eeffffff"/>
-                                                    <Style.Triggers>
+                                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <!--<Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsMouseOver, ElementName=AddDevice_GRID}" Value="true">
                                                             <DataTrigger.EnterActions>
                                                                 <BeginStoryboard>
@@ -565,7 +573,7 @@
                                                                 </BeginStoryboard>
                                                             </DataTrigger.ExitActions>
                                                         </DataTrigger>
-                                                    </Style.Triggers>
+                                                    </Style.Triggers>-->
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
@@ -624,7 +632,7 @@
 
                             <Grid Height="60" Margin="0,10,0,0">
 
-                                <TextBlock Text="Pages" FontSize="12pt" Foreground="#aaffffff"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="Pages" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                             </Grid>
 
@@ -649,7 +657,7 @@
         </Grid>
 
         <!--Not Logged in Panel-->
-        <Grid Background="#eee">
+        <Grid Background="{StaticResource Window_Background}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -661,7 +669,7 @@
                 </Style>
             </Grid.Style>
 
-            <TextBlock FontSize="18pt" Foreground="#888" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">        
+            <TextBlock FontSize="18pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">        
                 Not Logged In <LineBreak/>
                 Click the 'Login' button above to login
             </TextBlock>

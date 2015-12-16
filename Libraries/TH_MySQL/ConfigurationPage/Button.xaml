@@ -8,7 +8,15 @@
              
              mc:Ignorable="d" 
              MinWidth="200">
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         
         <StackPanel Orientation="Horizontal">
@@ -17,7 +25,7 @@
             <TextBlock Text="MySQL" FontSize="14pt" Margin="0,0,10,0">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="#eeffffff"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
@@ -29,7 +37,7 @@
                 <TextBlock Text="Database Name" VerticalAlignment="Center" FontSize="8pt">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#66ffffff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
@@ -38,7 +46,7 @@
                 <TextBlock Text="{Binding DatabaseName}" FontSize="12pt" Margin="10,0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#eeffffff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
@@ -52,7 +60,7 @@
                 <TextBlock Text="Server" VerticalAlignment="Center" FontSize="8pt">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#66ffffff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
@@ -61,7 +69,7 @@
                 <TextBlock Text="{Binding Server}" FontSize="12pt" Margin="10,0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#eeffffff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>

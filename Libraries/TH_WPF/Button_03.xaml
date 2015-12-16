@@ -8,6 +8,14 @@
              MinHeight="15"
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Border x:Name="BD" CornerRadius="0" PreviewMouseDown="Border_PreviewMouseDown" Background="#00000000">
 
         <!--<Border.Style>
@@ -97,7 +105,8 @@
                             <Setter Property="Fill" Value="#888"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
-                                    <DataTrigger.EnterActions>
+                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                    <!--<DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
@@ -118,10 +127,11 @@
                                                 </ColorAnimation>
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
+                                    </DataTrigger.ExitActions>-->
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                    <DataTrigger.EnterActions>
+                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                    <!--<DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
@@ -142,7 +152,7 @@
                                                 </ColorAnimation>
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
+                                    </DataTrigger.ExitActions>-->
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

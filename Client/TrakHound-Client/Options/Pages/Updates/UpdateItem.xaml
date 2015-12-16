@@ -21,8 +21,8 @@
                 <Setter Property="BorderBrush" Value="#ccc"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="#110080ff"/>
-                        <Setter Property="BorderBrush" Value="#0080ff"/>
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -36,7 +36,7 @@
             </Grid.ColumnDefinitions>
 
             <!--Plugin Image-->
-            <Rectangle Height="30" Width="30" Fill="{StaticResource DarkText}" Margin="10,0,20,0">
+            <Rectangle Height="30" Width="30" Fill="{StaticResource Foreground_Normal}" Margin="10,0,20,0">
                 <Rectangle.Resources>
                     <ImageBrush x:Key="IMG" ImageSource="{Binding PluginImage}" Stretch="Uniform" />
                 </Rectangle.Resources>
@@ -51,19 +51,19 @@
             <StackPanel Grid.Column="1">
 
                 <!--Build Version-->
-                <TextBlock Text="{Binding PluginVersion}" FontSize="12" Foreground="{StaticResource DarkText}" Margin="0,5,0,0"/>
+                <TextBlock Text="{Binding PluginVersion}" FontSize="12" Foreground="{StaticResource Foreground_Normal}" Margin="0,5,0,0"/>
 
                 <!--Plugin Title-->
-                <TextBlock Text="{Binding PluginTitle}" FontSize="18" Margin="0,2,0,2" Foreground="{StaticResource DarkText}"/>
+                <TextBlock Text="{Binding PluginTitle}" FontSize="18" Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}"/>
 
                 <!--Plugin Author-->
-                <TextBlock FontSize="10" Margin="0,0,0,2">
-                    <Run Text="Author :" Foreground="{StaticResource VeryLightText}"/>
-                    <Run Text="{Binding PluginAuthor}" Foreground="{StaticResource LightText}"/>
+                <TextBlock FontSize="10" Margin="0,0,0,2" Foreground="{StaticResource Foreground_Light}">
+                    <Run Text="Author :" />
+                    <Run Text="{Binding PluginAuthor}" />
                 </TextBlock>
 
                 <!--Plugin Author Info (Copyright info)-->
-                <TextBlock Text="{Binding PluginAuthorInfo}" Margin="0,0,0,5" FontSize="8" Foreground="{StaticResource LightText}" />
+                <TextBlock Text="{Binding PluginAuthorInfo}" Margin="0,0,0,5" FontSize="8" Foreground="{StaticResource Foreground_Light}" />
 
             </StackPanel>
 

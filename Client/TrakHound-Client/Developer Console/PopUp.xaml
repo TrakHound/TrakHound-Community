@@ -17,6 +17,14 @@
              Background="#00000000"
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.Resources>
             <GridLength x:Key="ShadowWidth">0</GridLength>
@@ -71,7 +79,7 @@
         </Grid>
 
         <!--Console Log-->
-        <Grid Grid.Row="1" Background="#0080ff">
+        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>

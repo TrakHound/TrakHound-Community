@@ -9,6 +9,7 @@ F:\feenux\TrakHound\TH_Libraries\TH_Styles\obj\Debug\TH_Styles.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\bin\Debug\TH_Styles.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\bin\Debug\TH_Styles.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\Styles\CheckBoxes.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\Styles\Colors.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\Styles\ComboBox2.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\Styles\ComboBox1.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\Styles\ComboBox3.baml

@@ -11,6 +11,7 @@
              
              xmlns:controls="clr-namespace:TrakHound_Client.Controls"
              xmlns:local="clr-namespace:TrakHound_Client.Main_Menu"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
 
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="200"
@@ -19,6 +20,14 @@
              VerticalAlignment="Top"
              
              >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID">
@@ -133,7 +142,7 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Border Grid.Column="1" Background="#eee" BorderBrush="#aaa" BorderThickness="1">
+            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="#aaa" BorderThickness="1">
 
                 <Grid>
                     <Grid.RowDefinitions>
@@ -144,7 +153,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     
-                    <!--Zoom Controls-->
+                    <!--Zoom Controls--><!--
                     <Grid Grid.Row="0" Height="35" Visibility="Collapsed">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*"/>
@@ -154,7 +163,7 @@
                             <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
                         
-                        <!--Zoom Out Button-->
+                        --><!--Zoom Out Button--><!--
                         <Grid Grid.Column="0" x:Name="ZoomOut_GRID" PreviewMouseDown="Zoom_Out_Click" ToolTip="Zoom Out" Cursor="Hand">
                             <Grid.Style>
                                 <Style TargetType="Grid">
@@ -224,16 +233,16 @@
                             
                         </Grid>
                         
-                        <!--Separator-->
+                        --><!--Separator--><!--
                         <Rectangle Grid.Column="1" Width="1" Margin="0,5" Fill="#22000000"/>
                         
-                        <!--Zoom Level Display-->
+                        --><!--Zoom Level Display--><!--
                         <TextBlock Grid.Column="2" Text="{Binding ZoomLevelDisplay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                        <!--Separator-->
+                        --><!--Separator--><!--
                         <Rectangle Grid.Column="3" Width="1" Margin="0,5" Fill="#22000000"/>
                         
-                        <!--Zoom In Button-->
+                        --><!--Zoom In Button--><!--
                         <Grid Grid.Column="4" x:Name="ZoomIn_GRID" PreviewMouseDown="Zoom_In_Click" ToolTip="Zoom In" Cursor="Hand">
                             <Grid.Style>
                                 <Style TargetType="Grid">
@@ -303,10 +312,10 @@
 
                         </Grid>
                         
-                    </Grid>
+                    </Grid>-->
                     
                     <!--Seperator-->
-                    <Rectangle Grid.Row="1" Height="1" Margin="5,0" Fill="#22000000" Visibility="Collapsed"/>
+                    <!--<Rectangle Grid.Row="1" Height="1" Margin="5,0" Fill="#22000000" Visibility="Collapsed"/>-->
                     
                     <!--MenuItem List-->
                     <ItemsControl Grid.Row="2" ItemsSource="{Binding MenuItems}" HorizontalAlignment="Center" Margin="0,10,0,0">
@@ -329,7 +338,7 @@
                     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
 
                         <!--About Button-->
-                        <controls:TH_Button Height="40" Width="40" Clicked="About_Clicked" Image="/TrakHound-Client;component/Resources/About_01.png" ToolTip="About TrakHound Client"/>
+                        <th_wpf:Button_01 Height="40" Width="40" Clicked="About_Clicked" Image="/TrakHound-Client;component/Resources/About_01.png" ToolTip="About TrakHound Client"/>
 
                         <!--Exit Button-->
                         <local:Exit_BT Clicked="Exit_BT_Clicked" ToolTip="Exit TrakHound Client" Cursor="Hand"/>

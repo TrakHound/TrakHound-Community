@@ -11,6 +11,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="800"/>
@@ -24,9 +32,9 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Add a New Device" FontSize="20pt" Foreground="#333" Margin="10,0,0,10"/>
+            <TextBlock Text="Add a New Device" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,10"/>
 
-            <TextBlock Grid.Row="1" FontSize="10pt" TextWrapping="Wrap" Foreground="#888" Margin="10,10,10,30">
+            <TextBlock Grid.Row="1" FontSize="10pt" TextWrapping="Wrap" Foreground="{StaticResource Foreground_Light}" Margin="10,10,10,30">
                 Add a new device using the catalog.
             </TextBlock>
 
@@ -44,7 +52,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Configuration Catalog" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                    <TextBlock Text="Configuration Catalog" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
                     <!--Search-->
                     <Grid Grid.Row="1">
@@ -60,13 +68,13 @@
                                 <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border BorderThickness="1" CornerRadius="1" Margin="0,5,10,5" Background="#fff">
+                            <Border BorderThickness="1" CornerRadius="1" Margin="0,5,10,5" Background="{StaticResource Window_Background}">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="BorderBrush" Value="#aaa"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=search_TXT}" Value="true">
-                                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -87,7 +95,7 @@
                                                 <Style TargetType="Rectangle">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                                    <Setter Property="Fill" Value="#aaa"/>
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Text, ElementName=search_TXT}" Value="">
                                                             <Setter Property="Visibility" Value="Visible"/>
@@ -98,7 +106,7 @@
                                         </Rectangle>
 
                                         <!--Text-->
-                                        <TextBlock Text="Search" FontStyle="Italic" FontSize="12pt" Foreground="#aaa" VerticalAlignment="Center" Margin="2,0" >
+                                        <TextBlock Text="Search" FontStyle="Italic" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -114,7 +122,7 @@
                                     </StackPanel>                                 
 
                                     <!--User Input-->
-                                    <TextBox x:Name="search_TXT" TextChanged="search_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                                    <TextBox x:Name="search_TXT" TextChanged="search_TXT_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
 
                                 </Grid>
 
@@ -127,7 +135,7 @@
                     </Grid>
 
                     <!--List-->
-                    <Border Grid.Row="2" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="300" VerticalAlignment="Stretch" Background="#fff">
+                    <Border Grid.Row="2" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="300" VerticalAlignment="Stretch" Background="{StaticResource Window_Background}">
 
                         <Grid>
 
@@ -201,7 +209,7 @@
                                     </Style>
                                 </Grid.Style>
 
-                                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="#0080ff" />
+                                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
 
                             </Grid>
 
@@ -242,7 +250,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Details" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                            <TextBlock Text="Details" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
                             <Border Grid.Row="1" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="450" VerticalAlignment="Stretch">
 
@@ -286,13 +294,13 @@
                                             <!--Author-->
                                             <StackPanel Grid.Column="1">
 
-                                                <TextBlock Text="Author" FontSize="8pt" Foreground="#888" Margin="0,2"/>
+                                                <TextBlock Text="Author" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
-                                                <TextBlock Text="{Binding Details_Author}" FontSize="10pt" FontWeight="Bold" Foreground="#0080ff" Margin="0,2"/>
+                                                <TextBlock Text="{Binding Details_Author}" FontSize="10pt" FontWeight="Bold" Foreground="{StaticResource Accent_Normal}" Margin="0,2"/>
 
-                                                <TextBlock Text="Upload Date" FontSize="8pt" Foreground="#888" Margin="0,2"/>
+                                                <TextBlock Text="Upload Date" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
-                                                <TextBlock Text="{Binding Details_LastUpdated}" FontSize="8pt" Foreground="#333" Margin="0,2"/>
+                                                <TextBlock Text="{Binding Details_LastUpdated}" FontSize="8pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,2"/>
 
                                             </StackPanel>
 
@@ -312,9 +320,9 @@
                                                 </Style>
                                             </StackPanel.Style>
 
-                                            <TextBlock Text="Description" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                                            <TextBlock Text="Description" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                            <TextBlock Text="{Binding Details_Description}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Details_Description}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                         </StackPanel>
 
@@ -331,9 +339,9 @@
                                                 </Style>
                                             </StackPanel.Style>
 
-                                            <TextBlock Text="Manufacturer" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                                            <TextBlock Text="Manufacturer" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                            <TextBlock Text="{Binding Details_Manufacturer}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Details_Manufacturer}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                         </StackPanel>
 
@@ -350,9 +358,9 @@
                                                 </Style>
                                             </StackPanel.Style>
 
-                                            <TextBlock Text="Device Type" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                                            <TextBlock Text="Device Type" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                            <TextBlock Text="{Binding Details_DeviceType}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Details_DeviceType}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                         </StackPanel>
 
@@ -369,9 +377,9 @@
                                                 </Style>
                                             </StackPanel.Style>
 
-                                            <TextBlock Text="Model" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                                            <TextBlock Text="Model" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                            <TextBlock Text="{Binding Details_Model}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Details_Model}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                         </StackPanel>
 
@@ -388,9 +396,9 @@
                                                 </Style>
                                             </StackPanel.Style>
 
-                                            <TextBlock Text="Controller" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                                            <TextBlock Text="Controller" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                            <TextBlock Text="{Binding Details_Controller}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Details_Controller}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                         </StackPanel>
 
@@ -407,9 +415,9 @@
                                                 </Style>
                                             </StackPanel.Style>
 
-                                            <TextBlock Text="Dependencies" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                                            <TextBlock Text="Dependencies" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                            <TextBlock Text="{Binding Details_Dependencies}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Details_Dependencies}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                         </StackPanel>
 
@@ -426,9 +434,9 @@
                                                 </Style>
                                             </StackPanel.Style>
 
-                                            <TextBlock Text="Search Tags" FontSize="10pt" Foreground="#888" Margin="0,5"/>
+                                            <TextBlock Text="Search Tags" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                            <TextBlock Text="{Binding Details_Tags}" FontSize="10pt" Foreground="#333" Margin="0,5" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Details_Tags}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                         </StackPanel>
 

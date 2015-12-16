@@ -16,7 +16,7 @@
         <TextBlock Text="Cycles" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
 
         <TextBlock Grid.Row="1" FontSize="10pt" Foreground="#888" Margin="0,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
-Use Cycles to track machine programs or sequences. 
+            Use Cycles to track machine programs or sequences. 
             Uses a Generated Event with two values (Cycle Started and Cycle Stopped). 
             The cycles table records the total number of cycles ran during a shift along with average cycle time and total parts produced.
         </TextBlock>

@@ -1165,7 +1165,7 @@ namespace TrakHound_Client
 
         #region "Plugin Launcher"
 
-        private void PluginLauncher_BT_Clicked(TH_Button bt)
+        private void PluginLauncher_BT_Clicked(Button_01 bt)
         {
             Point point = bt.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
             PluginLauncher.Margin = new Thickness(0, point.Y + bt.RenderSize.Height, 0, 0);
@@ -1209,7 +1209,7 @@ namespace TrakHound_Client
 
         #region "Main Menu Button"
 
-        private void MainMenu_BT_Clicked(TH_Button bt)
+        private void MainMenu_BT_Clicked(Button_01 bt)
         {
             Point point = bt.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
             MainMenu.Margin = new Thickness(0, point.Y + bt.RenderSize.Height, 5, 0);
@@ -1913,7 +1913,6 @@ namespace TrakHound_Client
         }
 
 
-
         List<Configuration> GetConfigurations()
         {
             List<Configuration> result = new List<Configuration>();
@@ -1984,27 +1983,6 @@ namespace TrakHound_Client
             DevicesMonitor_Initialize();
         }
 
-
-
-
-        void StartMonitor(Configuration config)
-        {
-            ConfigurationMonitor monitor = new ConfigurationMonitor();
-            monitor.CurrentConfiguration = config;
-            monitor.Interval = 10000;
-            monitor.TableName = config.TableName;
-            monitor.ConfigurationChanged += monitor_ConfigurationChanged;
-
-            //monitors.Add(monitor);
-
-            monitor.Start();
-        }
-
-        void monitor_ConfigurationChanged(Configuration config)
-        {
-            Logger.Log("New Configuration Found!");
-            //LoadDevices();
-        }
 
         #region "Offline Configurations"
 

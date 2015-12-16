@@ -62,10 +62,11 @@
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#100080ff"/>
+                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="{StaticResource Accent_Hover}"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
@@ -75,11 +76,12 @@
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#200080ff"/>
@@ -92,7 +94,7 @@
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
 
                 </Style.Triggers>
@@ -100,7 +102,7 @@
 
             
             <Style x:Key="SelectionIndicator_Normal" TargetType="Rectangle">
-                <Setter Property="Fill" Value="#ccffffff"/>
+                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                 <Setter Property="Margin" Value="0,5"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MouseOver}" Value="true">
@@ -139,7 +141,7 @@
             </Style>
 
             <Style x:Key="SelectionIndicator_Alternate" TargetType="Rectangle">
-                <Setter Property="Fill" Value="#0080ff"/>
+                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                 <Setter Property="Margin" Value="0,5"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MouseOver}" Value="true">
@@ -181,7 +183,7 @@
             <ImageBrush x:Key="IMG" ImageSource="{Binding Image}" Stretch="Uniform" />
           
             <Style x:Key="Image_Normal" TargetType="Rectangle">
-                <Setter Property="Fill" Value="White"/>
+                <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                 <Style.Triggers>
@@ -192,7 +194,7 @@
             </Style>
 
             <Style x:Key="Image_Alternate" TargetType="Rectangle">
-                <Setter Property="Fill" Value="#0080ff"/>
+                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                 <Style.Triggers>
@@ -204,7 +206,7 @@
 
 
             <Style x:Key="Text_Normal" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="#fff"/>
+                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
@@ -231,7 +233,7 @@
             </Style>
 
             <Style x:Key="Text_Alternate" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="#0080ff"/>
+                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                 <Setter Property="Visibility" Value="Visible"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
@@ -240,7 +242,7 @@
                     <!--<DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </DataTrigger>-->
-                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                    <!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
@@ -255,7 +257,7 @@
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.ExitActions>
-                    </DataTrigger>
+                    </DataTrigger>-->
 
                 </Style.Triggers>
             </Style>

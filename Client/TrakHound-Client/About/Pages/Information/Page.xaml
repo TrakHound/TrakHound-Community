@@ -32,27 +32,27 @@
 
             <StackPanel Grid.Column="1">
 
-                <TextBlock Text="{Binding Build_Version}" FontSize="12" Foreground="{StaticResource DarkText}" Margin="0,0,0,0"/>
+                <TextBlock Text="{Binding Build_Version}" FontSize="12" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,0"/>
 
-                <TextBlock Margin="0,2,0,2" Foreground="{StaticResource DarkText}">
+                <TextBlock Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}">
                     <Run Text="TrakHound" FontSize="30" FontWeight="600"/>
                     <Run Text="Client" FontSize="18"/>
                 </TextBlock>
 
-                <TextBlock Text="© 2015 Feenux LLC, All Rights Reserved" FontSize="10" Foreground="{StaticResource DarkText}" />
+                <TextBlock Text="© 2015 Feenux LLC, All Rights Reserved" FontSize="10" Foreground="{StaticResource Foreground_Normal}" />
 
             </StackPanel>
 
         </Grid>
 
         <!--Separator-->
-        <Rectangle Height="0.5" Margin="5,10" Fill="{StaticResource VeryLightText}" />
+        <Rectangle Height="0.5" Margin="5,10" Fill="#aaa" />
 
         <!--Designed By-->
-        <TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource DarkText}" />
+        <TextBlock Margin="5,0" TextWrapping="Wrap" Text="TrakHound is designed by Feenux, a Manufacturing Software Solutions company." FontSize="12" Foreground="{StaticResource Foreground_Normal}" />
 
         <!--Support-->
-        <TextBlock Margin="5,10" TextWrapping="Wrap" FontSize="10" Foreground="{StaticResource DarkText}">
+        <TextBlock Margin="5,10" TextWrapping="Wrap" FontSize="10" Foreground="{StaticResource Foreground_Normal}">
             <Run Text="Help"/>
             <Run FontWeight="Bold" Text="Support"/>
             <Run Text="TrakHound by reporting any bugs, suggesting new features, or helping develop new versions yourself. TrakHound is built for the manufacturing community to use as a platform for any 'Machine to PC' application or any Machine Management needs. Please use it and enjoy it!"/>
@@ -64,10 +64,10 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
+
+            <TextBlock Text="Build Information" FontSize="12" Foreground="{StaticResource Foreground_Light}"/>
             
-            <TextBlock Text="Build Information" FontSize="12" Foreground="{StaticResource LightText}"/>
-            
-            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource VeryLightText}" BorderThickness="1" CornerRadius="2">
+            <Border Grid.Row="1" Margin="0,5" BorderBrush="#aaa" BorderThickness="1" CornerRadius="2">
 
                 <StackPanel Margin="10,10">
                     <StackPanel.Resources>
@@ -77,8 +77,8 @@
                     </StackPanel.Resources>
 
                     <TextBlock>
-                        <Run Text="Build Version : " Foreground="{StaticResource LightText}"/>
-                        <Run Text="{Binding Build_Version}" Foreground="{StaticResource DarkText}"/>
+                        <Run Text="Build Version : " Foreground="{StaticResource Foreground_Light}"/>
+                        <Run Text="{Binding Build_Version}" Foreground="{StaticResource Foreground_Normal}"/>
                     </TextBlock>
 
                 </StackPanel>
@@ -94,9 +94,9 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Usage Information" FontSize="12" Foreground="{StaticResource LightText}"/>
+            <TextBlock Text="Usage Information" FontSize="12" Foreground="{StaticResource Foreground_Light}"/>
 
-            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource VeryLightText}" BorderThickness="1" CornerRadius="2">
+            <Border Grid.Row="1" Margin="0,5" BorderBrush="#aaa" BorderThickness="1" CornerRadius="2">
 
                 <StackPanel Margin="10,10">
                     <StackPanel.Resources>
@@ -106,15 +106,15 @@
                     </StackPanel.Resources>
 
                     <TextBlock>
-                        <Run Text="Current Memory Usage : " Foreground="{StaticResource LightText}"/>
-                        <Run Text="{Binding Usage_MemoryUsed}" Foreground="{StaticResource DarkText}"/>
+                        <Run Text="Current Memory Usage : " Foreground="{StaticResource Foreground_Light}"/>
+                        <Run Text="{Binding Usage_MemoryUsed}" Foreground="{StaticResource Foreground_Normal}"/>
                     </TextBlock>
 
                     <TextBlock>
-                        <Run Text="Most Memory Used : " Foreground="{StaticResource LightText}"/>
-                        <Run Text="{Binding Usage_MostMemoryUsed_Value}" Foreground="{StaticResource DarkText}"/>
-                        <Run Text="@" Foreground="{StaticResource LightText}" FontSize="10"/>
-                        <Run Text="{Binding Usage_MostMemoryUsed_Date}" Foreground="{StaticResource LightText}" FontSize="10"/>
+                        <Run Text="Most Memory Used : " Foreground="{StaticResource Foreground_Light}"/>
+                        <Run Text="{Binding Usage_MostMemoryUsed_Value}" Foreground="{StaticResource Foreground_Normal}"/>
+                        <Run Text="@" Foreground="{StaticResource Foreground_Light}" FontSize="10"/>
+                        <Run Text="{Binding Usage_MostMemoryUsed_Date}" Foreground="{StaticResource Foreground_Light}" FontSize="10"/>
                     </TextBlock>
 
                 </StackPanel>

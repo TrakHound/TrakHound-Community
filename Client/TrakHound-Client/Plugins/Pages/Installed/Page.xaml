@@ -23,69 +23,36 @@
 
     <Grid>
         
-        <Border BorderBrush="{StaticResource LightText}">
+        <Border BorderBrush="#888">
 
-            <StackPanel>
+            <!--PlugIns-->
+            <Grid Margin="0,0,0,50">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <!--Page PlugIns-->
-                <Grid Margin="0,0,0,50">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
+                    <TextBlock Text="Plugins" FontSize="16" Margin="0,0,0,10" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center"/>
 
-                        <TextBlock Text="Page Plugins" FontSize="16" Margin="0,0,0,10" Foreground="{StaticResource LightText}" VerticalAlignment="Center"/>
-
-                        <Button Grid.Column="1" Content="Browse..." Width="100" Height="25" Margin="0,0,0,10" Click="Browse_Page_Click"/>
-
-                    </Grid>
-
-                    <StackPanel x:Name="InstalledPage_STACK" Grid.Row="1">
-                        <StackPanel.Resources>
-                            <Style TargetType="local:ListItem">
-                                <Setter Property="Margin" Value="0,5"/>
-                            </Style>
-                        </StackPanel.Resources>
-                    </StackPanel>
+                    <Button Grid.Column="1" Content="Browse..." Width="100" Height="25" Margin="0,0,0,10" Click="Browse_Page_Click"/>
 
                 </Grid>
 
-                <!--Global PlugIns-->
-                <Grid Visibility="Collapsed">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <StackPanel x:Name="InstalledPage_STACK" Grid.Row="1">
+                    <StackPanel.Resources>
+                        <Style TargetType="local:ListItem">
+                            <Setter Property="Margin" Value="0,5"/>
+                        </Style>
+                    </StackPanel.Resources>
+                </StackPanel>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="Global Plugins" FontSize="16" Margin="0,0,0,10" Foreground="{StaticResource LightText}" VerticalAlignment="Center"/>
-
-                        <Button Grid.Column="1" Content="Browse..." Width="100" Height="25" Margin="0,0,0,10" Click="Browse_Global_Click"/>
-
-                    </Grid>
-
-                    <StackPanel x:Name="InstalledGlobal_STACK" Grid.Row="1">
-                        <StackPanel.Resources>
-                            <Style TargetType="local:ListItem">
-                                <Setter Property="Margin" Value="0,5"/>
-                            </Style>
-                        </StackPanel.Resources>
-                    </StackPanel>
-
-                </Grid>
-
-            </StackPanel>
+            </Grid>
 
         </Border>
     

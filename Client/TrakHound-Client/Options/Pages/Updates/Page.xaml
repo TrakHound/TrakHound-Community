@@ -30,11 +30,11 @@
         
         <StackPanel>
 
-            <RadioButton x:Name="Auto_RADIO" Content="Automatically install updates (recommeded)" GroupName="UpdateBehavior" Style="{StaticResource TH_RadioButton_Style}" Margin="0,5" Checked="Auto_RadioButton_Checked"/>
+            <RadioButton x:Name="Auto_RADIO" Content="Automatically install updates (recommeded)" GroupName="UpdateBehavior" Margin="0,5" Checked="Auto_RadioButton_Checked"/>
 
-            <RadioButton x:Name="SemiAuto_RADIO" Content="Check for updates, but let me decide when to install them" Style="{StaticResource TH_RadioButton_Style}" GroupName="UpdateBehavior" Margin="0,5" Checked="SemiAuto_RadioButton_Checked"/>
+            <RadioButton x:Name="SemiAuto_RADIO" Content="Check for updates, but let me decide when to install them" GroupName="UpdateBehavior" Margin="0,5" Checked="SemiAuto_RadioButton_Checked"/>
 
-            <RadioButton x:Name="Manual_RADIO" Content="Never automatically check for updates" GroupName="UpdateBehavior" Style="{StaticResource TH_RadioButton_Style}" Margin="0,5" Checked="Manual_RadioButton_Checked"/>
+            <RadioButton x:Name="Manual_RADIO" Content="Never automatically check for updates" GroupName="UpdateBehavior" Margin="0,5" Checked="Manual_RadioButton_Checked"/>
 
         </StackPanel>
 
@@ -54,14 +54,14 @@
 
                 <StackPanel Grid.Column="1">
 
-                    <TextBlock Text="{Binding ClientVersion}" FontSize="14" Foreground="{StaticResource DarkText}" Margin="0,5,0,0"/>
+                    <TextBlock Text="{Binding ClientVersion}" FontSize="14" Foreground="{StaticResource Foreground_Normal}" Margin="0,5,0,0"/>
 
-                    <TextBlock Margin="0,2,0,2" Foreground="{StaticResource DarkText}">
+                    <TextBlock Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}">
                         <Run Text="TrakHound" FontSize="30" FontWeight="600"/>
                         <Run Text="Client" FontSize="18"/>
                     </TextBlock>
 
-                    <TextBlock Text="© 2015 Feenux LLC, All Rights Reserved" FontSize="8" Foreground="{StaticResource DarkText}" />
+                    <TextBlock Text="© 2015 Feenux LLC, All Rights Reserved" FontSize="8" Foreground="{StaticResource Foreground_Normal}" />
 
                 </StackPanel>
 
@@ -129,7 +129,7 @@
         
         <!--Plugins-->
 
-        <TextBlock Text="Plugins" FontSize="16" Foreground="#888"/>
+        <TextBlock Text="Plugins" FontSize="16" Foreground="{StaticResource Foreground_Light}"/>
         
         <Rectangle Fill="#aaa" Height="1" Margin="0,10,0,20"/>
 

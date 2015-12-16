@@ -30,10 +30,10 @@
             <Grid.Resources>
 
                 <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="#66ffffff"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding DeviceEnabled}" Value="true">
-                            <Setter Property="Foreground" Value="#fff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -52,7 +52,7 @@
                 <TextBlock Text="{Binding Serial}" FontSize="8pt"/>
                
                 <!--Device Id-->
-                <TextBlock Text="{Binding Id}" FontSize="16pt" Foreground="#33ffffff" VerticalAlignment="Bottom"/>
+                <TextBlock Text="{Binding Id}" FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Dark}" VerticalAlignment="Bottom"/>
                 
             </StackPanel>
 
@@ -105,7 +105,7 @@
                                 </Style>
                             </Grid.Style>
 
-                            <loadinganimation:Wheel Height="20" Width="20" Foreground="#fff"/>
+                            <loadinganimation:Wheel Height="20" Width="20" Foreground="{StaticResource Foreground_Opposite_Normal}"/>
 
                         </Grid>
                         
@@ -157,7 +157,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <TextBlock Text="Shared" Foreground="#aaffffff" FontSize="10pt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="Shared" Foreground="{StaticResource Foreground_Opposite_Light}" FontSize="10pt" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     </Grid>
 
