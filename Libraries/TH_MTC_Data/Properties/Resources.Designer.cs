@@ -64,33 +64,37 @@ namespace TH_MTC_Data.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;EventValues&gt;
         ///
-        ///  &lt;EMERGENCY_STOP&gt;
-        ///    &lt;ARMED/&gt;
-        ///    &lt;TRIGGERED/&gt;
-        ///  &lt;/EMERGENCY_STOP&gt;
-        ///
-        ///  &lt;EXECUTION&gt;
-        ///    &lt;READY/&gt;
+        ///  &lt;ACTUATOR_STATE&gt;
         ///    &lt;ACTIVE/&gt;
-        ///    &lt;INTERRUPTED/&gt;
-        ///    &lt;FEED_HOLD/&gt;
+        ///    &lt;INACTIVE/&gt;
+        ///  &lt;/ACTUATOR_STATE&gt;
+        ///  
+        ///  &lt;AVAILABILITY&gt;
+        ///    &lt;AVAILABLE/&gt;
+        ///    &lt;UNAVAILABLE/&gt;
+        ///  &lt;/AVAILABILITY&gt;
+        ///
+        ///  &lt;AXIS_COUPLING&gt;
+        ///    &lt;TANDEM/&gt;
+        ///    &lt;SYNCHRONOUS/&gt;
+        ///    &lt;MASTER/&gt;
+        ///    &lt;SLAVE/&gt;
+        ///  &lt;/AXIS_COUPLING&gt;
+        ///
+        ///  &lt;AXIS_INTERLOCK&gt;
+        ///    &lt;ACTIVE/&gt;
+        ///    &lt;INACTIVE/&gt;
+        ///  &lt;/AXIS_INTERLOCK&gt;
+        ///
+        ///  &lt;AXIS_STATE&gt;
+        ///    &lt;HOME/&gt;
+        ///    &lt;TRAVEL/&gt;
+        ///    &lt;PARKED/&gt;
         ///    &lt;STOPPED/&gt;
-        ///    &lt;OPTIONAL_STOP/&gt;
-        ///    &lt;PROGRAM_STOPPED/&gt;
-        ///    &lt;PROGRAM_COMPLETED/&gt;
-        ///  &lt;/EXECUTION&gt;
+        ///  &lt;/AXIS_STATE&gt;
         ///
-        ///  &lt;FUNCTIONAL_MODE&gt;
-        ///    &lt;PRODUCTION/&gt;
-        ///    &lt;SETUP/&gt;
-        ///    &lt;TEARDOWN/&gt;
-        ///    &lt;MAINTENANCE/&gt;
-        ///    &lt;PROCESS_DEVELOPMENT/&gt;
-        ///  &lt;/FUNCTIONAL_MODE&gt;
-        ///
-        ///  &lt;INTERFACE_STATE&gt;
-        ///    &lt;ENABLED/&gt;
-        ///    &lt;DISABL [rest of string was truncated]&quot;;.
+        ///  &lt;CHUCK_INTERLOCK&gt;
+        ///    &lt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string EventDataValues {
             get {

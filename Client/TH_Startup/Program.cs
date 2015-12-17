@@ -5,13 +5,16 @@ using System.IO;
 using System.Collections.Generic;
 using Microsoft.Win32;
 
+using System.Reflection;
+
 using TH_Global;
-//using TH_Updater;
+
 
 namespace TH_Startup
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             Update();
@@ -61,9 +64,47 @@ namespace TH_Startup
 
         /// <summary>
         /// Open/Start the TrakHound-Client application
-        /// </summary>
+        /// </summary>       
         static void OpenClient()
         {
+            //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+
+            //Assembly assembly = Assembly.LoadFrom(clientPath);
+            //Type[] types = assembly.GetTypes();
+            //foreach (Type t in types)
+            //{
+            //    if (t.FullName == "TrakHound_Client.MainWindow")
+            //    {
+            //        try
+            //        {
+            //            object o = Activator.CreateInstance(t);
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Console.WriteLine(ex.Message);
+            //        }
+            //        break;
+
+
+            //        //MethodInfo method = t.GetMethod("Init");
+            //        //if (method != null)
+            //        //{
+            //        //    try
+            //        //    {
+            //        //        object o = Activator.CreateInstance(t);
+            //        //    }
+            //        //    catch (Exception ex)
+            //        //    {
+            //        //        Console.WriteLine(ex.Message);
+            //        //    }
+            //        //    break;
+            //        //}
+
+            //    }  
+            //}
+
+
+
             try
             {
 
@@ -71,7 +112,7 @@ namespace TH_Startup
 
                 Process.Start(clientPath);
             }
-            catch (Exception ex ) { Console.WriteLine("TH_StartUp.OpenClient() :: " + ex.Message); }
+            catch (Exception ex) { Console.WriteLine("TH_StartUp.OpenClient() :: " + ex.Message); }
         }
 
 
@@ -158,6 +199,8 @@ namespace TH_Startup
                 Console.WriteLine("AutoUpdater_DeleteRegistryKey() : " + ex.Message);
             }
         }
+
+
 
     }
 }

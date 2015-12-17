@@ -20,7 +20,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 
 using TH_PlugIns_Client_Control;
-using TH_Functions;
+using TH_WPF;
 
 namespace TrakHound_Client.Splash
 {

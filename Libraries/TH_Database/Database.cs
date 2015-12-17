@@ -18,6 +18,8 @@ namespace TH_Database
 
         public static List<Lazy<Database_Plugin>> Plugins;
 
+        public static bool UseMultithreading = true;
+
         public static void Initialize(Database_Settings settings)
         {
             if (Global.Plugins != null)
@@ -127,11 +129,14 @@ namespace TH_Database
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
-                            CreateWorkerInfo info = new CreateWorkerInfo();
-                            info.configuration = db.Configuration;
-                            info.plugin = dp;
+                                                     
+                                CreateWorkerInfo info = new CreateWorkerInfo();
+                                info.configuration = db.Configuration;
+                                info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                                if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                                else Create_Worker(info);
+                                                     
                             break;
                         }
                     }
@@ -169,7 +174,9 @@ namespace TH_Database
                             info.configuration = db.Configuration;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker), info);
+                            else Drop_Worker(info);
+
                             break;
                         }
                     }
@@ -253,7 +260,9 @@ namespace TH_Database
                             info.primaryKey = primaryKey;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                            else Create_Worker(info);
+
                             break;
                         }
                     }
@@ -293,7 +302,9 @@ namespace TH_Database
                             info.tablename = tablename;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker1), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker1), info);
+                            else Drop_Worker1(info);
+
                             break;
                         }
                     }
@@ -333,7 +344,9 @@ namespace TH_Database
                             info.tablenames = tablenames;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker2), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker2), info);
+                            else Drop_Worker2(info);
+
                             break;
                         }
                     }
@@ -373,7 +386,9 @@ namespace TH_Database
                             info.tablename = tablename;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(Truncate_Worker), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Truncate_Worker), info);
+                            else Truncate_Worker(info);
+
                             break;
                         }
                     }
@@ -642,7 +657,9 @@ namespace TH_Database
                             info.columnDefinition = columnDefinition;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(AddWorker), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(AddWorker), info);
+                            else AddWorker(info);
+
                             break;
                         }
                     }
@@ -734,7 +751,9 @@ namespace TH_Database
                             info.update = update;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker1), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker1), info);
+                            else InsertWorker1(info);
+
                             break;
                         }
                     }
@@ -777,7 +796,9 @@ namespace TH_Database
                             info.update = update;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker2), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker2), info);
+                            else InsertWorker2(info);
+
                             break;
                         }
                     }
@@ -820,7 +841,9 @@ namespace TH_Database
                             info.update = update;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker3), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker3), info);
+                            else InsertWorker3(info);
+
                             break;
                         }
                     }
@@ -860,7 +883,9 @@ namespace TH_Database
                             info.query = query;
                             info.plugin = dp;
 
-                            ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker4), info);
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker4), info);
+                            else InsertWorker4(info);
+
                             break;
                         }
                     }
@@ -1007,7 +1032,8 @@ namespace TH_Database
                                     info.commandText = commandText;
                                     info.plugin = dp;
 
-                                    ThreadPool.QueueUserWorkItem(new WaitCallback(CustomCommandWorker), info);
+                                    if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(CustomCommandWorker), info);
+                                    else CustomCommandWorker(info);
                                 }
                                 break;
                             }

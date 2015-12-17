@@ -79,10 +79,6 @@
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
-      <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
-      <Name>TH_Device_Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
@@ -90,10 +86,6 @@
     <ProjectReference Include="..\..\..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
       <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
       <Name>TH_MySQL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Data\TH_PlugIns_Client_Data.csproj">
-      <Project>{62109ec3-e65a-493f-8120-2e4ea2ef30a1}</Project>
-      <Name>TH_PlugIns_Client_Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

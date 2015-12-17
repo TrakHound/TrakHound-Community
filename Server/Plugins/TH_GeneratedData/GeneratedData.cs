@@ -443,7 +443,7 @@ namespace TH_GeneratedData
                     {
                         if (info.Name == prop)
                         {
-                            object val = info.GetValue(obj);
+                            object val = info.GetValue(obj, null);
                             if (val != null)
                             {
                                 return val.ToString().ToLower();

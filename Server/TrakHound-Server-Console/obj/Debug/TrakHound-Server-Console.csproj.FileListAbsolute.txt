@@ -27,3 +27,4 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_WPF.d
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Header.txt
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Newtonsoft.Json.xml

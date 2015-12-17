@@ -43,7 +43,7 @@ namespace TrakHound_Client.About
         public void AddPage(AboutPage page)
         {
             ListButton lb = new ListButton();
-            lb.Image = TH_Functions.Image_Functions.SetImageSize(page.Image, 20);
+            lb.Image = Image_Functions.SetImageSize(page.Image, 20);
             lb.Text = page.PageName;
             lb.Selected += ListButton_Selected;
             lb.DataObject = page;

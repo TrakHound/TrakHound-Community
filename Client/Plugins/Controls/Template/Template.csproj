@@ -87,10 +87,6 @@
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
-      <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
-      <Name>TH_Device_Client</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj">
       <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
       <Name>TH_PlugIns_Client_Control</Name>

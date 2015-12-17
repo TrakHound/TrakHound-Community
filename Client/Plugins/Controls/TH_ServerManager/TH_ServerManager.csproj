@@ -135,11 +135,6 @@
       <Name>TH_Configuration</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
-      <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
-      <Name>TH_Device_Client</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_Device_Server\TH_Device_Server.csproj">
       <Project>{de797c18-8530-40b6-964f-3164e34420f9}</Project>
       <Name>TH_Device_Server</Name>

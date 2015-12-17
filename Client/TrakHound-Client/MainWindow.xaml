@@ -51,10 +51,18 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-                <ResourceDictionary Source="/Styles/Window.xaml" />
+                <!--<ResourceDictionary Source="/Styles/Window.xaml" />
                 <ResourceDictionary Source="/Styles/ToolBars.xaml" />
-                <ResourceDictionary Source="/Styles/Menus.xaml" />
+                <ResourceDictionary Source="/Styles/Menus.xaml" />-->
             </ResourceDictionary.MergedDictionaries>
+
+            <!--Main Window Borders-->
+            <SolidColorBrush x:Key="ResizeBorder_Brush" Color="#FFEEEEEE"/>
+
+            <Color x:Key="WindowControl_Color">#FFCCCCCC</Color>
+            <SolidColorBrush x:Key="WindowControl_Brush" Color="{StaticResource WindowControl_Color}"/>
+            
+            
 
             <Style x:Key="PageTabItem" TargetType="{x:Type controls:TH_TabItem}">
 

@@ -49,10 +49,6 @@
 			<Name>TH_Device_Server</Name>
 			<Project>{DE797C18-8530-40B6-964F-3164E34420F9}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_Functions\TH_Functions.csproj">
-			<Name>TH_Functions</Name>
-			<Project>{79F4879C-44E9-4915-849A-B4C190DB4AA8}</Project>
-		</ProjectReference>
 		<ProjectReference Include="..\Plugins\TH_GeneratedData\TH_GeneratedData.csproj">
 			<Name>TH_GeneratedData</Name>
 			<Project>{51202EB2-C838-456E-9BD0-50840D12A19C}</Project>
@@ -80,10 +76,6 @@
 		<ProjectReference Include="..\Plugins\TH_OEE\TH_OEE.csproj">
 			<Name>TH_OEE</Name>
 			<Project>{37E8695A-089A-45F1-8DA8-85055728FCE9}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_Ping\TH_Ping.csproj">
-			<Name>TH_Ping</Name>
-			<Project>{D767CB7A-7C4E-4DF9-8B4C-9AA6EC8D12EC}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
 			<Name>TH_PlugIns_Server</Name>

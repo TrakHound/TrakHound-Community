@@ -37,6 +37,17 @@
                 <Setter Property="TextElement.FontWeight" Value="Bold" />
             </Style>
 
+            <Color x:Key="LightBlue_Color">#FFFFFFFF</Color>
+            <Color x:Key="DarkBlue_Color">#FF65b3ff</Color>
+
+            <SolidColorBrush x:Key="DarkBlue_Text" Color="#FF0070ff" />
+
+            <LinearGradientBrush x:Key="Splash_BG" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="{StaticResource LightBlue_Color}" Offset="0"/>
+                <GradientStop Color="{StaticResource DarkBlue_Color}" Offset="1"/>
+            </LinearGradientBrush>
+
+
         </ResourceDictionary>
 
     </Window.Resources>

@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TrakHound_Client</RootNamespace>
     <AssemblyName>TrakHound-Client</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -424,29 +425,9 @@
       <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
       <Name>TH_Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Device_Client\TH_Device_Client.csproj">
-      <Project>{e188cb92-c3e0-4069-8731-94815ca30922}</Project>
-      <Name>TH_Device_Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_FTP\TH_FTP.csproj">
-      <Project>{3a5989cc-8137-4cee-bdd3-0f6998bd3148}</Project>
-      <Name>TH_FTP</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Functions\TH_Functions.csproj">
-      <Project>{79f4879c-44e9-4915-849a-b4c190db4aa8}</Project>
-      <Name>TH_Functions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
-      <Project>{0822b312-19ed-4556-a197-210f0cb15bf1}</Project>
-      <Name>TH_MySQL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Ping\TH_Ping.csproj">
-      <Project>{d767cb7a-7c4e-4df9-8b4c-9aa6ec8d12ec}</Project>
-      <Name>TH_Ping</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj">
       <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>

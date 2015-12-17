@@ -28,11 +28,9 @@ namespace TH_WPF
             root_STACK.DataContext = this;
         }
 
-        //public event EventHandler PasswordChanged;
-
         public event RoutedEventHandler PasswordChanged;
 
-        public event KeyEventHandler PreviewKeyDown;
+        public event KeyEventHandler EnterPressed;
 
         public string Title
         {
@@ -56,7 +54,15 @@ namespace TH_WPF
 
         public SecureString SecurePassword { get; set; }
 
-        public string PasswordText { get; set; }
+
+        public string PasswordText
+        {
+            get { return (string)GetValue(PasswordTextProperty); }
+            set { SetValue(PasswordTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordTextProperty =
+            DependencyProperty.Register("PasswordText", typeof(string), typeof(PasswordBox), new PropertyMetadata(null));
 
 
         public string Instructions
@@ -80,11 +86,19 @@ namespace TH_WPF
             DependencyProperty.Register("Required", typeof(bool), typeof(PasswordBox), new PropertyMetadata(false));
 
         
-
-        private void txt_TextChanged(object sender, TextChangedEventArgs e)
+        public void Clear()
         {
-            //if (TextChanged != null) TextChanged(sender, e);
+            pswd.Clear();
+            PasswordText = null;
+            //SecurePassword.Clear();
         }
+
+
+
+        //private void txt_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    //if (TextChanged != null) TextChanged(sender, e);
+        //}
 
 
 
@@ -141,16 +155,25 @@ namespace TH_WPF
 
         private void pswd_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            SecurePassword = ((System.Windows.Controls.PasswordBox)sender).SecurePassword;
+            System.Windows.Controls.PasswordBox pbox = (System.Windows.Controls.PasswordBox)sender;
 
-            PasswordText = ((System.Windows.Controls.PasswordBox)sender).Password;
+            SecurePassword = pbox.SecurePassword;
+
+           if (pbox.Password != "" && pbox.Password != null)
+            {
+                PasswordText = pbox.Password;
+            }
+            else
+            {
+                PasswordText = null;
+            }
 
             if (PasswordChanged != null) PasswordChanged(sender, e);
         }
 
         private void pswd_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (PreviewKeyDown != null) PreviewKeyDown(sender, e);
+            if (EnterPressed != null) EnterPressed(sender, e);
         }
     }
 }

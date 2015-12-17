@@ -25,7 +25,6 @@ using System.Data;
 
 using TH_Configuration;
 using TH_Database;
-using TH_Device_Client;
 using TH_Global;
 using TH_PlugIns_Client_Control;
 using TH_UserManagement.Management;
@@ -98,8 +97,6 @@ namespace TH_TableManager
         #region "Methods"
 
         public void Initialize() { }
-
-        public void Update(ReturnData rd) {  }
 
         public void Closing() {  }
 

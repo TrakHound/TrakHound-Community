@@ -20,6 +20,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_PlugIns_Ser
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Styles.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\TH_DeviceManager.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\AddDevice\Controls\SharedItem.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\obj\Debug\Pages\AddShare\Page.baml

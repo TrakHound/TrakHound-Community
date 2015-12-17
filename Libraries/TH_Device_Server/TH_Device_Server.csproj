@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TH_Device_Server</RootNamespace>
     <AssemblyName>TH_Device_Server</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -73,10 +73,6 @@
     <ProjectReference Include="..\TH_MTC_Requests\TH_MTC_Requests.csproj">
       <Project>{db59642f-24b7-4584-bcdf-288788040709}</Project>
       <Name>TH_MTC_Requests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TH_Ping\TH_Ping.csproj">
-      <Project>{d767cb7a-7c4e-4df9-8b4c-9aa6ec8d12ec}</Project>
-      <Name>TH_Ping</Name>
     </ProjectReference>
     <ProjectReference Include="..\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
       <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>

@@ -12,7 +12,7 @@
     <SolidColorBrush x:Key="Accent_Normal" Color="#0080ff"/>
     <SolidColorBrush x:Key="Accent_Light" Color="#00aaff"/>
     <SolidColorBrush x:Key="Accent_Dark" Color="#0060ff"/>
-    <SolidColorBrush x:Key="Accent_Hover" Color="#100080ff"/>
+    <SolidColorBrush x:Key="Accent_Hover" Color="#200080ff"/>
 
     <!--<SolidColorBrush x:Key="Accent_Normal" Color="#FF5696D4"/>
     <SolidColorBrush x:Key="Accent_Light" Color="#FF65B3FF"/>

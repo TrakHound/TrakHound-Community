@@ -71,7 +71,7 @@
                 <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,14,0">
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Background" Value="#66000000"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Opacity" Value="0.25"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
@@ -102,7 +102,7 @@
                         </Style>
                     </Grid.Style>
                     
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Background="#33000000">
 
                         <!--Zoom Out-->
                         <th_wpf:Button_02 Image="/TrakHound-Client;component/Resources/Minus_04.png" Clicked="ZoomOut_Clicked"/>

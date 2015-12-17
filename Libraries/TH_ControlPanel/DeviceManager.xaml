@@ -411,7 +411,7 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Normal}" Margin="0,20"/>
+                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Opposite_Normal}" Margin="0,20"/>
 
                                 </Grid>
 

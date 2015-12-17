@@ -81,11 +81,7 @@ namespace TH_UserManagement
                     if (Shown) ShowMenu();
                     else HideMenu();
 
-                    if (!LoggedIn)
-                    {
-                        username_TXT.Focus();
-                        //username_TXT.Select(0, 0);
-                    }
+                    if (!LoggedIn) { UsernameFocus(); }
 
                     if (ShownChanged != null) ShownChanged(value);
                 }
@@ -140,7 +136,7 @@ namespace TH_UserManagement
 
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (password_TXT.PasswordText != "") PasswordEntered = true;
+            if (password_TXT.Password != "") PasswordEntered = true;
             else PasswordEntered = false;
         }
 
@@ -314,7 +310,8 @@ namespace TH_UserManagement
 
         private void Login_Clicked(Button_01 bt)
         {
-            Login(Username, password_TXT.PasswordText);
+            Login(username_TXT.Text, password_TXT.Password);
+            password_TXT.Clear();
         }
 
         private void SignOut_Clicked(Button_01 bt)
@@ -357,10 +354,10 @@ namespace TH_UserManagement
                 Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
                 EmailAddress = userConfig.email;
 
-                Username = null;
-                //username_TXT.Clear();
+                username_TXT.Clear();
+                password_TXT.Clear();
 
-                password_TXT.PasswordText = "";
+                rememberme_CHK.IsChecked = false;
 
                 LoadProfileImage(userConfig);
                 LoggedIn = true;
@@ -444,7 +441,9 @@ namespace TH_UserManagement
                 Lastname = null;
 
                 Username = null;
-                password_TXT.PasswordText = null;
+
+                username_TXT.Clear();
+                password_TXT.Clear();
             }
 
             Loading = false;
@@ -483,7 +482,9 @@ namespace TH_UserManagement
             Lastname = null;
 
             Username = null;
-            password_TXT.PasswordText = null;
+
+            username_TXT.Clear();
+            password_TXT.Clear();
 
             CurrentUser = null;
             ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
@@ -685,7 +686,8 @@ namespace TH_UserManagement
 
                 if (password_TXT.IsFocused)
                 {
-                    Login(Username, password_TXT.PasswordText);
+                    Login(username_TXT.Text, password_TXT.Password);
+                    password_TXT.Clear();
                 }
             }
         }
@@ -698,8 +700,44 @@ namespace TH_UserManagement
 
         private void password_TXT_GotFocus(object sender, RoutedEventArgs e)
         {
-            password_TXT.PasswordText = "";
+            password_TXT.Password = "";
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            UsernameFocus();
+        }
+
+        System.Timers.Timer focus_TIMER;
+
+        void UsernameFocus()
+        {
+            if (focus_TIMER != null) focus_TIMER.Enabled = false;
+
+            focus_TIMER = new System.Timers.Timer();
+            focus_TIMER.Interval = 50;
+            focus_TIMER.Elapsed += focus_TIMER_Elapsed;
+            focus_TIMER.Enabled = true;
+
+            //Keyboard.Focus(username_TXT);
+
+            //username_TXT.Focus();
+            //username_TXT.Select(0, 0);
+        }
+
+        void focus_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            focus_TIMER.Enabled = false;
+
+            this.Dispatcher.BeginInvoke(new Action(UsernameFocus_GUI));
+        }
+
+        void UsernameFocus_GUI()
+        {
+            username_TXT.Focus();
+        }
+
+
 
     }
 }

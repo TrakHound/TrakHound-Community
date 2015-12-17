@@ -49,10 +49,6 @@
 			<Name>TH_DeviceManager</Name>
 			<Project>{B5F883CC-0E97-468C-9CA4-84031F446EDF}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_Functions\TH_Functions.csproj">
-			<Name>TH_Functions</Name>
-			<Project>{79F4879C-44E9-4915-849A-B4C190DB4AA8}</Project>
-		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Global\TH_Global.csproj">
 			<Name>TH_Global</Name>
 			<Project>{3233B466-2FA9-4AE7-8A21-7EEB57BB61F4}</Project>
@@ -64,10 +60,6 @@
 		<ProjectReference Include="..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
 			<Name>TH_MySQL</Name>
 			<Project>{0822B312-19ED-4556-A197-210F0CB15BF1}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_Ping\TH_Ping.csproj">
-			<Name>TH_Ping</Name>
-			<Project>{D767CB7A-7C4E-4DF9-8B4C-9AA6EC8D12EC}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj">
 			<Name>TH_PlugIns_Client_Control</Name>

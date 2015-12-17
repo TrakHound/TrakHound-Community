@@ -26,6 +26,7 @@ namespace TrakHound_Server_Core
 
             PrintHeader();
 
+            Global.UseMultithreading = false;
             DatabasePluginReader dpr = new DatabasePluginReader();
 
             // Read Users and Login

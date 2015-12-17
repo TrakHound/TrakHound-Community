@@ -47,6 +47,11 @@
 
                 <!--Configuration-->
                 <StackPanel Grid.Row="2" Width="400" HorizontalAlignment="Left">
+                    <StackPanel.Resources>
+                        <Style TargetType="th_wpf:TextBox">
+                            <Setter Property="Margin" Value="0,10"/>
+                        </Style>
+                    </StackPanel.Resources>
 
                     <!--Device Description-->
                     <th_wpf:TextBox Text="{Binding Description, Mode=TwoWay}" Title="Description" TextChanged="TXT_TextChanged">
@@ -159,7 +164,7 @@
                 <!--Side Panel-->
                 <StackPanel Grid.Column="1" Margin="40,0">
 
-                    <th_wpf:ImageBox Image="{Binding Image}" Title="Image" HelpText="Upload an image" />
+                    <th_wpf:ImageBox Image="{Binding Image}" Title="Image" HelpText="Upload an image" Height="200" Width="200"/>
 
                     <!--Export Options-->
                     <StackPanel>

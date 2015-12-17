@@ -31,6 +31,7 @@ C:\TrakHound\Plugins\Database Plugins\LICENSE.txt
 C:\TrakHound\Plugins\Database Plugins\TH_MySQL.dll
 C:\TrakHound\Plugins\Database Plugins\TH_MySQL.pdb
 C:\TrakHound\Plugins\Database\LICENSE.txt
+C:\TrakHound\Plugins\Database\TH_MySQL.dll.config
 C:\TrakHound\Plugins\Database\TH_MySQL.dll
 C:\TrakHound\Plugins\Database\TH_MySQL.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\obj\Debug\TH_MySQL.csprojResolveAssemblyReference.cache

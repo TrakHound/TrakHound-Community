@@ -38,7 +38,6 @@ using System.ComponentModel.Composition.Hosting;
 
 using TH_Configuration;
 using TH_DeviceManager;
-using TH_Device_Client;
 using TH_Database;
 using TH_Global;
 using TH_PlugIns_Client_Control;
@@ -60,11 +59,15 @@ namespace TrakHound_Client
 
         public MainWindow()
         {
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += currentDomain_UnhandledException;
+
             Log_Initialize();
 
             Splash_Initialize();
 
             devicemanager = new DeviceManager(DeviceManagerType.Client);
+
 
             InitializeComponent();
             DataContext = this;
@@ -97,6 +100,13 @@ namespace TrakHound_Client
             while (SplashWait) { System.Threading.Thread.Sleep(200); }
             Splash_Close();
         }
+
+        void currentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.ExceptionObject.ToString());  
+        }
+
+        
 
         #region "Splash"
 
@@ -1107,13 +1117,11 @@ namespace TrakHound_Client
             {
                 currentuser = value;
 
-                devicemanager.CurrentUser = currentuser;
-
-                
+                if (devicemanager != null) devicemanager.CurrentUser = currentuser;
+             
                 if (currentuser != null)
                 {
                     CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
-
                     LoggedIn = true;
                 }
                 else
@@ -1819,9 +1827,9 @@ namespace TrakHound_Client
                     {
                         Configuration config = GetConfiguration(tablename);
 
-                        this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
+                        //this.Dispatcher.BeginInvoke((Action)delegate { LoadDevices_GUI(config); }, priority);
 
-                        //ThreadPool.QueueUserWorkItem(new WaitCallback(LoadDevices_Worker_GetConfiguration), tablename);
+                        this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
                     }
                 }
             }

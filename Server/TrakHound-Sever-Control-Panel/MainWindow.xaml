@@ -192,7 +192,7 @@
                     <!--Title Bar-->
                     <Border DockPanel.Dock="Top" >
 
-                        <Border MouseDown="TitleBar_MouseDown" Background="#FFEEEEEE" Height="28" >
+                        <Border MouseDown="TitleBar_MouseDown" Background="{StaticResource Window_Background}" Height="28" >
 
                             <DockPanel x:Name="TitleBar">
 
@@ -699,7 +699,7 @@
                     </Border>
 
                     <!--Window Content-->
-                    <Grid Height="auto" Width="auto" Background="#eee">
+                    <Grid Height="auto" Width="auto" Background="{StaticResource Window_Background}">
 
                         <DockPanel x:Name="Root_DOCK">
 
@@ -751,14 +751,14 @@
 
                             </Grid>
 
-                            <Border CornerRadius="0" Background="#eee">
+                            <Border CornerRadius="0" Background="{StaticResource Window_Background}">
 
                                 <Grid>
 
                                     <ContentControl Content="{Binding CurrentPage}"/>
 
                                     <!--Temp Page-->
-                                    <Grid Background="#eee">
+                                    <Grid Background="{StaticResource Window_Background}">
                                         <Grid.Style>
                                             <Style TargetType="Grid">
                                                 <Setter Property="Visibility" Value="Visible"/>

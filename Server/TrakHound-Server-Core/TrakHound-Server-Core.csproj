@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TrakHound_Server_Core</RootNamespace>
     <AssemblyName>TrakHound-Server-Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,10 +62,6 @@
       <Project>{de797c18-8530-40b6-964f-3164e34420f9}</Project>
       <Name>TH_Device_Server</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Functions\TH_Functions.csproj">
-      <Project>{79f4879c-44e9-4915-849a-b4c190db4aa8}</Project>
-      <Name>TH_Functions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
@@ -76,10 +73,6 @@
     <ProjectReference Include="..\..\Libraries\TH_MTC_Requests\TH_MTC_Requests.csproj">
       <Project>{db59642f-24b7-4584-bcdf-288788040709}</Project>
       <Name>TH_MTC_Requests</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Ping\TH_Ping.csproj">
-      <Project>{d767cb7a-7c4e-4df9-8b4c-9aa6ec8d12ec}</Project>
-      <Name>TH_Ping</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
       <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>

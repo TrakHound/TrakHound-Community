@@ -46,9 +46,9 @@ namespace TH_Global
         static LogQueue logQueue = new LogQueue();
 
         public static void Log(string text,
-                        [CallerFilePath] string file = "",
-                        [CallerMemberName] string member = "",
-                        [CallerLineNumber] int line = 0)
+                        string file = "",
+                        string member = "",
+                        int line = 0)
         {
 
             LogQueue.Line queueLine = new LogQueue.Line();
@@ -62,6 +62,24 @@ namespace TH_Global
             Console.WriteLine(text);
 
         }
+
+        //public static void Log(string text,
+        //                [CallerFilePath] string file = "",
+        //                [CallerMemberName] string member = "",
+        //                [CallerLineNumber] int line = 0)
+        //{
+
+        //    LogQueue.Line queueLine = new LogQueue.Line();
+        //    queueLine.text = text;
+        //    queueLine.file = file;
+        //    queueLine.member = member;
+        //    queueLine.lineNumber = line;
+
+        //    logQueue.LineQueue.Add(queueLine);
+
+        //    Console.WriteLine(text);
+
+        //}
     }
 
     class LogQueue
@@ -190,7 +208,7 @@ namespace TH_Global
         {
 
             XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Async = true;
+            //settings.Async = true;
             settings.Indent = true;
 
             try

@@ -155,9 +155,12 @@ namespace TH_DeviceCompare
             {
                 foreach (Configuration newConfig in e.NewItems)
                 {
-                    Devices.Add(newConfig);
+                    if (newConfig != null)
+                    {
+                        Devices.Add(newConfig);
 
-                    if (newConfig != null) CreateDeviceDisplay(newConfig);
+                        CreateDeviceDisplay(newConfig);
+                    }
                 }
             }
 
@@ -165,7 +168,7 @@ namespace TH_DeviceCompare
             {
                 foreach (Configuration oldConfig in e.OldItems)
                 {
-                    Devices.Add(oldConfig);
+                    if (oldConfig != null) Devices.Add(oldConfig);
                 }
             }
         }

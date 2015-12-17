@@ -4,7 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignWidth="100"
+             d:DesignWidth="100" 
+             
+             Focusable="True"
+             GotFocus="UserControl_GotFocus" 
+             GotKeyboardFocus="UserControl_GotKeyboardFocus"
+
              >
 
     <UserControl.Resources>
@@ -129,7 +134,30 @@
                     </TextBlock>
 
                     <!--User Input-->
-                    <TextBox x:Name="txt" Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="txt_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black"/>
+                    <TextBox x:Name="txt" 
+                             Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             TextChanged="txt_TextChanged"
+                             BorderThickness="0"
+                             Background="#00000000"
+                             FontSize="12pt"
+                             Foreground="{StaticResource Foreground_Normal}"
+                             Height="35"
+                             VerticalAlignment="Center" VerticalContentAlignment="Center"
+                             MaxLines="1"
+                             CaretBrush="Black"
+                             Focusable="True"
+                             PreviewKeyDown="txt_PreviewKeyDown"
+                             >
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsFocused}" Value="True">
+                                        <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Self}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
 
                 </Grid>
 

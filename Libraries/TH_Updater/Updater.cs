@@ -67,7 +67,7 @@ namespace TH_Updater
 
                 if (Directory.Exists(path))
                 {
-                    System.IO.Compression.ZipFile.ExtractToDirectory(zipFilePath, path);
+                    //System.IO.Compression.ZipFile.ExtractToDirectory(zipFilePath, path);
                     Result = path;
                 }
             }

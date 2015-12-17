@@ -269,7 +269,7 @@ namespace TH_Dashboard
             {
                 if (!config.enabled)
                 {
-                    ListButton lb = Pages_STACK.Children.OfType<ListButton>().ToList().Find(x => x.Text.ToUpper() == config.name.ToUpper());
+                    ListButton lb = Pages_STACK.Children.OfType<ListButton>().ToList().Find(x => GetPluginName(x.Text) == GetPluginName(config.name));
                     if (lb != null)
                     {
                         Pages_STACK.Children.Remove(lb);
@@ -282,6 +282,12 @@ namespace TH_Dashboard
                 }
             }
 
+        }
+
+        static string GetPluginName(string s)
+        {
+            if (s != null) return s.ToUpper();
+            return s;
         }
 
         private void lb_Selected(ListButton LB)
