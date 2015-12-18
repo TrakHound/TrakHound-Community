@@ -20,12 +20,14 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+                <!--<ResourceDictionary Source="/TH_Styles;component/All.xaml" />-->
+                <ResourceDictionary Source="Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="{StaticResource Accent_Normal}">
+    <!--<Grid Background="{StaticResource Window_Background}">-->
 
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
@@ -73,7 +75,7 @@
 
                     </Grid>
 
-                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>
+                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}"/>
 
                     <!--Column Headers-->
                     <ItemsControl Grid.Column="2" ItemsSource="{Binding ColumnHeaders}">
@@ -86,17 +88,18 @@
                     
                 </Grid>
 
-                <Grid Grid.Row="1" Background="#88000000">
+                <!--<Grid Grid.Row="1" Background="#88000000">-->
+                <Grid Grid.Row="1" Background="{StaticResource Window_Background_Dark}">
 
                     <Grid Grid.Row="1">
-                        <Grid.Background>
+                        <!--<Grid.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#18000000" Offset="0"/>
-                                <GradientStop Color="#11ffffff" Offset="0.4"/>
-                                <GradientStop Color="#11ffffff" Offset="0.6"/>
-                                <GradientStop Color="#22000000" Offset="1"/>
+                                <GradientStop Color="#10000000" Offset="0"/>
+                                <GradientStop Color="#00000000" Offset="0.4"/>
+                                <GradientStop Color="#00000000" Offset="0.6"/>
+                                <GradientStop Color="#10000000" Offset="1"/>
                             </LinearGradientBrush>
-                        </Grid.Background>
+                        </Grid.Background>-->
                         <!--<Grid.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#77000000" Offset="0"/>
@@ -110,7 +113,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Rectangle Grid.Row="0" Height="1" Fill="{StaticResource Shade_Light}" Margin="0" />
+                        <Rectangle Grid.Row="0" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
 
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">
 
@@ -125,7 +128,7 @@
                                 <ItemsControl ItemsSource="{Binding RowHeaders}"/>
 
                                 <!--Separator-->
-                                <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}" Margin="0" />
+                                <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
 
                                 <!--Columns-->
                                 <ItemsControl ItemsSource="{Binding Columns}" Grid.Column="2">

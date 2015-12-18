@@ -18,14 +18,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 
 namespace TrakHound_Client.Options.Pages.General
 {
     /// <summary>
     /// Interaction logic for General.xaml
     /// </summary>
-    public partial class Page : UserControl, OptionsPage
+    public partial class Page : UserControl, TH_Global.Page
     {
         public Page()
         {

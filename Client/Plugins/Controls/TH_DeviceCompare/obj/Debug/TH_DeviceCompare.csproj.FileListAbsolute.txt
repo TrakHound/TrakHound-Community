@@ -134,3 +134,4 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Styles.baml

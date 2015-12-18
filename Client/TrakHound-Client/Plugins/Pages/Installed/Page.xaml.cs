@@ -21,7 +21,7 @@ using System.Windows.Shapes;
 using System.Reflection;
 using System.IO;
 
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 using TH_WPF;
 
 namespace TrakHound_Client.Plugins.Pages.Installed
@@ -29,14 +29,13 @@ namespace TrakHound_Client.Plugins.Pages.Installed
     /// <summary>
     /// Interaction logic for Plugins.xaml
     /// </summary>
-    public partial class Page : UserControl, OptionsPage
+    public partial class Page : UserControl, TH_Global.Page
     {
         public Page()
         {
             InitializeComponent();
 
             mw = Application.Current.MainWindow as MainWindow;
-
         }
 
         MainWindow mw;
@@ -46,14 +45,14 @@ namespace TrakHound_Client.Plugins.Pages.Installed
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/CheckMark_01.png")); } }
 
 
-        public void AddInstalledPageItem(PlugInConfiguration config)
+        public void AddInstalledItem(PlugInConfiguration config)
         {
             if (mw != null)
             {
-                Lazy<Control_PlugIn> LCP = mw.PagePlugIns.Find(x => x.Value.Title.ToUpper() == config.name.ToUpper());
-                if (LCP != null)
+                Lazy<PlugIn> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == config.name.ToUpper());
+                if (lplugin != null)
                 {
-                    Control_PlugIn CP = LCP.Value;
+                    PlugIn plugin = lplugin.Value;
 
                     ListContainer lc = new ListContainer();
 
@@ -62,15 +61,15 @@ namespace TrakHound_Client.Plugins.Pages.Installed
                     li.PlugIn_Description = config.description;
                     li.config = config;
                     li.PlugIn_Enabled = config.enabled;
-                    li.PlugIn_Image = CP.Image;
+                    li.PlugIn_Image = plugin.Image;
 
                     // Author Info
-                    li.Author_Name = CP.Author;
-                    li.Author_Text = CP.AuthorText;
-                    li.Author_Image = Image_Functions.SetImageSize(CP.AuthorImage, 0, 30);
+                    li.Author_Name = plugin.Author;
+                    li.Author_Text = plugin.AuthorText;
+                    li.Author_Image = Image_Functions.SetImageSize(plugin.AuthorImage, 0, 30);
 
                     // Version Info
-                    Assembly assembly = Assembly.GetAssembly(CP.GetType());
+                    Assembly assembly = Assembly.GetAssembly(plugin.GetType());
                     if (assembly != null)
                     {
                         Version version = assembly.GetName().Version;
@@ -88,27 +87,27 @@ namespace TrakHound_Client.Plugins.Pages.Installed
 
                             foreach (PlugInConfiguration subConfig in subcat.PlugInConfigurations)
                             {
-                                Lazy<Control_PlugIn> sLCP = mw.PagePlugIns.Find(x => x.Value.Title.ToUpper() == subConfig.name.ToUpper());
-                                if (sLCP != null)
+                                Lazy<PlugIn> lcplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == subConfig.name.ToUpper());
+                                if (lcplugin != null)
                                 {
                                     try
                                     {
-                                        Control_PlugIn sCP = sLCP.Value;
+                                        PlugIn cplugin = lcplugin.Value;
 
                                         ListItem sli = new ListItem();
                                         sli.PlugIn_Title = subConfig.name;
                                         sli.PlugIn_Description = subConfig.description;
                                         sli.config = subConfig;
                                         sli.PlugIn_Enabled = subConfig.enabled;
-                                        sli.PlugIn_Image = sCP.Image;
+                                        sli.PlugIn_Image = cplugin.Image;
 
                                         // Author Info
-                                        sli.Author_Name = sCP.Author;
-                                        sli.Author_Text = sCP.AuthorText;
-                                        sli.Author_Image = Image_Functions.SetImageSize(sCP.AuthorImage, 0, 30);
+                                        sli.Author_Name = cplugin.Author;
+                                        sli.Author_Text = cplugin.AuthorText;
+                                        sli.Author_Image = Image_Functions.SetImageSize(cplugin.AuthorImage, 0, 30);
 
                                         // Version Info
-                                        Assembly sassembly = Assembly.GetAssembly(sCP.GetType());
+                                        Assembly sassembly = Assembly.GetAssembly(cplugin.GetType());
                                         if (sassembly != null)
                                         {
                                             Version sversion = sassembly.GetName().Version;
@@ -133,26 +132,26 @@ namespace TrakHound_Client.Plugins.Pages.Installed
                         }
                     }
 
-                    InstalledPage_STACK.Children.Add(lc);
+                    Installed_STACK.Children.Add(lc);
 
                 }
             }
         }
 
-        public void ClearInstalledPageItems()
+        public void ClearInstalledItems()
         {
-            InstalledPage_STACK.Children.Clear();
+            Installed_STACK.Children.Clear();
         }
 
         public void LoadPluginConfigurations()
         {
 
             // Load Page Plugin Configurations
-            if (Properties.Settings.Default.PagePlugIn_Configurations != null)
+            if (Properties.Settings.Default.PlugIn_Configurations != null)
             {
-                List<PlugInConfiguration> configs = Properties.Settings.Default.PagePlugIn_Configurations.ToList();
+                List<PlugInConfiguration> configs = Properties.Settings.Default.PlugIn_Configurations.ToList();
 
-                foreach (ListContainer lc in InstalledPage_STACK.Children.OfType<ListContainer>())
+                foreach (ListContainer lc in Installed_STACK.Children.OfType<ListContainer>())
                 {
                     foreach (ListItem root_li in lc.RootPlugin_GRID.Children.OfType<ListItem>())
                     {
@@ -180,13 +179,13 @@ namespace TrakHound_Client.Plugins.Pages.Installed
             }
         }
 
-        private void Browse_Page_Click(object sender, RoutedEventArgs e)
+        private void Browse_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
             dlg.InitialDirectory = Environment.GetEnvironmentVariable("system");
             dlg.Multiselect = true;
-            dlg.Title = "Browse for Client Page Plugins";
+            dlg.Title = "Browse for Client Plugins";
             dlg.Filter = "Client Plugin (*.dll)|*.dll";
 
             dlg.ShowDialog();
@@ -195,7 +194,7 @@ namespace TrakHound_Client.Plugins.Pages.Installed
             {
                 foreach (string filename in dlg.FileNames.ToList())
                 {
-                    string pluginPath = TH_Global.FileLocations.TrakHound + @"\PlugIns\Pages\";
+                    string pluginPath = TH_Global.FileLocations.TrakHound + @"\PlugIns\";
 
                     string name = System.IO.Path.GetFileNameWithoutExtension(filename);
                     string ext = System.IO.Path.GetExtension(filename);
@@ -221,51 +220,7 @@ namespace TrakHound_Client.Plugins.Pages.Installed
             }
             catch (Exception ex) 
             {
-                Console.WriteLine("Browse_Page_Click() : " + ex.Message);
-            }
-
-        }
-
-        private void Browse_Global_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            dlg.InitialDirectory = Environment.GetEnvironmentVariable("system");
-            dlg.Multiselect = true;
-            dlg.Title = "Browse for Client Global Plugins";
-            dlg.Filter = "Client Plugin (*.dll)|*.dll";
-
-            dlg.ShowDialog();
-
-            try
-            {
-                foreach (string filename in dlg.FileNames.ToList())
-                {
-                    string pluginPath = TH_Global.FileLocations.TrakHound + @"\PlugIns\Global\";
-
-                    string name = System.IO.Path.GetFileNameWithoutExtension(filename);
-                    string ext = System.IO.Path.GetExtension(filename);
-
-                    string suffix = "";
-                    int suffixNum = 0;
-
-                    string test = pluginPath + name + suffix + ext;
-
-                    while (File.Exists(test))
-                    {
-                        suffixNum += 1;
-                        suffix = "_" + suffixNum.ToString("00");
-                        test = pluginPath + name + suffix + ext;
-                    }
-
-                    File.Copy(filename, test);
-                }
-
-                LoadPluginConfigurations();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Browse_Global_Click() : " + ex.Message);
+                Console.WriteLine("Browse_Click() : " + ex.Message);
             }
 
         }

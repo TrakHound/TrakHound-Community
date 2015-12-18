@@ -20,7 +20,6 @@ using System.Windows.Shapes;
 
 using System.Diagnostics;
 
-using TH_PlugIns_Client_Control;
 using TH_Global;
 
 namespace TrakHound_Client.About.Pages.Information
@@ -28,7 +27,7 @@ namespace TrakHound_Client.About.Pages.Information
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, AboutPage
+    public partial class Page : UserControl, TH_Global.Page
     {
 
         public Page()

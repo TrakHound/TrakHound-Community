@@ -57,3 +57,4 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_Dashboard\obj\Debug\TH_
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_Dashboard\obj\Debug\TH_Dashboard.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_Dashboard\obj\Debug\TH_Dashboard.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_Dashboard\obj\Debug\TH_Dashboard.pdb
+C:\TrakHound\Plugins\Pages\LICENSE.txt

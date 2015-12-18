@@ -19,7 +19,7 @@ using System.Windows.Shapes;
 
 using System.Windows.Media.Animation;
 
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 using TH_WPF;
 
 namespace TrakHound_Client.Splash
@@ -55,11 +55,10 @@ namespace TrakHound_Client.Splash
             DependencyProperty.Register("Version", typeof(string), typeof(Screen), new PropertyMetadata(""));
 
 
-        public void AddPagePlugin(Control_PlugIn CP)
+        public void AddPlugin(PlugIn plugin)
         {
-
             ImageBrush NavIMGBRUSH = new ImageBrush();
-            NavIMGBRUSH.ImageSource = CP.Image;
+            NavIMGBRUSH.ImageSource = plugin.Image;
             NavIMGBRUSH.Stretch = Stretch.Uniform;
 
             Rectangle NavRECT = new Rectangle();
@@ -70,31 +69,9 @@ namespace TrakHound_Client.Splash
             NavRECT.OpacityMask = NavIMGBRUSH;
             NavRECT.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
 
-            PagePlugins_STACK.Children.Add(NavRECT);
+            Plugins_STACK.Children.Add(NavRECT);
 
-            PagePlugins_STACK.Visibility = System.Windows.Visibility.Visible;
-
-        }
-
-        public void AddGlobalPlugin(Control_PlugIn CP)
-        {
-
-            ImageBrush NavIMGBRUSH = new ImageBrush();
-            NavIMGBRUSH.ImageSource = CP.Image;
-            NavIMGBRUSH.Stretch = Stretch.Uniform;
-
-            Rectangle NavRECT = new Rectangle();
-            NavRECT.Fill = new SolidColorBrush(Color_Functions.GetColorFromString("#aaffffff"));
-            NavRECT.Height = 30;
-            NavRECT.Width = 30;
-            NavRECT.Margin = new Thickness(5);
-            NavRECT.OpacityMask = NavIMGBRUSH;
-            NavRECT.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-
-            GlobalPlugins_STACK.Children.Add(NavRECT);
-
-            GlobalPlugins_STACK.Visibility = System.Windows.Visibility.Visible;
-
+            Plugins_STACK.Visibility = System.Windows.Visibility.Visible;
         }
 
     }

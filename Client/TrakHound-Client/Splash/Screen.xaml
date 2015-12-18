@@ -216,12 +216,8 @@
                             <TextBlock Grid.Row="2" Text="{Binding Status}" FontSize="10pt" Foreground="#88ffffff"/>
 
                             <Grid x:Name="Plugins_GRID" Grid.Row="3">
-                                <StackPanel x:Name="PagePlugins_STACK" Orientation="Horizontal" Visibility="Collapsed">
+                                <StackPanel x:Name="Plugins_STACK" Orientation="Horizontal" Visibility="Collapsed">
                                     <TextBlock Text="Pages" Foreground="#aaffffff" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
-                                    <Rectangle Fill="#aaffffff" Width="2" Margin="0,5,10,5" Height="30"/>
-                                </StackPanel>
-                                <StackPanel x:Name="GlobalPlugins_STACK" Orientation="Horizontal" Visibility="Collapsed">
-                                    <TextBlock Text="Global" Foreground="#aaffffff" Margin="0,0,10,0" Height="30"/>
                                     <Rectangle Fill="#aaffffff" Width="2" Margin="0,5,10,5" Height="30"/>
                                 </StackPanel>
                             </Grid>

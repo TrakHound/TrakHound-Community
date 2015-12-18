@@ -17,7 +17,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+                <ResourceDictionary Source="/TH_DeviceCompare;component/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -32,10 +32,10 @@
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
-                        <Setter Property="Background" Value="#10ffffff"/>
+                        <Setter Property="Background" Value="#04000000"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <Setter Property="Background" Value="#18ffffff"/>
+                        <Setter Property="Background" Value="#08000000"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -54,7 +54,7 @@
             </ContentControl.Style>
         </ContentControl>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Light}"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}"/>
 
     </Grid>
     

@@ -20,7 +20,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.Reflection;
 
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 using TH_Updater;
 using TH_Global;
 
@@ -29,7 +29,7 @@ namespace TrakHound_Client.Options.Pages.Updates
     /// <summary>
     /// Interaction logic for General.xaml
     /// </summary>
-    public partial class Page : UserControl, OptionsPage
+    public partial class Page : UserControl, TH_Global.Page
     {
         public Page()
         {
@@ -224,29 +224,29 @@ namespace TrakHound_Client.Options.Pages.Updates
             Plugin_STACK.Children.Clear();
 
             // Load Page Plugin Configurations
-            if (Properties.Settings.Default.PagePlugIn_Configurations != null)
+            if (Properties.Settings.Default.PlugIn_Configurations != null)
             {
-                List<PlugInConfiguration> configs = Properties.Settings.Default.PagePlugIn_Configurations.ToList();
+                List<PlugInConfiguration> configs = Properties.Settings.Default.PlugIn_Configurations.ToList();
 
                 foreach (PlugInConfiguration config in configs)
                 {
                     if (mw != null)
                     {
-                        if (mw.PagePlugIns != null)
+                        if (mw.plugins != null)
                         {
                             try
                             {
-                                Lazy<Control_PlugIn> LCP = mw.PagePlugIns.Find(x => x.Value.Title.ToUpper() == config.name.ToUpper());
-                                if (LCP != null)
+                                Lazy<PlugIn> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == config.name.ToUpper());
+                                if (lplugin != null)
                                 {
-                                    Control_PlugIn CP = LCP.Value;
+                                    PlugIn plugin = lplugin.Value;
 
                                     UpdateItem ui = new UpdateItem();
                                     ui.PluginTitle = config.name;
-                                    ui.PluginImage = CP.Image;
+                                    ui.PluginImage = plugin.Image;
 
                                     // Build Information
-                                    Assembly assembly = Assembly.GetAssembly(CP.GetType());
+                                    Assembly assembly = Assembly.GetAssembly(plugin.GetType());
                                     Version version = assembly.GetName().Version;
 
                                     ui.assembly = assembly;
@@ -254,11 +254,11 @@ namespace TrakHound_Client.Options.Pages.Updates
                                     ui.PluginVersion = "v" + version.ToString();
 
                                     // Author Info
-                                    ui.PluginAuthor = CP.Author;
-                                    ui.PluginAuthorInfo = CP.AuthorText;
+                                    ui.PluginAuthor = plugin.Author;
+                                    ui.PluginAuthorInfo = plugin.AuthorText;
 
                                     // Update Info
-                                    ui.UpdateFileUrl = CP.UpdateFileURL;
+                                    ui.UpdateFileUrl = plugin.UpdateFileURL;
 
                                     Plugin_STACK.Children.Add(ui);
                                 }
@@ -273,19 +273,19 @@ namespace TrakHound_Client.Options.Pages.Updates
                         {
                             foreach (PlugInConfiguration subConfig in subcat.PlugInConfigurations)
                             {
-                                Lazy<Control_PlugIn> sLCP = mw.PagePlugIns.Find(x => x.Value.Title.ToUpper() == subConfig.name.ToUpper());
-                                if (sLCP != null)
+                                Lazy<PlugIn> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == subConfig.name.ToUpper());
+                                if (lplugin != null)
                                 {
                                     try
                                     {
-                                        Control_PlugIn sCP = sLCP.Value;
+                                        PlugIn plugin = lplugin.Value;
 
                                         UpdateItem ui = new UpdateItem();
                                         ui.PluginTitle = subConfig.name;
-                                        ui.PluginImage = sCP.Image;
+                                        ui.PluginImage = plugin.Image;
 
                                         // Build Information
-                                        Assembly assembly = Assembly.GetAssembly(sCP.GetType());
+                                        Assembly assembly = Assembly.GetAssembly(plugin.GetType());
                                         Version version = assembly.GetName().Version;
 
                                         ui.assembly = assembly;
@@ -293,11 +293,11 @@ namespace TrakHound_Client.Options.Pages.Updates
                                         ui.PluginVersion = "v" + version.ToString();
 
                                         // Author Info
-                                        ui.PluginAuthor = sCP.Author;
-                                        ui.PluginAuthorInfo = sCP.AuthorText;
+                                        ui.PluginAuthor = plugin.Author;
+                                        ui.PluginAuthorInfo = plugin.AuthorText;
 
                                         // Update Info
-                                        ui.UpdateFileUrl = sCP.UpdateFileURL;
+                                        ui.UpdateFileUrl = plugin.UpdateFileURL;
 
                                         Plugin_STACK.Children.Add(ui);
                                     }
@@ -502,18 +502,6 @@ namespace TrakHound_Client.Options.Pages.Updates
                     ui.CheckUpdateVersion();
                 }
             }  
-        }
-
-        private void Download_Button_Clicked(Controls.TH_Button bt)
-        {
-            if (appInfo != null)
-            {
-                // Run Updater
-                Updater updater = new Updater();
-                updater.assembly = Assembly.GetExecutingAssembly();
-                updater.Finished += updater_Finished;
-                updater.Start(appInfo.updateUrl);
-            }
         }
 
         void updater_Finished()

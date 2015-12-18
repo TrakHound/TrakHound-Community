@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 using TH_WPF;
 
 namespace TrakHound_Client.Options
@@ -39,7 +39,7 @@ namespace TrakHound_Client.Options
         public static readonly DependencyProperty CurrentPageNameProperty =
             DependencyProperty.Register("CurrentPageName", typeof(string), typeof(Manager), new PropertyMetadata(null));
      
-        public void AddPage(OptionsPage page)
+        public void AddPage(TH_Global.Page page)
         {
             ListButton lb = new ListButton();
             lb.Image = Image_Functions.SetImageSize(page.Image, 20);
@@ -50,7 +50,7 @@ namespace TrakHound_Client.Options
             Pages_STACK.Children.Add(lb);
         }
 
-        public void RemovePage(OptionsPage page)
+        public void RemovePage(TH_Global.Page page)
         {
             foreach (ListButton lb in Pages_STACK.Children.OfType<ListButton>())
             {

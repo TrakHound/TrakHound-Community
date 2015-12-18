@@ -4,12 +4,11 @@ using System.Windows.Media;
 
 using System.Configuration;
 
-namespace TH_PlugIns_Client_Control
+namespace TH_PlugIns_Client
 {
     [SettingsSerializeAs(SettingsSerializeAs.Xml)]
     public class PlugInConfiguration
     {
-
         public PlugInConfiguration() { SubCategories = new List<PlugInConfigurationCategory>(); }
 
         public string name { get; set; }
@@ -34,18 +33,15 @@ namespace TH_PlugIns_Client_Control
 
         public delegate void EnabledChanged_Handler(PlugInConfiguration config);
         public event EnabledChanged_Handler EnabledChanged;
-
     }
 
     public class PlugInConfigurationCategory
     {
-
         public PlugInConfigurationCategory() { PlugInConfigurations = new List<PlugInConfiguration>(); }
 
         public string name { get; set; }
 
         public List<PlugInConfiguration> PlugInConfigurations { get; set; }
-
     }
 
 }

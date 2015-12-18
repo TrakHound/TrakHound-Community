@@ -10,16 +10,17 @@ using System.Windows.Media;
 
 using TH_Configuration;
 using TH_UserManagement.Management;
+using TH_Global;
 
-namespace TH_PlugIns_Client_Control
+namespace TH_PlugIns_Client
 {
 
     /// <summary>
     /// This is the interface for writing Control PlugIns for TrakHound-Client. 
     /// All PlugIns MUST contain the following properties and methods.
     /// </summary>
-    [InheritedExport(typeof(Control_PlugIn))]
-    public interface Control_PlugIn
+    [InheritedExport(typeof(PlugIn))]
+    public interface PlugIn
     {
 
         #region "Descriptive"
@@ -116,7 +117,7 @@ namespace TH_PlugIns_Client_Control
         /// <summary>
         /// Contains the Plugin's "child" plugins
         /// </summary>
-        List<Control_PlugIn> PlugIns { get; set; }
+        List<PlugIn> PlugIns { get; set; }
 
         #endregion
 
@@ -168,10 +169,10 @@ namespace TH_PlugIns_Client_Control
         /// List of Device_Client objects
         /// </summary>
         //List<Device_Client> Devices { get; set; }
-        //List<Configuration> Devices { get; set; }
+        List<Configuration> Devices { get; set; }
         //ObservableCollection<Configuration> Devices { get; set; }
 
-        void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e);
+        //void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e);
 
         #endregion
 
@@ -181,7 +182,7 @@ namespace TH_PlugIns_Client_Control
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page
         /// (use if Plugin has parameters or options for how it operates or looks)
         /// </summary>
-        OptionsPage Options { get; set; }
+        Page Options { get; set; }
 
         #endregion
 
@@ -215,7 +216,7 @@ namespace TH_PlugIns_Client_Control
 
         public string Name { get; set; }
 
-        public List<Control_PlugIn> PlugIns { get; set; }
+        public List<PlugIn> PlugIns { get; set; }
 
     }
 

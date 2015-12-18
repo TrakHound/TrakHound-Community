@@ -15,12 +15,12 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 using TH_UserManagement.Management;
 
 namespace TH_StatusData
 {
-    public class StatusData : Control_PlugIn
+    public class StatusData : PlugIn
     {
 
         #region "PlugIn"
@@ -66,7 +66,7 @@ namespace TH_StatusData
 
         public List<PlugInConfigurationCategory> SubCategories { get; set; }
 
-        public List<Control_PlugIn> PlugIns { get; set; }
+        public List<PlugIn> PlugIns { get; set; }
 
         #endregion
 
@@ -95,36 +95,23 @@ namespace TH_StatusData
 
         #region "Devices"
 
-        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
-
-        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        List<Configuration> devices;
+        public List<Configuration> Devices
         {
-            Console.WriteLine("StatusData :: Devices :: " + e.Action.ToString());
-
-            if (e.NewItems != null)
+            get { return devices; }
+            set
             {
-                foreach (Configuration newConfig in e.NewItems)
-                {
-                    Devices.Add(newConfig);
-                }
-            }
+                devices = value;
 
-            if (e.OldItems != null)
-            {
-                foreach (Configuration oldConfig in e.OldItems)
-                {
-                    Devices.Add(oldConfig);
-                }
+                Update_Start();
             }
-
-            Update_Start();
         }
 
         #endregion
 
         #region "Options"
 
-        public OptionsPage Options { get; set; }
+        public Page Options { get; set; }
 
         #endregion
 

@@ -13,17 +13,26 @@
          
              mc:Ignorable="d" 
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_DeviceCompare;component/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#18ffffff"/>
+                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="{StaticResource Accent_Hover}"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </DataTrigger.EnterActions>
@@ -33,7 +42,7 @@
                                     <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -58,20 +67,20 @@
                     </Grid.RowDefinitions>
 
                     <!--Title-->
-                    <TextBlock Text="{Binding Text}" FontSize="14" Foreground="#fff" />
+                    <TextBlock Text="{Binding Text}" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
 
                     <!--Time Elapsed-->
-                    <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="10" Foreground="#88ffffff" />
+                    <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="10" Foreground="{StaticResource Foreground_Light}" />
 
                 </Grid>
 
                 <!--Percentage-->
-                <TextBlock Grid.Column="1" Text="{Binding Percentage}" FontSize="20" Foreground="#aaffffff" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" />
+                <TextBlock Grid.Column="1" Text="{Binding Percentage}" FontSize="20" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" />
 
             </Grid>
 
             <!--Time Bar-->
-            <ProgressBar Grid.Row="1" Height="10" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{Binding BarBrush}" Background="#22ffffff" BorderThickness="0"/>
+            <ProgressBar Grid.Row="1" Height="10" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{StaticResource Accent_Normal}" Background="{StaticResource Accent_Hover}" BorderThickness="0"/>
 
         </Grid>
 

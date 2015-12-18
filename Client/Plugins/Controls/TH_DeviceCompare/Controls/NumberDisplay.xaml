@@ -12,7 +12,15 @@
              Width="200"
              Height="50"
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_DeviceCompare;component/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid HorizontalAlignment="Center" Margin="0,10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -29,21 +37,21 @@
             </Grid.RowDefinitions>
 
             <!--Previous Value 3-->
-            <TextBlock Grid.Row="0" Text="{Binding PreviousValue3}" FontSize="10" Foreground="#33ffffff" Opacity="0.25"
+            <TextBlock Grid.Row="0" Text="{Binding PreviousValue3}" FontSize="10" Foreground="{StaticResource Foreground_Light}" Opacity="0.25"
                        FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"/>
 
             <!--Previous Value 2-->
-            <TextBlock Grid.Row="1" Text="{Binding PreviousValue2}" FontSize="10" Foreground="#33ffffff" Opacity="0.5"
+            <TextBlock Grid.Row="1" Text="{Binding PreviousValue2}" FontSize="10" Foreground="{StaticResource Foreground_Light}" Opacity="0.5"
                        FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"/>
 
             <!--Previous Value 1-->
-            <TextBlock Grid.Row="2" Text="{Binding PreviousValue1}" FontSize="10" Foreground="#33ffffff" Opacity="0.75"
+            <TextBlock Grid.Row="2" Text="{Binding PreviousValue1}" FontSize="10" Foreground="{StaticResource Foreground_Light}" Opacity="0.75"
                        FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"/>
         </Grid>
 
         <!--Number Value-->
         <TextBlock Grid.Column="1" Text="{Binding ValueText}" FontSize="24"
-                   Foreground="#fff"
+                   Foreground="{StaticResource Foreground_Normal}"
                    VerticalAlignment="Center" HorizontalAlignment="Right"
                    FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital"
                    Margin="5,0"
@@ -61,7 +69,9 @@
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ValueIncreasing}" Value="true">
                             <Setter Property="OpacityMask" Value="{StaticResource UP_Arrow_IMG}" />
-                            <Setter Property="Fill" Value="#00ff00"/>
+                            <!--<Setter Property="Fill" Value="#00ff00"/>-->
+                            
+                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding ValueDecreasing}" Value="true">
                             <Setter Property="OpacityMask" Value="{StaticResource DOWN_Arrow_IMG}" />

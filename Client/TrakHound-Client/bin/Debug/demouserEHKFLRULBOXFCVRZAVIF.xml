@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent>
+    <IP_Address>agent.mtconnect.org</IP_Address>
+    <Device_Name>VMC-3Axis</Device_Name>
+    <Current_Heartbeat>5000</Current_Heartbeat>
+    <Sample_Heartbeat>10000</Sample_Heartbeat>
+    <Port />
+  </Agent>
+  <Description>
+    <Machine_Type>CNC</Machine_Type>
+    <Customer_Name>MTConnect</Customer_Name>
+    <Manufacturer>Mazak</Manufacturer>
+    <Control_Type />
+    <Machine_ID>1</Machine_ID>
+    <Description>Mazak 5-Axis Mill</Description>
+    <Device_Type>CNC</Device_Type>
+    <Device_ID>01</Device_ID>
+    <Model>Integrex I-3006</Model>
+    <Serial>56320012549</Serial>
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Manufacturer_Logo_Path>GVZJLTVHBLWMJYCTYJRQ</Manufacturer_Logo_Path>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Image_Path>LRJLRLKQOFQIUFEVXTGQ</Image_Path>
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>False</Conditions>
+      <Events>False</Events>
+      <Samples>False</Samples>
+      <Omit>
+        <dev2_line />
+        <dev2_block />
+        <c2 />
+        <cl3 />
+        <x2 />
+        <x3 />
+        <n3 />
+        <y2 />
+        <y3 />
+        <y4 />
+        <z2 />
+        <z3 />
+        <z4 />
+        <Ppos />
+        <Frt />
+      </Omit>
+    </DataItems>
+  </InstanceTable>
+  <ShiftData>
+    <GeneratedEvents>
+      <Event id="00">production_status</Event>
+      <Event id="01">alert</Event>
+      <Event id="02">program_execution</Event>
+    </GeneratedEvents>
+    <Shifts>
+      <Shift id="00" name="1st Shift" begintime="06:00:00" endtime="16:00:00">
+        <Segments>
+          <Work id="00" begintime="06:00:00" endtime="07:00:00" />
+          <Work id="01" begintime="07:00:00" endtime="08:00:00" />
+          <Break id="02" begintime="08:00:00" endtime="08:15:00" />
+          <Work id="03" begintime="08:15:00" endtime="09:00:00" />
+          <Work id="04" begintime="09:00:00" endtime="10:00:00" />
+          <Work id="05" begintime="10:00:00" endtime="11:00:00" />
+          <Break id="06" begintime="11:00:00" endtime="11:30:00" />
+          <Work id="07" begintime="11:30:00" endtime="12:00:00" />
+          <Work id="08" begintime="12:00:00" endtime="13:00:00" />
+          <Work id="09" begintime="13:00:00" endtime="14:00:00" />
+          <Break id="10" begintime="14:00:00" endtime="14:15:00" />
+          <Work id="11" begintime="14:15:00" endtime="15:00:00" />
+          <Work id="12" begintime="15:00:00" endtime="16:00:00" />
+        </Segments>
+      </Shift>
+      <Shift id="01" name="2nd Shift" begintime="16:00:00" endtime="00:30:00">
+        <Segments>
+          <Work id="00" begintime="16:00:00" endtime="17:00:00" />
+          <Work id="01" begintime="17:00:00" endtime="18:00:00" />
+          <Break id="02" begintime="18:00:00" endtime="18:30:00" />
+          <Work id="03" begintime="18:30:00" endtime="19:00:00" />
+          <Break id="04" begintime="19:00:00" endtime="20:00:00" />
+          <Work id="05" begintime="20:00:00" endtime="21:00:00" />
+          <Work id="06" begintime="21:00:00" endtime="22:00:00" />
+          <Work id="07" begintime="22:00:00" endtime="23:00:00" />
+          <Work id="08" begintime="23:00:00" endtime="00:00:00" />
+          <Work id="09" begintime="00:00:00" endtime="00:30:00" />
+        </Segments>
+      </Shift>
+    </Shifts>
+  </ShiftData>
+  <Cycles>
+    <Event>program_execution</Event>
+    <CycleIdLink>program_name</CycleIdLink>
+  </Cycles>
+  <OEE>
+    <Availability>
+      <Event>Production_Status</Event>
+      <Value>Full Production</Value>
+    </Availability>
+  </OEE>
+  <Databases>
+    <MySQL id="00">
+      <Database>test_01</Database>
+      <Server>192.168.1.10</Server>
+      <Port>3306</Port>
+      <Username>TrakHound</Username>
+      <PHP_Server />
+      <PHP_Directory />
+      <Password>user</Password>
+      <UsePHP>False</UsePHP>
+    </MySQL>
+  </Databases>
+  <UpdateId>BALZGPGEIGXEKDYFSZEZ</UpdateId>
+  <Enabled>True</Enabled>
+  <GeneratedData>
+    <SnapShotData>
+      <Collected id="00" name="Connected" link="avail" />
+      <Collected id="01" name="Block" link="cn2" />
+      <Collected id="02" name="Line" link="cn4" />
+      <Collected id="03" name="Emergency Stop" link="estop" />
+      <Collected id="04" name="Message Text" link="msg" />
+      <Collected id="05" name="Program Name" link="cn5" />
+      <Collected id="06" name="Current Tool" link="cnt1" />
+      <Collected id="07" name="Controller Mode" link="cn3" />
+      <Collected id="08" name="Execution Mode" link="cn6" />
+      <Generated id="00" name="Production Status" link="production_status" />
+      <Generated id="01" name="Alert" link="alert" />
+      <Generated id="02" name="Production Execution" link="program_execution" />
+      <Variable id="00" name="Current Shift Name" link="shift_name" />
+      <Variable id="01" name="Current Shift Id" link="shift_id" />
+      <Variable id="02" name="Current Shift Type" link="shift_type" />
+      <Variable id="03" name="Current Shift Date" link="shift_date" />
+      <Variable id="04" name="Current Shift Begin" link="shift_begintime" />
+      <Variable id="05" name="Current Shift End" link="shift_endtime" />
+      <Variable id="06" name="Current Shift Time" link="shift_currenttime" />
+      <Variable id="07" name="Current Shift Begin UTC" link="shift_begintime_utc" />
+      <Variable id="08" name="Current Shift End UTC" link="shift_endtime_utc" />
+      <Variable id="09" name="Current Shift Time UTC" link="shift_currenttime_utc" />
+    </SnapShotData>
+    <GeneratedEvents>
+      <Event id="00" name="production_status" description="General status of production. Has three levels of production Full Production, Idle, and Alert.">
+        <Value id="00">
+          <Triggers>
+            <Trigger id="00" link="avail" value="AVAILABLE" />
+            <Trigger id="01" link="estop" value="ARMED" />
+            <Trigger id="02" link="execution" value="ACTIVE" />
+          </Triggers>
+          <Result numval="2">Full Production</Result>
+        </Value>
+        <Value id="01">
+          <Triggers>
+            <Trigger id="00" link="avail" value="AVAILABLE" />
+            <Trigger id="01" link="estop" value="ARMED" />
+          </Triggers>
+          <Result numval="1">Idle</Result>
+        </Value>
+        <Default numval="0">Alert</Default>
+      </Event>
+      <Event id="01" name="alert" description="Alert status of the device. If device is Not available or in Estop it is considered in Alert">
+        <Value id="00">
+          <Triggers>
+            <Trigger id="00" link="avail" value="AVAILABLE" />
+            <Trigger id="01" link="estop" value="ARMED" />
+          </Triggers>
+          <Result numval="1">False</Result>
+        </Value>
+        <Default numval="0">True</Default>
+      </Event>
+      <Event id="02" name="program_execution" description="Program status of device. If device is currently running a program then the Program has Started and also records the name of the program.">
+        <Value id="00">
+          <Triggers>
+            <Trigger id="00" link="mode" value="AUTOMATIC" />
+            <Trigger id="01" link="execution" value="ACTIVE" />
+          </Triggers>
+          <Result numval="1">Program Started</Result>
+        </Value>
+        <Default numval="0">Program Stopped</Default>
+      </Event>
+    </GeneratedEvents>
+  </GeneratedData>
+  <UniqueId>NNUNWJXDFCNFYHUOMEOD</UniqueId>
+  <Databases_Client>
+    <MySQL id="00">
+      <UseTrakHoundCloudServer>False</UseTrakHoundCloudServer>
+      <Database>test_01</Database>
+      <Server>192.168.1.10</Server>
+      <Port>3306</Port>
+      <Username>TrakHound</Username>
+      <Password>user</Password>
+      <PHP_Server />
+      <PHP_Directory />
+      <UsePHP>False</UsePHP>
+    </MySQL>
+  </Databases_Client>
+  <ClientUpdateId>AMQOCMENULWWDWQXMPCX</ClientUpdateId>
+  <ClientEnabled>True</ClientEnabled>
+</Settings>

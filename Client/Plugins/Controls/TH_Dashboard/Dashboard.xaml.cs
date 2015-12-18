@@ -25,9 +25,9 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 
 using TH_Configuration;
-using TH_PlugIns_Client_Control;
-//using TH_Device_Client;
+using TH_PlugIns_Client;
 using TH_UserManagement.Management;
+using TH_Global;
 using TH_WPF;
 
 namespace TH_Dashboard
@@ -35,7 +35,7 @@ namespace TH_Dashboard
     /// <summary>
     /// Interaction logic for DashboardPage.xaml
     /// </summary>
-    public partial class Dashboard : UserControl, Control_PlugIn
+    public partial class Dashboard : UserControl, PlugIn
     {
 
         #region "PlugIn"
@@ -75,7 +75,7 @@ namespace TH_Dashboard
 
         public List<PlugInConfigurationCategory> SubCategories { get; set; }
 
-        public List<Control_PlugIn> PlugIns { get; set; }
+        public List<PlugIn> PlugIns { get; set; }
 
         #endregion
 
@@ -104,17 +104,6 @@ namespace TH_Dashboard
             }
         }
 
-        //public void Update(ReturnData rd)
-        //{
-        //    if (PlugIns != null)
-        //    {
-        //        foreach (Control_PlugIn CP in PlugIns)
-        //        {
-        //            this.Dispatcher.BeginInvoke(new Action<ReturnData>(CP.Update), Priority, new object[] { rd });
-        //        }
-        //    }
-        //}
-
         public void Closing() { }
 
         public void Show() 
@@ -135,7 +124,7 @@ namespace TH_Dashboard
         {
             if (PlugIns != null)
             {
-                foreach (Control_PlugIn CP in PlugIns)
+                foreach (PlugIn CP in PlugIns)
                 {
                     this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(CP.Update_DataEvent), Priority, new object[] { de_d });
                 }
@@ -150,28 +139,29 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        //public List<Device_Client> Devices { get; set; }
-
-        //public List<Configuration> Devices { get; set; }
-
-        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
-
-        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        List<Configuration> devices;
+        public List<Configuration> Devices 
         {
-            //if (PlugIns != null)
-            //{
-            //    foreach (Control_PlugIn CP in PlugIns)
-            //    {
-            //        this.Dispatcher.BeginInvoke(new Action<object, System.Collections.Specialized.NotifyCollectionChangedEventArgs>(CP.Devices_CollectionChanged), Priority, new object[] { sender, e });
-            //    }
-            //} 
+            get { return devices; }
+            set
+            {
+                devices = value;
+
+                if (PlugIns != null)
+                {
+                    foreach (PlugIn plugin in PlugIns)
+                    {
+                        plugin.Devices = devices;
+                    }
+                } 
+            }
         }
 
         #endregion
 
         #region "Options"
 
-        public OptionsPage Options { get; set; }
+        public TH_Global.Page Options { get; set; }
 
         #endregion
 
@@ -212,7 +202,7 @@ namespace TH_Dashboard
             {
                 if (!EnabledPlugIns.Contains(config))
                 {
-                    Control_PlugIn CP = PlugIns.Find(x => x.Title.ToUpper() == config.name.ToUpper());
+                    PlugIn CP = PlugIns.Find(x => x.Title.ToUpper() == config.name.ToUpper());
                     if (CP != null)
                     {
                         try
@@ -221,7 +211,7 @@ namespace TH_Dashboard
                             CP.SubCategories = config.SubCategories;
                             CP.DataEvent += CP_DataEvent;
 
-                            CP.PlugIns = new List<Control_PlugIn>();
+                            CP.PlugIns = new List<PlugIn>();
 
                             if (CP.SubCategories != null)
                             {
@@ -229,7 +219,7 @@ namespace TH_Dashboard
                                 {
                                     foreach (PlugInConfiguration subConfig in subcategory.PlugInConfigurations)
                                     {
-                                        Control_PlugIn sCP = PlugIns.Find(x => x.Title.ToUpper() == subConfig.name.ToUpper());
+                                        PlugIn sCP = PlugIns.Find(x => x.Title.ToUpper() == subConfig.name.ToUpper());
                                         if (sCP != null)
                                         {
                                             CP.PlugIns.Add(sCP);
@@ -337,7 +327,7 @@ namespace TH_Dashboard
                         else oLB.IsSelected = false;
                     }
 
-                    Control_PlugIn cp = lb.DataObject as Control_PlugIn;
+                    PlugIn cp = lb.DataObject as PlugIn;
                     if (cp != null)
                     {
                         foreach (PlugInConfigurationCategory category in SubCategories)

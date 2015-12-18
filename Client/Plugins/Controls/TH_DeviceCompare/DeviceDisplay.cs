@@ -109,15 +109,25 @@ namespace TH_DeviceCompare
             dd.header = "Production Status Times";
             DataItems.Add(dd);
 
+            dd = new DataItem();
+            dd.id = "CurrentProgram";
+            dd.header = "Current Program";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "PreviousProgram";
+            dd.header = "Previous Program";
+            DataItems.Add(dd);
+
             //dd = new DataItem();
             //dd.id = "CNCInfo";
             //dd.header = "CNC Info";
             //DataItems.Add(dd);
 
-            dd = new DataItem();
-            dd.id = "ProductionStatusTimeline";
-            dd.header = "Production Status Timeline";
-            DataItems.Add(dd);
+            //dd = new DataItem();
+            //dd.id = "ProductionStatusTimeline";
+            //dd.header = "Production Status Timeline";
+            //DataItems.Add(dd);
 
         }
 

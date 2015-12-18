@@ -159,9 +159,9 @@
       <Name>TH_Global</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj">
+    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client.csproj">
       <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
-      <Name>TH_PlugIns_Client_Control</Name>
+      <Name>TH_PlugIns_Client</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">

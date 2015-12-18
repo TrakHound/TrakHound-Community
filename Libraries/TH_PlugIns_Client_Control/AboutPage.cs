@@ -3,7 +3,7 @@
 using System.ComponentModel.Composition;
 using System.Windows.Media;
 
-namespace TH_PlugIns_Client_Control
+namespace TH_PlugIns_Client
 {
     [InheritedExport(typeof(AboutPage))]
     public interface AboutPage

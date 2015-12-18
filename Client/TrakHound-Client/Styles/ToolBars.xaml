@@ -9,7 +9,7 @@
                     xmlns:local="clr-namespace:TrakHound_Client"
                     >
 
-    <Style x:Key="ToolBarButtonStyle" TargetType="{x:Type local:NavigationItem}">
+    <!--<Style x:Key="ToolBarButtonStyle" TargetType="{x:Type local:NavigationItem}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="Padding" Value="2"/>
         <Setter Property="BorderThickness" Value="1"/>
@@ -200,7 +200,7 @@
                             </LinearGradientBrush>
                         </Border.BorderBrush>
 
-                        <!--<Border.Background>
+                        --><!--<Border.Background>
                                 <LinearGradientBrush StartPoint="0,0"
                                  EndPoint="0,1">
                                     <LinearGradientBrush.GradientStops>
@@ -212,7 +212,7 @@
                                         </GradientStopCollection>
                                     </LinearGradientBrush.GradientStops>
                                 </LinearGradientBrush>
-                            </Border.Background>-->
+                            </Border.Background>--><!--
                         <DockPanel>
                             <ToggleButton DockPanel.Dock="Right"
                           IsEnabled="{TemplateBinding HasOverflowItems}"
@@ -277,6 +277,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
 
 </ResourceDictionary>

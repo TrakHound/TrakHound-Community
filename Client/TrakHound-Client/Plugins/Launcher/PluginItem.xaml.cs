@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 
 namespace TrakHound_Client.Plugins.Launcher
 {
@@ -33,7 +33,7 @@ namespace TrakHound_Client.Plugins.Launcher
             DataContext = this;
         }
 
-        public Control_PlugIn plugin;
+        public PlugIn plugin;
 
         public ImageSource Image
         {

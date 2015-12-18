@@ -9,6 +9,15 @@
              Margin="0"
              Padding="0"
              >
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_DeviceCompare;component/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <UserControl.ToolTip>
         <ToolTip>
             <StackPanel>
@@ -38,10 +47,10 @@
             <TextBlock Grid.Column="0" Width="10" Text="{Binding SegmentId}" FontSize="8" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="#33ffffff"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding CurrentShift}" Value="true">
-                                <Setter Property="Foreground" Value="#aaffffff"/>
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Dark}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -54,10 +63,10 @@
                 <ProgressBar Height="6" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Margin="5,0" Background="#22ffffff" BorderThickness="0" VerticalAlignment="Center" >
                     <ProgressBar.Style>
                         <Style TargetType="ProgressBar">
-                            <Setter Property="Foreground" Value="#55ffffff"/>
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Hover}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding CurrentShift}" Value="true">
-                                    <Setter Property="Foreground" Value="#fff"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -71,13 +80,13 @@
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Hidden"/>
-                        <Setter Property="Foreground" Value="#33ffffff"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding BreakType}" Value="true">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding CurrentShift}" Value="true">
-                                <Setter Property="Foreground" Value="#aaffffff"/>
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -93,7 +102,7 @@
                     <Setter Property="Background" Value="#00000000"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="#22ffffff"/>
+                            <Setter Property="Background" Value="{StaticResource Shade_Normal}"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>

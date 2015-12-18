@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 
 namespace TrakHound_Client.Plugins.Pages.Installed
 {
