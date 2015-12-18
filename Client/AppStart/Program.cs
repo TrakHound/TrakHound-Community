@@ -19,6 +19,8 @@ namespace AppStart
         static void Main(string[] args)
         {
             CheckForUpdates();
+
+            OpenClient();
         }
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
@@ -32,9 +34,7 @@ namespace AppStart
                 {
                     OpenUpdater();
                 }
-                else OpenClient();
             }
-            else OpenClient();
         }
 
         static void OpenClient()
@@ -45,7 +45,23 @@ namespace AppStart
 
                 //string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\trakhound-client.exe";
 
-                Process.Start(clientPath);
+                Process p = new Process();
+
+                p.StartInfo.FileName = clientPath;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.UseShellExecute = false;
+
+                p.Start();
+
+                string stdout = p.StandardOutput.ReadToEnd();
+                string stderr = p.StandardError.ReadToEnd();
+
+                p.WaitForExit();
+
+                Console.WriteLine("Client Exited with Code : " + p.ExitCode.ToString());
+                Console.WriteLine(stdout);
+                Console.WriteLine(stderr);
             }
             catch (Exception ex) { Console.WriteLine("TrakHound-Client-Updater.OpenClient() :: " + ex.Message); }
         }
@@ -55,11 +71,14 @@ namespace AppStart
             try
             {
 
-                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client-updater.exe";
+                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "trakhound-client-updater.exe";
 
                 //string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client-Updater\bin\Debug\trakhound-client-updater.exe";
 
-                Process.Start(clientPath, "runas");
+                Process p = new Process();
+                p.StartInfo.FileName = clientPath;
+                p.Start();
+                p.WaitForExit();
             }
             catch (Exception ex) { Console.WriteLine("TrakHound-Client-Updater.OpenUpdater() :: " + ex.Message); }
         }
@@ -148,7 +167,6 @@ namespace AppStart
                 Console.WriteLine("AutoUpdater_DeleteRegistryKey() : " + ex.Message);
             }
         }
-
 
     }
 }

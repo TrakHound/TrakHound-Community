@@ -5,7 +5,7 @@
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
         
         Width="300"
-        Height="120"
+        Height="140"
         
         WindowStartupLocation="CenterScreen"
         
@@ -14,7 +14,19 @@
         
         ResizeMode="NoResize"
         Background="#00000000"
+        Icon="TrakHound_Logo_Initials_10.ico"
         >
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Opacity" From="0" To="1" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
+
 
     <Grid x:Name="Root_GRID">
         <Grid.Resources>
@@ -140,17 +152,16 @@
 
             <Grid Grid.Column="1" x:Name="Main_GRID">
 
-                <Border CornerRadius="5">
+                <Border CornerRadius="1">
                     <Border.Background>
-                        <!--<LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">-->
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#ccc" Offset="0"/>
+                            <GradientStop Color="#ddd" Offset="0"/>
                             <GradientStop Color="#fff" Offset="0.5"/>
-                            <GradientStop Color="#ccc" Offset="1"/>
+                            <GradientStop Color="#ddd" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
 
-                    <Border BorderThickness="1" CornerRadius="5" BorderBrush="#aaa" Margin="1">
+                    <Border BorderThickness="1" CornerRadius="1" BorderBrush="#aaa" Margin="1">
 
                         <Grid>
                             <Grid.ColumnDefinitions>

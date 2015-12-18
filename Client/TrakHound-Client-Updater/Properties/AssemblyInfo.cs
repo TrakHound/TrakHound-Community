@@ -8,9 +8,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("TrakHound-Client-Updater")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Auto Update for TrakHound Client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Feenux LLC")]
 [assembly: AssemblyProduct("TrakHound-Client-Updater")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]

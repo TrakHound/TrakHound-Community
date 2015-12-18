@@ -59,6 +59,11 @@ namespace TrakHound_Client
 
         public MainWindow()
         {
+            init();
+        }
+
+        public void init()
+        {
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += currentDomain_UnhandledException;
 

@@ -40,6 +40,9 @@
   <PropertyGroup>
     <StartupObject>TrakHound_Client_Updater.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>TrakHound_Logo_Initials_10.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -124,6 +127,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\TrakHound_Logo_Initials_10_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
