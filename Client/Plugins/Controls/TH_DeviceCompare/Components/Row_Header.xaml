@@ -14,7 +14,15 @@
              Height="50"
              
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -64,7 +72,7 @@
 
         <TextBlock Text="{Binding Text}" Foreground="#66ffffff" Margin="10" FontSize="12" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
 
-        <Rectangle Grid.Row="1" Height="1" Fill="#33ffffff"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Light}"/>
         
     </Grid>
     

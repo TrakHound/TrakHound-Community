@@ -1,0 +1,258 @@
+﻿<Window x:Class="TH_Updater.UpdateDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        
+            xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             
+             Width="300"
+             Height="100"
+        
+            WindowStartupLocation="CenterScreen"
+        
+            WindowStyle="None"
+            AllowsTransparency="True"
+        
+            ResizeMode="NoResize"
+            Background="#00000000"
+             
+            >
+
+    <Grid x:Name="Root_GRID">
+        <Grid.Resources>
+            <GridLength x:Key="ShadowWidth">10</GridLength>
+
+            <Color x:Key="inside">#22000000</Color>
+            <GradientStopCollection x:Key="gradient">
+                <GradientStop Color="#00000000" Offset="1"/>
+                <GradientStop Color="{DynamicResource inside}" Offset="0.1"/>
+            </GradientStopCollection>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <Setter Property="Height" Value="0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+            <RowDefinition Height="*"/>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <Setter Property="Height" Value="0"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                    <Setter Property="Width" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                    <Setter Property="Width" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Column="0">
+                <Rectangle.Fill>
+                    <RadialGradientBrush Center="1,1" RadiusX="1" RadiusY="1" GradientOrigin="1,1" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Rectangle Grid.Column="1">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="0,1" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Rectangle Grid.Column="2">
+                <Rectangle.Fill>
+                    <RadialGradientBrush Center="0,1" RadiusX="1" RadiusY="1" GradientOrigin="0,1" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                    <Setter Property="Width" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                    <Setter Property="Width" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Column="0">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="1,0" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Grid Grid.Column="1" x:Name="Main_GRID">
+
+                <Border CornerRadius="5">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#eee" Offset="0"/>
+                            <GradientStop Color="#fff" Offset="0.5"/>
+                            <GradientStop Color="#eee" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--TrakHound Logo-->
+                        <!--<Image Source="Resources/TrakHound_Logo_10_90px.png" HorizontalAlignment="Left" VerticalAlignment="Center" Height="50" Width="50" Margin="20,20,50,20"/>-->
+
+                        <Grid Grid.Column="1" Margin="20,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!--Loading Animation-->
+                            <!--<loadinganimation:Wheel Foreground="#0080ff" Width="30" Height="30" Margin="0,0,20,0"/>-->
+
+                            <StackPanel Grid.Column="1" Margin="0,10" VerticalAlignment="Center" >
+
+                                <StackPanel Orientation="Horizontal">
+                                    
+                                    <Image  HorizontalAlignment="Left" VerticalAlignment="Center" Height="20" Width="20" Source="Resources/TrakHound_Logo_Initials_10_30px.png" Margin="0,0,10,0"/>
+
+                                    <TextBlock x:Name="applicationName_TXT" Foreground="#333" VerticalAlignment="Center" />
+
+                                </StackPanel>
+
+                                <TextBlock Text="{Binding Status}" Foreground="#888" />
+                                
+                                <ProgressBar Height="10" Margin="0,5,0,0" Value="35" Maximum="100" Foreground="#0080ff" Background="#10000000" BorderBrush="#ccc"/>
+
+                            </StackPanel>
+
+                        </Grid>
+
+                    </Grid>
+
+                </Border>
+               
+            </Grid>
+
+            <Rectangle Grid.Column="2">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                    <Setter Property="Width" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                    <Setter Property="Width" Value="0"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Column="0">
+                <Rectangle.Fill>
+                    <RadialGradientBrush Center="1,0" RadiusX="1" RadiusY="1" GradientOrigin="1,0" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Rectangle Grid.Column="1">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Rectangle Grid.Column="2">
+                <Rectangle.Fill>
+                    <RadialGradientBrush Center="0,0" RadiusX="1" RadiusY="1" GradientOrigin="0,0" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+        </Grid>
+
+    </Grid>
+
+</Window>

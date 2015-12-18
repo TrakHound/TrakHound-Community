@@ -12,9 +12,9 @@
              xmlns:controls="clr-namespace:TrakHound_Client.Controls"
              
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="800"
+             d:DesignHeight="300"
+             d:DesignWidth="800"
              
-             Background="#00000000"
              >
 
     <UserControl.Resources>
@@ -25,19 +25,12 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">0</GridLength>
-
-            <Color x:Key="inside">#22000000</Color>
-            <GradientStopCollection x:Key="gradient">
-                <GradientStop Color="#00000000" Offset="1"/>
-                <GradientStop Color="{DynamicResource inside}" Offset="0.1"/>
-            </GradientStopCollection>
-        </Grid.Resources>
+    <Grid Background="{StaticResource Accent_Normal}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="0"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.Style>
             <Style TargetType="Grid">
@@ -70,51 +63,33 @@
                 </Style.Triggers>
             </Style>
         </Grid.Style>
-        
-        <!--Top Shadow-->
-        <Grid Grid.Row="0">
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="0,1" GradientStops="{DynamicResource gradient}" />
-            </Grid.Background>
+
+        <!--Toolbar-->
+        <Grid Grid.Row="0" MinHeight="30" Background="#33000000">
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+
+                <controls:TH_ToolBarItem Clicked="Minimize_ToolBarItem_Clicked" Image="/TrakHound-Client;component/Resources/Carrot_Arrow_Down_01.png" ToolTip="Hide Developer Console"/>
+
+                <TextBlock Text="Developer Console" Foreground="#88ffffff" VerticalAlignment="Center" FontSize="12pt" Margin="10,0"/>
+
+            </StackPanel>
+
         </Grid>
 
-        <!--Console Log-->
-        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+        <!--Seperator-->
+        <Rectangle Grid.Row="1" Height="1" Fill="#66000000"/>
 
-            <!--Toolbar-->
-            <Grid Grid.Row="0" MinHeight="30" Background="#33000000">
+        <!--Content-->
+        <Grid Grid.Row="2">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#66000000" Offset="0"/>
+                    <GradientStop Color="#77000000" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-
-                    <controls:TH_ToolBarItem Clicked="Minimize_ToolBarItem_Clicked" Image="/TrakHound-Client;component/Resources/Carrot_Arrow_Down_01.png" ToolTip="Hide Developer Console"/>
-
-                    <TextBlock Text="Developer Console" Foreground="#88ffffff" VerticalAlignment="Center" FontSize="12pt" Margin="10,0"/>
-
-                </StackPanel>
-
-            </Grid>
-
-            <!--Seperator-->
-            <Rectangle Grid.Row="1" Height="1" Fill="#66000000"/>
-
-            <!--Content-->
-            <Grid Grid.Row="2">
-                <Grid.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#66000000" Offset="0"/>
-                        <!--<GradientStop Color="#88000000" Offset="0.4"/>
-                        <GradientStop Color="#88000000" Offset="0.6"/>-->
-                        <GradientStop Color="#77000000" Offset="1"/>
-                    </LinearGradientBrush>
-                </Grid.Background>
-
-                <DataGrid ItemsSource="{Binding Console_Output}" 
+            <DataGrid ItemsSource="{Binding Console_Output}" 
                     Loaded="DataGrid_Loaded"
                     LoadingRow="DataGrid_LoadingRow" 
                     AutoGenerateColumns="False"
@@ -126,123 +101,121 @@
                     HeadersVisibility="None"
                     IsReadOnly="True" 
                     >
-                    <DataGrid.Resources>
+                <DataGrid.Resources>
 
-                        <!--Standard CellStyle (Centered Text)-->
-                        <Style x:Key="DGC_Centered" TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0,0,0,0"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Border Background="{TemplateBinding Background}"
+                    <!--Standard CellStyle (Centered Text)-->
+                    <Style x:Key="DGC_Centered" TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                    <Border Background="{TemplateBinding Background}"
                                             Margin="0"
                                             Padding="10,0"
                                             BorderBrush="{TemplateBinding BorderBrush}" 
                                             BorderThickness="0"
                                             >
-                                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsFocused" Value="false">
-                                    <Setter Property="Foreground" Value="#fff"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="#00000000"/>
-                                    <Setter Property="BorderBrush" Value="#00000000"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
+                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsFocused" Value="false">
+                                <Setter Property="Foreground" Value="#fff"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="#00000000"/>
+                                <Setter Property="BorderBrush" Value="#00000000"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
 
-                        <!--ConsoleText CellStyle (Left Align Text)-->
-                        <Style x:Key="DGC_Left" TargetType="DataGridCell">
-                            <Setter Property="BorderThickness" Value="0,0,0,0"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Border Background="{TemplateBinding Background}"
+                    <!--ConsoleText CellStyle (Left Align Text)-->
+                    <Style x:Key="DGC_Left" TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                    <Border Background="{TemplateBinding Background}"
                                             Margin="0"
                                             Padding="10,0"
                                             BorderBrush="{TemplateBinding BorderBrush}" 
                                             BorderThickness="0"
                                             >
-                                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsFocused" Value="false">
-                                    <Setter Property="Foreground" Value="#fff"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="#00000000"/>
-                                    <Setter Property="BorderBrush" Value="#00000000"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.Resources>
+                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsFocused" Value="false">
+                                <Setter Property="Foreground" Value="#fff"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="#00000000"/>
+                                <Setter Property="BorderBrush" Value="#00000000"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" Binding="{Binding Row}" CellStyle="{StaticResource DGC_Centered}"/>
-                        <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" CellStyle="{StaticResource DGC_Centered}"/>
-                        <DataGridTextColumn Header="Text" Binding="{Binding Text}" Width="*" CellStyle="{StaticResource DGC_Left}"/>
-                    </DataGrid.Columns>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Binding="{Binding Row}" CellStyle="{StaticResource DGC_Centered}"/>
+                    <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" CellStyle="{StaticResource DGC_Centered}"/>
+                    <DataGridTextColumn Header="Text" Binding="{Binding Text}" Width="*" CellStyle="{StaticResource DGC_Left}"/>
+                </DataGrid.Columns>
 
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="#33000000"/>
-                            <Setter Property="MinHeight" Value="30"/>
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="FontSize" Value="12"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-                                        <Border Background="{TemplateBinding Background}"
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#33000000"/>
+                        <Setter Property="MinHeight" Value="30"/>
+                        <Setter Property="Foreground" Value="#fff"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                    <Border Background="{TemplateBinding Background}"
                                             Margin="0"
                                             Padding="10,0"
                                             BorderBrush="{TemplateBinding BorderBrush}" 
                                             BorderThickness="0"
                                             >
-                                            <ContentPresenter Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGrid.ColumnHeaderStyle>
+                                        <ContentPresenter Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
 
-                    <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="Background" Value="#00000000" />
-                            <Setter Property="BorderBrush" Value="#33000000" />
-                            <Setter Property="BorderThickness" Value="0,0,0,0" />
-                            <Setter Property="Foreground" Value="#fff" />
-                            <Setter Property="Height" Value="20"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#11ffffff"/>
-                                    <Setter Property="BorderBrush" Value="#00000000"/>
-                                    <Setter Property="Foreground" Value="#fff"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="#22ffffff"/>
-                                    <Setter Property="BorderBrush" Value="#00000000"/>
-                                    <Setter Property="Foreground" Value="#fff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.RowStyle>
-                </DataGrid>
-
-            </Grid>
-
-            <!--Seperator-->
-            <Rectangle Grid.Row="3" Height="1" Fill="#66000000"/>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="Background" Value="#00000000" />
+                        <Setter Property="BorderBrush" Value="#33000000" />
+                        <Setter Property="BorderThickness" Value="0,0,0,0" />
+                        <Setter Property="Foreground" Value="#fff" />
+                        <Setter Property="Height" Value="20"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#11ffffff"/>
+                                <Setter Property="BorderBrush" Value="#00000000"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="#22ffffff"/>
+                                <Setter Property="BorderBrush" Value="#00000000"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>
 
         </Grid>
+
+        <!--Seperator-->
+        <Rectangle Grid.Row="3" Height="1" Fill="#66000000"/>
 
     </Grid>
     

@@ -71,7 +71,7 @@
                             <Border BorderThickness="1" CornerRadius="1" Margin="0,5,10,5" Background="{StaticResource Window_Background}">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#aaa"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=search_TXT}" Value="true">
                                                 <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
@@ -135,7 +135,7 @@
                     </Grid>
 
                     <!--List-->
-                    <Border Grid.Row="2" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="300" VerticalAlignment="Stretch" Background="{StaticResource Window_Background}">
+                    <Border Grid.Row="2" CornerRadius="2" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Margin="0,10" Width="300" VerticalAlignment="Stretch" Background="{StaticResource Window_Background}">
 
                         <Grid>
 
@@ -242,7 +242,7 @@
                     </StackPanel>
 
                     <!--Details-->
-                    <Border Grid.Row="1" BorderBrush="#ccc" BorderThickness="0,1,0,0">
+                    <Border Grid.Row="1" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,1,0,0">
 
                         <Grid Margin="0,10,0,0">
                             <Grid.RowDefinitions>
@@ -252,7 +252,7 @@
 
                             <TextBlock Text="Details" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                            <Border Grid.Row="1" CornerRadius="2" BorderBrush="#aaa" BorderThickness="1" Margin="0,10" Width="450" VerticalAlignment="Stretch">
+                            <Border Grid.Row="1" CornerRadius="2" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Margin="0,10" Width="450" VerticalAlignment="Stretch">
 
                                 <Grid>
                                     <Grid.Style>

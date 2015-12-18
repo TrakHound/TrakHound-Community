@@ -180,10 +180,10 @@
                             <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#aaa"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
-                                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -192,7 +192,7 @@
                                 <Grid Margin="10,0">
 
                                     <!--Instructions-->
-                                    <TextBlock Text="Enter your username or email" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0" >
+                                    <TextBlock Text="Enter your username or email" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -206,7 +206,7 @@
                                     </TextBlock>
 
                                     <!--User Input-->
-                                    <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black" TextChanged="username_TXT_TextChanged"/>
+                                    <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black" TextChanged="username_TXT_TextChanged"/>
 
                                 </Grid>
 
@@ -216,10 +216,10 @@
                             <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="#aaa"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
-                                                <Setter Property="BorderBrush" Value="#0080ff"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -228,7 +228,7 @@
                                 <Grid Margin="10,0">
 
                                     <!--Instructions-->
-                                    <TextBlock Text="Password" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" Margin="2,0">
+                                    <TextBlock Text="Password" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -242,19 +242,11 @@
                                     </TextBlock>
 
                                     <!--User Input-->
-                                    <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="#333" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged" GotFocus="password_TXT_GotFocus"/>
+                                    <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged" GotFocus="password_TXT_GotFocus"/>
 
                                 </Grid>
 
                             </Border>
-                            
-                            <!--Username--><!--
-                            <th_wpf:TextBox x:Name="username_TXT" Instructions="Enter your username or email" Margin="10,10,0,15" EnterPressed="UserControl_PreviewKeyDown" TextChanged="username_TXT_TextChanged" Focusable="True"/>
-
-
-                            --><!--Password--><!--
-                            <th_wpf:PasswordBox x:Name="password_TXT" Instructions="Password" Margin="10,0,0,0" EnterPressed="UserControl_PreviewKeyDown" PasswordChanged="password_TXT_PasswordChanged" Focusable="True"/>-->
-
 
                             <!--Remember Me Enabled Text and Checkbox-->
                             <Grid Margin="10,0">
@@ -316,7 +308,7 @@
                         </Grid.Style>
 
                         <!--Profile Image-->
-                        <Border x:Name="profileimage_BD" Margin="10" BorderThickness="1" BorderBrush="#ccc" CornerRadius="2" Height="120" Width="120" VerticalAlignment="Top">
+                        <Border x:Name="profileimage_BD" Margin="10" BorderThickness="1" BorderBrush="{StaticResource Shade_Normal}" CornerRadius="2" Height="120" Width="120" VerticalAlignment="Top">
 
                             <Grid>
 
@@ -641,7 +633,6 @@
                                 </Grid.Style>
 
                                 <th_wpf:Button_01 Clicked="Login_Clicked" Text="Login" AlternateStyle="True" Height="40" HorizontalAlignment="Right" />
-
 
                                 <Grid>
                                     <Grid.Style>

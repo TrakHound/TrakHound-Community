@@ -11,8 +11,7 @@
                           
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800"
-             
-             
+                        
              Loaded="UserControl_Loaded"
              >
 
@@ -30,7 +29,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="{StaticResource Accent_Normal}" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" Background="{StaticResource Accent_Normal}" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,0,1,0">
             
             <StackPanel x:Name="Pages_STACK" Margin="0,40" />
             

@@ -42,8 +42,6 @@ namespace TrakHound_Client.Options.Pages.Updates
 
             if (updateBehavior == 0) AutoUpdater_Start();
             if (updateBehavior == 1) ManualUpdater_Start();
-
-            Download_BT.AlternateStyle = true;
         }
 
         int updateBehavior = 0;
@@ -59,7 +57,7 @@ namespace TrakHound_Client.Options.Pages.Updates
         {
             UpdateCheck updateCheck = new UpdateCheck();
             updateCheck.AppInfoReceived += AutoUpdater_AppInfoReceived;
-            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.txt");
+            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.json");
         }
 
         void AutoUpdater_AppInfoReceived(UpdateCheck.AppInfo info)
@@ -76,11 +74,6 @@ namespace TrakHound_Client.Options.Pages.Updates
                 Console.WriteLine("Update URL : " + info.updateUrl);
                 Console.WriteLine("File Size : " + info.size);
                 Console.WriteLine("--------------------------");
-
-                // Run Updater
-                Updater updater = new Updater();
-                updater.assembly = Assembly.GetExecutingAssembly();
-                updater.Start(info.updateUrl);
 
                 this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
             }
@@ -103,6 +96,11 @@ namespace TrakHound_Client.Options.Pages.Updates
             {
                 if (version < latestVersion)
                 {
+                    // Run Updater
+                    Updater updater = new Updater();
+                    updater.assembly = Assembly.GetExecutingAssembly();
+                    updater.Start(info.updateUrl);
+
                     Console.WriteLine("Update Available : " + latestVersion.ToString());
 
                     // Add Notification to Message Center
@@ -142,7 +140,7 @@ namespace TrakHound_Client.Options.Pages.Updates
         {
             UpdateCheck updateCheck = new UpdateCheck();
             updateCheck.AppInfoReceived += ManualUpdater_AppInfoReceived;
-            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.txt");
+            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.json");
         }
 
         void ManualUpdater_AppInfoReceived(UpdateCheck.AppInfo info)
@@ -251,6 +249,8 @@ namespace TrakHound_Client.Options.Pages.Updates
                                     Assembly assembly = Assembly.GetAssembly(CP.GetType());
                                     Version version = assembly.GetName().Version;
 
+                                    ui.assembly = assembly;
+                                    ui.version = version;
                                     ui.PluginVersion = "v" + version.ToString();
 
                                     // Author Info
@@ -263,7 +263,7 @@ namespace TrakHound_Client.Options.Pages.Updates
                                     Plugin_STACK.Children.Add(ui);
                                 }
                             }
-                            catch { }
+                            catch (Exception ex) { Console.WriteLine("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
                         }
                     }
 
@@ -288,6 +288,8 @@ namespace TrakHound_Client.Options.Pages.Updates
                                         Assembly assembly = Assembly.GetAssembly(sCP.GetType());
                                         Version version = assembly.GetName().Version;
 
+                                        ui.assembly = assembly;
+                                        ui.version = version;
                                         ui.PluginVersion = "v" + version.ToString();
 
                                         // Author Info

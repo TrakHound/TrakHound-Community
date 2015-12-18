@@ -49,7 +49,7 @@ namespace TH_StatusData
 
         #region "Update Information"
 
-        public string UpdateFileURL { get { return null; } }
+        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/statusdata-appinfo.json"; } }
 
         #endregion
 

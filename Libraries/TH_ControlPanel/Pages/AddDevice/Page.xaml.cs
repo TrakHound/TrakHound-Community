@@ -184,10 +184,40 @@ namespace TH_DeviceManager.Pages.AddDevice
             shareditems_search = new List<Shared.SharedListItem>();
             SharedList.Clear();
 
+            //items = items.OrderByDescending(x => x.downloads).ToList();
+
+            //foreach (Shared.SharedListItem item in items)
+            //{
+            //    LoadSharedItems_GUI(item, null);
+
+            //    //ThreadPool.QueueUserWorkItem(new WaitCallback(LoadSharedItems_Worker2), item);
+            //}
+
+            //LoadSharedItems_Finish();
+
             if (LoadShared_THREAD != null) LoadShared_THREAD.Abort();
 
             LoadShared_THREAD = new Thread(new ParameterizedThreadStart(LoadSharedItems_Worker));
             LoadShared_THREAD.Start(items);
+        }
+
+        void LoadSharedItems_Worker2(object o)
+        {
+            if (o != null)
+            {
+                Shared.SharedListItem item = (Shared.SharedListItem)o;
+
+                System.Drawing.Image img = null;
+
+                // Set Image --------------------------------------------
+                if (item.image_url != null)
+                {
+                    img = Images.GetImage(item.image_url, userDatabaseSettings);
+                }
+                // ------------------------------------------------------
+
+                this.Dispatcher.BeginInvoke(new Action<Shared.SharedListItem, System.Drawing.Image>(LoadSharedItems_GUI), priority, new object[] { item, img });
+            }
         }
 
         void LoadSharedItems_Worker(object o)
@@ -196,6 +226,8 @@ namespace TH_DeviceManager.Pages.AddDevice
             {
                 List<Shared.SharedListItem> items = (List<Shared.SharedListItem>)o;
 
+                items = items.OrderByDescending(x => x.downloads).ToList();
+
                 foreach (Shared.SharedListItem item in items)
                 {
                     System.Drawing.Image img = null;
@@ -203,7 +235,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                     // Set Image --------------------------------------------
                     if (item.image_url != null)
                     {
-                        img = Images.GetImage(item.image_url, userDatabaseSettings);                   
+                        img = Images.GetImage(item.image_url, userDatabaseSettings);
                     }
                     // ------------------------------------------------------
 

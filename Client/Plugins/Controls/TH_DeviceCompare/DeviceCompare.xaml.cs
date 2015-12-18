@@ -78,7 +78,7 @@ namespace TH_DeviceCompare
 
         #region "Update Information"
 
-        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/devicecompare-appinfo.txt"; } }
+        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/devicecompare-appinfo.json"; } }
 
         #endregion
 

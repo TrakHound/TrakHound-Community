@@ -117,6 +117,10 @@ namespace TH_Device_Server
         void c_CurrentError(Current.ErrorData errorData)
         {
             UpdateProcessingStatus("Current Error");
+
+            Thread.Sleep(configuration.Agent.Current_Heartbeat);
+
+            Current_Run();
         }
 
         /// <summary>

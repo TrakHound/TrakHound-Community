@@ -73,7 +73,7 @@ namespace TH_TableManager
 
         #region "Update Information"
 
-        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/tablemanager-appinfo.txt"; } }
+        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/tablemanager-appinfo.json"; } }
 
         #endregion
 

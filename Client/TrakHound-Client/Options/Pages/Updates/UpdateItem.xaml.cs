@@ -39,6 +39,8 @@ namespace TrakHound_Client.Options.Pages.Updates
 
         MainWindow mw;
 
+        public Assembly assembly { get; set; }
+
         public string UpdateFileUrl { get; set; }
 
 
@@ -71,11 +73,6 @@ namespace TrakHound_Client.Options.Pages.Updates
                 Console.WriteLine("File Size : " + info.size);
                 Console.WriteLine("--------------------------");
 
-                // Run Updater
-                Updater updater = new Updater();
-                updater.assembly = Assembly.GetExecutingAssembly();
-                updater.Start(info.updateUrl);
-
                 this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
             }
         }
@@ -83,20 +80,26 @@ namespace TrakHound_Client.Options.Pages.Updates
         void AutoUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
         {
             // Check if version is Up-to-date
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            Version version = assembly.GetName().Version;
+            //System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            //Version version = assembly.GetName().Version;
 
-            PluginVersion = "v" + version.ToString();
+            //PluginVersion = "v" + version.ToString();
+
 
             Version latestVersion = null;
             Version.TryParse(info.version, out latestVersion);
 
             PluginUpdateShown = false;
 
-            if (latestVersion != null)
+            if (latestVersion != null && version != null)
             {
                 if (version < latestVersion)
                 {
+                    // Run Updater
+                    Updater updater = new Updater();
+                    updater.assembly = assembly;
+                    updater.Start(info.updateUrl);
+
                     Console.WriteLine("Update Available : " + latestVersion.ToString());
 
                     // Add Notification to Message Center
@@ -160,17 +163,17 @@ namespace TrakHound_Client.Options.Pages.Updates
         void ManualUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
         {
             // Check if version is Up-to-date
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            Version version = assembly.GetName().Version;
+            //System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            //Version version = assembly.GetName().Version;
 
-            PluginVersion = "v" + version.ToString();
+            //PluginVersion = "v" + version.ToString();
 
             Version latestVersion = null;
             Version.TryParse(info.version, out latestVersion);
 
             PluginUpdateShown = false;
 
-            if (latestVersion != null)
+            if (latestVersion != null && version != null)
             {
                 if (version < latestVersion)
                 {
@@ -215,6 +218,7 @@ namespace TrakHound_Client.Options.Pages.Updates
             DependencyProperty.Register("PluginImage", typeof(ImageSource), typeof(UpdateItem), new PropertyMetadata(null));
 
 
+        public Version version { get; set; }
 
         public string PluginVersion
         {

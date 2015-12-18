@@ -25,7 +25,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource Accent_Normal}">
+    <Grid Background="Green">
 
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
@@ -73,7 +73,7 @@
 
                     </Grid>
 
-                    <Rectangle Grid.Column="1" Width="1" Fill="#66ffffff"/>
+                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>
 
                     <!--Column Headers-->
                     <ItemsControl Grid.Column="2" ItemsSource="{Binding ColumnHeaders}">
@@ -110,7 +110,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Rectangle Grid.Row="0" Height="1" Fill="#66ffffff" Margin="0" />
+                        <Rectangle Grid.Row="0" Height="1" Fill="{StaticResource Shade_Light}" Margin="0" />
 
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">
 
@@ -125,7 +125,7 @@
                                 <ItemsControl ItemsSource="{Binding RowHeaders}"/>
 
                                 <!--Separator-->
-                                <Rectangle Grid.Column="1" Width="1" Fill="#66ffffff" Margin="0" />
+                                <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}" Margin="0" />
 
                                 <!--Columns-->
                                 <ItemsControl ItemsSource="{Binding Columns}" Grid.Column="2">
@@ -161,7 +161,7 @@
                 </Style>
             </Grid.Style>
 
-            <TextBlock FontSize="18pt" Foreground="#fff" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">     
+            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">     
                 No Devices Found <LineBreak/>
                 Click on the 'Main Menu' button and open 'Device Manager'
             </TextBlock>
@@ -181,7 +181,7 @@
                 </Style>
             </Grid.Style>
 
-            <TextBlock FontSize="18pt" Foreground="#fff" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
+            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
                 Not Logged In <LineBreak/>
                 Click the 'Login' button above to login
             </TextBlock>

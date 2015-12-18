@@ -165,7 +165,7 @@
                         <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="{StaticResource Window_Background}">
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
@@ -303,7 +303,7 @@
                         <Border  BorderThickness="1" CornerRadius="1" Margin="0,5,10,0" Background="{StaticResource Window_Background}">
                             <Border.Style>
                                 <Style TargetType="Border">
-                                    <Setter Property="BorderBrush" Value="#aaa"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>

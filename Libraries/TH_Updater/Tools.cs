@@ -13,8 +13,10 @@ namespace TH_Updater
         {
             try
             {
-                WebClient webClient = new WebClient();
-                webClient.DownloadFile(url, localFile);
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.DownloadFile(url, localFile);
+                }
             }
             catch (Exception ex)
             {

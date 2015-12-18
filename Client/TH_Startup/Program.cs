@@ -17,98 +17,46 @@ namespace TH_Startup
         [STAThread]
         static void Main(string[] args)
         {
-            Update();
-
-            OpenClient();
+            CheckForUpdates();
         }
 
-        static void Update()
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+        static void CheckForUpdates()
         {
             string[] keyNames = GetRegistryKeyNames();
             if (keyNames != null)
             {
-                foreach (string keyName in keyNames)
+                if (keyNames.Length > 0)
                 {
-                    Console.WriteLine("Registry Update Key Found :: " + keyName);
-
-                    string keyValue = GetRegistryKey(keyName);
-                    if (keyValue != null)
-                    {
-                        if (keyValue.Contains(";"))
-                        {
-                            string unzipDirectory = keyValue.Substring(0, keyValue.IndexOf(';'));
-                            string copyDirectory = keyValue.Substring(keyValue.IndexOf(';') + 1);
-
-                            Console.WriteLine(keyName + " = " + keyValue);
-                            Console.WriteLine("unzipDirectory = " + unzipDirectory);
-                            Console.WriteLine("copyDirectory = " + copyDirectory);
-
-                            foreach (string filePath in Directory.GetFiles(unzipDirectory))
-                            {
-                                string fileName = Path.GetFileName(filePath);
-
-                                string copyPath = copyDirectory + "\\" + fileName;
-
-                                try
-                                {
-                                    File.Copy(filePath, copyPath, true);
-                                }
-                                catch { }
-                            }
-                            DeleteRegistryKey(keyName);
-                        }
-                    }
+                    OpenUpdater();
                 }
+                else OpenClient();
             }
+            else OpenClient();
         }
-
-        /// <summary>
-        /// Open/Start the TrakHound-Client application
-        /// </summary>       
+    
         static void OpenClient()
         {
-            //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+            try
+            {
+                //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
 
-            //Assembly assembly = Assembly.LoadFrom(clientPath);
-            //Type[] types = assembly.GetTypes();
-            //foreach (Type t in types)
-            //{
-            //    if (t.FullName == "TrakHound_Client.MainWindow")
-            //    {
-            //        try
-            //        {
-            //            object o = Activator.CreateInstance(t);
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            Console.WriteLine(ex.Message);
-            //        }
-            //        break;
+                string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\trakhound-client.exe";
 
+                Process.Start(clientPath);
+            }
+            catch (Exception ex) { Console.WriteLine("TH_StartUp.OpenClient() :: " + ex.Message); }
+        }
 
-            //        //MethodInfo method = t.GetMethod("Init");
-            //        //if (method != null)
-            //        //{
-            //        //    try
-            //        //    {
-            //        //        object o = Activator.CreateInstance(t);
-            //        //    }
-            //        //    catch (Exception ex)
-            //        //    {
-            //        //        Console.WriteLine(ex.Message);
-            //        //    }
-            //        //    break;
-            //        //}
-
-            //    }  
-            //}
-
-
-
+        static void OpenUpdater()
+        {
             try
             {
 
-                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+                //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+
+                string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client-Updater\bin\Debug\trakhound-client-updater.exe";
 
                 Process.Start(clientPath);
             }

@@ -588,7 +588,7 @@
 
         </Grid>
 
-        <Rectangle Grid.Column="1" Width="1" Fill="#66ffffff"/>
+        <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>
 
     </Grid>
 

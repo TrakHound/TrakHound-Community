@@ -13,7 +13,15 @@
              Width="200"
              MinHeight="50"
              >
-    
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid PreviewMouseDown="Control_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -46,7 +54,7 @@
             </ContentControl.Style>
         </ContentControl>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="#33ffffff"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Light}"/>
 
     </Grid>
     

@@ -81,7 +81,7 @@ namespace TH_Dashboard
 
         #region "Update Information"
 
-        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/dashboard-appinfo.txt"; } }
+        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/dashboard-appinfo.json"; } }
 
         #endregion
 
@@ -300,7 +300,7 @@ namespace TH_Dashboard
 
             foreach (PlugInConfigurationCategory category in SubCategories)
             {
-                PlugInConfiguration config = category.PlugInConfigurations.Find(x => x.name.ToUpper() == LB.Text.ToUpper());
+                PlugInConfiguration config = category.PlugInConfigurations.Find(x => GetPluginName(x.name) == GetPluginName(LB.Text));
                 if (config != null)
                 {
                     currentPage = config;

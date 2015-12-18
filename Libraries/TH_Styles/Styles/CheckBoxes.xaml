@@ -50,13 +50,13 @@
                                     Grid.Column="1" Grid.ColumnSpan="5"
                                     Grid.Row="2" Grid.RowSpan="5"
                                     BorderThickness="1"
-                                    BorderBrush="#808080" />
+                                    BorderBrush="{StaticResource Shade_Normal}" />
 
                                 <Path Name="InnerPath"
                                   Grid.Column="1" Grid.ColumnSpan="5"
                                   Grid.Row="2" Grid.RowSpan="5"
                                   Data="M31,5 L19.5,5 19.5,19.5 34.5,19.5 34.5,11.75"
-                                  Stretch="Fill" Stroke="#808080"/>
+                                  Stretch="Fill" Stroke="{StaticResource Shade_Normal}"/>
 
                                 <Path Name="CheckMark"
                                   Grid.Column="2" Grid.ColumnSpan="5"
@@ -65,7 +65,6 @@
                                   Data="M9.07743946676476E-09,4.31805768640244L4.68740335877841,8.86361158398516C4.68740335877841,8.86361158398516,16.3281249985376,-2.42451336648723,16.3281249985376,-2.42451336648723L14.0622100581796,-4.77304938341948 4.68740335877846,4.31805791992662 2.22656251699567,1.93164208562579z"
                                   Fill="{StaticResource Accent_Normal}"
                                   Stretch="Fill"/>
-                                  <!--Stroke="{StaticResource TH_Blue_Dark}" />-->
 
                                 <Path Name="InderminateMark"
                                   Grid.Column="3"
@@ -74,7 +73,7 @@
                                   Opacity="0"
                                   Stretch="Fill"
                                   StrokeThickness="0"
-                                  Fill="#808080" />
+                                  Fill="{StaticResource Shade_Normal}" />
                             </Grid>
                         </BulletDecorator.Bullet>
                         <VisualStateManager.VisualStateGroups>
@@ -113,11 +112,11 @@
                             <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource Accent_Hover}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="CheckMark" Property="Fill" Value="#cccccc" />
-                            <Setter TargetName="CheckMark" Property="Stroke" Value="#cccccc" />
-                            <Setter TargetName="InnerPath" Property="Stroke" Value="#cccccc" />
-                            <Setter TargetName="InderminateMark" Property="Fill" Value="#cccccc" />
-                            <Setter TargetName="InnerBorder" Property="BorderBrush" Value="#cccccc" />
+                            <Setter TargetName="CheckMark" Property="Fill" Value="{StaticResource Shade_Normal}" />
+                            <Setter TargetName="CheckMark" Property="Stroke" Value="{StaticResource Shade_Normal}" />
+                            <Setter TargetName="InnerPath" Property="Stroke" Value="{StaticResource Shade_Normal}" />
+                            <Setter TargetName="InderminateMark" Property="Fill" Value="{StaticResource Shade_Normal}" />
+                            <Setter TargetName="InnerBorder" Property="BorderBrush" Value="{StaticResource Shade_Normal}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

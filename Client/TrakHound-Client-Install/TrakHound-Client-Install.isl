@@ -344,6 +344,7 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>AppStart.Primary_output</td><td>{E3C0CAC1-8478-455D-9C52-31C6436386A2}</td><td>INSTALLDIR</td><td>2</td><td/><td>appstart.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{8B324531-048E-4FD1-9F77-273953994289}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{A6DEE5EF-A535-49C7-A11E-6396FF2C529B}</td><td>PLUGINS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{BF4F49D8-9DDC-4838-AE29-85FEBA154127}</td><td>PAGES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -360,7 +361,6 @@
 		<row><td>TH_MySQL.Content_Files</td><td>{E92876F4-68C0-4F71-8641-404131B6A590}</td><td>DATABASE_DIR</td><td>2</td><td/><td>th_mysql.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_MySQL.Primary_output1</td><td>{2BAA0937-20A6-4A3E-B183-1282B8FA2F6E}</td><td>DATABASE_DIR</td><td>2</td><td/><td>th_mysql.primary_output1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_PlugIns_Client_Control.Primary_output</td><td>{3AE72CF1-2044-48DE-B14A-D66BF96EBE99}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_plugins_client_control.pr</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>TH_Startup.Primary_output</td><td>{8CBEC569-0CC8-4C79-B486-7D3427B18DAA}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_startup.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_StatusData.Primary_output</td><td>{C16F6A8D-5A92-41D2-9F7C-82E00089F5C0}</td><td>PAGES</td><td>2</td><td/><td>th_statusdata.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Styles.Primary_output</td><td>{D34A8A1A-A9E0-415C-A10E-D0E8C76F96F1}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_styles.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_TableManager.Primary_output</td><td>{2551BF00-53DC-4D0F-8920-3E0EEA385180}</td><td>PAGES</td><td>2</td><td/><td>th_tablemanager.primary_outp</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -369,6 +369,7 @@
 		<row><td>TH_WPF.Primary_output</td><td>{57ECB012-A9C7-4D00-BFC5-CB2686EF2DF2}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_wpf.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Client.Content_Files</td><td>{484E3E65-63DC-48FD-970D-747A7AF318A2}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_client.content_fil</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TrakHound_Client.Primary_output</td><td>{95E070AE-54F1-40A2-AC1F-BD71F512433B}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_client.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TrakHound_Client_Updater.Primary_output</td><td>{89AC3DE9-942F-49D3-A6CC-42207CBDBADC}</td><td>INSTALLDIR</td><td>2</td><td/><td>trakhound_client_updater.pri</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1905,6 +1906,7 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>AppStart.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
@@ -1921,7 +1923,6 @@
 		<row><td>AlwaysInstall</td><td>TH_MySQL.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>TH_MySQL.Primary_output1</td></row>
 		<row><td>AlwaysInstall</td><td>TH_PlugIns_Client_Control.Primary_output</td></row>
-		<row><td>AlwaysInstall</td><td>TH_Startup.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_StatusData.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_Styles.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TH_TableManager.Primary_output</td></row>
@@ -1930,6 +1931,7 @@
 		<row><td>AlwaysInstall</td><td>TH_WPF.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Client.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>TrakHound_Client.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TrakHound_Client_Updater.Primary_output</td></row>
 	</table>
 
 	<table name="File">
@@ -1944,6 +1946,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>appstart.primary_output</td><td>AppStart.Primary_output</td><td>AppStart.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AppStart&gt;|Built</td><td>3</td><td/></row>
 		<row><td>mysql.data.dll</td><td>MySql.Data.dll</td><td>MYSQLD~1.DLL|MySql.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\MySql.Data.dll</td><td>1</td><td/></row>
 		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\bin\Debug\Newtonsoft.Json.dll</td><td>1</td><td/></row>
 		<row><td>th_configuration.primary_out</td><td>TH_Configuration.Primary_output</td><td>TH_Configuration.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Configuration&gt;|Built</td><td>3</td><td/></row>
@@ -1956,7 +1959,6 @@
 		<row><td>th_mysql.content_files</td><td>TH_MySQL.Content_Files</td><td>TH_MySQL.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MySQL&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>th_mysql.primary_output1</td><td>TH_MySQL.Primary_output1</td><td>TH_MySQL.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MySQL&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_plugins_client_control.pr</td><td>TH_PlugIns_Client_Control.Primary_output</td><td>TH_PlugIns_Client_Control.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_PlugIns_Client_Control&gt;|Built</td><td>3</td><td/></row>
-		<row><td>th_startup.primary_output</td><td>TH_Startup.Primary_output</td><td>TH_Startup.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Startup&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_statusdata.primary_output</td><td>TH_StatusData.Primary_output</td><td>TH_StatusData.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_StatusData&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_styles.primary_output</td><td>TH_Styles.Primary_output</td><td>TH_Styles.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Styles&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_tablemanager.primary_outp</td><td>TH_TableManager.Primary_output</td><td>TH_TableManager.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_TableManager&gt;|Built</td><td>3</td><td/></row>
@@ -1965,6 +1967,7 @@
 		<row><td>th_wpf.primary_output</td><td>TH_WPF.Primary_output</td><td>TH_WPF.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_WPF&gt;|Built</td><td>3</td><td/></row>
 		<row><td>trakhound_client.content_fil</td><td>TrakHound_Client.Content_Files</td><td>TrakHound-Client.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Client&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>trakhound_client.primary_out</td><td>TrakHound_Client.Primary_output</td><td>TrakHound-Client.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;TrakHound-Client&gt;|Built</td><td>3</td><td/></row>
+		<row><td>trakhound_client_updater.pri</td><td>TrakHound_Client_Updater.Primary_output</td><td>TrakHound-Client-Updater.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TrakHound-Client-Updater&gt;|Built</td><td>3</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2108,6 +2111,7 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>AppStart.Primary_output</td><td/><td/><td>_AB6358C7_AB00_4671_BA47_750EE76E9CE8_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_1702FB50_04BA_4AD8_A27C_173FCBBE9210_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_925760FC_E919_4725_A6E7_541F89732D91_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_9C3BC4C3_AA16_4DB0_8F2C_556E170769CD_FILTER</td><td/><td/><td/><td/></row>
@@ -2124,7 +2128,6 @@
 		<row><td>TH_MySQL.Content_Files</td><td/><td/><td>_D68D90C1_85A3_4255_9636_769C77506EFE_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_MySQL.Primary_output1</td><td/><td/><td>_919FA175_1722_43EE_8E04_14F435D4C44A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_PlugIns_Client_Control.Primary_output</td><td/><td/><td>_294C27F2_1D9F_43E6_B416_91D980E22596_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>TH_Startup.Primary_output</td><td/><td/><td>_12AAB5EE_A336_4ADA_997A_4A147D49E707_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_StatusData.Primary_output</td><td/><td/><td>_EB560357_9149_4DC1_B98C_897128C202F2_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Styles.Primary_output</td><td/><td/><td>_06C3B40D_952A_4308_B9EC_4ADDA24EB16E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_TableManager.Primary_output</td><td/><td/><td>_F5448BB2_C7D8_4BDD_A87E_4486BD9D4F87_FILTER</td><td/><td/><td/><td/></row>
@@ -2133,6 +2136,7 @@
 		<row><td>TH_WPF.Primary_output</td><td/><td/><td>_5617C430_2CB0_449E_984D_6F764F7E4478_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Client.Content_Files</td><td/><td/><td>_C35FB64E_5B86_4541_994B_7917EAD492D4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TrakHound_Client.Primary_output</td><td/><td/><td>_24C4A910_9FE4_4A20_A1BF_5970A79F7257_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TrakHound_Client_Updater.Primary_output</td><td/><td/><td>_C7069575_FBF5_4A13_960B_C91BE4DED968_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2446,6 +2450,7 @@
 		<col def="S255">Value</col>
 		<col def="S255">TestValue</col>
 		<col def="i4">Type</col>
+		<row><td>AppStart</td><td>Client\AppStart\AppStart.csproj</td><td/><td>2</td></row>
 		<row><td>CommonFilesFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISPROJECTDIR</td><td/><td/><td>1</td></row>
 		<row><td>ISProductFolder</td><td/><td/><td>1</td></row>
@@ -2476,6 +2481,7 @@
 		<row><td>TH_UserManagement</td><td>Libraries\TH_UserManagement\TH_UserManagement.csproj</td><td/><td>2</td></row>
 		<row><td>TH_WPF</td><td>Libraries\TH_WPF\TH_WPF.csproj</td><td/><td>2</td></row>
 		<row><td>TrakHound-Client</td><td>Client\TrakHound-Client\TrakHound-Client.csproj</td><td/><td>2</td></row>
+		<row><td>TrakHound-Client-Updater</td><td>Client\TrakHound-Client-Updater\TrakHound-Client-Updater.csproj</td><td/><td>2</td></row>
 		<row><td>WindowsFolder</td><td/><td/><td>1</td></row>
 	</table>
 
@@ -3887,6 +3893,10 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>1420001680</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td>http://www.TrakHound.org</td><td>0</td><td/><td>1025731445</td></row>
+		<row><td>ID_STRING10</td><td>1033</td><td>TRAKHO~1|TrakHound Client</td><td>0</td><td/><td>-1910275753</td></row>
+		<row><td>ID_STRING11</td><td>1033</td><td>TrakHound Data Acquisition Software Client using MTConnect®</td><td>0</td><td/><td>-1910290057</td></row>
+		<row><td>ID_STRING12</td><td>1033</td><td>TrakHound Data Acquisition Software Client using MTConnect®</td><td>0</td><td/><td>-1910275721</td></row>
+		<row><td>ID_STRING13</td><td>1033</td><td>TRAKHO~1|TrakHound Client</td><td>0</td><td/><td>-1910275721</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>TrakHound</td><td>0</td><td/><td>1419983415</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>Launch |Built</td><td>0</td><td/><td>1420001808</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>Run TrakHound Client</td><td>0</td><td/><td>-1398569397</td></row>
@@ -4008,6 +4018,8 @@
 		<row><td>NewShortcut111_29170405AC9246E987E0BB8B9155CBD3.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
 		<row><td>NewShortcut11_7BA1216BEEB64C109BF4464FC2BD1679.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
 		<row><td>NewShortcut1_8552329AEE3244AF8590F11A15E75C04.exe</td><td/><td>C:\Program Files (x86)\InstallShield\2013LE\Redist\Language Independent\OS Independent\uninstall.ico</td><td>0</td></row>
+		<row><td>NewShortcut21_23F9028794144201ADD29A203BFDEC7E.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
+		<row><td>NewShortcut2_C3128A0F401443F1BF107612FB3EC09B.exe</td><td/><td>F:\feenux\TrakHound\Logo\10\TrakHound_Logo_Initials_10.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4519,7 +4531,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGRAMFILETOLAUNCHATEND</td><td>[INSTALLDIR]TrakHound-Client.Primary output</td><td/></row>
 		<row><td>ProductCode</td><td>{CA9760E7-66AF-4BEF-B3F2-E7ADF2221CD2}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Client</td><td/></row>
-		<row><td>ProductVersion</td><td>1.2.0.6</td><td/></row>
+		<row><td>ProductVersion</td><td>1.2.0.10</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4599,7 +4611,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>FileKey1</td><td>TrakHound_Client.Primary_output</td><td/><td>feenux</td><td>2</td></row>
 		<row><td>FileKey2</td><td>TrakHound_Client.Primary_output</td><td/><td>trakho_1_trakhound_client</td><td>2</td></row>
 		<row><td>NewShortcut1</td><td>ISX_DEFAULTCOMPONENT</td><td/><td>feenux</td><td>2</td></row>
-		<row><td>NewShortcut11</td><td>TH_Startup.Primary_output</td><td/><td>feenux</td><td>2</td></row>
+		<row><td>NewShortcut21</td><td>AppStart.Primary_output</td><td/><td>feenux</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4686,8 +4698,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
 		<row><td>NewShortcut1</td><td>feenux</td><td>##ID_STRING9##</td><td>ISX_DEFAULTCOMPONENT</td><td>[SystemFolder]MsiExec.exe</td><td>/x [ProductCode]</td><td/><td/><td>NewShortcut1_8552329AEE3244AF8590F11A15E75C04.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>NewShortcut11</td><td>feenux</td><td>##ID_STRING7##</td><td>TH_Startup.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING6##</td><td/><td>NewShortcut11_7BA1216BEEB64C109BF4464FC2BD1679.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>NewShortcut111</td><td>DesktopFolder</td><td>##ID_STRING8##</td><td>TH_Startup.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING4##</td><td/><td>NewShortcut111_29170405AC9246E987E0BB8B9155CBD3.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut2</td><td>DesktopFolder</td><td>##ID_STRING10##</td><td>AppStart.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING11##</td><td/><td>NewShortcut2_C3128A0F401443F1BF107612FB3EC09B.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>NewShortcut21</td><td>feenux</td><td>##ID_STRING13##</td><td>AppStart.Primary_output</td><td>AlwaysInstall</td><td/><td>##ID_STRING12##</td><td/><td>NewShortcut21_23F9028794144201ADD29A203BFDEC7E.exe</td><td>0</td><td>1</td><td/><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

@@ -29,6 +29,10 @@
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
 	<ItemGroup>
+		<ProjectReference Include="..\AppStart\AppStart.csproj">
+			<Name>AppStart</Name>
+			<Project>{9A24091E-0369-4134-8AA5-9D5970D05A83}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
 			<Name>TH_Configuration</Name>
 			<Project>{147A0360-5F86-4D33-A874-46F785723EAD}</Project>
@@ -65,10 +69,6 @@
 			<Name>TH_PlugIns_Client_Control</Name>
 			<Project>{4DA60983-505E-463C-AB96-0A80D0CD1330}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\TH_Startup\TH_Startup.csproj">
-			<Name>TH_Startup</Name>
-			<Project>{2F57AA7E-C892-4FA1-A8F5-55AE3412BC23}</Project>
-		</ProjectReference>
 		<ProjectReference Include="..\Plugins\Controls\TH_StatusData\TH_StatusData.csproj">
 			<Name>TH_StatusData</Name>
 			<Project>{CB42CE42-E942-49CA-9F3A-CBD768107434}</Project>
@@ -96,6 +96,10 @@
 		<ProjectReference Include="..\TrakHound-Client\TrakHound-Client.csproj">
 			<Name>TrakHound-Client</Name>
 			<Project>{59D86774-5544-47FC-AFA0-A78A013F2531}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\TrakHound-Client-Updater\TrakHound-Client-Updater.csproj">
+			<Name>TrakHound-Client-Updater</Name>
+			<Project>{CE002EA1-5893-4553-BD7D-6274F05022D0}</Project>
 		</ProjectReference>
 	</ItemGroup>
 </Project>

@@ -63,15 +63,15 @@
                 <!--Manufacturer-->
                 <TextBlock Text="{Binding Manufacturer}" FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center"/>
                 
-                <StackPanel Margin="15,0" VerticalAlignment="Center">
+                <!--<StackPanel Margin="15,0" VerticalAlignment="Center">
 
-                    <!--Model-->
+                    --><!--Model--><!--
                     <TextBlock Text="{Binding Model}" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
-                    <!--Controller-->
+                    --><!--Controller--><!--
                     <TextBlock Text="{Binding Controller}" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
-                </StackPanel>
+                </StackPanel>-->
 
             </StackPanel>
 
@@ -100,7 +100,7 @@
                 </Style>
             </Grid.Style>
 
-            <TextBlock Text="Owner" Foreground="#aaa" FontSize="8pt" Margin="5" ToolTip="You are the owner of this shared configuration"/>
+            <TextBlock Text="Owner" Foreground="{StaticResource Foreground_Light}" FontSize="8pt" Margin="5" ToolTip="You are the owner of this shared configuration"/>
 
         </Grid>
 
@@ -149,11 +149,8 @@
                 
             </Grid>
 
-
         </Grid>
         
-        
-                 
     </Grid>
     
 </UserControl>

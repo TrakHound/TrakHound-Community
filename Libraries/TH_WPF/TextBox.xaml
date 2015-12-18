@@ -105,7 +105,7 @@
             <Border BorderThickness="1" CornerRadius="1" Background="{StaticResource Window_Background}">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="BorderBrush" Value="#aaa"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
                                 <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>

@@ -31,7 +31,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="#333" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -107,7 +107,7 @@
             <!--Image-->
             <Grid>
 
-                <Rectangle Stroke="#aaa" StrokeThickness="2" SnapsToDevicePixels="True" StrokeDashArray="2">
+                <Rectangle Stroke="{StaticResource Shade_Normal}" StrokeThickness="2" SnapsToDevicePixels="True" StrokeDashArray="2">
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -130,7 +130,7 @@
                                 <Style TargetType="Border">
                                     <Setter Property="Opacity" Value="0.0"/>
                                     <Setter Property="Visibility" Value="Visible"/>
-                                    <Setter Property="BorderBrush" Value="#ccc"/>
+                                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                                     <Setter Property="BorderThickness" Value="1"/>
                                     <Style.Triggers>
                                         
@@ -304,7 +304,7 @@
         <TextBlock Grid.Row="2" Margin="0,5,0,0" Text="Clear" FontSize="10pt" TextDecorations="Underline" HorizontalAlignment="Right" MouseDown="Clear_MouseDown">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="#888"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
