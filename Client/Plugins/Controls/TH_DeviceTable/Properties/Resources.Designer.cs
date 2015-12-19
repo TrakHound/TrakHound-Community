@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace TH_DeviceTable.Properties {
+    using System;
     
     
     /// <summary>
@@ -37,7 +38,7 @@ namespace TH_DeviceTable.Properties {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if ((resourceMan == null)) {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TH_DeviceTable.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
@@ -56,6 +57,26 @@ namespace TH_DeviceTable.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Carrot_Arrow_Down_02 {
+            get {
+                object obj = ResourceManager.GetObject("Carrot_Arrow_Down_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Carrot_Arrow_Up_02 {
+            get {
+                object obj = ResourceManager.GetObject("Carrot_Arrow_Up_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

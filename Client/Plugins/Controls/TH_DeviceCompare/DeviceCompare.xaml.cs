@@ -27,7 +27,7 @@ using System.Globalization;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_PlugIns_Client;
+using TH_Plugins_Client;
 using TH_UserManagement.Management;
 using TH_WPF.TimeLine;
 
@@ -38,7 +38,7 @@ namespace TH_DeviceCompare
     /// <summary>
     /// Interaction logic for DeviceCompare.xaml
     /// </summary>
-    public partial class DeviceCompare : UserControl, PlugIn
+    public partial class DeviceCompare : UserControl, Plugin
     {
         public DeviceCompare()
         {
@@ -87,26 +87,21 @@ namespace TH_DeviceCompare
         public string DefaultParent { get { return "Dashboard"; } }
         public string DefaultParentCategory { get { return "Pages"; } }
 
-        public bool AcceptsPlugIns { get { return true; } }
+        public bool AcceptsPlugins { get { return true; } }
 
         public bool OpenOnStartUp { get { return true; } }
 
         public bool ShowInAppMenu { get { return true; } }
 
-        public List<PlugInConfigurationCategory> SubCategories { get; set; }
+        public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<Control_PlugIn> PlugIns { get; set; }
+        public List<Plugin> Plugins { get; set; }
 
         #endregion
 
         #region "Methods"
 
         public void Initialize() { }
-
-        //public void Update(ReturnData rd)
-        //{
-        //    this.Dispatcher.BeginInvoke(new Action<ReturnData>(Update_GUI), Priority_Background, new object[] { rd });
-        //}
 
         public void Closing() { }
 
@@ -131,76 +126,98 @@ namespace TH_DeviceCompare
 
         public event DataEvent_Handler DataEvent;
 
-        public event PlugInTools.ShowRequested_Handler ShowRequested;
+        public event PluginTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 
         #region "Device Properties"
 
-        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
-
-        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        List<Configuration> devices;
+        public List<Configuration> Devices
         {
-            Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
-
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-            {
-                Devices.Clear();
-                DeviceDisplays.Clear();
-                ColumnHeaders.Clear();
-                Columns.Clear();
-            }
-
-            if (e.NewItems != null)
-            {
-                foreach (Configuration newConfig in e.NewItems)
-                {
-                    if (newConfig != null)
-                    {
-                        Devices.Add(newConfig);
-
-                        CreateDeviceDisplay(newConfig);
-                    }
-                }
-            }
-
-            if (e.OldItems != null)
-            {
-                foreach (Configuration oldConfig in e.OldItems)
-                {
-                    if (oldConfig != null) Devices.Add(oldConfig);
-                }
-            }
-        }
-
-        private int lSelectedDeviceIndex;
-        public int SelectedDeviceIndex
-        {
-            get { return lSelectedDeviceIndex; }
-
+            get { return devices; }
             set
             {
-                lSelectedDeviceIndex = value;
+                devices = value;
 
-                // Unselect other headers and columns
-                for (int x = 0; x <= DeviceDisplays.Count - 1; x++) if (x != lSelectedDeviceIndex)
+                if (devices != null)
+                {
+                    DeviceDisplays = new List<DeviceDisplay>();
+                    ColumnHeaders.Clear();
+                    Columns.Clear();
+
+                    foreach (Configuration device in devices)
                     {
-                        DeviceDisplays[x].ComparisonGroup.header.IsSelected = false;
-                        DeviceDisplays[x].ComparisonGroup.column.IsSelected = false;
+                        CreateDeviceDisplay(device);
                     }
-
-                // Select header and column at SelectedDeviceIndex
-                DeviceDisplays[lSelectedDeviceIndex].ComparisonGroup.header.IsSelected = true;
-                DeviceDisplays[lSelectedDeviceIndex].ComparisonGroup.column.IsSelected = true;
-
+                }
             }
         }
+
+        //ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
+
+        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
+
+        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+        //    {
+        //        Devices.Clear();
+        //        DeviceDisplays.Clear();
+        //        ColumnHeaders.Clear();
+        //        Columns.Clear();
+        //    }
+
+        //    if (e.NewItems != null)
+        //    {
+        //        foreach (Configuration newConfig in e.NewItems)
+        //        {
+        //            if (newConfig != null)
+        //            {
+        //                Devices.Add(newConfig);
+
+        //                CreateDeviceDisplay(newConfig);
+        //            }
+        //        }
+        //    }
+
+        //    if (e.OldItems != null)
+        //    {
+        //        foreach (Configuration oldConfig in e.OldItems)
+        //        {
+        //            if (oldConfig != null) Devices.Add(oldConfig);
+        //        }
+        //    }
+        //}
+
+        //private int lSelectedDeviceIndex;
+        //public int SelectedDeviceIndex
+        //{
+        //    get { return lSelectedDeviceIndex; }
+
+        //    set
+        //    {
+        //        lSelectedDeviceIndex = value;
+
+        //        // Unselect other headers and columns
+        //        for (int x = 0; x <= DeviceDisplays.Count - 1; x++) if (x != lSelectedDeviceIndex)
+        //            {
+        //                DeviceDisplays[x].ComparisonGroup.header.IsSelected = false;
+        //                DeviceDisplays[x].ComparisonGroup.column.IsSelected = false;
+        //            }
+
+        //        // Select header and column at SelectedDeviceIndex
+        //        DeviceDisplays[lSelectedDeviceIndex].ComparisonGroup.header.IsSelected = true;
+        //        DeviceDisplays[lSelectedDeviceIndex].ComparisonGroup.column.IsSelected = true;
+
+        //    }
+        //}
 
         #endregion
 
         #region "Options"
 
-        public OptionsPage Options { get; set; }
+        public TH_Global.Page Options { get; set; }
 
         #endregion
 
@@ -586,39 +603,44 @@ namespace TH_DeviceCompare
 
                 foreach (SegmentInfo segment in shiftSegments)
                 {
-                    Controls.ShiftSegmentIndicator indicator;
-
-                    int indicatorIndex = sd.SegmentIndicators.ToList().FindIndex(x => x.id == segment.segmentId);
-                    if (indicatorIndex >= 0) indicator = sd.SegmentIndicators[indicatorIndex];
-                    else
-                    {
-                        indicator = new Controls.ShiftSegmentIndicator();
-                        sd.SegmentIndicators.Add(indicator);
-                    }
-
-                    indicator.Segment = segment;
-
-                    indicator.id = segment.segmentId;
-
-                    DateTime segmentEnd = segment.segmentEnd;
-                    if (segment.segmentEnd < segment.segmentStart) segmentEnd = segmentEnd.AddDays(1);
-
-                    double segmentDuration = (segmentEnd - segment.segmentStart).TotalSeconds;
-                    indicator.BarMaximum = Math.Max(0, Convert.ToInt32(segmentDuration));
-
-                    indicator.ProgressWidth = (segmentDuration * 55) / maxDuration;
-
-                    indicator.SegmentTimes = segment.segmentStart.ToShortTimeString() + " - " + segmentEnd.ToShortTimeString();
-
-                    indicator.SegmentDuration = (segmentEnd - segment.segmentStart).ToString();
-
-                    indicator.SegmentId = (segment.segmentId + 1).ToString("00");
-
-                    if (segment.segmentType.ToLower() == "break") indicator.BreakType = true;
-
-                    indicator.SegmentType = segment.segmentType;
+                    this.Dispatcher.BeginInvoke(new Action<SegmentInfo, Controls.ShiftDisplay, double>(UpdateShiftSegment), Priority_Context, new object[] { segment, sd, maxDuration });
                 }
             }
+        }
+
+        void UpdateShiftSegment(SegmentInfo segment, Controls.ShiftDisplay sd, double maxDuration)
+        {
+            Controls.ShiftSegmentIndicator indicator;
+
+            int indicatorIndex = sd.SegmentIndicators.ToList().FindIndex(x => x.id == segment.segmentId);
+            if (indicatorIndex >= 0) indicator = sd.SegmentIndicators[indicatorIndex];
+            else
+            {
+                indicator = new Controls.ShiftSegmentIndicator();
+                sd.SegmentIndicators.Add(indicator);
+            }
+
+            indicator.Segment = segment;
+
+            indicator.id = segment.segmentId;
+
+            DateTime segmentEnd = segment.segmentEnd;
+            if (segment.segmentEnd < segment.segmentStart) segmentEnd = segmentEnd.AddDays(1);
+
+            double segmentDuration = (segmentEnd - segment.segmentStart).TotalSeconds;
+            indicator.BarMaximum = Math.Max(0, Convert.ToInt32(segmentDuration));
+
+            indicator.ProgressWidth = (segmentDuration * 55) / maxDuration;
+
+            indicator.SegmentTimes = segment.segmentStart.ToShortTimeString() + " - " + segmentEnd.ToShortTimeString();
+
+            indicator.SegmentDuration = (segmentEnd - segment.segmentStart).ToString();
+
+            indicator.SegmentId = (segment.segmentId + 1).ToString("00");
+
+            if (segment.segmentType.ToLower() == "break") indicator.BreakType = true;
+
+            indicator.SegmentType = segment.segmentType;
         }
 
         List<SegmentInfo> GetShiftSegments(object shiftData)

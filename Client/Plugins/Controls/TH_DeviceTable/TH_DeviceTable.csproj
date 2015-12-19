@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -47,12 +48,48 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UserControl1.xaml">
+    <Page Include="Components\Cell.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
+    <Page Include="Components\Header.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Components\Row.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Components\Column_Header.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\NumberDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DeviceTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Components\Cell.xaml.cs">
+      <DependentUpon>Cell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Header.xaml.cs">
+      <DependentUpon>Header.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Row.xaml.cs">
+      <DependentUpon>Row.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\Column_Header.xaml.cs">
+      <DependentUpon>Column_Header.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NumberDisplay.xaml.cs">
+      <DependentUpon>NumberDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceDisplay.cs" />
+    <Compile Include="DeviceTable.xaml.cs">
+      <DependentUpon>DeviceTable.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -101,11 +138,21 @@
       <Name>TH_Styles</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
+      <Name>TH_UserManagement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Carrot_Arrow_Down_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Carrot_Arrow_Up_02.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

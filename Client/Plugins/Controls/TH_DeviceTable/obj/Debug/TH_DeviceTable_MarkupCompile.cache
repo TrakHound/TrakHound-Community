@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-1-98425716
+6897554865
 
-41942428625
-18-2070768498
-UserControl1.xaml;
+101834914731
+19891405730
+Components\Cell.xaml;Components\Header.xaml;Components\Row.xaml;Components\Column_Header.xaml;Controls\NumberDisplay.xaml;DeviceTable.xaml;
 
 False
 
