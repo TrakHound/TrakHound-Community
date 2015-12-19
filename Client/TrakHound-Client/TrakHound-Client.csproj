@@ -63,34 +63,34 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="About\Manager.xaml.cs">
+    <Compile Include="Pages\About\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="About\Pages\Information\Page.xaml.cs">
+    <Compile Include="Pages\About\Information\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="About\Pages\License\Page.xaml.cs">
+    <Compile Include="Pages\About\License\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Account Management\Manager.xaml.cs">
+    <Compile Include="Pages\Account\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Fullscreen.xaml.cs">
       <DependentUpon>Fullscreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Developer Console\PopUp.xaml.cs">
+    <Compile Include="Controls\Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Options\Pages\Updates\Page.xaml.cs">
+    <Compile Include="Pages\Options\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Options\Pages\Updates\UpdateItem.xaml.cs">
+    <Compile Include="Pages\Options\Updates\UpdateItem.xaml.cs">
       <DependentUpon>UpdateItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Launcher\PluginItem.xaml.cs">
+    <Compile Include="Menus\Plugins\PluginItem.xaml.cs">
       <DependentUpon>PluginItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Launcher\Menu.xaml.cs">
+    <Compile Include="Menus\Plugins\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TH_Page.xaml.cs">
@@ -102,44 +102,44 @@
     <Compile Include="Controls\TH_ToolBarItem.xaml.cs">
       <DependentUpon>TH_ToolBarItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main Menu\DropDown.xaml.cs">
-      <DependentUpon>DropDown.xaml</DependentUpon>
+    <Compile Include="Menus\Main\Menu.xaml.cs">
+      <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main Menu\Exit_BT.xaml.cs">
+    <Compile Include="Menus\Main\Exit_BT.xaml.cs">
       <DependentUpon>Exit_BT.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main Menu\MenuItem.xaml.cs">
+    <Compile Include="Menus\Main\MenuItem.xaml.cs">
       <DependentUpon>MenuItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Message Center\Message.xaml.cs">
+    <Compile Include="Controls\Message Center\Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Message Center\MessageCenter.xaml.cs">
+    <Compile Include="Controls\Message Center\MessageCenter.xaml.cs">
       <DependentUpon>MessageCenter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Message Center\Notifications\Exception.cs" />
-    <Compile Include="Message Center\Notifications\Notification_Item.xaml.cs">
+    <Compile Include="Controls\Message Center\Notifications\Exception.cs" />
+    <Compile Include="Controls\Message Center\Notifications\Notification_Item.xaml.cs">
       <DependentUpon>Notification_Item.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Options\Manager.xaml.cs">
+    <Compile Include="Pages\Options\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Options\Pages\General\Page.xaml.cs">
+    <Compile Include="Pages\Options\General\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Manager.xaml.cs">
+    <Compile Include="Pages\Plugins\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Pages\Installed\ListContainer.xaml.cs">
+    <Compile Include="Pages\Plugins\Installed\ListContainer.xaml.cs">
       <DependentUpon>ListContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Pages\Installed\ListItem.xaml.cs">
+    <Compile Include="Pages\Plugins\Installed\ListItem.xaml.cs">
       <DependentUpon>ListItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Pages\Installed\Page.xaml.cs">
+    <Compile Include="Pages\Plugins\Installed\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Pages\Installed\SubCategory.xaml.cs">
+    <Compile Include="Pages\Plugins\Installed\SubCategory.xaml.cs">
       <DependentUpon>SubCategory.xaml</DependentUpon>
     </Compile>
     <Compile Include="SingleInstance.cs" />
@@ -150,19 +150,19 @@
       <DependentUpon>Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TH_TabItem.cs" />
-    <Page Include="About\Manager.xaml">
+    <Page Include="Pages\About\Manager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="About\Pages\Information\Page.xaml">
+    <Page Include="Pages\About\Information\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="About\Pages\License\Page.xaml">
+    <Page Include="Pages\About\License\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Account Management\Manager.xaml">
+    <Page Include="Pages\Account\Manager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -170,23 +170,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Developer Console\PopUp.xaml">
+    <Page Include="Controls\Developer Console\PopUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Options\Pages\Updates\Page.xaml">
+    <Page Include="Pages\Options\Updates\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Options\Pages\Updates\UpdateItem.xaml">
+    <Page Include="Pages\Options\Updates\UpdateItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Plugins\Launcher\PluginItem.xaml">
+    <Page Include="Menus\Plugins\PluginItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Plugins\Launcher\Menu.xaml">
+    <Page Include="Menus\Plugins\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -202,15 +202,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main Menu\DropDown.xaml">
+    <Page Include="Menus\Main\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main Menu\Exit_BT.xaml">
+    <Page Include="Menus\Main\Exit_BT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main Menu\MenuItem.xaml">
+    <Page Include="Menus\Main\MenuItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -226,43 +226,43 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Message Center\Message.xaml">
+    <Page Include="Controls\Message Center\Message.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Message Center\MessageCenter.xaml">
+    <Page Include="Controls\Message Center\MessageCenter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Message Center\Notifications\Notification_Item.xaml">
+    <Page Include="Controls\Message Center\Notifications\Notification_Item.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Options\Manager.xaml">
+    <Page Include="Pages\Options\Manager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Options\Pages\General\Page.xaml">
+    <Page Include="Pages\Options\General\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Plugins\Manager.xaml">
+    <Page Include="Pages\Plugins\Manager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Plugins\Pages\Installed\ListContainer.xaml">
+    <Page Include="Pages\Plugins\Installed\ListContainer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Plugins\Pages\Installed\ListItem.xaml">
+    <Page Include="Pages\Plugins\Installed\ListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Plugins\Pages\Installed\Page.xaml">
+    <Page Include="Pages\Plugins\Installed\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Plugins\Pages\Installed\SubCategory.xaml">
+    <Page Include="Pages\Plugins\Installed\SubCategory.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -274,22 +274,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Menus.xaml">
+    <None Include="Styles\Menus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Splash.xaml">
+    </None>
+    <None Include="Styles\Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\ToolBars.xaml">
+    </None>
+    <None Include="Styles\ToolBars.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\Window.xaml">
+    </None>
+    <None Include="Styles\Window.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -351,7 +351,7 @@
     <Resource Include="Resources\Carrot_Arrow_Down_01.png" />
     <Resource Include="Resources\X_01.png" />
     <Resource Include="Resources\CheckMark_01.png" />
-    <Resource Include="Plugins\Pages\Installed\Plug_01.png" />
+    <Resource Include="Pages\Plugins\Installed\Plug_01.png" />
     <Resource Include="Resources\Menu_01.png" />
     <Resource Include="Resources\Rocket_02.png" />
     <Resource Include="Resources\Rocket_01.png" />
@@ -364,13 +364,12 @@
     <Resource Include="Resources\feenux_logo_06_50px.png" />
     <Resource Include="Resources\Power_01.png" />
     <Resource Include="Resources\About_01.png" />
-    <Resource Include="Options\Pages\General\Home_01.png" />
+    <Resource Include="Pages\Options\General\Home_01.png" />
     <Resource Include="Resources\options_gear_30px.png" />
-    <None Include="Images\TrakHound_Splash_05.png" />
-    <Resource Include="About\Pages\Information\Information_01.png" />
-    <Resource Include="About\Pages\License\Key_01.png" />
-    <Resource Include="About\Pages\License\Key_02.png" />
-    <Resource Include="About\Pages\License\Key_03.png" />
+    <Resource Include="Pages\About\Information\Information_01.png" />
+    <Resource Include="Pages\About\License\Key_01.png" />
+    <Resource Include="Pages\About\License\Key_02.png" />
+    <Resource Include="Pages\About\License\Key_03.png" />
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -393,9 +392,9 @@
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client.csproj">
+    <ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Control\TH_Plugins_Client.csproj">
       <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
-      <Name>TH_PlugIns_Client</Name>
+      <Name>TH_Plugins_Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>

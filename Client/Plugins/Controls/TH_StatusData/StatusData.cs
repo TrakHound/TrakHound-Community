@@ -15,12 +15,12 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
-using TH_PlugIns_Client;
+using TH_Plugins_Client;
 using TH_UserManagement.Management;
 
 namespace TH_StatusData
 {
-    public class StatusData : PlugIn
+    public class StatusData : Plugin
     {
 
         #region "PlugIn"
@@ -58,15 +58,15 @@ namespace TH_StatusData
         public string DefaultParent { get { return null; } }
         public string DefaultParentCategory { get { return null; } }
 
-        public bool AcceptsPlugIns { get { return false; } }
+        public bool AcceptsPlugins { get { return false; } }
 
         public bool OpenOnStartUp { get { return false; } }
 
         public bool ShowInAppMenu { get { return false; } }
 
-        public List<PlugInConfigurationCategory> SubCategories { get; set; }
+        public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<PlugIn> PlugIns { get; set; }
+        public List<Plugin> Plugins { get; set; }
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace TH_StatusData
 
         public event DataEvent_Handler DataEvent;
 
-        public event PlugInTools.ShowRequested_Handler ShowRequested;
+        public event PluginTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 

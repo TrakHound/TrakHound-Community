@@ -1,6 +1,6 @@
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_PlugIns_Client.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_PlugIns_Client.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Plugins_Client.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Plugins_Client.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\Newtonsoft.Json.dll
@@ -12,5 +12,5 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\Newt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_PlugIns_Client.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_PlugIns_Client.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_PlugIns_Client.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_Plugins_Client.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_PlugIns_Client_Control\obj\Debug\TH_Plugins_Client.pdb

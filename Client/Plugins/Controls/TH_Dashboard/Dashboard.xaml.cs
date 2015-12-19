@@ -25,7 +25,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 
 using TH_Configuration;
-using TH_PlugIns_Client;
+using TH_Plugins_Client;
 using TH_UserManagement.Management;
 using TH_Global;
 using TH_WPF;
@@ -35,10 +35,10 @@ namespace TH_Dashboard
     /// <summary>
     /// Interaction logic for DashboardPage.xaml
     /// </summary>
-    public partial class Dashboard : UserControl, PlugIn
+    public partial class Dashboard : UserControl, Plugin
     {
 
-        #region "PlugIn"
+        #region "Plugin"
 
         #region "Descriptive"
 
@@ -67,15 +67,15 @@ namespace TH_Dashboard
         public string DefaultParent { get { return null; } }
         public string DefaultParentCategory { get { return null; } }
 
-        public bool AcceptsPlugIns { get { return true; } }
+        public bool AcceptsPlugins { get { return true; } }
 
         public bool OpenOnStartUp { get { return true; } }
 
         public bool ShowInAppMenu { get { return true; } }
 
-        public List<PlugInConfigurationCategory> SubCategories { get; set; }
+        public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<PlugIn> PlugIns { get; set; }
+        public List<Plugin> Plugins { get; set; }
 
         #endregion
 
@@ -91,15 +91,15 @@ namespace TH_Dashboard
 
         public void Initialize()
         {
-            EnabledPlugIns = new List<PlugInConfiguration>();
+            EnabledPlugins = new List<PluginConfiguration>();
 
-            foreach (PlugInConfigurationCategory category in SubCategories)
+            foreach (PluginConfigurationCategory category in SubCategories)
             {
-                foreach (PlugInConfiguration config in category.PlugInConfigurations)
+                foreach (PluginConfiguration config in category.PluginConfigurations)
                 {
                     config.EnabledChanged += config_EnabledChanged;
 
-                    if (config.enabled) PlugIns_Load(config);
+                    if (config.Enabled) Plugins_Load(config);
                 }
             }
         }
@@ -122,18 +122,18 @@ namespace TH_Dashboard
 
         public void Update_DataEvent(DataEvent_Data de_d)
         {
-            if (PlugIns != null)
+            if (Plugins != null)
             {
-                foreach (PlugIn CP in PlugIns)
+                foreach (Plugin plugin in Plugins)
                 {
-                    this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(CP.Update_DataEvent), Priority, new object[] { de_d });
+                    this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(plugin.Update_DataEvent), Priority, new object[] { de_d });
                 }
             }        
         }
 
         public event DataEvent_Handler DataEvent;
 
-        public event PlugInTools.ShowRequested_Handler ShowRequested;
+        public event PluginTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 
@@ -147,9 +147,9 @@ namespace TH_Dashboard
             {
                 devices = value;
 
-                if (PlugIns != null)
+                if (Plugins != null)
                 {
-                    foreach (PlugIn plugin in PlugIns)
+                    foreach (Plugin plugin in Plugins)
                     {
                         plugin.Devices = devices;
                     }
@@ -184,82 +184,80 @@ namespace TH_Dashboard
         {
             InitializeComponent();
 
-            SubCategories = new List<PlugInConfigurationCategory>();
-            PlugInConfigurationCategory pages = new PlugInConfigurationCategory();
-            pages.name = "Pages";
+            SubCategories = new List<PluginConfigurationCategory>();
+            PluginConfigurationCategory pages = new PluginConfigurationCategory();
+            pages.Name = "Pages";
             SubCategories.Add(pages);
         }
 
         #region "Child PlugIns"
 
-        PlugInConfiguration currentPage;
+        PluginConfiguration currentPage;
 
-        List<PlugInConfiguration> EnabledPlugIns;
+        List<PluginConfiguration> EnabledPlugins;
 
-        public void PlugIns_Load(PlugInConfiguration config)
+        public void Plugins_Load(PluginConfiguration config)
         {
-            if (PlugIns != null)
+            if (Plugins != null)
             {
-                if (!EnabledPlugIns.Contains(config))
+                if (!EnabledPlugins.Contains(config))
                 {
-                    PlugIn CP = PlugIns.Find(x => x.Title.ToUpper() == config.name.ToUpper());
-                    if (CP != null)
+                    Plugin plugin = Plugins.Find(x => x.Title.ToUpper() == config.Name.ToUpper());
+                    if (plugin != null)
                     {
                         try
                         {
-                            //CP.Devices = Devices;
-                            CP.SubCategories = config.SubCategories;
-                            CP.DataEvent += CP_DataEvent;
+                            plugin.SubCategories = config.SubCategories;
+                            plugin.DataEvent += Plugin_DataEvent;
 
-                            CP.PlugIns = new List<PlugIn>();
+                            plugin.Plugins = new List<Plugin>();
 
-                            if (CP.SubCategories != null)
+                            if (plugin.SubCategories != null)
                             {
-                                foreach (PlugInConfigurationCategory subcategory in CP.SubCategories)
+                                foreach (PluginConfigurationCategory subcategory in plugin.SubCategories)
                                 {
-                                    foreach (PlugInConfiguration subConfig in subcategory.PlugInConfigurations)
+                                    foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
                                     {
-                                        PlugIn sCP = PlugIns.Find(x => x.Title.ToUpper() == subConfig.name.ToUpper());
-                                        if (sCP != null)
+                                        Plugin cplugin = Plugins.Find(x => x.Title.ToUpper() == subConfig.Name.ToUpper());
+                                        if (cplugin != null)
                                         {
-                                            CP.PlugIns.Add(sCP);
+                                            plugin.Plugins.Add(cplugin);
                                         }
                                     }
                                 }
                             }
 
-                            CP.Initialize();
+                            plugin.Initialize();
                         }
 
                         catch { }
 
                         ListButton lb = new ListButton();
                         //lb.Text = config.name;
-                        lb.ToolTip = config.name;
-                        lb.Image = CP.Image;
+                        lb.ToolTip = config.Name;
+                        lb.Image = plugin.Image;
                         lb.Selected += lb_Selected;
-                        lb.DataObject = CP;
+                        lb.DataObject = plugin;
                         Pages_STACK.Children.Add(lb);
 
-                        EnabledPlugIns.Add(config);
+                        EnabledPlugins.Add(config);
                     }
                 }
             }
         }
 
-        void CP_DataEvent(DataEvent_Data de_d)
+        void Plugin_DataEvent(DataEvent_Data de_d)
         {
             if (DataEvent != null) DataEvent(de_d);
         }
 
-        public void PlugIns_Unload(PlugInConfiguration config)
+        public void Plugins_Unload(PluginConfiguration config)
         {
-
             if (config != null)
             {
-                if (!config.enabled)
+                if (!config.Enabled)
                 {
-                    ListButton lb = Pages_STACK.Children.OfType<ListButton>().ToList().Find(x => GetPluginName(x.Text) == GetPluginName(config.name));
+                    ListButton lb = Pages_STACK.Children.OfType<ListButton>().ToList().Find(x => GetPluginName(x.Text) == GetPluginName(config.Name));
                     if (lb != null)
                     {
                         Pages_STACK.Children.Remove(lb);
@@ -267,11 +265,9 @@ namespace TH_Dashboard
 
                     if (config == currentPage) Content_GRID.Children.Clear();
 
-                    if (EnabledPlugIns.Contains(config)) EnabledPlugIns.Remove(config);
-
+                    if (EnabledPlugins.Contains(config)) EnabledPlugins.Remove(config);
                 }
             }
-
         }
 
         static string GetPluginName(string s)
@@ -288,9 +284,9 @@ namespace TH_Dashboard
                 else oLB.IsSelected = false;
             }
 
-            foreach (PlugInConfigurationCategory category in SubCategories)
+            foreach (PluginConfigurationCategory category in SubCategories)
             {
-                PlugInConfiguration config = category.PlugInConfigurations.Find(x => GetPluginName(x.name) == GetPluginName(LB.Text));
+                PluginConfiguration config = category.PluginConfigurations.Find(x => GetPluginName(x.Name) == GetPluginName(LB.Text));
                 if (config != null)
                 {
                     currentPage = config;
@@ -305,10 +301,10 @@ namespace TH_Dashboard
             Content_GRID.Children.Add(childPlugIn);
         }
 
-        void config_EnabledChanged(PlugInConfiguration config)
+        void config_EnabledChanged(PluginConfiguration config)
         {
-            if (config.enabled) PlugIns_Load(config);
-            else PlugIns_Unload(config);
+            if (config.Enabled) Plugins_Load(config);
+            else Plugins_Unload(config);
         }
 
         #endregion
@@ -327,12 +323,12 @@ namespace TH_Dashboard
                         else oLB.IsSelected = false;
                     }
 
-                    PlugIn cp = lb.DataObject as PlugIn;
-                    if (cp != null)
+                    Plugin plugin = lb.DataObject as Plugin;
+                    if (plugin != null)
                     {
-                        foreach (PlugInConfigurationCategory category in SubCategories)
+                        foreach (PluginConfigurationCategory category in SubCategories)
                         {
-                            PlugInConfiguration config = category.PlugInConfigurations.Find(x => x.name.ToUpper() == cp.Title.ToUpper());
+                            PluginConfiguration config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
                             if (config != null)
                             {
                                 currentPage = config;

@@ -28,15 +28,15 @@ namespace TrakHound_Client.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public List<TH_PlugIns_Client.PlugInConfiguration> PlugIn_Configurations
+        public List<TH_Plugins_Client.PluginConfiguration> Plugin_Configurations
         {
             get
             {
-                return ((List<TH_PlugIns_Client.PlugInConfiguration>)(this["PlugIn_Configurations"]));
+                return ((List<TH_Plugins_Client.PluginConfiguration>)(this["Plugin_Configurations"]));
             }
             set
             {
-                this["PlugIn_Configurations"] = value;
+                this["Plugin_Configurations"] = value;
             }
         }
         

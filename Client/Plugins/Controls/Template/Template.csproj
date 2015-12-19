@@ -87,9 +87,9 @@
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client.csproj">
+    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_Plugins_Client.csproj">
       <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
-      <Name>TH_PlugIns_Client</Name>
+      <Name>TH_Plugins_Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

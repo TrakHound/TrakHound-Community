@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{AB288811-5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{8C990E0D-D722-4B65-A4B9-1A51C177FFDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_PlugIns_Client", "Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client.csproj", "{4DA60983-505E-463C-AB96-0A80D0CD1330}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Plugins_Client", "Libraries\TH_PlugIns_Client_Control\TH_Plugins_Client.csproj", "{4DA60983-505E-463C-AB96-0A80D0CD1330}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_DeviceStatus", "Client\Plugins\Data\TH_DeviceStatus\TH_DeviceStatus.csproj", "{7D7B5FF2-0379-4BCB-A623-D2F843E779DC}"
 EndProject

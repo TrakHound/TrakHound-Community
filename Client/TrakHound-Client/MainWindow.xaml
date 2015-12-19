@@ -10,11 +10,13 @@
         xmlns:local="clr-namespace:TrakHound_Client"
         xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
         xmlns:controls="clr-namespace:TrakHound_Client.Controls"
-        xmlns:devconsole="clr-namespace:TrakHound_Client.Developer_Console"
-        xmlns:message="clr-namespace:TrakHound_Client.Message_Center"
+        
+        xmlns:devconsole="clr-namespace:TrakHound_Client.Controls.Developer_Console"     
+        xmlns:message="clr-namespace:TrakHound_Client.Controls.Message_Center"
         xmlns:notifications="clr-namespace:TrakHound_Client.Notifications"
-        xmlns:main_menu="clr-namespace:TrakHound_Client.Main_Menu"
-        xmlns:plugins="clr-namespace:TrakHound_Client.Plugins.Launcher"
+        
+        xmlns:menus_main="clr-namespace:TrakHound_Client.Menus.Main"
+        xmlns:menus_plugins="clr-namespace:TrakHound_Client.Menus.Plugins"
         
         xmlns:user="clr-namespace:TH_UserManagement;assembly=TH_UserManagement"
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
@@ -1032,12 +1034,12 @@
                 </DockPanel>
                 
                 <!--Plugins Launcher Menu-->
-                <plugins:Menu x:Name="PluginLauncher" 
+                <menus_plugins:Menu x:Name="PluginLauncher" 
                            Shown="False" ShownChanged="PluginLauncher_ShownChanged"
                             />
 
                 <!--Main Menu Drop Down--> 
-                <main_menu:DropDown x:Name="MainMenu"
+                <menus_main:Menu x:Name="MainMenu"
                                 Shown="False" ShownChanged="MainMenu_ShownChanged"
                                 />
 

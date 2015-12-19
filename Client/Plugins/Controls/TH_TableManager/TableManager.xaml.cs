@@ -26,7 +26,7 @@ using System.Data;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
-using TH_PlugIns_Client_Control;
+using TH_Plugins_Client;
 using TH_UserManagement.Management;
 using TH_WPF;
 
@@ -37,7 +37,7 @@ namespace TH_TableManager
     /// <summary>
     /// Interaction logic for TableManager.xaml
     /// </summary>
-    public partial class TableManager : UserControl, Control_PlugIn
+    public partial class TableManager : UserControl, Plugin
     {
         public TableManager()
         {
@@ -82,15 +82,15 @@ namespace TH_TableManager
         public string DefaultParent { get { return null; } }
         public string DefaultParentCategory { get { return null; } }
 
-        public bool AcceptsPlugIns { get { return true; } }
+        public bool AcceptsPlugins { get { return true; } }
 
         public bool OpenOnStartUp { get { return false; } }
 
         public bool ShowInAppMenu { get { return true; } }
 
-        public List<PlugInConfigurationCategory> SubCategories { get; set; }
+        public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<Control_PlugIn> PlugIns { get; set; }
+        public List<Plugin> Plugins { get; set; }
 
         #endregion
 
@@ -111,74 +111,111 @@ namespace TH_TableManager
 
         public event DataEvent_Handler DataEvent;
 
-        public event PlugInTools.ShowRequested_Handler ShowRequested;
+        public event PluginTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 
         #region "Device Properties"
 
-        ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
+        //ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
 
-        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
+
+        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+        //    {
+        //        Devices.Clear();
+        //        DeviceList.Clear();
+        //    }
+
+        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+        //    {
+        //        DeviceList.Clear();
+        //    }
+
+        //    if (e.NewItems != null)
+        //    {
+        //        foreach (Configuration newConfig in e.NewItems)
+        //        {
+        //            Devices.Add(newConfig);
+
+        //            if (newConfig != null)
+        //            {
+        //                // Initialize Database Configurations
+        //                Global.Initialize(newConfig.Databases_Client);
+
+        //                Controls.DeviceButton db = new DeviceButton();
+        //                db.Description = newConfig.Description.Description;
+        //                db.Manufacturer = newConfig.Description.Manufacturer;
+        //                db.Model = newConfig.Description.Model;
+        //                db.Serial = newConfig.Description.Serial;
+        //                db.Id = newConfig.Description.Machine_ID;
+
+        //                db.Clicked += db_Clicked;
+
+        //                ListButton lb = new ListButton();
+        //                lb.ButtonContent = db;
+        //                lb.ShowImage = false;
+        //                lb.Selected += lb_Device_Selected;
+        //                lb.DataObject = newConfig;
+
+        //                db.Parent = lb;
+
+        //                DeviceList.Add(lb);
+        //            }
+        //        }
+        //    }
+
+        //    if (e.OldItems != null)
+        //    {
+        //        foreach (Configuration oldConfig in e.OldItems)
+        //        {
+        //            Devices.Add(oldConfig);
+        //        }
+        //    }
+        //}
+
+        private List<Configuration> devices;
+        public List<Configuration> Devices
         {
-            Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
-
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            get { return devices; }
+            set
             {
-                Devices.Clear();
+                devices = value;
+
                 DeviceList.Clear();
-            }
 
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-                DeviceList.Clear();
-            }
-
-            if (e.NewItems != null)
-            {
-                foreach (Configuration newConfig in e.NewItems)
+                foreach (Configuration device in devices)
                 {
-                    Devices.Add(newConfig);
 
-                    if (newConfig != null)
-                    {
-                        // Initialize Database Configurations
-                        Global.Initialize(newConfig.Databases_Client);
+                    // Initialize Database Configurations
+                    Global.Initialize(device.Databases_Client);
 
-                        Controls.DeviceButton db = new DeviceButton();
-                        db.Description = newConfig.Description.Description;
-                        db.Manufacturer = newConfig.Description.Manufacturer;
-                        db.Model = newConfig.Description.Model;
-                        db.Serial = newConfig.Description.Serial;
-                        db.Id = newConfig.Description.Machine_ID;
+                    Controls.DeviceButton db = new DeviceButton();
+                    db.Description = device.Description.Description;
+                    db.Manufacturer = device.Description.Manufacturer;
+                    db.Model = device.Description.Model;
+                    db.Serial = device.Description.Serial;
+                    db.Id = device.Description.Machine_ID;
 
-                        db.Clicked += db_Clicked;
+                    db.Clicked += db_Clicked;
 
-                        ListButton lb = new ListButton();
-                        lb.ButtonContent = db;
-                        lb.ShowImage = false;
-                        lb.Selected += lb_Device_Selected;
-                        lb.DataObject = newConfig;
+                    ListButton lb = new ListButton();
+                    lb.ButtonContent = db;
+                    lb.ShowImage = false;
+                    lb.Selected += lb_Device_Selected;
+                    lb.DataObject = device;
 
-                        db.Parent = lb;
+                    db.Parent = lb;
 
-                        DeviceList.Add(lb);
-                    }
-                }
-            }
-
-            if (e.OldItems != null)
-            {
-                foreach (Configuration oldConfig in e.OldItems)
-                {
-                    Devices.Add(oldConfig);
+                    DeviceList.Add(lb);
                 }
             }
         }
 
-
         //private List<Device_Client> lDevices;
-        //public List<Device_Client> Devices 
+        //public List<Device_Client> Devices
         //{
         //    get { return lDevices; }
         //    set
@@ -232,7 +269,7 @@ namespace TH_TableManager
 
         #region "Options"
 
-        public OptionsPage Options { get; set; }
+        public TH_Global.Page Options { get; set; }
 
         #endregion
 

@@ -27,7 +27,7 @@ using System.Globalization;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_PlugIns_Client_Control;
+using TH_PlugIns_Client;
 using TH_UserManagement.Management;
 using TH_WPF.TimeLine;
 
@@ -38,7 +38,7 @@ namespace TH_DeviceCompare
     /// <summary>
     /// Interaction logic for DeviceCompare.xaml
     /// </summary>
-    public partial class DeviceCompare : UserControl, Control_PlugIn
+    public partial class DeviceCompare : UserControl, PlugIn
     {
         public DeviceCompare()
         {

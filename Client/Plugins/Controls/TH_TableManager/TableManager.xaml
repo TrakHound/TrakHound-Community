@@ -341,7 +341,7 @@
 
                     <!--Table Data-->
                     <DataGrid Grid.Row="1" ItemsSource="{Binding TableDataView}"
-                                      Background="{x:Null}"
+                                      Background="{StaticResource Window_Background_Dark}"
                                       Margin="0,0,10,10"
                                       HeadersVisibility="Column"
                                       BorderBrush="#33000000" BorderThickness="1,0,1,1"
@@ -361,7 +361,7 @@
 
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="DataGridColumnHeader">
-                                <Setter Property="Background" Value="#33000000"/>
+                                <Setter Property="Background" Value="#0052a3"/>
                                 <Setter Property="MinHeight" Value="30"/>
                                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                 <Setter Property="FontSize" Value="12"/>
@@ -387,18 +387,18 @@
                                 <Setter Property="Background" Value="#00000000" />
                                 <Setter Property="BorderBrush" Value="#33000000" />
                                 <Setter Property="BorderThickness" Value="0,0,0,0" />
-                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}" />
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
                                 <Setter Property="MinHeight" Value="30"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="#22ffffff"/>
+                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                                         <Setter Property="BorderBrush" Value="#00000000"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="true">
-                                        <Setter Property="Background" Value="#33ffffff"/>
+                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                                         <Setter Property="BorderBrush" Value="#00000000"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -423,7 +423,7 @@
                                 </Setter>
                                 <Style.Triggers>
                                     <Trigger Property="IsFocused" Value="false">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="true">
                                         <Setter Property="Background" Value="#00000000"/>

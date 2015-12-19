@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,15 +17,14 @@ using TH_Configuration;
 using TH_UserManagement.Management;
 using TH_Global;
 
-namespace TH_PlugIns_Client
+namespace TH_Plugins_Client
 {
-
     /// <summary>
     /// This is the interface for writing Control PlugIns for TrakHound-Client. 
     /// All PlugIns MUST contain the following properties and methods.
     /// </summary>
-    [InheritedExport(typeof(PlugIn))]
-    public interface PlugIn
+    [InheritedExport(typeof(Plugin))]
+    public interface Plugin
     {
 
         #region "Descriptive"
@@ -96,7 +100,7 @@ namespace TH_PlugIns_Client
         /// <summary>
         /// Used to turn on/off ability for the plugin to accept "child" plugins
         /// </summary>
-        bool AcceptsPlugIns { get; }
+        bool AcceptsPlugins { get; }
 
         /// <summary>
         /// Used to force the plugin to open up when intially loaded/enabled
@@ -112,12 +116,12 @@ namespace TH_PlugIns_Client
         /// Contains the Subcategories for this plugin's "child" plugins
         /// (ex. Dashboard has "Pages" as a subcategory)
         /// </summary>
-        List<PlugInConfigurationCategory> SubCategories { get; set; }
+        List<PluginConfigurationCategory> SubCategories { get; set; }
 
         /// <summary>
         /// Contains the Plugin's "child" plugins
         /// </summary>
-        List<PlugIn> PlugIns { get; set; }
+        List<Plugin> Plugins { get; set; }
 
         #endregion
 
@@ -128,12 +132,6 @@ namespace TH_PlugIns_Client
         /// (ex. called after DeviceData has been set)
         /// </summary>
         void Initialize();
-
-        /// <summary>
-        /// Updated information sent so that the UI can be updated
-        /// </summary>
-        /// <param name="rd">ReturnData object with updated information</param>
-        //void Update( ReturnData rd);
 
         /// <summary>
         /// Called when parent Window or plugin is closing so that the plugin can 
@@ -159,7 +157,7 @@ namespace TH_PlugIns_Client
         /// <summary>
         /// Send Request to Add/Show this Page in the Client
         /// </summary>
-        event PlugInTools.ShowRequested_Handler ShowRequested;
+        event PluginTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 
@@ -170,9 +168,6 @@ namespace TH_PlugIns_Client
         /// </summary>
         //List<Device_Client> Devices { get; set; }
         List<Configuration> Devices { get; set; }
-        //ObservableCollection<Configuration> Devices { get; set; }
-
-        //void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e);
 
         #endregion
 
@@ -200,7 +195,6 @@ namespace TH_PlugIns_Client
 
     public class DataEvent_Data
     {
-
         public string id { get; set; }
 
         public object data01 { get; set; }
@@ -208,16 +202,12 @@ namespace TH_PlugIns_Client
         public object data03 { get; set; }
         public object data04 { get; set; }
         public object data05 { get; set; }
-
     }
 
     public class PluginCategory
     {
-
         public string Name { get; set; }
-
-        public List<PlugIn> PlugIns { get; set; }
-
+        public List<Plugin> Plugins { get; set; }
     }
 
     public class PluginShowInfo
@@ -227,13 +217,10 @@ namespace TH_PlugIns_Client
         public object Page { get; set; }
     }
 
-    public static class PlugInTools
+    public static class PluginTools
     {
-
         public delegate void SelectedDeviceChanged_Handler(int Index);
         public delegate void ShowRequested_Handler(PluginShowInfo info);
-
     }
-
 
 }

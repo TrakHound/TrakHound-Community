@@ -19,7 +19,7 @@ using System.Windows.Shapes;
 
 using System.Windows.Media.Animation;
 
-using TH_PlugIns_Client;
+using TH_Plugins_Client;
 using TH_WPF;
 
 namespace TrakHound_Client.Splash
@@ -55,14 +55,14 @@ namespace TrakHound_Client.Splash
             DependencyProperty.Register("Version", typeof(string), typeof(Screen), new PropertyMetadata(""));
 
 
-        public void AddPlugin(PlugIn plugin)
+        public void AddPlugin(Plugin plugin)
         {
             ImageBrush NavIMGBRUSH = new ImageBrush();
             NavIMGBRUSH.ImageSource = plugin.Image;
             NavIMGBRUSH.Stretch = Stretch.Uniform;
 
             Rectangle NavRECT = new Rectangle();
-            NavRECT.Fill = new SolidColorBrush(Color_Functions.GetColorFromString("#aaffffff"));
+            NavRECT.Fill = new SolidColorBrush(Color_Functions.GetColorFromString("#333"));
             NavRECT.Height = 30;
             NavRECT.Width = 30;
             NavRECT.Margin = new Thickness(5);

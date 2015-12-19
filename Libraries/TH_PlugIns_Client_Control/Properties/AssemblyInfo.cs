@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TH_PlugIns_Client")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TH_Plugins_Client")]
+[assembly: AssemblyDescription("Plugin Library for TrakHound Client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TH_PlugIns_Client")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
+[assembly: AssemblyCompany("Feenux LLC")]
+[assembly: AssemblyProduct("TH_Plugins_Client")]
+[assembly: AssemblyCopyright("Copyright © 2015 Feenux LLC, All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
