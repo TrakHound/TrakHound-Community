@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-6897554865
+7-137671652
 
-141457199935
+15-1052618491
 19891405730
-Components\Cell.xaml;Components\Header.xaml;Components\Row.xaml;Components\Column_Header.xaml;Controls\NumberDisplay.xaml;DeviceTable.xaml;
+Components\Cell.xaml;Components\Header.xaml;Components\Row.xaml;Components\Column_Header.xaml;Controls\NumberDisplay.xaml;Controls\TextDisplay.xaml;DeviceTable.xaml;
 
 True
 

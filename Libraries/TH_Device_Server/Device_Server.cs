@@ -20,21 +20,15 @@ namespace TH_Device_Server
     public partial class Device_Server
     {
 
+
+
+
+
+
+
         #region "Public"
 
         public Device_Server(Configuration config, bool useDatabases = true)
-        {
-            init(config, useDatabases);
-        }
-
-        public Device_Server(UserConfiguration userConfig, Configuration config)
-        {
-            //if (userConfig != null) TablePrefix = userConfig.username.ToLower() + "_" + config.UniqueId + "_";
-
-            init(config);
-        }
-
-        void init(Configuration config, bool useDatabases = true)
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 

@@ -24,7 +24,7 @@
     </UserControl.Resources>
 
     <Border MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown"
-            BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,1,1"
+            BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,0,1,1"
             >
         <Border.Style>
             <Style TargetType="Border">
@@ -40,7 +40,7 @@
             </Style>
         </Border.Style>
 
-        <TextBlock Text="{Binding Text}" Foreground="{StaticResource Foreground_Light}" Margin="10" FontSize="12" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+        <TextBlock Text="{Binding Text}" Foreground="{StaticResource Foreground_Opposite_Normal}" Margin="10" FontSize="12" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
         
     </Border>
     

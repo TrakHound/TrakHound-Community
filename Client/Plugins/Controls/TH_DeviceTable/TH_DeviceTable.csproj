@@ -68,6 +68,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\TextDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DeviceTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,6 +90,9 @@
     </Compile>
     <Compile Include="Controls\NumberDisplay.xaml.cs">
       <DependentUpon>NumberDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextDisplay.xaml.cs">
+      <DependentUpon>TextDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="DeviceDisplay.cs" />
     <Compile Include="DeviceTable.xaml.cs">
@@ -153,6 +160,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Carrot_Arrow_Up_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01_40px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Down_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Up_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

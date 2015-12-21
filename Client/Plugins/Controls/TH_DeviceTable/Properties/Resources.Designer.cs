@@ -63,6 +63,26 @@ namespace TH_DeviceTable.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Arrow_Down_01 {
+            get {
+                object obj = ResourceManager.GetObject("Arrow_Down_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Arrow_Up_01 {
+            get {
+                object obj = ResourceManager.GetObject("Arrow_Up_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Carrot_Arrow_Down_02 {
             get {
                 object obj = ResourceManager.GetObject("Carrot_Arrow_Down_02", resourceCulture);
@@ -76,6 +96,16 @@ namespace TH_DeviceTable.Properties {
         internal static System.Drawing.Bitmap Carrot_Arrow_Up_02 {
             get {
                 object obj = ResourceManager.GetObject("Carrot_Arrow_Up_02", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Warning_01_40px {
+            get {
+                object obj = ResourceManager.GetObject("Warning_01_40px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

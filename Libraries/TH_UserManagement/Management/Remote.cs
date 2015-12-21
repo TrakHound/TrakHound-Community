@@ -407,23 +407,25 @@ namespace TH_UserManagement.Management
                 string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
                 string responseString = HTTP.SendData(url, values);
 
-
-                DataTable DT = JSON.ToTable(responseString);
-                if (DT != null)
+                if (responseString != null)
                 {
-                    List<string> result = new List<string>();
-
-                    foreach (DataRow Row in DT.Rows)
+                    DataTable DT = JSON.ToTable(responseString);
+                    if (DT != null)
                     {
-                        string tablename = Row[0].ToString();
+                        List<string> result = new List<string>();
 
-                        result.Add(tablename);
+                        foreach (DataRow Row in DT.Rows)
+                        {
+                            string tablename = Row[0].ToString();
+
+                            result.Add(tablename);
+                        }
+
+                        return result.ToArray();
                     }
-
-                    return result.ToArray();
+                    else return new string[0];
                 }
-
-                return null;
+                else return null;
             }
 
             //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig)
@@ -500,6 +502,22 @@ namespace TH_UserManagement.Management
                 Result = JSON.ToTable(responseString);
 
                 return Result;
+            }
+
+            public static Management.Configurations.UpdateInfo GetServerUpdateInfo(string table)
+            {
+                Management.Configurations.UpdateInfo result = null;
+
+                NameValueCollection values = new NameValueCollection();
+                values["tablename"] = table;
+
+                string url = "https://www.feenux.com/php/configurations/getserverupdateid.php";
+
+                string responseString = HTTP.SendData(url, values);
+
+                result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
+
+                return result;
             }
 
             public static bool UpdateConfigurationTable(string tableName, DataTable dt)

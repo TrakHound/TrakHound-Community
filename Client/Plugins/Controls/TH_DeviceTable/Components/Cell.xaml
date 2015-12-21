@@ -54,7 +54,7 @@
             </ContentControl.Style>
         </ContentControl>
 
-        <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}"/>
+        <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>
 
     </Grid>
     

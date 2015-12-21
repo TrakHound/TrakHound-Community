@@ -220,6 +220,9 @@ namespace TH_DeviceTable
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateStatus_Alert), Priority_Context, new object[] { dd, de_d.data02 });
 
 
+                            // Production Status
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatus), Priority_Context, new object[] { dd, de_d.data02 });
+
 
                             //// Shift Info
                             //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_Snapshots), Priority_Context, new object[] { dd, de_d.data02 });
@@ -230,11 +233,11 @@ namespace TH_DeviceTable
                             //// Production Status Times
                             //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
 
-                            //// Current Program
-                            //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProgram_Current), Priority_Context, new object[] { dd, de_d.data02 });
+                            // Current Program
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProgram_Current), Priority_Context, new object[] { dd, de_d.data02 });
 
-                            //// Previous Program
-                            //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProgram_Previous), Priority_Context, new object[] { dd, de_d.data02 });
+                            // Previous Program
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProgram_Previous), Priority_Context, new object[] { dd, de_d.data02 });
 
 
                             // Production Status Timeline
@@ -356,6 +359,34 @@ namespace TH_DeviceTable
         }
 
         #endregion
+
+        void UpdateProductionStatus(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Production Status", "value");
+
+                int cellIndex = dd.ComparisonGroup.row.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatus");
+                if (cellIndex >= 0)
+                {
+                    Controls.TextDisplay txt;
+
+                    object ddData = dd.ComparisonGroup.row.Cells[cellIndex].Data;
+
+                    if (ddData == null)
+                    {
+                        txt = new Controls.TextDisplay();
+                        txt.Width = 300;
+                        dd.ComparisonGroup.row.Cells[cellIndex].Data = txt;
+                        dd.ComparisonGroup.row.Cells[cellIndex].Width = 300;
+                    }
+                    else txt = (Controls.TextDisplay)ddData;
+
+                    txt.Text = value;
+                }
+            }
+        }
 
         #region "Shift Break"
 
@@ -841,7 +872,7 @@ namespace TH_DeviceTable
                         }
                         else oeeAverage = (Controls.NumberDisplay)ddData;
 
-                        oeeAverage.Value_Format = "P2";
+                        oeeAverage.Value_Format = "P1";
                         oeeAverage.Value = average;
                     }
                 }
@@ -879,7 +910,7 @@ namespace TH_DeviceTable
                                     }
                                     else oeeSegment = (Controls.NumberDisplay)ddData;
 
-                                    oeeSegment.Value_Format = "P2";
+                                    oeeSegment.Value_Format = "P1";
                                     oeeSegment.Value = oee;
                                 }
                             }
@@ -1081,57 +1112,59 @@ namespace TH_DeviceTable
 
         #region "Programs"
 
-        //void UpdateProgram_Current(DeviceDisplay dd, object snapshotData)
-        //{
-        //    DataTable dt = snapshotData as DataTable;
-        //    if (dt != null)
-        //    {
-        //        string value = DataTable_Functions.GetTableValue(dt, "name", "Program", "value");
+        void UpdateProgram_Current(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Program", "value");
 
-        //        int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "currentprogram");
-        //        if (cellIndex >= 0)
-        //        {
-        //            Controls.TextDisplay txt;
+                int cellIndex = dd.ComparisonGroup.row.Cells.ToList().FindIndex(x => x.Link.ToLower() == "currentprogram");
+                if (cellIndex >= 0)
+                {
+                    Controls.TextDisplay txt;
 
-        //            object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+                    object ddData = dd.ComparisonGroup.row.Cells[cellIndex].Data;
 
-        //            if (ddData == null)
-        //            {
-        //                txt = new Controls.TextDisplay();
-        //                dd.ComparisonGroup.column.Cells[cellIndex].Data = txt;
-        //            }
-        //            else txt = (Controls.TextDisplay)ddData;
+                    if (ddData == null)
+                    {
+                        txt = new Controls.TextDisplay();
+                        txt.Width = 300;
+                        dd.ComparisonGroup.row.Cells[cellIndex].Data = txt;
+                        dd.ComparisonGroup.row.Cells[cellIndex].Width = 300;
+                    }
+                    else txt = (Controls.TextDisplay)ddData;
 
-        //            txt.Text = value;
-        //        }
-        //    }
-        //}
+                    txt.Text = value;
+                }
+            }
+        }
 
-        //void UpdateProgram_Previous(DeviceDisplay dd, object snapshotData)
-        //{
-        //    DataTable dt = snapshotData as DataTable;
-        //    if (dt != null)
-        //    {
-        //        string value = DataTable_Functions.GetTableValue(dt, "name", "Program", "previous_value");
+        void UpdateProgram_Previous(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Program", "previous_value");
 
-        //        int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "previousprogram");
-        //        if (cellIndex >= 0)
-        //        {
-        //            Controls.TextDisplay txt;
+                int cellIndex = dd.ComparisonGroup.row.Cells.ToList().FindIndex(x => x.Link.ToLower() == "previousprogram");
+                if (cellIndex >= 0)
+                {
+                    Controls.TextDisplay txt;
 
-        //            object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+                    object ddData = dd.ComparisonGroup.row.Cells[cellIndex].Data;
 
-        //            if (ddData == null)
-        //            {
-        //                txt = new Controls.TextDisplay();
-        //                dd.ComparisonGroup.column.Cells[cellIndex].Data = txt;
-        //            }
-        //            else txt = (Controls.TextDisplay)ddData;
+                    if (ddData == null)
+                    {
+                        txt = new Controls.TextDisplay();
+                        dd.ComparisonGroup.row.Cells[cellIndex].Data = txt;
+                    }
+                    else txt = (Controls.TextDisplay)ddData;
 
-        //            txt.Text = value;
-        //        }
-        //    }
-        //}
+                    txt.Text = value;
+                }
+            }
+        }
 
         #endregion
 
@@ -1628,6 +1661,7 @@ namespace TH_DeviceTable
             {
                 Column_Header ch = new Column_Header();
                 ch.Text = item.header;
+                ch.Width = Math.Max(200, item.columnWidth);
                 ch.Index = i;
                 ch.Clicked += ch_Clicked;
                 ColumnHeaders.Add(ch);

@@ -84,69 +84,88 @@ namespace TrakHound_Server_Core
         /// Monitor runs at a fixed interval of 5 seconds and compares Devices with list of tables for current user
         /// </summary>
 
-        System.Timers.Timer devicesMonitor_TIMER;
+        Thread devicesmonitor_THREAD;
+        ManualResetEvent monitorstop = null;
 
         void DevicesMonitor_Initialize()
         {
-            if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+            monitorstop = new ManualResetEvent(false);
 
-            devicesMonitor_TIMER = new System.Timers.Timer();
-            devicesMonitor_TIMER.Interval = 5000;
-            devicesMonitor_TIMER.Elapsed += devicesMonitor_TIMER_Elapsed;
-            devicesMonitor_TIMER.Enabled = true;
+            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
+
+            devicesmonitor_THREAD = new Thread(new ThreadStart(DevicesMonitor_Start));
+            devicesmonitor_THREAD.Start();
         }
 
-        void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void DevicesMonitor_Start()
         {
-            devicesMonitor_TIMER.Enabled = false;
-            ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
-        }
-
-        void DevicesMonitor_Worker(object o)
-        {
-            if (o != null)
+            while (!monitorstop.WaitOne(0, true))
             {
-                List<Device_Server> devs = (List<Device_Server>)o;
+                DevicesMonitor_Worker(Devices.ToList());
 
-                if (currentuser != null)
+                Thread.Sleep(5000);
+            }
+        }
+
+        void DevicesMonitor_Stop()
+        {
+            if (monitorstop != null) monitorstop.Set();
+        }
+
+        void DevicesMonitor_Worker(List<Device_Server> devs)
+        {
+            if (currentuser != null)
+            {
+                string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                if (tablenames != null) // Connected to database properly
                 {
-                    string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
-                    if (tablenames != null)
+                    if (tablenames.Length > 0) // Has configurations
                     {
                         foreach (string tablename in tablenames)
                         {
-                            Configuration config = GetConfiguration(tablename);
-                            if (config != null)
+                            if (tablename != null)
                             {
-                                config.TableName = tablename;
+                                Configurations.UpdateInfo info = Configurations.GetServerUpdateInfo(tablename, userDatabaseSettings);
+                                if (info != null)
+                                {
+                                    bool enabled = false;
+                                    bool.TryParse(info.Enabled, out enabled);
 
-                                    Device_Server server = Devices.Find(x => x.configuration.UniqueId == config.UniqueId);
-                                    if (server != null) // Server is already part of list
+                                    int index = devs.FindIndex(x => x.configuration.UniqueId == info.UniqueId);
+                                    if (index >= 0) // Server is already part of list
                                     {
+                                        Device_Server server = Devices[index];
+
                                         // Check if Configuration has changed
-                                        if (server.configuration.ServerUpdateId != config.ServerUpdateId)
+                                        if (server.configuration.ServerUpdateId != info.UpdateId)
                                         {
+                                            // If changed at all then stop the current server
                                             server.Stop();
 
-                                            server.configuration = config;
-
-                                            if (config.ServerEnabled)
+                                            // If changed and still enabled then restart server
+                                            if (enabled)
                                             {
+                                                Configuration config = GetConfiguration(tablename);
+                                                if (config != null)
+                                                {
+                                                    server.configuration = config;
 
-                                            server.LoadPlugins();
+                                                    // Load/Reload Plugins
+                                                    server.LoadPlugins();
 
-                                            // Initialize Database Configurations
-                                            Global.Initialize(server.configuration.Databases_Server);
+                                                    // Initialize Database Configurations
+                                                    Global.Initialize(server.configuration.Databases_Server);
 
-                                            server.Start(false);
+                                                    server.Start(false);
+                                                }
                                             }
                                         }
                                     }
                                     else // Create & Add Device Server
                                     {
-                                        if (config.ServerEnabled) LoadConfiguration(tablename);
+                                        if (enabled) LoadConfiguration(tablename);
                                     }
-                                
+                                }
                             }
                         }
 
@@ -162,16 +181,105 @@ namespace TrakHound_Server_Core
                             }
                         }
                     }
-                    else
+                    else // No configurations found
                     {
                         foreach (Device_Server server in Devices) server.Stop();
                         Devices.Clear();
-                    }  
+                    }
                 }
             }
-
-            devicesMonitor_TIMER.Enabled = true;
         }
+
+
+
+        //System.Timers.Timer devicesMonitor_TIMER;
+
+        //void DevicesMonitor_Initialize()
+        //{
+        //    if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+
+        //    devicesMonitor_TIMER = new System.Timers.Timer();
+        //    devicesMonitor_TIMER.Interval = 5000;
+        //    devicesMonitor_TIMER.Elapsed += devicesMonitor_TIMER_Elapsed;
+        //    devicesMonitor_TIMER.Enabled = true;
+        //}
+
+        //void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    devicesMonitor_TIMER.Enabled = false;
+        //    ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
+        //}
+
+        //void DevicesMonitor_Worker(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        List<Device_Server> devs = (List<Device_Server>)o;
+
+        //        if (currentuser != null)
+        //        {
+        //            string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+        //            if (tablenames != null)
+        //            {
+        //                foreach (string tablename in tablenames)
+        //                {
+        //                    Configuration config = GetConfiguration(tablename);
+        //                    if (config != null)
+        //                    {
+        //                        config.TableName = tablename;
+
+        //                            Device_Server server = Devices.Find(x => x.configuration.UniqueId == config.UniqueId);
+        //                            if (server != null) // Server is already part of list
+        //                            {
+        //                                // Check if Configuration has changed
+        //                                if (server.configuration.ServerUpdateId != config.ServerUpdateId)
+        //                                {
+        //                                    server.Stop();
+
+        //                                    server.configuration = config;
+
+        //                                    if (config.ServerEnabled)
+        //                                    {
+
+        //                                    server.LoadPlugins();
+
+        //                                    // Initialize Database Configurations
+        //                                    Global.Initialize(server.configuration.Databases_Server);
+
+        //                                    server.Start(false);
+        //                                    }
+        //                                }
+        //                            }
+        //                            else // Create & Add Device Server
+        //                            {
+        //                                if (config.ServerEnabled) LoadConfiguration(tablename);
+        //                            }
+                                
+        //                    }
+        //                }
+
+        //                // Remove any server that was removed from user
+        //                foreach (Device_Server server in devs.ToList())
+        //                {
+        //                    string ExistingTable = tablenames.ToList().Find(x => x == server.configuration.TableName);
+        //                    if (ExistingTable == null)
+        //                    {
+        //                        server.Stop();
+        //                        int index = Devices.FindIndex(x => x.configuration.UniqueId == server.configuration.UniqueId);
+        //                        if (index >= 0) Devices.RemoveAt(index);
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                foreach (Device_Server server in Devices) server.Stop();
+        //                Devices.Clear();
+        //            }  
+        //        }
+        //    }
+
+        //    devicesMonitor_TIMER.Enabled = true;
+        //}
 
         Configuration GetConfiguration(string tablename)
         {
@@ -184,6 +292,16 @@ namespace TrakHound_Server_Core
                     Configuration config = Configuration.ReadConfigFile(xml);
                     if (config != null) return config;
                 }
+            }
+
+            return null;
+        }
+
+        Configurations.UpdateInfo GetServerUpdateInfo(string tablename)
+        {
+            if (tablename != null)
+            {
+                return Configurations.GetServerUpdateInfo(tablename, userDatabaseSettings);
             }
 
             return null;

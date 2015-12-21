@@ -101,6 +101,102 @@ namespace TH_Global.Web
         }
 
 
+
+
+        public static string Send(string url, NameValueCollection postData = null)
+        {
+            string result = null;
+
+            var attempts = 0;
+            var success = false;
+            string message = null;
+
+            // Try to send data for number of connectionAttempts
+            while (attempts < connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    byte[] postBytes = new byte[0];
+
+                    if (postData != null) postBytes = CreatePostBytes(postData);
+
+                    // Create HTTP request and define Header info
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Timeout = timeout;
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = postBytes.Length;
+                    request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+
+                    // Add POST data to request stream
+                    Stream postStream = request.GetRequestStream();
+                    postStream.Write(postBytes, 0, postBytes.Length);
+                    postStream.Flush();
+                    postStream.Close();
+
+                    // Get HTTP resonse and return as string
+                    GetHTTPResponse(request);
+
+                    success = true;
+                }
+                catch (WebException wex) { message = wex.Message; }
+                catch (Exception ex) { message = ex.Message; }
+
+                if (!success) System.Threading.Thread.Sleep(1000);
+            }
+
+            if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Create byte array that contains Post Data
+        /// </summary>
+        /// <param name="nvc"></param>
+        /// <returns></returns>
+        static byte[] CreatePostBytes(NameValueCollection nvc)
+        {
+            var postData = new StringBuilder();
+            for (var x = 0; x <= nvc.AllKeys.Length - 1; x++)
+            {
+                string key = nvc.AllKeys[x];
+                var vals = "";
+                foreach (var value in nvc.GetValues(key))
+                {
+                    vals += value;
+                }
+                postData.Append(HttpUtility.UrlEncode(key));
+                postData.Append("=");
+                postData.Append(HttpUtility.UrlEncode(vals));
+
+                // If not the last data item then add '&'
+                if (x < nvc.AllKeys.Length) postData.Append("&");
+            }
+
+            // Convert POST data to byte array
+            var ascii = new ASCIIEncoding();
+            return ascii.GetBytes(postData.ToString());
+        }
+
+        /// <summary>
+        /// HTTP resonse and return as string
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        static string GetHTTPResponse(HttpWebRequest request)
+        {
+            using (var response = (HttpWebResponse)request.GetResponse())
+            using (var s = response.GetResponseStream())
+            using (var reader = new StreamReader(s))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+
         /// <summary>
         /// Send Data to URL with POST Data using HTTP
         /// </summary>
@@ -177,6 +273,13 @@ namespace TH_Global.Web
 
             return result;
         }
+
+
+
+
+
+
+
         //public static string SendData(string url, NameValueCollection nvc, bool insureDelivery = false)
         //{
 

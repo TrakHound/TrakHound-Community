@@ -37,14 +37,14 @@
         
         <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}"/>
 
-        <Grid Grid.Column="2" Background="#0052a3">
+        <Grid Grid.Column="2" Background="{StaticResource Window_Background}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <!--Column Headers-->
-            <ItemsControl Grid.Column="2" ItemsSource="{Binding ColumnHeaders}">
+            <ItemsControl Grid.Column="2" ItemsSource="{Binding ColumnHeaders}" Background="#0052a3">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal"/>

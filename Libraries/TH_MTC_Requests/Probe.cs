@@ -193,7 +193,7 @@ namespace TH_MTC_Requests
             return result;
         }
 
-        List<Device> ProcessDevices(XmlElement Root)
+        public static List<Device> ProcessDevices(XmlElement Root)
         {
             List<Device> Result = new List<Device>();
 
@@ -210,7 +210,7 @@ namespace TH_MTC_Requests
             return Result;
         }
 
-        Device ProcessDevice(XmlElement element)
+        public static Device ProcessDevice(XmlElement element)
         {
             Device Result = null;
 
@@ -225,7 +225,7 @@ namespace TH_MTC_Requests
             return Result;
         }
 
-        Header_Devices ProcessHeader(XmlElement Root)
+        public static Header_Devices ProcessHeader(XmlElement Root)
         {
             Header_Devices Result = null;
 

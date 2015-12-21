@@ -23,7 +23,6 @@ namespace TH_DeviceTable
         void Init()
         {
             DataItems_Init();
-            //row = new Row();
             ComparisonGroup = new Comparison_Group();
         }
 
@@ -67,7 +66,7 @@ namespace TH_DeviceTable
 
             public object data { get; set; }
 
-            public int rowHeight { get; set; }
+            public int columnWidth { get; set; }
         }
 
         public class Comparison_Group
@@ -85,9 +84,21 @@ namespace TH_DeviceTable
 
             DataItem dd;
 
+            //dd = new DataItem();
+            //dd.id = "ShiftInfo";
+            //dd.header = "Shift Info";
+            //DataItems.Add(dd);
+
             dd = new DataItem();
-            dd.id = "ShiftInfo";
-            dd.header = "Shift Info";
+            dd.id = "CurrentProgram";
+            dd.header = "Current Program";
+            dd.columnWidth = 300;
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "ProductionStatus";
+            dd.header = "Production Status";
+            dd.columnWidth = 300;
             DataItems.Add(dd);
 
             dd = new DataItem();
@@ -100,25 +111,21 @@ namespace TH_DeviceTable
             dd.header = "Shift Segment OEE";
             DataItems.Add(dd);
 
-            dd = new DataItem();
-            dd.id = "OEETimeLine";
-            dd.header = "OEE Timeline";
-            DataItems.Add(dd);
+            //dd = new DataItem();
+            //dd.id = "OEETimeLine";
+            //dd.header = "OEE Timeline";
+            //DataItems.Add(dd);
 
-            dd = new DataItem();
-            dd.id = "productionstatustimes";
-            dd.header = "Production Status Times";
-            DataItems.Add(dd);
+            //dd = new DataItem();
+            //dd.id = "productionstatustimes";
+            //dd.header = "Production Status Times";
+            //DataItems.Add(dd);
 
-            dd = new DataItem();
-            dd.id = "CurrentProgram";
-            dd.header = "Current Program";
-            DataItems.Add(dd);
-
-            dd = new DataItem();
-            dd.id = "PreviousProgram";
-            dd.header = "Previous Program";
-            DataItems.Add(dd);
+            //dd = new DataItem();
+            //dd.id = "PreviousProgram";
+            //dd.header = "Previous Program";
+            //dd.columnWidth = 300;
+            //DataItems.Add(dd);
 
             //dd = new DataItem();
             //dd.id = "CNCInfo";

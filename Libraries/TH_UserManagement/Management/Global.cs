@@ -175,6 +175,30 @@ namespace TH_UserManagement.Management
             return result;
         }
 
+
+        public class UpdateInfo
+        {
+            public string UniqueId { get; set; }
+            public string UpdateId { get; set; }
+            public string Enabled { get; set; }
+        }
+
+        public static UpdateInfo GetServerUpdateInfo(string table, Database_Settings userDatabaseSettings)
+        {
+            UpdateInfo result = null;
+
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.Configurations.GetServerUpdateInfo(table);
+            }
+            else
+            {
+                //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
+            }
+
+            return result;
+        }
+
         public static bool UpdateConfigurationTable(string tableName, DataTable dt, Database_Settings userDatabaseSettings)
         {
             bool result = false;

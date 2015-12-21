@@ -30,12 +30,21 @@
             <Grid.Style>
                 <Style TargetType="Grid">
 
-                    <Setter Property="Background" Value="#00000000"/>
+                    <Setter Property="Background" Value="#0052a3"/>
 
                     <Style.Triggers>
 
                         <DataTrigger Binding="{Binding Production}" Value="true">
-                            <Setter Property="Background" Value="#FF19B419"/>
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FF40B240" Offset="0"/>
+                                        <GradientStop Color="#FF19B419" Offset="0.2"/>
+                                        <GradientStop Color="#FF19B419" Offset="0.8"/>
+                                        <GradientStop Color="#FF40B240" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
                         </DataTrigger>
 
                         <DataTrigger Binding="{Binding Alert}" Value="true">
@@ -157,7 +166,7 @@
                 </StackPanel>
 
                 <!--Separator-->
-                <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
+                <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Light}" Margin="0" />
 
             </Grid>
             
