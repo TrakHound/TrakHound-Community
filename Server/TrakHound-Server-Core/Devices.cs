@@ -32,7 +32,6 @@ namespace TrakHound_Server_Core
                 foreach (string tablename in tablenames)
                 {
                     LoadConfiguration(tablename);
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(LoadConfiguration), tablename);
                 }
             }
             // If not logged in Read from File in 'C:\TrakHound\'

@@ -135,7 +135,7 @@ namespace TrakHound_Client
 
         }
 
-        void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), new object[] { }); }
+        void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), Priority, new object[] { }); }
 
         void Splash_Show_GUI() { SPLSH.Show(); }
 
@@ -147,7 +147,7 @@ namespace TrakHound_Client
 
         void Splash_UpdateStatus_GUI(string Status) { SPLSH.Status = Status; }
 
-        void Splash_AddPlugin(Plugin plugin) { this.Dispatcher.Invoke(new Action<Plugin>(Splash_AddPlugin_GUI), new object[] { plugin }); }
+        void Splash_AddPlugin(Plugin plugin) { this.Dispatcher.Invoke(new Action<Plugin>(Splash_AddPlugin_GUI), Priority, new object[] { plugin }); }
 
         void Splash_AddPlugin_GUI(Plugin plugin) { SPLSH.AddPlugin(plugin); }
 
@@ -635,6 +635,8 @@ namespace TrakHound_Client
                     }
                 }
             }
+
+            DevicesMonitor_Stop();
 
             Properties.Settings.Default.Save();
 
@@ -1650,7 +1652,25 @@ namespace TrakHound_Client
         }
 
 
-        void UpdatePluginDevices(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //void UpdatePluginDevices(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (plugins != null)
+        //    {
+        //        foreach (Lazy<Plugin> lplugin in plugins.ToList())
+        //        {
+        //            Plugin plugin = lplugin.Value;
+
+        //            this.Dispatcher.BeginInvoke(new Action<Plugin, object, NotifyCollectionChangedEventArgs>(UpdatePluginDevices), Priority, new object[] { plugin, sender, e });
+        //        }
+        //    }       
+        //}
+
+        //void UpdatePluginDevices(Plugin plugin, object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    plugin.Devices = Devices.ToList();
+        //}
+
+        void UpdatePluginDevices(List<Configuration> devices)
         {
             if (plugins != null)
             {
@@ -1658,14 +1678,9 @@ namespace TrakHound_Client
                 {
                     Plugin plugin = lplugin.Value;
 
-                    this.Dispatcher.BeginInvoke(new Action<Plugin, object, NotifyCollectionChangedEventArgs>(UpdatePluginDevices), Priority, new object[] { plugin, sender, e });
+                    plugin.Devices = devices;
                 }
-            }       
-        }
-
-        void UpdatePluginDevices(Plugin plugin, object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            plugin.Devices = Devices.ToList();
+            } 
         }
 
 
@@ -1695,415 +1710,415 @@ namespace TrakHound_Client
 
         #region "Devices"
 
-        public ObservableCollection<Configuration> Devices { get; set; }
-
-        #region "Load Devices"
-
-        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
-        Thread loaddevices_THREAD;
-
-        void LoadDevices_Initialize()
-        {
-            Devices = new ObservableCollection<Configuration>();
-            Devices.CollectionChanged += Devices_CollectionChanged;
-        }
-
-
-        void LoadDevices()
-        {
-            Devices.Clear();
-
-            if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
-
-            loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
-            loaddevices_THREAD.Start();
-        }
-
-        void LoadDevices_Worker()
-        {
-            List<Configuration> configs = new List<Configuration>();
-
-            if (currentuser != null)
-            {
-                string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
-
-                if (tablenames != null)
-                {
-                    foreach (string tablename in tablenames)
-                    {
-                        Configuration config = GetConfiguration(tablename);
-
-                        //this.Dispatcher.BeginInvoke((Action)delegate { LoadDevices_GUI(config); }, priority);
-
-                        this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
-                    }
-                }
-            }
-            // If not logged in Read from File in 'C:\TrakHound\'
-            else
-            {
-                configs = ReadConfigurationFile();
-
-                this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
-            }
-
-            this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), priority, new object[] { });
-        }
-
-        void LoadDevices_Worker_GetConfiguration(object o)
-        {
-            if (o != null)
-            {
-                string tablename = o.ToString();
-
-                DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
-                if (dt != null)
-                {
-                    XmlDocument xml = Converter.TableToXML(dt);
-                    Configuration config = Configuration.ReadConfigFile(xml);
-                    if (config != null)
-                    {
-                        config.TableName = tablename;
-
-                        if (config.ClientEnabled)
-                        {
-                            // Initialize Database Configurations
-                            Global.Initialize(config.Databases_Client);
-
-                            this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
-                        }
-                    }
-                }
-            }
-        }
-
-        Configuration GetConfiguration(string tablename)
-        {
-            Configuration result = null;
-
-            DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
-            if (dt != null)
-            {
-                XmlDocument xml = Converter.TableToXML(dt);
-                Configuration config = Configuration.ReadConfigFile(xml);
-                if (config != null)
-                {
-                    config.TableName = tablename;
-
-                    if (config.ClientEnabled)
-                    {
-                        // Initialize Database Configurations
-                        Global.Initialize(config.Databases_Client);
-
-                        result = config;
-
-                        //this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
-                    }
-                }
-            }
+        //public ObservableCollection<Configuration> Devices { get; set; }
+
+        //#region "Load Devices"
+
+        //const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
+
+        //Thread loaddevices_THREAD;
+
+        //void LoadDevices_Initialize()
+        //{
+        //    Devices = new ObservableCollection<Configuration>();
+        //    Devices.CollectionChanged += Devices_CollectionChanged;
+        //}
+
+
+        //void LoadDevices()
+        //{
+        //    Devices.Clear();
+
+        //    if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
+
+        //    loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
+        //    loaddevices_THREAD.Start();
+        //}
+
+        //void LoadDevices_Worker()
+        //{
+        //    List<Configuration> configs = new List<Configuration>();
+
+        //    if (currentuser != null)
+        //    {
+        //        string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+
+        //        if (tablenames != null)
+        //        {
+        //            foreach (string tablename in tablenames)
+        //            {
+        //                Configuration config = GetConfiguration(tablename);
+
+        //                //this.Dispatcher.BeginInvoke((Action)delegate { LoadDevices_GUI(config); }, priority);
+
+        //                this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
+        //            }
+        //        }
+        //    }
+        //    // If not logged in Read from File in 'C:\TrakHound\'
+        //    else
+        //    {
+        //        configs = ReadConfigurationFile();
+
+        //        this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), priority, new object[] { configs });
+        //    }
+
+        //    this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), priority, new object[] { });
+        //}
+
+        //void LoadDevices_Worker_GetConfiguration(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        string tablename = o.ToString();
+
+        //        DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+        //        if (dt != null)
+        //        {
+        //            XmlDocument xml = Converter.TableToXML(dt);
+        //            Configuration config = Configuration.ReadConfigFile(xml);
+        //            if (config != null)
+        //            {
+        //                config.TableName = tablename;
+
+        //                if (config.ClientEnabled)
+        //                {
+        //                    // Initialize Database Configurations
+        //                    Global.Initialize(config.Databases_Client);
+
+        //                    this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //Configuration GetConfiguration(string tablename)
+        //{
+        //    Configuration result = null;
+
+        //    DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+        //    if (dt != null)
+        //    {
+        //        XmlDocument xml = Converter.TableToXML(dt);
+        //        Configuration config = Configuration.ReadConfigFile(xml);
+        //        if (config != null)
+        //        {
+        //            config.TableName = tablename;
+
+        //            if (config.ClientEnabled)
+        //            {
+        //                // Initialize Database Configurations
+        //                Global.Initialize(config.Databases_Client);
+
+        //                result = config;
+
+        //                //this.Dispatcher.BeginInvoke(new Action<Configuration>(LoadDevices_GUI), priority, new object[] { config });
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        void LoadDevices_GUI(Configuration config)
-        {
-            if (config != null) Devices.Add(config);
-        }
+        //void LoadDevices_GUI(Configuration config)
+        //{
+        //    if (config != null) Devices.Add(config);
+        //}
 
-        void LoadDevices_Finished()
-        {
-            if (Devices.Count == 0 && currentuser != null)
-            {
-                if (devicemanager != null) devicemanager.AddDevice();
-                DeviceManager_Open();
-            }
+        //void LoadDevices_Finished()
+        //{
+        //    if (Devices.Count == 0 && currentuser != null)
+        //    {
+        //        if (devicemanager != null) devicemanager.AddDevice();
+        //        DeviceManager_Open();
+        //    }
 
-            DevicesMonitor_Initialize();
-        }
+        //    DevicesMonitor_Initialize();
+        //}
 
-        void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            UpdatePluginDevices(sender, e);
-        }
+        //void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    UpdatePluginDevices(sender, e);
+        //}
 
 
-        List<Configuration> GetConfigurations()
-        {
-            List<Configuration> result = new List<Configuration>();
+        //List<Configuration> GetConfigurations()
+        //{
+        //    List<Configuration> result = new List<Configuration>();
 
-            string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
-
-            if (tablenames != null)
-            {
-                foreach (string tablename in tablenames)
-                {
-                    DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
-                    if (dt != null)
-                    {
-                        XmlDocument xml = Converter.TableToXML(dt);
-                        Configuration config = Configuration.ReadConfigFile(xml);
-                        if (config != null)
-                        {
-                            config.TableName = tablename;
-
-                            if (config.ClientEnabled) result.Add(config);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        void LoadDevices_GUI(List<Configuration> configs)
-        {
-            Devices.Clear();
+        //    string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+
+        //    if (tablenames != null)
+        //    {
+        //        foreach (string tablename in tablenames)
+        //        {
+        //            DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
+        //            if (dt != null)
+        //            {
+        //                XmlDocument xml = Converter.TableToXML(dt);
+        //                Configuration config = Configuration.ReadConfigFile(xml);
+        //                if (config != null)
+        //                {
+        //                    config.TableName = tablename;
+
+        //                    if (config.ClientEnabled) result.Add(config);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        //void LoadDevices_GUI(List<Configuration> configs)
+        //{
+        //    Devices.Clear();
 
-            if (configs != null)
-            {
-                int index = 0;
-
-                DatabasePluginReader dpr = new DatabasePluginReader();
-
-                // Create DevicesList based on Configurations
-                foreach (Configuration config in configs)
-                {
-                    config.Index = index;
-
-                    //if (config.Remote) { StartMonitor(config); }
-
-                    if (config.ClientEnabled)
-                    {
-                        Devices.Add(config);
-
-                        // Initialize Database Configurations
-                        Global.Initialize(config.Databases_Client);
-                    }
-
-                    index += 1;
-                }
-            }
-
-            // If a user is logged in but no Devices are found then open up Device Manager and Add Device page
-            if (CurrentUser != null && Devices.Count == 0)
-            {
-                if (devicemanager != null) devicemanager.AddDevice();
-
-                DeviceManager_Open();
-            }
-
-            //UpdatePlugInDevices();
-
-            DevicesMonitor_Initialize();
-        }
-
-
-        #region "Offline Configurations"
-
-        List<Configuration> ReadConfigurationFile()
-        {
-            List<Configuration> result = new List<Configuration>();
-
-            //UpdateExceptionsThrown = new List<string>();
-
-            string configPath;
-
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
-
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
-
-            if (System.IO.File.Exists(configPath))
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(configPath);
-
-                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-                {
-                    if (Node.NodeType == XmlNodeType.Element)
-                    {
-                        switch (Node.Name.ToLower())
-                        {
-                            case "devices":
-                                foreach (XmlNode ChildNode in Node.ChildNodes)
-                                {
-                                    if (ChildNode.NodeType == XmlNodeType.Element)
-                                    {
-                                        switch (ChildNode.Name.ToLower())
-                                        {
-                                            case "device":
-
-                                                Configuration config = GetSettingsFromNode(ChildNode);
-                                                if (config != null) result.Add(config);
-
-                                                break;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        private Configuration GetSettingsFromNode(XmlNode Node)
-        {
-
-            Configuration Result = null;
-
-            string configPath = null;
-
-            foreach (XmlNode ChildNode in Node.ChildNodes)
-            {
-                switch (ChildNode.Name.ToLower())
-                {
-                    case "configuration_path": configPath = ChildNode.InnerText; break;
-                }
-            }
-
-            if (configPath != null)
-            {
-                configPath = GetConfigurationPath(configPath);
-
-                Result = Configuration.ReadConfigFile(configPath);
-
-                if (Result == null)
-                {
-                    Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.title = "Device Configuration Error";
-                    mData.text = "Could not load device configuration from " + configPath;
-                    mData.additionalInfo = "Check to make sure the file exists at "
-                        + configPath
-                        + " and that the format is correct and restart TrakHound Client."
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "For more information please contact us at info@TrakHound.org";
-                    if (messageCenter != null) messageCenter.AddError(mData);
-                }
-            }
-
-            return Result;
-
-        }
-
-        static string GetConfigurationPath(string path)
-        {
-            // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-            if (!System.IO.Path.IsPathRooted(path))
-            {
-                // Remove initial Backslash if contained in "configuration_path"
-                if (path[0] == '\\' && path.Length > 1) path.Substring(1);
-
-                string original = path;
-
-                // Check System Path
-                path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-
-                // Check local app Path
-                path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-
-                // if no files exist return null
-                return null;
-            }
-            else return path;
-        }
-
-        #endregion
-
-        #endregion
-
-        #region "Devices Monitor"
-
-        System.Timers.Timer devicesMonitor_TIMER;
-
-        void DevicesMonitor_Initialize()
-        {
-            //if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
-
-            //devicesMonitor_TIMER = new System.Timers.Timer();
-            //devicesMonitor_TIMER.Interval = 5000;
-            //devicesMonitor_TIMER.Elapsed += devicesMonitor_TIMER_Elapsed;
-            //devicesMonitor_TIMER.Enabled = true;
-        }
-
-        void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
-        }
-
-        Thread devicesMonitor_THREAD;
-
-        void DevicesMonitor_Start()
-        {
-            if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
-
-            devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
-            devicesMonitor_THREAD.Start(Devices.ToList());
-        }
-
-        void DevicesMonitor_Worker(object o)
-        {
-            bool changed = false;
-
-            if (o != null)
-            {
-                List<Configuration> devs = (List<Configuration>)o;
-
-                if (currentuser != null)
-                {
-                    List<Configuration> userConfigs = GetConfigurations();
-                    if (userConfigs != null)
-                    {
-                        foreach (Configuration userConfig in userConfigs)
-                        {
-                            if (userConfig != null)
-                            {
-                                Configuration match = devs.Find(x => x.UniqueId == userConfig.UniqueId);
-                                if (match != null)
-                                {
-                                    bool update = userConfig.ClientUpdateId == match.ClientUpdateId;
-                                    if (!update)
-                                    {
-                                        // Configuration has been updated / changed
-                                        changed = true;
-                                        break;
-                                    }
-                                }
-                                else if (userConfig.ClientEnabled)
-                                {
-                                    // Configuration has been added or removed
-                                    changed = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else if (devs.Count > 0) changed = true;
-                }
-            }
-
-            this.Dispatcher.BeginInvoke(new Action<bool>(DevicesMonitor_Finished), priority, new object[] { changed });
-        }
-
-        void DevicesMonitor_Finished(bool changed)
-        {
-            if (changed)
-            {
-                if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
-
-                LoadDevices();
-            }
-        }
-
-        #endregion
+        //    if (configs != null)
+        //    {
+        //        int index = 0;
+
+        //        DatabasePluginReader dpr = new DatabasePluginReader();
+
+        //        // Create DevicesList based on Configurations
+        //        foreach (Configuration config in configs)
+        //        {
+        //            config.Index = index;
+
+        //            //if (config.Remote) { StartMonitor(config); }
+
+        //            if (config.ClientEnabled)
+        //            {
+        //                Devices.Add(config);
+
+        //                // Initialize Database Configurations
+        //                Global.Initialize(config.Databases_Client);
+        //            }
+
+        //            index += 1;
+        //        }
+        //    }
+
+        //    // If a user is logged in but no Devices are found then open up Device Manager and Add Device page
+        //    if (CurrentUser != null && Devices.Count == 0)
+        //    {
+        //        if (devicemanager != null) devicemanager.AddDevice();
+
+        //        DeviceManager_Open();
+        //    }
+
+        //    //UpdatePlugInDevices();
+
+        //    DevicesMonitor_Initialize();
+        //}
+
+
+        //#region "Offline Configurations"
+
+        //List<Configuration> ReadConfigurationFile()
+        //{
+        //    List<Configuration> result = new List<Configuration>();
+
+        //    //UpdateExceptionsThrown = new List<string>();
+
+        //    string configPath;
+
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
+
+        //    if (System.IO.File.Exists(configPath))
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(configPath);
+
+        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
+        //        {
+        //            if (Node.NodeType == XmlNodeType.Element)
+        //            {
+        //                switch (Node.Name.ToLower())
+        //                {
+        //                    case "devices":
+        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
+        //                        {
+        //                            if (ChildNode.NodeType == XmlNodeType.Element)
+        //                            {
+        //                                switch (ChildNode.Name.ToLower())
+        //                                {
+        //                                    case "device":
+
+        //                                        Configuration config = GetSettingsFromNode(ChildNode);
+        //                                        if (config != null) result.Add(config);
+
+        //                                        break;
+        //                                }
+        //                            }
+        //                        }
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        //private Configuration GetSettingsFromNode(XmlNode Node)
+        //{
+
+        //    Configuration Result = null;
+
+        //    string configPath = null;
+
+        //    foreach (XmlNode ChildNode in Node.ChildNodes)
+        //    {
+        //        switch (ChildNode.Name.ToLower())
+        //        {
+        //            case "configuration_path": configPath = ChildNode.InnerText; break;
+        //        }
+        //    }
+
+        //    if (configPath != null)
+        //    {
+        //        configPath = GetConfigurationPath(configPath);
+
+        //        Result = Configuration.ReadConfigFile(configPath);
+
+        //        if (Result == null)
+        //        {
+        //            Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
+        //            mData.title = "Device Configuration Error";
+        //            mData.text = "Could not load device configuration from " + configPath;
+        //            mData.additionalInfo = "Check to make sure the file exists at "
+        //                + configPath
+        //                + " and that the format is correct and restart TrakHound Client."
+        //                + Environment.NewLine
+        //                + Environment.NewLine
+        //                + "For more information please contact us at info@TrakHound.org";
+        //            if (messageCenter != null) messageCenter.AddError(mData);
+        //        }
+        //    }
+
+        //    return Result;
+
+        //}
+
+        //static string GetConfigurationPath(string path)
+        //{
+        //    // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
+        //    if (!System.IO.Path.IsPathRooted(path))
+        //    {
+        //        // Remove initial Backslash if contained in "configuration_path"
+        //        if (path[0] == '\\' && path.Length > 1) path.Substring(1);
+
+        //        string original = path;
+
+        //        // Check System Path
+        //        path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
+
+        //        // Check local app Path
+        //        path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
+
+        //        // if no files exist return null
+        //        return null;
+        //    }
+        //    else return path;
+        //}
+
+        //#endregion
+
+        //#endregion
+
+        //#region "Devices Monitor"
+
+        //System.Timers.Timer devicesMonitor_TIMER;
+
+        //void DevicesMonitor_Initialize()
+        //{
+        //    //if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+
+        //    //devicesMonitor_TIMER = new System.Timers.Timer();
+        //    //devicesMonitor_TIMER.Interval = 5000;
+        //    //devicesMonitor_TIMER.Elapsed += devicesMonitor_TIMER_Elapsed;
+        //    //devicesMonitor_TIMER.Enabled = true;
+        //}
+
+        //void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
+        //}
+
+        //Thread devicesMonitor_THREAD;
+
+        //void DevicesMonitor_Start()
+        //{
+        //    if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
+
+        //    devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
+        //    devicesMonitor_THREAD.Start(Devices.ToList());
+        //}
+
+        //void DevicesMonitor_Worker(object o)
+        //{
+        //    bool changed = false;
+
+        //    if (o != null)
+        //    {
+        //        List<Configuration> devs = (List<Configuration>)o;
+
+        //        if (currentuser != null)
+        //        {
+        //            List<Configuration> userConfigs = GetConfigurations();
+        //            if (userConfigs != null)
+        //            {
+        //                foreach (Configuration userConfig in userConfigs)
+        //                {
+        //                    if (userConfig != null)
+        //                    {
+        //                        Configuration match = devs.Find(x => x.UniqueId == userConfig.UniqueId);
+        //                        if (match != null)
+        //                        {
+        //                            bool update = userConfig.ClientUpdateId == match.ClientUpdateId;
+        //                            if (!update)
+        //                            {
+        //                                // Configuration has been updated / changed
+        //                                changed = true;
+        //                                break;
+        //                            }
+        //                        }
+        //                        else if (userConfig.ClientEnabled)
+        //                        {
+        //                            // Configuration has been added or removed
+        //                            changed = true;
+        //                            break;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //            else if (devs.Count > 0) changed = true;
+        //        }
+        //    }
+
+        //    this.Dispatcher.BeginInvoke(new Action<bool>(DevicesMonitor_Finished), priority, new object[] { changed });
+        //}
+
+        //void DevicesMonitor_Finished(bool changed)
+        //{
+        //    if (changed)
+        //    {
+        //        if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
+
+        //        LoadDevices();
+        //    }
+        //}
+
+        //#endregion
 
         #endregion
 

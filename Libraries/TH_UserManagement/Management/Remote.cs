@@ -504,6 +504,22 @@ namespace TH_UserManagement.Management
                 return Result;
             }
 
+            public static Management.Configurations.UpdateInfo GetClientUpdateInfo(string table)
+            {
+                Management.Configurations.UpdateInfo result = null;
+
+                NameValueCollection values = new NameValueCollection();
+                values["tablename"] = table;
+
+                string url = "https://www.feenux.com/php/configurations/getclientupdateinfo.php";
+
+                string responseString = HTTP.SendData(url, values);
+
+                result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
+
+                return result;
+            }
+
             public static Management.Configurations.UpdateInfo GetServerUpdateInfo(string table)
             {
                 Management.Configurations.UpdateInfo result = null;
@@ -511,7 +527,7 @@ namespace TH_UserManagement.Management
                 NameValueCollection values = new NameValueCollection();
                 values["tablename"] = table;
 
-                string url = "https://www.feenux.com/php/configurations/getserverupdateid.php";
+                string url = "https://www.feenux.com/php/configurations/getserverupdateinfo.php";
 
                 string responseString = HTTP.SendData(url, values);
 

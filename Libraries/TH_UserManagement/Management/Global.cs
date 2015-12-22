@@ -183,6 +183,22 @@ namespace TH_UserManagement.Management
             public string Enabled { get; set; }
         }
 
+        public static UpdateInfo GetClientUpdateInfo(string table, Database_Settings userDatabaseSettings)
+        {
+            UpdateInfo result = null;
+
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.Configurations.GetClientUpdateInfo(table);
+            }
+            else
+            {
+                //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
+            }
+
+            return result;
+        }
+
         public static UpdateInfo GetServerUpdateInfo(string table, Database_Settings userDatabaseSettings)
         {
             UpdateInfo result = null;

@@ -62,7 +62,7 @@ namespace TrakHound_Client.Splash
             NavIMGBRUSH.Stretch = Stretch.Uniform;
 
             Rectangle NavRECT = new Rectangle();
-            NavRECT.Fill = new SolidColorBrush(Color_Functions.GetColorFromString("#333"));
+            NavRECT.Fill = new SolidColorBrush(Color_Functions.GetColorFromString("#eee"));
             NavRECT.Height = 30;
             NavRECT.Width = 30;
             NavRECT.Margin = new Thickness(5);

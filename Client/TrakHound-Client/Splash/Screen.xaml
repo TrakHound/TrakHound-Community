@@ -138,19 +138,31 @@
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="1" CornerRadius="5" Background="#eee">
+            <Rectangle Grid.Column="0">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="1,0" GradientStops="{DynamicResource gradient}" />
+                </Rectangle.Fill>
+            </Rectangle>
+
+            <Border Grid.Column="1" CornerRadius="5" Background="#0080ff" Margin="-2">
 
                 <Border CornerRadius="5">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#20000000" Offset="0"/>
-                            <GradientStop Color="#00000000" Offset="0.4"/>
-                            <GradientStop Color="#00000000" Offset="0.6"/>
-                            <GradientStop Color="#20000000" Offset="1"/>
+                            <GradientStop Color="#00000000" Offset="0"/>
+                            <GradientStop Color="#20ffffff" Offset="0.5"/>
+                            <!--<GradientStop Color="#66ffffff" Offset="0.6"/>-->
+                            <GradientStop Color="#00000000" Offset="1"/>
                         </LinearGradientBrush>
+                        <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#10ffffff" Offset="0"/>
+                            <GradientStop Color="#66ffffff" Offset="0.4"/>
+                            <GradientStop Color="#66ffffff" Offset="0.6"/>
+                            <GradientStop Color="#10ffffff" Offset="1"/>
+                        </LinearGradientBrush>-->
                     </Border.Background>
                     
-                    <Border BorderBrush="#aaa" BorderThickness="1" CornerRadius="5" Margin="1">
+                    <Border BorderBrush="#0060ff" BorderThickness="1" CornerRadius="5" Margin="1">
 
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -158,7 +170,22 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Source="/TrakHound-Client;component/Resources/TrakHound_Logo_10.png" Height="150"/>
+                            <!--Image-->
+                            <!--<Rectangle Width="180" Height="180" Margin="20,20,40,0" VerticalAlignment="Top" HorizontalAlignment="Center">
+                                <Rectangle.Resources>
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/TrakHound_Logo_Initials_10_260px.png" />
+                                </Rectangle.Resources>
+
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Fill" Value="#eee"/>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>-->
+
+
+                            <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,30,20,0" Source="/TrakHound-Client;component/Resources/TrakHound_Logo_Initials_10_200px_White.png" Height="150"/>
 
                             <Grid Grid.Column="1" Margin="20,30">
                                 <Grid.RowDefinitions>
@@ -168,19 +195,19 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Style="{StaticResource TrakHoundFont}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#333">
+                                <TextBlock Style="{StaticResource TrakHoundFont}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#eee">
                                 <Run FontSize="36pt">TrakHound</Run>
                                 <Run FontSize="4pt" BaselineAlignment="Superscript">TM</Run>
                                 </TextBlock>
 
-                                <TextBlock Grid.Row="1" Text="{Binding Version}" Foreground="#333" FontSize="10pt" />
+                                <TextBlock Grid.Row="1" Text="{Binding Version}" Foreground="#eee" FontSize="10pt" />
 
-                                <TextBlock Grid.Row="2" Text="{Binding Status}" FontSize="10pt" Foreground="#333"/>
+                                <TextBlock Grid.Row="2" Text="{Binding Status}" FontSize="10pt" Foreground="#eee"/>
 
                                 <Grid x:Name="Plugins_GRID" Grid.Row="3">
                                     <StackPanel x:Name="Plugins_STACK" Orientation="Horizontal" Visibility="Collapsed">
-                                        <TextBlock Text="Pages" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
-                                        <Rectangle Fill="#333" Width="2" Margin="0,5,10,5" Height="30"/>
+                                        <TextBlock Text="Pages" Foreground="#eee" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                                        <Rectangle Fill="#eee" Width="2" Margin="0,5,10,5" Height="30"/>
                                     </StackPanel>
                                 </Grid>
 

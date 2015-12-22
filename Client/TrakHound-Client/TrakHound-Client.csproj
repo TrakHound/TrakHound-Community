@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Devices.cs" />
     <Compile Include="Pages\About\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
@@ -331,6 +332,8 @@
     <Resource Include="Resources\feenux_logo_05_30px.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\TrakHound_Logo_Initials_10_200px_White.png" />
+    <Resource Include="Resources\TrakHound_Logo_Initials_10_260px.png" />
     <Resource Include="Resources\FullScreen_02_30px.png" />
     <Resource Include="Resources\Minus_04.png" />
     <Resource Include="Resources\Plus_04.png" />

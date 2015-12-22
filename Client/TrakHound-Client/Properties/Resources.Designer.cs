@@ -203,16 +203,6 @@ namespace TrakHound_Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap feenux_logo_05_30px {
-            get {
-                object obj = ResourceManager.GetObject("feenux_logo_05_30px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap feenux_logo_06_50px {
             get {
                 object obj = ResourceManager.GetObject("feenux_logo_06_50px", resourceCulture);
@@ -407,6 +397,26 @@ namespace TrakHound_Client.Properties {
             get {
                 object obj = ResourceManager.GetObject("TrakHound_Logo_Initials_10", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TrakHound_Logo_Initials_10_200px_White {
+            get {
+                object obj = ResourceManager.GetObject("TrakHound_Logo_Initials_10_200px_White", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap TrakHound_Logo_Initials_10_260px {
+            get {
+                object obj = ResourceManager.GetObject("TrakHound_Logo_Initials_10_260px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
