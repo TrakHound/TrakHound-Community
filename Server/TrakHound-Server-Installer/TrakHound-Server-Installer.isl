@@ -343,6 +343,7 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>AppStart.Primary_output</td><td>{464C71C0-18CE-4EF3-AC51-9DE4EBED81E8}</td><td>INSTALLDIR</td><td>2</td><td/><td>appstart.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{690BCC6B-26BC-4B94-885F-26076D3C51F1}</td><td>PLUGINS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{C6FF16F2-0A10-4F10-8123-E624530956D0}</td><td>ADMIN_FUNCTIONS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td>{66582C4E-081C-4BF1-968C-50C7B1CB64C2}</td><td>TH_SHIFTTABLE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1923,6 +1924,7 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>AppStart.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT10</td></row>
@@ -1979,6 +1981,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>appstart.primary_output</td><td>AppStart.Primary_output</td><td>AppStart.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AppStart1&gt;|Built</td><td>3</td><td/></row>
 		<row><td>mysql.data.dll</td><td>MySql.Data.dll</td><td>MYSQLD~1.DLL|MySql.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\MySql.Data.dll</td><td>1</td><td/></row>
 		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\bin\Debug\Newtonsoft.Json.dll</td><td>1</td><td/></row>
 		<row><td>th_configuration.primary_out</td><td>TH_Configuration.Primary_output</td><td>TH_Configuration.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Configuration&gt;|Built</td><td>3</td><td/></row>
@@ -2155,6 +2158,7 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>AppStart.Primary_output</td><td/><td/><td>_9107E359_EC33_43B5_9A3F_32CBA2E6F032_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_DB78A419_5D73_4BF9_A669_D419F7FEEC55_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_695184BE_3767_42EE_AE9C_2E30E23E572E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT10</td><td/><td/><td>_6A054649_E017_4D4F_B521_8239C6A77263_FILTER</td><td/><td/><td/><td/></row>
@@ -2499,6 +2503,8 @@
 		<col def="S255">Value</col>
 		<col def="S255">TestValue</col>
 		<col def="i4">Type</col>
+		<row><td>AppStart</td><td>Client\AppStart\AppStart.csproj</td><td/><td>2</td></row>
+		<row><td>AppStart1</td><td>Server\AppStart\AppStart.csproj</td><td/><td>2</td></row>
 		<row><td>CommonFilesFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISPROJECTDIR</td><td/><td/><td>1</td></row>
 		<row><td>ISProductFolder</td><td/><td/><td>1</td></row>

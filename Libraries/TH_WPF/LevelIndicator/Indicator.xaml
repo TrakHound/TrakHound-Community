@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="TH_WPF.LevelIndicator.Indicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TH_WPF.LevelIndicator"
+             
+             mc:Ignorable="d" 
+             
+             SizeChanged="UserControl_SizeChanged"
+             
+             d:DesignHeight="300" 
+             d:DesignWidth="300"
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ItemsControl ItemsSource="{Binding Segments}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Horizontal"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.Resources>
+            <Style TargetType="local:Segment">
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+            </Style>
+        </ItemsControl.Resources>
+    </ItemsControl>
+
+</UserControl>

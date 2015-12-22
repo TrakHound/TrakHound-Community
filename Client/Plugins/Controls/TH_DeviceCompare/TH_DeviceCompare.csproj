@@ -88,6 +88,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Include="Controls\OverrideDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ShiftDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,6 +120,9 @@
     <None Include="Controls\PieChartDisplay.xaml.cs">
       <DependentUpon>PieChartDisplay.xaml</DependentUpon>
     </None>
+    <Compile Include="Controls\OverrideDisplay.xaml.cs">
+      <DependentUpon>OverrideDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ShiftDisplay.xaml.cs">
       <DependentUpon>ShiftDisplay.xaml</DependentUpon>
     </Compile>

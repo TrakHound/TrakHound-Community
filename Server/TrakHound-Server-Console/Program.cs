@@ -15,12 +15,20 @@ namespace TrakHound_Server_Console
     {
         static void Main(string[] args)
         {
+            System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             Server server = new Server();
             server.Start();
 
             Console.ReadLine();
 
+            Environment.Exit(0);
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine("TrakHound Server Console :: Unhandled Exception :: " + e.ExceptionObject.ToString());
+            Environment.Exit(12);
         }
     }
 }

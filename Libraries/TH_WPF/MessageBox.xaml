@@ -1,0 +1,102 @@
+﻿<Window x:Class="TH_WPF.MessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
+        xmlns:th_wpf="clr-namespace:TH_WPF"
+        
+        WindowStartupLocation="CenterScreen"
+            
+        Title="{Binding WindowTitle}" 
+        Height="200" Width="400" Icon="Resources/TrakHound_Logo_Initials_10_30px.png"
+        >
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource Window_Background}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="20,10" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Image-->
+            <Rectangle Width="40" Height="40" Margin="0,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Rectangle.Resources>
+                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                </Rectangle.Resources>
+
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+
+            <!--Text-->
+            <TextBlock Grid.Column="1" Text="{Binding Text}" Foreground="{StaticResource Foreground_Normal}" FontSize="12pt" TextAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap"/>
+
+        </Grid>
+        
+
+        <!--Buttons-->
+        <Grid Grid.Row="1" Margin="0,20">
+            
+            <!--Ok-->
+            <Grid HorizontalAlignment="Center">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Buttons}" Value="{x:Static th_wpf:MessageBoxButtons.Ok}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <th_wpf:Button_01 Text="Ok" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="100" Height="40" Clicked="Ok_Clicked"/>
+
+            </Grid>
+
+            <!--YesNo-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Buttons}" Value="{x:Static th_wpf:MessageBoxButtons.YesNo}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <th_wpf:Button_01 Text="Yes" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="100" Height="40" Margin="0,0,20,0" HorizontalAlignment="Center" Clicked="Yes_Clicked"/>
+
+                <th_wpf:Button_01 Text="No" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="100" Height="40" HorizontalAlignment="Center" Clicked="No_Clicked"/>
+
+            </StackPanel>
+
+
+        </Grid>
+        
+    </Grid>
+    
+</Window>

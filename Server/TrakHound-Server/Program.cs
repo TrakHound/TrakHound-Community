@@ -19,12 +19,21 @@ namespace TrakHound_Server
         /// </summary>
         static void Main()
         {
+            System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
                 { 
                     new Service1() 
                 };
             ServiceBase.Run(ServicesToRun);
+            Environment.ExitCode = 0;     
+        }
+
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Console.WriteLine("TrakHound Server Console :: Unhandled Exception :: " + e.ExceptionObject.ToString());
+            Environment.ExitCode = 12;            
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿<Window x:Class="Test.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+
+        xmlns:levelindicator="clr-namespace:TH_WPF.LevelIndicator;assembly=TH_WPF"
+        
+        Title="MainWindow" Height="500" Width="500">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -13,14 +16,16 @@
 
     <Grid Background="#eee">
         
-        <ComboBox Width="150" Height="30" IsEditable="True">
+        <levelindicator:Indicator x:Name="levels_LI" Foreground="Blue" BorderBrush="Red" HorizontalAlignment="Center" Width="50" Height="50"/>
+        
+        <!--<ComboBox Width="150" Height="30" IsEditable="True">
             <ComboBoxItem Content="Test 1"/>
             <ComboBoxItem Content="Test 2"/>
             <ComboBoxItem Content="Test 3"/>
             <ComboBoxItem Content="Test 4"/>
             <ComboBoxItem Content="Test 5"/>
             <ComboBoxItem Content="Test 6"/>
-        </ComboBox>
+        </ComboBox>-->
         
     </Grid>
     

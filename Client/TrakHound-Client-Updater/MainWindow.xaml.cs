@@ -43,6 +43,9 @@ namespace TrakHound_Client_Updater
         }
 
 
+
+
+
         Thread update_THREAD;
 
         void Update_Start()
@@ -168,6 +171,7 @@ namespace TrakHound_Client_Updater
         {
             Close();
         }
+
 
         #region "Properties"
 

@@ -23,6 +23,9 @@ namespace Test
         public MainWindow()
         {
             InitializeComponent();
+
+            levels_LI.TotalLevelCount = 4;
+            levels_LI.ActiveLevelCount = 1;
         }
     }
 }

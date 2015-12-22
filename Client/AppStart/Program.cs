@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 using Microsoft.Win32;
 using System.Reflection;
 using System.Diagnostics;
+using System.Windows;
 
 using TH_Global;
+using TH_WPF;
 
 namespace AppStart
 {
@@ -18,6 +21,7 @@ namespace AppStart
         [STAThread]
         static void Main(string[] args)
         {
+
             CheckForUpdates();
 
             OpenClient();
@@ -32,18 +36,54 @@ namespace AppStart
             {
                 if (keyNames.Length > 0)
                 {
-                    OpenUpdater();
+                    int updateBehavior = GetUpdateBehavior();
+                    if (updateBehavior == 0)
+                    {
+                        OpenUpdater();
+                    }
+                    else if (updateBehavior == 1)
+                    {
+                        bool? yesClicked = TH_WPF.MessageBox.Show(
+                            "Updates are available for TrakHound" + Environment.NewLine + "Click Yes to Install",
+                            "TrakHound Updates Available",
+                            TH_WPF.MessageBoxButtons.YesNo
+                            );
+
+                        if (yesClicked == true)
+                        {
+                            OpenUpdater();
+                        }
+                    } 
                 }
             }
+        }
+
+       static int GetUpdateBehavior()
+        {
+            int Result = -1;
+
+            object updateBehavior = GetRegistryKey("Update_Behavior");
+
+            if (updateBehavior != null)
+            {
+                int val = -1;
+                int.TryParse(updateBehavior.ToString(), out val);
+                if (val >= 0)
+                {
+                    Result = val;
+                }
+            }
+
+            return Result;
         }
 
         static void OpenClient()
         {
             try
             {
-                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+                //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
 
-                //string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\trakhound-client.exe";
+                string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\trakhound-client.exe";
 
                 Process p = new Process();
 
@@ -71,9 +111,9 @@ namespace AppStart
             try
             {
 
-                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "trakhound-client-updater.exe";
+                //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "trakhound-client-updater.exe";
 
-                //string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client-Updater\bin\Debug\trakhound-client-updater.exe";
+                string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client-Updater\bin\Debug\trakhound-client-updater.exe";
 
                 Process p = new Process();
                 p.StartInfo.FileName = clientPath;
@@ -97,10 +137,10 @@ namespace AppStart
                 RegistryKey rootKey = key.OpenSubKey("TrakHound");
 
                 // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey("Updates");
+                //RegistryKey updatesKey = rootKey.OpenSubKey("Update_Behavior");
 
                 // Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                RegistryKey updateKey = updatesKey.OpenSubKey(keyName);
+                RegistryKey updateKey = rootKey.OpenSubKey(keyName);
 
                 // Read value for [keyName] to [keyValue]
                 Result = updateKey.GetValue(keyName).ToString();
@@ -157,7 +197,7 @@ namespace AppStart
                 RegistryKey rootKey = key.OpenSubKey("TrakHound", true);
 
                 // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey("Updates", true);
+                RegistryKey updatesKey = rootKey.OpenSubKey("Update_Behavior", true);
 
                 // Delete CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
                 updatesKey.DeleteSubKey(keyName);

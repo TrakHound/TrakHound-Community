@@ -40,8 +40,8 @@ namespace TrakHound_Client.Pages.Options.Updates
 
             updateBehavior = ProcessUpdateBehavior();
 
-            if (updateBehavior == 0) AutoUpdater_Start();
-            if (updateBehavior == 1) ManualUpdater_Start();
+            if (updateBehavior == 0 || updateBehavior == 1) AutoUpdater_Start();
+            //if (updateBehavior == 1) ManualUpdater_Start();
         }
 
         int updateBehavior = 0;
@@ -476,7 +476,7 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         private void CheckForUpdates_Clicked(TH_WPF.Button_01 bt)
         {
-            ManualUpdater_Start();
+            //ManualUpdater_Start();
 
             foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
             {

@@ -849,6 +849,7 @@ namespace TH_GeneratedData
                 new ColumnDefinition("TIMESTAMP", DataType.DateTime),
                 new ColumnDefinition("NAME", DataType.LargeText),
                 new ColumnDefinition("VALUE", DataType.LargeText),
+                new ColumnDefinition("PREVIOUS_TIMESTAMP", DataType.DateTime),
                 new ColumnDefinition("PREVIOUS_VALUE", DataType.LargeText)
             };
 
@@ -892,10 +893,11 @@ namespace TH_GeneratedData
 
             // Set Columns to Update (include Name so that it can Update the row instead of creating a new one)
             List<string> columns = new List<string>();
-            columns.Add("Name");
-            columns.Add("Timestamp");
-            columns.Add("Value");
-            columns.Add("Previous_Value");
+            columns.Add("NAME");
+            columns.Add("TIMESTAMP");
+            columns.Add("VALUE");
+            columns.Add("PREVIOUS_TIMESTAMP");
+            columns.Add("PREVIOUS_VALUE");
 
             List<List<object>> rowValues = new List<List<object>>();
 
@@ -906,7 +908,9 @@ namespace TH_GeneratedData
                 values.Add(ssi.name);
                 values.Add(ssi.timestamp);
                 values.Add(ssi.value);
+                values.Add(ssi.previous_timestamp);
                 values.Add(ssi.previous_value);
+                
 
                 // only add to query if different (no need sending more info than needed)
                 if (ssi.value != ssi.previous_value) rowValues.Add(values);
@@ -1153,6 +1157,7 @@ namespace TH_GeneratedData
             public DateTime timestamp { get; set; }
             public string name { get; set; }
             public string value { get; set; }
+            public DateTime previous_timestamp { get; set; }
             public string previous_value { get; set; }
 
             public SnapShotItem Copy()
@@ -1161,6 +1166,7 @@ namespace TH_GeneratedData
                 Result.timestamp = timestamp;
                 Result.name = name;
                 Result.value = value;
+                Result.previous_timestamp = previous_timestamp;
                 Result.previous_value = previous_value;
                 return Result;
             }
@@ -1186,7 +1192,6 @@ namespace TH_GeneratedData
                         variables_DT = Table.Get(config.Databases_Server, TableNames.Variables);
                     }
 
-
                    foreach (Snapshots.Item item in gdc.snapshots.Items)
                    {
                        // Get ssi in previousSSI list
@@ -1194,7 +1199,8 @@ namespace TH_GeneratedData
                        if (lpreviousSSI != null) ssi = lpreviousSSI.Find(x => x.name == item.name);
                        if (ssi != null)
                        {
-                           ssi.previous_value = ssi.value;
+                           //ssi.previous_value = ssi.value;
+                           //ssi.previous_timestamp = ssi.timestamp;
                        }
                        else
                        {
@@ -1206,87 +1212,24 @@ namespace TH_GeneratedData
                        {
                            case "collected":
 
-                               if (currentData.deviceStreams != null)
-                               {
-                                   TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
-
-                                   bool found = false;
-
-                                   // Seach Conditions
-                                   TH_MTC_Data.Streams.Condition condition_DI = dataItems.Conditions.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
-                                   if (condition_DI != null)
-                                   {
-                                       ssi.value = condition_DI.value;
-                                       ssi.timestamp = condition_DI.timestamp;
-                                       found = true;
-                                   }
-
-                                   // Search Events
-                                   if (!found)
-                                   {
-                                       TH_MTC_Data.Streams.Event event_DI = dataItems.Events.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
-                                       if (event_DI != null)
-                                       {
-                                           ssi.value = event_DI.CDATA;
-                                           ssi.timestamp = event_DI.timestamp;
-                                           found = true;
-                                       }
-                                   }
-
-                                   // Search Samples
-                                   if (!found)
-                                   {
-                                       TH_MTC_Data.Streams.Sample sample_DI = dataItems.Samples.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
-                                       if (sample_DI != null)
-                                       {
-                                           ssi.value = sample_DI.CDATA;
-                                           ssi.timestamp = sample_DI.timestamp;
-                                           found = true;
-                                       }
-                                   }
-
-                                   if (found) Result.Add(ssi.Copy());
-                               }
+                               ProcessSnapshot_Collected(item, ssi, currentData);
+                               Result.Add(ssi);
 
                                break;
 
                            case "generated":
 
-                               GeneratedEvents.Event e = gdc.generatedEvents.events.Find(x => x.Name.ToLower() == item.link.ToLower());
-                               if (e != null)
-                               {
-                                   GeneratedEvents.Return returnValue = e.ProcessEvent(currentInstanceData);
-
-                                   ssi.value = returnValue.Value;
-                                   ssi.timestamp = returnValue.TimeStamp;
-
-                                   if (ssi.value != ssi.previous_value) Result.Add(ssi.Copy());
-                               }
+                               ProcessSnapshot_Generated(item, ssi, gdc, currentInstanceData);
+                               Result.Add(ssi);
 
                                break;
 
                            case "variable":
 
-                               if (variables_DT != null)
-                               {
-                                   DataRow[] rows = variables_DT.Select("variable = '" + item.link + "'");
-                                   if (rows != null)
-                                   {
-                                       if (rows.Length > 0)
-                                       {
-                                           ssi.value = rows[0]["value"].ToString();
-
-                                           DateTime timestamp = DateTime.MinValue;
-                                           DateTime.TryParse(rows[0]["timestamp"].ToString(), out timestamp);
-                                           if (timestamp > DateTime.MinValue) ssi.timestamp = timestamp;
-
-                                           if (ssi.value != ssi.previous_value) Result.Add(ssi.Copy());
-                                       }
-                                   }
-                               }
+                               ProcessSnapshot_Variables(item, ssi, variables_DT);
+                               Result.Add(ssi);
 
                                break;
-
                        }
                    }
                 }
@@ -1295,6 +1238,150 @@ namespace TH_GeneratedData
             return Result;
 
         }
+
+        static bool ProcessSnapshot_Collected(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.ReturnData currentData)
+        {
+            bool result = false;
+
+            if (currentData.deviceStreams != null)
+            {
+                TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
+
+                bool found = false;
+
+                // Seach Conditions
+                found = ProcessSnapshot_Collected_Condtion(item, ssi, dataItems);
+
+                // Search Events
+                if (!found) found = ProcessSnapshot_Collected_Event(item, ssi, dataItems);
+
+                // Search Samples
+                if (!found) found = ProcessSnapshot_Collected_Sample(item, ssi, dataItems);
+
+                result = found;
+            }
+
+            return result;
+        }
+
+        static bool ProcessSnapshot_Collected_Condtion(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.DataItemCollection dataItems)
+        {
+            bool result = false;
+
+            TH_MTC_Data.Streams.Condition condition_DI = dataItems.Conditions.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
+            if (condition_DI != null)
+            {
+                if (ssi.value != condition_DI.CDATA)
+                {
+                    ssi.previous_timestamp = ssi.timestamp;
+                    ssi.previous_value = ssi.value;
+
+                    ssi.value = condition_DI.CDATA;
+                    ssi.timestamp = condition_DI.timestamp;
+
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        static bool ProcessSnapshot_Collected_Event(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.DataItemCollection dataItems)
+        {
+            bool result = false;
+
+            TH_MTC_Data.Streams.Event event_DI = dataItems.Events.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
+            if (event_DI != null)
+            {
+                if (ssi.value != event_DI.CDATA)
+                {
+                    ssi.previous_timestamp = ssi.timestamp;
+                    ssi.previous_value = ssi.value;
+
+                    ssi.value = event_DI.CDATA;
+                    ssi.timestamp = event_DI.timestamp;
+
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        static bool ProcessSnapshot_Collected_Sample(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.DataItemCollection dataItems)
+        {
+            bool result = false;
+
+            TH_MTC_Data.Streams.Sample sample_DI = dataItems.Samples.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
+            if (sample_DI != null)
+            {
+                if (ssi.value != sample_DI.CDATA)
+                {
+                    ssi.previous_timestamp = ssi.timestamp;
+                    ssi.previous_value = ssi.value;
+
+                    ssi.value = sample_DI.CDATA;
+                    ssi.timestamp = sample_DI.timestamp;
+
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+
+        static void ProcessSnapshot_Generated(Snapshots.Item item, SnapShotItem ssi, GeneratedData.GenDataConfiguration gdc, InstanceTable.InstanceData currentInstanceData)
+        {
+            GeneratedEvents.Event e = gdc.generatedEvents.events.Find(x => x.Name.ToLower() == item.link.ToLower());
+            if (e != null)
+            {
+                GeneratedEvents.Return returnValue = e.ProcessEvent(currentInstanceData);
+
+                if (ssi.value != returnValue.Value)
+                {
+                    ssi.previous_timestamp = ssi.timestamp;
+                    ssi.previous_value = ssi.value;
+
+                    ssi.value = returnValue.Value;
+                    ssi.timestamp = returnValue.TimeStamp;
+                }
+            }
+        }
+
+        static bool ProcessSnapshot_Variables(Snapshots.Item item, SnapShotItem ssi, DataTable dt)
+        {
+            bool result = false;
+
+            if (dt != null)
+            {
+                DataRow[] rows = dt.Select("variable = '" + item.link + "'");
+                if (rows != null)
+                {
+                    if (rows.Length > 0)
+                    {
+                        var val = rows[0]["value"].ToString();
+
+                        if (ssi.value != val)
+                        {
+                            ssi.previous_timestamp = ssi.timestamp;
+                            ssi.previous_value = ssi.value;
+
+                            ssi.value = val;
+
+                            DateTime timestamp = DateTime.MinValue;
+                            DateTime.TryParse(rows[0]["timestamp"].ToString(), out timestamp);
+                            if (timestamp > DateTime.MinValue) ssi.timestamp = timestamp;
+
+                            result = true;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
 
         void SendGeneratedEventItems(List<GeneratedEventItem> items)
         {

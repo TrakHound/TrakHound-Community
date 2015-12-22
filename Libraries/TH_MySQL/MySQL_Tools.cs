@@ -39,6 +39,7 @@ namespace TH_MySQL
             return r;
         }
 
+
         public static object[] ConvertColumnDefinitions(ColumnDefinition[] columns)
         {
             List<object> result = new List<object>();

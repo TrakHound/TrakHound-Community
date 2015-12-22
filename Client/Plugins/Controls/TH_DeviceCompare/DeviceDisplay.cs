@@ -84,9 +84,14 @@ namespace TH_DeviceCompare
 
             DataItem dd;
 
+            //dd = new DataItem();
+            //dd.id = "ShiftInfo";
+            //dd.header = "Shift Info";
+            //DataItems.Add(dd);
+
             dd = new DataItem();
-            dd.id = "ShiftInfo";
-            dd.header = "Shift Info";
+            dd.id = "productionstatustimes";
+            dd.header = "Production Status Times";
             DataItems.Add(dd);
 
             dd = new DataItem();
@@ -104,10 +109,6 @@ namespace TH_DeviceCompare
             dd.header = "OEE Timeline";
             DataItems.Add(dd);
 
-            dd = new DataItem();
-            dd.id = "productionstatustimes";
-            dd.header = "Production Status Times";
-            DataItems.Add(dd);
 
             dd = new DataItem();
             dd.id = "CurrentProgram";
@@ -117,6 +118,41 @@ namespace TH_DeviceCompare
             dd = new DataItem();
             dd.id = "PreviousProgram";
             dd.header = "Previous Program";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "FeedrateOverride";
+            dd.header = "Feedrate Override";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "RapidOverride";
+            dd.header = "Rapid Override";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "SpindleOverride";
+            dd.header = "Spindle Override";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "ControllerMode";
+            dd.header = "Controller Mode";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "ExecutionMode";
+            dd.header = "Execution Mode";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "EmergencyStop";
+            dd.header = "Emergency Stop";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "ShiftInfo";
+            dd.header = "Shift Info";
             DataItems.Add(dd);
 
             //dd = new DataItem();

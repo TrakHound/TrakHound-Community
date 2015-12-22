@@ -40,10 +40,10 @@
             </TextBlock.Style>
         </TextBlock>
 
-        <Viewbox>
+        <Viewbox MaxHeight="25" VerticalAlignment="Center">
 
             <!--Text Value-->
-            <TextBlock Text="{Binding Text}" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20,0"/>
+            <TextBlock Text="{Binding Text}" Foreground="{Binding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="20,0"/>
 
         </Viewbox>
 

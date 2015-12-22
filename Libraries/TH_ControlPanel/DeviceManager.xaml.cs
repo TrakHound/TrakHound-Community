@@ -510,7 +510,7 @@ namespace TH_DeviceManager
 
         void Save_Finished(bool success)
         {
-            if (!success) MessageBox.Show("Device did not save correctly. Try Again." + Environment.NewLine + @"A backup of the Device has been created in the 'C:\TrakHound\Temp directory'");
+            if (!success) TH_WPF.MessageBox.Show("Device did not save correctly. Try Again." + Environment.NewLine + @"A backup of the Device has been created in the 'C:\TrakHound\Temp directory'");
 
             if (SelectedDevice != null) SelectDevice(SelectedDevice);
 
@@ -574,11 +574,17 @@ namespace TH_DeviceManager
 
         void RemoveDevice(DeviceButton bt)
         {
-            MessageBoxResult result = MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-            if (result == MessageBoxResult.Yes)
+            bool? result = TH_WPF.MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", TH_WPF.MessageBoxButtons.YesNo);
+            if (result == true)
             {
                 ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevice_Worker), bt);
             }
+
+            //MessageBoxResult result = MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            //if (result == MessageBoxResult.Yes)
+            //{
+            //    ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevice_Worker), bt);
+            //}
         }
 
         void RemoveDevice_Worker(object o)
@@ -624,7 +630,7 @@ namespace TH_DeviceManager
             }
             else
             {
-                MessageBox.Show("An error occured while attempting to Remove Device. Please try again.", "Remove Device Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                TH_WPF.MessageBox.Show("An error occured while attempting to Remove Device. Please try again.", "Remove Device Error", MessageBoxButtons.Ok);
                 LoadDevices();
             }
         }
@@ -716,7 +722,7 @@ namespace TH_DeviceManager
             if (success) LoadDevices();
             else
             {
-                MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                TH_WPF.MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButtons.Ok);
             }
 
         }

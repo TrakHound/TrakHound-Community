@@ -15,3 +15,6 @@ F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTes
 F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.exe
 F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\obj\Debug\PhoneNumberTester.pdb
 F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\PhoneNumberTester.exe.CodeAnalysisLog.xml
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\PhoneNumberTester.exe.lastcodeanalysissucceeded
+F:\feenux\TrakHound\TrakHound\Testing\PhoneNumberTester\bin\Debug\Newtonsoft.Json.xml

@@ -135,15 +135,15 @@ namespace TH_MySQL
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
-                object[] coldefs = MySQL_Tools.ConvertColumnDefinitions(columnDefinitions);
+                //object[] coldefs = MySQL_Tools.ConvertColumnDefinitions(columnDefinitions);
 
                 if (config.UsePHP)
                 {
-                    result = PHP.Table.Create(config, tablename, coldefs, primaryKey);
+                    result = PHP.Table.Create(config, tablename, columnDefinitions, primaryKey);
                 }
                 else
                 {
-                    result = Connector.Table.Create(config, tablename, coldefs, primaryKey);
+                    //result = Connector.Table.Create(config, tablename, coldefs, primaryKey);
                 }
             }
 

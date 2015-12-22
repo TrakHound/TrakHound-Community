@@ -81,6 +81,12 @@
     <Compile Include="Info_BT.xaml.cs">
       <DependentUpon>Info_BT.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LevelIndicator\Indicator.xaml.cs">
+      <DependentUpon>Indicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LevelIndicator\Segment.xaml.cs">
+      <DependentUpon>Segment.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ListButton.xaml.cs">
       <DependentUpon>ListButton.xaml</DependentUpon>
     </Compile>
@@ -89,6 +95,9 @@
     </Compile>
     <Compile Include="LoadingAnimation\Wheel.xaml.cs">
       <DependentUpon>Wheel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="PasswordBox.xaml.cs">
       <DependentUpon>PasswordBox.xaml</DependentUpon>
@@ -171,6 +180,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LevelIndicator\Indicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LevelIndicator\Segment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ListButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -180,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LoadingAnimation\Wheel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -225,6 +246,9 @@
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TrakHound_Logo_Initials_10_30px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

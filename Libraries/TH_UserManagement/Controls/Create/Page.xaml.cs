@@ -497,7 +497,8 @@ namespace TH_UserManagement.Create
             }
             else
             {
-                MessageBox.Show("Error during User Creation! Try Again.");
+
+                TH_WPF.MessageBox.Show("Error during User Creation! Try Again.");
             }
 
             Saving = false;
@@ -852,7 +853,7 @@ namespace TH_UserManagement.Create
             {
                 System.Diagnostics.Process.Start(e.Uri.ToString());
             }
-            catch (Exception ex) { MessageBox.Show("Error Opening Privacy Policy. Please try again or open a browser and navigate to 'http://www.feenux.com/trakhound/docs/privacypolicy_desktopapp.html'"); }
+            catch (Exception ex) { TH_WPF.MessageBox.Show("Error Opening Privacy Policy. Please try again or open a browser and navigate to 'http://www.feenux.com/trakhound/docs/privacypolicy_desktopapp.html'"); }
         }
 
 

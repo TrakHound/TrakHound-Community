@@ -309,6 +309,28 @@ namespace TH_DeviceCompare
 
                             // Production Status Timeline
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateProductionStatusTimeline_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
+
+
+                            // Feedrate Override
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateFeedrateOverride), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Rapid Override
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateRapidOverride), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Spindle Override
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateSpindleOverride), Priority_Context, new object[] { dd, de_d.data02 });
+
+
+                            // Controller Mode
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateControllerMode), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Execution Mode
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateExecutionMode), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Emergency Stop
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateEmergencyStop), Priority_Context, new object[] { dd, de_d.data02 });
+
+                        
                         }
 
                         // Shifts Table Data
@@ -1453,6 +1475,239 @@ namespace TH_DeviceCompare
                     //    timeline.StartTime = shift_begin;
                     //    timeline.EndTime = shift_end;
                     //}
+                }
+            }
+        }
+
+        #endregion
+
+        #region "Overrides"
+
+        void UpdateFeedrateOverride(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Feedrate Override", "value");
+
+                if (value != null)
+                {
+
+                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "feedrateoverride");
+                    if (cellIndex >= 0)
+                    {
+                        Controls.OverrideDisplay od;
+
+                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                        if (ddData == null)
+                        {
+                            od = new Controls.OverrideDisplay();
+                            dd.ComparisonGroup.column.Cells[cellIndex].Data = od;
+                        }
+                        else od = (Controls.OverrideDisplay)ddData;
+
+                        double ovr = 0;
+                        if (double.TryParse(value, out ovr))
+                        {
+                            od.Value = ovr;
+                        }
+                    }
+                }
+            }
+        }
+
+        void UpdateRapidOverride(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Rapid Override", "value");
+
+                if (value != null)
+                {
+
+                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "rapidoverride");
+                    if (cellIndex >= 0)
+                    {
+                        Controls.OverrideDisplay od;
+
+                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                        if (ddData == null)
+                        {
+                            od = new Controls.OverrideDisplay();
+                            dd.ComparisonGroup.column.Cells[cellIndex].Data = od;
+                        }
+                        else od = (Controls.OverrideDisplay)ddData;
+
+                        double ovr = 0;
+                        if (double.TryParse(value, out ovr))
+                        {
+                            od.Value = ovr;
+                        }
+                    }
+                }
+            }
+        }
+
+        void UpdateSpindleOverride(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Spindle Override", "value");
+
+                if (value != null)
+                {
+
+                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "spindleoverride");
+                    if (cellIndex >= 0)
+                    {
+                        Controls.OverrideDisplay od;
+
+                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                        if (ddData == null)
+                        {
+                            od = new Controls.OverrideDisplay();
+                            dd.ComparisonGroup.column.Cells[cellIndex].Data = od;
+                        }
+                        else od = (Controls.OverrideDisplay)ddData;
+
+                        double ovr = 0;
+                        if (double.TryParse(value, out ovr))
+                        {
+                            od.Value = ovr;
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+        #region "CNC Status"
+
+        void UpdateControllerMode(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Controller Mode", "value");
+
+                if (value != null)
+                {
+                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "controllermode");
+                    if (cellIndex >= 0)
+                    {
+                        Controls.TextDisplay txt;
+
+                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                        if (ddData == null)
+                        {
+                            txt = new Controls.TextDisplay();
+                            dd.ComparisonGroup.column.Cells[cellIndex].Data = txt;
+                        }
+                        else txt = (Controls.TextDisplay)ddData;
+
+                        switch (value)
+                        {
+                            case "AUTOMATIC":
+                                txt.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                                txt.Background = new SolidColorBrush(Color.FromRgb(25, 180, 25));
+                                break;
+                            default:
+                                txt.Foreground = (Brush)TryFindResource("Foreground_Normal");
+                                txt.Background = new SolidColorBrush(Colors.Transparent); 
+                                break;
+                        }
+
+                        txt.Text = value;
+                    }
+                }
+            }
+        }
+
+        void UpdateExecutionMode(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Execution Mode", "value");
+
+                if (value != null)
+                {
+                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "executionmode");
+                    if (cellIndex >= 0)
+                    {
+                        Controls.TextDisplay txt;
+
+                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                        if (ddData == null)
+                        {
+                            txt = new Controls.TextDisplay();
+                            dd.ComparisonGroup.column.Cells[cellIndex].Data = txt;
+                        }
+                        else txt = (Controls.TextDisplay)ddData;
+
+                        switch (value)
+                        {
+                            case "ACTIVE":
+                                txt.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                                txt.Background = new SolidColorBrush(Color.FromRgb(25, 180, 25));
+                                break;
+                            default:
+                                txt.Foreground = (Brush)TryFindResource("Foreground_Normal");
+                                txt.Background = new SolidColorBrush(Colors.Transparent); 
+                                break;
+                        }
+
+                        txt.Text = value;
+                    }
+                }
+            }
+        }
+
+        void UpdateEmergencyStop(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Emergency Stop", "value");
+
+                if (value != null)
+                {
+                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "emergencystop");
+                    if (cellIndex >= 0)
+                    {
+                        Controls.TextDisplay txt;
+
+                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                        if (ddData == null)
+                        {
+                            txt = new Controls.TextDisplay();
+                            dd.ComparisonGroup.column.Cells[cellIndex].Data = txt;
+                        }
+                        else txt = (Controls.TextDisplay)ddData;
+
+                        switch (value)
+                        {
+                            case "ARMED":
+                                txt.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                                txt.Background = new SolidColorBrush(Color.FromRgb(25, 180, 25));
+                                break;
+                            default:
+                                txt.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                                txt.Background = new SolidColorBrush(Colors.Red);
+                                break;
+                        }
+
+                        txt.Text = value;
+                    }
                 }
             }
         }

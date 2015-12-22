@@ -29,6 +29,10 @@
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
 	<ItemGroup>
+		<ProjectReference Include="..\AppStart\AppStart.csproj">
+			<Name>AppStart</Name>
+			<Project>{C417362E-4EF0-43EE-BCED-CF4ABDAEBCB6}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
 			<Name>TH_Configuration</Name>
 			<Project>{147A0360-5F86-4D33-A874-46F785723EAD}</Project>

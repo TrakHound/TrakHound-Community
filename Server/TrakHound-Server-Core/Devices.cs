@@ -31,7 +31,8 @@ namespace TrakHound_Server_Core
 
                 foreach (string tablename in tablenames)
                 {
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(LoadConfiguration), tablename);
+                    LoadConfiguration(tablename);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(LoadConfiguration), tablename);
                 }
             }
             // If not logged in Read from File in 'C:\TrakHound\'
@@ -60,6 +61,8 @@ namespace TrakHound_Server_Core
 
                         if (config.ServerEnabled)
                         {
+                            Console.WriteLine(config.TableName + " Loaded!");
+
                             config.Index = Devices.Count;
 
                             Device_Server server = new Device_Server(config);

@@ -13,7 +13,7 @@ namespace TH_MySQL.PHP
     public static class Table
     {
 
-        public static bool Create(MySQL_Configuration config, string tablename, object[] columnDefinitions, string primaryKey)
+        public static bool Create(MySQL_Configuration config, string tablename, TH_Database.ColumnDefinition[] columnDefinitions, string primaryKey)
         {
 
             bool Result = false;
@@ -31,26 +31,59 @@ namespace TH_MySQL.PHP
             //Create Column Definition string
             for (int x = 0; x <= columnDefinitions.Length - 1; x++)
             {
-                coldef += columnDefinitions[x].ToString();
+                coldef += MySQL_Tools.ConvertColumnDefinition(columnDefinitions[x]).ToString();
                 if (x < columnDefinitions.Length - 1) coldef += ",";
             }
 
             string Keydef = "";
             if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
 
-            values["query"] = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + Keydef + ")";
+            // Create Table
+            values["query1"] = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + Keydef + ")";
 
+            // Add Missing Columns (if any)
+            //var columnQuery = "ALTER IGNORE TABLE " + tablename;
 
+            // Drop Procedure (make sure doesn't already exist)
+            values["query2"] = "DROP PROCEDURE IF EXISTS addcolumns";
+
+            // Create Procedure
+            string procedure = "CREATE PROCEDURE addcolumns() BEGIN";
+
+            for (int x = 0; x <= columnDefinitions.Length - 1; x++)
+            {
+                procedure += " IF NOT EXISTS(" +
+                    "(SELECT * FROM information_schema.COLUMNS" +
+                     " WHERE TABLE_SCHEMA=DATABASE()" + 
+                     " AND COLUMN_NAME='" + columnDefinitions[x].ColumnName + "'" +
+                     " AND TABLE_NAME='" + tablename + "'))" + 
+                     " THEN" +
+                     " ALTER TABLE " + tablename + " ADD " + MySQL_Tools.ConvertColumnDefinition(columnDefinitions[x]).ToString() + ";" +
+                     " END IF;";
+            }
+
+            procedure += "END";
+
+            values["query3"] = procedure;
+
+            values["query4"] = "CALL addcolumns()";
+
+            
             string PHP_Directory = "";
             if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
-            string url = "http://" + config.PHP_Server + PHP_Directory + "/Send.php";
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/create_table.php";
 
-            if (HTTP.SendData(url, values) == "true") Result = true;
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString.Trim() == "true") Result = true;
 
             return Result;
 
         }
+
+
+
 
         public static bool Drop(MySQL_Configuration config, string tablename)
         {

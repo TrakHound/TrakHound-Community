@@ -63,3 +63,9 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.Properties.Resou
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MessageBox.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MessageBox.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Indicator.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Segment.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Indicator.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Segment.g.cs

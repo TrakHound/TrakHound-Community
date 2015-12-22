@@ -366,6 +366,8 @@ namespace TH_DeviceTable
             if (dt != null)
             {
                 string value = DataTable_Functions.GetTableValue(dt, "name", "Production Status", "value");
+                string time = DataTable_Functions.GetTableValue(dt, "name", "Production Status", "timestamp");
+                string currenttime = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Time UTC", "timestamp");
 
                 int cellIndex = dd.ComparisonGroup.row.Cells.ToList().FindIndex(x => x.Link.ToLower() == "productionstatus");
                 if (cellIndex >= 0)
@@ -383,9 +385,32 @@ namespace TH_DeviceTable
                     }
                     else txt = (Controls.TextDisplay)ddData;
 
-                    txt.Text = value;
+                    // Calculate how long the device has been in this status
+                    if (time != null && currenttime != null)
+                    {
+                        TimeSpan duration = GetStatusTimeSpan(time, currenttime);
+
+                        txt.Text = value + " for " + duration.ToString();
+                    }
+                    else txt.Text = value;
                 }
             }
+        }
+
+        TimeSpan GetStatusTimeSpan(string begin_str, string end_str)
+        {
+            var begin = DateTime.MinValue;
+            DateTime.TryParse(begin_str, out begin);
+
+            var end = DateTime.MinValue;
+            DateTime.TryParse(end_str, out end);
+
+            if (begin > DateTime.MinValue && end > DateTime.MinValue)
+            {
+                return end - begin;
+            }
+
+            return TimeSpan.Zero;
         }
 
         #region "Shift Break"
