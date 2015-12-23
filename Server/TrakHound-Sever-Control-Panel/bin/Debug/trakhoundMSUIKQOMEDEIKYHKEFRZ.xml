@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent>
+    <IP_Address>127.0.0.1</IP_Address>
+    <Port>5000</Port>
+    <Device_Name>DEMO-1</Device_Name>
+    <Current_Heartbeat>5000</Current_Heartbeat>
+    <Sample_Heartbeat>5000</Sample_Heartbeat>
+  </Agent>
+  <Databases />
+  <Description>
+    <Description>Local Test Device</Description>
+    <Device_Type />
+    <Manufacturer />
+    <Device_ID />
+    <Model />
+    <Serial />
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path />
+    <Image_Path />
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>False</Conditions>
+      <Events>True</Events>
+      <Samples>False</Samples>
+      <Omit />
+    </DataItems>
+  </InstanceTable>
+  <GeneratedData>
+    <SnapShotData />
+  </GeneratedData>
+  <ShiftData>
+    <Shifts />
+    <GeneratedEvents />
+  </ShiftData>
+  <Cycles>
+    <Event />
+    <CycleIdLink>program_name</CycleIdLink>
+  </Cycles>
+  <OEE>
+    <Availability>
+      <Event />
+      <Value>Full Production</Value>
+    </Availability>
+  </OEE>
+  <ServerUpdateId>UGEFKPQPSTFTPRIBXLKO</ServerUpdateId>
+  <UniqueId>EKBYNKPTLITDOSVYXCOL</UniqueId>
+</Settings>

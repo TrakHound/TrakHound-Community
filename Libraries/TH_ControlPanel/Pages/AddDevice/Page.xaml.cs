@@ -410,6 +410,8 @@ namespace TH_DeviceManager.Pages.AddDevice
 
             Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
 
+            if (DeviceAdded != null) DeviceAdded(config);
+
         }
 
         Configuration CreateBlankConfiguration()

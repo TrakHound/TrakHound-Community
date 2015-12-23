@@ -63,10 +63,11 @@ namespace TH_InstanceTable
 
         public void Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
         {
-
             CurrentData = returnData;
 
             InstanceData instanceData = ProcessSingleInstance(returnData);
+
+            PreviousInstanceData_old = PreviousInstanceData_new;
 
             CurrentInstanceData cid = new CurrentInstanceData();
             cid.currentData = returnData;
@@ -79,8 +80,7 @@ namespace TH_InstanceTable
             de_d.data02 = cid;
 
             if (DataEvent != null) DataEvent(de_d);
-            // --------------------------------------------
-          
+             //--------------------------------------------         
         }
 
         public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
@@ -103,7 +103,6 @@ namespace TH_InstanceTable
 
             //instanceDatas.Clear();
             // --------------------------------------------
-
         }
 
         void SendDataEvent(DataEvent_Data de_d)
@@ -652,6 +651,35 @@ namespace TH_InstanceTable
             {
                 public string id { get; set; }
                 public string value { get; set; }
+
+                public Value Copy()
+                {
+                    var result = new Value();
+                    result.id = id;
+                    result.value = value;
+                    return result;
+                }
+            }
+
+            public InstanceData Copy()
+            {
+                InstanceData result = new InstanceData();
+                result.timestamp = timestamp;
+                result.sequence = sequence;
+                result.agentInstanceId = agentInstanceId;
+
+                foreach (InstanceData.Value val in values)
+                {
+                    if (val != null)
+                    {
+                        InstanceData.Value newval = new InstanceData.Value();
+                        newval.id = val.id;
+                        newval.value = val.value;
+                        result.values.Add(newval.Copy());
+                    }
+                }
+
+                return result;
             }
 
             public List<Value> values;
@@ -685,13 +713,12 @@ namespace TH_InstanceTable
         // Process instance table after receiving Sample Data
         List<InstanceData> ProcessInstances(TH_MTC_Data.Streams.ReturnData currentData, TH_MTC_Data.Streams.ReturnData sampleData)
         {
-
             List<InstanceData> Result = new List<InstanceData>();
+
+            InstanceData previousData = PreviousInstanceData_old;
 
             if (currentData != null && sampleData != null)
             {
-                InstanceData previousData = PreviousInstanceData_old;
-
                 if (sampleData.deviceStreams != null && currentData.deviceStreams != null)
                 {
                     // Get all of the DataItems from the DeviceStream object
@@ -710,65 +737,88 @@ namespace TH_InstanceTable
                     // Get List of Variables used
                     IEnumerable<string> usedVariables = values.Select(x => x.id).Distinct();
 
-                    foreach (DateTime timestamp in sortedTimestamps.ToList())
+                    bool anyChanged = false;
+
+                    var ic = GetConfiguration(config);
+
+                    foreach (string variable in usedVariables.ToList())
                     {
-                        InstanceData data = new InstanceData();
-
-                        // Preset previous values into new InstanceData object
-                        if (previousData != null) data.values = previousData.values;
-
-                        // Fill unused variables with the values from the CurrentData object
-                        else FillInstanceDataWithCurrentData(usedVariables.ToList(), data, currentData);
-
-                        // Set timestamp for InstanceData object
-                        data.timestamp = timestamp;
-
-                        data.agentInstanceId = currentData.header.instanceId;
-
-                        // Get List of Values at this timestamp
-                        List<InstanceVariableData> valuesAtTimestamp = values.FindAll(x => x.timestamp == timestamp);
-
-                        foreach (InstanceVariableData ivd in valuesAtTimestamp)
+                        if (ic.DataItems.Omit.Find(x => x.ToLower() == variable.ToLower()) == null)
                         {
-                            InstanceData.Value oldval = data.values.Find(x => x.id == ivd.id);
-                            // if value with id is already in data.values then overwrite the value
-                            if (oldval != null)
-                            {
-                                oldval.value = ivd.value.ToString();
-                            }
-                            // if not already in data.values then create new InstanceData.Value object and add it
-                            else
-                            {
-                                InstanceData.Value newval = new InstanceData.Value();
-                                newval.id = ivd.id;
-                                newval.value = ivd.value.ToString();
-                                data.values.Add(newval);
-                            }
-
-                            data.sequence = ivd.sequence;
-                        }
-
-                        Result.Add(data);
-
-                        previousData = new InstanceData();
-                        previousData.timestamp = data.timestamp;
-                        previousData.sequence = data.sequence;
-                        previousData.agentInstanceId = data.agentInstanceId;                     
-
-                        foreach (InstanceData.Value val in data.values.ToList())
-                        {
-                            if (val != null)
-                            {
-                                InstanceData.Value newval = new InstanceData.Value();
-                                newval.id = val.id;
-                                newval.value = val.value;
-                                previousData.values.Add(newval);
-                            }
+                            Console.WriteLine(variable + " changed");
+                            anyChanged = true;
+                            break;
                         }
                     }
 
-                    PreviousInstanceData_new = previousData;
+                    if (anyChanged)
+                    {
+                        foreach (DateTime timestamp in sortedTimestamps.ToList())
+                        {
+                            InstanceData data = new InstanceData();
 
+                            // Preset previous values into new InstanceData object
+                            if (previousData != null) data = previousData.Copy();
+                            // Fill unused variables with the values from the CurrentData object
+                            else FillInstanceDataWithCurrentData(usedVariables.ToList(), data, currentData);
+
+                            // Set timestamp for InstanceData object
+                            data.timestamp = timestamp;
+
+                            data.agentInstanceId = currentData.header.instanceId;
+
+                            // Get List of Values at this timestamp
+                            List<InstanceVariableData> valuesAtTimestamp = values.FindAll(x => x.timestamp == timestamp);
+
+                            foreach (InstanceVariableData ivd in valuesAtTimestamp)
+                            {
+                                InstanceData.Value oldval = data.values.Find(x => x.id == ivd.id);
+                                // if value with id is already in data.values then overwrite the value
+                                if (oldval != null)
+                                {
+                                    if (oldval.value != ivd.value.ToString())
+                                    {
+                                        oldval.value = ivd.value.ToString();
+                                    }
+                                }
+                                // if not already in data.values then create new InstanceData.Value object and add it
+                                else
+                                {
+                                    InstanceData.Value newval = new InstanceData.Value();
+                                    newval.id = ivd.id;
+                                    newval.value = ivd.value.ToString();
+                                    data.values.Add(newval);
+                                }
+
+                                data.sequence = ivd.sequence;
+                            }
+
+                            previousData = data.Copy();
+
+
+                            bool changed = false;
+
+                            foreach (var value in valuesAtTimestamp)
+                            {
+                                if (ic.DataItems.Omit.Find(x => x.ToLower() == value.id.ToLower()) == null)
+                                {
+                                    changed = true;
+                                    break;
+                                }
+                            }
+
+                            if (changed) Result.Add(data);
+                            
+                        }
+                    }
+                    else if (currentData != null)
+                    {
+                        InstanceData instanceData = ProcessSingleInstance(currentData);
+
+                        Result.Add(instanceData);
+
+                        previousData = instanceData.Copy();
+                    }
                 }
             }
             else if (currentData != null)
@@ -776,10 +826,13 @@ namespace TH_InstanceTable
                 InstanceData instanceData = ProcessSingleInstance(currentData);
 
                 Result.Add(instanceData);
+
+                previousData = instanceData.Copy();
             }
 
-            return Result;
+            PreviousInstanceData_new = previousData;
 
+            return Result;
         }
 
         // Process InstanceData after receiving Current Data

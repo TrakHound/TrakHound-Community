@@ -1090,7 +1090,6 @@ namespace TH_GeneratedData
 
         List<GeneratedEventItem> ProcessGeneratedEvents(List<InstanceTable.InstanceData> instanceDatas)
         {
-
             List<GeneratedEventItem> Result = new List<GeneratedEventItem>();
 
             // Get GenDataConfiguration object from Configuration.CustomClasses List (if exists)
@@ -1120,7 +1119,6 @@ namespace TH_GeneratedData
                             }
                         }
 
-
                         GeneratedEventItem gei = new GeneratedEventItem();
                         gei.eventName = e.Name;
                         gei.timestamp = e.CurrentValue.TimeStamp;
@@ -1149,7 +1147,6 @@ namespace TH_GeneratedData
             }
 
             return Result;
-
         }
 
         public class SnapShotItem

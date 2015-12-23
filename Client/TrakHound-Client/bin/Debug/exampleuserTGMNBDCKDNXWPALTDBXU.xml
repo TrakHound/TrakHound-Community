@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent />
+  <Databases />
+  <Description>
+    <Description>Local Test Device</Description>
+    <Device_Type />
+    <Manufacturer />
+    <Device_ID />
+    <Model />
+    <Serial />
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path />
+    <Image_Path />
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>false</Conditions>
+      <Events>true</Events>
+      <Samples>false</Samples>
+      <Omit />
+    </DataItems>
+  </InstanceTable>
+  <GeneratedData>
+    <SnapShotData />
+    <GeneratedEvents>
+      <UploadToMySQL>true</UploadToMySQL>
+    </GeneratedEvents>
+  </GeneratedData>
+  <ShiftData>
+    <Shifts />
+    <GeneratedEvents />
+  </ShiftData>
+  <Cycles />
+  <OEE>
+    <Availability />
+  </OEE>
+  <Databases_Client>
+    <MySQL id="00">
+      <UseTrakHoundCloudServer>True</UseTrakHoundCloudServer>
+      <Database>feenuxco_local_test</Database>
+      <Server>localhost</Server>
+      <Port />
+      <Username>feenuxco_reader</Username>
+      <Password>#reader</Password>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <PHP_Directory>php</PHP_Directory>
+      <UsePHP>True</UsePHP>
+    </MySQL>
+  </Databases_Client>
+  <ClientUpdateId>XURWBLZAAFVVWZQSCVTJ</ClientUpdateId>
+  <UniqueId>EERQZHQQZDAEWKTSALUP</UniqueId>
+</Settings>
