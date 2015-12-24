@@ -16,5 +16,5 @@ DEBUG;TRACE
 19891405730
 Components\Cell.xaml;Components\Header.xaml;Components\Row.xaml;Components\Column_Header.xaml;Controls\NumberDisplay.xaml;Controls\TextDisplay.xaml;DeviceTable.xaml;
 
-True
+False
 

@@ -100,7 +100,38 @@ namespace TH_Global.Web
             return result;
         }
 
+        /// <summary>
+        /// Encode a string used in Post Data. 
+        /// This was typically done using WebUtility.HtmlEncode but this is not available
+        /// in .NET 4.0 Client Profile which is required to work in XP
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string EncodePostString(string str)
+        {
+            string result = str;
+            result = result.Replace("!", "%21");
+            result = result.Replace("#", "%23");
+            result = result.Replace("$", "%24");
+            result = result.Replace("&", "%26");
+            result = result.Replace("'", "%27");
+            //result = result.Replace("(", "%28");
+            //result = result.Replace(")", "%29");
+            result = result.Replace("*", "%2a");
+            result = result.Replace("+", "%2b");
+            result = result.Replace(",", "%2c");
+            result = result.Replace("/", "%2f");
+            result = result.Replace(":", "%3a");
+            result = result.Replace(";", "%3b");
+            result = result.Replace("=", "%3d");
+            result = result.Replace("?", "%3f");
+            result = result.Replace("@", "%40");
+            result = result.Replace("[", "%5b");
+            result = result.Replace("]", "%5d");
+            result = result.Replace(" ", "+");
 
+            return result;
+        }
 
 
         public static string Send(string url, NameValueCollection postData = null)
@@ -168,9 +199,9 @@ namespace TH_Global.Web
                 {
                     vals += value;
                 }
-                postData.Append(HttpUtility.UrlEncode(key));
+                postData.Append(EncodePostString(key));
                 postData.Append("=");
-                postData.Append(HttpUtility.UrlEncode(vals));
+                postData.Append(EncodePostString(vals));
 
                 // If not the last data item then add '&'
                 if (x < nvc.AllKeys.Length) postData.Append("&");
@@ -229,9 +260,9 @@ namespace TH_Global.Web
                         {
                             vals += value;
                         }
-                        postData.Append(HttpUtility.UrlEncode(key));
+                        postData.Append(EncodePostString(key));
                         postData.Append("=");
-                        postData.Append(HttpUtility.UrlEncode(vals));
+                        postData.Append(EncodePostString(vals));
 
                         if (x < nvc.AllKeys.Length) postData.Append("&");
                     }

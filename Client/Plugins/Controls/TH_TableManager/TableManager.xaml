@@ -55,7 +55,6 @@
                 </Grid.Style>
 
                 <th_wpf:Button_02 Clicked="DropTables_Button_Clicked" Image="Resources/TrashCan_01.png" ToolTip="Drop Tables"/>
-                <!--<controls:Button Clicked="DropTables_Button_Clicked" Image="Resources/TrashCan_01.png" ToolTip="Drop Tables"/>-->
 
             </Grid>
             
@@ -248,8 +247,12 @@
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
 
                         <TextBlock Text="Page" FontSize="8pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="10,0" VerticalAlignment="Center"/>
+
+                        <th_wpf:Button_02 x:Name="PreviousPage_BT" Text="◄" Clicked="PageButton_Clicked" IsEnabled="False"/>
                         
                         <StackPanel x:Name="PageNumbers_STACK" Grid.Column="1" Orientation="Horizontal"/>
+
+                        <th_wpf:Button_02 x:Name="NextPage_BT" Text="►" Clicked="PageButton_Clicked" IsEnabled="False"/>
 
                         <TextBlock Text="Displaying" FontSize="8pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="10,0" VerticalAlignment="Center"/>
 
@@ -341,12 +344,12 @@
 
                     <!--Table Data-->
                     <DataGrid Grid.Row="1" ItemsSource="{Binding TableDataView}"
-                                      Background="{StaticResource Window_Background_Dark}"
-                                      Margin="0,0,10,10"
-                                      HeadersVisibility="Column"
-                                      BorderBrush="#33000000" BorderThickness="1,0,1,1"
-                                      IsReadOnly="True" CanUserReorderColumns="False"
-                                      HorizontalGridLinesBrush="#33000000" VerticalGridLinesBrush="#33000000">
+                            Background="{StaticResource Window_Background_Dark}"
+                            Margin="0,0,10,10"
+                            BorderBrush="#33000000" BorderThickness="1,0,1,1"
+                            IsReadOnly="True" CanUserReorderColumns="False"
+                            HorizontalGridLinesBrush="#33000000" VerticalGridLinesBrush="#33000000" HeadersVisibility="Column"
+                            >
 
                         <DataGrid.Style>
                             <Style TargetType="DataGrid">

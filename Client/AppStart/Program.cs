@@ -21,7 +21,6 @@ namespace AppStart
         [STAThread]
         static void Main(string[] args)
         {
-
             CheckForUpdates();
 
             OpenClient();
@@ -81,9 +80,9 @@ namespace AppStart
         {
             try
             {
-                //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
 
-                string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\trakhound-client.exe";
+                //string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\trakhound-client.exe";
 
                 Process p = new Process();
 
@@ -111,9 +110,9 @@ namespace AppStart
             try
             {
 
-                //string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "trakhound-client-updater.exe";
+                string clientPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "trakhound-client-updater.exe";
 
-                string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client-Updater\bin\Debug\trakhound-client-updater.exe";
+                //string clientPath = @"F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client-Updater\bin\Debug\trakhound-client-updater.exe";
 
                 Process p = new Process();
                 p.StartInfo.FileName = clientPath;
@@ -169,14 +168,6 @@ namespace AppStart
                 RegistryKey updatesKey = rootKey.OpenSubKey("Updates");
 
                 Result = updatesKey.GetSubKeyNames();
-
-
-
-                //// Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                //RegistryKey updateKey = updatesKey.OpenSubKey(keyName);
-
-                //// Read value for [keyName] to [keyValue]
-                //Result = updateKey.GetValue(keyName).ToString();
             }
             catch (Exception ex)
             {

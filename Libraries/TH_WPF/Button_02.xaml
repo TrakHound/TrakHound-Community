@@ -17,7 +17,8 @@
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Trigger.EnterActions>
+                        <Setter Property="Background" Value="#18000000"/>
+                        <!--<Trigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#18000000">
@@ -38,10 +39,11 @@
                                     </ColorAnimation>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </Trigger.ExitActions>
+                        </Trigger.ExitActions>-->
                     </Trigger>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <DataTrigger.EnterActions>
+                        <Setter Property="Background" Value="#33ffffff"/>
+                        <!--<DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
                                     <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#33ffffff">
@@ -62,7 +64,7 @@
                                     </ColorAnimation>
                                 </Storyboard>
                             </BeginStoryboard>
-                        </DataTrigger.ExitActions>
+                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
 
                 </Style.Triggers>
@@ -118,9 +120,9 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="#aaffffff"/>
+                            <Setter Property="Fill" Value="#ffffff"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
+                                <!--<DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -167,7 +169,10 @@
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
-                                </DataTrigger>
+                                </DataTrigger>-->
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Fill" Value="#20ffffff"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </Rectangle.Style>
@@ -179,7 +184,7 @@
             <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="#aaffffff"/>
+                        <Setter Property="Foreground" Value="#ffffff"/>
                         <Setter Property="Margin" Value="5,0,10,0"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
@@ -188,7 +193,7 @@
                             <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
+                            <!--<DataTrigger Binding="{Binding IsMouseOver, ElementName=BD}" Value="true">
                                 <DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
@@ -235,7 +240,10 @@
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </DataTrigger.ExitActions>
-                            </DataTrigger>
+                            </DataTrigger>-->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#20ffffff"/>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>

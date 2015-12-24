@@ -57,16 +57,12 @@
 			<Name>TH_Global</Name>
 			<Project>{3233B466-2FA9-4AE7-8A21-7EEB57BB61F4}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_MTC_Data\TH_MTC_Data.csproj">
-			<Name>TH_MTC_Data</Name>
-			<Project>{318E6702-3C9E-4ACC-B326-E3EC903417A8}</Project>
-		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
 			<Name>TH_MySQL</Name>
 			<Project>{0822B312-19ED-4556-A197-210F0CB15BF1}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Control\TH_PlugIns_Client_Control.csproj">
-			<Name>TH_PlugIns_Client_Control</Name>
+		<ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Control\TH_Plugins_Client.csproj">
+			<Name>TH_Plugins_Client</Name>
 			<Project>{4DA60983-505E-463C-AB96-0A80D0CD1330}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\Plugins\Controls\TH_StatusData\TH_StatusData.csproj">

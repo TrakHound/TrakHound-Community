@@ -745,7 +745,6 @@ namespace TH_InstanceTable
                     {
                         if (ic.DataItems.Omit.Find(x => x.ToLower() == variable.ToLower()) == null)
                         {
-                            Console.WriteLine(variable + " changed");
                             anyChanged = true;
                             break;
                         }
