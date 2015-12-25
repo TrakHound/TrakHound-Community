@@ -463,8 +463,6 @@ namespace TH_TableManager
 
         const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
-        //Device_Client selectedDevice = null;
-
         Configuration selectedDevice = null;
 
         void lb_Device_Selected(TH_WPF.ListButton lb)
@@ -985,7 +983,7 @@ namespace TH_TableManager
             }
         }
 
-        int[] rowLimits = new int[] { 25, 50, 100, 500, 1000, 5000 };
+        int[] rowLimits = new int[] { 50, 100, 500, 1000, 5000 };
 
         public string RowDisplayLimit
         {

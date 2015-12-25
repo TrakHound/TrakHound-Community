@@ -342,7 +342,6 @@ namespace TH_ShiftTable
                 values.Add(info.totalTime);
 
                 rowValues.Add(values);
-
             }
 
             Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, true);

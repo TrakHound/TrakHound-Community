@@ -50,6 +50,7 @@
     <Compile Include="MTC Requests.cs" />
     <Compile Include="Plugins.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\Current.cs" />
     <Compile Include="Table Management\AgentInfo.cs" />
     <None Include="Table Management\Variables.cs" />
   </ItemGroup>

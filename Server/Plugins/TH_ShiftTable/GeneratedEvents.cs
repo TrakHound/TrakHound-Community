@@ -179,8 +179,6 @@ namespace TH_ShiftTable
                 }              
                 gesi.shiftDate = d;
 
-                //gesi.shiftDate = date;
-
                 // Get Times for segment and convert timestamps to Local
                 SegmentShiftTimes sst = SegmentShiftTimes.Get(item1.timestamp, item2.timestamp, date, segment);
 

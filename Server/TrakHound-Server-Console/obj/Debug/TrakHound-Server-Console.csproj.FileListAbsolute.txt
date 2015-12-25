@@ -6,14 +6,12 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Confi
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Device_Server.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_MTC_Data.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_MTC_Requests.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_PlugIns_Server.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Device_Server.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_MTC_Data.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_MTC_Requests.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_PlugIns_Server.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Core.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.csprojResolveAssemblyReference.cache

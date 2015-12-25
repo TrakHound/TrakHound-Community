@@ -41,12 +41,6 @@
 
             <SolidColorBrush x:Key="DarkBlue_Text" Color="#FF0070ff" />
 
-            <!--<LinearGradientBrush x:Key="Splash_BG" EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="{StaticResource LightBlue_Color}" Offset="0"/>
-                <GradientStop Color="{StaticResource DarkBlue_Color}" Offset="1"/>
-            </LinearGradientBrush>-->
-
-
         </ResourceDictionary>
 
     </Window.Resources>
@@ -170,23 +164,17 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <!--Image-->
-                            <!--<Rectangle Width="180" Height="180" Margin="20,20,40,0" VerticalAlignment="Top" HorizontalAlignment="Center">
-                                <Rectangle.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/TrakHound_Logo_Initials_10_260px.png" />
-                                </Rectangle.Resources>
+                            <!--TrakHound Logo-->
+                            <StackPanel Margin="40,40,20,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
 
-                                <Rectangle.Style>
-                                    <Style TargetType="Rectangle">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Fill" Value="#eee"/>
-                                    </Style>
-                                </Rectangle.Style>
-                            </Rectangle>-->
+                                <!--Logo Image-->
+                                <Image Source="/TrakHound-Client;component/Resources/TrakHound_Logo_10_150px_White.png" Height="150"/>
 
+                                <!--Trademark Symbol-->
+                                <TextBlock Text="TM" FontSize="4pt" Foreground="#fff" VerticalAlignment="Bottom" Margin="2,0,0,0"/>
 
-                            <Image HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,30,20,0" Source="/TrakHound-Client;component/Resources/TrakHound_Logo_Initials_10_200px_White.png" Height="150"/>
-
+                            </StackPanel>
+                            
                             <Grid Grid.Column="1" Margin="20,30">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -195,18 +183,21 @@
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Style="{StaticResource TrakHoundFont}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#eee">
+                                <!--Title-->
+                                <TextBlock Style="{StaticResource TrakHoundFont}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#fff">
                                 <Run FontSize="36pt">TrakHound</Run>
                                 <Run FontSize="4pt" BaselineAlignment="Superscript">TM</Run>
                                 </TextBlock>
 
-                                <TextBlock Grid.Row="1" Text="{Binding Version}" Foreground="#eee" FontSize="10pt" />
+                                <!--Version-->
+                                <TextBlock Grid.Row="1" Text="{Binding Version}" Foreground="#fff" FontSize="10pt" />
 
-                                <TextBlock Grid.Row="2" Text="{Binding Status}" FontSize="10pt" Foreground="#eee"/>
+                                <!--Loading Status-->
+                                <TextBlock Grid.Row="2" Text="{Binding Status}" FontSize="10pt" Foreground="#fff"/>
 
                                 <Grid x:Name="Plugins_GRID" Grid.Row="3">
                                     <StackPanel x:Name="Plugins_STACK" Orientation="Horizontal" Visibility="Collapsed">
-                                        <TextBlock Text="Pages" Foreground="#eee" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Pages" Foreground="#fff" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
                                         <Rectangle Fill="#eee" Width="2" Margin="0,5,10,5" Height="30"/>
                                     </StackPanel>
                                 </Grid>

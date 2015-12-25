@@ -81,7 +81,7 @@
 
                 <TextBlock Text="Devices" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
 
-                <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="#33000000"/>
+                <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Normal}"/>
 
                 <ItemsControl Grid.Row="2" ItemsSource="{Binding DeviceList}" Margin="5,0"/>
 
@@ -134,7 +134,7 @@
                     <TextBlock Grid.Row="0" Text="Tables" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                     <!--Seperator-->
-                    <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="#33000000"/>
+                    <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Normal}"/>
 
                 </StackPanel>
                 
@@ -208,10 +208,10 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Table Name-->
-                        <TextBlock Text="{Binding SelectedTableName}" FontSize="20pt" Foreground="{StaticResource Foreground_Opposite_Light}" VerticalAlignment="Center" Margin="20,10" />
+                        <TextBlock Text="{Binding SelectedTableName}" FontSize="20pt" Foreground="{StaticResource Foreground_Opposite_Normal}" VerticalAlignment="Center" Margin="20,10" />
 
                         <!--Seperator-->
-                        <Rectangle Grid.Column="1" Fill="#33000000" Width="1" Margin="10" />
+                        <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="10" />
 
                         <!--Table Info-->
                         <Grid Grid.Column="2" VerticalAlignment="Center">
@@ -232,11 +232,11 @@
                             </Grid.Resources>
 
                             <!--Row Count-->
-                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Row Count :" Foreground="{StaticResource Foreground_Opposite_Light}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Row Count :" Foreground="{StaticResource Foreground_Opposite_Normal}"/>
                             <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding TableRowCount}" Foreground="{StaticResource Foreground_Opposite_Normal}"/>
 
                             <!--Table Size-->
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Size :" Foreground="{StaticResource Foreground_Opposite_Light}"/>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Size :" Foreground="{StaticResource Foreground_Opposite_Normal}"/>
                             <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TableSize}" Foreground="{StaticResource Foreground_Opposite_Normal}"/>
 
                         </Grid>

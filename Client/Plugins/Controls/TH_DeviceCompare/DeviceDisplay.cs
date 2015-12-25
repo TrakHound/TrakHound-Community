@@ -115,10 +115,10 @@ namespace TH_DeviceCompare
             dd.header = "Current Program";
             DataItems.Add(dd);
 
-            dd = new DataItem();
-            dd.id = "PreviousProgram";
-            dd.header = "Previous Program";
-            DataItems.Add(dd);
+            //dd = new DataItem();
+            //dd.id = "PreviousProgram";
+            //dd.header = "Previous Program";
+            //DataItems.Add(dd);
 
             dd = new DataItem();
             dd.id = "FeedrateOverride";

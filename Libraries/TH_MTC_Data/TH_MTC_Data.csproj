@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Classes.cs" />
+    <Compile Include="Components\Requests.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Components\ReturnData.cs" />
     <Compile Include="Components\Tools.cs" />
@@ -55,6 +56,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Streams\Classes.cs" />
+    <Compile Include="Streams\Requests.cs" />
     <Compile Include="Streams\ReturnData.cs" />
     <Compile Include="Streams\Tools.cs" />
     <Compile Include="Tools.cs" />
