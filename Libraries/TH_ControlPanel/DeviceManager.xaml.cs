@@ -56,9 +56,9 @@ namespace TH_DeviceManager
 
             ManagerType = type;
 
-            if (type == DeviceManagerType.Server) LoadPlugins();
+            //if (type == DeviceManagerType.Server) LoadPlugins();
 
-            InitializePages(type);
+            //InitializePages(type);
         }
 
         void init()
@@ -352,7 +352,7 @@ namespace TH_DeviceManager
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in configs)
                 {
-                    this.Dispatcher.BeginInvoke(new Action<Configuration>(CreateDeviceButton), background, new object[] { config });
+                    this.Dispatcher.BeginInvoke(new Action<Configuration>(AddDeviceButton), background, new object[] { config });
                 }
             }
 
@@ -677,7 +677,7 @@ namespace TH_DeviceManager
 
         void page_DeviceAdded(Configuration config)
         {
-            CreateDeviceButton(config);
+            AddDeviceButton(config);
         }
 
         #endregion
@@ -711,20 +711,18 @@ namespace TH_DeviceManager
                 {
                     success = false;
                 }
-            }
 
-            this.Dispatcher.BeginInvoke(new Action<bool>(CopyDevice_GUI), priority, new object[] { success });
+                this.Dispatcher.BeginInvoke(new Action<bool, Configuration>(CopyDevice_GUI), priority, new object[] { success, config });
+            }
         }
 
-        void CopyDevice_GUI(bool success)
+        void CopyDevice_GUI(bool success, Configuration config)
         {
-
-            if (success) LoadDevices();
+            if (success) AddDeviceButton(config);
             else
             {
                 TH_WPF.MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButtons.Ok);
             }
-
         }
 
         #endregion
@@ -757,29 +755,100 @@ namespace TH_DeviceManager
             }
         }
 
-
-        void CreateDeviceButton(Configuration config)
+        void AddDeviceButton(string uniqueId, string tableName)
         {
-            Controls.DeviceButton db = new Controls.DeviceButton();
-            db.devicemanager = this;
+            ListButton lb;
 
-            db.Config = config;
+            int index = DeviceList.ToList().FindIndex(x => GetDeviceButtonUniqueId(x) == uniqueId);
+            if (index >= 0)
+            {
 
-            db.Enabled += db_Enabled;
-            db.Disabled += db_Disabled;
-            db.RemoveClicked += db_RemoveClicked;
-            db.ShareClicked += db_ShareClicked;
-            db.CopyClicked += db_CopyClicked;
-            db.Clicked += db_Clicked;
+            }
+            else
+            {
+                Controls.DeviceButton db = new Controls.DeviceButton();
+                db.devicemanager = this;
 
-            ListButton lb = new ListButton();
-            lb.ButtonContent = db;
-            lb.ShowImage = false;
-            lb.Selected += lb_Device_Selected;
+                // Create a temporary Configuration to hold the button's place in the list
+                Configuration config = Configuration.CreateBlank();
+                config.UniqueId = uniqueId;
+                config.TableName = tableName;
+                db.Config = config;
 
-            db.Parent = lb;
+                db.Enabled += db_Enabled;
+                db.Disabled += db_Disabled;
+                db.RemoveClicked += db_RemoveClicked;
+                db.ShareClicked += db_ShareClicked;
+                db.CopyClicked += db_CopyClicked;
+                db.Clicked += db_Clicked;
 
-            DeviceList.Add(lb);
+                lb = new ListButton();
+                lb.ButtonContent = db;
+                lb.ShowImage = false;
+                lb.Selected += lb_Device_Selected;
+
+                db.Parent = lb;
+
+                DeviceList.Add(lb);
+            }   
+        }
+
+        void AddDeviceButton(Configuration config)
+        {
+            ListButton lb;
+
+            int index = DeviceList.ToList().FindIndex(x => GetDeviceButtonUniqueId(x) == config.UniqueId);
+            if (index >= 0)
+            {
+                lb = DeviceList[index];
+                Controls.DeviceButton db = lb.ButtonContent as Controls.DeviceButton;
+                if (db != null)
+                {
+                    db.Config = config;
+                }
+            }
+            else
+            {
+                Controls.DeviceButton db = new Controls.DeviceButton();
+                db.devicemanager = this;
+
+                db.Config = config;
+
+                db.Enabled += db_Enabled;
+                db.Disabled += db_Disabled;
+                db.RemoveClicked += db_RemoveClicked;
+                db.ShareClicked += db_ShareClicked;
+                db.CopyClicked += db_CopyClicked;
+                db.Clicked += db_Clicked;
+
+                lb = new ListButton();
+                lb.ButtonContent = db;
+                lb.ShowImage = false;
+                lb.Selected += lb_Device_Selected;
+
+                db.Parent = lb;
+
+                DeviceList.Add(lb);
+            }   
+        }
+
+        string GetDeviceButtonUniqueId(ListButton lb)
+        {
+            string result = null;
+
+            if (lb != null)
+            {
+                if (lb.ButtonContent != null)
+                {
+                    Configuration config = lb.ButtonContent as Configuration;
+                    if (config != null)
+                    {
+                        result = config.UniqueId;
+                    }
+                }
+            }
+
+            return result;
         }
 
         void db_Enabled(DeviceButton bt)

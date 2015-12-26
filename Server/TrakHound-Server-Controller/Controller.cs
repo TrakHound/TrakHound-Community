@@ -26,6 +26,7 @@ namespace TrakHound_Server_Controller
         private System.ComponentModel.IContainer mComponents;   //List of components
         private NotifyIcon mNotifyIcon;
         private ContextMenuStrip mContextMenu;
+        private ToolStripMenuItem mControlPanel;
         private ToolStripMenuItem mStartService;
         private ToolStripMenuItem mStopService;
         private ToolStripMenuItem mExitApplication;
@@ -71,11 +72,19 @@ namespace TrakHound_Server_Controller
             mNotifyIcon.Visible = true;
 
             mContextMenu = new ContextMenuStrip();
+            mControlPanel = new ToolStripMenuItem();
             mStartService = new ToolStripMenuItem();
             mStopService = new ToolStripMenuItem();
             mExitApplication = new ToolStripMenuItem();
 
             mNotifyIcon.ContextMenuStrip = mContextMenu;
+
+            mControlPanel.Text = "Control Panel";
+            mControlPanel.Click += mControlPanel_Click;
+            mContextMenu.Items.Add(mControlPanel);
+
+            ToolStripSeparator seperator = new System.Windows.Forms.ToolStripSeparator();
+            mContextMenu.Items.Add(seperator);
 
             mStartService.Text = "Start Server";
             mStartService.Image = Properties.Resources.UAC_01;
@@ -87,7 +96,7 @@ namespace TrakHound_Server_Controller
             mStopService.Click += mStopService_Click;
             mContextMenu.Items.Add(mStopService);
 
-            ToolStripSeparator seperator = new System.Windows.Forms.ToolStripSeparator();
+            seperator = new System.Windows.Forms.ToolStripSeparator();
             mContextMenu.Items.Add(seperator);
 
             mExitApplication.Text = "Exit";
@@ -95,6 +104,7 @@ namespace TrakHound_Server_Controller
             mExitApplication.Click += mExitApplication_Click;
             mContextMenu.Items.Add(mExitApplication);
         }
+
 
         void StartAdminProcess(string fileName)
         {
@@ -114,6 +124,20 @@ namespace TrakHound_Server_Controller
         }
 
         System.Timers.Timer StatusDelay_TIMER;
+
+        void OpenControlPanel()
+        {
+            try
+            {
+                string filename = AppDomain.CurrentDomain.BaseDirectory + @"trakhound-server-control-panel.exe";
+
+                Process.Start(filename);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
 
         void StartService()
         {
@@ -216,6 +240,8 @@ namespace TrakHound_Server_Controller
         }
 
         #region "Menu Options"
+
+        void mControlPanel_Click(object sender, EventArgs e) { OpenControlPanel(); }
 
         void mStartService_Click(object sender, EventArgs e) { StartService(); }
 
