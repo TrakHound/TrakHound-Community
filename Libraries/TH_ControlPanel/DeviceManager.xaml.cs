@@ -56,9 +56,9 @@ namespace TH_DeviceManager
 
             ManagerType = type;
 
-            //if (type == DeviceManagerType.Server) LoadPlugins();
+            if (type == DeviceManagerType.Server) LoadPlugins();
 
-            //InitializePages(type);
+            InitializePages(type);
         }
 
         void init()

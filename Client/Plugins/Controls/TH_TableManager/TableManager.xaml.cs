@@ -531,7 +531,17 @@ namespace TH_TableManager
 
         public static readonly DependencyProperty TableSizeProperty =
             DependencyProperty.Register("TableSize", typeof(string), typeof(TableManager), new PropertyMetadata(null));
-     
+
+
+        public string SelectedRowCount
+        {
+            get { return (string)GetValue(SelectedRowCountProperty); }
+            set { SetValue(SelectedRowCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedRowCountProperty =
+            DependencyProperty.Register("SelectedRowCount", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+
 
         Thread Info_WORKER;
 
@@ -798,11 +808,9 @@ namespace TH_TableManager
 
             // Calculate Offset based on selected page
             string offset = "";
-            if (ltp.page > 1)
-            {
-                Int64 o = ltp.page * limit;
-                offset = " OFFSET " + o.ToString();
-            }
+            Int64 page = Math.Max(0, ltp.page - 1);
+            Int64 o = page * limit;
+            offset = " OFFSET " + o.ToString();
                 
             // Get MySQL table
             DataTable dt = TH_Database.Table.Get(ltp.config.Databases_Client, ltp.tablename, "LIMIT " + limit.ToString() + offset);
@@ -888,7 +896,7 @@ namespace TH_TableManager
         {
             int rowLimit = rowLimits[Properties.Settings.Default.RowDisplayIndex];
 
-            Int64 pageCount = Math.Max(1, totalRows / rowLimit);
+            Int64 pageCount = Convert.ToInt64(Math.Max(1, Math.Ceiling((double)totalRows / rowLimit)));
 
             var pages = new List<Int64>();
 
@@ -1050,6 +1058,13 @@ namespace TH_TableManager
 
             // Table Data
             TableDataView = null;
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var dg = (DataGrid)sender;
+
+            SelectedRowCount = dg.SelectedItems.Count.ToString() + " Rows Selected";
         }
 
     }

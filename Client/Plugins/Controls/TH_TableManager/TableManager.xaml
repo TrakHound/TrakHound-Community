@@ -260,6 +260,8 @@
 
                         <TextBlock Text="Rows" FontSize="8pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="5,0" VerticalAlignment="Center"/>
 
+                        <TextBlock Text="{Binding SelectedRowCount}" FontSize="8pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="20,0" VerticalAlignment="Center"/>
+
                     </StackPanel>
                     
                     <!--Info Refresh Button-->
@@ -349,6 +351,7 @@
                             BorderBrush="#33000000" BorderThickness="1,0,1,1"
                             IsReadOnly="True" CanUserReorderColumns="False"
                             HorizontalGridLinesBrush="#33000000" VerticalGridLinesBrush="#33000000" HeadersVisibility="Column"
+                            SelectionChanged="DataGrid_SelectionChanged"
                             >
 
                         <DataGrid.Style>
