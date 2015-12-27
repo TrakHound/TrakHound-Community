@@ -63,6 +63,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\PageManager.xaml.cs">
+      <DependentUpon>PageManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Devices.cs" />
     <Compile Include="Pages\About\Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
@@ -94,8 +97,8 @@
     <Compile Include="Menus\Plugins\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TH_Page.xaml.cs">
-      <DependentUpon>TH_Page.xaml</DependentUpon>
+    <Compile Include="Controls\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TH_TabHeader_Top.xaml.cs">
       <DependentUpon>TH_TabHeader_Top.xaml</DependentUpon>
@@ -151,6 +154,10 @@
       <DependentUpon>Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TH_TabItem.cs" />
+    <Page Include="Controls\PageManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\About\Manager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -191,7 +198,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TH_Page.xaml">
+    <Page Include="Controls\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

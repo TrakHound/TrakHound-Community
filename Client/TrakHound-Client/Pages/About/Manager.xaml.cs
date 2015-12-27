@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 using TH_WPF;
 
@@ -27,7 +28,25 @@ namespace TrakHound_Client.Pages.About
         public Manager()
         {
             InitializeComponent();
+            DataContext = this;
         }
+
+        ObservableCollection<ListButton> pages;
+        public ObservableCollection<ListButton> Pages
+        {
+            get
+            {
+                if (pages == null)
+                    pages = new ObservableCollection<ListButton>();
+                return pages;
+            }
+
+            set
+            {
+                pages = value;
+            }
+        }
+
 
         public string CurrentPageName
         {
@@ -47,23 +66,23 @@ namespace TrakHound_Client.Pages.About
             lb.Selected += ListButton_Selected;
             lb.DataObject = page;
 
-            Pages_STACK.Children.Add(lb);
+            Pages.Add(lb);
         }
 
         public void RemovePage(TH_Global.Page page)
         {
-            foreach (ListButton lb in Pages_STACK.Children.OfType<ListButton>())
+            foreach (ListButton lb in Pages)
             {
                 if (lb.Text.ToUpper() == page.PageName.ToUpper())
                 {
-                    Pages_STACK.Children.Remove(lb);
+                    Pages.Remove(lb);
                 }
             } 
         }
 
         private void ListButton_Selected(ListButton LB)
         {
-            foreach (ListButton oLB in Pages_STACK.Children.OfType<ListButton>())
+            foreach (ListButton oLB in Pages)
             {
                 if (oLB == LB) oLB.IsSelected = true;
                 else oLB.IsSelected = false;
@@ -79,13 +98,13 @@ namespace TrakHound_Client.Pages.About
 
         private void manager_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Pages_STACK.Children.Count > 0)
+            if (Pages.Count > 0)
             {
-                if (Pages_STACK.Children[0].GetType() == typeof(ListButton))
+                if (Pages[0].GetType() == typeof(ListButton))
                 {
-                    ListButton lb = (ListButton) Pages_STACK.Children[0];
+                    ListButton lb = (ListButton) Pages[0];
 
-                    foreach (ListButton oLB in Pages_STACK.Children.OfType<ListButton>())
+                    foreach (ListButton oLB in Pages)
                     {
                         if (oLB == lb) oLB.IsSelected = true;
                         else oLB.IsSelected = false;

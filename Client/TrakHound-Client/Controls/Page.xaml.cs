@@ -25,9 +25,9 @@ namespace TrakHound_Client.Controls
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class TH_Page : UserControl
+    public partial class Page : UserControl
     {
-        public TH_Page()
+        public Page()
         {
             InitializeComponent();
             DataContext = this;
@@ -47,7 +47,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty PageContentProperty =
-            DependencyProperty.Register("PageContent", typeof(object), typeof(TH_Page), new PropertyMetadata(null));
+            DependencyProperty.Register("PageContent", typeof(object), typeof(Page), new PropertyMetadata(null));
 
         public bool Closing
         {
@@ -56,7 +56,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ClosingProperty =
-            DependencyProperty.Register("Closing", typeof(bool), typeof(TH_Page), new PropertyMetadata(false));
+            DependencyProperty.Register("Closing", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
 
 
@@ -69,7 +69,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ZoomLevelProperty =
-            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(TH_Page), new PropertyMetadata(1D));
+            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(Page), new PropertyMetadata(1D));
 
 
         public string ZoomLevelText
@@ -79,7 +79,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ZoomLevelTextProperty =
-            DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(TH_Page), new PropertyMetadata(null));
+            DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(Page), new PropertyMetadata(null));
 
         ObservableCollection<string> zoomlevels;
         public ObservableCollection<string> ZoomLevels

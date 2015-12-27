@@ -24,8 +24,8 @@ namespace Test
         {
             InitializeComponent();
 
-            levels_LI.TotalLevelCount = 4;
-            levels_LI.ActiveLevelCount = 1;
+            //levels_LI.TotalLevelCount = 4;
+            //levels_LI.ActiveLevelCount = 1;
         }
     }
 }

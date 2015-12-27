@@ -730,9 +730,9 @@ namespace TrakHound_Client
             }
         }
 
-        public TH_Page CreatePage(object control)
+        public Controls.Page CreatePage(object control)
         {
-            TH_Page Result = new TH_Page();
+            Controls.Page Result = new Controls.Page();
 
             Result.PageContent = control;
 
@@ -853,7 +853,7 @@ namespace TrakHound_Client
                 {
                     TH_TabItem tab = (TH_TabItem)Pages_TABCONTROL.Items[Pages_TABCONTROL.SelectedIndex];
 
-                    TH_Page page = (TH_Page)tab.Content;
+                    Controls.Page page = (Controls.Page)tab.Content;
                     page.ZoomLevel = value;
 
                     ZoomLevelDisplay = value.ToString("P0");
@@ -896,11 +896,11 @@ namespace TrakHound_Client
 
         #region "About"
 
-        public Pages.About.Manager aboutManager;
+        public PageManager aboutManager;
 
         void About_Initialize()
         {
-            aboutManager = new Pages.About.Manager();
+            aboutManager = new PageManager();
             aboutManager.AddPage(new Pages.About.Information.Page());
             aboutManager.AddPage(new Pages.About.License.Page());           
         }
@@ -930,13 +930,13 @@ namespace TrakHound_Client
 
         #region "Account Manager"
 
-        public Pages.Account.Manager accountManager;
+        public PageManager accountManager;
 
         TH_UserManagement.Create.Page accountpage;
 
         void AccountManager_Initialize()
         {
-            accountManager = new Pages.Account.Manager();
+            accountManager = new PageManager();
 
             accountpage = new TH_UserManagement.Create.Page();
             accountpage.UserChanged += accountpage_UserChanged;
@@ -949,9 +949,9 @@ namespace TrakHound_Client
 
         public void AccountManager_Open()
         {
-            accountManager.ClearPages();
+            //accountManager.ClearPages();
             accountManager.AddPage(accountpage);
-            accountManager.currentUser = currentuser;
+            //accountManager.currentUser = currentuser;
 
             AddPageAsTab(accountManager, "Acount Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
         }
@@ -960,11 +960,11 @@ namespace TrakHound_Client
 
         #region "Options"
 
-        Pages.Options.Manager optionsManager;
+        PageManager optionsManager;
 
         void Options_Initialize()
         {
-            optionsManager = new Pages.Options.Manager();
+            optionsManager = new PageManager();
             optionsManager.AddPage(new Pages.Options.Updates.Page());
         }
 
@@ -977,13 +977,13 @@ namespace TrakHound_Client
 
         #region "Plugins"
 
-        Pages.Plugins.Manager pluginsManager;
+        PageManager pluginsManager;
 
         Pages.Plugins.Installed.Page pluginsPage;
 
         void Plugins_Initialize()
         {
-            pluginsManager = new Pages.Plugins.Manager();
+            pluginsManager = new PageManager();
 
             pluginsPage = new Pages.Plugins.Installed.Page();
             pluginsManager.AddPage(pluginsPage);
@@ -1125,7 +1125,7 @@ namespace TrakHound_Client
 
         #region "Plugin Launcher"
 
-        private void PluginLauncher_BT_Clicked(Button_01 bt)
+        private void PluginLauncher_BT_Clicked(TH_WPF.Button bt)
         {
             Point point = bt.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
             PluginLauncher.Margin = new Thickness(0, point.Y + bt.RenderSize.Height, 0, 0);
@@ -1169,7 +1169,7 @@ namespace TrakHound_Client
 
         #region "Main Menu Button"
 
-        private void MainMenu_BT_Clicked(Button_01 bt)
+        private void MainMenu_BT_Clicked(TH_WPF.Button bt)
         {
             Point point = bt.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
             MainMenu.Margin = new Thickness(0, point.Y + bt.RenderSize.Height, 5, 0);
@@ -1630,11 +1630,11 @@ namespace TrakHound_Client
 
                     if (optionsManager != null)
                     {
-                        foreach (ListButton lb in optionsManager.Pages_STACK.Children.OfType<ListButton>().ToList())
+                        foreach (ListButton lb in optionsManager.Pages.ToList())
                         {
                             if (lb.Text.ToUpper() == config.Name.ToUpper())
                             {
-                                optionsManager.Pages_STACK.Children.Remove(lb);
+                                optionsManager.Pages.Remove(lb);
                             }
                         }
                     }

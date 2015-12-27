@@ -183,12 +183,30 @@ namespace TH_Dashboard
         public Dashboard()
         {
             InitializeComponent();
+            DataContext = this;
 
             SubCategories = new List<PluginConfigurationCategory>();
             PluginConfigurationCategory pages = new PluginConfigurationCategory();
             pages.Name = "Pages";
             SubCategories.Add(pages);
         }
+
+        ObservableCollection<ListButton> pages;
+        public ObservableCollection<ListButton> Pages
+        {
+            get
+            {
+                if (pages == null)
+                    pages = new ObservableCollection<ListButton>();
+                return pages;
+            }
+
+            set
+            {
+                pages = value;
+            }
+        }
+
 
         #region "Child PlugIns"
 
@@ -238,7 +256,7 @@ namespace TH_Dashboard
                         lb.Image = plugin.Image;
                         lb.Selected += lb_Selected;
                         lb.DataObject = plugin;
-                        Pages_STACK.Children.Add(lb);
+                        Pages.Add(lb);
 
                         EnabledPlugins.Add(config);
                     }
@@ -257,10 +275,10 @@ namespace TH_Dashboard
             {
                 if (!config.Enabled)
                 {
-                    ListButton lb = Pages_STACK.Children.OfType<ListButton>().ToList().Find(x => GetPluginName(x.Text) == GetPluginName(config.Name));
+                    ListButton lb = Pages.ToList().Find(x => GetPluginName(x.Text) == GetPluginName(config.Name));
                     if (lb != null)
                     {
-                        Pages_STACK.Children.Remove(lb);
+                        Pages.Remove(lb);
                     }
 
                     if (config == currentPage) Content_GRID.Children.Clear();
@@ -278,7 +296,7 @@ namespace TH_Dashboard
 
         private void lb_Selected(ListButton LB)
         {
-            foreach (ListButton oLB in Pages_STACK.Children.OfType<ListButton>())
+            foreach (ListButton oLB in Pages)
             {
                 if (oLB == LB) oLB.IsSelected = true;
                 else oLB.IsSelected = false;
@@ -311,13 +329,13 @@ namespace TH_Dashboard
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Pages_STACK.Children.Count > 0)
+            if (Pages.Count > 0)
             {
-                if (Pages_STACK.Children[0].GetType() == typeof(ListButton))
+                if (Pages[0].GetType() == typeof(ListButton))
                 {
-                    ListButton lb = (ListButton)Pages_STACK.Children[0];
+                    ListButton lb = (ListButton)Pages[0];
 
-                    foreach (ListButton oLB in Pages_STACK.Children.OfType<ListButton>())
+                    foreach (ListButton oLB in Pages)
                     {
                         if (oLB == lb) oLB.IsSelected = true;
                         else oLB.IsSelected = false;

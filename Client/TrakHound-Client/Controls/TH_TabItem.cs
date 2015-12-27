@@ -53,9 +53,9 @@ namespace TrakHound_Client.Controls
                 header.Closing = true;
             }
 
-            if (Content.GetType() == typeof(TH_Page))
+            if (Content.GetType() == typeof(Controls.Page))
             {
-                TH_Page page = (TH_Page)Content;
+                Controls.Page page = (Controls.Page)Content;
                 page.Closing = true;
             }
  

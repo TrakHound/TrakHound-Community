@@ -9,6 +9,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
              d:DesignHeight="500"
              
@@ -34,7 +36,17 @@
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Background="{StaticResource Accent_Normal}">
-                <StackPanel x:Name="Pages_STACK" Margin="0,40" />
+
+                <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40">
+                    <ItemsControl.Resources>
+                        <Style TargetType="th_wpf:ListButton">
+                            <Setter Property="Foreground" Value="#fff"/>
+                            <Setter Property="HoverBrush" Value="#33ffffff"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+
+                <!--<StackPanel x:Name="Pages_STACK" Margin="0,40" />-->
             </Border>
 
             <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1">

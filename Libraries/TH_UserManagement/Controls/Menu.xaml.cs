@@ -308,18 +308,18 @@ namespace TH_UserManagement
 
         #endregion
 
-        private void Login_Clicked(Button_01 bt)
+        private void Login_Clicked(TH_WPF.Button bt)
         {
             Login(username_TXT.Text, password_TXT.Password);
             password_TXT.Clear();
         }
 
-        private void SignOut_Clicked(Button_01 bt)
+        private void SignOut_Clicked(TH_WPF.Button bt)
         {
             Logout();
         }
 
-        private void Create_Clicked(Button_01 bt)
+        private void Create_Clicked(TH_WPF.Button bt)
         {
             Shown = false;
             CreateAccount();
@@ -327,7 +327,7 @@ namespace TH_UserManagement
 
         public event Clicked_Handler MyAccountClicked;
 
-        private void MyAccount_Clicked(Button_01 bt)
+        private void MyAccount_Clicked(TH_WPF.Button bt)
         {
             Shown = false;
 

@@ -3,7 +3,7 @@
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
 
-<UserControl x:Class="TrakHound_Client.Controls.TH_Page"
+<UserControl x:Class="TrakHound_Client.Controls.Page"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

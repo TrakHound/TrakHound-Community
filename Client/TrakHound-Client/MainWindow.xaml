@@ -987,6 +987,18 @@
 
                                     <!--Top Bar-->
                                     <Grid>
+                                        <Grid.Resources>
+                                            <Style TargetType="th_wpf:Button">
+                                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                                <Setter Property="Padding" Value="2"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Resources>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto"/>
                                             <ColumnDefinition Width="*"/>
@@ -1005,7 +1017,7 @@
                                         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,0,0">
 
                                             <!--Plugin Launcher Button-->
-                                            <th_wpf:Button_01 x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
+                                            <th_wpf:Button x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
                                             
                                             <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
 
@@ -1017,7 +1029,7 @@
                                             <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
                                             
                                             <!--MainMenu Button-->
-                                            <th_wpf:Button_01 x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
+                                            <th_wpf:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
 
                                         </StackPanel>
 

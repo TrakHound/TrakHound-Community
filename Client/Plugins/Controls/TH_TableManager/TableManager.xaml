@@ -83,7 +83,14 @@
 
                 <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Normal}"/>
 
-                <ItemsControl Grid.Row="2" ItemsSource="{Binding DeviceList}" Margin="5,0"/>
+                <ItemsControl Grid.Row="2" ItemsSource="{Binding DeviceList}" Margin="5,0">
+                    <ItemsControl.Resources>
+                        <Style TargetType="th_wpf:ListButton">
+                            <Setter Property="Foreground" Value="#fff"/>
+                            <Setter Property="HoverBrush" Value="#33ffffff"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
 
                 <Grid Grid.Row="3" Background="#00000000" PreviewMouseDown="TableList_MouseDown"/>
 
@@ -140,7 +147,14 @@
                 
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
-                    <ItemsControl ItemsSource="{Binding TableList}" Margin="5,0"/>
+                    <ItemsControl ItemsSource="{Binding TableList}" Margin="5,0">
+                        <ItemsControl.Resources>
+                            <Style TargetType="th_wpf:ListButton">
+                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="HoverBrush" Value="#33ffffff"/>
+                            </Style>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
 
                 </ScrollViewer>
                 

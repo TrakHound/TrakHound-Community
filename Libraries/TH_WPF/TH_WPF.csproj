@@ -52,6 +52,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Button.xaml.cs">
+      <DependentUpon>Button.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Button_01.xaml.cs">
       <DependentUpon>Button_01.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,10 @@
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Button_01.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

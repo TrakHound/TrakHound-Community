@@ -79,6 +79,22 @@ namespace TH_WPF
         public static readonly DependencyProperty ShowImageProperty =
             DependencyProperty.Register("ShowImage", typeof(bool), typeof(ListButton), new PropertyMetadata(true));
 
+
+
+
+        public Brush HoverBrush
+        {
+            get { return (Brush)GetValue(HoverBrushProperty); }
+            set { SetValue(HoverBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty HoverBrushProperty =
+            DependencyProperty.Register("HoverBrush", typeof(Brush), typeof(ListButton), new PropertyMetadata(new SolidColorBrush(Color_Functions.GetColorFromString("#33000000"))));
+
+        
+
+
+
         
         public delegate void Selected_Handler(ListButton LB);
         public event Selected_Handler Selected;
