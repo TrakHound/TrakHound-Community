@@ -12,7 +12,7 @@ namespace TH_MySQL.Connector
     public static class Table
     {
 
-        public static bool Create(MySQL_Configuration config, string tableName, object[] columnDefinitions, string primaryKey)
+        public static bool Create(MySQL_Configuration config, string tableName, TH_Database.ColumnDefinition[] columnDefinitions, string primaryKey)
         {
 
             bool Result = false;
@@ -40,22 +40,54 @@ namespace TH_MySQL.Connector
                     //Create Column Definition string
                     for (int x = 0; x <= columnDefinitions.Length - 1; x++)
                     {
-                        coldef += columnDefinitions[x].ToString();
+                        coldef += MySQL_Tools.ConvertColumnDefinition(columnDefinitions[x]).ToString();
                         if (x < columnDefinitions.Length - 1) coldef += ",";
                     }
 
                     string Keydef = "";
                     if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
 
-                    Command.CommandText = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
 
-                    Command.Prepare();
-                    Command.ExecuteNonQuery();
+                    string[] queries = new string[4];
+
+                    // Create Table
+                    queries[0] = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
+
+                    // Drop Procedure (make sure doesn't already exist)
+                    queries[1] = "DROP PROCEDURE IF EXISTS addcolumns";
+
+                    // Create Procedure
+                    string procedure = "CREATE PROCEDURE addcolumns() BEGIN";
+
+                    for (int x = 0; x <= columnDefinitions.Length - 1; x++)
+                    {
+                        procedure += " IF NOT EXISTS(" +
+                            "(SELECT * FROM information_schema.COLUMNS" +
+                             " WHERE TABLE_SCHEMA=DATABASE()" +
+                             " AND COLUMN_NAME='" + columnDefinitions[x].ColumnName + "'" +
+                             " AND TABLE_NAME='" + tableName + "'))" +
+                             " THEN" +
+                             " ALTER TABLE " + tableName + " ADD " + MySQL_Tools.ConvertColumnDefinition(columnDefinitions[x]).ToString() + ";" +
+                             " END IF;";
+                    }
+
+                    procedure += "END";
+
+                    queries[2] = procedure;
+
+                    // Call Procedure
+                    queries[3] = "CALL addcolumns()";
+
+                    // Execute queries
+                    for (var x = 0; x <= queries.Length - 1; x++)
+                    {
+                        Command.CommandText = queries[x];
+                        Command.Prepare();
+                        Command.ExecuteNonQuery();
+                    }
 
                     Command.Dispose();
-
                     conn.Close();
-
                     Command.Dispose();
                     conn.Dispose();
 

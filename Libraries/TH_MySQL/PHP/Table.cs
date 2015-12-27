@@ -42,7 +42,6 @@ namespace TH_MySQL.PHP
             values["query1"] = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + Keydef + ")";
 
             // Add Missing Columns (if any)
-            //var columnQuery = "ALTER IGNORE TABLE " + tablename;
 
             // Drop Procedure (make sure doesn't already exist)
             values["query2"] = "DROP PROCEDURE IF EXISTS addcolumns";
@@ -81,8 +80,6 @@ namespace TH_MySQL.PHP
             return Result;
 
         }
-
-
 
 
         public static bool Drop(MySQL_Configuration config, string tablename)
