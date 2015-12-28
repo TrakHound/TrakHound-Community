@@ -6,7 +6,9 @@
         
         xmlns:levelindicator="clr-namespace:TH_WPF.LevelIndicator;assembly=TH_WPF"
         
-        Title="MainWindow" Height="500" Width="500">
+        Title="MainWindow" Height="500" Width="500"
+        
+        >
 
     <Window.Resources>
         <ResourceDictionary>
@@ -16,9 +18,11 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid Background="#0080ff">
+    <Grid x:Name="dummy">
         
-        <th_wpf:ListButton Text="Test Text" Selected="ListButton_Selected">
+        <th_wpf:ProgressBar Width="40" Value="{Binding ProgressValue}" Maximum="{Binding ProgressMaximum}" Orientation="Vertical" Background="Green"/>
+        
+        <!--<th_wpf:ListButton Text="Test Text" Selected="ListButton_Selected">
             <th_wpf:ListButton.Style>
                 <Style TargetType="th_wpf:ListButton">
                     <Setter Property="Foreground" Value="#fff"/>
@@ -34,7 +38,7 @@
                     </Style.Triggers>
                 </Style>
             </th_wpf:ListButton.Style>
-        </th_wpf:ListButton>
+        </th_wpf:ListButton>-->
 
         <!--<th_wpf:Button Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Image="Resources/Camera_01.png" Padding="2" FontSize="16">
             <th_wpf:Button.Style>

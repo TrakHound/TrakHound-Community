@@ -1041,26 +1041,31 @@ namespace TH_DeviceCompare
                 int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
                 if (cellIndex >= 0)
                 {
-                    Controls.HistogramDisplay oeeTimeline;
+                    //Controls.HistogramDisplay oeeTimeline;
+                    TH_WPF.Histogram.Histogram oeeTimeline;
 
                     object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
                     if (ddData == null)
                     {
-                        oeeTimeline = new Controls.HistogramDisplay();
+                        //oeeTimeline = new Controls.HistogramDisplay();
+                        oeeTimeline = new TH_WPF.Histogram.Histogram();
+                        oeeTimeline.Height = 100;
+                        oeeTimeline.Width = 200;
                         dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeTimeline;
                     }
-                    else oeeTimeline = (Controls.HistogramDisplay)ddData;
+                    //else oeeTimeline = (Controls.HistogramDisplay)ddData;
+                    else oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
 
 
                     foreach (OEE_TimelineInfo info in infos)
                     {
-                        Controls.DataBar db;
+                        TH_WPF.Histogram.DataBar db;
 
                         int dbIndex = oeeTimeline.DataBars.ToList().FindIndex(x => x.Id == info.id);
                         if (dbIndex < 0)
                         {
-                            db = new Controls.DataBar();
+                            db = new TH_WPF.Histogram.DataBar();
                             db.Id = info.id;
                             db.SegmentTimes = info.segmentTimes;
                             oeeTimeline.DataBars.Add(db);
@@ -1080,16 +1085,16 @@ namespace TH_DeviceCompare
             int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
             if (cellIndex >= 0)
             {
-                Controls.HistogramDisplay oeeTimeline;
+                TH_WPF.Histogram.Histogram oeeTimeline;
 
                 object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
                 if (ddData != null)
                 {
-                    oeeTimeline = (Controls.HistogramDisplay)ddData;
+                    oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
 
                     // Get Segment Times (for ToolTip)
-                    foreach (Controls.DataBar db in oeeTimeline.DataBars)
+                    foreach (TH_WPF.Histogram.DataBar db in oeeTimeline.DataBars)
                     {
                         string segmentTimes = GetSegmentName(db.Id, shiftData);
                         if (segmentTimes != null)
@@ -1111,13 +1116,14 @@ namespace TH_DeviceCompare
                 int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
                 if (cellIndex >= 0)
                 {
-                    Controls.HistogramDisplay oeeTimeline;
+                    TH_WPF.Histogram.Histogram oeeTimeline;
 
                     object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
                     if (ddData != null)
                     {
-                        oeeTimeline = (Controls.HistogramDisplay)ddData;
+                        //oeeTimeline = (Controls.HistogramDisplay)ddData;
+                        oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
 
                         // Get Shift Name to check if still in the same shift as last update
                         string prev_shiftName = oeeTimeline.shiftName;
@@ -1125,7 +1131,7 @@ namespace TH_DeviceCompare
                         if (prev_shiftName != oeeTimeline.shiftName) oeeTimeline.DataBars.Clear();
 
                         // Get Current Segment
-                        foreach (Controls.DataBar db in oeeTimeline.DataBars)
+                        foreach (TH_WPF.Histogram.DataBar db in oeeTimeline.DataBars)
                         {
                             string currentShiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
                             if (currentShiftId == db.Id) db.CurrentSegment = true;

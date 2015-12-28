@@ -9,6 +9,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
              xmlns:system="clr-namespace:System;assembly=mscorlib"
          
              mc:Ignorable="d" 
@@ -29,20 +31,6 @@
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <!--<DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="{StaticResource Accent_Hover}"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -80,7 +68,7 @@
             </Grid>
 
             <!--Time Bar-->
-            <ProgressBar Grid.Row="1" Height="10" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{StaticResource Accent_Normal}" Background="{StaticResource Accent_Hover}" BorderThickness="0"/>
+            <th_wpf:ProgressBar Grid.Row="1" Height="10" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{StaticResource Accent_Normal}" Background="{StaticResource Accent_Hover}" BorderThickness="0"/>
 
         </Grid>
 

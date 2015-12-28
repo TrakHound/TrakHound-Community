@@ -23,10 +23,60 @@ namespace Test
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
 
             //levels_LI.TotalLevelCount = 4;
             //levels_LI.ActiveLevelCount = 1;
+
+            test_TIMER = new System.Timers.Timer();
+            test_TIMER.Interval = 100;
+            test_TIMER.Elapsed += test_TIMER_Elapsed;
+            test_TIMER.Enabled = true;
         }
+
+        void test_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(new Action(UpdateProgress), System.Windows.Threading.DispatcherPriority.Background);
+        }
+
+        void UpdateProgress()
+        {
+            ProgressValue += 1d;
+            if (ProgressValue > ProgressMaximum)
+            {
+                ProgressMaximum = ProgressMaximum * 10;
+            }
+        }
+
+        System.Timers.Timer test_TIMER = new System.Timers.Timer();
+
+
+
+
+        public double ProgressValue
+        {
+            get { return (double)GetValue(ProgressValueProperty); }
+            set { SetValue(ProgressValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProgressValueProperty =
+            DependencyProperty.Register("ProgressValue", typeof(double), typeof(MainWindow), new PropertyMetadata(0d));
+
+
+
+
+        public double ProgressMaximum
+        {
+            get { return (double)GetValue(ProgressMaximumProperty); }
+            set { SetValue(ProgressMaximumProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ProgressMaximum.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ProgressMaximumProperty =
+            DependencyProperty.Register("ProgressMaximum", typeof(double), typeof(MainWindow), new PropertyMetadata(100d));
+
+        
+
 
         private void ListButton_Selected(TH_WPF.ListButton LB)
         {

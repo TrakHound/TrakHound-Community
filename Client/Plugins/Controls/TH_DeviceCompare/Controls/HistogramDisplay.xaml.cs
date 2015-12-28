@@ -20,6 +20,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 
 using TH_Configuration;
+using TH_WPF;
 
 namespace TH_DeviceCompare.Controls
 {
@@ -60,7 +61,7 @@ namespace TH_DeviceCompare.Controls
 
     }
 
-    public class DataBar : ProgressBar
+    public class DataBar : TH_WPF.ProgressBar
     {
         public DataBar()
         {

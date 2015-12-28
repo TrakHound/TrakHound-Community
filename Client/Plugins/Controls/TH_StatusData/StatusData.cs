@@ -220,15 +220,17 @@ namespace TH_StatusData
 
         static DataEvent_Data GetConnectionData(Configuration config)
         {
-            int maxAttempts = 3;
-            int attempt = 0;
-            bool connected = false;
+            bool connected = true;
 
-            while (attempt < maxAttempts && !connected)
-            {
-                attempt += 1;
-                if (CheckDatabaseConnections(config)) connected = true;
-            }
+            //int maxAttempts = 3;
+            //int attempt = 0;
+            //bool connected = false;
+
+            //while (attempt < maxAttempts && !connected)
+            //{
+            //    attempt += 1;
+            //    if (CheckDatabaseConnections(config)) connected = true;
+            //}
 
             DataEvent_Data result = new DataEvent_Data();
             result.id = "StatusData_Connection";

@@ -52,10 +52,9 @@ namespace TH_WPF.Histogram
         public static readonly DependencyProperty shiftNameProperty =
             DependencyProperty.Register("shiftName", typeof(string), typeof(Histogram), new PropertyMetadata(null));
        
-
     }
 
-    public class DataBar : ProgressBar
+    public class DataBar : TH_WPF.ProgressBar
     {
         public DataBar()
         {
