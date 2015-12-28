@@ -31,10 +31,8 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_MTC_Requests.
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\PageManager.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\Manager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\Information\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\License\Page.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Account\Manager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Fullscreen.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Updates\UpdateItem.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\PluginItem.baml
@@ -44,19 +42,15 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Exit_
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\MenuItem.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\MessageCenter.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Notifications\Notification_Item.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Manager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\General\Page.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Manager.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\ListContainer.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\ListItem.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\SubCategory.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Splash\PluginIcon.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Splash\Screen.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\PageManager.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\Manager.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\Information\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\About\License\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Account\Manager.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Fullscreen.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Developer Console\PopUp.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Updates\Page.g.cs
@@ -73,9 +67,7 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\MainWindow.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Message.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\MessageCenter.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Notifications\Notification_Item.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Manager.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\General\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Manager.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\ListContainer.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\ListItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Page.g.cs

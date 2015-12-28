@@ -217,13 +217,13 @@ namespace TrakHound_Client.Menus.Main
 
         #region "Bottom Buttons"
 
-        private void About_Clicked(TH_WPF.Button_01 bt)
+        private void About_Clicked(TH_WPF.Button bt)
         {
             Shown = false;
             mw.About_Open(); 
         }
 
-        private void Exit_BT_Clicked(Exit_BT bt)
+        private void Exit_BT_Clicked(TH_WPF.Button bt)
         {
             mw.Close();
         }

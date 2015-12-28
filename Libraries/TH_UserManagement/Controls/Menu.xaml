@@ -595,16 +595,18 @@
 
                             <!--Create Account-->
                             <th_wpf:Button Clicked="Create_Clicked" Text="Create Account" 
-                                           BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" 
                                            Height="40" Margin="10,0" HorizontalAlignment="Left" >
                                 <th_wpf:Button.Style>
                                     <Style TargetType="th_wpf:Button">
                                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
                                         <Setter Property="FontSize" Value="14"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="true">
                                                 <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                                 <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -708,15 +710,18 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Sign Out-->
-                            <th_wpf:Button Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" >
+                            <th_wpf:Button Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" >
                                 <th_wpf:Button.Style>
                                     <Style TargetType="th_wpf:Button">
                                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
                                         <Setter Property="FontSize" Value="14"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="true">
                                                 <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                                 <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>

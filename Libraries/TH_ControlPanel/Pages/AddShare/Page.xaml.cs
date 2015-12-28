@@ -188,7 +188,7 @@ namespace TH_DeviceManager.Pages.AddShare
         }
 
 
-        private void Share_Clicked(TH_WPF.Button_01 bt)
+        private void Share_Clicked(TH_WPF.Button bt)
         {
             Shared.SharedListItem item = new Shared.SharedListItem();
 

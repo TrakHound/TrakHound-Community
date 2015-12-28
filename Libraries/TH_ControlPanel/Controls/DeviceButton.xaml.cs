@@ -147,7 +147,7 @@ namespace TH_DeviceManager.Controls
         public delegate void Clicked_Handler(DeviceButton bt);
         public event Clicked_Handler ShareClicked;
 
-        private void Share_Clicked(TH_WPF.Button_02 bt)
+        private void Share_Clicked(TH_WPF.Button bt)
         {
             if (ShareClicked != null) ShareClicked(this);
         }
@@ -161,7 +161,7 @@ namespace TH_DeviceManager.Controls
 
         public event Clicked_Handler RemoveClicked;
 
-        private void Remove_Clicked(TH_WPF.Button_05 bt)
+        private void Remove_Clicked(TH_WPF.Button bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
         }
@@ -191,7 +191,7 @@ namespace TH_DeviceManager.Controls
 
         public event Clicked_Handler CopyClicked;
 
-        private void Copy_Clicked(TH_WPF.Button_02 bt)
+        private void Copy_Clicked(TH_WPF.Button bt)
         {
             if (CopyClicked != null) CopyClicked(this);
         }

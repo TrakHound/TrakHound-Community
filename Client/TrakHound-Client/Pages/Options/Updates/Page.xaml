@@ -39,7 +39,24 @@
         </StackPanel>
 
         <!--Check for Updates Button-->
-        <th_wpf:Button_01 Image="/TrakHound-Client;component/Resources/Refresh_01.png" Text="Check for Updates" Height="40" Margin="0,20,0,10" HorizontalAlignment="Left" Clicked="CheckForUpdates_Clicked"/>
+        <th_wpf:Button Image="/TrakHound-Client;component/Resources/Refresh_01.png" Text="Check for Updates" Height="40" Margin="0,20,0,10" HorizontalAlignment="Left" Clicked="CheckForUpdates_Clicked">
+            <th_wpf:Button.Style>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="Background" Value="#00000000"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        </Trigger>
+                    </Style.Triggers>                   
+                </Style>
+            </th_wpf:Button.Style>
+        </th_wpf:Button>
         
         <!--TrakHound Client-->
         <Border CornerRadius="1" BorderThickness="1" BorderBrush="{StaticResource Shade_Normal}" Margin="0, 20">

@@ -2133,7 +2133,7 @@ namespace TrakHound_Client
         public static readonly DependencyProperty NotificationsCountProperty =
             DependencyProperty.Register("NotificationsCount", typeof(int), typeof(MainWindow), new PropertyMetadata(0));
 
-        private void MessageCenter_ToolBarItem_Clicked()
+        private void MessageCenter_ToolBarItem_Clicked(TH_WPF.Button bt)
         {
             messageCenter.Shown = !messageCenter.Shown;
         }
@@ -2152,7 +2152,7 @@ namespace TrakHound_Client
             DependencyProperty.Register("DevConsole_Shown", typeof(bool), typeof(MainWindow), new PropertyMetadata(false));
 
 
-        private void DeveloperConsole_ToolBarItem_Clicked()
+        private void DeveloperConsole_ToolBarItem_Clicked(TH_WPF.Button bt)
         {
             developerConsole.Shown = !developerConsole.Shown;
         }

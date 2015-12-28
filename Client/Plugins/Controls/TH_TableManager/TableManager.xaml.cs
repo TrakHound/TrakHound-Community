@@ -588,128 +588,12 @@ namespace TH_TableManager
             CreatePageNumbers();
         }
 
-        private void TableInfoRefresh_Button_Clicked(TH_WPF.Button_02 bt)
+        private void TableInfoRefresh_Button_Clicked(TH_WPF.Button bt)
         {
             LoadInfo(SelectedTableName, selectedDevice);
         }
 
         Int64 RowCount;
-
-
-
-        //void CreatePageNumbers(Int64 rowCount, Int64 selectedPage)
-        //{
-        //    PageNumbers_STACK.Children.Clear();
-
-        //    Int64 pageCount = rowCount / 100;
-
-        //    if (pageCount > 0)
-        //    {
-        //        int firstPage = 1;
-        //        Int64 lastPage = pageCount + 1;
-
-        //        int maxpages = 5; // should be an odd number
-        //        Int64[] pageRange = new Int64[maxpages];
-
-        //        //Create pageRange array
-        //        if (selectedPage < maxpages) // ex. 1,2,3,4,5...100
-        //        {
-        //            for (int i = 0; i <= pageRange.Length - 1; i++)
-        //                pageRange[i] = i + 1;
-        //        }
-        //        else if (selectedPage > (lastPage - maxpages)) // ex. 1...96,97,98,99,100
-        //        {
-        //            for (int i = 0; i <= pageRange.Length - 1; i++)
-        //                pageRange[i] = lastPage - i;
-        //        }
-        //        else // ex. 1...10,11,12,13,14...100
-        //        {
-        //            for (int i = 0; i <= pageRange.Length - 1; i++)
-        //            {
-        //                double midpoint = (double)maxpages / 2;
-        //                double mid = Math.Round(midpoint, 0, MidpointRounding.AwayFromZero);
-        //                Int64 start = selectedPage - (Int64)mid + 1;
-        //                pageRange[i] = start + i;
-        //            }
-        //        }
-
-        //        Int64 firstRangePage = pageRange[0];
-        //        Int64 lastRangePage = pageRange[pageRange.Length - 1];
-
-
-        //        // Create Page Number Buttons
-
-        //        // Previous Page Button
-        //        Controls.Button prev_bt = new Controls.Button();
-        //        prev_bt.Text = "<";
-        //        prev_bt.data = selectedPage - 1;
-        //        prev_bt.Clicked += PageButton_Clicked;
-        //        PageNumbers_STACK.Children.Add(prev_bt);
-
-        //        // First Page Button
-        //        if (selectedPage > maxpages)
-        //        {
-        //            Controls.Button first_bt = new Controls.Button();
-        //            first_bt.Text = firstPage.ToString();
-        //            first_bt.data = firstPage;
-        //            if (selectedPage == firstPage) first_bt.IsSelected = true;
-        //            first_bt.Clicked += PageButton_Clicked;
-        //            PageNumbers_STACK.Children.Add(first_bt);
-
-        //            PageNumbers_STACK.Children.Add(CreateDotDotDot());
-        //        }
-
-        //        // Page Buttons
-        //        for (int x = 0; x <= pageRange.Length - 1; x++)
-        //        {
-        //            Controls.Button bt = new Controls.Button();
-        //            bt.Text = pageRange[x].ToString();
-        //            bt.data = pageRange[x];
-        //            if (selectedPage == pageRange[x]) bt.IsSelected = true;
-        //            bt.Clicked += PageButton_Clicked;
-        //            PageNumbers_STACK.Children.Add(bt);
-        //        }
-
-        //        // Last Page Button
-        //        if (selectedPage < (lastPage - maxpages))
-        //        {
-        //            PageNumbers_STACK.Children.Add(CreateDotDotDot());
-
-        //            Controls.Button last_bt = new Controls.Button();
-        //            last_bt.Text = lastPage.ToString();
-        //            last_bt.data = lastPage;
-        //            if (selectedPage == lastPage) last_bt.IsSelected = true;
-        //            last_bt.Clicked += PageButton_Clicked;
-        //            PageNumbers_STACK.Children.Add(last_bt);
-        //        }
-
-        //        // Next Page Button
-        //        Controls.Button next_bt = new Controls.Button();
-        //        next_bt.Text = ">";
-        //        next_bt.data = selectedPage + 1;
-        //        next_bt.Clicked += PageButton_Clicked;
-        //        PageNumbers_STACK.Children.Add(next_bt);
-        //    }
-        //    else // only 1 page
-        //    {
-        //        // Single Page Button
-        //        Controls.Button only_bt = new Controls.Button();
-        //        only_bt.Text = "1";
-        //        only_bt.IsSelected = true;
-        //        PageNumbers_STACK.Children.Add(only_bt);
-        //    }
-        //}
-
-        //TextBlock CreateDotDotDot()
-        //{
-        //    TextBlock txt = new TextBlock();
-        //    txt.Text = "..";
-        //    txt.FontSize = 14;
-        //    txt.Foreground = new SolidColorBrush(Color_Functions.GetColorFromString("#aaffffff"));
-        //    txt.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-        //    txt.Margin = new Thickness(2, 0, 2, 0);
-        //    return txt;
-        //}
 
         #endregion
 
@@ -870,7 +754,7 @@ namespace TH_TableManager
 
         #endregion
 
-        private void DropTables_Button_Clicked(TH_WPF.Button_02 bt)
+        private void DropTables_Button_Clicked(TH_WPF.Button bt)
         {
 
             if (TH_WPF.MessageBox.Show("Delete Selected Tables?", "Drop Tables", MessageBoxButtons.YesNo) == true)
@@ -934,7 +818,7 @@ namespace TH_TableManager
             {
                 if (selectedPage > pages[0])
                 {
-                    PreviousPage_BT.data = selectedPage - 1;
+                    PreviousPage_BT.DataObject = selectedPage - 1;
                     PreviousPage_BT.IsEnabled = true;
                 }
                 else PreviousPage_BT.IsEnabled = false;
@@ -942,9 +826,9 @@ namespace TH_TableManager
                 for (var x = 0; x <= pages.Length - 1; x++)
                 {
                     Int64 pageNumber = pages[x];
-                    var bt = new TH_WPF.Button_02();
+                    var bt = new TH_WPF.Button();
                     bt.Text = pageNumber.ToString();
-                    bt.data = pageNumber;
+                    bt.DataObject = pageNumber;
                     if (selectedPage == pageNumber) bt.IsSelected = true;
                     bt.Clicked += PageButton_Clicked;
                     PageNumbers_STACK.Children.Add(bt);
@@ -952,16 +836,16 @@ namespace TH_TableManager
 
                 if (selectedPage < pages[pages.Length - 1])
                 {
-                    NextPage_BT.data = selectedPage + 1;
+                    NextPage_BT.DataObject = selectedPage + 1;
                     NextPage_BT.IsEnabled = true;
                 }
                 else NextPage_BT.IsEnabled = false;
             }
         }
 
-        void PageButton_Clicked(TH_WPF.Button_02 bt)
+        void PageButton_Clicked(TH_WPF.Button bt)
         {
-            var selectedPageNumber = (Int64)bt.data;
+            var selectedPageNumber = (Int64)bt.DataObject;
 
             LoadTable(SelectedTableName, selectedPageNumber, selectedDevice);
             selectedPage = selectedPageNumber;
@@ -1034,16 +918,7 @@ namespace TH_TableManager
             Properties.Settings.Default.RowDisplayIndex = limit;
             Properties.Settings.Default.Save();
         }
-
-        //int GetTableRowLimit()
-        //{
-        //    //if (Properties.Settings.Default.RowDisplayIndex == 1) return 100;
-        //    //if (Properties.Settings.Default.RowDisplayIndex == 2) return 500;
-        //    //if (Properties.Settings.Default.RowDisplayIndex == 3) return 1000;
-        //    //if (Properties.Settings.Default.RowDisplayIndex == 4) return 5000;
-        //    //else return 50;
-        //}
-
+         
         #endregion
 
         private void TableList_MouseDown(object sender, MouseButtonEventArgs e)

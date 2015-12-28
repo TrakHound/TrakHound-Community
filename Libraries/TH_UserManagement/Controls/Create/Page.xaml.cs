@@ -392,7 +392,7 @@ namespace TH_UserManagement.Create
             DependencyProperty.Register("Saving", typeof(bool), typeof(Page), new PropertyMetadata(false));
       
 
-        private void Apply_Clicked(Button_01 bt)
+        private void Apply_Clicked(TH_WPF.Button bt)
         {
             UpdateUser(CreateUserConfiguration());
         }
@@ -584,7 +584,7 @@ namespace TH_UserManagement.Create
         public static readonly DependencyProperty ShowChangePasswordProperty =
             DependencyProperty.Register("ShowChangePassword", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
-        private void ChangePassword_Clicked(Button_01 bt)
+        private void ChangePassword_Clicked(TH_WPF.Button bt)
         {
             ShowChangePassword = true;
         }

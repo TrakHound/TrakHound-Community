@@ -115,7 +115,7 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
         public delegate void Clicked_Handler(SharedItem item);
         public event Clicked_Handler AddClicked;
 
-        private void Add_Clicked(TH_WPF.Button_01 bt)
+        private void Add_Clicked(TH_WPF.Button bt)
         {
             if (AddClicked != null) AddClicked(this);
         }
@@ -126,7 +126,6 @@ namespace TH_DeviceManager.Pages.AddDevice.Controls
         {
             if (Clicked != null) Clicked(this);
         }
-
 
 
         public bool Loading

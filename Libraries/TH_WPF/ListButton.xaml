@@ -7,7 +7,6 @@
              
              MinHeight="40"
              
-             Background="#00000000"
              >
 
     <UserControl.Resources>
@@ -19,137 +18,103 @@
     </UserControl.Resources>
 
     <Grid MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" Margin="1,0,0,0" Cursor="Hand">
-        
-        <!--Normal Style-->
-        <Grid>
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding AlternateStyle}" Value="true">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
 
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Background" Value="#00000000"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid PreviewMouseDown="Main_GRID_MouseDown" Background="#00000000">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Selection Indicator-->
+            <Rectangle >
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Fill" Value="{Binding Foreground}"/>
+                        <Setter Property="Margin" Value="0,5"/>
                         <Style.Triggers>
-                            
                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                <Setter Property="Background" Value="{Binding HoverBrush}"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard FillBehavior="Stop">
+                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0,5"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
                             </DataTrigger>
-
                             <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <Setter Property="Background" Value="{Binding HoverBrush}"/>
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard FillBehavior="Stop">
+                                            <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0,5"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
                             </DataTrigger>
-
                         </Style.Triggers>
                     </Style>
-                </Grid.Style>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                </Rectangle.Style>
+            </Rectangle>
 
-                <Grid PreviewMouseDown="Main_GRID_MouseDown" Background="#00000000">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+            <!--Icon-->
+            <Rectangle Grid.Column="1" Height="20" Width="20" Margin="10,0">
+                <Rectangle.Resources>
+                    <ImageBrush x:Key="IMG" ImageSource="{Binding Image}" Stretch="Uniform" />
+                </Rectangle.Resources>
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Setter Property="Fill" Value="{Binding Foreground}"/>
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ShowImage}" Value="false">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
 
-                    <!--Selection Indicator-->
-                    <Rectangle >
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="Fill" Value="{Binding Foreground}"/>
-                                <Setter Property="Margin" Value="0,5"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0,5"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ThicknessAnimation Duration="0:0:0.25" Storyboard.TargetProperty="Margin" To="0,5"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                    <!--Icon-->
-                    <Rectangle Grid.Column="1" Height="20" Width="20" Margin="10,0">
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" ImageSource="{Binding Image}" Stretch="Uniform" />
-                        </Rectangle.Resources>
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="Fill" Value="{Binding Foreground}"/>
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ShowImage}" Value="false">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                    <!--Simple Text-->
-                    <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                                <Setter Property="Visibility" Value="Visible"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                </Grid>
-                
-                <Grid Grid.Column="1" MouseDown="Main_GRID_MouseDown" Background="#00000000"/>
-
-                <!--Custom Content-->
-                <ContentControl Grid.Column="1" Content="{Binding ButtonContent}"/>
-
-            </Grid>
+            <!--Simple Text-->
+            <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
         </Grid>
+
+        <Grid Grid.Column="1" MouseDown="Main_GRID_MouseDown" Background="#00000000"/>
+
+        <!--Custom Content-->
+        <ContentControl Grid.Column="1" Content="{Binding ButtonContent}"/>
 
     </Grid>
     

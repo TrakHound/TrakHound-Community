@@ -112,19 +112,19 @@ namespace TrakHound_Client.Controls
             }
         }
 
-        private void ZoomOut_Clicked(TH_WPF.Button_02 bt)
+        private void ZoomOut_Clicked(TH_WPF.Button bt)
         {
             double zoom = Math.Max(ZoomLevel - 0.1, 0.5);
             zoom_COMBO.Text = zoom.ToString("P0");
         }
 
-        private void ZoomIn_Clicked(TH_WPF.Button_02 bt)
+        private void ZoomIn_Clicked(TH_WPF.Button bt)
         {
             double zoom = Math.Min(ZoomLevel + 0.1, 2.0);
             zoom_COMBO.Text = zoom.ToString("P0");
         }
 
-        private void Fullscreen_Clicked(TH_WPF.Button_02 bt)
+        private void Fullscreen_Clicked(TH_WPF.Button bt)
         {
             this.Close();
         }

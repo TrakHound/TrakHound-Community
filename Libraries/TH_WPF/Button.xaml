@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" 
              d:DesignWidth="30"
-             
+                         
              >
 
     <UserControl.Resources>
@@ -22,7 +22,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border Padding="{Binding Padding}" CornerRadius="{Binding CornerRadius}">
+    <Border x:Name="bd" Padding="{Binding Padding}" CornerRadius="{Binding CornerRadius}">
 
         <Grid>
 

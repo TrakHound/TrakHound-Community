@@ -45,13 +45,25 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.Resources>
-                        <Style TargetType="th_wpf:Button_01">
-                            <Setter Property="MinWidth" Value="100"/>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Height" Value="35"/>
+                            <Setter Property="ImageTextPadding" Value="10"/>
+                            <Setter Property="Padding" Value="10,5"/>
                             <Setter Property="Margin" Value="0,0,10,0"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                            <Setter Property="AlternateStyle" Value="true"/>
+                            <Setter Property="FontSize" Value="14"/>
                             <Setter Property="Image" Value="/TH_DeviceManager;component/Resources/Add_01.png"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding Loading}" Value="true">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </ItemsControl.Resources>
                 </ItemsControl>

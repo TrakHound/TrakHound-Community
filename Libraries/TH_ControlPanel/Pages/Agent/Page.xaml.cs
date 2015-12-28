@@ -188,7 +188,7 @@ namespace TH_DeviceManager.Pages.Agent
 
         #region "Test Connection"
 
-        private void TestConnection_Clicked(TH_WPF.Button_01 bt)
+        private void TestConnection_Clicked(TH_WPF.Button bt)
         {
             TestConnection();
         }

@@ -54,7 +54,20 @@
                     </Style>
                 </Grid.Style>
 
-                <th_wpf:Button_02 Clicked="DropTables_Button_Clicked" Image="Resources/TrashCan_01.png" ToolTip="Drop Tables"/>
+                <th_wpf:Button Clicked="DropTables_Button_Clicked" Image="Resources/TrashCan_01.png" ToolTip="Drop Tables">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="#00000000"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
             </Grid>
             
@@ -87,7 +100,15 @@
                     <ItemsControl.Resources>
                         <Style TargetType="th_wpf:ListButton">
                             <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="HoverBrush" Value="#33ffffff"/>
+                            <Setter Property="Background" Value="#00000000"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </ItemsControl.Resources>
                 </ItemsControl>
@@ -151,7 +172,15 @@
                         <ItemsControl.Resources>
                             <Style TargetType="th_wpf:ListButton">
                                 <Setter Property="Foreground" Value="#fff"/>
-                                <Setter Property="HoverBrush" Value="#33ffffff"/>
+                                <Setter Property="Background" Value="#00000000"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#33ffffff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#33ffffff"/>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </ItemsControl.Resources>
                     </ItemsControl>
@@ -259,14 +288,35 @@
                     
                     <!--Display Options-->
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <StackPanel.Resources>
+
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="#00000000"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Setter Property="MinWidth" Value="30"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#33ffffff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="#33ffffff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="#20ffffff"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+
+                        </StackPanel.Resources>
 
                         <TextBlock Text="Page" FontSize="8pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="10,0" VerticalAlignment="Center"/>
 
-                        <th_wpf:Button_02 x:Name="PreviousPage_BT" Text="◄" Clicked="PageButton_Clicked" IsEnabled="False"/>
+                        <th_wpf:Button x:Name="PreviousPage_BT" Text="◄" Clicked="PageButton_Clicked" IsEnabled="False"/>
                         
                         <StackPanel x:Name="PageNumbers_STACK" Grid.Column="1" Orientation="Horizontal"/>
 
-                        <th_wpf:Button_02 x:Name="NextPage_BT" Text="►" Clicked="PageButton_Clicked" IsEnabled="False"/>
+                        <th_wpf:Button x:Name="NextPage_BT" Text="►" Clicked="PageButton_Clicked" IsEnabled="False"/>
 
                         <TextBlock Text="Displaying" FontSize="8pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="10,0" VerticalAlignment="Center"/>
 
@@ -279,9 +329,22 @@
                     </StackPanel>
                     
                     <!--Info Refresh Button-->
-                    <th_wpf:Button_02 Image="Resources/Refresh_01.png" ToolTip="Refresh Table Info"
+                    <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Table Info"
                                      Height="30" Width="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"
-                                     Clicked="TableInfoRefresh_Button_Clicked" />
+                                     Clicked="TableInfoRefresh_Button_Clicked" >
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="#00000000"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#33ffffff"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
 
                 </Grid>
                 

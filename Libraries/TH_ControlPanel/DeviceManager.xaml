@@ -60,9 +60,22 @@
             </Border.Style>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel.Resources>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                        <Setter Property="Background" Value="#00000000"/>
+                        <Setter Property="Height" Value="35"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#33ffffff"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
 
                 <!--Restore-->
-                <th_wpf:Button_02 Text="Restore" Clicked="Restore_Clicked" Image="/TH_DeviceManager;component/Resources/Refresh_01.png"/>
+                <th_wpf:Button Text="Restore" Clicked="Restore_Clicked" Image="/TH_DeviceManager;component/Resources/Refresh_01.png"/>
 
                 <!--Save-->
                 <Grid>
@@ -99,7 +112,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <th_wpf:Button_02 Text="Save" Clicked="Save_Clicked" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
+                        <th_wpf:Button Text="Save" Clicked="Save_Clicked" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
 
                     </Grid>
 
@@ -245,6 +258,20 @@
             <Border Background="{StaticResource Accent_Normal}" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="0,0,1,0" Margin="0,0,0,-1">
 
                 <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="th_wpf:ListButton">
+                            <Setter Property="Foreground" Value="#fff"/>
+                            <Setter Property="Background" Value="#00000000"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Resources>
 
                     <!--Device List-->
                     <Grid Grid.Column="0" MinWidth="250">
@@ -262,7 +289,22 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Refresh Button-->
-                            <th_wpf:Button_02 ToolTip="Refresh the Device List" Image="Resources/Refresh_01.png" VerticalAlignment="Center" Clicked="RefreshDevices_Clicked"/>
+                            <th_wpf:Button ToolTip="Refresh the Device List" Image="Resources/Refresh_01.png" VerticalAlignment="Center" Clicked="RefreshDevices_Clicked">
+                                <th_wpf:Button.Style>
+                                    <Style TargetType="th_wpf:Button">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                        <Setter Property="Background" Value="#00000000"/>
+                                        <Setter Property="Width" Value="35"/>
+                                        <Setter Property="Height" Value="35"/>
+                                        <Setter Property="Padding" Value="8"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="Background" Value="#33ffffff"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </th_wpf:Button.Style>
+                            </th_wpf:Button>
 
                             <!--Title-->
                             <TextBlock Grid.Column="0" Grid.ColumnSpan="3" Text="Devices" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}"  Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -422,28 +464,7 @@
                                             <Setter Property="Background" Value="#00000000"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#33ffffff">
-                                                                    <ColorAnimation.EasingFunction>
-                                                                        <CubicEase EasingMode="EaseOut"/>
-                                                                    </ColorAnimation.EasingFunction>
-                                                                </ColorAnimation>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                                                    <ColorAnimation.EasingFunction>
-                                                                        <CubicEase EasingMode="EaseOut"/>
-                                                                    </ColorAnimation.EasingFunction>
-                                                                </ColorAnimation>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.ExitActions>
+                                                    <Setter Property="Background" Value="#33ffffff"/>
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>

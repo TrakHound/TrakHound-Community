@@ -387,7 +387,7 @@ namespace TH_DeviceManager
 
         #region "Save Configuration"
 
-        private void Save_Clicked(Button_02 bt)
+        private void Save_Clicked(TH_WPF.Button bt)
         {
             bt.Focus();
 
@@ -1321,7 +1321,7 @@ namespace TH_DeviceManager
             SaveNeeded = true;
         }
 
-        private void Restore_Clicked(Button_02 bt)
+        private void Restore_Clicked(TH_WPF.Button bt)
         {
             SelectDevice(SelectedDevice);
         }
@@ -1544,12 +1544,12 @@ namespace TH_DeviceManager
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
-        private void RefreshDevices_Clicked(Button_02 bt)
+        private void RefreshDevices_Clicked(TH_WPF.Button bt)
         {
             LoadDevices();
         }
 
-        private void IndexUp_Clicked(Button_02 bt)
+        private void IndexUp_Clicked(TH_WPF.Button bt)
         {
             if (SelectedDevice != null)
             {
@@ -1560,7 +1560,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private void IndexDown_Clicked(Button_02 bt)
+        private void IndexDown_Clicked(TH_WPF.Button bt)
         {
             if (SelectedDevice != null)
             {

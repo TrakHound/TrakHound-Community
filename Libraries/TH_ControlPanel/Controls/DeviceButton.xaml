@@ -14,9 +14,27 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
+            
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="th_wpf:Button">
+                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                <Setter Property="Background" Value="#00000000"/>
+                <Setter Property="Width" Value="35"/>
+                <Setter Property="Height" Value="35"/>
+                <Setter Property="Padding" Value="8"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="#18000000"/>
+                    </Trigger>
+                    <DataTrigger Binding="{Binding DeviceEnabled}" Value="true">
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -110,9 +128,8 @@
                         </Grid>
                         
                     </Grid>
-
                     
-                    <th_wpf:Button_05 Image="/TH_DeviceManager;component/Resources/X_01.png" ToolTip="Remove Device" Clicked="Remove_Clicked"/>
+                    <th_wpf:Button Image="/TH_DeviceManager;component/Resources/X_01.png" ToolTip="Remove Device" Clicked="Remove_Clicked" Height="30" Width="30" Padding="8"/>
 
                 </StackPanel>
 
@@ -122,7 +139,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
 
                 <!--Copy-->
-                <th_wpf:Button_02 ToolTip="Add a Copy of this device" Image="/TH_DeviceManager;component/Resources/Copy_01.png" Clicked="Copy_Clicked"/>
+                <th_wpf:Button ToolTip="Add a Copy of this device" Image="/TH_DeviceManager;component/Resources/Copy_01.png" Clicked="Copy_Clicked"/>
 
                 <!--Share-->
                 <Grid>
@@ -140,7 +157,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <th_wpf:Button_02 Grid.Row="1" Text="Share" ToolTip="Share this Device configuration with other TrakHound users" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked"/>
+                        <th_wpf:Button Text="Share" Width="75" ToolTip="Share this Device configuration with other TrakHound users" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked"/>
 
                     </Grid>
 

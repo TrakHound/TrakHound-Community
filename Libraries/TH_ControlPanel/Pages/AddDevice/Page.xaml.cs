@@ -636,7 +636,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         #endregion
 
-        private void Refresh_Clicked(TH_WPF.Button_04 bt)
+        private void Refresh_Clicked(TH_WPF.Button bt)
         {
             LoadCatalog();
         }

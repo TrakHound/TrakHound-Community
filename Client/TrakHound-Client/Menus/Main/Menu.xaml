@@ -174,10 +174,41 @@
                     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
 
                         <!--About Button-->
-                        <th_wpf:Button_01 Height="40" Width="40" Clicked="About_Clicked" Image="/TrakHound-Client;component/Resources/About_01.png" ToolTip="About TrakHound Client"/>
+                        <th_wpf:Button Clicked="About_Clicked" Image="/TrakHound-Client;component/Resources/About_01.png" ToolTip="About TrakHound Client">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Background" Value="#00000000"/>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
 
                         <!--Exit Button-->
-                        <local:Exit_BT Clicked="Exit_BT_Clicked" ToolTip="Exit TrakHound Client" Cursor="Hand"/>
+                        <th_wpf:Button Clicked="Exit_BT_Clicked" ToolTip="Exit TrakHound Client" Cursor="Hand" Image="/;component/Resources/Power_01.png">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="#eeff0000"/>
+                                    <Setter Property="Width" Value="40"/>
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="Padding" Value="8"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" Value="#aaff0000"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
 
                     </StackPanel>
 

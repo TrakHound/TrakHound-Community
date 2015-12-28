@@ -57,6 +57,24 @@
 
         <!--Buttons-->
         <Grid Grid.Row="1" Margin="0,20">
+            <Grid.Resources>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="Background" Value="#00000000"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="MinWidth" Value="100"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Resources>
             
             <!--Ok-->
             <Grid HorizontalAlignment="Center">
@@ -71,7 +89,7 @@
                     </Style>
                 </Grid.Style>
 
-                <th_wpf:Button_01 Text="Ok" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="100" Height="40" Clicked="Ok_Clicked"/>
+                <th_wpf:Button Text="Ok" Clicked="Ok_Clicked"/>
 
             </Grid>
 
@@ -88,9 +106,9 @@
                     </Style>
                 </StackPanel.Style>
 
-                <th_wpf:Button_01 Text="Yes" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="100" Height="40" Margin="0,0,20,0" HorizontalAlignment="Center" Clicked="Yes_Clicked"/>
+                <th_wpf:Button Text="Yes" Margin="0,0,20,0" HorizontalAlignment="Center" Clicked="Yes_Clicked"/>
 
-                <th_wpf:Button_01 Text="No" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" Width="100" Height="40" HorizontalAlignment="Center" Clicked="No_Clicked"/>
+                <th_wpf:Button Text="No" HorizontalAlignment="Center" Clicked="No_Clicked"/>
 
             </StackPanel>
 

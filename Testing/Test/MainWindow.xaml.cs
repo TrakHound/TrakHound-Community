@@ -27,5 +27,10 @@ namespace Test
             //levels_LI.TotalLevelCount = 4;
             //levels_LI.ActiveLevelCount = 1;
         }
+
+        private void ListButton_Selected(TH_WPF.ListButton LB)
+        {
+            TH_WPF.MessageBox.Show("Test Box", "TEST TITLE", TH_WPF.MessageBoxButtons.YesNo);
+        }
     }
 }

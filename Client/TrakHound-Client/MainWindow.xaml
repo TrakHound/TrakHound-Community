@@ -731,145 +731,6 @@
 
                         <DockPanel x:Name="Root_DOCK">
 
-                            <!--<Grid DockPanel.Dock="Top">
-
-                                <DockPanel>
-
-                                    --><!--Main Menu--><!--
-                                    <DockPanel DockPanel.Dock="Top" HorizontalAlignment="Stretch" Grid.ColumnSpan="2" >
-                                        <DockPanel.RenderTransform>
-                                            <TranslateTransform />
-                                        </DockPanel.RenderTransform>
-                                        <DockPanel.Style>
-                                            <Style TargetType="DockPanel">
-                                                <Setter Property="MaxHeight" Value="0"/>
-                                                <Setter Property="Background" Value="#00000000"/>
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding MainMenuBar_Show}" Value="true">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                        <DataTrigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="MaxHeight" From="0" To="25">
-                                                                        <DoubleAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseOut"/>
-                                                                        </DoubleAnimation.EasingFunction>
-                                                                    </DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.EnterActions>
-                                                        <DataTrigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard FillBehavior="Stop">
-                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="MaxHeight" From="25" To="0">
-                                                                        <DoubleAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseOut"/>
-                                                                        </DoubleAnimation.EasingFunction>
-                                                                    </DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.ExitActions>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding MainMenuBar_Shown}" Value="true">
-                                                        <DataTrigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00aaff">
-                                                                        <ColorAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseOut"/>
-                                                                        </ColorAnimation.EasingFunction>
-                                                                    </ColorAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.EnterActions>
-                                                        <DataTrigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard FillBehavior="Stop">
-                                                                    <ColorAnimation Duration="0:0:0.5" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                                                        <ColorAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseOut"/>
-                                                                        </ColorAnimation.EasingFunction>
-                                                                    </ColorAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.ExitActions>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DockPanel.Style>
-
-
-                                        <Menu DockPanel.Dock="Top" Height="25" HorizontalAlignment="Left" Margin="0" Background="{x:Null}" FontSize="14">
-
-                                            --><!--File--><!--
-                                            <MenuItem Header="_File">
-                                                <MenuItem Header="_Exit" Click="MenuItem_Exit_Click">
-                                                    <MenuItem.Icon>
-                                                        <Rectangle Width="20" Height="20" Fill="Red">
-                                                            <Rectangle.Resources>
-                                                                <ImageBrush x:Key="Exit_IMG" Stretch="Uniform" ImageSource="Resources/Power_01.png" />
-                                                            </Rectangle.Resources>
-                                                            <Rectangle.Style>
-                                                                <Style TargetType="Rectangle">
-                                                                    <Setter Property="OpacityMask" Value="{StaticResource Exit_IMG}" />
-                                                                </Style>
-                                                            </Rectangle.Style>
-                                                        </Rectangle>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                            </MenuItem>
-
-                                            --><!--View--><!--
-                                            <MenuItem x:Name="View_MenuItem" Header="_View"/>
-
-                                            --><!--Tools--><!--
-                                            <MenuItem Header="_Tools">
-                                                <MenuItem Header="_Options" Click="MenuItem_Options_Click">
-                                                    <MenuItem.Icon>
-                                                        <Rectangle Width="20" Height="20" Fill="{StaticResource DWBlue}">
-                                                            <Rectangle.Resources>
-                                                                <ImageBrush x:Key="About_IMG" Stretch="Uniform" ImageSource="Resources/options_gear_30px.png" />
-                                                            </Rectangle.Resources>
-                                                            <Rectangle.Style>
-                                                                <Style TargetType="Rectangle">
-                                                                    <Setter Property="OpacityMask" Value="{StaticResource About_IMG}" />
-                                                                </Style>
-                                                            </Rectangle.Style>
-                                                        </Rectangle>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-
-                                                <MenuItem Header="_Restore Default Configuration" Click="MenuItem_RestoreDefaultConfiguration_Click"/>
-
-                                            </MenuItem>
-
-                                            --><!--Help--><!--
-                                            <MenuItem Header="_Help">
-                                                <MenuItem Header="_About" Click="MenuItem_About_Click" >
-                                                    <MenuItem.Icon>
-                                                        <Rectangle Width="20" Height="20" Fill="{StaticResource DWBlue}">
-                                                            <Rectangle.Resources>
-                                                                <ImageBrush x:Key="About_IMG" Stretch="Uniform" ImageSource="Resources/About_01.png" />
-                                                            </Rectangle.Resources>
-
-                                                            <Rectangle.Style>
-                                                                <Style TargetType="Rectangle">
-                                                                    <Setter Property="OpacityMask" Value="{StaticResource About_IMG}" />
-                                                                </Style>
-                                                            </Rectangle.Style>
-                                                        </Rectangle>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
-                                            </MenuItem>
-
-                                        </Menu>
-                                    </DockPanel>
-
-                                </DockPanel>
-
-                            </Grid>-->
-
                             <!--Status Bar-->
                             <Grid x:Name="StatusBar_GRID" DockPanel.Dock="Bottom" Height="25" Background="{StaticResource Accent_Normal}" >
                                 <Grid.ColumnDefinitions>
@@ -890,14 +751,45 @@
                                         </Style>
                                     </StackPanel.Style>
 
-                                    <controls:TH_ToolBarItem Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)"/>
+                                    <th_wpf:Button Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)">
+                                        <th_wpf:Button.Style>
+                                            <Style TargetType="th_wpf:Button">
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Setter Property="Background" Value="#00000000"/>
+                                                <Setter Property="Height" Value="30"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter Property="Background" Value="#33ffffff"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </th_wpf:Button.Style>
+                                    </th_wpf:Button>
 
                                 </StackPanel>
                                 
                                 <!--Message Center-->
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,0,50,0">
 
-                                    <controls:TH_ToolBarItem Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center"/>
+                                    <th_wpf:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
+                                        <th_wpf:Button.Style>
+                                            <Style TargetType="th_wpf:Button">
+                                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                <!--<Setter Property="Width" Value="35"/>
+                                                <Setter Property="Height" Value="35"/>
+                                                <Setter Property="Padding" Value="2"/>-->
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <!--<Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>-->
+                                                        <Setter Property="Background" Value="#33ffffff"/>
+                                                    </Trigger>
+                                                    <!--<Trigger Property="IsSelected" Value="true">
+                                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                                    </Trigger>-->
+                                                </Style.Triggers>
+                                            </Style>
+                                        </th_wpf:Button.Style>
+                                    </th_wpf:Button>
                                     
                                     <Border CornerRadius="2" Margin="5,4">
                                         <Border.Style>
@@ -990,11 +882,16 @@
                                         <Grid.Resources>
                                             <Style TargetType="th_wpf:Button">
                                                 <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                                <Setter Property="Width" Value="35"/>
+                                                <Setter Property="Height" Value="35"/>
                                                 <Setter Property="Padding" Value="2"/>
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="true">
                                                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="true">
+                                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>

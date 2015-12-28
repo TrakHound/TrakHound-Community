@@ -179,7 +179,7 @@ namespace TH_DeviceManager.Pages.Databases
                 TH_Database.Database_Plugin plugin = lplugin.Value;
                 plugins.Add(plugin);
 
-                Button_01 bt = new Button_01();
+                TH_WPF.Button bt = new TH_WPF.Button();
                 bt.Text = plugin.Type;
                 bt.DataObject = plugin;
                 bt.Clicked += AddDatabase_Clicked;
@@ -189,7 +189,7 @@ namespace TH_DeviceManager.Pages.Databases
 
         List<Tuple<string, string>> AddRootList = new List<Tuple<string, string>>();
 
-        void AddDatabase_Clicked(Button_01 bt)
+        void AddDatabase_Clicked(TH_WPF.Button bt)
         {
             if (configurationTable != null)
             {

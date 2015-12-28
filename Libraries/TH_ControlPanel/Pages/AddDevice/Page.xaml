@@ -130,7 +130,21 @@
 
                         </Grid>
 
-                        <th_wpf:Button_04 Grid.Column="1"  Image="/TH_DeviceManager;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked"/>
+                        <th_wpf:Button Grid.Column="1" Image="/TH_DeviceManager;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Background" Value="#00000000"/>
+                                    <Setter Property="Height" Value="35"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
 
                     </Grid>
 

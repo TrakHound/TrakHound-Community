@@ -474,7 +474,7 @@ namespace TrakHound_Client.Pages.Options.Updates
         //    }
         //}
 
-        private void CheckForUpdates_Clicked(TH_WPF.Button_01 bt)
+        private void CheckForUpdates_Clicked(TH_WPF.Button bt)
         {
             //ManualUpdater_Start();
 

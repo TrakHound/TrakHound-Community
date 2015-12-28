@@ -9,7 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             xmlns:controls="clr-namespace:TrakHound_Client.Controls"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d" 
              d:DesignHeight="300"
@@ -69,7 +69,20 @@
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 
-                <controls:TH_ToolBarItem Clicked="Minimize_ToolBarItem_Clicked" Image="/TrakHound-Client;component/Resources/Carrot_Arrow_Down_01.png" ToolTip="Hide Developer Console"/>
+                <th_wpf:Button Clicked="Minimize_ToolBarItem_Clicked" Image="/TrakHound-Client;component/Resources/Carrot_Arrow_Down_01.png" ToolTip="Hide Developer Console">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="#00000000"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
                 <TextBlock Text="Developer Console" Foreground="#88ffffff" VerticalAlignment="Center" FontSize="12pt" Margin="10,0"/>
 

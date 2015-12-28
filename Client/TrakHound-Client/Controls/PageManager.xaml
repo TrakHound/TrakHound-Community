@@ -33,7 +33,15 @@
                     <ItemsControl.Resources>
                         <Style TargetType="th_wpf:ListButton">
                             <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="HoverBrush" Value="#33ffffff"/>
+                            <Setter Property="Background" Value="#00000000"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                            </Style.Triggers>
                         </Style>
                     </ItemsControl.Resources>
                 </ItemsControl>
@@ -64,7 +72,7 @@
 
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="auto" >
 
-                            <ContentControl Content="{Binding PageContent}" />
+                            <ContentControl Content="{Binding PageContent}" HorizontalAlignment="Left"/>
 
                         </ScrollViewer>
 

@@ -161,19 +161,29 @@
                             </StackPanel>
 
                             <!--Password-->
-                            <Grid Margin="0,0,0,20">
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Setter Property="Visibility" Value="Visible"/>
+                            <th_wpf:Button Grid.Column="1" Text="Change Password" HorizontalAlignment="Left" Height="40" Margin="0,0,0,20" Clicked="ChangePassword_Clicked">
+                                <th_wpf:Button.Style>
+                                    <Style TargetType="th_wpf:Button">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="Background" Value="#00000000"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="MinWidth" Value="100"/>
+                                        <Setter Property="Height" Value="40"/>
                                         <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                                            </Trigger>
                                             <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
-                                </Grid.Style>
-                                <th_wpf:Button_01 Grid.Column="1" Text="Change Password" AlternateStyle="True" HorizontalAlignment="Left" Height="40" Clicked="ChangePassword_Clicked"/>
-                            </Grid>
+                                </th_wpf:Button.Style>
+                            </th_wpf:Button>
 
                         </StackPanel>
 
@@ -400,21 +410,48 @@
                             <Grid>
 
                                 <!--Button-->
-                                <th_wpf:Button_01 AlternateStyle="True" Clicked="Apply_Clicked" Height="40" >
-                                    <th_wpf:Button_01.Style>
-                                        <Style TargetType="th_wpf:Button_01">
+                                <th_wpf:Button Clicked="Apply_Clicked">
+                                    <th_wpf:Button.Style>
+                                        <Style TargetType="th_wpf:Button">
                                             <Setter Property="Text" Value="Apply Changes"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                            <Setter Property="FontSize" Value="14"/>
+                                            <Setter Property="Height" Value="40"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
                                                     <Setter Property="Text" Value="Create Account"/>
                                                 </DataTrigger>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                                                    <Setter Property="Background" Value="{StaticResource Accent_Dark}"/>
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding ShowChangePassword}" Value="true">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
+                                                    <Setter Property="IsEnabled" Value="false"/>
+                                                </DataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding UsernameVerified}" Value="true"/>
+                                                        <Condition Binding="{Binding PasswordEntered}" Value="true"/>
+                                                        <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
+                                                        <Condition Binding="{Binding PasswordVerified}" Value="true"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="IsEnabled" Value="false"/>
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </th_wpf:Button_01.Style>
-                                </th_wpf:Button_01>
+                                    </th_wpf:Button.Style>
+
+                                </th_wpf:Button>
 
                                 <!--Disabled Shade-->
-                                <Grid>
+                                <!--<Grid>
                                     <Grid.Style>
                                         <Style TargetType="Grid">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -449,7 +486,7 @@
 
                                     </Grid>
 
-                                </Grid>
+                                </Grid>-->
 
                             </Grid>
 

@@ -22,7 +22,7 @@ namespace TH_WPF
         public Button()
         {
             InitializeComponent();
-            DataContext = this;
+            bd.DataContext = this;
         }
 
         public object DataObject { get; set; }

@@ -67,17 +67,11 @@
       <DependentUpon>PageManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Devices.cs" />
-    <Compile Include="Pages\About\Manager.xaml.cs">
-      <DependentUpon>Manager.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\About\Information\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\About\License\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Account\Manager.xaml.cs">
-      <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Fullscreen.xaml.cs">
       <DependentUpon>Fullscreen.xaml</DependentUpon>
@@ -125,14 +119,8 @@
     <Compile Include="Controls\Message Center\Notifications\Notification_Item.xaml.cs">
       <DependentUpon>Notification_Item.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Options\Manager.xaml.cs">
-      <DependentUpon>Manager.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Options\General\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Plugins\Manager.xaml.cs">
-      <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Plugins\Installed\ListContainer.xaml.cs">
       <DependentUpon>ListContainer.xaml</DependentUpon>
@@ -158,10 +146,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\About\Manager.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\About\Information\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,10 +153,6 @@
     <Page Include="Pages\About\License\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Account\Manager.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Fullscreen.xaml">
       <SubType>Designer</SubType>
@@ -246,17 +226,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Options\Manager.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\Options\General\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\Plugins\Manager.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Plugins\Installed\ListContainer.xaml">
       <Generator>MSBuild:Compile</Generator>

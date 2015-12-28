@@ -113,28 +113,6 @@
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
-                                            <!--<Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>-->
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -251,28 +229,6 @@
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
-                                            <!--<Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>-->
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -352,7 +308,25 @@
                 </Grid.RowDefinitions>
 
                 <!--Buttton-->
-                <th_wpf:Button_01 Text="Test Connection" Clicked="TestConnection_Clicked" AlternateStyle="True" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <th_wpf:Button Text="Test Connection" Clicked="TestConnection_Clicked" Height="35" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Height" Value="35"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding Loading}" Value="true">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
                 <StackPanel Grid.Row="1">
 

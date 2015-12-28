@@ -113,11 +113,19 @@
         <Grid Grid.Column="1">
 
             <!--Add Button-->
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
+            <th_wpf:Button Text="Add" Margin="10" Height="30" Clicked="Add_Clicked">
+                <th_wpf:Button.Style>
+                    <Style TargetType="th_wpf:Button">
                         <Setter Property="Visibility" Value="Hidden"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Height" Value="35"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Padding" Value="8,0"/>
                         <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=Main_GRID}" Value="true">
                                 <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
@@ -126,12 +134,9 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Grid.Style>
+                </th_wpf:Button.Style>
+            </th_wpf:Button>
 
-                <th_wpf:Button_01 AlternateStyle="True" Text="Add" Margin="10" Height="30" Clicked="Add_Clicked"/>
-
-            </Grid>
-            
             <!--Loading Animation-->
             <Grid>
                 <Grid.Style>

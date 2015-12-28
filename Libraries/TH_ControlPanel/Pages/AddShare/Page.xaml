@@ -123,18 +123,25 @@
                     <Grid HorizontalAlignment="Right" Margin="20">
 
                         <!--Share Button-->
-                        <th_wpf:Button_01 AlternateStyle="True" Text="Share" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked" Height="40" Width="100">
-                            <th_wpf:Button_01.Style>
-                                <Style TargetType="th_wpf:Button_01">
+                        <th_wpf:Button Text="Share" Image="/TH_DeviceManager;component/Resources/Share_01.png" Clicked="Share_Clicked" Height="40" Width="100">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
                                     <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Height" Value="35"/>
+                                    <Setter Property="FontSize" Value="14"/>
                                     <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                        </Trigger>
                                         <DataTrigger Binding="{Binding Loading}" Value="true">
                                             <Setter Property="Visibility" Value="Hidden"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </th_wpf:Button_01.Style>
-                        </th_wpf:Button_01>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
 
                         <!--Sharing in Progress-->
                         <StackPanel Orientation="Horizontal">

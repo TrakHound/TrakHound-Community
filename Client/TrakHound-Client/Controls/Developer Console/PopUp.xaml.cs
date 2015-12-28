@@ -101,7 +101,7 @@ namespace TrakHound_Client.Controls.Developer_Console
             }  
         }
         
-        private void Minimize_ToolBarItem_Clicked()
+        private void Minimize_ToolBarItem_Clicked(TH_WPF.Button bt)
         {
             Shown = !Shown;
         }

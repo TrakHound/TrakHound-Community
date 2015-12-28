@@ -82,19 +82,19 @@ namespace TH_WPF
         public static readonly DependencyProperty ImageProperty =
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(MessageBox), new PropertyMetadata(null));
 
-        private void Ok_Clicked(Button_01 bt)
+        private void Ok_Clicked(TH_WPF.Button bt)
         {
             this.DialogResult = true;
             this.Close();
         }
 
-        private void Yes_Clicked(Button_01 bt)
+        private void Yes_Clicked(TH_WPF.Button bt)
         {
             this.DialogResult = true;
             this.Close();
         }
 
-        private void No_Clicked(Button_01 bt)
+        private void No_Clicked(TH_WPF.Button bt)
         {
             this.DialogResult = false;
             this.Close();
