@@ -10,9 +10,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
                           
              mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800"
+             d:DesignHeight="300" d:DesignWidth="800"
                         
              Loaded="UserControl_Loaded"
              >
@@ -54,9 +55,76 @@
 
         <Border Grid.Column="1" Background="{StaticResource Window_Background}">
 
-            <Grid x:Name="Content_GRID" />
+            <!--<Grid x:Name="Content_GRID" />-->
+            
+            <ContentControl Content="{Binding PageContent}"/>
             
         </Border>
+
+        <!--No Devices-->
+        <Grid Grid.Column="1" Background="{StaticResource Accent_Normal}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">     
+                No Devices Found <LineBreak/>
+                Click on the 'Main Menu' button and open 'Device Manager'
+            </TextBlock>
+
+        </Grid>
+
+        <!--Loading Devices-->
+        <Grid Grid.Column="1" Background="{StaticResource Accent_Normal}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="{StaticResource Foreground_Opposite_Normal}" />
+
+                <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" Margin="0,20,0,0">     
+                Loading Devices...
+                </TextBlock>
+
+            </StackPanel>
+
+        </Grid>
+
+        <!--Not Logged in Panel-->
+        <Grid Grid.Column="1" Background="{StaticResource Accent_Normal}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
+                Not Logged In <LineBreak/>
+                Click the 'Login' button above to login
+            </TextBlock>
+
+        </Grid>
 
     </Grid>
     

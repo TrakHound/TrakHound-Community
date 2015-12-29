@@ -46,7 +46,6 @@ namespace TH_DeviceTable
             Rows.Clear();
         }
 
-
         #region "PlugIn"
 
         #region "Descriptive"
@@ -55,7 +54,7 @@ namespace TH_DeviceTable
 
         public string Description { get { return "Compare Devices using a Table Format"; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceTable;component/Resources/List_01.png")); } }
 
 
         public string Author { get { return "TrakHound"; } }

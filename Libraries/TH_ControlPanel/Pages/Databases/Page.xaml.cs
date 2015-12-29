@@ -225,8 +225,8 @@ namespace TH_DeviceManager.Pages.Databases
 
                     TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)o;
 
-                    if (PageType == Page_Type.Client) page.PageType = TH_Database.Page_Type.Client;
-                    else if (PageType == Page_Type.Server) page.PageType = TH_Database.Page_Type.Server;
+                    if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
+                    else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
 
                     page.prefix = address;
                     page.SettingChanged += Configuration_Page_SettingChanged;
@@ -290,8 +290,8 @@ namespace TH_DeviceManager.Pages.Databases
 
                         TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)o;
 
-                        if (PageType == Page_Type.Client) page.PageType = TH_Database.Page_Type.Client;
-                        else if (PageType == Page_Type.Server) page.PageType = TH_Database.Page_Type.Server;
+                        if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
+                        else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
 
                         page.prefix = address;
                         page.LoadConfiguration(temp_dt);

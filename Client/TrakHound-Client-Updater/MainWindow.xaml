@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
+        xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
         
         Width="300"
         Height="140"
@@ -155,9 +156,9 @@
                 <Border CornerRadius="1">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#ddd" Offset="0"/>
+                            <GradientStop Color="#eee" Offset="0"/>
                             <GradientStop Color="#fff" Offset="0.5"/>
-                            <GradientStop Color="#ddd" Offset="1"/>
+                            <GradientStop Color="#eee" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
 
@@ -236,7 +237,7 @@
                                     </StackPanel>
 
 
-                                    <ProgressBar Height="10" Margin="0,5,0,0" Value="{Binding ProgressValue}" Maximum="{Binding ProgressMaximum}" Foreground="#0080ff" Background="#10000000" BorderBrush="#ccc"/>
+                                    <th_wpf:ProgressBar Height="10" Margin="0,5,0,0" Value="{Binding ProgressValue}" Maximum="{Binding ProgressMaximum}" Foreground="#0080ff" Background="#10000000" BorderBrush="#ccc"/>
 
                                 </StackPanel>
 

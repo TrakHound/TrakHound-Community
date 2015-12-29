@@ -1,6 +1,6 @@
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TrakHound-Server-Control-Panel.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TrakHound-Server-Control-Panel.exe.config
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TrakHound-Server-Control-Panel.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TrakHound-Server-Control-Panel.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Sever-Control-Panel\bin\Debug\TH_Database.dll

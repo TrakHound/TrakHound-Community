@@ -130,7 +130,7 @@ namespace TH_MySQL.ConfigurationPage
             Table_Functions.UpdateTableValue(UsePHPServer.ToString(), prefix + "UsePHP", dt);
         }
 
-        public Page_Type PageType { get; set; }
+        public Application_Type ApplicationType { get; set; }
 
 
         private void TXT_TextChanged(object sender, TextChangedEventArgs e)
@@ -504,7 +504,7 @@ namespace TH_MySQL.ConfigurationPage
             Server = "localhost";
             Port = null;
 
-            if (PageType == Page_Type.Client)
+            if (ApplicationType == Application_Type.Client)
             {
                 Username = "feenuxco_reader";
                 password_TXT.PasswordText = "#reader";

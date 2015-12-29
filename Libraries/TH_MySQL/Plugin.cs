@@ -62,6 +62,60 @@ namespace TH_MySQL
             return result;          
         }
 
+        public bool CheckPermissions(object settings, Application_Type type)
+        {
+            bool Result = false;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                string username = config.Username;
+                DataTable dt = null;
+
+                if (config.UsePHP) dt = PHP.etc.GetGrants(config, username);
+                else dt = Connector.etc.GetGrants(config, username);
+                if (dt != null)
+                {
+                    foreach (DataRow Row in dt.Rows)
+                    {
+                        if (Row[0] != null)
+                        {
+                            string Field = Row[0].ToString();
+
+                            string databasename = config.Database;
+                            databasename = databasename.Replace("_", "\\_").ToString().ToLower();
+
+                            if (
+                                Field.Contains("ALL PRIVILEGES") ||
+                                (
+                                Field.Contains("ALTER") &&
+                                Field.Contains("CREATE") &&
+                                Field.Contains("DELETE") &&
+                                Field.Contains("DROP") &&
+                                Field.Contains("INSERT") &&
+                                Field.Contains("SELECT") &&
+                                Field.Contains("UPDATE") &&
+                                (Field.Contains(databasename) || Field.Contains("%"))
+                                )
+                                )
+                            {
+                                //Settings.Log.AddLine(Logger.ErrorClass.SQL, Logger.ErrorSubClass.None, "Correct Permissions for " + Settings.SQL.Username + " @ " + Settings.SQL.Database);
+                                Result = true;
+                            }
+                            else
+                            {
+
+                                //Settings.Log.AddLine(Logger.ErrorClass.SQL, Logger.ErrorSubClass.None, "Incorrect Permissions for " + Settings.SQL.Username + " @ " + Settings.SQL.Database);
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            return Result;
+        }
+
         string GetTableValue(string name, DataTable dt)
         {
             string result = null;
@@ -143,7 +197,7 @@ namespace TH_MySQL
                 }
                 else
                 {
-                    //result = Connector.Table.Create(config, tablename, coldefs, primaryKey);
+                    result = Connector.Table.Create(config, tablename, columnDefinitions, primaryKey);
                 }
             }
 
@@ -589,13 +643,15 @@ namespace TH_MySQL
             return result;
         }
 
-        public DataTable GetGrants(object settings, string username)
+        public DataTable GetGrants(object settings)
         {
             DataTable result = null;
 
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
+                string username = config.Username;
+
                 if (config.UsePHP)
                 {
                     result = PHP.etc.GetGrants(config, username);

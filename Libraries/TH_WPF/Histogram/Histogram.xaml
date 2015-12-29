@@ -17,16 +17,16 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="5">
+    <Grid>
 
         <!--100%-->
         <Grid VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="100%" FontSize="8" Foreground="{StaticResource Foreground_Light}" HorizontalAlignment="Center"/>
+            <TextBlock Text="100%" FontSize="8" Foreground="{StaticResource Foreground_Light}" HorizontalAlignment="Center" Margin="0,0,10,0"/>
 
             <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Height="1"/>
 
@@ -35,11 +35,11 @@
         <!--50%-->
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="50%" FontSize="8" Foreground="{StaticResource Foreground_Light}" HorizontalAlignment="Center" />
+            <TextBlock Text="50%" FontSize="8" Foreground="{StaticResource Foreground_Light}" HorizontalAlignment="Center" Margin="0,0,10,0"/>
 
             <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Height="1"/>
 
@@ -48,11 +48,11 @@
         <!--0%-->
         <Grid VerticalAlignment="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="0%" FontSize="8" Foreground="{StaticResource Foreground_Light}" HorizontalAlignment="Center" />
+            <TextBlock Text="0%" FontSize="8" Foreground="{StaticResource Foreground_Light}" HorizontalAlignment="Center" Margin="0,0,10,0"/>
 
             <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Height="1"/>
 
@@ -69,12 +69,12 @@
 
                                 <Setter Property="Maximum" Value="100"/>
                                 <Setter Property="Width" Value="{Binding BarWidth}"/>
-                                <Setter Property="Margin" Value="1,0"/>
+                                <Setter Property="Margin" Value="2,0"/>
 
                                 <Setter Property="BorderThickness" Value="0"/>
                                 <Setter Property="BorderBrush" Value="#00000000"/>
                                 <Setter Property="Background" Value="#00000000"/>
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Hover}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                 <Setter Property="ToolTipService.ShowDuration" Value="10000"/>
                                 <Setter Property="ToolTipService.BetweenShowDelay" Value="3000"/>
                                 <Setter Property="ToolTipService.InitialShowDelay" Value="1000"/>
@@ -89,9 +89,6 @@
                                 </Setter>
 
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CurrentSegment, RelativeSource={RelativeSource Self}}" Value="true">
-                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                    </DataTrigger>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                                     </Trigger>

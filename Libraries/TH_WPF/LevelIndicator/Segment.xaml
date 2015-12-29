@@ -15,7 +15,7 @@
     </UserControl.Resources>
 
     <Border Background="{Binding Foreground}"
-            CornerRadius="2"
+            CornerRadius="1"
             />
     
 </UserControl>

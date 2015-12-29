@@ -79,13 +79,6 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         void AutoUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
         {
-            // Check if version is Up-to-date
-            //System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            //Version version = assembly.GetName().Version;
-
-            //PluginVersion = "v" + version.ToString();
-
-
             Version latestVersion = null;
             Version.TryParse(info.version, out latestVersion);
 
@@ -105,7 +98,7 @@ namespace TrakHound_Client.Pages.Options.Updates
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
                     mData.title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.text = "Click to Update";
+                    mData.text = "Reopen TrakHound to apply update";
 
                     mw.messageCenter.AddNotification(mData);
 
@@ -162,12 +155,6 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         void ManualUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
         {
-            // Check if version is Up-to-date
-            //System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            //Version version = assembly.GetName().Version;
-
-            //PluginVersion = "v" + version.ToString();
-
             Version latestVersion = null;
             Version.TryParse(info.version, out latestVersion);
 

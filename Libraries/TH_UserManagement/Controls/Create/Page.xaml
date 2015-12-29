@@ -171,6 +171,7 @@
                                         <Setter Property="FontSize" Value="14"/>
                                         <Setter Property="MinWidth" Value="100"/>
                                         <Setter Property="Height" Value="40"/>
+                                        <Setter Property="Padding" Value="10,5"/>
                                         <Style.Triggers>
                                             <Trigger Property="IsMouseOver" Value="true">
                                                 <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
@@ -442,7 +443,7 @@
                                                         <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
                                                         <Condition Binding="{Binding PasswordVerified}" Value="true"/>
                                                     </MultiDataTrigger.Conditions>
-                                                    <Setter Property="IsEnabled" Value="false"/>
+                                                    <Setter Property="IsEnabled" Value="true"/>
                                                 </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>

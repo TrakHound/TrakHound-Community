@@ -14,7 +14,7 @@
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d" 
-             d:DesignWidth="800"
+             Width="800"
              Loaded="UserControl_Loaded"
              >
     
@@ -97,7 +97,7 @@
                                 <Setter Property="Fill" Value="{Binding ClientCheckBrush}"/>
                                 <Setter Property="Visibility" Value="Visible"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IMG}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding ClientCheckImage}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>

@@ -940,6 +940,7 @@ namespace TrakHound_Client
 
             accountpage = new TH_UserManagement.Create.Page();
             accountpage.UserChanged += accountpage_UserChanged;
+            accountManager.AddPage(accountpage);
         }
 
         void accountpage_UserChanged(UserConfiguration userConfig)
@@ -949,10 +950,6 @@ namespace TrakHound_Client
 
         public void AccountManager_Open()
         {
-            //accountManager.ClearPages();
-            accountManager.AddPage(accountpage);
-            //accountManager.currentUser = currentuser;
-
             AddPageAsTab(accountManager, "Acount Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
         }
 

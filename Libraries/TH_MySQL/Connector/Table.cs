@@ -99,7 +99,10 @@ namespace TH_MySQL.Connector
                 {
                     Logger.Log(ex.Message);
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) 
+                {
+                    Logger.Log(ex.Message);
+                }
             }
 
             return Result;

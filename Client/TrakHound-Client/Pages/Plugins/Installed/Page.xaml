@@ -11,8 +11,10 @@
              
              xmlns:local="clr-namespace:TrakHound_Client.Pages.Plugins.Installed"
              
+             Width="800"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300">
+    
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

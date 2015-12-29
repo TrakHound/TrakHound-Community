@@ -121,7 +121,7 @@ namespace TH_DeviceCompare
 
         public void Update_DataEvent(DataEvent_Data de_d)
         {
-            Update(de_d);
+            UpdateData(de_d);
         }
 
         public event DataEvent_Handler DataEvent;
@@ -223,18 +223,7 @@ namespace TH_DeviceCompare
 
         #region "User"
 
-        UserConfiguration currentuser = null;
-        public UserConfiguration CurrentUser 
-        {
-            get { return currentuser; }
-            set
-            {
-                currentuser = value;
-
-                if (currentuser != null) LoggedIn = true;
-                else LoggedIn = false;
-            }
-        }
+        public UserConfiguration CurrentUser { get; set; }
 
         public Database_Settings UserDatabaseSettings { get; set; }
 
@@ -251,7 +240,7 @@ namespace TH_DeviceCompare
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
-        void Update(DataEvent_Data de_d)
+        void UpdateData(DataEvent_Data de_d)
         {
             if (de_d != null)
             {
@@ -1051,7 +1040,8 @@ namespace TH_DeviceCompare
                         //oeeTimeline = new Controls.HistogramDisplay();
                         oeeTimeline = new TH_WPF.Histogram.Histogram();
                         oeeTimeline.Height = 100;
-                        oeeTimeline.Width = 200;
+                        oeeTimeline.Width = 180;
+                        oeeTimeline.Margin = new Thickness(0, 5, 0, 5);
                         dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeTimeline;
                     }
                     //else oeeTimeline = (Controls.HistogramDisplay)ddData;
@@ -2048,16 +2038,6 @@ namespace TH_DeviceCompare
                 minimized = false;
             }
         }
-
-
-        public bool LoggedIn
-        {
-            get { return (bool)GetValue(LoggedInProperty); }
-            set { SetValue(LoggedInProperty, value); }
-        }
-
-        public static readonly DependencyProperty LoggedInProperty =
-            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DeviceCompare), new PropertyMetadata(false));
 
         #endregion
 

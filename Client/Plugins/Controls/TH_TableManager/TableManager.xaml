@@ -418,9 +418,6 @@
         
                 </Grid>
                 
-                
-                <!--<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">-->
-
                     <!--Table Data-->
                     <DataGrid Grid.Row="1" ItemsSource="{Binding TableDataView}"
                             Background="{StaticResource Window_Background_Dark}"
@@ -518,9 +515,112 @@
 
                     </DataGrid>
 
-                <!--</ScrollViewer>-->
+            </Grid>
+
+            <!--No Table Selected Text-->
+            <Grid Grid.Column="3" Background="{StaticResource Window_Background}">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding TableIsSelected}" Value="false">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <TextBlock  FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">          
+                    No Table Selected <LineBreak/>
+                    Select a table to the left to view content
+                </TextBlock>
 
             </Grid>
+
+            <!--No Device Selected Text-->
+            <Grid Grid.Column="3" Background="{StaticResource Window_Background}">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SelectedDevice}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <TextBlock  FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">           
+                    No Device Selected <LineBreak/>
+                    Select a device to the left
+                </TextBlock>
+
+            </Grid>
+
+        </Grid>
+
+        <!--No Devices-->
+        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">     
+                No Devices Found <LineBreak/>
+                Click on the 'Main Menu' button and open 'Device Manager'
+            </TextBlock>
+
+        </Grid>
+
+        <!--Loading Devices-->
+        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="{StaticResource Foreground_Opposite_Normal}" />
+
+                <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" Margin="0,20,0,0">     
+                Loading Devices...
+                </TextBlock>
+
+            </StackPanel>
+
+        </Grid>
+
+        <!--Not Logged in Panel-->
+        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
+                Not Logged In <LineBreak/>
+                Click the 'Login' button above to login
+            </TextBlock>
 
         </Grid>
 

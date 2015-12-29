@@ -41,7 +41,6 @@ namespace TrakHound_Client.Pages.Options.Updates
             updateBehavior = ProcessUpdateBehavior();
 
             if (updateBehavior == 0 || updateBehavior == 1) AutoUpdater_Start();
-            //if (updateBehavior == 1) ManualUpdater_Start();
         }
 
         int updateBehavior = 0;
@@ -106,7 +105,7 @@ namespace TrakHound_Client.Pages.Options.Updates
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
                     mData.title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.text = "Click to Update";
+                    mData.text = "Reopen TrakHound to apply update";
 
                     mw.messageCenter.AddNotification(mData);
 
@@ -114,7 +113,6 @@ namespace TrakHound_Client.Pages.Options.Updates
                     ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
                     ClientCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));
                     ClientCheckImage = null;
-                    //ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Down_01.png"));
 
                     ClientUpdateShown = true;
                 }
@@ -193,7 +191,6 @@ namespace TrakHound_Client.Pages.Options.Updates
                     ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
                     ClientCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));
                     ClientCheckImage = null;
-                    //ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Down_01.png"));
 
                     ClientUpdateShown = true;
                 }
@@ -464,19 +461,9 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         #endregion
 
-        //private void CheckForUpdates_Button_Clicked(Controls.TH_Button bt)
-        //{
-        //    ManualUpdater_Start();
-
-        //    foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
-        //    {
-        //        ui.CheckUpdateVersion();
-        //    }
-        //}
-
         private void CheckForUpdates_Clicked(TH_WPF.Button bt)
         {
-            //ManualUpdater_Start();
+            AutoUpdater_Start();
 
             foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
             {

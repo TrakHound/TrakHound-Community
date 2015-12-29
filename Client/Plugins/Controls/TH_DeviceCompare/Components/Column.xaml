@@ -36,37 +36,9 @@
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding MouseOver}" Value="true">
                         <Setter Property="Background" Value="#04000000"/>
-                        <!--<DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10ffffff"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
                         <Setter Property="Background" Value="#18000000"/>
-                        <!--<DataTrigger.EnterActions>
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#18ffffff"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.EnterActions>
-                        <DataTrigger.ExitActions>
-                            <BeginStoryboard>
-                                <Storyboard FillBehavior="Stop">
-                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </DataTrigger.ExitActions>-->
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -76,7 +48,6 @@
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Opacity" Value="1.0"/>
-                    <!--<Setter Property="Background" Value="#FF199319"/>-->
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Loading}" Value="true">
                             <DataTrigger.EnterActions>
@@ -94,9 +65,6 @@
                                 </BeginStoryboard>
                             </DataTrigger.ExitActions>
                         </DataTrigger>
-                        <!--<DataTrigger Binding="{Binding Alert}" Value="true">
-                            <Setter Property="Background" Value="#FFC32121"/>
-                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
@@ -134,7 +102,7 @@
                     </Style>
                 </Grid.Style>
 
-                <!--<loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />-->
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
 
             </Grid>
 

@@ -25,6 +25,7 @@ namespace TH_Database
 
         bool Ping(object settings);
 
+        bool CheckPermissions(object settings, Application_Type type);
 
         // Database Functions -----------------------------------------------------------
 
@@ -98,7 +99,7 @@ namespace TH_Database
 
         object GetValue(object settings, string tablename, string column, string filterExpression);
 
-        DataTable GetGrants(object settings, string username);
+        DataTable GetGrants(object settings);
 
         // ------------------------------------------------------------------------------
 
@@ -180,11 +181,11 @@ namespace TH_Database
 
         void SaveConfiguration(DataTable dt);
 
-        Page_Type PageType { get; set; }
+        Application_Type ApplicationType { get; set; }
 
     }
 
-    public enum Page_Type
+    public enum Application_Type
     {
         Client = 0,
         Server = 1

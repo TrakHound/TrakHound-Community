@@ -40,10 +40,9 @@
         </ContentControl>
 
         <!--Page Control-->
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,14,0">
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,14,0" Background="{StaticResource Accent_Normal}">
             <Grid.Style>
                 <Style TargetType="Grid">
-                    <Setter Property="Background" Value="#66000000"/>
                     <Setter Property="Opacity" Value="0.25"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
@@ -74,7 +73,7 @@
                 </Style>
             </Grid.Style>
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Background="#33000000">
                 <StackPanel.Resources>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>

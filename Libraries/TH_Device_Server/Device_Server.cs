@@ -54,11 +54,63 @@ namespace TH_Device_Server
 
         public void Initialize()
         {
+            CheckDatabaseConnection();
+
+            TH_Database.Database.Create(configuration.Databases_Server);
+
             // Initialize any aux tables such as Agent info or variables
             InitializeTables();
 
             // Initialize each Table Plugin with the current Configuration 
             TablePlugIns_Initialize(configuration, UseDatabases);
+        }
+
+        /// <summary>
+        /// Check Database Connections to insure they are connected before proceeding.
+        /// This method will run continously until the database connections are established.
+        /// </summary>
+        void CheckDatabaseConnection()
+        {
+            bool dbsuccess = false;
+
+            int interval_min = 3000;
+            int interval_max = 60000;
+            int interval = interval_min;
+
+            bool first = true;
+
+            if (UseDatabases)
+                while (!dbsuccess)
+                {
+                    // Ping Database connection for each Database Configuration
+                    dbsuccess = true;
+                    foreach (Database_Configuration db_config in configuration.Databases_Server.Databases)
+                    {
+                        //if (!TH_Database.Global.Ping(db_config)) { dbsuccess = false; break; }
+                        if (!TH_Database.Global.CheckPermissions(db_config, Application_Type.Server))
+                        {
+                            dbsuccess = false;
+                            break;
+                        }
+                    }
+
+                    if (dbsuccess) UpdateProcessingStatus("Database Connections Established");
+                    else
+                    {
+                        // Write to console that there was an error
+                        //if (first) WriteToConsole("Error in Database Connection... Retrying in " + interval.ToString() + "ms", ConsoleOutputType.Error);
+                        //first = false;
+
+                        // Increase the interval by 25% until interval == interval_max
+                        if (!first) interval = Math.Min(Convert.ToInt32(interval + (interval * 0.25)), interval_max);
+                        first = false;
+
+                        WriteToConsole("Error in Database Connection... Retrying in " + interval.ToString() + "ms", ConsoleOutputType.Error);
+
+                        // Sleep the current thread for the calculated interval
+                        System.Threading.Thread.Sleep(interval);
+                    }
+                }
         }
 
         public void Start() { start(); }

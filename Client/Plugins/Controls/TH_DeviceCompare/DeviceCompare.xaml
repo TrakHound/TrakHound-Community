@@ -10,6 +10,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="800"
@@ -150,46 +151,6 @@
             </Grid>
 
         </ScrollViewer>
-
-        <!--No Devices-->
-        <Grid Background="{StaticResource Accent_Normal}">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-
-            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">     
-                No Devices Found <LineBreak/>
-                Click on the 'Main Menu' button and open 'Device Manager'
-            </TextBlock>
-
-        </Grid>
-
-        <!--Not Logged in Panel-->
-        <Grid Background="{StaticResource Accent_Normal}">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-
-            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
-                Not Logged In <LineBreak/>
-                Click the 'Login' button above to login
-            </TextBlock>
-
-        </Grid>
 
     </Grid>
 

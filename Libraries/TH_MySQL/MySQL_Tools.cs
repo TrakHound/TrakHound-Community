@@ -202,5 +202,71 @@ namespace TH_MySQL
             return "INSERT IGNORE INTO " + TableName + " (" + cols + ") " + vals + update;
         }
 
+
+
+
+        //bool CheckSQLPermissions()
+        //{
+
+        //    bool Result = false;
+
+        //    DataTable Grants_DT = Global.GetGrants(Settings.SQL, Settings.SQL.Username);
+        //    if (Grants_DT != null)
+        //        {
+
+        //        foreach (DataRow Row in Grants_DT.Rows)
+        //            {
+        //            if (Row[0] != null)
+        //                {
+
+        //                string Field = Row[0].ToString();
+
+        //                TH_Console.Log(Field);
+
+        //                string databasename = Settings.SQL.Database;
+        //                databasename = databasename.Replace("_", "\\_").ToString().ToLower();
+
+        //                if (
+
+        //                    Field.Contains("ALL PRIVILEGES") ||
+
+        //                    (
+
+        //                    Field.Contains("ALTER") &&
+        //                    Field.Contains("CREATE") &&
+        //                    Field.Contains("DELETE") &&
+        //                    Field.Contains("DROP") &&
+        //                    Field.Contains("INSERT") &&
+        //                    Field.Contains("SELECT") &&
+        //                    Field.Contains("UPDATE") &&
+        //                    (Field.Contains(databasename) || Field.Contains("%"))
+
+        //                    )
+
+        //                    )
+
+        //                    {
+
+        //                    Settings.Log.AddLine(Logger.ErrorClass.SQL, Logger.ErrorSubClass.None, "Correct Permissions for " + Settings.SQL.Username + " @ " + Settings.SQL.Database);
+        //                    Result = true;
+
+        //                    }
+        //                else
+        //                    {
+
+        //                    Settings.Log.AddLine(Logger.ErrorClass.SQL, Logger.ErrorSubClass.None, "Incorrect Permissions for " + Settings.SQL.Username + " @ " + Settings.SQL.Database);
+
+        //                    }
+
+        //                }
+
+        //            }
+
+        //        }
+
+        //    return Result;
+
+        //}
+
     }
 }

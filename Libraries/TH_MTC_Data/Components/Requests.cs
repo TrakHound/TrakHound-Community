@@ -54,8 +54,6 @@ namespace TH_MTC_Data.Components
             {
                 if (deviceNodes.Count > 0)
                 {
-                    Console.WriteLine("deviceNodes.Count = " + deviceNodes.Count.ToString());
-
                     result = new List<Device>();
 
                     foreach (XmlElement deviceNode in deviceNodes)

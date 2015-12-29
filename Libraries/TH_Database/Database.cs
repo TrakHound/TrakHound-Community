@@ -75,6 +75,33 @@ namespace TH_Database
             return result;
         }
 
+        public static bool CheckPermissions(Database_Configuration config, Application_Type type)
+        {
+            bool result = false;
+
+            if (Global.Plugins != null)
+            {
+                foreach (Lazy<Database_Plugin> ldp in Global.Plugins.ToList())
+                {
+                    try
+                    {
+                        Database_Plugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == config.Type.ToLower())
+                        {
+                            result = dp.CheckPermissions(config.Configuration, type);
+                            break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("CheckPermissions : Exception : " + ex.Message);
+                    }
+                }
+            }
+
+            return result;
+        }
 
         public const string DateString = "yyyy-MM-dd H:mm:ss";
 
@@ -129,14 +156,13 @@ namespace TH_Database
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
-                                                     
-                                CreateWorkerInfo info = new CreateWorkerInfo();
-                                info.configuration = db.Configuration;
-                                info.plugin = dp;
+                            CreateWorkerInfo info = new CreateWorkerInfo();
+                            info.configuration = db.Configuration;
+                            info.plugin = dp;
 
-                                if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
-                                else Create_Worker(info);
-                                                     
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
+                            else Create_Worker(info);
+
                             break;
                         }
                     }

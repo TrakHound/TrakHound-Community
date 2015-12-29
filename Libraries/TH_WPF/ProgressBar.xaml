@@ -13,11 +13,11 @@
              d:DesignWidth="300"
              >
 
-    <Grid x:Name="grid" RenderTransformOrigin="0.5,0.5">
+    <Border x:Name="bd" CornerRadius="1">
 
-        <Rectangle Fill="{Binding Foreground}">
-            <Rectangle.Style>
-                <Style TargetType="Rectangle">
+        <Border Background="{Binding Foreground}" CornerRadius="1">
+            <Border.Style>
+                <Style TargetType="Border">
                     <Setter Property="Width" Value="{Binding ProgressWidth}"/>
                     <Setter Property="Height" Value="auto"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -31,9 +31,9 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Rectangle.Style>
-        </Rectangle>
+            </Border.Style>
+        </Border>
 
-    </Grid>
+    </Border>
 
 </UserControl>

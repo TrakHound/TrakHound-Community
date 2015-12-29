@@ -41,6 +41,11 @@ namespace TrakHound_Client
         {
             Devices.Clear();
 
+            // Send message to plugins that Devices are being loaded
+            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
+            de_d.id = "LoadingDevices";
+            Plugin_DataEvent(de_d);
+
             if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
 
             loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
@@ -126,6 +131,11 @@ namespace TrakHound_Client
             UpdatePluginDevices(configs);
 
             DevicesMonitor_Initialize();
+
+            // Send message to plugins that Devices have been loaded
+            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
+            de_d.id = "devicesloaded";
+            Plugin_DataEvent(de_d);
         }
 
         //List<Configuration> GetConfigurations()

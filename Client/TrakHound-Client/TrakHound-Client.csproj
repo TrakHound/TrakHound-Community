@@ -66,6 +66,9 @@
     <Compile Include="Controls\PageManager.xaml.cs">
       <DependentUpon>PageManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TabManager.xaml.cs">
+      <DependentUpon>TabManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Devices.cs" />
     <Compile Include="Pages\About\Information\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
@@ -143,6 +146,10 @@
     </Compile>
     <Compile Include="Controls\TH_TabItem.cs" />
     <Page Include="Controls\PageManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

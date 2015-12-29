@@ -54,8 +54,6 @@ namespace TH_MTC_Data.Streams
             {
                 if (deviceStreamNodes.Count > 0)
                 {
-                    Console.WriteLine("deviceStreamNodes.Count = " + deviceStreamNodes.Count.ToString());
-
                     result = new List<DeviceStream>();
 
                     foreach (XmlElement deviceNode in deviceStreamNodes)

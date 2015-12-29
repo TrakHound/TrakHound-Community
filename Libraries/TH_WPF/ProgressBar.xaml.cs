@@ -22,7 +22,7 @@ namespace TH_WPF
         public ProgressBar()
         {
             InitializeComponent();
-            grid.DataContext = this;
+            bd.DataContext = this;
         }
 
 
@@ -74,22 +74,7 @@ namespace TH_WPF
         public static readonly DependencyProperty OrientationProperty =
             DependencyProperty.Register("Orientation", typeof(ProgressBarOrientation), typeof(ProgressBar), new PropertyMetadata(ProgressBarOrientation.Horizontal));
 
-        
 
-        //public bool Orientation
-        //{
-        //    get { return (bool)GetValue(OrientationProperty); }
-        //    set 
-        //    {
-        //        SetValue(OrientationProperty, value);
-        //        SetProgressValue(Value);
-        //    }
-        //}
-
-        //public static readonly DependencyProperty OrientationProperty =
-        //    DependencyProperty.Register("Orientation", typeof(bool), typeof(ProgressBar), new PropertyMetadata(false));
-
-        
         public double ProgressWidth
         {
             get { return (double)GetValue(ProgressWidthProperty); }
@@ -108,8 +93,6 @@ namespace TH_WPF
 
         public static readonly DependencyProperty ProgressHeightProperty =
             DependencyProperty.Register("ProgressHeight", typeof(double), typeof(ProgressBar), new PropertyMetadata(0d));
-
-        
 
 
         void SetProgressValue(double value)

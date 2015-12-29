@@ -60,8 +60,6 @@ namespace TrakHound_Server_Core
 
                         if (config.ServerEnabled)
                         {
-                            Console.WriteLine(config.TableName + " Loaded!");
-
                             config.Index = Devices.Count;
 
                             Device_Server server = new Device_Server(config);

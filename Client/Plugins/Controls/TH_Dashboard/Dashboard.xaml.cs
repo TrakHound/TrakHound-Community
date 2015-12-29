@@ -122,6 +122,8 @@ namespace TH_Dashboard
 
         public void Update_DataEvent(DataEvent_Data de_d)
         {
+            UpdateDevicesLoading(de_d);
+
             if (Plugins != null)
             {
                 foreach (Plugin plugin in Plugins)
@@ -139,23 +141,47 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        List<Configuration> devices;
-        public List<Configuration> Devices 
-        {
-            get { return devices; }
-            set
-            {
-                devices = value;
+        //List<Configuration> devices;
+        //public List<Configuration> Devices 
+        //{
+        //    get { return devices; }
+        //    set
+        //    {
+        //        devices = value;
 
-                if (Plugins != null)
-                {
-                    foreach (Plugin plugin in Plugins)
-                    {
-                        plugin.Devices = devices;
-                    }
-                } 
+        //        if (Plugins != null)
+        //        {
+        //            foreach (Plugin plugin in Plugins)
+        //            {
+        //                plugin.Devices = devices;
+        //            }
+        //        } 
+        //    }
+        //}
+
+
+
+        public List<Configuration> Devices
+        {
+            get { return (List<Configuration>)GetValue(DevicesProperty); }
+            set 
+            { 
+                SetValue(DevicesProperty, value);
+
+                //if (Plugins != null)
+                //{
+                //    foreach (Plugin plugin in Plugins)
+                //    {
+                //        plugin.Devices = devices;
+                //    }
+                //} 
             }
         }
+
+        public static readonly DependencyProperty DevicesProperty =
+            DependencyProperty.Register("Devices", typeof(List<Configuration>), typeof(Dashboard), new PropertyMetadata(null));
+
+        
 
         #endregion
 
@@ -167,7 +193,18 @@ namespace TH_Dashboard
 
         #region "User"
 
-        public UserConfiguration CurrentUser { get; set; }
+        UserConfiguration currentuser = null;
+        public UserConfiguration CurrentUser
+        {
+            get { return currentuser; }
+            set
+            {
+                currentuser = value;
+
+                if (currentuser != null) LoggedIn = true;
+                else LoggedIn = false;
+            }
+        }
 
         public Database_Settings UserDatabaseSettings { get; set; }
 
@@ -207,6 +244,53 @@ namespace TH_Dashboard
             }
         }
 
+
+        public object PageContent
+        {
+            get { return (object)GetValue(PageContentProperty); }
+            set { SetValue(PageContentProperty, value); }
+        }
+
+        public static readonly DependencyProperty PageContentProperty =
+            DependencyProperty.Register("PageContent", typeof(object), typeof(Dashboard), new PropertyMetadata(null));
+
+
+        public bool LoggedIn
+        {
+            get { return (bool)GetValue(LoggedInProperty); }
+            set { SetValue(LoggedInProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoggedInProperty =
+            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
+
+
+        public bool LoadingDevices
+        {
+            get { return (bool)GetValue(LoadingDevicesProperty); }
+            set { SetValue(LoadingDevicesProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingDevicesProperty =
+            DependencyProperty.Register("LoadingDevices", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
+
+        
+
+        void UpdateDevicesLoading(DataEvent_Data de_d)
+        {
+            if (de_d != null)
+            {
+                if (de_d.id.ToLower() == "loadingdevices")
+                {
+                    LoadingDevices = true;
+                }
+
+                if (de_d.id.ToLower() == "devicesloaded")
+                {
+                    LoadingDevices = false;
+                }
+            }
+        }
 
         #region "Child PlugIns"
 
@@ -251,7 +335,6 @@ namespace TH_Dashboard
                         catch { }
 
                         ListButton lb = new ListButton();
-                        //lb.Text = config.name;
                         lb.ToolTip = config.Name;
                         lb.Image = plugin.Image;
                         lb.Selected += lb_Selected;
@@ -281,7 +364,7 @@ namespace TH_Dashboard
                         Pages.Remove(lb);
                     }
 
-                    if (config == currentPage) Content_GRID.Children.Clear();
+                    if (config == currentPage) PageContent = null;
 
                     if (EnabledPlugins.Contains(config)) EnabledPlugins.Remove(config);
                 }
@@ -315,8 +398,7 @@ namespace TH_Dashboard
 
             UserControl childPlugIn = LB.DataObject as UserControl;
 
-            Content_GRID.Children.Clear();
-            Content_GRID.Children.Add(childPlugIn);
+            PageContent = childPlugIn;
         }
 
         void config_EnabledChanged(PluginConfiguration config)
@@ -329,36 +411,38 @@ namespace TH_Dashboard
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Pages.Count > 0)
+            if (PageContent == null)
             {
-                if (Pages[0].GetType() == typeof(ListButton))
+                if (Pages.Count > 0)
                 {
-                    ListButton lb = (ListButton)Pages[0];
-
-                    foreach (ListButton oLB in Pages)
+                    if (Pages[0].GetType() == typeof(ListButton))
                     {
-                        if (oLB == lb) oLB.IsSelected = true;
-                        else oLB.IsSelected = false;
-                    }
+                        ListButton lb = (ListButton)Pages[0];
 
-                    Plugin plugin = lb.DataObject as Plugin;
-                    if (plugin != null)
-                    {
-                        foreach (PluginConfigurationCategory category in SubCategories)
+                        foreach (ListButton oLB in Pages)
                         {
-                            PluginConfiguration config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
-                            if (config != null)
-                            {
-                                currentPage = config;
-                                break;
-                            }
+                            if (oLB == lb) oLB.IsSelected = true;
+                            else oLB.IsSelected = false;
                         }
 
-                        UserControl childPlugIn = lb.DataObject as UserControl;
+                        Plugin plugin = lb.DataObject as Plugin;
+                        if (plugin != null)
+                        {
+                            foreach (PluginConfigurationCategory category in SubCategories)
+                            {
+                                PluginConfiguration config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
+                                if (config != null)
+                                {
+                                    currentPage = config;
+                                    break;
+                                }
+                            }
 
-                        Content_GRID.Children.Clear();
-                        Content_GRID.Children.Add(childPlugIn);
-                    }                
+                            UserControl childPlugIn = lb.DataObject as UserControl;
+
+                            PageContent = childPlugIn;
+                        }
+                    }
                 }
             }
         }

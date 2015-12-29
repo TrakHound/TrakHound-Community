@@ -110,7 +110,7 @@ namespace TH_WPF.Histogram
         }
 
         public static readonly DependencyProperty BarWidthProperty =
-            DependencyProperty.Register("BarWidth", typeof(double), typeof(Histogram), new PropertyMetadata(8d));
+            DependencyProperty.Register("BarWidth", typeof(double), typeof(Histogram), new PropertyMetadata(10d));
 
     }
 }
