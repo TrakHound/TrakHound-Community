@@ -99,14 +99,7 @@ namespace TH_MySQL
                                 )
                                 )
                             {
-                                //Settings.Log.AddLine(Logger.ErrorClass.SQL, Logger.ErrorSubClass.None, "Correct Permissions for " + Settings.SQL.Username + " @ " + Settings.SQL.Database);
                                 Result = true;
-                            }
-                            else
-                            {
-
-                                //Settings.Log.AddLine(Logger.ErrorClass.SQL, Logger.ErrorSubClass.None, "Incorrect Permissions for " + Settings.SQL.Username + " @ " + Settings.SQL.Database);
-
                             }
                         }
                     }

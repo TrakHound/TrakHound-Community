@@ -253,7 +253,7 @@ namespace TH_UserManagement.Management
 
             public static string GetConfigurationTableName(UserConfiguration userConfig, Configuration configuration)
             {
-                string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Machine_Type + "_" + configuration.Description.Machine_ID + "_Configuration";
+                string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Device_Type + "_" + configuration.Description.Device_ID + "_Configuration";
                 table = table.Replace(' ', '_');
 
                 return table;

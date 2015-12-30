@@ -11,51 +11,28 @@ namespace TH_Configuration.Converter_Sub_Classes
     public static class ObjectToXml
     {
 
-    //    public static XmlDocument Create(Configuration obj)
-    //    {
-    //        XmlDocument result = new XmlDocument();
+        public static XmlDocument Create(Configuration obj)
+        {
+            XmlDocument result = new XmlDocument();
 
-    //        // Insert XML Declaration
-    //        XmlDeclaration xmlDeclaration = result.CreateXmlDeclaration("1.0", "UTF-8", null);
-    //        XmlElement root = result.DocumentElement;
-    //        result.InsertBefore(xmlDeclaration, root);
+            // Insert XML Declaration
+            XmlDeclaration xmlDeclaration = result.CreateXmlDeclaration("1.0", "UTF-8", null);
+            XmlElement root = result.DocumentElement;
+            result.InsertBefore(xmlDeclaration, root);
 
-    //        XmlElement configuration = result.CreateElement(string.Empty, "Settings", string.Empty);
-    //        result.AppendChild(configuration);
+            XmlElement configuration = result.CreateElement(string.Empty, "Settings", string.Empty);
+            result.AppendChild(configuration);
 
-    //        foreach (DataRow row in table.Rows)
-    //        {
-    //            XmlNode node = AddAddress(result, row["address"].ToString());
-    //            if (node != null)
-    //            {
-    //                // Set Inner Text (Value) and prevent from adding closing tag by checking for ""
-    //                if (row["value"] != null) if (row["Value"].ToString() != "") node.InnerText = row["value"].ToString();
+            foreach (PropertyInfo info in typeof(Configuration).GetProperties())
+            {
+                XmlNode propertyNode = result.CreateElement(string.Empty, info.Name, string.Empty);
+                object value = info.GetValue(obj, null);
+                if (value != null) propertyNode.InnerText = value.ToString();
+                configuration.AppendChild(propertyNode);
+            }
 
-    //                // Set Attributes
-    //                if (row["attributes"] != null)
-    //                {
-    //                    string[] attributes = row["attributes"].ToString().Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-    //                    foreach (string attribute in attributes.ToList())
-    //                    {
-    //                        string[] split = attribute.Split(new string[] { "||" }, StringSplitOptions.RemoveEmptyEntries);
-    //                        if (split.Length > 1)
-    //                        {
-    //                            string name = split[0];
-    //                            string val = split[1];
-
-    //                            XmlAttribute a = result.CreateAttribute(name);
-    //                            a.Value = val;
-    //                            node.Attributes.Append(a);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //        //WriteDocument(result, @"C:\Temp\TestConfigXML.xml");
-
-    //        return result;
-    //    }
+            return result;
+        }
 
     //    static List<object> GetAllProperties(Configuration config)
     //    {

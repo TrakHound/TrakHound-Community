@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TH_Configuration;
+using TH_Configuration.Converter_Sub_Classes;
+
 namespace Test
 {
     /// <summary>
@@ -80,7 +83,11 @@ namespace Test
 
         private void ListButton_Selected(TH_WPF.ListButton LB)
         {
-            TH_WPF.MessageBox.Show("Test Box", "TEST TITLE", TH_WPF.MessageBoxButtons.YesNo);
+            //TH_WPF.MessageBox.Show("Test Box", "TEST TITLE", TH_WPF.MessageBoxButtons.YesNo);
+
+            Configuration config = Configuration.CreateBlank();
+
+           ObjectToXml.Create(config);
         }
     }
 }

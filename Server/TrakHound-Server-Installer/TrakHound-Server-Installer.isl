@@ -353,8 +353,8 @@
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td>{872B8637-FDC0-4690-9293-C09915EF0DF9}</td><td>TH_GENERATEDDATA</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td>{27A591A1-CE60-4B5E-8AB6-C63E8ADAD69F}</td><td>TH_INSTANCETABLE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td>{1D4EC165-E351-4C7E-B810-F88167022B97}</td><td>TH_OEE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MySql.Data.dll</td><td>{4AAC9B68-5104-4276-A6CE-21CB926DC671}</td><td>TH_MYSQL</td><td>2</td><td/><td>mysql.data.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Newtonsoft.Json.dll</td><td>{2B9BFF97-6DA8-4D87-869A-19C3BB44E8BE}</td><td>INSTALLDIR</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MySql.Data.dll</td><td>{3854B172-A762-442A-92AD-9CB161B20155}</td><td>INSTALLDIR</td><td>2</td><td/><td>mysql.data.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Newtonsoft.Json.dll</td><td>{6116F3FF-682D-48E0-A783-1AA5BBBEA5DB}</td><td>INSTALLDIR</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Configuration.Primary_output</td><td>{DD95CA16-824E-496F-8512-DC52CA3B6081}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_configuration.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Cycles.Content_Files</td><td>{FDF66F18-1AA0-4A00-AD8E-0BBD0EA5C3B4}</td><td>TH_CYCLES</td><td>2</td><td/><td>th_cycles.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_Cycles.Primary_output2</td><td>{1951C8C9-700F-4246-8611-A08D3DE4A877}</td><td>TH_CYCLES</td><td>2</td><td/><td>th_cycles.primary_output2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1982,8 +1982,8 @@
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>appstart.primary_output</td><td>AppStart.Primary_output</td><td>AppStart.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AppStart1&gt;|Built</td><td>3</td><td/></row>
-		<row><td>mysql.data.dll</td><td>MySql.Data.dll</td><td>MYSQLD~1.DLL|MySql.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\TH_MySQL\bin\Debug\MySql.Data.dll</td><td>1</td><td/></row>
-		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\bin\Debug\Newtonsoft.Json.dll</td><td>1</td><td/></row>
+		<row><td>mysql.data.dll</td><td>MySql.Data.dll</td><td>MYSQLD~1.DLL|MySql.Data.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\MySql.Data.dll</td><td>1</td><td/></row>
+		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>F:\feenux\TrakHound\TrakHound\Libraries\Newtonsoft.Json.dll</td><td>1</td><td/></row>
 		<row><td>th_configuration.primary_out</td><td>TH_Configuration.Primary_output</td><td>TH_Configuration.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Configuration&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_cycles.content_files</td><td>TH_Cycles.Content_Files</td><td>TH_Cycles.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Cycles&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>th_cycles.primary_output2</td><td>TH_Cycles.Primary_output2</td><td>TH_Cycles.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Cycles&gt;|Built</td><td>3</td><td/></row>
@@ -2168,8 +2168,8 @@
 		<row><td>ISX_DEFAULTCOMPONENT7</td><td/><td/><td>_D7D52690_E1FC_45FA_86CE_2D15F6F6B943_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT8</td><td/><td/><td>_5E26B02D_EC7B_4963_A903_FC59EDADC0FB_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT9</td><td/><td/><td>_B314CF8F_B7F6_478F_B4EC_774FFA2EC224_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MySql.Data.dll</td><td/><td/><td>_CAEA3454_0CF6_49BE_9F71_D8AD66CF3542_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_F85009C4_6260_422C_AB16_8B6BE78B2CC0_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MySql.Data.dll</td><td/><td/><td>_E13E5D66_2C3D_457C_9F9C_29AFFC430555_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_7041DB40_E674_4FC3_8269_2339AAFC16BD_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Configuration.Primary_output</td><td/><td/><td>_D4CBA11D_1801_449A_84EF_E929083DC7C7_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Cycles.Content_Files</td><td/><td/><td>_9836AED6_6E91_46D0_B601_CD16A6B04365_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_Cycles.Primary_output2</td><td/><td/><td>_DE4DD6E0_380E_4AFD_B645_7B29C7C56AA5_FILTER</td><td/><td/><td/><td/></row>

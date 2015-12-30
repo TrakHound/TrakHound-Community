@@ -9,6 +9,7 @@ using System.Xml;
 using System.Text;
 using System.Reflection;
 using System.Drawing;
+using System.Data;
 
 namespace TH_Configuration
 {
@@ -16,34 +17,29 @@ namespace TH_Configuration
     public class Configuration
     {
 
+        public Agent_Settings Agent;
+        public Database_Settings Databases_Client;
+        public Database_Settings Databases_Server;
+        public FileLocation_Settings FileLocations;
+        public Description_Settings Description;
+        public List<object> CustomClasses;
+
         public Configuration()
+        {
+            init();
+        }
+
+        void init()
         {
             Agent = new Agent_Settings();
             FileLocations = new FileLocation_Settings();
             Description = new Description_Settings();
-            Server = new Server_Settings();
-
             Databases_Client = new Database_Settings();
             Databases_Server = new Database_Settings();
-
             CustomClasses = new List<object>();
         }
 
-        #region "SubClass Objects"
 
-        public Agent_Settings Agent;
-
-        //public SQL_Settings SQL;
-        public Database_Settings Databases_Client;
-        public Database_Settings Databases_Server;
-
-        public FileLocation_Settings FileLocations;
-        public Description_Settings Description;
-        public Server_Settings Server;
-
-        public List<object> CustomClasses;
-
-        #endregion
 
         #region "Properties"
 
@@ -64,9 +60,6 @@ namespace TH_Configuration
         public string TableName { get; set; }
 
         public string Version { get; set; }
-
-
-        //public bool Shared { get; set; }
 
         public string SharedId { get; set; }
 
@@ -107,6 +100,7 @@ namespace TH_Configuration
         #endregion
 
         #region "Methods"
+
 
         static Random random = new Random();
         public static string RandomString(int size)
@@ -178,7 +172,7 @@ namespace TH_Configuration
                                     case "databases_server": Result.Databases_Server = Process_Databases(node); break;
                                     case "description": Result.Description = Process_Description(node); break;
                                     case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
-                                    case "server": Result.Server = Process_Server(node); break;
+                                    //case "server": Result.Server = Process_Server(node); break;
                                 }
                             }
                         }
@@ -232,7 +226,7 @@ namespace TH_Configuration
                                 case "databases_server": Result.Databases_Server = Process_Databases(node); break;
                                 case "description": Result.Description = Process_Description(node); break;
                                 case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
-                                case "server": Result.Server = Process_Server(node); break;
+                                //case "server": Result.Server = Process_Server(node); break;
                             }
                         }
                     }
@@ -285,42 +279,6 @@ namespace TH_Configuration
                                 }
                             }
                         }
-                    }
-                }
-            }
-
-            return Result;
-
-        }
-
-        private static SQL_Settings Process_SQL(XmlNode Node)
-        {
-
-            SQL_Settings Result = new SQL_Settings();
-
-            foreach (XmlNode Child in Node.ChildNodes)
-            {
-                if (Child.NodeType == XmlNodeType.Element)
-                {
-                    if (Child.InnerText != "")
-                    {
-
-                        Type Settings = typeof(SQL_Settings);
-                        PropertyInfo info = Settings.GetProperty(Child.Name);
-
-                        if (info != null)
-                        {
-                            Type t = info.PropertyType;
-                            info.SetValue(Result, Convert.ChangeType(Child.InnerText, t), null);
-                        }
-                        else
-                        {
-                            if (Child.Name.ToLower() == "admin_sql")
-                            {
-                                Result.AdminSQL = Process_SQL(Child);
-                            }
-                        }
-
                     }
                 }
             }
@@ -472,89 +430,7 @@ namespace TH_Configuration
         }
 
 
-        private static Server_Settings Process_Server(XmlNode Node)
-        {
-
-            Server_Settings Result = new Server_Settings();
-
-            foreach (XmlNode Child in Node.ChildNodes)
-            {
-                if (Child.NodeType == XmlNodeType.Element)
-                {
-                    if (Child.InnerText != "")
-                    {
-
-                        Type Settings = typeof(Server_Settings);
-                        PropertyInfo info = Settings.GetProperty(Child.Name);
-
-                        if (info != null)
-                        {
-                            Type t = info.PropertyType;
-                            info.SetValue(Result, Convert.ChangeType(Child.InnerText, t), null);
-                        }
-                        else if (Child.Name.ToLower() == "tables")
-                        {
-
-                            Tables_Settings Tables = new Tables_Settings();
-
-                            foreach (XmlNode TablesNode in Child.ChildNodes)
-                            {
-                                if (TablesNode.NodeType == XmlNodeType.Element)
-                                {
-                                    switch (TablesNode.Name.ToLower())
-                                    {
-                                        case "mtconnect":
-
-                                            Result.Tables.MTConnect = Process_Tables_MTConnect(TablesNode);
-
-                                            break;
-                                    }
-                                }
-                            }
-
-                            Result.Tables = Tables;
-
-                        }
-
-                    }
-                }
-            }
-
-            return Result;
-
-        }
-
-        static Tables_MTConnect_Settings Process_Tables_MTConnect(XmlNode Node)
-        {
-
-            Tables_MTConnect_Settings Result = new Tables_MTConnect_Settings();
-
-            foreach (XmlNode ChildNode in Node.ChildNodes)
-            {
-                if (ChildNode.NodeType == XmlNodeType.Element)
-                {
-                    switch (ChildNode.Name.ToLower())
-                    {
-                        case "probe":
-                            Result.Probe = Convert.ToBoolean(ChildNode.InnerText);
-                            break;
-
-                        case "current":
-                            Result.Current = Convert.ToBoolean(ChildNode.InnerText);
-                            break;
-
-                        case "sample":
-                            Result.Sample = Convert.ToBoolean(ChildNode.InnerText);
-                            break;
-
-                    }
-                }
-            }
-
-            return Result;
-
-        }
-
+        #region "Static"
 
         public static Configuration CreateBlank()
         {
@@ -566,6 +442,8 @@ namespace TH_Configuration
 
             return result;
         }
+
+        #endregion
 
         #endregion
 

@@ -11,13 +11,6 @@ namespace TH_Configuration
         public string Image_Path { get; set; }
         public string Manufacturer_Logo_Path { get; set; }
 
-        public string Data_Table_Path { get; set; }
-        public string Event_Table_Path { get; set; }
-        public string Event_Type_Table_Path { get; set; }
-        public string Duration_Table_Path { get; set; }
-
-        public string Parts_Count_File_Path { get; set; }
-
         public string Log_File_Path { get; set; }
 
     }

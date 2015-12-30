@@ -24,12 +24,6 @@ namespace TH_Configuration
         // List of Custom Configurations for Plugins
         public List<Tuple<string, string>> Custom;
 
-        // OBSOLETE
-        public string Machine_Type { get; set; }
-        public string Machine_ID { get; set; }
-        public string Control_Type { get; set; }
-        public string Customer_Name { get; set; }
-
     }
 
 }

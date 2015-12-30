@@ -8,8 +8,6 @@ using System.Data;
 using System.Net;
 using System.Collections.Specialized;
 
-using Newtonsoft.Json;
-
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
@@ -74,8 +72,7 @@ namespace TH_UserManagement.Management
                     {
                         try
                         {
-                            DataTable dt = (DataTable)JsonConvert.DeserializeObject(responseString, (typeof(DataTable)));
-
+                            DataTable dt = JSON.ToTable(responseString);
                             if (dt != null)
                             {
                                 foreach (DataRow row in dt.Rows)

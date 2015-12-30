@@ -40,31 +40,6 @@ namespace TH_MySQL.PHP
 
         }
 
-        //public static object[] CustomCommand(MySQL_Configuration config, string commandText)
-        //{
-        //    object[] Result = null;
-
-        //    NameValueCollection values = new NameValueCollection();
-        //    if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
-        //    else values["server"] = config.Server;
-
-        //    values["user"] = config.Username;
-        //    values["password"] = config.Password;
-        //    values["db"] = config.Database;
-
-        //    values["query"] = commandText;
-
-        //    string PHP_Directory = "";
-        //    if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
-
-        //    string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
-
-        //    Result = Web.HttpSendData(url, values);
-
-        //    return Result;
-
-        //}
-
         public static object GetValue(MySQL_Configuration config, string tablename, string column, string filterExpression)
         {
 
@@ -107,16 +82,15 @@ namespace TH_MySQL.PHP
             values["server"] = config.Server;
             values["user"] = config.Username;
             values["password"] = config.Password;
-            values["db"] = config.Database;
 
-            values["query"] = "SHOW GRANTS FOR '" + username + "'@'%'";
+            values["query"] = "SHOW GRANTS FOR '" + username + "'@'" + config.Server + "'";
 
             string PHP_Directory = "";
             if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
 
 
 
-            string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/mysql_retrieve.php";
 
             string responseString = HTTP.SendData(url, values);
 

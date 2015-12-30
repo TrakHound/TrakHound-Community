@@ -387,10 +387,15 @@ namespace TH_UserManagement.Management
                 result = CreateConfigurationTable(tableName);
                 if (result)
                 {
+
                     DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
 
+                    string uniqueId = String_Functions.RandomString(20);
+
+                    configuration.UniqueId = uniqueId;
+
                     // Set new Unique Id
-                    Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UniqueId", dt);
+                    Table_Functions.UpdateTableValue(uniqueId, "/UniqueId", dt);
 
                     result = UpdateConfigurationTable(tableName, dt);
                 }
@@ -793,7 +798,7 @@ namespace TH_UserManagement.Management
 
             public static string GetConfigurationTableName(UserConfiguration userConfig, Configuration configuration)
             {
-                string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Machine_Type + "_" + configuration.Description.Machine_ID + "_Configuration";
+                string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Device_Type + "_" + configuration.Description.Device_ID + "_Configuration";
                 table = table.Replace(' ', '_');
 
                 return table;

@@ -15,3 +15,6 @@ F:\feenux\TrakHound\TrakHound\Testing\Test\obj\Debug\Test.exe
 F:\feenux\TrakHound\TrakHound\Testing\Test\obj\Debug\Test.pdb
 F:\feenux\TrakHound\TrakHound\Testing\Test\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Testing\Test\bin\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Testing\Test\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Testing\Test\bin\Debug\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Testing\Test\bin\Debug\TH_Configuration.pdb
