@@ -141,41 +141,10 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        //List<Configuration> devices;
-        //public List<Configuration> Devices 
-        //{
-        //    get { return devices; }
-        //    set
-        //    {
-        //        devices = value;
-
-        //        if (Plugins != null)
-        //        {
-        //            foreach (Plugin plugin in Plugins)
-        //            {
-        //                plugin.Devices = devices;
-        //            }
-        //        } 
-        //    }
-        //}
-
-
-
         public List<Configuration> Devices
         {
             get { return (List<Configuration>)GetValue(DevicesProperty); }
-            set 
-            { 
-                SetValue(DevicesProperty, value);
-
-                //if (Plugins != null)
-                //{
-                //    foreach (Plugin plugin in Plugins)
-                //    {
-                //        plugin.Devices = devices;
-                //    }
-                //} 
-            }
+            set { SetValue(DevicesProperty, value); }
         }
 
         public static readonly DependencyProperty DevicesProperty =

@@ -20,12 +20,6 @@ namespace TH_Device_Server
     public partial class Device_Server
     {
 
-
-
-
-
-
-
         #region "Public"
 
         public Device_Server(Configuration config, bool useDatabases = true)

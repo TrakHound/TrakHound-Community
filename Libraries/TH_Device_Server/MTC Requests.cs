@@ -49,6 +49,10 @@ namespace TH_Device_Server
                             {
                                 TablePlugIns_Update_Sample(sampleData);
                             }
+                            else
+                            {
+                                TablePlugIns_Update_Sample(null);
+                            }
                         }
 
                         Thread.Sleep(configuration.Agent.Current_Heartbeat);

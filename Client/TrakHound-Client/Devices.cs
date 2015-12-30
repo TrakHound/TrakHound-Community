@@ -382,7 +382,7 @@ namespace TrakHound_Client
                                     bool.TryParse(info.Enabled, out enabled);
 
                                     int index = devices.FindIndex(x => x.UniqueId == info.UniqueId);
-                                    if (index >= 0) // Device is already part of list
+                                    if (index >= 0 && index <= Devices.Count - 1) // Device is already part of list
                                     {
                                         Configuration device = Devices[index];
 

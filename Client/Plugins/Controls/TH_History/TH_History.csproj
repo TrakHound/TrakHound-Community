@@ -72,6 +72,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Graphs\Bar\Category\Graph.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Graphs\LineGraph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Graphs\Line\Category\Graph.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Graphs\Line\Timestamp\Graph.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\HistogramDisplay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -84,10 +100,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ShiftComparison.xaml">
+    <None Include="Controls\ShiftComparison.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="History.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -101,15 +117,33 @@
     <Compile Include="Controls\Calendar\DayOfWeekTitle.xaml.cs">
       <DependentUpon>DayOfWeekTitle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Graphs\Bar\Category\Data.cs" />
+    <Compile Include="Controls\Graphs\Bar\Category\Graph.xaml.cs">
+      <DependentUpon>Graph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Graphs\Bar\Category\ViewModel.cs" />
+    <Compile Include="Controls\Graphs\LineGraph.xaml.cs">
+      <DependentUpon>LineGraph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Graphs\Line\Category\Data.cs" />
+    <Compile Include="Controls\Graphs\Line\Category\Graph.xaml.cs">
+      <DependentUpon>Graph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Graphs\Line\Category\ViewModel.cs" />
+    <Compile Include="Controls\Graphs\Line\Timestamp\Data.cs" />
+    <Compile Include="Controls\Graphs\Line\Timestamp\Graph.xaml.cs">
+      <DependentUpon>Graph.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Graphs\Line\Timestamp\ViewModel.cs" />
     <Compile Include="Controls\HistogramDisplay.xaml.cs">
       <DependentUpon>HistogramDisplay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\HistoryContainer.xaml.cs">
       <DependentUpon>HistoryContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ShiftComparison.xaml.cs">
+    <None Include="Controls\ShiftComparison.xaml.cs">
       <DependentUpon>ShiftComparison.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="GraphInfo.cs" />
     <Compile Include="Controls\HistoryItem.xaml.cs">
       <DependentUpon>HistoryItem.xaml</DependentUpon>
@@ -164,18 +198,18 @@
       <Name>TH_Plugins_Client</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
-      <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
-      <Name>TH_PlugIns_Server</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Server\Plugins\TH_ShiftTable\TH_ShiftTable.csproj">
-      <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
-      <Name>TH_ShiftTable</Name>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
+      <Name>TH_UserManagement</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
+      <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
+      <Name>TH_WPF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

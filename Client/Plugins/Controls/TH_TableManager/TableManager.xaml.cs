@@ -137,7 +137,7 @@ namespace TH_TableManager
                     db.Manufacturer = device.Description.Manufacturer;
                     db.Model = device.Description.Model;
                     db.Serial = device.Description.Serial;
-                    db.Id = device.Description.Machine_ID;
+                    db.Id = device.Description.Device_ID;
 
                     db.Clicked += db_Clicked;
 
