@@ -1,6 +1,6 @@
+F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_UserManagement.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_Global.dll

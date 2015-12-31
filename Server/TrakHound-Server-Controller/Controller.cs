@@ -129,7 +129,7 @@ namespace TrakHound_Server_Controller
         {
             try
             {
-                string filename = AppDomain.CurrentDomain.BaseDirectory + @"trakhound-server-control-panel.exe";
+                string filename = AppDomain.CurrentDomain.BaseDirectory + @"TrakHound-Server-Control-Panel.exe";
 
                 Process.Start(filename);
             }

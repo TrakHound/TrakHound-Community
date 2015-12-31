@@ -1,5 +1,5 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -164,6 +164,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Client-Updater", "Client\TrakHound-Client-Updater\TrakHound-Client-Updater.csproj", "{CE002EA1-5893-4553-BD7D-6274F05022D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppStart", "Server\AppStart\AppStart.csproj", "{C417362E-4EF0-43EE-BCED-CF4ABDAEBCB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrakHound-Server-Login", "Server\TrakHound-Server-Login\TrakHound-Server-Login.csproj", "{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -753,6 +755,18 @@ Global
 		{C417362E-4EF0-43EE-BCED-CF4ABDAEBCB6}.Server|Any CPU.Build.0 = Release|Any CPU
 		{C417362E-4EF0-43EE-BCED-CF4ABDAEBCB6}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{C417362E-4EF0-43EE-BCED-CF4ABDAEBCB6}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.Server|Any CPU.ActiveCfg = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.Server|Any CPU.Build.0 = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -816,5 +830,6 @@ Global
 		{9A24091E-0369-4134-8AA5-9D5970D05A83} = {F67397DD-E37C-4B3C-A67B-EBB9C5533F76}
 		{CE002EA1-5893-4553-BD7D-6274F05022D0} = {F67397DD-E37C-4B3C-A67B-EBB9C5533F76}
 		{C417362E-4EF0-43EE-BCED-CF4ABDAEBCB6} = {FC5BAEDE-7CDF-4883-96CA-8A279A632F01}
+		{981E7B06-52DF-48F3-AB83-710ACD7D6B3E} = {FC5BAEDE-7CDF-4883-96CA-8A279A632F01}
 	EndGlobalSection
 EndGlobal

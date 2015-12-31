@@ -1,5 +1,6 @@
 F:\feenux\TrakHound\TrakHound\Server\AppStart\bin\Debug\AppStart.exe.config
 F:\feenux\TrakHound\TrakHound\Server\AppStart\bin\Debug\AppStart.exe
 F:\feenux\TrakHound\TrakHound\Server\AppStart\bin\Debug\AppStart.pdb
+F:\feenux\TrakHound\TrakHound\Server\AppStart\obj\Debug\AppStart.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\AppStart\obj\Debug\AppStart.exe
 F:\feenux\TrakHound\TrakHound\Server\AppStart\obj\Debug\AppStart.pdb

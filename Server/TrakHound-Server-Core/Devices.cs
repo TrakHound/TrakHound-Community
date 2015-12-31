@@ -159,6 +159,10 @@ namespace TrakHound_Server_Core
                                                     server.Start(false);
                                                 }
                                             }
+                                            else // Remove from List
+                                            {
+                                                Devices.RemoveAt(index);
+                                            }
                                         }
                                     }
                                     else // Create & Add Device Server

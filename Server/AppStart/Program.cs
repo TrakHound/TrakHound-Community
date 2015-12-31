@@ -10,6 +10,8 @@ namespace AppStart
         static void Main(string[] args)
         {
 
+            Login();
+
             // Reopen Server if it closed for any reason other than normal termination
             while (!OpenServer())
             {
@@ -21,15 +23,36 @@ namespace AppStart
         }
 
 
+        static bool Login()
+        {
+            bool result = false;
+
+            try
+            {
+                //string serverPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-server-login.exe";
+
+                string serverPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Login\bin\Debug\trakhound-server-login.exe";
+
+                Process p = new Process();
+
+                p.StartInfo.FileName = serverPath;
+                p.Start();
+                p.WaitForExit();
+            }
+            catch (Exception ex) { Console.WriteLine("AppStart.Login() :: " + ex.Message); }
+
+            return result;
+        }
+
         static bool OpenServer()
         {
             bool result = false;
 
             try
             {
-                string serverPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-server-console.exe";
+                //string serverPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-server-console.exe";
 
-                //string serverPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\trakhound-server-console.exe";
+                string serverPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\trakhound-server-console.exe";
 
                 Process p = new Process();
 

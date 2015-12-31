@@ -267,14 +267,14 @@ namespace TH_Device_Server
             {
                 case ConsoleOutputType.Normal:
 
-                    Console.WriteLine(line);
+                    Logger.Log(line);
 
                     break;
 
                 case ConsoleOutputType.Status:
                     if (configuration != null)
                     {
-                        if (DEBUG) Console.Write("[Status] [" + configuration.Description.Description + " : " + configuration.Description.Device_ID + "] " + line + Environment.NewLine);
+                        if (DEBUG) Console.WriteLine("[Status] [" + configuration.Description.Description + " : " + configuration.Description.Device_ID + "] " + line);
                     }
 
                     break;
@@ -288,7 +288,7 @@ namespace TH_Device_Server
                     Console.Write("[Error]");
                     Console.ResetColor();
 
-                    Console.Write(" [" + previousErrorTimestamp.ToString() + " - " + DateTime.Now.ToString() + "] " + line + Environment.NewLine);
+                    Logger.Log(" [" + previousErrorTimestamp.ToString() + " - " + DateTime.Now.ToString() + "] " + line);
 
                     break;
             }

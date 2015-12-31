@@ -34,13 +34,13 @@ namespace TrakHound_Server_Core
             else
             {
                 RememberMeMonitor_Start();
-                Console.WriteLine("Login failed : Login through Control Panel and set 'Remember Me'");
+                Logger.Log("Login failed : Login through Control Panel and set 'Remember Me'");
             }
         }
 
         void LoginUser(UserConfiguration userConfig)
         {
-            RememberMe.Set(userConfig, RememberMeType.Server, userDatabaseSettings);
+            //RememberMe.Set(userConfig, RememberMeType.Server, userDatabaseSettings);
 
             currentuser = userConfig;
 
@@ -49,7 +49,7 @@ namespace TrakHound_Server_Core
             Console.Write(TH_Global.Formatting.UppercaseFirst(userConfig.username));
             Console.ResetColor();
 
-            Console.Write(" Logged in Successfully" + Environment.NewLine);
+            Logger.Log(" Logged in Successfully");
         }
 
         void ReadUserManagementSettings()

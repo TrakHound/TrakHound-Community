@@ -1,0 +1,10 @@
+﻿  _______ _    _ 
+ |__   __| |  | |  TrakHound Server
+    | |  | |__| |  [v]
+    | |  |  __  |  
+    | |  | |  | |  GPLv3
+    |_|  |_|  |_|  Copyright Feenux LLC 2015
+
+  Open Source CNC Data Acquistion Software
+	  Package using MTConnect
+             www.TrakHound.org

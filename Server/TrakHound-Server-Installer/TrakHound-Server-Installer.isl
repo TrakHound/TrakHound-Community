@@ -3950,6 +3950,7 @@
 		<row><td>ID_STRING10</td><td>1033</td><td>TRAKHO~1|TrakHound Server Controller</td><td>0</td><td/><td>1956863434</td></row>
 		<row><td>ID_STRING11</td><td>1033</td><td>TRAKHO~1|TrakHound Server [Console]</td><td>0</td><td/><td>1956872303</td></row>
 		<row><td>ID_STRING12</td><td>1033</td><td>TRAKHO~1|TrakHound Server Control Panel</td><td>0</td><td/><td>774068464</td></row>
+		<row><td>ID_STRING13</td><td>1033</td><td>TrakHound-Server</td><td>0</td><td/><td>-165424876</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>TrakHound</td><td>0</td><td/><td>1554218741</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>TrakHound-Server</td><td>0</td><td/><td>1554191286</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>TRAKHO~1|TrakHound Server Controller</td><td>0</td><td/><td>1956846986</td></row>
@@ -4583,7 +4584,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{48C262CF-7EDE-43DB-B4FF-4D3D30A754F3}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Server</td><td/></row>
-		<row><td>ProductVersion</td><td>1.2.0.2</td><td/></row>
+		<row><td>ProductVersion</td><td>1.3.0.0</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4710,7 +4711,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">Arguments</col>
 		<col def="I2">Wait</col>
 		<col def="s72">Component_</col>
-		<row><td>NewEvent1</td><td>TrakHound-Server</td><td>128</td><td/><td>0</td><td>TrakHound_Server.Primary_output</td></row>
+		<row><td>NewEvent1</td><td>MyService1</td><td>128</td><td/><td>0</td><td>TrakHound_Server.Primary_output</td></row>
 	</table>
 
 	<table name="ServiceInstall">
@@ -4727,7 +4728,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">Arguments</col>
 		<col def="s72">Component_</col>
 		<col def="L255">Description</col>
-		<row><td>NewServiceInstall1</td><td>TrakHound-Server</td><td>##ID_STRING3##</td><td>16</td><td>2</td><td>1</td><td/><td/><td/><td/><td/><td>TrakHound_Server.Primary_output</td><td/></row>
+		<row><td>NewServiceInstall1</td><td>MyService1</td><td>##ID_STRING13##</td><td>16</td><td>3</td><td>1</td><td/><td/><td/><td/><td/><td>TrakHound_Server.Primary_output</td><td/></row>
 	</table>
 
 	<table name="Shortcut">

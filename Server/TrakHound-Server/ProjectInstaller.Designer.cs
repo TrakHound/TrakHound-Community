@@ -46,11 +46,9 @@ namespace TrakHound_Server
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.Description = "Server for retrieving data from MTConnect devices and transferring that data to a" +
-    " MySQL database. Part of the TrakHound Software Package.";
+            this.serviceInstaller1.Description = "Server application that is part of the TrakHound software package.";
             this.serviceInstaller1.DisplayName = "TrakHound-Server";
             this.serviceInstaller1.ServiceName = "TrakHound-Server";
-            this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
             // 

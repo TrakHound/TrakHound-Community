@@ -83,11 +83,11 @@ namespace TH_Device_Server
             result = TH_MTC_Data.Components.Requests.Get(url);
             if (result != null)
             {
-                Console.WriteLine("Probe Successful : " + url);
+                WriteToConsole("Probe Successful : " + url, ConsoleOutputType.Status);
             }
             else
             {
-                Console.WriteLine("Probe Error : " + url);
+                WriteToConsole("Probe Error : " + url, ConsoleOutputType.Error);
             }
 
             return result;
@@ -106,11 +106,11 @@ namespace TH_Device_Server
             result = TH_MTC_Data.Streams.Requests.Get(url);
             if (result != null)
             {
-                Console.WriteLine("Current Successful : " + url);
+                WriteToConsole("Current Successful : " + url, ConsoleOutputType.Status);
             }
             else
             {
-                Console.WriteLine("Current Error : " + url);
+                WriteToConsole("Current Error : " + url, ConsoleOutputType.Error);
             }
 
             return result;
@@ -141,11 +141,11 @@ namespace TH_Device_Server
                     result = TH_MTC_Data.Streams.Requests.Get(url);
                     if (result != null)
                     {
-                        Console.WriteLine("Sample Successful : " + url);
+                        WriteToConsole("Sample Successful : " + url, ConsoleOutputType.Status);
                     }
                     else
                     {
-                        Console.WriteLine("Sample Error : " + url);
+                        WriteToConsole("Sample Error : " + url, ConsoleOutputType.Error);
                     }
                 }
             }

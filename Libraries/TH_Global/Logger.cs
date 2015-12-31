@@ -12,6 +12,24 @@ using System.Runtime.CompilerServices;
 using System.Xml;
 using System.IO;
 
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
+    public sealed class CallerMemberNameAttribute : Attribute
+    {
+    }
+
+    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
+    public sealed class CallerFilePathAttribute : Attribute
+    {
+    }
+
+    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
+    public sealed class CallerLineNumberAttribute : Attribute
+    {
+    }
+}
+
 namespace TH_Global
 {
     public class LogWriter : TextWriter
@@ -45,10 +63,23 @@ namespace TH_Global
 
         static LogQueue logQueue = new LogQueue();
 
+        //public static void Log(string text, string file = "", string member = "", int line = 0)
+        //{
+        //    LogQueue.Line queueLine = new LogQueue.Line();
+        //    queueLine.text = text;
+        //    queueLine.file = file;
+        //    queueLine.member = member;
+        //    queueLine.lineNumber = line;
+
+        //    logQueue.LineQueue.Add(queueLine);
+
+        //    Console.WriteLine(text);
+        //}
+
         public static void Log(string text,
-                        string file = "",
-                        string member = "",
-                        int line = 0)
+                        [CallerFilePath] string file = "",
+                        [CallerMemberName] string member = "",
+                        [CallerLineNumber] int line = 0)
         {
 
             LogQueue.Line queueLine = new LogQueue.Line();
@@ -62,24 +93,6 @@ namespace TH_Global
             Console.WriteLine(text);
 
         }
-
-        //public static void Log(string text,
-        //                [CallerFilePath] string file = "",
-        //                [CallerMemberName] string member = "",
-        //                [CallerLineNumber] int line = 0)
-        //{
-
-        //    LogQueue.Line queueLine = new LogQueue.Line();
-        //    queueLine.text = text;
-        //    queueLine.file = file;
-        //    queueLine.member = member;
-        //    queueLine.lineNumber = line;
-
-        //    logQueue.LineQueue.Add(queueLine);
-
-        //    Console.WriteLine(text);
-
-        //}
     }
 
     class LogQueue
@@ -136,7 +149,8 @@ namespace TH_Global
 
                 LineQueue.Clear();
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            //catch { }
         }
 
         void AddToLog(XmlDocument doc, Line line)
@@ -218,7 +232,8 @@ namespace TH_Global
                     doc.Save(writer);
                 }
             }
-            catch { }
+            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            //catch { }
 
         }
 
@@ -242,7 +257,8 @@ namespace TH_Global
                 {
                     Result.Load(LogFile);
                 }
-                catch { }             
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                //catch { }            
             }
 
             return Result;
