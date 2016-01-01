@@ -24,7 +24,7 @@ TrakHound Client is a Windows application and is used to view the data that was 
   <div>
     <img width="400" src="http://feenux.com/github/images/client_devicemanager_01.png"/>
     &nbsp;&nbsp;
-    <img width="400" src="http://feenux.com/github/images/client_plugins_01.png"/>
+    <img width="400" src="http://feenux.com/github/images/client_plugins_01_sm.png"/>
   </div>
 </div>
 
