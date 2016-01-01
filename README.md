@@ -28,8 +28,6 @@ Important messages are displayed as Windows Notifications and others are written
 
 ![TrakHound Server Notification] (http://feenux.com/github/images/server_notification_01.png)
 
-<br>
-
 ![TrakHound Server Console] (http://feenux.com/github/images/server_console_01.png)
 
 ##Client
