@@ -1,11 +1,28 @@
 ![TrakHound Logo] (http://feenux.com/github/images/github_header_01.png)
 
-[TrakHound.org] (http://www.trakhound.org/)
-
-![ScreenShot] (http://feenux.com/trakhound/images/devicecompare_05_sm.png)
+<p align="center">
+  <a href="http://www.trakhound.org/">www.TrakHound.org</a>
+</p>
 
 ##About
-TrakHound is an Open Source software package designed to use the MTConnect® communication protocol to retrieve and store data from CNC and other PLC driven equipment. Since TrakHound is based on a plugin architecture, you can think of it as more of a development platform than a stand alone monitoring application. Most of the work in developing a MTConnect® compatible application is already done and all that is needed is to develop a simple plugin for TrakHound!
+TrakHound is an Open Source software package designed to retrieve and store data from CNC and other PLC driven equipment. Data is retrieved using <a href="http://mtconnect.org">MTConnect®</a> and data is stored in a database. 
+
+##Server
+TrakHound Server is used to collect, process, and store the data from each device. The data collection is built in but the processing of the data is left up to plugins. Server plugins receive the Probe, Current, and Sample data and can also send data between each other. Preinstalled plugins include Instance Table, Generated Data, Shifts, Cycles, and OEE. Data is stored in a database which is also controlled by plugins. Preinstalled is a MySQL database plugin but any other SQL type of database can be developed. Data can also be stored in multiple databases for redundancy or other uses.
+
+The Server is ran as a Windows application and is controlled by a System Tray Icon menu. The menu contains options to Login / Logout, Start / Stop server, open the Device Manager for configuring the server, and a Console. 
+
+![TrakHound Server Menu (Logged In)] (http://feenux.com/github/images/server_menu_01.png)
+
+![TrakHound Server Menu (Logged Out)] (http://feenux.com/github/images/server_menu_02.png)
+
+Important messages are displayed as Windows Notifications.
+
+![TrakHound Server Notification] (http://feenux.com/github/images/server_notification_01.png)
+
+##Client
+TrakHound Client 
+
 
 TrakHound is comprised of Server and Client applications.
 
