@@ -12,6 +12,16 @@ TrakHound Server is used to collect, process, and store the data from each devic
 
 The Server is ran as a Windows application and is controlled by a System Tray Icon menu. The menu contains options to Login / Logout, Start / Stop server, open the Device Manager for configuring the server, and a Console. 
 
+<div align="center">
+  <div>
+    <img src="http://feenux.com/github/images/server_menu_01.png"/>
+    &nbsp;&nbsp;&nbsp;
+    <img src="http://feenux.com/github/images/server_menu_02.png"/>
+  </div>
+</div>
+
+
+
 ![TrakHound Server Menu (Logged In)] (http://feenux.com/github/images/server_menu_01.png)
 
 ![TrakHound Server Menu (Logged Out)] (http://feenux.com/github/images/server_menu_02.png)
