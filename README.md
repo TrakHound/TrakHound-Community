@@ -20,12 +20,6 @@ The Server is ran as a Windows application and is controlled by a System Tray Ic
   </div>
 </div>
 
-
-
-![TrakHound Server Menu (Logged In)] (http://feenux.com/github/images/server_menu_01.png)
-
-![TrakHound Server Menu (Logged Out)] (http://feenux.com/github/images/server_menu_02.png)
-
 Important messages are displayed as Windows Notifications.
 
 ![TrakHound Server Notification] (http://feenux.com/github/images/server_notification_01.png)
