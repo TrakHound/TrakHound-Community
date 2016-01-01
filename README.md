@@ -15,10 +15,11 @@ The Server is ran as a Windows application and is controlled by a System Tray Ic
 <div align="center">
   <div>
     <img src="http://feenux.com/github/images/server_menu_01.png"/>
-    &nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <img src="http://feenux.com/github/images/server_menu_02.png"/>
   </div>
 </div>
+
 
 Important messages are displayed as Windows Notifications.
 
