@@ -17,6 +17,8 @@ namespace TH_Updater
 
         public Assembly assembly;
 
+        public string UpdateKeyGroup;
+
         public void Start(string url)
         {
             Thread worker = new Thread(new ParameterizedThreadStart(Prepare));
@@ -47,7 +49,7 @@ namespace TH_Updater
 
                         string keyValue = unzipDirectory + ";" + localDirectory;
 
-                        Tools.SetRegistryKey(keyName, keyValue);
+                        Tools.SetRegistryKey(UpdateKeyGroup, keyName, keyValue);
 
                         Console.WriteLine("Update Registry Key :: " + keyName + " :: " + localDirectory + " :: " + unzipDirectory);
 

@@ -1,9 +1,0 @@
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\bin\Server\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\bin\Server\TrakHound-Server-Controller.exe.config
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\bin\Server\TrakHound-Server-Controller.exe
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\bin\Server\TH_Global.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\obj\Server\TrakHound-Server-Controller.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\obj\Server\TrakHound-Server-Controller.g.resources
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\obj\Server\TrakHound_Server_Controller.Properties.Resources.resources
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\obj\Server\TrakHound-Server-Controller.csproj.GenerateResource.Cache
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Controller\obj\Server\TrakHound-Server-Controller.exe

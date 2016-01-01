@@ -283,12 +283,12 @@ namespace TH_Device_Server
 
                     previousErrorTimestamp = DateTime.Now;
 
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("[Error]");
-                    Console.ResetColor();
+                    //Console.BackgroundColor = ConsoleColor.Red;
+                    //Console.ForegroundColor = ConsoleColor.White;
+                    //Console.Write("[Error]");
+                    //Console.ResetColor();
 
-                    Logger.Log(" [" + previousErrorTimestamp.ToString() + " - " + DateTime.Now.ToString() + "] " + line);
+                    Logger.Log("[Error] [" + configuration.Description.Description + " : " + configuration.Description.Device_ID + "] [" + previousErrorTimestamp.ToString() + " - " + DateTime.Now.ToString() + "] " + line);
 
                     break;
             }

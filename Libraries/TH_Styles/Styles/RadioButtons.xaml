@@ -15,7 +15,7 @@
                                 <!--Define size of the Bullet-->
 
                                 <!--The two borders-->
-                                <Border Name="RadioOuter" Background="Transparent" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="1" />
+                                <Border Name="RadioOuter" Background="Transparent" BorderBrush="{StaticResource Shade_Dark}" BorderThickness="1" CornerRadius="1" />
                                 <Border CornerRadius="1" Margin="5" Name="RadioMark" Background="{StaticResource Accent_Normal}" Visibility="Hidden" />
 
                             </Grid>
@@ -31,7 +31,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
                             <Setter TargetName="RadioMark" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{StaticResource Shade_Normal}" />
+                            <Setter TargetName="RadioOuter" Property="BorderBrush" Value="{StaticResource Shade_Dark}" />
                         </Trigger>
 
                     </ControlTemplate.Triggers>

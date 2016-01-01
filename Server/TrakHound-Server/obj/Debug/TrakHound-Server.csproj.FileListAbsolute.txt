@@ -39,5 +39,10 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_DeviceManager
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_MTC_Requests.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_DeviceManager.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_MTC_Requests.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Control-Panel.baml
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Control-Panel.g.cs
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Device-Manager.baml
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Device-Manager.g.cs
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Output-Console.baml
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Output-Console.g.cs
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Updater.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\ICSharpCode.SharpZipLib.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Updater.pdb

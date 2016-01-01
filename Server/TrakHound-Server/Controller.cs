@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Windows.Forms;
 using System.Diagnostics;
 
 using TH_Configuration;
@@ -24,31 +24,33 @@ namespace TrakHound_Server
         private ToolStripMenuItem mLogin;
         private ToolStripMenuItem mLogout;
 
-        private ToolStripMenuItem mControlPanel;
+        private ToolStripMenuItem mDeviceManager;
+        private ToolStripMenuItem mConsole;
         private ToolStripMenuItem mStartService;
         private ToolStripMenuItem mStopService;
         private ToolStripMenuItem mExitApplication;
 
         private Label mUsernameLBL;
         private ToolStripControlHost mLoggedIn;
+        ToolStripSeparator seperator1;
 
         public Database_Settings userDatabaseSettings;
 
         private Server server;
-        private Control_Panel controlPanel;
+        private Device_Manager deviceManager;
+        private Output_Console console;
 
-        public Controller(Server s, Control_Panel cp)
+        public Controller(Server s, Device_Manager dm, Output_Console c)
         {
             InitializeComponents();
 
-            controlPanel = cp;
+            server = s;
+            deviceManager = dm;
+            console = c;
 
             s.CurrentUserChanged += s_CurrentUserChanged;
             s.Started += s_Started;
             s.Stopped += s_Stopped;
-
-            server = s;
-
         }
 
         void InitializeComponents()
@@ -66,14 +68,15 @@ namespace TrakHound_Server
             // Add Username label
             mContextMenu.Items.Add(CreateLoggedInLabel());
 
-            ToolStripSeparator seperator1 = new System.Windows.Forms.ToolStripSeparator();
+            seperator1 = new System.Windows.Forms.ToolStripSeparator();
             seperator1.Visible = false;
             mContextMenu.Items.Add(seperator1);
 
             mLogin = new ToolStripMenuItem();
             mLogout = new ToolStripMenuItem();
 
-            mControlPanel = new ToolStripMenuItem();
+            mDeviceManager = new ToolStripMenuItem();
+            mConsole = new ToolStripMenuItem();
             mStartService = new ToolStripMenuItem();
             mStopService = new ToolStripMenuItem();
             mExitApplication = new ToolStripMenuItem();
@@ -90,9 +93,14 @@ namespace TrakHound_Server
             ToolStripSeparator seperator = new System.Windows.Forms.ToolStripSeparator();
             mContextMenu.Items.Add(seperator);
 
-            mControlPanel.Text = "Control Panel";
-            mControlPanel.Click += mControlPanel_Click;
-            mContextMenu.Items.Add(mControlPanel);
+            mDeviceManager.Text = "Device Manager";
+            mDeviceManager.Image = Properties.Resources.Root;
+            mDeviceManager.Click += mDeviceManager_Click;
+            mContextMenu.Items.Add(mDeviceManager);
+
+            mConsole.Text = "Open Console";
+            mConsole.Click += mConsole_Click;
+            mContextMenu.Items.Add(mConsole);
 
             seperator = new System.Windows.Forms.ToolStripSeparator();
             mContextMenu.Items.Add(seperator);
@@ -124,10 +132,10 @@ namespace TrakHound_Server
             var mLabel = new Label();
             mLabel.BackColor = System.Drawing.Color.Transparent;
             mLabel.ForeColor = System.Drawing.Color.FromArgb(136, 136, 136);
-            System.Drawing.Font font1 = new System.Drawing.Font("segoe", 6);
+            System.Drawing.Font font1 = new System.Drawing.Font("segoe", 8);
             mLabel.Font = font1;
             mLabel.Margin = new Padding(0, 10, 0, 2);
-            mLabel.Height = 10;
+            mLabel.Height = 15;
             mLabel.Text = "Logged in as";
             mLabel.Parent = mPanel;
 
@@ -137,7 +145,7 @@ namespace TrakHound_Server
             System.Drawing.Font font2 = new System.Drawing.Font("segoe", 10, System.Drawing.FontStyle.Bold);
             mUsernameLBL.Font = font2;
             mUsernameLBL.Margin = new Padding(0, 0, 0, 0);
-            mUsernameLBL.Text = "Trakhound";
+            mUsernameLBL.Text = "";
             mUsernameLBL.Parent = mPanel;
 
             mLoggedIn = new ToolStripControlHost(mPanel);
@@ -188,7 +196,9 @@ namespace TrakHound_Server
         {
             if (userConfig != null)
             {
+                mUsernameLBL.Text = Formatting.UppercaseFirst(userConfig.username);
                 mLoggedIn.Visible = true;
+                seperator1.Visible = true;
 
                 mLogin.Enabled = false;
                 mLogout.Enabled = true;
@@ -201,6 +211,7 @@ namespace TrakHound_Server
             else
             {
                 mLoggedIn.Visible = false;
+                seperator1.Visible = false;
 
                 mLogin.Enabled = true;
                 mLogout.Enabled = false;
@@ -211,7 +222,7 @@ namespace TrakHound_Server
                 mNotifyIcon.ShowBalloonTip(3000);
             }
 
-            if (controlPanel != null) controlPanel.CurrentUser = userConfig;
+            if (deviceManager != null) deviceManager.CurrentUser = userConfig;
         }
 
         #endregion
@@ -237,10 +248,14 @@ namespace TrakHound_Server
             if (server != null) server.Logout();
         }
 
-        void OpenControlPanel()
+        void OpenDeviceManager()
         {
-            if (controlPanel != null) { controlPanel.Show(); }
-            if (controlPanel != null) controlPanel.CurrentUser = null;
+            if (deviceManager != null) { deviceManager.Show(); }
+        }
+
+        void OpenConsole()
+        {
+            if (console != null) { console.Show(); }
         }
 
         void StartServer()
@@ -259,7 +274,9 @@ namespace TrakHound_Server
 
         void mSignOut_Click(object sender, EventArgs e) { Logout(); }
 
-        void mControlPanel_Click(object sender, EventArgs e) { OpenControlPanel(); }
+        void mDeviceManager_Click(object sender, EventArgs e) { OpenDeviceManager(); }
+
+        void mConsole_Click(object sender, EventArgs e) { OpenConsole(); }
 
         void mStartService_Click(object sender, EventArgs e) { StartServer(); }
 

@@ -7,7 +7,16 @@
         
         Title="TrakHound Server Login"
         Height="315"
-        Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Icon="Resources/TrakHound_Logo_Initials_10.ico"
+        Width="400" 
+        
+        ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen" 
+        Icon="Resources/TrakHound_Logo_Initials_10.ico"
+        Topmost="True"
+           
+        Loaded="UserControl_Loaded"
+        Closed="Window_Closed"
+        PreviewKeyDown="UserControl_PreviewKeyDown"
         >
 
     <Window.Resources>
@@ -25,394 +34,146 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <!--Logged Out Panel-->
-        <Grid>
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Opacity" Value="0.0"/>
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding LoggedIn}" Value="false">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseIn"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseIn"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                        <Trigger Property="Opacity" Value="0.0">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+        <StackPanel>
 
-            <StackPanel>
+            <!--Header Info-->
+            <Grid Margin="10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <!--Header Info-->
-                <Grid Margin="10,15">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <!--Profile Icon-->
+                <Rectangle Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/blank_profile_01_sm.png" />
+                    </Rectangle.Resources>
 
-                    <!--Profile Icon-->
-                    <Rectangle Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/blank_profile_01_sm.png" />
-
-                            
-
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                    <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="10pt" Foreground="{StaticResource Shade_Dark}" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Center"/>
-
-                </Grid>
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="11,0">
-
-                    <!--Lock Icon-->
-                    <Rectangle Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Lock_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                    <TextBlock Text="Secure Connection" Foreground="{StaticResource Shade_Dark}" FontSize="8pt" VerticalAlignment="Center" />
-
-                </StackPanel>
-
-
-                <!--Username-->
-                <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
-                                    <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
                         </Style>
-                    </Border.Style>
+                    </Rectangle.Style>
+                </Rectangle>
 
-                    <Grid Margin="10,0">
+                <TextBlock Grid.Column="1" Margin="0,0,0,0" Text="Sign in to TrakHound to access your saved devices" FontSize="10pt" Foreground="{StaticResource Shade_Dark}" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
-                        <!--Instructions-->
-                        <TextBlock Text="Enter your username or email" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Text, ElementName=username_TXT}" Value="">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+            </Grid>
 
-                        <!--User Input-->
-                        <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black" TextChanged="username_TXT_TextChanged"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="11,0">
 
-                    </Grid>
+                <!--Lock Icon-->
+                <Rectangle Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">
+                    <Rectangle.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Lock_01.png" />
+                    </Rectangle.Resources>
 
-                </Border>
-
-                <!--Password-->
-                <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
-                                    <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
                         </Style>
-                    </Border.Style>
+                    </Rectangle.Style>
+                </Rectangle>
 
-                    <Grid Margin="10,0">
-
-                        <!--Instructions-->
-                        <TextBlock Text="Password" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                        <!--User Input-->
-                        <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged" GotFocus="password_TXT_GotFocus"/>
-
-                    </Grid>
-
-                </Border>
-
-                <!--Remember Me Enabled Text and Checkbox-->
-                <Grid Margin="10,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
-
-                    <CheckBox x:Name="rememberme_CHK" Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
-
-                </Grid>
+                <TextBlock Text="Secure Connection" Foreground="{StaticResource Shade_Dark}" FontSize="8pt" VerticalAlignment="Center" />
 
             </StackPanel>
 
-        </Grid>
 
-        <!--Logged In Panel-->
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Opacity" Value="0.0"/>
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseIn"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                            <DoubleAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseIn"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
-                        </DataTrigger>
-                        <Trigger Property="Opacity" Value="0.0">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+            <!--Username-->
+            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
+                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-            <!--Profile Image-->
-            <Border x:Name="profileimage_BD" Margin="10" BorderThickness="1" BorderBrush="{StaticResource Shade_Normal}" CornerRadius="2" Height="120" Width="120" VerticalAlignment="Top">
+                <Grid Margin="10,0">
 
-                <Grid>
-
-                    <!--Profile Image-->
-                    <Grid>
-
-                        <Image Source="{Binding ProfileImage}" />
-
-                        <Border Height="30" CornerRadius="2" Margin="10,0" PreviewMouseDown="ProfileImage_PreviewMouseDown">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Setter Property="Background" Value="#88ffffff"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="#aaffffff"/>
-                                            <Setter Property="Cursor" Value="Hand"/>
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=profileimage_BD}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="5,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <!--Camera Icon-->
-                                <Rectangle x:Name="uploadphoto_image" Height="30"  Width="30" >
-                                    <Rectangle.Resources>
-                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Camera_01.png" />
-                                    </Rectangle.Resources>
-
-                                    <Rectangle.Style>
-                                        <Style TargetType="Rectangle">
-                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Setter Property="Fill" Value="#333"/>
-                                        </Style>
-                                    </Rectangle.Style>
-                                </Rectangle>
-
-                                <!--Change Text-->
-                                <TextBlock Grid.Column="1" Text="Change" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap"/>
-
-                            </Grid>
-
-                        </Border>
-
-                    </Grid>
-
-                    <!--Loading Animation-->
-                    <Grid Background="{StaticResource Window_Background}">
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Opacity" Value="0.0"/>
-                                <Setter Property="Width" Value="0"/>
-                                <Setter Property="Height" Value="0"/>
+                    <!--Instructions-->
+                    <TextBlock Text="Enter your username or email" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ProfileImageLoading}" Value="true">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="0" To="120" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Width" From="0" To="120" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseIn"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Height" Duration="0" BeginTime="00:00:0.15">
-                                                        <DiscreteDoubleKeyFrame Value="0" />
-                                                    </DoubleAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Width" Duration="0" BeginTime="00:00:0.15">
-                                                        <DiscreteDoubleKeyFrame Value="0" />
-                                                    </DoubleAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                        <DoubleAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseIn"/>
-                                                        </DoubleAnimation.EasingFunction>
-                                                    </DoubleAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
+                                    <DataTrigger Binding="{Binding Text, ElementName=username_TXT}" Value="">
+                                        <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Grid.Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
-                        <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
-
-                    </Grid>
+                    <!--User Input-->
+                    <TextBox x:Name="username_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black" TextChanged="username_TXT_TextChanged"/>
 
                 </Grid>
 
             </Border>
 
-            <StackPanel Grid.Column="1" Margin="10" VerticalAlignment="Center">
+            <!--Password-->
+            <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
+                                <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                <!--Username-->
-                <TextBlock Text="{Binding Username}" FontSize="14pt" Foreground="{StaticResource Accent_Normal}" FontWeight="Bold" Margin="0,5"/>
+                <Grid Margin="10,0">
 
-                <!--Full Name-->
-                <TextBlock Text="{Binding Fullname}"  FontSize="10pt" Foreground="{StaticResource Foreground_Normal}">
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding Firstname}" Value="{x:Null}"/>
-                                        <Condition Binding="{Binding Lastname}" Value="{x:Null}"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                    <!--Instructions-->
+                    <TextBlock Text="Password" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding PasswordEntered}" Value="false">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
-                <!--Email Address-->
-                <TextBlock Text="{Binding EmailAddress}" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
+                    <!--User Input-->
+                    <PasswordBox x:Name="password_TXT" BorderThickness="0" Background="#00000000"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" CaretBrush="Black" PasswordChanged="password_TXT_PasswordChanged" GotFocus="password_TXT_GotFocus"/>
 
-            </StackPanel>
+                </Grid>
 
-        </Grid>
+            </Border>
+
+            <!--Remember Me Enabled Text and Checkbox-->
+            <Grid Margin="10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
+
+                <CheckBox x:Name="rememberme_CHK" Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
+
+            </Grid>
+
+        </StackPanel>
 
         <!--Loading Cover-->
         <Grid Background="{StaticResource Window_Background}">
             <Grid.Style>
                 <Style TargetType="Grid">
-                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="Opacity" Value="0"/>
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Loading}" Value="false">
@@ -513,7 +274,6 @@
         <!--Bottom Bar-->
         <Grid Grid.Row="2" Height="59" Background="{StaticResource Window_Background_Dark}">
 
-            <!--Logged Out-->
             <Grid>
                 <Grid.Style>
                     <Style TargetType="Grid">
@@ -530,26 +290,6 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
-
-                <!--Create Account-->
-                <!--<th_wpf:Button Clicked="Create_Clicked" Text="Create Account" 
-                                           Height="40" Margin="10,0" HorizontalAlignment="Left" >
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                    <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>-->
 
                 <!--Login Error--> 
                 <Grid Grid.Column="1">
@@ -625,63 +365,6 @@
                     </Grid>
 
                 </Grid>
-
-            </Grid>
-
-            <!--Logged In-->
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-
-                <!--Sign Out-->
-                <th_wpf:Button Grid.Column="2" Clicked="SignOut_Clicked" Text="Sign out" Width="80" Height="40" Margin="10,0" HorizontalAlignment="Right" >
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                    <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>
-
-                <!--My Account-->
-                <!--<th_wpf:Button Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" Clicked="MyAccount_Clicked">
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Padding" Value="10,0"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>-->
 
             </Grid>
 

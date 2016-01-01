@@ -51,13 +51,13 @@
                                     Grid.Column="1" Grid.ColumnSpan="5"
                                     Grid.Row="2" Grid.RowSpan="5"
                                     BorderThickness="1"
-                                    BorderBrush="{StaticResource Shade_Normal}" />
+                                    BorderBrush="{StaticResource Shade_Dark}" />
 
                                 <Path Name="InnerPath"
                                   Grid.Column="1" Grid.ColumnSpan="5"
                                   Grid.Row="2" Grid.RowSpan="5"
                                   Data="M31,5 L19.5,5 19.5,19.5 34.5,19.5 34.5,11.75"
-                                  Stretch="Fill" Stroke="{StaticResource Shade_Normal}"/>
+                                  Stretch="Fill" Stroke="{StaticResource Shade_Dark}"/>
 
                                 <Path Name="CheckMark"
                                   Grid.Column="2" Grid.ColumnSpan="5"

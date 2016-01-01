@@ -111,19 +111,7 @@
 		</ProjectReference>
 		<ProjectReference Include="..\TrakHound-Server\TrakHound-Server.csproj">
 			<Name>TrakHound-Server</Name>
-			<Project>{AAC6D3F3-D589-4CCC-8264-3EF620E2AE9C}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\TrakHound-Server-Console\TrakHound-Server-Console.csproj">
-			<Name>TrakHound-Server-Console</Name>
-			<Project>{6F02E73F-8300-446C-91FB-41E5DF3C8C4F}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\TrakHound-Sever-Control-Panel\TrakHound-Server-Control-Panel.csproj">
-			<Name>TrakHound-Server-Control-Panel</Name>
-			<Project>{B2FE4410-125F-433F-8286-41B5968892C1}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\TrakHound-Server-Controller\TrakHound-Server-Controller.csproj">
-			<Name>TrakHound-Server-Controller</Name>
-			<Project>{BD131298-96E8-42F8-9F1A-DCD815BF40C0}</Project>
+			<Project>{10450457-1613-4B50-AA42-812A29D48C0D}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\TrakHound-Server-Core\TrakHound-Server-Core.csproj">
 			<Name>TrakHound-Server-Core</Name>

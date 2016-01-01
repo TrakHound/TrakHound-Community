@@ -73,7 +73,7 @@ namespace TH_Updater
 
         #region "Registry Functions"
 
-        public static void SetRegistryKey(string keyName, object keyValue)
+        public static void SetRegistryKey(string groupName, string keyName, object keyValue)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace TH_Updater
                 RegistryKey rootKey = key.CreateSubKey("TrakHound");
 
                 // Create/Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.CreateSubKey("Updates");
+                RegistryKey updatesKey = rootKey.CreateSubKey(groupName);
 
                 // Create/Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
                 RegistryKey updateKey = updatesKey.CreateSubKey(keyName);
@@ -98,7 +98,7 @@ namespace TH_Updater
             }
         }
 
-        public static string GetRegistryKey(string keyName)
+        public static string GetRegistryKey(string groupName, string keyName)
         {
             string Result = null;
 
@@ -111,7 +111,7 @@ namespace TH_Updater
                 RegistryKey rootKey = key.OpenSubKey("TrakHound");
 
                 // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey("Updates");
+                RegistryKey updatesKey = rootKey.OpenSubKey(groupName);
 
                 // Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
                 RegistryKey updateKey = updatesKey.OpenSubKey(keyName);
@@ -127,7 +127,7 @@ namespace TH_Updater
             return Result;
         }
 
-        public static string[] GetRegistryKeyNames()
+        public static string[] GetRegistryKeyNames(string groupName)
         {
             string[] Result = null;
 
@@ -140,7 +140,7 @@ namespace TH_Updater
                 RegistryKey rootKey = key.OpenSubKey("TrakHound");
 
                 // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey("Updates");
+                RegistryKey updatesKey = rootKey.OpenSubKey(groupName);
 
                 Result = updatesKey.GetSubKeyNames();
 
@@ -160,7 +160,7 @@ namespace TH_Updater
             return Result;
         }
 
-        public static void DeleteRegistryKey(string keyName)
+        public static void DeleteRegistryKey(string groupName, string keyName)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace TH_Updater
                 RegistryKey rootKey = key.OpenSubKey("TrakHound", true);
 
                 // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey("Updates", true);
+                RegistryKey updatesKey = rootKey.OpenSubKey(groupName, true);
 
                 // Delete CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
                 updatesKey.DeleteSubKey(keyName, true);

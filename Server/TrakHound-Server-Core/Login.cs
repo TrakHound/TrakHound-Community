@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.IO;
 using System.Threading;
 
@@ -27,11 +27,16 @@ namespace TrakHound_Server_Core
             {
                 currentuser = value;
 
+                SendCurrentUserChanged(currentuser);
+
                 if (currentuser != null) Start();
                 else Stop();
-
-                if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
+        }
+
+        void SendCurrentUserChanged(UserConfiguration userConfig)
+        {
+            if (CurrentUserChanged != null) CurrentUserChanged(userConfig);
         }
 
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
@@ -43,12 +48,7 @@ namespace TrakHound_Server_Core
         {
             CurrentUser = userConfig;
 
-            Console.BackgroundColor = ConsoleColor.Blue;
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(TH_Global.Formatting.UppercaseFirst(userConfig.username));
-            Console.ResetColor();
-
-            Logger.Log(" Logged in Successfully");
+            Logger.Log(TH_Global.Formatting.UppercaseFirst(userConfig.username) + " Logged in Successfully");
         }
 
         public void Logout()
