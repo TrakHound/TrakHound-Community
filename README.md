@@ -12,6 +12,8 @@ Setup is easy using the built in Device Manager page. Devices can be added from 
 ##Client
 TrakHound Client is a Windows application and is used to view the data that was processed and stored by the server. The client's core only manages the pages, updates, etc. and all of the data related pages are plugins. Preinstalled plugins include Dashboard, Device Compare, Table Manager, and Status Data. These provide the tools necessary to monitor current basic device / production data.
 
+Plugins for further analysis of the data such as reporting, graphing, alerts, etc. can be downloaded from our web site.
+
 <div align="center">
   <div>
     <a href="http://feenux.com/github/images/client_dashboard_01.png"><img width="400" src="http://feenux.com/github/images/client_dashboard_01_sm.png"/></a>
