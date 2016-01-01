@@ -10,7 +10,13 @@ TrakHound is an Open Source software package designed to retrieve and store data
 ##Client
 TrakHound Client is a Windows application and is used to view the data that was processed and stored by the server. The client's core only manages the pages, updates, etc. and all of the data related pages are plugins. Preinstalled plugins include Dashboard, Device Compare, Table Manager, and Status Data. These provide the tools necessary to monitor current basic device / production data.
 
-
+<div align="center">
+  <div>
+    <img width="400" src="http://feenux.com/github/images/client_dashboard_01.png"/>
+    &nbsp;&nbsp;
+    <img width="400" src="http://feenux.com/github/images/client_tablemanager_01.png"/>
+  </div>
+</div>
 
 
 
