@@ -12,9 +12,9 @@ TrakHound Client is a Windows application and is used to view the data that was 
 
 <div align="center">
   <div>
-    <img width="400" src="http://feenux.com/github/images/client_dashboard_01.png"/>
+    <a href="http://feenux.com/github/images/client_dashboard_01.png"><img width="400" src="http://feenux.com/github/images/client_dashboard_01_sm.png"/></a>
     &nbsp;&nbsp;
-    <img width="400" src="http://feenux.com/github/images/client_tablemanager_01.png"/>
+    <a href="http://feenux.com/github/images/client_tablemanager_01.png"><img width="400" src="http://feenux.com/github/images/client_tablemanager_01_sm.png"/></a>
   </div>
 </div>
 
@@ -22,7 +22,7 @@ TrakHound Client is a Windows application and is used to view the data that was 
 
 <div align="center">
   <div>
-    <img width="400" src="http://feenux.com/github/images/client_devicemanager_01_sm.png"/>
+    <a href="http://feenux.com/github/images/client_devicemanager_01.png"><img width="400" src="http://feenux.com/github/images/client_devicemanager_01_sm.png"/></a>
     &nbsp;&nbsp;
     <a href="http://feenux.com/github/images/client_plugins_01.png"><img width="400" src="http://feenux.com/github/images/client_plugins_01_sm.png"/></a>
   </div>
