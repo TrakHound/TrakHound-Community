@@ -14,6 +14,8 @@ TrakHound Client is a Windows application and is used to view the data that was 
 
 Plugins for further analysis of the data such as reporting, graphing, alerts, etc. can be downloaded from our web site.
 
+<br>
+
 <div align="center">
   <div>
     <a href="http://feenux.com/github/images/client_dashboard_01.png"><img width="400" src="http://feenux.com/github/images/client_dashboard_01_sm.png"/></a>
