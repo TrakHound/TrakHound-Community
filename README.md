@@ -1,4 +1,4 @@
-![TrakHound Logo] (http://feenux.com/misc/TrakHound_Logo_Full_10.png)
+![TrakHound Logo] (http://feenux.com/github/images/github_header_01.png)
 
 [TrakHound.org] (http://www.trakhound.org/)
 
