@@ -7,6 +7,8 @@
 ##About
 TrakHound is an Open Source software package designed to retrieve and store data from CNC and other PLC driven equipment. Data is retrieved using <a href="http://mtconnect.org">MTConnect®</a> and data is stored in a database. 
 
+Setup is easy using the built in Device Manager page. Devices can be added from our Device Catalog which contains preconfigured devices and all that is needed is to enter in the MTConnect Agent and database information. Users can also share their devices using the Device Catalog so each configuration can be improved upon by the community. The Device Manager has all of the tools to fully configure each device. Some pages are specific to the Server or Client applications so depending on which application the Device Manager is opened in, the options may vary.
+
 ##Client
 TrakHound Client is a Windows application and is used to view the data that was processed and stored by the server. The client's core only manages the pages, updates, etc. and all of the data related pages are plugins. Preinstalled plugins include Dashboard, Device Compare, Table Manager, and Status Data. These provide the tools necessary to monitor current basic device / production data.
 
@@ -27,8 +29,6 @@ TrakHound Client is a Windows application and is used to view the data that was 
     <a href="http://feenux.com/github/images/client_plugins_01.png"><img width="400" src="http://feenux.com/github/images/client_plugins_01_sm.png"/></a>
   </div>
 </div>
-
-
 
 
 ##Server
