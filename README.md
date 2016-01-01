@@ -12,6 +12,8 @@ TrakHound Server is used to collect, process, and store the data from each devic
 
 The Server is ran as a Windows application and is controlled by a System Tray Icon menu. The menu contains options to Login / Logout, Start / Stop server, open the Device Manager for configuring the server, and a Console. 
 
+<br>
+
 <div align="center">
   <div>
     <img src="http://feenux.com/github/images/server_menu_01.png"/>
@@ -20,6 +22,7 @@ The Server is ran as a Windows application and is controlled by a System Tray Ic
   </div>
 </div>
 
+<br><br>
 
 Important messages are displayed as Windows Notifications.
 
