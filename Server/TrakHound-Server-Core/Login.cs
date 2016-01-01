@@ -20,29 +20,28 @@ namespace TrakHound_Server_Core
     {
 
         UserConfiguration currentuser;
-
-        Database_Settings userDatabaseSettings;
-
-        void Login()
+        public UserConfiguration CurrentUser
         {
-            // Remember Me
-            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, userDatabaseSettings);
-            if (rememberUser != null)
+            get { return currentuser; }
+            set
             {
-                LoginUser(rememberUser);
-            }
-            else
-            {
-                RememberMeMonitor_Start();
-                Logger.Log("Login failed : Login through Control Panel and set 'Remember Me'");
+                currentuser = value;
+
+                if (currentuser != null) Start();
+                else Stop();
+
+                if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
         }
 
-        void LoginUser(UserConfiguration userConfig)
-        {
-            //RememberMe.Set(userConfig, RememberMeType.Server, userDatabaseSettings);
+        public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
+        public event CurrentUserChanged_Handler CurrentUserChanged;
 
-            currentuser = userConfig;
+        Database_Settings userDatabaseSettings;
+
+        public void Login(UserConfiguration userConfig)
+        {
+            CurrentUser = userConfig;
 
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.White;
@@ -50,6 +49,12 @@ namespace TrakHound_Server_Core
             Console.ResetColor();
 
             Logger.Log(" Logged in Successfully");
+        }
+
+        public void Logout()
+        {
+            Stop();
+            CurrentUser = null;
         }
 
         void ReadUserManagementSettings()
@@ -99,10 +104,10 @@ namespace TrakHound_Server_Core
         void RememberMeMonitor_Worker(object o)
         {
            UserConfiguration rememberMe = RememberMe.Get(RememberMeType.Server, userDatabaseSettings);
-            if (rememberMe != null && currentuser == null)
+           if (rememberMe != null && CurrentUser == null)
             {
                 if (rememberMe_TIMER != null) rememberMe_TIMER.Enabled = false;
-                LoginUser(rememberMe);
+                Login(rememberMe);
             }
         }
 

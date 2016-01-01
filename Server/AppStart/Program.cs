@@ -52,7 +52,7 @@ namespace AppStart
             {
                 //string serverPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-server-console.exe";
 
-                string serverPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\trakhound-server-console.exe";
+                string serverPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\trakhound-server.exe";
 
                 Process p = new Process();
 

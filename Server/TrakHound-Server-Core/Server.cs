@@ -20,6 +20,10 @@ namespace TrakHound_Server_Core
     public partial class Server
     {
 
+        public delegate void StatusChanged_Handler();
+        public event StatusChanged_Handler Started;
+        public event StatusChanged_Handler Stopped;
+
         public void Start()
         {
             System.Threading.ThreadPool.SetMaxThreads(10, 10);
@@ -29,13 +33,9 @@ namespace TrakHound_Server_Core
             Global.UseMultithreading = false;
             DatabasePluginReader dpr = new DatabasePluginReader();
 
-            // Read Users and Login
-            ReadUserManagementSettings();
-
-            // Attempt to Login user
-            Login();
-
             LoadDevices();
+
+            if (Started != null) Started();
         }
 
         public void Stop()
@@ -44,6 +44,10 @@ namespace TrakHound_Server_Core
             {
                 if (device != null) device.Close();
             }
+
+            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
+
+            if (Stopped != null) Stopped();
         }
 
     }

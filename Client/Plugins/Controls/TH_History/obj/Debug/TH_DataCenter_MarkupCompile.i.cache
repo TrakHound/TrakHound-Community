@@ -16,5 +16,5 @@ DEBUG;TRACE
 23-1606863180
 Controls\Calendar\Calendar.xaml;Controls\Calendar\Day.xaml;Controls\Calendar\DayOfWeekTitle.xaml;Controls\Graphs\Bar\Category\Graph.xaml;Controls\Graphs\LineGraph.xaml;Controls\Graphs\Line\Category\Graph.xaml;Controls\Graphs\Line\Timestamp\Graph.xaml;Controls\HistogramDisplay.xaml;Controls\HistoryContainer.xaml;Controls\HistoryItem.xaml;History.xaml;
 
-True
+False
 

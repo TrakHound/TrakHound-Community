@@ -25,9 +25,9 @@ namespace TrakHound_Server_Core
 
         void LoadDevices()
         {
-            if (currentuser != null)
+            if (CurrentUser != null)
             {
-                string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                string[] tablenames = Configurations.GetConfigurationsForUser(CurrentUser, userDatabaseSettings);
 
                 foreach (string tablename in tablenames)
                 {
@@ -114,9 +114,9 @@ namespace TrakHound_Server_Core
 
         void DevicesMonitor_Worker(List<Device_Server> devs)
         {
-            if (currentuser != null)
+            if (CurrentUser != null)
             {
-                string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, userDatabaseSettings);
+                string[] tablenames = Configurations.GetConfigurationsForUser(CurrentUser, userDatabaseSettings);
                 if (tablenames != null) // Connected to database properly
                 {
                     if (tablenames.Length > 0) // Has configurations
