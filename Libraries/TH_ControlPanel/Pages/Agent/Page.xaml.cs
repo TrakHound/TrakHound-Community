@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 
 using TH_Configuration;
+using TH_Global;
 using TH_Global.Functions;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
@@ -273,7 +274,7 @@ namespace TH_DeviceManager.Pages.Agent
 
         void probe_ProbeError(Probe.ErrorData errorData)
         {
-            Console.WriteLine("Probe Error :: " + errorData.message);
+            Logger.Log("Probe Error :: " + errorData.message);
 
             //this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { errorData.probe.URL });
 

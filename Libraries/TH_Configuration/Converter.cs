@@ -12,6 +12,8 @@ using System.Data;
 using System.Xml;
 using System.Reflection;
 
+using TH_Global;
+
 using TH_Configuration.Converter_Sub_Classes;
 
 namespace TH_Configuration
@@ -31,7 +33,7 @@ namespace TH_Configuration
             }
             catch (Exception ex)
             {
-                Console.WriteLine("XMLToTable() :: Exception :: " + ex.Message);
+                Logger.Log("XMLToTable() :: Exception :: " + ex.Message);
             }
 
             return result;

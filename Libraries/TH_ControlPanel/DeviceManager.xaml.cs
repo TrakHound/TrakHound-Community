@@ -242,7 +242,7 @@ namespace TH_DeviceManager
 
                     if (config != null)
                     {
-                        Console.WriteLine("Device Congifuration Read Successfully!");
+                        Logger.Log("Device Congifuration Read Successfully!");
 
                         // Initialize Database Configurations
                         Global.Initialize(config.Databases_Client);
@@ -458,7 +458,7 @@ namespace TH_DeviceManager
                             string localPath = tempdir + @"\" + temp_filename;
 
                             try { backupXml.Save(temp_filename); }
-                            catch (Exception ex) { Console.WriteLine("Error during Configuration Xml Backup"); }                
+                            catch (Exception ex) { Logger.Log("Error during Configuration Xml Backup"); }                
                         }
 
 
@@ -1497,7 +1497,7 @@ namespace TH_DeviceManager
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Plugin Exception! : " + ex.Message);
+                        Logger.Log("Plugin Exception! : " + ex.Message);
                     }
                 }
             }

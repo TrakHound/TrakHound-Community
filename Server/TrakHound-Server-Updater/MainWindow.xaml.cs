@@ -65,8 +65,6 @@ namespace TrakHound_Server_Updater
 
                     foreach (string keyName in keyNames)
                     {
-                        Console.WriteLine("Registry Update Key Found :: " + keyName);
-
                         this.Dispatcher.BeginInvoke(new Action<string>(Update_ApplicationName), new object[] { keyName });
 
                         string keyValue = GetRegistryKey(keyName);
@@ -76,10 +74,6 @@ namespace TrakHound_Server_Updater
                             {
                                 string unzipDirectory = keyValue.Substring(0, keyValue.IndexOf(';'));
                                 string copyDirectory = keyValue.Substring(keyValue.IndexOf(';') + 1);
-
-                                Console.WriteLine(keyName + " = " + keyValue);
-                                Console.WriteLine("unzipDirectory = " + unzipDirectory);
-                                Console.WriteLine("copyDirectory = " + copyDirectory);
 
                                 bool success = true;
 
@@ -99,10 +93,6 @@ namespace TrakHound_Server_Updater
                                     catch (Exception ex)
                                     {
                                         success = false;
-
-                                        //MessageBox.Show("AppStart.Update() :: Exception :: " + ex.Message);
-                                        //this.Dispatcher.BeginInvoke(new Action<string>(Update_DEBUGException), new object[] { "AppStart.Update() :: Exception :: " + ex.Message });
-
                                         Console.WriteLine("TrakHound-Server-Updater.Update() :: Exception :: " + ex.Message);
                                     }
 
@@ -118,7 +108,6 @@ namespace TrakHound_Server_Updater
                     this.Dispatcher.BeginInvoke(new Action(Update_Completed), new object[] { });
 
                     Thread.Sleep(2000);
-
                 }
 
             this.Dispatcher.BeginInvoke(new Action(Update_Finished), new object[] { });
@@ -267,14 +256,6 @@ namespace TrakHound_Server_Updater
                 RegistryKey updatesKey = rootKey.OpenSubKey("Updates");
 
                 Result = updatesKey.GetSubKeyNames();
-
-
-
-                //// Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                //RegistryKey updateKey = updatesKey.OpenSubKey(keyName);
-
-                //// Read value for [keyName] to [keyValue]
-                //Result = updateKey.GetValue(keyName).ToString();
             }
             catch (Exception ex)
             {

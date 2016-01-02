@@ -423,8 +423,6 @@ namespace TrakHound_Server_Core
 
                     if (config != null)
                     {
-                        Console.WriteLine("Device Congifuration Read Successfully!");
-
                         config.Index = index;
 
                         Device_Server server = new Device_Server(config);

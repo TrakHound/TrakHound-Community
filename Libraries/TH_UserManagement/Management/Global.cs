@@ -141,6 +141,22 @@ namespace TH_UserManagement.Management
             return result;
         }
 
+        public static List<Configuration> GetConfigurationsListForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        {
+            List<Configuration> result = null;
+
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.Configurations.GetConfigurationsListForUser(userConfig);
+            }
+            else
+            {
+                //result = Local.Configurations.GetConfigurationsForUser(userConfig, userDatabaseSettings);
+            }
+
+            return result;
+        }
+
         //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         //{
         //    List<Configuration> result = null;

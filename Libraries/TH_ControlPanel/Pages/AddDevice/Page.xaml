@@ -52,7 +52,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Configuration Catalog" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
+                    <TextBlock Text="Device Catalog" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
                     <!--Search-->
                     <Grid Grid.Row="1">

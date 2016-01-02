@@ -149,7 +149,7 @@ namespace TH_Global
 
                 LineQueue.Clear();
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Console.WriteLine("Logger.queue_TIMER_Elapsed() :: Exception :: " + ex.Message); }
             //catch { }
         }
 
@@ -232,7 +232,7 @@ namespace TH_Global
                     doc.Save(writer);
                 }
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
+            catch (Exception ex) { Console.WriteLine("Logger.WriteDocument() :: Exception :: " + ex.Message); }
             //catch { }
 
         }
@@ -257,7 +257,7 @@ namespace TH_Global
                 {
                     Result.Load(LogFile);
                 }
-                catch (Exception ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex) { Console.WriteLine("Logger.CreateDocument() :: Exception :: " + ex.Message); }
                 //catch { }            
             }
 

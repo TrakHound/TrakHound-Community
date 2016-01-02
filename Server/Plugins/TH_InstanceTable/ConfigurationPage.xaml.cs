@@ -328,23 +328,7 @@ namespace TH_InstanceTable
 
         void probe_ProbeError(Probe.ErrorData errorData)
         {
-            //Console.WriteLine("Probe Error :: " + errorData.message);
 
-            //this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { errorData.probe.URL });
-
-            //if (errorData.probe != null)
-            //{
-            //    // Run Probe again using other ports
-            //    if (tryPortIndex < tryPorts.Length - 1)
-            //    {
-            //        RunProbe(errorData.probe.configuration.Agent.IP_Address, tryPorts[tryPortIndex], errorData.probe.configuration.Agent.Device_Name);
-            //        tryPortIndex += 1;
-            //    }
-            //    else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), new object[] { false });
-
-            //    errorData.probe.Stop();
-            //}
-            //else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), new object[] { false });
         }
 
         #endregion

@@ -58,24 +58,12 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
-                string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
-
-                if (tablenames != null)
+                List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser, UserDatabaseSettings);
+                if (configurations != null)
                 {
-                    foreach (string tablename in tablenames)
+                    foreach (Configuration config in configurations)
                     {
-                        Configurations.UpdateInfo info = Configurations.GetClientUpdateInfo(tablename, UserDatabaseSettings);
-                        if (info != null)
-                        {
-                            bool enabled = false;
-                            bool.TryParse(info.Enabled, out enabled);
-
-                            if (enabled)
-                            {
-                                Configuration config = GetConfiguration(tablename);
-                                if (config != null) configs.Add(config);
-                            }
-                        }
+                        if (config.ClientEnabled) configs.Add(config);
                     }
                 }
             }
@@ -87,8 +75,65 @@ namespace TrakHound_Client
 
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_Finished), priority, new object[] { configs });
 
-            //this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), priority, new object[] { });
         }
+
+        //void LoadDevices_Worker()
+        //{
+        //    System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
+        //    stpw.Start();
+
+        //    List<Configuration> configs = new List<Configuration>();
+
+        //    if (currentuser != null)
+        //    {
+        //        string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
+
+        //        stpw.Stop();
+        //        Console.WriteLine("LoadDevices_Worker() : GetConfigurationsForUser : " + stpw.ElapsedMilliseconds.ToString() + "ms");
+        //        stpw.Restart();
+
+        //        if (tablenames != null)
+        //        {
+        //            foreach (string tablename in tablenames)
+        //            {
+        //                Configurations.UpdateInfo info = Configurations.GetClientUpdateInfo(tablename, UserDatabaseSettings);
+
+        //                stpw.Stop();
+        //                Console.WriteLine("LoadDevices_Worker() : GetClientUpdateInfo : " + tablename + " : " + stpw.ElapsedMilliseconds.ToString() + "ms");
+        //                stpw.Restart();
+
+        //                if (info != null)
+        //                {
+        //                    bool enabled = false;
+        //                    bool.TryParse(info.Enabled, out enabled);
+
+        //                    if (enabled)
+        //                    {
+        //                        Configuration config = GetConfiguration(tablename);
+
+        //                        stpw.Stop();
+        //                        Console.WriteLine("LoadDevices_Worker() : GetConfiguration : " + tablename + " : " + stpw.ElapsedMilliseconds.ToString() + "ms");
+        //                        stpw.Restart();
+
+        //                        if (config != null) configs.Add(config);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    // If not logged in Read from File in 'C:\TrakHound\'
+        //    else
+        //    {
+        //        configs = ReadConfigurationFile();
+        //    }
+
+        //    this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_Finished), priority, new object[] { configs });
+
+        //    //this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), priority, new object[] { });
+
+        //    stpw.Stop();
+        //    Console.WriteLine("LoadDevices_Worker() : " + stpw.ElapsedMilliseconds.ToString() + "ms");
+        //}
 
         Configuration GetConfiguration(string tablename)
         {

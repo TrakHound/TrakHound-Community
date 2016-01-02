@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 
 using TH_Configuration;
+using TH_Global;
 using TH_Global.Functions;
 using TH_PlugIns_Server;
 using TH_MTC_Data.Components;
@@ -245,7 +246,7 @@ namespace TH_GeneratedData.ConfigurationPage
         void probe_ProbeError(Probe.ErrorData errorData)
         {
 
-            Console.WriteLine("TH_GeneratedData :: ConfigurationPage :: Probe Error :: " + errorData.message);
+            Logger.Log("TH_GeneratedData :: ConfigurationPage :: Probe Error :: " + errorData.message);
 
             // Set 'Loading' to false
             this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
@@ -366,8 +367,6 @@ namespace TH_GeneratedData.ConfigurationPage
 
         void LoadSnapshotItems(DataTable dt)
         {
-            Console.WriteLine("Loading Snapshots");
-
             string address = "/GeneratedData/SnapShotData/";
 
             string filter = "address LIKE '" + address + "*'";

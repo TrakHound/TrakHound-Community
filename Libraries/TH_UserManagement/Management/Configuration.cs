@@ -8,6 +8,7 @@ using System.Data;
 using System.Xml;
 
 using TH_Configuration;
+using TH_Global;
 
 namespace TH_UserManagement.Management
 {
@@ -75,7 +76,6 @@ namespace TH_UserManagement.Management
             string rootPath;
             rootPath = System.IO.Path.GetDirectoryName(filepath);
             rootPath += @"\";
-            //Console.WriteLine("User Configuration Root Path = " + rootPath);
 
             if (System.IO.File.Exists(filepath))
             {
@@ -93,11 +93,7 @@ namespace TH_UserManagement.Management
                     }
                 }
 
-                Console.WriteLine("User Configuration Successfully Read From : " + filepath);
-            }
-            else
-            {
-                //Console.WriteLine("User Configuration File Not Found : " + filepath);
+                Logger.Log("User Configuration Successfully Read From : " + filepath);
             }
 
             return result;

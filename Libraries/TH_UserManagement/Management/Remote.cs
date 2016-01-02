@@ -39,11 +39,11 @@ namespace TH_UserManagement.Management
                 DataRow dbrow = GetLoginData(username, password);
                 if (dbrow != null)
                 {
-                    Console.WriteLine(username + " Logged in Successfully!");
+                    Logger.Log(username + " Logged in Successfully!");
 
                     result = LoginSuccess(dbrow);
                 }
-                else Console.WriteLine("Username '" + username + "' Not Found in Database!");
+                else Logger.Log("Username '" + username + "' Not Found in Database!");
 
                 return result;
             }
@@ -431,6 +431,56 @@ namespace TH_UserManagement.Management
                     else return new string[0];
                 }
                 else return null;
+            }
+
+            public static List<Configuration> GetConfigurationsListForUser(UserConfiguration userConfig)
+            {
+                List<Configuration> result = null;
+
+                NameValueCollection values = new NameValueCollection();
+
+                values["username"] = userConfig.username;
+
+                string url = "https://www.feenux.com/php/configurations/getconfigurationslist.php";
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString != null)
+                {
+                    result = new List<Configuration>();
+
+                    string[] tables = responseString.Split('%');
+
+                    foreach (string table in tables)
+                    {
+                        if (!String.IsNullOrEmpty(table))
+                        {
+                            var delimiter = table.IndexOf('~');
+                            if (delimiter > 0)
+                            {
+                                string tablename = table.Substring(0, delimiter);
+                                string tabledata = table.Substring(delimiter + 1);
+
+                                DataTable dt = JSON.ToTable(tabledata);
+                                if (dt != null)
+                                {
+                                    XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                                    if (xml != null)
+                                    {
+                                        Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+                                        if (config != null)
+                                        {
+                                            config.Remote = true;
+                                            config.TableName = tablename;
+                                            result.Add(config);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                }
+
+                return result;
             }
 
             //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig)

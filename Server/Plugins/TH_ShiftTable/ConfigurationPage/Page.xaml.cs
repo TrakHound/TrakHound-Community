@@ -225,7 +225,6 @@ namespace TH_ShiftTable.ConfigurationPage
                 foreach (Shift s in shifts)
                 {
                     SaveShift(s, dt);
-                    Console.WriteLine(s.name + " :: Saved!");
                 }
             }
 

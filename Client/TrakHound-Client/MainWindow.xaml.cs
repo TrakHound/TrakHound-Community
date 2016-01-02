@@ -1669,6 +1669,9 @@ namespace TrakHound_Client
 
         void UpdatePluginDevices(List<Configuration> devices)
         {
+            System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
+            stpw.Start();
+
             if (plugins != null)
             {
                 foreach (Lazy<Plugin> lplugin in plugins.ToList())
@@ -1677,7 +1680,11 @@ namespace TrakHound_Client
 
                     plugin.Devices = devices;
                 }
-            } 
+            }
+
+            stpw.Stop();
+
+            Console.WriteLine("UpdatePluginDevices() : " + stpw.ElapsedMilliseconds.ToString() + "ms");
         }
 
 

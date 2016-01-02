@@ -32,9 +32,9 @@ namespace AppStart
 
             try
             {
-                //string serverPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-server-console.exe";
+                string serverPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "TrakHound-Server.exe";
 
-                string serverPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\trakhound-server.exe";
+                //string serverPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\trakhound-server.exe";
 
                 Process p = new Process();
                 p.StartInfo.FileName = serverPath;
@@ -76,9 +76,9 @@ namespace AppStart
         {
             try
             {
-                //string updaterPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "trakhound-server-updater.exe";
+                string updaterPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "TrakHound-Server-Updater.exe";
 
-                string updaterPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Updater\bin\Debug\trakhound-server-updater.exe";
+                //string updaterPath = @"F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Updater\bin\Debug\trakhound-server-updater.exe";
 
                 Process p = new Process();
                 p.StartInfo.FileName = updaterPath;

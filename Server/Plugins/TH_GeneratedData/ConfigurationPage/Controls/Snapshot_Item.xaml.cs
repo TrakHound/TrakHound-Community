@@ -171,8 +171,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
             if (combo.SelectedItem != null)
             {
-                Console.WriteLine("Link = " + combo.SelectedItem.ToString());
-
                 if (ParentSnapshot != null) ParentSnapshot.link = combo.SelectedItem.ToString();
             }
 

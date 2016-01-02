@@ -11,6 +11,8 @@ using System.Reflection;
 using System.Drawing;
 using System.Data;
 
+using TH_Global;
+
 namespace TH_Configuration
 {
 
@@ -135,7 +137,7 @@ namespace TH_Configuration
             string RootPath;
             RootPath = System.IO.Path.GetDirectoryName(ConfigFilePath);
             RootPath += @"\";
-            Console.WriteLine("Settings Root Path = " + RootPath);
+            Logger.Log("Settings Root Path = " + RootPath);
 
             if (System.IO.File.Exists(ConfigFilePath))
             {
@@ -181,12 +183,12 @@ namespace TH_Configuration
 
                 Result.UniqueId = GetUniqueID();
 
-                Console.WriteLine("Settings Successfully Read From : " + ConfigFilePath);
+                Logger.Log("Settings Successfully Read From : " + ConfigFilePath);
 
             }
             else
             {
-                Console.WriteLine("Settings File Not Found : " + ConfigFilePath);
+                Logger.Log("Settings File Not Found : " + ConfigFilePath);
             }
 
             return Result;
@@ -235,7 +237,7 @@ namespace TH_Configuration
 
             //Result.UniqueId = GetUniqueID();
 
-            //Console.WriteLine("Configuration Successfully Read");
+            //Logger.Log("Configuration Successfully Read");
 
             return Result;
 

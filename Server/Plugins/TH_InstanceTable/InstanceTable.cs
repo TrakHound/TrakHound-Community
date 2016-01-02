@@ -298,9 +298,6 @@ namespace TH_InstanceTable
 
         void AddRowsToDatabase(List<string> columns, List<InstanceData> instanceDatas)
         {
-            //System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
-            //stpw.Start();
-
             List<string> reqColumns = new List<string>();
 
             if (columns != null)
@@ -332,11 +329,6 @@ namespace TH_InstanceTable
                         InstanceData.Value prev_Value = null;
 
                         if (previousData != null) prev_Value = previousData.values.Find(x => x.id.ToUpper() == column.ToUpper());
-                        else
-                        {
-                            //Console.WriteLine("prevousData is null : " + column);
-                        }
-
 
                         string val = null;
                         string prev_val = null;
@@ -354,9 +346,6 @@ namespace TH_InstanceTable
 
                     previousData = instanceData;
 
-                    //Console.WriteLine(prev_output);
-                    //Console.WriteLine(output);
-
                     if (changed) rowValues.Add(values);
                 }
 
@@ -367,19 +356,8 @@ namespace TH_InstanceTable
                 columnsMySQL.AddRange(reqColumns);
                 columnsMySQL.AddRange(columns);
 
-                //foreach (string col in columnsMySQL) Console.WriteLine(col);
-
-                //stpw.Stop();
-                //UpdateStatus("InstanceTable AddRowsToMySQL() : Processing : " + stpw.ElapsedMilliseconds + "ms");
-
-                //stpw = new System.Diagnostics.Stopwatch();
-                //stpw.Start();
-
-                //UpdateStatus("Adding " + rowValues.Count.ToString() + " Rows to MySQL Instance Table...");
-
                 int interval = 50;
                 int countLeft = rowValues.Count;
-
 
                 while (countLeft > 0)
                 {
@@ -388,20 +366,8 @@ namespace TH_InstanceTable
                     countLeft -= interval;
 
                     Row.Insert(config.Databases_Server, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), false);
-
-                    //ThreadInfo threadInfo = new ThreadInfo();
-                    //threadInfo.tableName = TableName;
-                    //threadInfo.columns = columnsMySQL.ToArray();
-                    //threadInfo.values = ValuesToAdd.ToList();
-                    //threadInfo.update = false;
-
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(AddItemToSQLQueue), threadInfo);
                 }
-
-                //stpw.Stop();
-                //UpdateStatus("InstanceTable AddRowsToMySQL() : Transferring : " + stpw.ElapsedMilliseconds + "ms");
             }
-
         }
 
         //void AddRowsToDatabase(List<string> columns, List<InstanceData> instanceDatas)

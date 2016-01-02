@@ -70,18 +70,18 @@ namespace TH_UserManagement.Management
 
                                 if (pwd.hash == hash)
                                 {
-                                    Console.WriteLine(username + " Logged in Successfully!");
+                                    Logger.Log(username + " Logged in Successfully!");
 
                                     result = UserConfiguration.GetFromDataRow(dbrow);
 
                                     UpdateLoginTime(result, db);
                                 }
-                                else Console.WriteLine("Incorrect Password!");
+                                else Logger.Log("Incorrect Password!");
                             }
                         }
                     }
                 }
-                else Console.WriteLine("Username '" + username + "' Not Found in Database!");
+                else Logger.Log("Username '" + username + "' Not Found in Database!");
 
                 return result;
             }

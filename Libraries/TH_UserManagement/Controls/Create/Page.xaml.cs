@@ -472,8 +472,6 @@ namespace TH_UserManagement.Create
                     // Upload Profile Image
                     if (profileImageChanged)
                     {
-                        Console.WriteLine("Updating Profile Image");
-
                         if (success) success = UploadProfileImage(profileImage, info.userDatabaseSettings);
                         if (success) success = Users.UpdateImageURL(profileImageFilename, info.userConfig, info.userDatabaseSettings);
                     }

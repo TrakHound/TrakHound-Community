@@ -89,14 +89,6 @@
 			<Name>TH_ShiftTable</Name>
 			<Project>{21996C58-2404-42E4-A2D7-BEC46AEF6357}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\Admin Functions\TH_StartService\TH_StartService.csproj">
-			<Name>TH_StartService</Name>
-			<Project>{81B730A9-3C81-443F-AD0A-FDE16A4B661D}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\Admin Functions\TH_StopService\TH_StopService.csproj">
-			<Name>TH_StopService</Name>
-			<Project>{DBBBD291-8CE9-474A-A575-FFF46709C3A0}</Project>
-		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Styles\TH_Styles.csproj">
 			<Name>TH_Styles</Name>
 			<Project>{EBFABB3A-6FB4-47AE-8CB1-B663D57CF5B1}</Project>
@@ -116,6 +108,10 @@
 		<ProjectReference Include="..\TrakHound-Server-Core\TrakHound-Server-Core.csproj">
 			<Name>TrakHound-Server-Core</Name>
 			<Project>{19525183-F6E4-4179-91F3-F425DFE1AB40}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\TrakHound-Server-Updater\TrakHound-Server-Updater.csproj">
+			<Name>TrakHound-Server-Updater</Name>
+			<Project>{D3FCFB43-0971-428B-9B83-0E13258EB609}</Project>
 		</ProjectReference>
 	</ItemGroup>
 </Project>
