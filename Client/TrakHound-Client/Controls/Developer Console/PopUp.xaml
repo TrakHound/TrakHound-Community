@@ -14,7 +14,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300"
              d:DesignWidth="800"
-             
              >
 
     <UserControl.Resources>
@@ -25,7 +24,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource Accent_Normal}">
+    <Grid Background="#66000000">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -65,7 +64,7 @@
         </Grid.Style>
 
         <!--Toolbar-->
-        <Grid Grid.Row="0" MinHeight="30" Background="#33000000">
+        <Grid Grid.Row="0" MinHeight="30">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 
@@ -84,23 +83,23 @@
                     </th_wpf:Button.Style>
                 </th_wpf:Button>
 
-                <TextBlock Text="Developer Console" Foreground="#88ffffff" VerticalAlignment="Center" FontSize="12pt" Margin="10,0"/>
+                <TextBlock Text="Developer Console" Foreground="{StaticResource Foreground_Opposite_Normal}" VerticalAlignment="Center" FontSize="12pt" Margin="10,0"/>
 
             </StackPanel>
 
         </Grid>
 
         <!--Seperator-->
-        <Rectangle Grid.Row="1" Height="1" Fill="#66000000"/>
+        <Rectangle Grid.Row="1" Height="1" Fill="#33ffffff"/>
 
         <!--Content-->
         <Grid Grid.Row="2">
-            <Grid.Background>
+            <!--<Grid.Background>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#66000000" Offset="0"/>
                     <GradientStop Color="#77000000" Offset="1"/>
                 </LinearGradientBrush>
-            </Grid.Background>
+            </Grid.Background>-->
 
             <DataGrid ItemsSource="{Binding Console_Output}" 
                     Loaded="DataGrid_Loaded"
@@ -109,8 +108,8 @@
                     Background="{x:Null}"
                     BorderBrush="{x:Null}" 
                     GridLinesVisibility="Vertical"
-                    VerticalGridLinesBrush="#66000000"
-                    VerticalScrollBarVisibility="Disabled"  
+                    VerticalGridLinesBrush="#33ffffff"
+                    VerticalScrollBarVisibility="Auto"  
                     HeadersVisibility="None"
                     IsReadOnly="True" 
                     >

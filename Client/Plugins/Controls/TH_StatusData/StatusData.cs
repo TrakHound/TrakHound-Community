@@ -129,19 +129,31 @@ namespace TH_StatusData
 
         int interval = 5000;
 
-        ManualResetEvent stop = null;
+        //ManualResetEvent stop = null;
+
+        List<ManualResetEvent> stops = new List<ManualResetEvent>();
 
         void Update_Start()
         {
             Update_Stop();
 
+            Console.WriteLine("StatusData :: All Previous Threads Stopped");
+
             if (Devices != null)
             {
-                stop = new ManualResetEvent(false);
+                //stop = new ManualResetEvent(false);
 
                 foreach (Configuration device in Devices.ToList())
                 {
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(Update_Worker), device);
+                    Thread thread = new Thread(new ParameterizedThreadStart(Update_Worker));
+                    var stop = new ManualResetEvent(false);
+                    stops.Add(stop);
+
+                    var info = new UpdateInfo();
+                    info.Config = device;
+                    info.Stop = stop;
+
+                    thread.Start(info);
                 }
             }
         }
@@ -149,16 +161,31 @@ namespace TH_StatusData
         void Update_Stop()
         {
             // Set Update thread to stop
-            if (stop != null) stop.Set();
+            //if (stop != null) stop.Set();
+
+            foreach (var stop in stops)
+            {
+                if (stop != null) stop.Set();
+            }
+
+            stops.Clear();
+        }
+
+        class UpdateInfo
+        {
+            public Configuration Config { get; set; }
+            public ManualResetEvent Stop { get; set; }
         }
 
         void Update_Worker(object o)
         {
             if (o != null)
             {
-                Configuration config = (Configuration)o;
+                var info = (UpdateInfo)o;
 
-                while (!stop.WaitOne(0, true))
+                Configuration config = info.Config;
+
+                while (!info.Stop.WaitOne(0, true))
                 {
                     // Get Connection Status
                     DataEvent_Data connected = GetConnectionData(config);

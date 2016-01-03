@@ -180,7 +180,7 @@
                             <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=username_TXT}" Value="true">
                                                 <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
@@ -216,7 +216,7 @@
                             <Border BorderThickness="1" CornerRadius="1" Margin="10,5">
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsFocused, ElementName=password_TXT}" Value="true">
                                                 <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>

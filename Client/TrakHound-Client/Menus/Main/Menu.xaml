@@ -174,7 +174,7 @@
                     <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
 
                         <!--About Button-->
-                        <th_wpf:Button Clicked="About_Clicked" Image="/TrakHound-Client;component/Resources/About_01.png" ToolTip="About TrakHound Client">
+                        <th_wpf:Button Clicked="About_Clicked" ToolTip="About TrakHound Client">
                             <th_wpf:Button.Style>
                                 <Style TargetType="th_wpf:Button">
                                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
@@ -193,7 +193,7 @@
                         </th_wpf:Button>
 
                         <!--Exit Button-->
-                        <th_wpf:Button Clicked="Exit_BT_Clicked" ToolTip="Exit TrakHound Client" Cursor="Hand" Image="/;component/Resources/Power_01.png">
+                        <th_wpf:Button Clicked="Exit_BT_Clicked" ToolTip="Exit TrakHound Client" Cursor="Hand" >
                             <th_wpf:Button.Style>
                                 <Style TargetType="th_wpf:Button">
                                     <Setter Property="Foreground" Value="White"/>

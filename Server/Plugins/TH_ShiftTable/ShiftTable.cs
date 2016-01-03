@@ -458,6 +458,7 @@ namespace TH_ShiftTable
         public DateTime end { get; set; }
         public DateTime segmentStart { get; set; }
         public DateTime segmentEnd { get; set; }
+        public ShiftDate shiftData { get; set; }
 
         public static SegmentShiftTimes Get(DateTime d1, DateTime d2, ShiftDate date, Segment segment)
         {
@@ -488,7 +489,7 @@ namespace TH_ShiftTable
             // segmentStart = 11:00 AM 9/28/2015
             // segmentEnd   = 12:00 AM 9/28/2015
             // ------------------------
-            if (segmentEnd < segmentStart) segmentEnd = segmentEnd.AddDays(1);
+            if (segmentEnd < segmentStart) { segmentEnd = segmentEnd.AddDays(1); }
 
             SegmentShiftTimes Result = new SegmentShiftTimes();
             Result.start = start;

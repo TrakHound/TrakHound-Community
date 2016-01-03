@@ -38,19 +38,27 @@ namespace TrakHound_Server
 
         private Server server;
         private Device_Manager deviceManager;
-        private Output_Console console;
+        private ConsoleData consoleData;
 
-        public Controller(Server s, Device_Manager dm, Output_Console c)
+        //public Controller(Server s, Device_Manager dm, Output_Console c)
+        public Controller(Server s, ConsoleData cd)
         {
             InitializeComponents();
 
             server = s;
-            deviceManager = dm;
-            console = c;
+            consoleData = cd;
 
             s.CurrentUserChanged += s_CurrentUserChanged;
             s.Started += s_Started;
             s.Stopped += s_Stopped;
+        }
+
+        protected override void OnMainFormClosed(object sender, EventArgs e)
+        {
+            if (mNotifyIcon != null) mNotifyIcon.Visible = false;
+            mNotifyIcon.Dispose();
+
+            base.OnMainFormClosed(sender, e);
         }
 
         void InitializeComponents()
@@ -255,7 +263,15 @@ namespace TrakHound_Server
 
         void OpenConsole()
         {
-            if (console != null) { console.Show(); }
+            if (consoleData != null)
+            {
+                var console = new Output_Console();
+                console.DataContext = consoleData;
+                //console.Console_Output = consoleData.Console_Output;
+                console.Show();
+            }
+
+            //if (console != null) { console.Show(); }
         }
 
         void StartServer()

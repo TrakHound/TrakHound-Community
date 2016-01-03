@@ -6,8 +6,12 @@
              
              xmlns:local="clr-namespace:TH_WPF.Histogram"
              
+             SizeChanged="UserControl_SizeChanged"
+             
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             >
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -58,7 +62,7 @@
 
         </Grid>
 
-        <ItemsControl ItemsSource="{Binding DataBars}" Margin="30,2,0,5">
+        <ItemsControl x:Name="itemsControl" ItemsSource="{Binding DataBars}" Margin="30,2,0,5" HorizontalAlignment="Stretch">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -68,7 +72,7 @@
                                 <Setter Property="HorizontalAlignment" Value="Left"/>
 
                                 <Setter Property="Maximum" Value="100"/>
-                                <Setter Property="Width" Value="{Binding BarWidth}"/>
+                                <Setter Property="Width" Value="{Binding BarWidth, RelativeSource={RelativeSource Self}}"/>
                                 <Setter Property="Margin" Value="2,0"/>
 
                                 <Setter Property="BorderThickness" Value="0"/>

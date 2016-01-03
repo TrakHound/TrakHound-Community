@@ -171,12 +171,13 @@ namespace TH_ShiftTable
                 gesi.CaptureItems = item1.CaptureItems;
 
                 ShiftDate d = date;
-                if (segment.beginDayOffset > 0 && 
-                    segment.endDayOffset > 0 &&
-                    new ShiftDate(item1.timestamp.ToLocalTime()) == new ShiftDate(item2.timestamp.ToLocalTime()))
-                {
-                    d = d - segment.endDayOffset;
-                }              
+                //if (segment.beginDayOffset > 0 && 
+                //    segment.endDayOffset > 0 &&
+                //    new ShiftDate(item1.timestamp.ToLocalTime()) == new ShiftDate(item2.timestamp.ToLocalTime()))
+                //{
+                //    d = d - segment.endDayOffset;
+                //}  
+                d = d - segment.endDayOffset;
                 gesi.shiftDate = d;
 
                 // Get Times for segment and convert timestamps to Local

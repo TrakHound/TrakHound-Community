@@ -42,6 +42,34 @@ namespace TH_WPF.Histogram
             }
         }
 
+        public void AddDataBar(DataBar dataBar)
+        {
+            DataBars.Add(dataBar);
+
+            SetDataBarWidths();
+        }
+
+        void SetDataBarWidths()
+        {
+            double controlWidth = itemsControl.ActualWidth;
+            double barWidth = DataBar.MaxBarWidth;
+
+            if (controlWidth > 0 && DataBars.Count > 0)
+            {
+                int count = DataBars.Count;
+
+                int margin = 4;
+
+                barWidth = (controlWidth - (count * margin)) / count;
+                barWidth = Math.Min(DataBar.MaxBarWidth, barWidth);
+            }
+
+            foreach (var dataBar in DataBars)
+            {
+                dataBar.BarWidth = barWidth;
+            }
+        }
+
 
         public string shiftName
         {
@@ -51,15 +79,24 @@ namespace TH_WPF.Histogram
 
         public static readonly DependencyProperty shiftNameProperty =
             DependencyProperty.Register("shiftName", typeof(string), typeof(Histogram), new PropertyMetadata(null));
+
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SetDataBarWidths();
+        }
        
     }
 
     public class DataBar : TH_WPF.ProgressBar
     {
+        public const double MaxBarWidth = 10d;
+
         public DataBar()
         {
             this.DataContext = this;
         }
+
 
         public string Id
         {
@@ -81,7 +118,6 @@ namespace TH_WPF.Histogram
             DependencyProperty.Register("CurrentSegment", typeof(bool), typeof(DataBar), new PropertyMetadata(false));
 
 
-
         public string SegmentTimes
         {
             get { return (string)GetValue(SegmentTimesProperty); }
@@ -90,7 +126,6 @@ namespace TH_WPF.Histogram
 
         public static readonly DependencyProperty SegmentTimesProperty =
             DependencyProperty.Register("SegmentTimes", typeof(string), typeof(DataBar), new PropertyMetadata(null));
-
 
 
         public string ValueText
@@ -110,7 +145,7 @@ namespace TH_WPF.Histogram
         }
 
         public static readonly DependencyProperty BarWidthProperty =
-            DependencyProperty.Register("BarWidth", typeof(double), typeof(Histogram), new PropertyMetadata(10d));
+            DependencyProperty.Register("BarWidth", typeof(double), typeof(DataBar), new PropertyMetadata(MaxBarWidth));
 
     }
 }

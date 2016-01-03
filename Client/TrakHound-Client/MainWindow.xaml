@@ -872,7 +872,7 @@
                                             />
                                     
                                     <!--Developer Console-->
-                                    <devconsole:PopUp x:Name="developerConsole" Grid.Row="2" Margin="0,-10,0,0" ShownChanged="developerConsole_ShownChanged"/>
+                                    <devconsole:PopUp x:Name="developerConsole" Grid.Row="2" ShownChanged="developerConsole_ShownChanged" Background="{StaticResource Accent_Normal}"/>
 
                                     <!--Top Bar-->
                                     <Grid>

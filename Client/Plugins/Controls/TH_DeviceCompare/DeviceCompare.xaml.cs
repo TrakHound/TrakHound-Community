@@ -1058,7 +1058,8 @@ namespace TH_DeviceCompare
                             db = new TH_WPF.Histogram.DataBar();
                             db.Id = info.id;
                             db.SegmentTimes = info.segmentTimes;
-                            oeeTimeline.DataBars.Add(db);
+                            //oeeTimeline.DataBars.Add(db);
+                            oeeTimeline.AddDataBar(db);
                         }
                         else db = oeeTimeline.DataBars[dbIndex];
 

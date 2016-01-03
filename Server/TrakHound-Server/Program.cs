@@ -6,6 +6,15 @@
 using System;
 using System.Windows.Forms;
 using System.IO;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+
+using System.Threading;
+using System.Threading.Tasks;
+
+//using System.Threading;
+//using System.Windows;
+//using System.Windows.Data;
 
 using TH_Configuration;
 using TH_Database;
@@ -32,14 +41,16 @@ namespace TrakHound_Server
         {
             Server server;
             Controller controller;
-            Device_Manager deviceManager;
-            Output_Console console;
+            ConsoleData consoleData;
+            //Device_Manager deviceManager;
+            //Output_Console console;
 
             public Run()
             {
                 System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-                console = new Output_Console();
+                //console = new Output_Console();
+                consoleData = new ConsoleData();
 
                 LogWriter logWriter = new LogWriter();
                 logWriter.Updated += Log_Updated;
@@ -48,8 +59,9 @@ namespace TrakHound_Server
                 CheckForUpdates();
 
                 server = new Server();
-                deviceManager = new Device_Manager();
-                controller = new Controller(server, deviceManager, console);
+                //deviceManager = new Device_Manager();
+                //controller = new Controller(server, deviceManager, console);
+                controller = new Controller(server, consoleData);
 
                 Database_Settings userDatabaseSettings = GetRememberMe();
                 controller.userDatabaseSettings = userDatabaseSettings;
@@ -171,8 +183,52 @@ namespace TrakHound_Server
 
             void Log_Updated(string newline)
             {
-                if (console != null) console.AddLine(newline);
+                if (consoleData != null) consoleData.AddLogLine(newline);
+
+                //if (console != null) console.AddLine(newline);
+
+                //var ci = new Console_Item();
+                //ci.Row = rowIndex;
+                //ci.Timestamp = DateTime.Now;
+                //ci.Text = newline;
+
+                //rowIndex++;
+
+                //AddLogLine(ci);
             }
+
+            //ObservableCollection<Output_Console.Console_Item> console_output;
+            //public ObservableCollection<Output_Console.Console_Item> Console_Output
+            //{
+            //    get
+            //    {
+            //        if (console_output == null) console_output = new ObservableCollection<Output_Console.Console_Item>();
+            //        return console_output;
+            //    }
+            //    set { console_output = value; }
+            //}
+
+            //Int64 rowIndex = 0;
+            //const int MaxLines = 500;
+
+            //void AddLogLine(Output_Console.Console_Item ci)
+            //{
+            //    Console_Output.Add(ci);
+
+            //    if (Console_Output.Count > MaxLines)
+            //    {
+            //        int first = Console_Output.Count - MaxLines;
+
+            //        for (int x = 0; x < first; x++) Console_Output.RemoveAt(0);
+            //    }
+
+            //    //dg.ScrollIntoView(ci);
+
+            //    //scrollviewer.ScrollToEnd();
+
+            //    //var scrollerViewer = GetScrollViewer();
+            //    //if (scrollerViewer != null) scrollerViewer.ScrollToEnd();
+            //}
 
             void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
             {
@@ -180,5 +236,62 @@ namespace TrakHound_Server
                 Environment.Exit(12);
             }
         }
+
     }
+
+    class ConsoleData
+    {
+        private static object _lock = new object();
+
+        public Output_Console console;
+
+        ObservableCollection<Console_Item> console_output;
+        public ObservableCollection<Console_Item> Console_Output
+        {
+            get
+            {
+                if (console_output == null)
+                {
+                    console_output = new ObservableCollection<Console_Item>();
+                }
+                return console_output;
+            }
+            set { console_output = value; }
+        }
+
+        Int64 rowIndex = 0;
+        const int MaxLines = 500;
+
+        public void AddLogLine(string line)
+        {
+            var ci = new Console_Item();
+            ci.Row = rowIndex;
+            ci.Timestamp = DateTime.Now;
+            ci.Text = line;
+
+            rowIndex++;
+
+            AddLogLine_GUI(ci);
+        }
+
+        void AddLogLine_GUI(Console_Item ci)
+        {
+            Console_Output.Add(ci);
+
+            if (Console_Output.Count > MaxLines)
+            {
+                int first = Console_Output.Count - MaxLines;
+
+                for (int x = 0; x < first; x++) Console_Output.RemoveAt(0);
+            }
+        }
+    }
+
+    public class Console_Item
+    {
+        public Int64 Row { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Text { get; set; }
+    }
+
 }
