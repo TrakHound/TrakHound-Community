@@ -36,21 +36,17 @@ namespace TrakHound_Server
 
         public Database_Settings userDatabaseSettings;
 
-        private Server server;
-        private Device_Manager deviceManager;
-        private ConsoleData consoleData;
+        private ServerGroup serverGroup;
 
-        //public Controller(Server s, Device_Manager dm, Output_Console c)
-        public Controller(Server s, ConsoleData cd)
+        public Controller(ServerGroup group)
         {
             InitializeComponents();
 
-            server = s;
-            consoleData = cd;
+            serverGroup = group;
 
-            s.CurrentUserChanged += s_CurrentUserChanged;
-            s.Started += s_Started;
-            s.Stopped += s_Stopped;
+            group.Server.CurrentUserChanged += s_CurrentUserChanged;
+            group.Server.Started += s_Started;
+            group.Server.Stopped += s_Stopped;
         }
 
         protected override void OnMainFormClosed(object sender, EventArgs e)
@@ -161,21 +157,6 @@ namespace TrakHound_Server
             return mLoggedIn;
         }
 
-       //ToolStripControlHost CreateLoggedOutLabel()
-       //{
-       //    var mLabel = new Label();
-       //    mLabel.BackColor = System.Drawing.Color.Transparent;
-       //    mLabel.ForeColor = System.Drawing.Color.FromArgb(136, 136, 136);
-       //    System.Drawing.Font font1 = new System.Drawing.Font("segoe", 8);
-       //    mLabel.Font = font1;
-       //    mLabel.Margin = new Padding(0, 10, 0, 0);
-       //    mLabel.Height = 25;
-       //    mLabel.Text = "Logged Out";
-
-       //    mLoggedOut = new ToolStripControlHost(mLabel);
-       //    return mLoggedOut;
-       //}
-
         #region "Server Events"
 
         void s_Started()
@@ -229,79 +210,28 @@ namespace TrakHound_Server
                 mNotifyIcon.BalloonTipText = "User Logged Out";
                 mNotifyIcon.ShowBalloonTip(3000);
             }
-
-            if (deviceManager != null) deviceManager.CurrentUser = userConfig;
         }
 
         #endregion
 
-        void Login()
-        {
-
-            Login login = new Login();
-            login.CurrentUserChanged += login_CurrentUserChanged;
-            login.ShowDialog();
-
-        }
-
-        void login_CurrentUserChanged(TH_UserManagement.Management.UserConfiguration userConfig)
-        {
-            if (server != null) server.Login(userConfig);
-        }
-
-        void Logout()
-        {
-            RememberMe.Clear(RememberMeType.Server, userDatabaseSettings);
-
-            if (server != null) server.Logout();
-        }
-
-        void OpenDeviceManager()
-        {
-            if (deviceManager != null) { deviceManager.Show(); }
-        }
-
-        void OpenConsole()
-        {
-            if (consoleData != null)
-            {
-                var console = new Output_Console();
-                console.DataContext = consoleData;
-                //console.Console_Output = consoleData.Console_Output;
-                console.Show();
-            }
-
-            //if (console != null) { console.Show(); }
-        }
-
-        void StartServer()
-        {
-            if (server != null) server.Start();
-        }
-
-        void StopServer()
-        {
-            if (server != null) server.Stop();
-        }
-        
         #region "Menu Options"
 
-        void mLogin_Click(object sender, EventArgs e) { Login(); }
+        void mLogin_Click(object sender, EventArgs e) { if (serverGroup != null) serverGroup.Login(); }
 
-        void mSignOut_Click(object sender, EventArgs e) { Logout(); }
+        void mSignOut_Click(object sender, EventArgs e) { if (serverGroup != null) serverGroup.Logout(); }
 
-        void mDeviceManager_Click(object sender, EventArgs e) { OpenDeviceManager(); }
+        void mDeviceManager_Click(object sender, EventArgs e) { if (serverGroup != null) serverGroup.OpenDeviceManager(); }
 
-        void mConsole_Click(object sender, EventArgs e) { OpenConsole(); }
+        void mConsole_Click(object sender, EventArgs e) { if (serverGroup != null) serverGroup.OpenOutputConsole(); }
 
-        void mStartService_Click(object sender, EventArgs e) { StartServer(); }
+        void mStartService_Click(object sender, EventArgs e) { if (serverGroup != null) serverGroup.StartServer(); }
 
-        void mStopService_Click(object sender, EventArgs e) { StopServer(); }
+        void mStopService_Click(object sender, EventArgs e) { if (serverGroup != null) serverGroup.StopServer(); }
 
 
         void mExitApplication_Click(object sender, EventArgs e)
         {
-            if (server != null) server.Stop();
+            if (serverGroup != null) serverGroup.StopServer();
 
             ExitThreadCore();
         }
@@ -312,6 +242,5 @@ namespace TrakHound_Server
         }
 
         #endregion
-
     }
 }

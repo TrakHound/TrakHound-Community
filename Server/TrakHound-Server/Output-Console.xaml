@@ -7,6 +7,8 @@
         Title="TrakHound Server Output Console"
         Icon="Resources/TrakHound_Logo_Initials_10.ico"
         
+        Closing="Window_Closing"
+        
         mc:Ignorable="d" 
         d:DesignHeight="300" 
         d:DesignWidth="600" 

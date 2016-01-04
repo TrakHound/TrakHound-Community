@@ -53,7 +53,6 @@ namespace TrakHound_Server
 
         DeviceManager devicemanager;
 
-
         public object CurrentPage
         {
             get { return (object)GetValue(CurrentPageProperty); }
@@ -62,8 +61,6 @@ namespace TrakHound_Server
 
         public static readonly DependencyProperty CurrentPageProperty =
             DependencyProperty.Register("CurrentPage", typeof(object), typeof(Device_Manager), new PropertyMetadata(null));
-
-
 
         public object TempPage
         {
@@ -77,7 +74,6 @@ namespace TrakHound_Server
         public static readonly DependencyProperty TempPageProperty =
             DependencyProperty.Register("TempPage", typeof(object), typeof(Device_Manager), new PropertyMetadata(null));
 
-        
         #region "User Login"
 
         UserConfiguration currentuser;
@@ -137,5 +133,4 @@ namespace TrakHound_Server
         }
 
     }
-
 }

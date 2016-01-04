@@ -53,7 +53,6 @@ namespace TrakHound_Server
             }
         }
 
-
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
         public event CurrentUserChanged_Handler CurrentUserChanged;
 

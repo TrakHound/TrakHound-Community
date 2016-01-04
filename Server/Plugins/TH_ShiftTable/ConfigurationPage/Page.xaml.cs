@@ -255,8 +255,10 @@ namespace TH_ShiftTable.ConfigurationPage
             string attr = "";
             attr += "id||" + s.id.ToString("00") + ";";
             attr += "name||" + s.name + ";";
-            attr += "begintime||" + s.begintime.To24HourString() + ";";
-            attr += "endtime||" + s.endtime.To24HourString() + ";";
+            //attr += "begintime||" + s.begintime.To24HourString() + ";";
+            //attr += "endtime||" + s.endtime.To24HourString() + ";";
+            attr += "begintime||" + s.begintime.ToFullString() + ";";
+            attr += "endtime||" + s.endtime.ToFullString() + ";";
 
             Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
@@ -269,8 +271,10 @@ namespace TH_ShiftTable.ConfigurationPage
 
                 string segattr = "";
                 segattr += "id||" + segment.id.ToString("00") + ";";
-                segattr += "begintime||" + segment.begintime.To24HourString() + ";";
-                segattr += "endtime||" + segment.endtime.To24HourString() + ";";
+                //segattr += "begintime||" + segment.begintime.To24HourString() + ";";
+                //segattr += "endtime||" + segment.endtime.To24HourString() + ";";
+                segattr += "begintime||" + segment.begintime.ToFullString() + ";";
+                segattr += "endtime||" + segment.endtime.ToFullString() + ";";
 
                 Table_Functions.UpdateTableValue(null, segattr, segadr, dt);
             }
@@ -285,7 +289,8 @@ namespace TH_ShiftTable.ConfigurationPage
 
             ShiftTime begintime = shift.begintime.Copy();
             ShiftTime endtime = shift.endtime.Copy();
-            if (endtime < begintime) endtime.dayOffset = begintime.dayOffset + 1;
+            //if (endtime < begintime) endtime.dayOffset = begintime.dayOffset + 1;
+            if (endtime < begintime) endtime.hour += 24;
 
             ShiftTime time = begintime.Copy();
 
@@ -347,6 +352,8 @@ namespace TH_ShiftTable.ConfigurationPage
                 segment.type = type;
                 segment.id = id;
                 result.Add(segment);
+
+                //Console.WriteLine(segment.begintime.ToString() + " - " + segment.endtime.ToString() + " :: " + segment.begintime.dayOffset.ToString() + " : " + segment.endtime.dayOffset.ToString());
 
                 id += 1;
             }
@@ -499,8 +506,7 @@ namespace TH_ShiftTable.ConfigurationPage
             interval.second = 0;
 
             ShiftTime endtime = new ShiftTime();
-            endtime.dayOffset = 1;
-            endtime.hour = 0;
+            endtime.hour = 24;
             endtime.minute = 0;
             endtime.second = 0;
 

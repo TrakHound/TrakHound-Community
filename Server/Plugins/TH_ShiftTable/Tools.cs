@@ -26,15 +26,26 @@ namespace TH_ShiftTable
 
         public static DateTime GetDateTimeFromShiftTime(ShiftTime time, ShiftDate date, int dayOffset)
         {
-            DateTime Result = new DateTime(date.year, date.month, date.day, time.hour, time.minute, time.second);
+            //DateTime Result = new DateTime(date.year, date.month, date.day, time.hour, time.minute, time.second);
+            DateTime Result = new DateTime(date.year, date.month, date.day, time.adjHour, time.minute, time.second);
             Result = Result.AddDays(dayOffset);
 
             return Result;
         }
 
+        //public static DateTime GetDateTimeFromShiftTime(ShiftTime time, ShiftDate date, int dayOffset)
+        //{
+        //    //DateTime Result = new DateTime(date.year, date.month, date.day, time.hour, time.minute, time.second);
+        //    DateTime Result = new DateTime(date.year, date.month, date.day, time.adjHour, time.minute, time.second);
+        //    //Result = Result.AddDays(dayOffset);
+
+        //    //return Result;
+        //}
+
         public static DateTime getDateTimeFromShift(ShiftTime time, ShiftDate date, bool addDayValue)
         {
-            return new DateTime(date.year, date.month, date.day, time.hour, time.minute, time.second);
+            //return new DateTime(date.year, date.month, date.day, time.hour, time.minute, time.second);
+            return new DateTime(date.year, date.month, date.day, time.adjHour, time.minute, time.second);
         }
 
         #endregion

@@ -72,9 +72,11 @@ namespace TH_ShiftTable
                     time.minute = m;
                     time.second = 0;
 
-                    time.dayOffset = dayOffset;
+                    //time.dayOffset = dayOffset;
 
                     if (pm) time.hour += 12;
+
+                    //Console.WriteLine("TryParse() :: " + time.hour.ToString() + " : " + time.minute.ToString());
 
                     Result = true;
                 }
@@ -87,7 +89,28 @@ namespace TH_ShiftTable
         public int minute { get; set; }
         public int second { get; set; }
 
-        public int dayOffset { get; set; }
+        //public int dayOffset { get; set; }
+
+        public int dayOffset
+        {
+            get
+            {
+                double span = (double)hour / 24;
+                double floor = Math.Floor(span);
+
+                return Convert.ToInt32(floor);
+            }
+        }
+
+        public int adjHour
+        {
+            get
+            {
+                return hour - dayOffset * 24;
+            }
+        }
+
+
 
         public string To24HourString()
         {
@@ -96,7 +119,21 @@ namespace TH_ShiftTable
             result.minute = minute;
             result.second = second;
 
-            if (result.hour >= 24) result.hour -= 24;
+            if (result.hour >= 24) result.hour -= dayOffset * 24;
+
+            string h = result.hour.ToString("00");
+            string m = result.minute.ToString("00");
+            string s = result.second.ToString("00");
+
+            return h + ":" + m + ":" + s;
+        }
+
+        public string ToFullString()
+        {
+            ShiftTime result = new ShiftTime();
+            result.hour = hour;
+            result.minute = minute;
+            result.second = second;
 
             string h = result.hour.ToString("00");
             string m = result.minute.ToString("00");
@@ -107,18 +144,19 @@ namespace TH_ShiftTable
 
         public override string ToString()
         {
-            int adjHour = hour;
+            //int adjHour = hour;
+            int adjHour = (hour - (dayOffset * 24));
 
             string meridian = "AM";
-            if (hour == 0)
+            if (adjHour == 0)
             {
                 adjHour = 12;
             }
-            else if (hour == 12)
+            else if (adjHour == 12)
             {
                 meridian = "PM";
             }
-            else if (hour > 12)
+            else if (adjHour > 12)
             {
                 meridian = "PM";
                 adjHour -= 12;
@@ -150,7 +188,7 @@ namespace TH_ShiftTable
                 result.minute = minute;
                 result.second = second;
 
-                result.dayOffset = dayOffset;
+                //result.dayOffset = dayOffset;
 
                 return result;
             }
@@ -197,8 +235,10 @@ namespace TH_ShiftTable
         static bool LessThan(ShiftTime c1, ShiftTime c2)
         {
             // Adjust hours to account for dayValue (ex. c1.hour = 18 & c2.hour = 0 when (c1 = 6 PM & c2 = 12 AM (the next day)))
-            int c1Hour = c1.hour + (24 * c1.dayOffset);
-            int c2Hour = c2.hour + (24 * c2.dayOffset);
+            //int c1Hour = c1.hour + (24 * c1.dayOffset);
+            //int c2Hour = c2.hour + (24 * c2.dayOffset);
+            int c1Hour = c1.hour;
+            int c2Hour = c2.hour;
 
             if (c1Hour > c2Hour) return false;
             else if (c1Hour == c2Hour && c1.minute > c2.minute) return false;
@@ -211,8 +251,11 @@ namespace TH_ShiftTable
             // Adjust hours to account for dayValue (ex. c1.hour = 18 & c2.hour = 0 when (c1 = 6 PM & c2 = 12 AM (the next day)))
             //int c1Hour = c1.hour + (c1.hour * c1.dayOffset);
             //int c2Hour = c2.hour + (c2.hour * c2.dayOffset);
-            int c1Hour = c1.hour + (24 * c1.dayOffset);
-            int c2Hour = c2.hour + (24 * c2.dayOffset);
+
+            //int c1Hour = c1.hour + (24 * c1.dayOffset);
+            //int c2Hour = c2.hour + (24 * c2.dayOffset);
+            int c1Hour = c1.hour;
+            int c2Hour = c2.hour;
 
             if (c1Hour < c2Hour) return false;
             else if (c1Hour == c2Hour && c1.minute < c2.minute) return false;

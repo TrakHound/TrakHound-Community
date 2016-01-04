@@ -187,21 +187,21 @@ namespace TH_ShiftTable
                         sc.type = child.Name;
                         sc.shift = shift;
 
-                        // Get BeginTime Day Offset
-                        if (child.Attributes["begindayoffset"] != null)
-                        {
-                            int beginDayOffset = 0;
-                            int.TryParse(child.Attributes["begindayoffset"].Value, out beginDayOffset);
-                            sc.beginDayOffset = beginDayOffset;
-                        }
+                        //// Get BeginTime Day Offset
+                        //if (child.Attributes["begindayoffset"] != null)
+                        //{
+                        //    int beginDayOffset = 0;
+                        //    int.TryParse(child.Attributes["begindayoffset"].Value, out beginDayOffset);
+                        //    sc.beginDayOffset = beginDayOffset;
+                        //}
 
-                        // Get BeginTime Day Offset
-                        if (child.Attributes["enddayoffset"] != null)
-                        {
-                            int endDayOffset = 0;
-                            int.TryParse(child.Attributes["enddayoffset"].Value, out endDayOffset);
-                            sc.endDayOffset = endDayOffset;
-                        }
+                        //// Get BeginTime Day Offset
+                        //if (child.Attributes["enddayoffset"] != null)
+                        //{
+                        //    int endDayOffset = 0;
+                        //    int.TryParse(child.Attributes["enddayoffset"].Value, out endDayOffset);
+                        //    sc.endDayOffset = endDayOffset;
+                        //}
 
                         ShiftTime begin;
                         ShiftTime end;
@@ -212,16 +212,23 @@ namespace TH_ShiftTable
                             sc.beginTime = begin;
                             sc.endTime = end;
 
-                            if (sc.beginDayOffset > 0)
-                            {
-                                sc.beginTime.dayOffset = sc.beginDayOffset;
-                            }
+                            //Console.WriteLine("ProcessSegments() :: " + sc.beginTime.hour.ToString() + " : " + sc.beginTime.minute.ToString());
+                            //Console.WriteLine("ProcessSegments() :: " + sc.endTime.hour.ToString() + " : " + sc.endTime.minute.ToString());
 
-                            if (sc.endDayOffset > 0)
-                            {
-                                sc.endTime.dayOffset = sc.endDayOffset;
-                                sc.shift.endTime.dayOffset = sc.endDayOffset;
-                            }
+                            //if (sc.beginDayOffset > 0)
+                            //{
+                            //    //sc.beginTime.dayOffset = sc.beginDayOffset;
+                            //    sc.beginTime.hour += sc.beginDayOffset * 24;
+                            //}
+
+                            //if (sc.endDayOffset > 0)
+                            //{
+                            //    //sc.endTime.dayOffset = sc.endDayOffset;
+                            //    //sc.shift.endTime.dayOffset = sc.endDayOffset;
+
+                            //    sc.endTime.hour += sc.endDayOffset * 24;
+                            //    sc.shift.endTime.hour += sc.endDayOffset * 24;
+                            //}
 
                             Result.Add(sc);
                         }
