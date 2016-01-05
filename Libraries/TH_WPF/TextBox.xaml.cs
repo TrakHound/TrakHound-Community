@@ -142,19 +142,19 @@ namespace TH_WPF
             }
         }
 
-        private void UserControl_GotFocus(object sender, RoutedEventArgs e)
-        {
-            //txt.Focus();
-            //Keyboard.Focus(txt);
-            txt.Select(0, 0);
-        }
+        //private void UserControl_GotFocus(object sender, RoutedEventArgs e)
+        //{
+        //    //txt.Focus();
+        //    //Keyboard.Focus(txt);
+        //    txt.Select(0, 0);
+        //}
 
-        private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            //txt.Focus();
-            //Keyboard.Focus(txt);
-            txt.Select(0, 0);
-        }
+        //private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        //{
+        //    //txt.Focus();
+        //    //Keyboard.Focus(txt);
+        //    txt.Select(0, 0);
+        //}
 
         private void txt_PreviewKeyDown(object sender, KeyEventArgs e)
         {

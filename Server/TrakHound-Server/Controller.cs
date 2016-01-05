@@ -15,7 +15,7 @@ using TrakHound_Server_Core;
 
 namespace TrakHound_Server
 {
-    class Controller : ApplicationContext
+    public class Controller : ApplicationContext
     {
         private System.ComponentModel.IContainer mComponents;   //List of components
         private NotifyIcon mNotifyIcon;
@@ -51,6 +51,8 @@ namespace TrakHound_Server
 
         protected override void OnMainFormClosed(object sender, EventArgs e)
         {
+            if (serverGroup != null) serverGroup.Close();
+
             if (mNotifyIcon != null) mNotifyIcon.Visible = false;
             mNotifyIcon.Dispose();
 

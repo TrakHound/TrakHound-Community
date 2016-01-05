@@ -47,6 +47,7 @@
                 </StackPanel.Resources>
 
                 <!--Device Description-->
+
                 <th_wpf:TextBox Text="{Binding DeviceDescription, Mode=TwoWay}" Title="Device Description" Instructions="Enter description of device" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Used to record a general desciption of the device.

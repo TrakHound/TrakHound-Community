@@ -35,9 +35,13 @@ namespace TrakHound_Server
     /// </summary>
     public partial class Device_Manager : Window
     {
-        public Device_Manager()
+        ServerGroup serverGroup;
+
+        public Device_Manager(ServerGroup group)
         {
             devicemanager = new DeviceManager(DeviceManagerType.Server);
+
+            serverGroup = group;
 
             InitializeComponent();
             DataContext = this;
@@ -50,6 +54,7 @@ namespace TrakHound_Server
             e.Cancel = true;
             Hide();
         }
+
 
         DeviceManager devicemanager;
 
@@ -76,17 +81,44 @@ namespace TrakHound_Server
 
         #region "User Login"
 
-        UserConfiguration currentuser;
+        //UserConfiguration currentuser;
+        //public UserConfiguration CurrentUser
+        //{
+        //    get { return currentuser; }
+        //    set
+        //    {
+        //        currentuser = value;
+
+        //        devicemanager.CurrentUser = currentuser;
+        //    }
+        //}
+
         public UserConfiguration CurrentUser
         {
-            get { return currentuser; }
-            set
-            {
-                currentuser = value;
+            get { return (UserConfiguration)GetValue(CurrentUserProperty); }
+            set 
+            { 
+                SetValue(CurrentUserProperty, value);
+                devicemanager.CurrentUser = value;
 
-                devicemanager.CurrentUser = currentuser;
+                Loading = false;
             }
         }
+
+        public static readonly DependencyProperty CurrentUserProperty =
+            DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(Device_Manager), new PropertyMetadata(null));
+
+
+        public bool Loading
+        {
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(Device_Manager), new PropertyMetadata(false));
+
+        
 
         public Database_Settings userDatabaseSettings;
 
@@ -130,6 +162,11 @@ namespace TrakHound_Server
         private void Back_Clicked(Button_04 bt)
         {
             TempPage = null;
+        }
+
+        private void LoginButton_Clicked(TH_WPF.Button bt)
+        {
+            if (serverGroup != null) serverGroup.Login();
         }
 
     }

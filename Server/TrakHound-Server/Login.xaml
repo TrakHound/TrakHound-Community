@@ -15,6 +15,7 @@
         Topmost="True"
            
         Loaded="UserControl_Loaded"
+        Closing="Window_Closing"
         Closed="Window_Closed"
         PreviewKeyDown="UserControl_PreviewKeyDown"
         >

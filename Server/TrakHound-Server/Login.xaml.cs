@@ -58,6 +58,13 @@ namespace TrakHound_Server
 
         public delegate void Clicked_Handler();
 
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
+            if (currentuser != null) CurrentUser = currentuser;
+        }
+
         #region "Properties"
 
         public bool UsernameEntered

@@ -312,25 +312,28 @@ namespace TH_DeviceManager
 
             if (currentuser != null)
             {
-                string[] tablenames = Remote.Configurations.GetConfigurationsForUser(currentuser);
+                configs = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
 
-                if (tablenames != null)
-                {
-                    foreach (string tablename in tablenames)
-                    {
-                        DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
-                        if (dt != null)
-                        {
-                            XmlDocument xml = Converter.TableToXML(dt);
-                            Configuration config = Configuration.ReadConfigFile(xml);
-                            if (config != null)
-                            {
-                                config.TableName = tablename;
-                                configs.Add(config);
-                            }
-                        }
-                    }
-                }
+
+                //string[] tablenames = Remote.Configurations.GetConfigurationsForUser(currentuser);
+
+                //if (tablenames != null)
+                //{
+                //    foreach (string tablename in tablenames)
+                //    {
+                //        DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
+                //        if (dt != null)
+                //        {
+                //            XmlDocument xml = Converter.TableToXML(dt);
+                //            Configuration config = Configuration.ReadConfigFile(xml);
+                //            if (config != null)
+                //            {
+                //                config.TableName = tablename;
+                //                configs.Add(config);
+                //            }
+                //        }
+                //    }
+                //}
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else

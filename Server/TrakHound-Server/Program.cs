@@ -31,12 +31,14 @@ namespace TrakHound_Server
         }
     }
 
-    class ServerGroup
+    public class ServerGroup
     {
         public Server Server { get; set; }
         public Controller Controller { get; set; }
         public Device_Manager DeviceManager { get; set; }
         public Output_Console OutputConsole { get; set; }
+        public Login login;
+
 
         Database_Settings userDatabaseSettings;
 
@@ -63,16 +65,27 @@ namespace TrakHound_Server
             Environment.ExitCode = 0;
         }
 
+        public void Close()
+        {
+            if (login != null) login.Close();
+            if (DeviceManager != null) DeviceManager.Close();
+        }
+
+
         void Server_CurrentUserChanged(UserConfiguration userConfig)
         {
             if (DeviceManager != null) DeviceManager.CurrentUser = userConfig;
         }
 
+
         public void OpenDeviceManager()
         {
-            if (DeviceManager == null) DeviceManager = new Device_Manager();
+            if (DeviceManager == null) DeviceManager = new Device_Manager(this);
+
             if (Server != null) DeviceManager.CurrentUser = Server.CurrentUser;
-            DeviceManager.Show();
+
+            if (login != null) login.Hide();
+            DeviceManager.ShowDialog();
         }
 
         public void OpenOutputConsole()
@@ -130,16 +143,34 @@ namespace TrakHound_Server
             return result;
         }
 
-        void login_CurrentUserChanged(TH_UserManagement.Management.UserConfiguration userConfig)
-        {
-            if (Server != null) Server.Login(userConfig);
-        }
 
         public void Login()
         {
-            Login login = new Login();
-            login.CurrentUserChanged += login_CurrentUserChanged;
+            bool deviceManagerOpen = false;
+            if (DeviceManager != null)
+            {
+                deviceManagerOpen = true;
+                DeviceManager.Hide();
+            }
+
+            if (login == null)
+            {
+                login = new Login();
+                login.CurrentUserChanged += login_CurrentUserChanged;
+            }
+
             login.ShowDialog();
+
+            if (deviceManagerOpen)
+            {
+                DeviceManager.Loading = true;
+                DeviceManager.ShowDialog();
+            }
+        }
+
+        void login_CurrentUserChanged(TH_UserManagement.Management.UserConfiguration userConfig)
+        {
+            if (Server != null) Server.Login(userConfig);
         }
 
         public void Logout()
