@@ -20,6 +20,7 @@ using System.Data;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
+using TH_Global.Functions;
 using TH_Plugins_Client;
 using TH_Styles;
 using TH_UserManagement.Management;
@@ -217,9 +218,10 @@ namespace TH_History
             DeviceList.Add(bt);
 
 
-            GetOEE(config);
+            GetOEE_Day(config);
+            //GetOEE_Week(config);
 
-            graph1.Plot1.InvalidatePlot(true);
+            //graph1.Plot1.InvalidatePlot(true);
         }
 
         List<Data> CreateDummyData()
@@ -240,50 +242,158 @@ namespace TH_History
             return result;
         }
 
-        void GetOEE(Configuration config)
+        void GetOEE_Day(Configuration config)
         {
             DataEvent_Data result = new DataEvent_Data();
 
-            string where = "";
+            // Get OEE Table
+            //string shiftQuery = DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToString("yyyyMMdd_");
+            string query = DateTime.Now.ToString("yyyyMMdd_");
+            DataTable oee_dt = Table.Get(config.Databases_Client, TableNames.OEE, "WHERE SHIFT_ID LIKE '" + query + "%'");
 
-            // Get Past Week
-            int days = 7;
-            for (var x = 0; x <= days - 1; x++)
-            {
-                string shiftQuery = "Shift_Id LIKE '" + DateTime.Now.Subtract(TimeSpan.FromDays(x)).ToString("yyyyMMdd_") + "%'";
-                if (x < days - 1) shiftQuery += " OR ";
-                where += shiftQuery;
-            }
+            // Get Shifts Table
+            DataTable shifts_dt = Table.Get(config.Databases_Client, TableNames.Shifts, "WHERE ID LIKE '" + query + "%'");
+
+            shiftDisplay.LoadData(oee_dt, shifts_dt);
 
 
-            //string shiftQuery = DateTime.Now.ToString("yyyyMMdd_");
-            //DataTable dt = Table.Get(config.Databases_Client, TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+            //if (dt != null)
+            //{
+                
 
-            DataTable dt = Table.Get(config.Databases_Client, TableNames.OEE, "WHERE " + where);
-            if (dt != null)
-            {
-                var dataList = new List<Data>();
 
-                foreach (DataRow row in dt.Rows)
-                {
-                    string shiftId = row["SHIFT_ID"].ToString();
+            //    //ShiftInfo_Day(dt);
 
-                    string oee_str = row["OEE"].ToString();
-                    double oee = 0;
-                    double.TryParse(oee_str, out oee);
 
-                    var data = new Data(); 
-                    data.Category = shiftId;
-                    data.Value = oee;
-                    dataList.Add(data);
-                }
+            //    //var dataList = new List<Data>();
 
-                var color = ((SolidColorBrush)TryFindResource("Accent_Normal")).Color;
+            //    //List<double> oees = new List<double>();
 
-                graph1.viewModel.LoadData(dataList, color);
+            //    //foreach (DataRow row in dt.Rows)
+            //    //{
+            //    //    string shiftId = row["SHIFT_ID"].ToString();
 
-            }
+            //    //    string oee_str = row["OEE"].ToString();
+            //    //    double oee = 0;
+            //    //    double.TryParse(oee_str, out oee);
+
+            //    //    oees.Add(oee);
+
+            //    //    //var data = new Data(); 
+            //    //    //data.Category = shiftId;
+            //    //    //data.Value = oee;
+            //    //    //dataList.Add(data);
+            //    //}
+
+            //    //ShiftInfo_Day_OEE(oees);
+
+            //    //var color = ((SolidColorBrush)TryFindResource("Accent_Normal")).Color;
+            //    //var color = Colors.Green;
+
+            //    //graph1.viewModel.LoadData(dataList, color);
+            //}
         }
+
+        //void GetOEE_Week(Configuration config)
+        //{
+        //    DataEvent_Data result = new DataEvent_Data();
+
+        //    string where = "";
+
+        //    // Get Past Week
+        //    int days = 7;
+        //    for (var x = 0; x <= days - 1; x++)
+        //    {
+        //        string shiftQuery = "Shift_Id LIKE '" + DateTime.Now.Subtract(TimeSpan.FromDays(x)).ToString("yyyyMMdd_") + "%'";
+        //        if (x < days - 1) shiftQuery += " OR ";
+        //        where += shiftQuery;
+        //    }
+
+        //    DataTable dt = Table.Get(config.Databases_Client, TableNames.OEE, "WHERE " + where);
+        //    if (dt != null)
+        //    {
+        //        List<double> oees = new List<double>();
+
+        //        foreach (DataRow row in dt.Rows)
+        //        {
+        //            string shiftId = row["SHIFT_ID"].ToString();
+
+        //            string oee_str = row["OEE"].ToString();
+        //            double oee = 0;
+        //            double.TryParse(oee_str, out oee);
+
+        //            oees.Add(oee);
+        //        }
+
+        //        ShiftInfo_Week_OEE(oees);
+        //    }
+        //}
+
+        //void ShiftInfo_Day(DataTable dt)
+        //{
+        //    List<double> total_oees = new List<double>();
+
+        //    foreach (DataRow row in dt.Rows)
+        //    {
+        //        string shiftId = row["SHIFT_ID"].ToString();
+
+        //        string oee_str = row["OEE"].ToString();
+        //        double oee = 0;
+        //        double.TryParse(oee_str, out oee);
+
+        //        total_oees.Add(oee);
+        //    }
+
+        //    var total_data = new ShiftInfo.Data();
+        //    total_data.OEEAverage = Math.Round(total_oees.Average(), 2);
+
+        //    //Day_ShiftInfo.SetData(total_data);
+
+
+
+        //    //// Average
+        //    //rowData = new VariableTable.RowData();
+        //    //rowData.Variable = "Average OEE";
+        //    //rowData.Value = Math.Round(oees.Average(), 2).ToString();
+        //    //Day_ShiftInfo.LoadData(rowData);
+
+        //    //// Median
+        //    //rowData = new VariableTable.RowData();
+        //    //rowData.Variable = "Median OEE";
+        //    //rowData.Value = Math.Round(Math_Functions.GetMedian(oees.ToArray()), 2).ToString();
+        //    //Day_ShiftInfo.LoadData(rowData);
+
+        //    //// Standard Deviation
+        //    //rowData = new VariableTable.RowData();
+        //    //rowData.Variable = "Standard Deviation OEE";
+        //    //rowData.Value = Math.Round(Math_Functions.StdDev(oees.ToArray()), 2).ToString();
+        //    //Day_ShiftInfo.LoadData(rowData);
+
+        //}
+
+        //void ShiftInfo_Week_OEE(List<double> oees)
+        //{
+        //    Controls.VariableTable.RowData rowData;
+
+        //    // Average
+        //    rowData = new VariableTable.RowData();
+        //    rowData.Variable = "Average OEE";
+        //    rowData.Value = Math.Round(oees.Average(), 2).ToString();
+        //    Week_ShiftInfo.LoadData(rowData);
+
+        //    // Median
+        //    rowData = new VariableTable.RowData();
+        //    rowData.Variable = "Median OEE";
+        //    rowData.Value = Math.Round(Math_Functions.GetMedian(oees.ToArray()), 2).ToString();
+        //    Week_ShiftInfo.LoadData(rowData);
+
+        //    // Standard Deviation
+        //    rowData = new VariableTable.RowData();
+        //    rowData.Variable = "Standard Deviation OEE";
+        //    rowData.Value = Math.Round(Math_Functions.StdDev(oees.ToArray()), 2).ToString();
+        //    Week_ShiftInfo.LoadData(rowData);
+
+        //}
 
         #endregion
 

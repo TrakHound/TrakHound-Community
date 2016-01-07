@@ -104,6 +104,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Include="Controls\ShiftDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ShiftInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\VariableTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="History.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,6 +156,15 @@
     <None Include="Controls\ShiftComparison.xaml.cs">
       <DependentUpon>ShiftComparison.xaml</DependentUpon>
     </None>
+    <Compile Include="Controls\ShiftDisplay.xaml.cs">
+      <DependentUpon>ShiftDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ShiftInfo.xaml.cs">
+      <DependentUpon>ShiftInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\VariableTable.xaml.cs">
+      <DependentUpon>VariableTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GraphInfo.cs" />
     <Compile Include="Controls\HistoryItem.xaml.cs">
       <DependentUpon>HistoryItem.xaml</DependentUpon>

@@ -8,6 +8,8 @@
              
              xmlns:categorybargraph="clr-namespace:TH_DataCenter.Controls.Graphs.Bar.Category"
              
+             xmlns:controls="clr-namespace:TH_History.Controls"
+             
              mc:Ignorable="d" 
              d:DesignHeight="300"
              d:DesignWidth="800"
@@ -45,9 +47,54 @@
             </ItemsControl>
 
         </Border>
+        
+        <Grid Grid.Column="1" Background="{StaticResource Window_Background}">
+            
+            <StackPanel>
+
+                <StackPanel>
+
+                    <TextBlock Text="Device Description"/>
+                    <TextBlock Text="Device Manufacturer"/>
+                    <TextBlock Text="Device Model"/>
+                    <TextBlock Text="Device Serial"/>
+                    <TextBlock Text="Device ID"/>
+
+                </StackPanel>
+
+                <!--Shift Display-->
+                <controls:ShiftDisplay x:Name="shiftDisplay"/>
+                
+                <!--<StackPanel Orientation="Horizontal">
+
+                    --><!--Day-->
+                    <!--<controls:ShiftInfo x:Name="Day_ShiftInfo" />-->
+
+                    <!--Week--><!--
+                    <controls:ShiftInfo x:Name="Week_ShiftInfo" />
+
+                    --><!--Month--><!--
+                    <controls:ShiftInfo x:Name="Month_ShiftInfo" />--><!--
 
 
-        <categorybargraph:Graph x:Name="graph1" Grid.Column="1" />
+                </StackPanel>-->
+                
+                
+                
+                
+            </StackPanel>
+            
+            
+            
+            
+            
+            
+            
+            
+        </Grid>
+
+
+        <!--<categorybargraph:Graph x:Name="graph1" Grid.Column="1" />-->
 
     </Grid>
     

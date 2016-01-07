@@ -63,7 +63,11 @@ namespace TrakHound_Client
                 {
                     foreach (Configuration config in configurations)
                     {
-                        if (config.ClientEnabled) configs.Add(config);
+                        if (config.ClientEnabled)
+                        {
+                            Global.Initialize(config.Databases_Client);
+                            configs.Add(config);
+                        }
                     }
                 }
             }

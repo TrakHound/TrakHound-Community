@@ -250,6 +250,11 @@ namespace TH_DeviceCompare
                     DeviceDisplay dd = DeviceDisplays.Find(x => x.configuration.UniqueId == config.UniqueId);
                     if (dd != null)
                     {
+                        if (dd.ComparisonGroup.header != null)
+                        {
+                            dd.ComparisonGroup.header.LastUpdatedTimestamp = DateTime.Now.ToString();
+                        }
+
                         // Connection
                         if (de_d.id.ToLower() == "statusdata_connection")
                         {

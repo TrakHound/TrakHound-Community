@@ -25,6 +25,24 @@ namespace TH_Global.Functions
             return median;
         }
 
+        public static double StdDev(this double[] vals)
+        {
+            double result = 0;
+            int count = vals.Count();
+            if (count > 1)
+            {
+                //Compute the Average
+                double avg = vals.Average();
+
+                //Perform the Sum of (value-avg)^2
+                double sum = vals.Sum(d => (d - avg) * (d - avg));
+
+                //Put it all together
+                result = Math.Sqrt(sum / count);
+            }
+            return result;
+        }
+
         public static bool IsOdd(int val)
         {
             return val % 2 != 0;
