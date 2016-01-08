@@ -180,6 +180,8 @@ namespace TH_ShiftTable
             columns.Add(new ColumnDefinition("SEGMENTID", DataType.Long));
             columns.Add(new ColumnDefinition("START", DataType.LargeText));
             columns.Add(new ColumnDefinition("END", DataType.LargeText));
+            columns.Add(new ColumnDefinition("START_UTC", DataType.LargeText));
+            columns.Add(new ColumnDefinition("END_UTC", DataType.LargeText));
             columns.Add(new ColumnDefinition("TYPE", DataType.LargeText));
             columns.Add(new ColumnDefinition("TOTALTIME", DataType.Long));
 
@@ -270,6 +272,18 @@ namespace TH_ShiftTable
                         sri.end = new ShiftTime(date);
                         // --------------------------------------------------------
 
+                        // get start time utc -------------------------------------
+                        date = DateTime.MinValue;
+                        DateTime.TryParse(row["start_utc"].ToString(), out date);
+                        sri.start = new ShiftTime(date);
+                        // --------------------------------------------------------
+
+                        // get end time utc ---------------------------------------
+                        date = DateTime.MinValue;
+                        DateTime.TryParse(row["end_utc"].ToString(), out date);
+                        sri.end = new ShiftTime(date);
+                        // --------------------------------------------------------
+
                         sri.type = row["type"].ToString();
 
                         int totalTime = -1;
@@ -314,6 +328,8 @@ namespace TH_ShiftTable
             columns.Add("segmentid");
             columns.Add("start");
             columns.Add("end");
+            columns.Add("start_utc");
+            columns.Add("end_utc");
             columns.Add("type");
 
             foreach (string column in GenEventColumns) columns.Add(column);
@@ -330,6 +346,8 @@ namespace TH_ShiftTable
                 values.Add(info.segmentId);
                 values.Add(info.start.ToString());
                 values.Add(info.end.ToString());
+                values.Add(info.start_utc.ToString());
+                values.Add(info.end_utc.ToString());
                 values.Add(info.type);
 
                 foreach (string column in GenEventColumns)
@@ -387,6 +405,8 @@ namespace TH_ShiftTable
                         info.segmentId = newInfo.segmentId;
                         info.start = newInfo.start;
                         info.end = newInfo.end;
+                        info.start_utc = newInfo.start_utc;
+                        info.end_utc = newInfo.end_utc;
                         info.type = newInfo.type;
 
                         foreach (string column in GenEventColumns)

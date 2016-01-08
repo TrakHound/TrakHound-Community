@@ -110,7 +110,20 @@ namespace TH_ShiftTable
             }
         }
 
+        public ShiftTime ToUTC()
+        {
+            TimeZone zone = TimeZone.CurrentTimeZone;
+            DateTime time = new DateTime(1, 1, 1, adjHour, minute, second);
+            TimeSpan offset = zone.GetUtcOffset(time);
 
+            var result = new ShiftTime();
+            result.hour = hour - offset.Hours; // Offset is given as negative number
+            if (result.hour < 0) result.hour = 24 - result.hour;
+            result.minute = minute - offset.Minutes;
+            result.second = second = offset.Seconds;
+
+            return result;
+        }
 
         public string To24HourString()
         {

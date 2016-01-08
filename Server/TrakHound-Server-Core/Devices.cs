@@ -108,6 +108,8 @@ namespace TrakHound_Server_Core
 
                 Thread.Sleep(5000);
             }
+
+            Logger.Log("DeviceMonitor_Start() :: while loop exited");
         }
 
         void DevicesMonitor_Stop()

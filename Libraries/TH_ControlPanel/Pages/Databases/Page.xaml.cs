@@ -158,7 +158,6 @@ namespace TH_DeviceManager.Pages.Databases
         }
 
 
-
         public bool DisplayDatabases
         {
             get { return (bool)GetValue(DisplayDatabasesProperty); }
@@ -169,7 +168,6 @@ namespace TH_DeviceManager.Pages.Databases
             DependencyProperty.Register("DisplayDatabases", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
         
-
         #region "Add Database"
 
         void CreateAddDatabaseButtons(TH_Database.DatabasePluginReader dpr)

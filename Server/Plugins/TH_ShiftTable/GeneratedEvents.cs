@@ -184,7 +184,10 @@ namespace TH_ShiftTable
                 // Get Times for segment and convert timestamps to Local
                 SegmentShiftTimes sst = SegmentShiftTimes.Get(item1.timestamp, item2.timestamp, date, segment);
 
-                gesi.shiftDate = date - segment.endTime.dayOffset;
+                if (segment.beginTime.dayOffset == segment.endTime.dayOffset) gesi.shiftDate = date - segment.endTime.dayOffset;
+                else gesi.shiftDate = date;
+
+                
 
                 // Calculate Start and End timestamps based on the DuringSegmentType
                 switch (type)

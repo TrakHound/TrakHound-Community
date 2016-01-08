@@ -44,7 +44,7 @@ namespace TrakHound_Server
 
         public ServerGroup()
         {
-            System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            //System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             OutputConsole = new Output_Console();
 

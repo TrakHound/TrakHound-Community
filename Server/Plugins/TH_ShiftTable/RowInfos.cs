@@ -28,6 +28,9 @@ namespace TH_ShiftTable
         public ShiftTime start { get; set; }
         public ShiftTime end { get; set; }
 
+        public ShiftTime start_utc { get; set; }
+        public ShiftTime end_utc { get; set; }
+
         public string type { get; set; }
 
         public int totalTime { get; set; }
@@ -43,6 +46,8 @@ namespace TH_ShiftTable
             Result.segmentId = segmentId;
             Result.start = start;
             Result.end = end;
+            Result.start_utc = start_utc;
+            Result.end_utc = end_utc;
             Result.type = type;
             Result.genEventRowInfos = genEventRowInfos;
             return Result;
@@ -72,8 +77,13 @@ namespace TH_ShiftTable
                         sri.date = shiftDate;
                         sri.shift = shiftName;
                         sri.segmentId = segment.id;
+
                         sri.start = segment.beginTime;
                         sri.end = segment.endTime;
+
+                        sri.start_utc = segment.beginTime.ToUTC();
+                        sri.end_utc = segment.endTime.ToUTC();
+
                         sri.type = segment.type;
 
                         sri.totalTime = Tools.GetTotalShiftSeconds(sri, currentData);

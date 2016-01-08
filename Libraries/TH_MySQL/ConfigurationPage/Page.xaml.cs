@@ -59,9 +59,6 @@ namespace TH_MySQL.ConfigurationPage
                 trakhoundserver_CHK.IsChecked = useTrakHoundCloudServer;
             }
 
-            // Load UseTrakHoundCloudServer
-            DatabaseName = Table_Functions.GetTableValue(prefix + "UseTrakHoundCloudServer", dt);
-
             // Load Database Name
             DatabaseName = Table_Functions.GetTableValue(prefix + "Database", dt);
 
@@ -490,7 +487,32 @@ namespace TH_MySQL.ConfigurationPage
         public bool UseTrakHoundCloudServer
         {
             get { return (bool)GetValue(UseTrakHoundCloudServerProperty); }
-            set { SetValue(UseTrakHoundCloudServerProperty, value); }
+            set 
+            {
+                SetValue(UseTrakHoundCloudServerProperty, value);
+
+                Server = "localhost";
+                Port = null;
+
+                if (ApplicationType == Application_Type.Client)
+                {
+                    Username = "feenuxco_reader";
+                    password_TXT.PasswordText = "#reader";
+                    confirmpassword_TXT.PasswordText = "#reader";
+                }
+                else
+                {
+                    Username = "feenuxco_th";
+                    password_TXT.PasswordText = "#mtconnect";
+                    confirmpassword_TXT.PasswordText = "#mtconnect";
+                }
+
+                UsePHPServer = true;
+                PhpServer = "www.feenux.com";
+                PhpDirectory = "php";
+
+                ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
+            }
         }
 
         public static readonly DependencyProperty UseTrakHoundCloudServerProperty =
@@ -501,27 +523,27 @@ namespace TH_MySQL.ConfigurationPage
         {
             UseTrakHoundCloudServer = true;
 
-            Server = "localhost";
-            Port = null;
+            //Server = "localhost";
+            //Port = null;
 
-            if (ApplicationType == Application_Type.Client)
-            {
-                Username = "feenuxco_reader";
-                password_TXT.PasswordText = "#reader";
-                confirmpassword_TXT.PasswordText = "#reader";
-            }
-            else
-            {
-                Username = "feenuxco_th";
-                password_TXT.PasswordText = "#mtconnect";
-                confirmpassword_TXT.PasswordText = "#mtconnect";
-            }
+            //if (ApplicationType == Application_Type.Client)
+            //{
+            //    Username = "feenuxco_reader";
+            //    password_TXT.PasswordText = "#reader";
+            //    confirmpassword_TXT.PasswordText = "#reader";
+            //}
+            //else
+            //{
+            //    Username = "feenuxco_th";
+            //    password_TXT.PasswordText = "#mtconnect";
+            //    confirmpassword_TXT.PasswordText = "#mtconnect";
+            //}
 
-            UsePHPServer = true;
-            PhpServer = "www.feenux.com";
-            PhpDirectory = "php";
+            //UsePHPServer = true;
+            //PhpServer = "www.feenux.com";
+            //PhpDirectory = "php";
 
-            ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
+            //ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
 
         }
 
