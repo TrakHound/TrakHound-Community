@@ -35,6 +35,9 @@
   <PropertyGroup>
     <ApplicationIcon>TrakHound_Logo_Initials_10.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>TrakHound_Server.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

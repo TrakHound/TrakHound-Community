@@ -353,8 +353,6 @@ namespace TH_ShiftTable.ConfigurationPage
                 segment.id = id;
                 result.Add(segment);
 
-                //Console.WriteLine(segment.begintime.ToString() + " - " + segment.endtime.ToString() + " :: " + segment.begintime.dayOffset.ToString() + " : " + segment.endtime.dayOffset.ToString());
-
                 id += 1;
             }
 

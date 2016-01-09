@@ -45,9 +45,17 @@ namespace TH_ShiftTable
             {
                 List<ListInfo> nameInfos = GetListByName(genEventItems);
 
+                PreviousData previousData = previousItems.Find(x => x.Id == config.UniqueId);
+                if (previousData == null)
+                {
+                    previousData = new PreviousData();
+                    previousData.Id = config.UniqueId;
+                    previousItems.Add(previousData);
+                }
+
                 foreach (ListInfo nameInfo in nameInfos)
                 {
-                    GeneratedData.GeneratedEventItem previousItem = previousItems.Find(x => x.eventName.ToLower() == nameInfo.title.ToLower());
+                    GeneratedData.GeneratedEventItem previousItem = previousData.PreviousItems.Find(x => x.eventName.ToLower() == nameInfo.title.ToLower());
 
                     for (int i = 0; i <= nameInfo.genEventItems.Count - 1; i++)
                     {
@@ -65,12 +73,12 @@ namespace TH_ShiftTable
                         }
                         else
                         {
-                            previousItems.Add(item);
+                            previousData.PreviousItems.Add(item);
                             previousItem = item;
                         }
 
-                        int prevIndex = previousItems.FindIndex(x => x.eventName.ToLower() == nameInfo.title.ToLower());
-                        if (prevIndex >= 0) previousItems[prevIndex] = previousItem;
+                        int prevIndex = previousData.PreviousItems.FindIndex(x => x.eventName.ToLower() == nameInfo.title.ToLower());
+                        if (prevIndex >= 0) previousData.PreviousItems[prevIndex] = previousItem;
                     }
                 }
             }
@@ -80,7 +88,18 @@ namespace TH_ShiftTable
         }
 
         // Used to hold information between Samples
-        public static List<GeneratedData.GeneratedEventItem> previousItems;
+
+        public class PreviousData
+        {
+            public PreviousData() { PreviousItems = new List<GeneratedData.GeneratedEventItem>(); }
+
+            public string Id { get; set; }
+            public List<GeneratedData.GeneratedEventItem> PreviousItems { get; set; }
+        }
+
+        public static List<PreviousData> previousItems = new List<PreviousData>();
+
+        //public static List<GeneratedData.GeneratedEventItem> previousItems;
 
         #region "Private"
 

@@ -28,8 +28,6 @@ namespace TH_Device_Server
 
             UseDatabases = useDatabases;
 
-            LoadPlugins();
-
             configuration = config;
 
             RunningTime_Initialize();
@@ -48,9 +46,13 @@ namespace TH_Device_Server
 
         public void Initialize()
         {
+            Global.Initialize(configuration.Databases_Server);
+
+            if (UseDatabases) Database.Create(configuration.Databases_Server);
+
             CheckDatabaseConnection();
 
-            TH_Database.Database.Create(configuration.Databases_Server);
+            LoadPlugins();
 
             // Initialize any aux tables such as Agent info or variables
             InitializeTables();
@@ -121,7 +123,7 @@ namespace TH_Device_Server
         {
             PrintDeviceHeader(configuration);
 
-            if (UseDatabases) Database.Create(configuration.Databases_Server);
+            //if (UseDatabases) Database.Create(configuration.Databases_Server);
 
             worker = new Thread(new ThreadStart(Worker_Start));
             worker.Start();
@@ -134,6 +136,7 @@ namespace TH_Device_Server
 
             if (worker != null)
             {
+                Worker_Stop();
                 worker.Join(5000);
                 if (worker != null) worker.Abort();
                 worker = null;
@@ -176,6 +179,8 @@ namespace TH_Device_Server
 
         void Worker_Stop()
         {
+            Requests_Stop();
+
             RunningTimeSTPW.Stop();
         }
 

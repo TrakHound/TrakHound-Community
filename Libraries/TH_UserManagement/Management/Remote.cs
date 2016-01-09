@@ -387,15 +387,17 @@ namespace TH_UserManagement.Management
                 result = CreateConfigurationTable(tableName);
                 if (result)
                 {
-
-                    DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
-
                     string uniqueId = String_Functions.RandomString(20);
 
                     configuration.UniqueId = uniqueId;
 
                     // Set new Unique Id
-                    Table_Functions.UpdateTableValue(uniqueId, "/UniqueId", dt);
+                    XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
+
+                    DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
+
+                    // Set new Unique Id
+                    //Table_Functions.UpdateTableValue(uniqueId, "/UniqueId", dt);
 
                     result = UpdateConfigurationTable(tableName, dt);
                 }

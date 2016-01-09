@@ -72,11 +72,7 @@ namespace TH_ShiftTable
                     time.minute = m;
                     time.second = 0;
 
-                    //time.dayOffset = dayOffset;
-
                     if (pm) time.hour += 12;
-
-                    //Console.WriteLine("TryParse() :: " + time.hour.ToString() + " : " + time.minute.ToString());
 
                     Result = true;
                 }
@@ -88,8 +84,6 @@ namespace TH_ShiftTable
         public int hour { get; set; }
         public int minute { get; set; }
         public int second { get; set; }
-
-        //public int dayOffset { get; set; }
 
         public int dayOffset
         {

@@ -100,11 +100,11 @@ namespace TH_GeneratedData
 
                             List<GeneratedEventItem> geis = ProcessGeneratedEvents(instanceDatas);
 
-                            if (UseDatabases) if (gdc.generatedEvents.UploadToMySQL) InsertGeneratedEventItems(geis);
-
                             // Send List of GeneratedEventItems to other Plugins--------
                             SendGeneratedEventItems(geis);
                             // ----------------------------------------------------
+
+                            if (UseDatabases) if (gdc.generatedEvents.UploadToMySQL) InsertGeneratedEventItems(geis);
 
                             break;
 
@@ -1385,7 +1385,7 @@ namespace TH_GeneratedData
             DataEvent_Data data = new DataEvent_Data();
             data.id = "GeneratedEventItems";
             data.data01 = config;
-            data.data02 = items;
+            data.data02 = items.ToList();
             if (DataEvent != null) DataEvent(data);
         }
 

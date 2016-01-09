@@ -30,14 +30,14 @@ namespace TH_Device_Server
 
             stopRequests = new ManualResetEvent(false);
 
-            while (true)
+            while (!stopRequests.WaitOne(0, true))
             {
                 var probeData = RunProbe();
                 if (probeData != null)
                 {
                     TablePlugIns_Update_Probe(probeData);
 
-                    while (true)
+                    while (!stopRequests.WaitOne(0, true))
                     {
                         var currentData = RunCurrent();
                         if (currentData != null)
@@ -148,6 +148,7 @@ namespace TH_Device_Server
                         WriteToConsole("Sample Error : " + url, ConsoleOutputType.Error);
                     }
                 }
+                else WriteToConsole("Sample Skipped", ConsoleOutputType.Status);
             }
 
             return result;

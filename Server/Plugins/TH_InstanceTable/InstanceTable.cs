@@ -63,6 +63,8 @@ namespace TH_InstanceTable
 
         public void Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
         {
+            //Console.WriteLine("InstanceTable.Update_Current()" + config.Description.Description + this.GetHashCode().ToString());
+
             CurrentData = returnData;
 
             InstanceData instanceData = ProcessSingleInstance(returnData);
@@ -85,6 +87,8 @@ namespace TH_InstanceTable
 
         public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
         {
+            //Console.WriteLine("InstanceTable.Update_Sample()" + config.Description.Description + this.GetHashCode().ToString());
+
             List<InstanceData> instanceDatas = ProcessInstances(CurrentData, returnData);
 
             if (UseDatabases) if (AddMySQL) AddRowsToDatabase(ColumnNames, instanceDatas);
@@ -112,7 +116,15 @@ namespace TH_InstanceTable
 
         public void Update_DataEvent(DataEvent_Data de_data)
         {
-
+            //if (de_data.data01 != null)
+            //{
+            //    Configuration updateConfig = de_data.data01 as Configuration;
+            //    if (updateConfig != null)
+            //    {
+            //        Console.WriteLine("InstanceTable.Update_DataEvent() : " + de_data.id + " : " + updateConfig.Description.Description + " = " + config.Description.Description + this.GetHashCode().ToString());
+            //    }
+            //}
+            
         }
 
         public event DataEvent_Handler DataEvent;
@@ -570,7 +582,8 @@ namespace TH_InstanceTable
                     // Conditions -------------------------------------------------------------------------
                     foreach (TH_MTC_Data.Components.DataItem dataItem in dataItems.Conditions)
                     {
-                        Result.Add(dataItem.id.ToUpper());
+                        string name = dataItem.id.ToUpper();
+                        if (!Result.Contains(name)) Result.Add(name);
                     }
                     // ------------------------------------------------------------------------------------
                 }
@@ -580,7 +593,8 @@ namespace TH_InstanceTable
                     // Events -----------------------------------------------------------------------------
                     foreach (TH_MTC_Data.Components.DataItem dataItem in dataItems.Events)
                     {
-                        Result.Add(dataItem.id.ToUpper());
+                        string name = dataItem.id.ToUpper();
+                        if (!Result.Contains(name)) Result.Add(name);
                     }
                     // ------------------------------------------------------------------------------------
                 }
@@ -590,7 +604,8 @@ namespace TH_InstanceTable
                     // Samples ----------------------------------------------------------------------------
                     foreach (TH_MTC_Data.Components.DataItem dataItem in dataItems.Samples)
                     {
-                        Result.Add(dataItem.id.ToUpper());
+                        string name = dataItem.id.ToUpper();
+                        if (!Result.Contains(name)) Result.Add(name);
                     }
                     // ------------------------------------------------------------------------------------
                 }

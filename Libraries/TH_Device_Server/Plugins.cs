@@ -35,6 +35,8 @@ namespace TH_Device_Server
             public IEnumerable<Lazy<Table_PlugIn>> PlugIns { get; set; }
         }
 
+        List<Table_PlugIn> plugins = new List<Table_PlugIn>();
+
         public void LoadPlugins()
         {
             //UpdateProcessingStatus("Loading Plugins...");
@@ -43,6 +45,7 @@ namespace TH_Device_Server
 
             if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
 
+            //TablePlugIns = new List<Table_PlugIn>();
             Table_Plugins = new List<Lazy<Table_PlugIn>>();
 
             string pluginsPath;
@@ -55,7 +58,7 @@ namespace TH_Device_Server
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
 
-            TablePlugIns = Table_Plugins;
+            //TablePlugIns = Table_Plugins;
 
             Console.WriteLine("Table Plugins --------------------------");
             Console.WriteLine(Table_Plugins.Count.ToString() + " Table Plugins Found");
@@ -64,18 +67,43 @@ namespace TH_Device_Server
             {
                 Table_PlugIn tp = ltp.Value;
 
-                string name = tp.Name;
-                string version = null;
 
-                 // Version Info
-                    Assembly assembly = Assembly.GetAssembly(tp.GetType());
-                    if (assembly != null)
+
+                object o = Activator.CreateInstance(tp.GetType());
+                if (o != null)
+                {
+                    Table_PlugIn plugin = o as Table_PlugIn;
+                    if (plugin != null)
                     {
-                        Version v = assembly.GetName().Version;
-                        version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
-                    }
+                        string name = plugin.Name;
+                        string version = null;
 
-                    Console.WriteLine(tp.Name + " : " + version);
+                        // Version Info
+                        Assembly assembly = Assembly.GetAssembly(plugin.GetType());
+                        if (assembly != null)
+                        {
+                            Version v = assembly.GetName().Version;
+                            version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
+                        }
+
+                        Console.WriteLine(plugin.Name + " : " + version);
+
+                        plugins.Add(plugin);
+                    }
+                }
+
+                //string name = tp.Name;
+                //string version = null;
+
+                // // Version Info
+                //    Assembly assembly = Assembly.GetAssembly(tp.GetType());
+                //    if (assembly != null)
+                //    {
+                //        Version v = assembly.GetName().Version;
+                //        version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
+                //    }
+
+                //    Console.WriteLine(tp.Name + " : " + version);
             }
             Console.WriteLine("----------------------------------------");
 
@@ -153,21 +181,37 @@ namespace TH_Device_Server
 
         void TablePlugIns_Initialize(Configuration Config, bool useDatabases = true)
         {
-            if (TablePlugIns != null && Config != null)
+            if (plugins != null && Config != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Table_PlugIn plugin in plugins.ToList())
                 {
-                    Table_PlugIn tp = ltp.Value;
+                    //Table_PlugIn tp = ltp.Value;
 
                     InitializeWorkerInfo info = new InitializeWorkerInfo();
                     info.config = Config;
                     info.useDatabases = useDatabases;
-                    info.tablePlugin = tp;
+                    info.tablePlugin = plugin;
 
                     TablePlugIn_Initialize_Worker(info);
                     //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
                 }
             }
+
+            //if (TablePlugIns != null && Config != null)
+            //{
+            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+            //    {
+            //        Table_PlugIn tp = ltp.Value;
+
+            //        InitializeWorkerInfo info = new InitializeWorkerInfo();
+            //        info.config = Config;
+            //        info.useDatabases = useDatabases;
+            //        info.tablePlugin = tp;
+
+            //        TablePlugIn_Initialize_Worker(info);
+            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
+            //    }
+            //}
         }
 
         void TablePlugIn_Initialize_Worker(object o)
@@ -198,20 +242,35 @@ namespace TH_Device_Server
 
         void TablePlugIns_Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
         {
-            if (TablePlugIns != null)
+            if (plugins != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Table_PlugIn plugin in plugins.ToList())
                 {
-                    Table_PlugIn tp = ltp.Value;
+                    //Table_PlugIn tp = ltp.Value;
 
                     ComponentWorkerInfo info = new ComponentWorkerInfo();
                     info.returnData = returnData;
-                    info.tablePlugin = tp;
+                    info.tablePlugin = plugin;
 
                     TablePlugIns_Update_Probe_Worker(info);
                     //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
                 }
             }
+
+            //if (TablePlugIns != null)
+            //{
+            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+            //    {
+            //        Table_PlugIn tp = ltp.Value;
+
+            //        ComponentWorkerInfo info = new ComponentWorkerInfo();
+            //        info.returnData = returnData;
+            //        info.tablePlugin = tp;
+
+            //        TablePlugIns_Update_Probe_Worker(info);
+            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
+            //    }
+            //}
         }
 
         void TablePlugIns_Update_Probe_Worker(object o)
@@ -238,20 +297,35 @@ namespace TH_Device_Server
 
         void TablePlugIns_Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            if (TablePlugIns != null)
+            if (plugins != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Table_PlugIn plugin in plugins.ToList())
                 {
-                    Table_PlugIn tp = ltp.Value;
+                    //Table_PlugIn tp = ltp.Value;
 
                     StreamWorkerInfo info = new StreamWorkerInfo();
                     info.returnData = returnData;
-                    info.tablePlugin = tp;
+                    info.tablePlugin = plugin;
 
                     TablePlugIns_Update_Current_Worker(info);
                     //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
                 }
             }
+
+            //if (TablePlugIns != null)
+            //{
+            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+            //    {
+            //        Table_PlugIn tp = ltp.Value;
+
+            //        StreamWorkerInfo info = new StreamWorkerInfo();
+            //        info.returnData = returnData;
+            //        info.tablePlugin = tp;
+
+            //        TablePlugIns_Update_Current_Worker(info);
+            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
+            //    }
+            //}
         }
 
         void TablePlugIns_Update_Current_Worker(object o)
@@ -278,20 +352,35 @@ namespace TH_Device_Server
 
         void TablePlugIns_Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            if (TablePlugIns != null)
+            if (plugins != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Table_PlugIn plugin in plugins.ToList())
                 {
-                    Table_PlugIn tp = ltp.Value;
+                    //Table_PlugIn tp = ltp.Value;
 
                     StreamWorkerInfo info = new StreamWorkerInfo();
                     info.returnData = returnData;
-                    info.tablePlugin = tp;
+                    info.tablePlugin = plugin;
 
                     TablePlugIns_Update_Sample_Worker(info);
                     //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
                 }
             }
+
+            //if (TablePlugIns != null)
+            //{
+            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+            //    {
+            //        Table_PlugIn tp = ltp.Value;
+
+            //        StreamWorkerInfo info = new StreamWorkerInfo();
+            //        info.returnData = returnData;
+            //        info.tablePlugin = tp;
+
+            //        TablePlugIns_Update_Sample_Worker(info);
+            //        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
+            //    }
+            //}
         }
 
         void TablePlugIns_Update_Sample_Worker(object o)
@@ -318,20 +407,35 @@ namespace TH_Device_Server
 
         void TablePlugIn_Update_DataEvent(DataEvent_Data de_data)
         {
-            if (TablePlugIns != null)
+            if (plugins != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Table_PlugIn plugin in plugins.ToList())
                 {
-                    Table_PlugIn tp = ltp.Value;
+                    //Table_PlugIn tp = ltp.Value;
 
                     DataEventWorkerInfo info = new DataEventWorkerInfo();
                     info.de_data = de_data;
-                    info.tablePlugin = tp;
+                    info.tablePlugin = plugin;
 
                     TablePlugIn_Update_DataEvent_Worker(info);
                     //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
                 }
             }
+
+            //if (TablePlugIns != null)
+            //{
+            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+            //    {
+            //        Table_PlugIn tp = ltp.Value;
+
+            //        DataEventWorkerInfo info = new DataEventWorkerInfo();
+            //        info.de_data = de_data;
+            //        info.tablePlugin = tp;
+
+            //        TablePlugIn_Update_DataEvent_Worker(info);
+            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
+            //    }
+            //}
 
             if (DataEvent != null) DataEvent(de_data);
         }
@@ -360,12 +464,12 @@ namespace TH_Device_Server
 
         void TablePlugIns_Closing()
         {
-            if (TablePlugIns != null)
+            if (plugins != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Table_PlugIn plugin in plugins.ToList())
                 {
-                    Table_PlugIn tp = ltp.Value;
-                    TablePlugIn_Closing_Worker(tp);
+                    //Table_PlugIn tp = ltp.Value;
+                    TablePlugIn_Closing_Worker(plugin);
 
                     //if (tp.IsValueCreated)
                     //{
@@ -374,6 +478,21 @@ namespace TH_Device_Server
                     //}
                 }
             }
+
+            //if (TablePlugIns != null)
+            //{
+            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+            //    {
+            //        Table_PlugIn tp = ltp.Value;
+            //        TablePlugIn_Closing_Worker(tp);
+
+            //        //if (tp.IsValueCreated)
+            //        //{
+            //        //    TablePlugIn_Closing_Worker
+            //        //    ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Closing_Worker), tp.Value);
+            //        //}
+            //    }
+            //}
         }
 
         void TablePlugIn_Closing_Worker(object o)

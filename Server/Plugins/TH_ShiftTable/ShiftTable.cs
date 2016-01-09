@@ -29,12 +29,10 @@ namespace TH_ShiftTable
 
         public string Name { get { return "TH_ShiftTable"; } }
 
-        public int Priority { get { return 2; } }
+        //public int Priority { get { return 2; } }
 
         public void Initialize(Configuration configuration)
         {
-            GenEventShiftItem.previousItems = new List<GeneratedData.GeneratedEventItem>();
-
             ShiftConfiguration sc = ShiftConfiguration.ReadXML(configuration.ConfigurationXML);
 
             if (sc != null)
@@ -123,7 +121,7 @@ namespace TH_ShiftTable
             if (de_data != null)
             {
                 if (de_data.id.ToLower() == "generatedeventitems")
-                {
+                {                          
                     List<GeneratedData.GeneratedEventItem> genEventItems = (List<GeneratedData.GeneratedEventItem>)de_data.data02;
 
                     ProcessShifts(genEventItems);

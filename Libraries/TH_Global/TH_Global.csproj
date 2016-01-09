@@ -62,6 +62,7 @@
     <Compile Include="Functions\Math_Functions.cs" />
     <Compile Include="Functions\String_Functions.cs" />
     <Compile Include="Functions\Window_Functions.cs" />
+    <Compile Include="Functions\XML_Functions.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

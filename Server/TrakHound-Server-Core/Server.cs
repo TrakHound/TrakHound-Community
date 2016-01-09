@@ -26,7 +26,7 @@ namespace TrakHound_Server_Core
 
         public void Start()
         {
-            System.Threading.ThreadPool.SetMaxThreads(10, 10);
+            //System.Threading.ThreadPool.SetMaxThreads(10, 10);
 
             PrintHeader();
 
@@ -45,6 +45,7 @@ namespace TrakHound_Server_Core
                 if (device != null) device.Close();
             }
 
+            DevicesMonitor_Stop();
             if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
 
             if (Stopped != null) Stopped();
