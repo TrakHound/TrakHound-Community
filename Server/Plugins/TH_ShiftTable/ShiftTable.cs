@@ -29,8 +29,6 @@ namespace TH_ShiftTable
 
         public string Name { get { return "TH_ShiftTable"; } }
 
-        //public int Priority { get { return 2; } }
-
         public void Initialize(Configuration configuration)
         {
             ShiftConfiguration sc = ShiftConfiguration.ReadXML(configuration.ConfigurationXML);
@@ -54,10 +52,7 @@ namespace TH_ShiftTable
         }
 
 
-        public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
-        {
-
-        }
+        public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData) { }
 
         public void Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
         {

@@ -15,7 +15,7 @@ namespace AppStart
         [STAThread]
         static void Main(string[] args)
         {
-            CheckForUpdates();
+            //CheckForUpdates();
 
             // Reopen Server if it closed for any reason other than normal termination
             while (!OpenServer())
@@ -43,12 +43,20 @@ namespace AppStart
 
                 Logger.Log("Server Exited with Code : " + p.ExitCode.ToString());
 
-                if (p.ExitCode <= 0) result = true;
+                result = ProcessExitCode(p.ExitCode);
 
             }
             catch (Exception ex) { Logger.Log("AppStart.OpenServer() :: " + ex.Message); }
 
             return result;
+        }
+
+        static bool ProcessExitCode(int code)
+        {
+            if (code == 0) return true; // User Exit (Normal)
+            if (code < 0) return true;
+            if (code == 1) return false; // End Task (Task Manager)
+            else return false; // Exit Codes with positive integers (Exceptions)
         }
 
         static void CheckForUpdates()

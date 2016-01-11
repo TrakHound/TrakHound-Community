@@ -28,9 +28,6 @@ namespace TrakHound_Server_Core
                 currentuser = value;
 
                 SendCurrentUserChanged(currentuser);
-
-                //if (currentuser != null) Start();
-                //else Stop();
             }
         }
 

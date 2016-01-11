@@ -44,7 +44,7 @@ namespace TrakHound_Server
 
         public ServerGroup()
         {
-            //System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             OutputConsole = new Output_Console();
 
@@ -52,13 +52,15 @@ namespace TrakHound_Server
             logWriter.Updated += Log_Updated;
             Console.SetOut(logWriter);
 
-            CheckForUpdates();
+            //CheckForUpdates();
 
             Server = new Server();
             Server.CurrentUserChanged += Server_CurrentUserChanged;
             Controller = new Controller(this);
 
             userDatabaseSettings = GetRememberMe();
+
+            StartServer();
 
             Application.Run(Controller);
 

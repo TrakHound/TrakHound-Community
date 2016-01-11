@@ -384,7 +384,7 @@ namespace TH_InstanceTable.ConfigurationPage
         void AddEventItem(DataItem dataItem)
         {
             Controls.CheckBox chk = new Controls.CheckBox();
-
+            
             // Set text
             if (dataItem.name == null) chk.Content = dataItem.id;
             else chk.Content = dataItem.id + " : " + dataItem.name;

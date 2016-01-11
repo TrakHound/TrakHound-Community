@@ -26,8 +26,6 @@ namespace TrakHound_Server_Core
 
         public void Start()
         {
-            //System.Threading.ThreadPool.SetMaxThreads(10, 10);
-
             PrintHeader();
 
             Global.UseMultithreading = false;

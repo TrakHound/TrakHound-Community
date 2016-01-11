@@ -56,8 +56,6 @@ namespace TH_ShiftTable
                             date = date - segment.endDayOffset;
                         }
 
-                        //date = date - segment.endTime.dayOffset;
-
                         // Get DateTime objects from ShiftTime and ShiftDate along with segment.dayOffset
                         DateTime segmentStart = Tools.GetDateTimeFromShiftTime(segment.beginTime, date, segment.beginDayOffset);
                         DateTime segmentEnd = Tools.GetDateTimeFromShiftTime(segment.endTime, date, segment.endDayOffset);
@@ -77,8 +75,6 @@ namespace TH_ShiftTable
                         }
 
                         if (segmentEnd < segmentStart) segmentEnd = segmentEnd.AddDays(1);
-
-                        //date -= segment.endTime.dayOffset;
 
                         // Set Shift Times 
                         shiftStart = Tools.GetDateTimeFromShiftTime(shift.beginTime, date);
@@ -104,10 +100,9 @@ namespace TH_ShiftTable
                             Result.shift = shift;
                             Result.type = segment.type;
 
-                            date -= segment.endTime.dayOffset;
+                            if (segment.beginTime.dayOffset == segment.endTime.dayOffset) date = date - segment.endTime.dayOffset;
 
                             Result.date = date.ToString();
-                            //Result.date = (date - segment.endTime.dayOffset).ToString();
 
                             Result.id = Tools.GetShiftId(date, segment);
 

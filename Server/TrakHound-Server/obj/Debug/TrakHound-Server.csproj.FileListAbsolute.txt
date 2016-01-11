@@ -1,4 +1,3 @@
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\Header.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server.exe.config
@@ -17,6 +16,7 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_UserManagemen
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_MTC_Requests.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\ICSharpCode.SharpZipLib.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_DeviceManager.pdb

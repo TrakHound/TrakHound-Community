@@ -93,38 +93,35 @@ namespace TH_ShiftTable
                             IEnumerable<string> eventNames = genEventShiftItems.Select(x => x.eventName).Distinct();
                             foreach (string eventName in eventNames.ToList())
                             {
-                                //if (sc.generatedEvents.Find(x => x.name.ToLower() == eventName.ToLower()) != null)
-                                //{
-                                    List<GenEventShiftItem> sameNames = genEventShiftItems.FindAll(x => (x.shiftDate == shiftDate &&
-                                            x.shiftName == shiftName &&
-                                            x.segment == segment &&
-                                            x.eventName == eventName));
+                                List<GenEventShiftItem> sameNames = genEventShiftItems.FindAll(x => (x.shiftDate == shiftDate &&
+                                        x.shiftName == shiftName &&
+                                        x.segment == segment &&
+                                        x.eventName == eventName));
 
-                                    IEnumerable<string> eventValues = sameNames.Select(x => x.eventValue).Distinct();
-                                    foreach (string eventValue in eventValues.ToList())
+                                IEnumerable<string> eventValues = sameNames.Select(x => x.eventValue).Distinct();
+                                foreach (string eventValue in eventValues.ToList())
+                                {
+                                    TimeSpan duration = TimeSpan.Zero;
+
+                                    // Get list of GenEventShiftItem objects that satisfy all of the filters
+                                    List<GenEventShiftItem> items = sameNames.FindAll(x => x.eventValue == eventValue);
+                                    if (items != null)
                                     {
-                                        TimeSpan duration = TimeSpan.Zero;
+                                        int eventNumVal = 0;
 
-                                        // Get list of GenEventShiftItem objects that satisfy all of the filters
-                                        List<GenEventShiftItem> items = sameNames.FindAll(x => x.eventValue == eventValue);
-                                        if (items != null)
+                                        foreach (GenEventShiftItem item in items)
                                         {
-                                            int eventNumVal = 0;
-
-                                            foreach (GenEventShiftItem item in items)
-                                            {
-                                                duration += item.duration;
-                                                eventNumVal = item.eventNumVal;
-                                            }
-
-                                            GenEventRowInfo geri = new GenEventRowInfo();
-                                            geri.columnName = Tools.FormatColumnName(eventName, eventNumVal, eventValue);
-                                            geri.seconds = Convert.ToInt32(duration.TotalSeconds);
-
-                                            sri.genEventRowInfos.Add(geri);
+                                            duration += item.duration;
+                                            eventNumVal = item.eventNumVal;
                                         }
+
+                                        GenEventRowInfo geri = new GenEventRowInfo();
+                                        geri.columnName = Tools.FormatColumnName(eventName, eventNumVal, eventValue);
+                                        geri.seconds = Convert.ToInt32(duration.TotalSeconds);
+
+                                        sri.genEventRowInfos.Add(geri);
                                     }
-                                //}
+                                }
                             }
                         }
 

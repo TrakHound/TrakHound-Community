@@ -99,8 +99,6 @@ namespace TH_ShiftTable
 
         public static List<PreviousData> previousItems = new List<PreviousData>();
 
-        //public static List<GeneratedData.GeneratedEventItem> previousItems;
-
         #region "Private"
 
         class ListInfo
@@ -189,24 +187,11 @@ namespace TH_ShiftTable
 
                 gesi.CaptureItems = item1.CaptureItems;
 
-                //ShiftDate d = date;
-                ////if (segment.beginDayOffset > 0 && 
-                ////    segment.endDayOffset > 0 &&
-                ////    new ShiftDate(item1.timestamp.ToLocalTime()) == new ShiftDate(item2.timestamp.ToLocalTime()))
-                ////{
-                ////    d = d - segment.endDayOffset;
-                ////} 
- 
-                //d = d - segment.endDayOffset;
-                //gesi.shiftDate = d;
-
                 // Get Times for segment and convert timestamps to Local
                 SegmentShiftTimes sst = SegmentShiftTimes.Get(item1.timestamp, item2.timestamp, date, segment);
 
                 if (segment.beginTime.dayOffset == segment.endTime.dayOffset) gesi.shiftDate = date - segment.endTime.dayOffset;
                 else gesi.shiftDate = date;
-
-                
 
                 // Calculate Start and End timestamps based on the DuringSegmentType
                 switch (type)
@@ -231,13 +216,6 @@ namespace TH_ShiftTable
                         gesi.end_timestamp = sst.end;
                         break;
                 }
-
-                // Insure that end is not less than start
-                // Example ------------
-                // start_timestamp = 11:50 PM 9/28/2015
-                // end_timestamp   = 12:10 AM 9/28/2015
-                // --------------------
-                //if (gesi.end_timestamp < gesi.start_timestamp) gesi.end_timestamp = gesi.end_timestamp.AddDays(1);
 
                 // Calculate duration of GeneratedEventShiftItem
                 TimeSpan duration = gesi.end_timestamp - gesi.start_timestamp;

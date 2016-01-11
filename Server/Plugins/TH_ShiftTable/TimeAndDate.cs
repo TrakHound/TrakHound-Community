@@ -195,8 +195,6 @@ namespace TH_ShiftTable
                 result.minute = minute;
                 result.second = second;
 
-                //result.dayOffset = dayOffset;
-
                 return result;
             }
             else return null;
@@ -241,9 +239,6 @@ namespace TH_ShiftTable
 
         static bool LessThan(ShiftTime c1, ShiftTime c2)
         {
-            // Adjust hours to account for dayValue (ex. c1.hour = 18 & c2.hour = 0 when (c1 = 6 PM & c2 = 12 AM (the next day)))
-            //int c1Hour = c1.hour + (24 * c1.dayOffset);
-            //int c2Hour = c2.hour + (24 * c2.dayOffset);
             int c1Hour = c1.hour;
             int c2Hour = c2.hour;
 
@@ -255,12 +250,6 @@ namespace TH_ShiftTable
 
         static bool GreaterThan(ShiftTime c1, ShiftTime c2)
         {
-            // Adjust hours to account for dayValue (ex. c1.hour = 18 & c2.hour = 0 when (c1 = 6 PM & c2 = 12 AM (the next day)))
-            //int c1Hour = c1.hour + (c1.hour * c1.dayOffset);
-            //int c2Hour = c2.hour + (c2.hour * c2.dayOffset);
-
-            //int c1Hour = c1.hour + (24 * c1.dayOffset);
-            //int c2Hour = c2.hour + (24 * c2.dayOffset);
             int c1Hour = c1.hour;
             int c2Hour = c2.hour;
 
