@@ -34,6 +34,8 @@ namespace TH_MySQL.ConfigurationPage
             DataContext = this;
 
             trakhoundserver_CHK.IsChecked = true;
+
+            SetTrakHoundClourServer();
         }
 
         public string PageName { get { return "MySQL"; } }
@@ -484,13 +486,10 @@ namespace TH_MySQL.ConfigurationPage
 
         #region "TrakHound Cloud Server"
 
-        public bool UseTrakHoundCloudServer
+        void SetTrakHoundClourServer()
         {
-            get { return (bool)GetValue(UseTrakHoundCloudServerProperty); }
-            set 
+            if (UseTrakHoundCloudServer)
             {
-                SetValue(UseTrakHoundCloudServerProperty, value);
-
                 Server = "localhost";
                 Port = null;
 
@@ -510,6 +509,17 @@ namespace TH_MySQL.ConfigurationPage
                 UsePHPServer = true;
                 PhpServer = "www.feenux.com";
                 PhpDirectory = "php";
+            }
+        }
+
+        public bool UseTrakHoundCloudServer
+        {
+            get { return (bool)GetValue(UseTrakHoundCloudServerProperty); }
+            set 
+            {
+                SetValue(UseTrakHoundCloudServerProperty, value);
+
+                SetTrakHoundClourServer();
 
                 ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
             }

@@ -7,8 +7,8 @@
     <ProjectGuid>{C564426D-1737-4A3F-BC95-145D337EC721}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TH_PlugIns_Server</RootNamespace>
-    <AssemblyName>TH_PlugIns_Server</AssemblyName>
+    <RootNamespace>TH_Plugins_Server</RootNamespace>
+    <AssemblyName>TH_Plugins_Server</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -49,7 +49,7 @@
   <ItemGroup>
     <Compile Include="ConfigurationPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Table_PlugIn.cs" />
+    <Compile Include="IServerPlugin.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TH_Configuration\TH_Configuration.csproj">

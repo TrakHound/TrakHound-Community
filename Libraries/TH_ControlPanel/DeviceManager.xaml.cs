@@ -32,7 +32,7 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 using TH_UserManagement.Management;
 using TH_WPF;
 
@@ -1239,13 +1239,13 @@ namespace TH_DeviceManager
             if (type == DeviceManagerType.Server || !useTrakHoundCloud) ConfigurationPages.Add(new Pages.Databases.Page());
 
             // Load configuration pages from plugins
-            if (type == DeviceManagerType.Server) ConfigurationPages.AddRange(AddConfigurationPageButtons(Table_Plugins));
+            if (type == DeviceManagerType.Server) ConfigurationPages.AddRange(AddConfigurationPageButtons(Plugins));
 
             // Create PageItem and add to PageList
             foreach (ConfigurationPage page in ConfigurationPages)
             {
-                if (ManagerType == DeviceManagerType.Client) page.PageType = TH_PlugIns_Server.Page_Type.Client;
-                else if (ManagerType == DeviceManagerType.Server) page.PageType = TH_PlugIns_Server.Page_Type.Server;
+                if (ManagerType == DeviceManagerType.Client) page.PageType = TH_Plugins_Server.Page_Type.Client;
+                else if (ManagerType == DeviceManagerType.Server) page.PageType = TH_Plugins_Server.Page_Type.Server;
 
                 this.Dispatcher.BeginInvoke(new Action<ConfigurationPage>(AddPageButton), priority, new object[] { page });
             }
@@ -1347,11 +1347,11 @@ namespace TH_DeviceManager
             }
         }
 
-        List<ConfigurationPage> AddConfigurationPageButtons(List<Table_PlugIn> plugins)
+        List<ConfigurationPage> AddConfigurationPageButtons(List<IServerPlugin> plugins)
         {
             List<ConfigurationPage> result = new List<ConfigurationPage>();
 
-            foreach (Table_PlugIn plugin in plugins)
+            foreach (IServerPlugin plugin in plugins)
             {
                 try
                 {
@@ -1368,7 +1368,7 @@ namespace TH_DeviceManager
             return result;
         }
 
-        void AddConfigurationPageButton(Table_PlugIn tp)
+        void AddConfigurationPageButton(IServerPlugin tp)
         {
             if (tp != null)
             {
@@ -1390,16 +1390,16 @@ namespace TH_DeviceManager
 
         #region "PlugIns"
 
-        public IEnumerable<Lazy<Table_PlugIn>> TablePlugIns { get; set; }
+        IEnumerable<Lazy<IServerPlugin>> plugins { get; set; }
 
-        public List<Table_PlugIn> Table_Plugins { get; set; }
+        public List<IServerPlugin> Plugins { get; set; }
 
-        TablePlugs TPLUGS;
+        Plugs PLUGS;
 
-        class TablePlugs
+        class Plugs
         {
-            [ImportMany(typeof(Table_PlugIn))]
-            public IEnumerable<Lazy<Table_PlugIn>> PlugIns { get; set; }
+            [ImportMany(typeof(IServerPlugin))]
+            public IEnumerable<Lazy<IServerPlugin>> Plugins { get; set; }
         }
 
         void LoadPlugins()
@@ -1408,59 +1408,59 @@ namespace TH_DeviceManager
 
             if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
 
-            Table_Plugins = new List<Table_PlugIn>();
+            Plugins = new List<IServerPlugin>();
 
             string pluginsPath;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
             pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
-            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
+            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
+            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
         }
 
-        void LoadTablePlugins(string Path)
+        void LoadPlugins(string Path)
         {
-            Logger.Log("Searching for Table Plugins in '" + Path + "'");
+            Logger.Log("Searching for Server Plugins in '" + Path + "'");
             if (Directory.Exists(Path))
             {
                 try
                 {
-                    TPLUGS = new TablePlugs();
+                    PLUGS = new Plugs();
 
                     var PageCatalog = new DirectoryCatalog(Path);
                     var PageContainer = new CompositionContainer(PageCatalog);
-                    PageContainer.SatisfyImportsOnce(TPLUGS);
+                    PageContainer.SatisfyImportsOnce(PLUGS);
 
-                    TablePlugIns = TPLUGS.PlugIns;
+                    plugins = PLUGS.Plugins;
 
-                    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns)
+                    foreach (Lazy<IServerPlugin> lplugin in plugins)
                     {
-                        Table_PlugIn tp = ltp.Value;
+                        IServerPlugin plugin = lplugin.Value;
 
-                        if (Table_Plugins.ToList().Find(x => x.Name.ToLower() == tp.Name.ToLower()) == null)
+                        if (Plugins.ToList().Find(x => x.Name.ToLower() == plugin.Name.ToLower()) == null)
                         {
-                            Logger.Log(tp.Name + " : PlugIn Found");
-                            Table_Plugins.Add(tp);
+                            Logger.Log(plugin.Name + " : Plugin Found");
+                            Plugins.Add(plugin);
                         }
                         else
                         {
-                            Logger.Log(tp.Name + " : PlugIn Already Found");
+                            Logger.Log(plugin.Name + " : Plugin Already Found");
                         }
                     }
                 }
-                catch (Exception ex) { Logger.Log("LoadTablePlugins() : Exception : " + ex.Message); }
+                catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message); }
 
                 // Search Subdirectories
                 foreach (string directory in Directory.GetDirectories(Path))
                 {
-                    LoadTablePlugins(directory);
+                    LoadPlugins(directory);
                 }
             }
-            else Logger.Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
+            else Logger.Log("Plugins Directory Doesn't Exist (" + Path + ")");
         }
 
 
@@ -1468,15 +1468,15 @@ namespace TH_DeviceManager
 
         void ProcessTablePlugins(DataTable dt)
         {
-            if (TablePlugIns != null && dt != null)
+            if (Plugins != null && dt != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
                     try
                     {
-                        Table_PlugIn tp = ltp.Value;
+                        IServerPlugin plugin = lplugin.Value;
 
-                        Type config_type = tp.Config_Page;
+                        Type config_type = plugin.Config_Page;
 
                         object o = Activator.CreateInstance(config_type);
 
@@ -1487,16 +1487,16 @@ namespace TH_DeviceManager
             }
         }
 
-        void TablePlugIns_Closing()
+        void PlugIns_Closing()
         {
-            if (TablePlugIns != null)
+            if (Plugins != null)
             {
-                foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
                     try
                     {
-                        Table_PlugIn tp = ltp.Value;
-                        tp.Closing();
+                        IServerPlugin plugin = lplugin.Value;
+                        plugin.Closing();
                     }
                     catch (Exception ex)
                     {

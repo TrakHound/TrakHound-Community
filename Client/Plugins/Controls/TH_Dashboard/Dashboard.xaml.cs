@@ -35,7 +35,7 @@ namespace TH_Dashboard
     /// <summary>
     /// Interaction logic for DashboardPage.xaml
     /// </summary>
-    public partial class Dashboard : UserControl, Plugin
+    public partial class Dashboard : UserControl, IClientPlugin
     {
 
         #region "Plugin"
@@ -75,7 +75,7 @@ namespace TH_Dashboard
 
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<Plugin> Plugins { get; set; }
+        public List<IClientPlugin> Plugins { get; set; }
 
         #endregion
 
@@ -126,7 +126,7 @@ namespace TH_Dashboard
 
             if (Plugins != null)
             {
-                foreach (Plugin plugin in Plugins)
+                foreach (IClientPlugin plugin in Plugins)
                 {
                     this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(plugin.Update_DataEvent), Priority, new object[] { de_d });
                 }
@@ -273,7 +273,7 @@ namespace TH_Dashboard
             {
                 if (!EnabledPlugins.Contains(config))
                 {
-                    Plugin plugin = Plugins.Find(x => x.Title.ToUpper() == config.Name.ToUpper());
+                    IClientPlugin plugin = Plugins.Find(x => x.Title.ToUpper() == config.Name.ToUpper());
                     if (plugin != null)
                     {
                         try
@@ -281,7 +281,7 @@ namespace TH_Dashboard
                             plugin.SubCategories = config.SubCategories;
                             plugin.DataEvent += Plugin_DataEvent;
 
-                            plugin.Plugins = new List<Plugin>();
+                            plugin.Plugins = new List<IClientPlugin>();
 
                             if (plugin.SubCategories != null)
                             {
@@ -289,7 +289,7 @@ namespace TH_Dashboard
                                 {
                                     foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
                                     {
-                                        Plugin cplugin = Plugins.Find(x => x.Title.ToUpper() == subConfig.Name.ToUpper());
+                                        IClientPlugin cplugin = Plugins.Find(x => x.Title.ToUpper() == subConfig.Name.ToUpper());
                                         if (cplugin != null)
                                         {
                                             plugin.Plugins.Add(cplugin);
@@ -394,7 +394,7 @@ namespace TH_Dashboard
                             else oLB.IsSelected = false;
                         }
 
-                        Plugin plugin = lb.DataObject as Plugin;
+                        IClientPlugin plugin = lb.DataObject as IClientPlugin;
                         if (plugin != null)
                         {
                             foreach (PluginConfigurationCategory category in SubCategories)

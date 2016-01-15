@@ -7,6 +7,7 @@ using System.Threading;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.IO;
+using System.Reflection;
 
 using TH_Configuration;
 using TH_Global;
@@ -16,7 +17,7 @@ namespace TH_Database
     public static class Global
     {
 
-        public static List<Lazy<Database_Plugin>> Plugins;
+        public static List<Lazy<IDatabasePlugin>> Plugins;
 
         public static bool UseMultithreading = true;
 
@@ -26,11 +27,11 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins.ToList())
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins.ToList())
                     {
                         try
                         {
-                            Database_Plugin dp = ldp.Value;
+                            IDatabasePlugin dp = ldp.Value;
 
                             if (dp.Type.ToLower() == db.Type.ToLower())
                             {
@@ -53,11 +54,11 @@ namespace TH_Database
 
             if (Global.Plugins != null)
             {
-                foreach (Lazy<Database_Plugin> ldp in Global.Plugins.ToList())
+                foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins.ToList())
                 {
                     try
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == config.Type.ToLower())
                         {
@@ -81,11 +82,11 @@ namespace TH_Database
 
             if (Global.Plugins != null)
             {
-                foreach (Lazy<Database_Plugin> ldp in Global.Plugins.ToList())
+                foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins.ToList())
                 {
                     try
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == config.Type.ToLower())
                         {
@@ -132,14 +133,14 @@ namespace TH_Database
         {
             public object configuration { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         class DropWorkerInfo
         {
             public object configuration { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         #endregion
@@ -150,9 +151,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -190,9 +191,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -236,9 +237,9 @@ namespace TH_Database
             public object configuration { get; set; }
             public string tablename { get; set; }
             public ColumnDefinition[] columnDefinitions { get; set; }
-            public string primaryKey { get; set; }
+            public string[] primaryKey { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         class DropWorkerInfo1
@@ -246,7 +247,7 @@ namespace TH_Database
             public object configuration { get; set; }
             public string tablename { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         class DropWorkerInfo2
@@ -254,7 +255,7 @@ namespace TH_Database
             public object configuration { get; set; }
             public string[] tablenames { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         class TruncateWorkerInfo
@@ -262,20 +263,20 @@ namespace TH_Database
             public object configuration { get; set; }
             public string tablename { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         #endregion
 
-        public static void Create(Database_Settings settings, string tablename, ColumnDefinition[] columnDefinitions, string primaryKey)
+        public static void Create(Database_Settings settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
             if (Global.Plugins != null)
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -317,9 +318,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -359,9 +360,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -401,9 +402,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -447,9 +448,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -473,9 +474,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -499,9 +500,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -526,9 +527,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -552,9 +553,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -579,9 +580,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -605,9 +606,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -634,7 +635,7 @@ namespace TH_Database
             public string tablename { get; set; }
             public ColumnDefinition columnDefinition { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         #endregion
@@ -649,9 +650,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -671,9 +672,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -720,9 +721,10 @@ namespace TH_Database
             public string tablename { get; set; }
             public object[] columns { get; set; }
             public object[] values { get; set; }
+            public string[] primaryKey { get; set; }
             public bool update { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         class InsertWorkerInfo2
@@ -731,9 +733,10 @@ namespace TH_Database
             public string tablename { get; set; }
             public object[] columns { get; set; }
             public List<List<object>> values { get; set; }
+            public string[] primaryKey { get; set; }
             public bool update { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         class InsertWorkerInfo3
@@ -742,9 +745,10 @@ namespace TH_Database
             public string tablename { get; set; }
             public List<object[]> columnsList { get; set; }
             public List<object[]> valuesList { get; set; }
+            public string[] primaryKey { get; set; }
             public bool update { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         class InsertWorkerInfo4
@@ -752,20 +756,20 @@ namespace TH_Database
             public object configuration { get; set; }
             public string query { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         #endregion
 
-        public static void Insert(Database_Settings settings, string tablename, object[] columns, object[] values, bool update)
+        public static void Insert(Database_Settings settings, string tablename, object[] columns, object[] values, string[] primaryKey, bool update)
         {
-            if (Global.Plugins != null)
+            if (Global.Plugins != null && values.Length > 0)
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -774,6 +778,7 @@ namespace TH_Database
                             info.tablename = tablename;
                             info.columns = columns;
                             info.values = values;
+                            info.primaryKey = primaryKey;
                             info.update = update;
                             info.plugin = dp;
 
@@ -795,22 +800,22 @@ namespace TH_Database
                 {
                     InsertWorkerInfo1 info = (InsertWorkerInfo1)o;
 
-                    info.plugin.Row_Insert(info.configuration, info.tablename, info.columns, info.values, info.update);
+                    info.plugin.Row_Insert(info.configuration, info.tablename, info.columns, info.values, info.primaryKey, info.update);
                 }
             }
             catch (Exception ex) { Logger.Log("Column.InsertWorker1() : Exception : " + ex.Message); }
         }
 
 
-        public static void Insert(Database_Settings settings, string tablename, object[] columns, List<List<object>> values, bool update)
+        public static void Insert(Database_Settings settings, string tablename, object[] columns, List<List<object>> values, string[] primaryKey, bool update)
         {
-            if (Global.Plugins != null)
+            if (Global.Plugins != null && values.Count > 0)
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -819,6 +824,7 @@ namespace TH_Database
                             info.tablename = tablename;
                             info.columns = columns;
                             info.values = values;
+                            info.primaryKey = primaryKey;
                             info.update = update;
                             info.plugin = dp;
 
@@ -840,22 +846,22 @@ namespace TH_Database
                 {
                     InsertWorkerInfo2 info = (InsertWorkerInfo2)o;
 
-                    info.plugin.Row_Insert(info.configuration, info.tablename, info.columns, info.values, info.update);
+                    info.plugin.Row_Insert(info.configuration, info.tablename, info.columns, info.values, info.primaryKey, info.update);
                 }
             }
             catch (Exception ex) { Logger.Log("Column.InsertWorker2() : Exception : " + ex.Message); }
         }
 
 
-        public static void Insert(Database_Settings settings, string tablename, List<object[]> columnsList, List<object[]> valuesList, bool update)
+        public static void Insert(Database_Settings settings, string tablename, List<object[]> columnsList, List<object[]> valuesList, string[] primaryKey, bool update)
         {
-            if (Global.Plugins != null)
+            if (Global.Plugins != null && valuesList.Count > 0)
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -864,6 +870,7 @@ namespace TH_Database
                             info.tablename = tablename;
                             info.columnsList = columnsList;
                             info.valuesList = valuesList;
+                            info.primaryKey = primaryKey;
                             info.update = update;
                             info.plugin = dp;
 
@@ -885,7 +892,7 @@ namespace TH_Database
                 {
                     InsertWorkerInfo3 info = (InsertWorkerInfo3)o;
 
-                    info.plugin.Row_Insert(info.configuration, info.tablename, info.columnsList, info.valuesList, info.update);
+                    info.plugin.Row_Insert(info.configuration, info.tablename, info.columnsList, info.valuesList, info.primaryKey, info.update);
                 }
             }
             catch (Exception ex) { Logger.Log("Column.InsertWorker3() : Exception : " + ex.Message); }
@@ -898,9 +905,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == db.Type.ToLower())
                         {
@@ -944,9 +951,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -970,9 +977,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -998,9 +1005,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -1026,7 +1033,7 @@ namespace TH_Database
             public object configuration { get; set; }
             public string commandText { get; set; }
 
-            public Database_Plugin plugin { get; set; }
+            public IDatabasePlugin plugin { get; set; }
         }
 
         #endregion
@@ -1044,9 +1051,9 @@ namespace TH_Database
                     {
                         Database_Configuration db = settings.Databases[x];
 
-                        foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                        foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                         {
-                            Database_Plugin dp = ldp.Value;
+                            IDatabasePlugin dp = ldp.Value;
 
                             if (dp.Type.ToLower() == db.Type.ToLower())
                             {
@@ -1096,9 +1103,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -1124,9 +1131,9 @@ namespace TH_Database
 
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<Database_Plugin> ldp in Global.Plugins)
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
-                        Database_Plugin dp = ldp.Value;
+                        IDatabasePlugin dp = ldp.Value;
 
                         if (dp.Type.ToLower() == primary.Type.ToLower())
                         {
@@ -1150,16 +1157,16 @@ namespace TH_Database
             GetPlugins();
         }
 
-        public IEnumerable<Lazy<Database_Plugin>> databasePlugins { get; set; }
+        public IEnumerable<Lazy<IDatabasePlugin>> databasePlugins { get; set; }
 
-        public List<Lazy<Database_Plugin>> plugins { get; set; }
+        public List<Lazy<IDatabasePlugin>> plugins { get; set; }
 
         DatabasePlugs DBPLUGS;
 
         class DatabasePlugs
         {
-            [ImportMany(typeof(Database_Plugin))]
-            public IEnumerable<Lazy<Database_Plugin>> PlugIns { get; set; }
+            [ImportMany(typeof(IDatabasePlugin))]
+            public IEnumerable<Lazy<IDatabasePlugin>> PlugIns { get; set; }
         }
 
         public void GetPlugins()
@@ -1168,7 +1175,7 @@ namespace TH_Database
 
             if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
 
-            plugins = new List<Lazy<Database_Plugin>>();
+            plugins = new List<Lazy<IDatabasePlugin>>();
 
             string pluginsPath;
 
@@ -1179,6 +1186,30 @@ namespace TH_Database
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
+
+
+            Console.WriteLine("Database Plugins --------------------------");
+            Console.WriteLine(plugins.Count.ToString() + " Plugins Found");
+            Console.WriteLine("------------------------------");
+            foreach (Lazy<IDatabasePlugin> lplugin in plugins)
+            {
+                IDatabasePlugin plugin = lplugin.Value;
+
+                string name = plugin.Name;
+                string version = null;
+
+                // Version Info
+                Assembly assembly = Assembly.GetAssembly(plugin.GetType());
+                if (assembly != null)
+                {
+                    Version v = assembly.GetName().Version;
+                    version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
+                }
+
+                Console.WriteLine(plugin.Name + " : " + version);
+            }
+            Console.WriteLine("----------------------------------------");
+
 
             Global.Plugins = plugins;
 
@@ -1200,7 +1231,7 @@ namespace TH_Database
 
                     databasePlugins = DBPLUGS.PlugIns;
 
-                    foreach (Lazy<Database_Plugin> DBP in databasePlugins.ToList())
+                    foreach (Lazy<IDatabasePlugin> DBP in databasePlugins.ToList())
                     {
                         if (plugins.ToList().Find(x => x.Value.Name.ToLower() == DBP.Value.Name.ToLower()) == null)
                         {

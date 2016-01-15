@@ -24,7 +24,7 @@ namespace TH_Device_Server
 
         public Device_Server(Configuration config, bool useDatabases = true)
         {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            //AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             UseDatabases = useDatabases;
 
@@ -58,7 +58,7 @@ namespace TH_Device_Server
             InitializeTables();
 
             // Initialize each Table Plugin with the current Configuration 
-            TablePlugIns_Initialize(configuration, UseDatabases);
+            Plugins_Initialize(configuration, UseDatabases);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace TH_Device_Server
         public void Close()
         {
             Stop();
-            TablePlugIns_Closing();
+            Plugins_Closing();
             FSW_Stop();
 
             Log("Device (" + configuration.Index.ToString() + ") Closed");

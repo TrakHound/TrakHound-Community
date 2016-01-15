@@ -37,6 +37,8 @@ namespace TrakHound_Server
         {
             InitializeComponent();
             DataContext = this;
+
+            autostart_CHK.IsChecked = Properties.Settings.Default.autostart;
         }
 
         public Database_Settings userDatabaseSettings;
@@ -148,6 +150,11 @@ namespace TrakHound_Server
         private void CheckBox_Checked(object sender, RoutedEventArgs e) { RememberMe = true; }
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e) { RememberMe = false; }
+
+
+        private void autostart_Checked(object sender, RoutedEventArgs e) { Properties.Settings.Default.autostart = true; }
+
+        private void autostart_Unchecked(object sender, RoutedEventArgs e) { Properties.Settings.Default.autostart = false; }
 
 
 

@@ -101,6 +101,7 @@
     <ProjectReference Include="..\..\..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_Plugins_Client.csproj">
       <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>

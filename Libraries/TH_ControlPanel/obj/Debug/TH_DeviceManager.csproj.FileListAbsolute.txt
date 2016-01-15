@@ -6,7 +6,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Database.dl
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_MTC_Data.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_MTC_Requests.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_PlugIns_Server.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Plugins_Server.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Styles.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_WPF.dll
@@ -16,7 +16,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Database.pd
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_MTC_Data.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_MTC_Requests.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_PlugIns_Server.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Plugins_Server.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_Styles.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_ControlPanel\bin\Debug\TH_WPF.pdb

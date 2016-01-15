@@ -17,6 +17,7 @@ namespace TH_Database.Tables
     /// </summary>
     public static class Variables
     {
+        static string[] primaryKey = { "Variable" };
 
         public static void CreateTable(Database_Settings config, string TablePrefix = "")
         {
@@ -27,7 +28,7 @@ namespace TH_Database.Tables
                 new ColumnDefinition("Timestamp", DataType.DateTime)
             };
 
-            Table.Create(config, TablePrefix + TableNames.Variables, Columns, "Variable");
+            Table.Create(config, TablePrefix + TableNames.Variables, Columns, primaryKey);
         }
 
         public static void Update(Database_Settings config, string variable, string value, DateTime timestamp, string TablePrefix = "")
@@ -42,7 +43,7 @@ namespace TH_Database.Tables
             values.Add(value);
             values.Add(timestamp);
 
-            Row.Insert(config, TablePrefix + TableNames.Variables, columns.ToArray(), values.ToArray(), true);
+            Row.Insert(config, TablePrefix + TableNames.Variables, columns.ToArray(), values.ToArray(), primaryKey, true);
         }
 
         public static VariableData Get(Database_Settings config, string VariableName, string TablePrefix = "")

@@ -8,7 +8,7 @@ using TH_Database;
 
 namespace TH_MySQL
 {
-    public class Plugin : Database_Plugin
+    public class Plugin : IDatabasePlugin
     {
         public string Name { get { return "MySQL Database Plugin"; } }
 
@@ -175,7 +175,7 @@ namespace TH_MySQL
 
         // Table ------------------------------------------------------------------------
 
-        public bool Table_Create(object settings, string tablename, ColumnDefinition[] columnDefinitions, string primaryKey) 
+        public bool Table_Create(object settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey) 
         {
             bool result = false;
 
@@ -449,7 +449,7 @@ namespace TH_MySQL
 
         // Row --------------------------------------------------------------------------
 
-        public bool Row_Insert(object settings, string tablename, object[] columns, object[] values, bool update)
+        public bool Row_Insert(object settings, string tablename, object[] columns, object[] values, string[] primaryKey, bool update)
         {
             bool result = false;
 
@@ -469,7 +469,7 @@ namespace TH_MySQL
             return result;
         }
 
-        public bool Row_Insert(object settings, string tablename, object[] columns, List<List<object>> values, bool update)
+        public bool Row_Insert(object settings, string tablename, object[] columns, List<List<object>> values, string[] primaryKey, bool update)
         {
             bool result = false;
 
@@ -489,7 +489,7 @@ namespace TH_MySQL
             return result;
         }
 
-        public bool Row_Insert(object settings, string tablename, List<object[]> columnsList, List<object[]> valuesList, bool update)
+        public bool Row_Insert(object settings, string tablename, List<object[]> columnsList, List<object[]> valuesList, string[] primaryKey, bool update)
         {
             bool result = false;
 

@@ -17,13 +17,13 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_MTC_Data;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 
 using TH_ShiftTable;
 
 namespace TH_Cycles
 {
-    public class Cycles : Table_PlugIn
+    public class Cycles : IServerPlugin
     {
 
         #region "PlugIn"
@@ -175,11 +175,12 @@ namespace TH_Cycles
 
         #region "Database"
 
-        string TableName = TableNames.Cycles;
+        string cycleTableName = TableNames.Cycles;
+        string[] cyclePrimaryKey = { "Shift_Id", "Cycle_Id" }; 
 
         void CreateCycleTable()
         {
-            TableName = TablePrefix + TableNames.Cycles;
+            cycleTableName = TablePrefix + TableNames.Cycles;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -200,7 +201,7 @@ namespace TH_Cycles
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableName, ColArray, "Shift_Id, Cycle_Id");  
+            Table.Create(config.Databases_Server, cycleTableName, ColArray, cyclePrimaryKey);  
 
         }
 
@@ -238,13 +239,12 @@ namespace TH_Cycles
                 rowValues.Add(values);
             }
 
-            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, true);
-
+            Row.Insert(config.Databases_Server, cycleTableName, columns.ToArray(), rowValues, cyclePrimaryKey, true);
         }
 
 
-
         string SetupTableName = TableNames.Cycles_Setup;
+        string[] setupPrimaryKey = { "Cycle_Id" };
 
         void CreateSetupTable()
         {
@@ -258,7 +258,7 @@ namespace TH_Cycles
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, SetupTableName, ColArray, "Cycle_Id");  
+            Table.Create(config.Databases_Server, SetupTableName, ColArray, setupPrimaryKey);  
         }
 
         void DEBUG_AddSetupRows()
@@ -290,7 +290,7 @@ namespace TH_Cycles
             values.Add(1);
             rowValues.Add(values);
 
-            Row.Insert(config.Databases_Server, SetupTableName, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, SetupTableName, columns.ToArray(), rowValues, setupPrimaryKey, true);
 
         }
 

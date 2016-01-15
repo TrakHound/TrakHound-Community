@@ -7,7 +7,7 @@ using System.Data;
 
 using TH_Configuration;
 
-namespace TH_PlugIns_Server
+namespace TH_Plugins_Server
 {
     [InheritedExport(typeof(ConfigurationPage))]
     public interface ConfigurationPage

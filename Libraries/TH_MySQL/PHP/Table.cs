@@ -13,7 +13,7 @@ namespace TH_MySQL.PHP
     public static class Table
     {
 
-        public static bool Create(MySQL_Configuration config, string tablename, TH_Database.ColumnDefinition[] columnDefinitions, string primaryKey)
+        public static bool Create(MySQL_Configuration config, string tablename, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
 
             bool Result = false;
@@ -36,7 +36,19 @@ namespace TH_MySQL.PHP
             }
 
             string Keydef = "";
-            if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+            if (primaryKey != null)
+            {
+                //Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+                Keydef = ", PRIMARY KEY (";
+
+                for (var k = 0; k <= primaryKey.Length - 1; k++)
+                {
+                    Keydef += primaryKey[k];
+                    if (k < primaryKey.Length - 1) Keydef += ", ";
+                }
+
+                Keydef += ")";
+            }
 
             // Create Table
             values["query1"] = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + Keydef + ")";

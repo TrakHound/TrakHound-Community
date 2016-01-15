@@ -20,7 +20,7 @@ using TH_UserManagement.Management;
 
 namespace TH_StatusData
 {
-    public class StatusData : Plugin
+    public class StatusData : IClientPlugin
     {
 
         #region "PlugIn"
@@ -66,7 +66,7 @@ namespace TH_StatusData
 
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<Plugin> Plugins { get; set; }
+        public List<IClientPlugin> Plugins { get; set; }
 
         #endregion
 

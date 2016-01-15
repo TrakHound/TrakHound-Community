@@ -14,7 +14,7 @@ using System.Reflection;
 
 using TH_Configuration;
 using TH_Global;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 
 namespace TH_Device_Server
 {
@@ -23,134 +23,92 @@ namespace TH_Device_Server
         public delegate void DataEvent_Handler(DataEvent_Data de_data);
         public event DataEvent_Handler DataEvent;
 
-        public IEnumerable<Lazy<Table_PlugIn>> TablePlugIns { get; set; }
+        IEnumerable<Lazy<IServerPlugin>> plugins { get; set; }
 
-        public List<Lazy<Table_PlugIn>> Table_Plugins { get; set; }
+        public List<Lazy<IServerPlugin>> Plugins { get; set; }
 
-        TablePlugs TPLUGS;
+        Plugs PLUGS;
 
-        class TablePlugs
+        class Plugs
         {
-            [ImportMany(typeof(Table_PlugIn))]
-            public IEnumerable<Lazy<Table_PlugIn>> PlugIns { get; set; }
+            [ImportMany(typeof(IServerPlugin))]
+            public IEnumerable<Lazy<IServerPlugin>> Plugins { get; set; }
         }
-
-        List<Table_PlugIn> plugins = new List<Table_PlugIn>();
 
         public void LoadPlugins()
         {
-            //UpdateProcessingStatus("Loading Plugins...");
-
             string plugin_rootpath = FileLocations.Plugins + @"\Server";
 
             if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
 
-            //TablePlugIns = new List<Table_PlugIn>();
-            Table_Plugins = new List<Lazy<Table_PlugIn>>();
+            Plugins = new List<Lazy<IServerPlugin>>();
 
             string pluginsPath;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
-            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
+            pluginsPath = plugin_rootpath;
+            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            if (Directory.Exists(pluginsPath)) LoadTablePlugins(pluginsPath);
+            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
-            //TablePlugIns = Table_Plugins;
-
-            Console.WriteLine("Table Plugins --------------------------");
-            Console.WriteLine(Table_Plugins.Count.ToString() + " Table Plugins Found");
+            Console.WriteLine("Server Plugins --------------------------");
+            Console.WriteLine(Plugins.Count.ToString() + " Plugins Found");
             Console.WriteLine("------------------------------");
-            foreach (Lazy<Table_PlugIn> ltp in Table_Plugins)
+            foreach (Lazy<IServerPlugin> lplugin in Plugins)
             {
-                Table_PlugIn tp = ltp.Value;
+                IServerPlugin plugin = lplugin.Value;
 
+                string name = plugin.Name;
+                string version = null;
 
-
-                object o = Activator.CreateInstance(tp.GetType());
-                if (o != null)
+                // Version Info
+                Assembly assembly = Assembly.GetAssembly(plugin.GetType());
+                if (assembly != null)
                 {
-                    Table_PlugIn plugin = o as Table_PlugIn;
-                    if (plugin != null)
-                    {
-                        string name = plugin.Name;
-                        string version = null;
-
-                        // Version Info
-                        Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-                        if (assembly != null)
-                        {
-                            Version v = assembly.GetName().Version;
-                            version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
-                        }
-
-                        Console.WriteLine(plugin.Name + " : " + version);
-
-                        plugins.Add(plugin);
-                    }
+                    Version v = assembly.GetName().Version;
+                    version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
                 }
 
-                //string name = tp.Name;
-                //string version = null;
-
-                // // Version Info
-                //    Assembly assembly = Assembly.GetAssembly(tp.GetType());
-                //    if (assembly != null)
-                //    {
-                //        Version v = assembly.GetName().Version;
-                //        version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
-                //    }
-
-                //    Console.WriteLine(tp.Name + " : " + version);
+                Console.WriteLine(plugin.Name + " : " + version);
             }
             Console.WriteLine("----------------------------------------");
-
-
-
-            //ClearProcessingStatus();
         }
 
-        void LoadTablePlugins(string Path)
+        void LoadPlugins(string Path)
         {
-            //Logger.Log("Searching for Table Plugins in '" + Path + "'");
             if (Directory.Exists(Path))
             {
                 try
                 {
-                    TPLUGS = new TablePlugs();
+                    PLUGS = new Plugs();
 
                     var PageCatalog = new DirectoryCatalog(Path);
                     var PageContainer = new CompositionContainer(PageCatalog);
-                    PageContainer.SatisfyImportsOnce(TPLUGS);
+                    PageContainer.SatisfyImportsOnce(PLUGS);
 
-                    TablePlugIns = TPLUGS.PlugIns;
+                    plugins = PLUGS.Plugins;
 
-                    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns)
+                    foreach (Lazy<IServerPlugin> lplugin in plugins)
                     {
-                        Table_PlugIn tp = ltp.Value;
+                        IServerPlugin plugin = lplugin.Value;
 
-                        if (Table_Plugins.ToList().Find(x => x.Value.Name.ToLower() == tp.Name.ToLower()) == null)
+                        if (Plugins.ToList().Find(x => x.Value.Name.ToLower() == plugin.Name.ToLower()) == null)
                         {
-                            //Logger.Log(tp.Name + " : PlugIn Found");
-                            Table_Plugins.Add(ltp);
-                        }
-                        else
-                        {
-                            //Logger.Log(tp.Name + " : PlugIn Already Found");
+                            Plugins.Add(lplugin);
                         }
                     }
                 }
-                catch (Exception ex) { Logger.Log("LoadTablePlugins() : Exception : " + ex.Message); }
+                catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message); }
 
                 // Search Subdirectories
                 foreach (string directory in Directory.GetDirectories(Path))
                 {
-                    LoadTablePlugins(directory);
+                    LoadPlugins(directory);
                 }
             }
-            else Logger.Log("Table PlugIns Directory Doesn't Exist (" + Path + ")");
+            else Logger.Log("Plugins Directory Doesn't Exist (" + Path + ")");
         }
 
 
@@ -158,73 +116,57 @@ namespace TH_Device_Server
         {
             public Configuration config { get; set; }
             public bool useDatabases { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
+            public IServerPlugin tablePlugin { get; set; }
         }
 
         class ComponentWorkerInfo
         {
             public TH_MTC_Data.Components.ReturnData returnData { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
+            public IServerPlugin tablePlugin { get; set; }
         }
 
         class StreamWorkerInfo
         {
             public TH_MTC_Data.Streams.ReturnData returnData { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
+            public IServerPlugin tablePlugin { get; set; }
         }
 
         class DataEventWorkerInfo
         {
             public DataEvent_Data de_data { get; set; }
-            public Table_PlugIn tablePlugin { get; set; }
+            public IServerPlugin tablePlugin { get; set; }
         }
 
-        void TablePlugIns_Initialize(Configuration Config, bool useDatabases = true)
+        void Plugins_Initialize(Configuration Config, bool useDatabases = true)
         {
-            if (plugins != null && Config != null)
+            if (Plugins != null && Config != null)
             {
-                foreach (Table_PlugIn plugin in plugins.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
-                    //Table_PlugIn tp = ltp.Value;
+                    IServerPlugin plugin = lplugin.Value;
 
                     InitializeWorkerInfo info = new InitializeWorkerInfo();
                     info.config = Config;
                     info.useDatabases = useDatabases;
                     info.tablePlugin = plugin;
 
-                    TablePlugIn_Initialize_Worker(info);
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
+                    Plugin_Initialize_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(Plugin_Initialize_Worker), info);
                 }
             }
-
-            //if (TablePlugIns != null && Config != null)
-            //{
-            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-            //    {
-            //        Table_PlugIn tp = ltp.Value;
-
-            //        InitializeWorkerInfo info = new InitializeWorkerInfo();
-            //        info.config = Config;
-            //        info.useDatabases = useDatabases;
-            //        info.tablePlugin = tp;
-
-            //        TablePlugIn_Initialize_Worker(info);
-            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Initialize_Worker), info);
-            //    }
-            //}
         }
 
-        void TablePlugIn_Initialize_Worker(object o)
+        void Plugin_Initialize_Worker(object o)
         {
             InitializeWorkerInfo info = (InitializeWorkerInfo)o;
 
             try
             {
-                Table_PlugIn tpi = info.tablePlugin;
+                IServerPlugin tpi = info.tablePlugin;
                 tpi.TablePrefix = TablePrefix;
                 tpi.UseDatabases = info.useDatabases;
-                tpi.DataEvent -= TablePlugIn_Update_DataEvent;
-                tpi.DataEvent += TablePlugIn_Update_DataEvent;
+                tpi.DataEvent -= Plugin_Update_DataEvent;
+                tpi.DataEvent += Plugin_Update_DataEvent;
                 tpi.StatusChanged += tpi_StatusChanged;
                 tpi.Initialize(info.config);
             }
@@ -240,40 +182,25 @@ namespace TH_Device_Server
         }
 
 
-        void TablePlugIns_Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
+        void Plugins_Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
         {
-            if (plugins != null)
+            if (Plugins != null)
             {
-                foreach (Table_PlugIn plugin in plugins.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
-                    //Table_PlugIn tp = ltp.Value;
+                    IServerPlugin plugin = lplugin.Value;
 
                     ComponentWorkerInfo info = new ComponentWorkerInfo();
                     info.returnData = returnData;
                     info.tablePlugin = plugin;
 
-                    TablePlugIns_Update_Probe_Worker(info);
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
+                    Plugins_Update_Probe_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(Plugins_Update_Probe_Worker), info);
                 }
             }
-
-            //if (TablePlugIns != null)
-            //{
-            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-            //    {
-            //        Table_PlugIn tp = ltp.Value;
-
-            //        ComponentWorkerInfo info = new ComponentWorkerInfo();
-            //        info.returnData = returnData;
-            //        info.tablePlugin = tp;
-
-            //        TablePlugIns_Update_Probe_Worker(info);
-            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Probe_Worker), info);
-            //    }
-            //}
         }
 
-        void TablePlugIns_Update_Probe_Worker(object o)
+        void Plugins_Update_Probe_Worker(object o)
         {
             ComponentWorkerInfo info = (ComponentWorkerInfo)o;
 
@@ -283,7 +210,7 @@ namespace TH_Device_Server
                 {
                     try
                     {
-                        Table_PlugIn tpi = info.tablePlugin;
+                        IServerPlugin tpi = info.tablePlugin;
                         tpi.Update_Probe(info.returnData);
                     }
                     catch (Exception ex)
@@ -295,40 +222,25 @@ namespace TH_Device_Server
         }
 
 
-        void TablePlugIns_Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
+        void Plugins_Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            if (plugins != null)
+            if (Plugins != null)
             {
-                foreach (Table_PlugIn plugin in plugins.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
-                    //Table_PlugIn tp = ltp.Value;
+                    IServerPlugin plugin = lplugin.Value;
 
                     StreamWorkerInfo info = new StreamWorkerInfo();
                     info.returnData = returnData;
                     info.tablePlugin = plugin;
 
-                    TablePlugIns_Update_Current_Worker(info);
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
+                    Plugins_Update_Current_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(Plugins_Update_Current_Worker), info);
                 }
             }
-
-            //if (TablePlugIns != null)
-            //{
-            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-            //    {
-            //        Table_PlugIn tp = ltp.Value;
-
-            //        StreamWorkerInfo info = new StreamWorkerInfo();
-            //        info.returnData = returnData;
-            //        info.tablePlugin = tp;
-
-            //        TablePlugIns_Update_Current_Worker(info);
-            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Current_Worker), info);
-            //    }
-            //}
         }
 
-        void TablePlugIns_Update_Current_Worker(object o)
+        void Plugins_Update_Current_Worker(object o)
         {
             StreamWorkerInfo info = (StreamWorkerInfo)o;
 
@@ -338,7 +250,7 @@ namespace TH_Device_Server
                 {
                     try
                     {
-                        Table_PlugIn tpi = info.tablePlugin;
+                        IServerPlugin tpi = info.tablePlugin;
                         tpi.Update_Current(info.returnData);
                     }
                     catch (Exception ex)
@@ -350,40 +262,25 @@ namespace TH_Device_Server
         }
 
 
-        void TablePlugIns_Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
+        void Plugins_Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
         {
-            if (plugins != null)
+            if (Plugins != null)
             {
-                foreach (Table_PlugIn plugin in plugins.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
-                    //Table_PlugIn tp = ltp.Value;
+                    IServerPlugin plugin = lplugin.Value;
 
                     StreamWorkerInfo info = new StreamWorkerInfo();
                     info.returnData = returnData;
                     info.tablePlugin = plugin;
 
-                    TablePlugIns_Update_Sample_Worker(info);
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
+                    Plugins_Update_Sample_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(Plugins_Update_Sample_Worker), info);
                 }
             }
-
-            //if (TablePlugIns != null)
-            //{
-            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-            //    {
-            //        Table_PlugIn tp = ltp.Value;
-
-            //        StreamWorkerInfo info = new StreamWorkerInfo();
-            //        info.returnData = returnData;
-            //        info.tablePlugin = tp;
-
-            //        TablePlugIns_Update_Sample_Worker(info);
-            //        ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIns_Update_Sample_Worker), info);
-            //    }
-            //}
         }
 
-        void TablePlugIns_Update_Sample_Worker(object o)
+        void Plugins_Update_Sample_Worker(object o)
         {
             StreamWorkerInfo info = (StreamWorkerInfo)o;
 
@@ -393,7 +290,7 @@ namespace TH_Device_Server
                 {
                     try
                     {
-                        Table_PlugIn tpi = info.tablePlugin;
+                        IServerPlugin tpi = info.tablePlugin;
                         tpi.Update_Sample(info.returnData);
                     }
                     catch (Exception ex)
@@ -405,42 +302,27 @@ namespace TH_Device_Server
         }
 
 
-        void TablePlugIn_Update_DataEvent(DataEvent_Data de_data)
+        void Plugin_Update_DataEvent(DataEvent_Data de_data)
         {
-            if (plugins != null)
+            if (Plugins != null)
             {
-                foreach (Table_PlugIn plugin in plugins.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
-                    //Table_PlugIn tp = ltp.Value;
+                    IServerPlugin plugin = lplugin.Value;
 
                     DataEventWorkerInfo info = new DataEventWorkerInfo();
                     info.de_data = de_data;
                     info.tablePlugin = plugin;
 
-                    TablePlugIn_Update_DataEvent_Worker(info);
-                    //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
+                    Plugin_Update_DataEvent_Worker(info);
+                    //ThreadPool.QueueUserWorkItem(new WaitCallback(Plugin_Update_DataEvent_Worker), info);
                 }
             }
-
-            //if (TablePlugIns != null)
-            //{
-            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-            //    {
-            //        Table_PlugIn tp = ltp.Value;
-
-            //        DataEventWorkerInfo info = new DataEventWorkerInfo();
-            //        info.de_data = de_data;
-            //        info.tablePlugin = tp;
-
-            //        TablePlugIn_Update_DataEvent_Worker(info);
-            //        //ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Update_DataEvent_Worker), info);
-            //    }
-            //}
 
             if (DataEvent != null) DataEvent(de_data);
         }
 
-        void TablePlugIn_Update_DataEvent_Worker(object o)
+        void Plugin_Update_DataEvent_Worker(object o)
         {
             DataEventWorkerInfo info = (DataEventWorkerInfo)o;
 
@@ -450,7 +332,7 @@ namespace TH_Device_Server
                 {
                     try
                     {
-                        Table_PlugIn tpi = info.tablePlugin;
+                        IServerPlugin tpi = info.tablePlugin;
                         tpi.Update_DataEvent(info.de_data);
                     }
                     catch (Exception ex)
@@ -462,42 +344,21 @@ namespace TH_Device_Server
         }
 
 
-        void TablePlugIns_Closing()
+        void Plugins_Closing()
         {
-            if (plugins != null)
+            if (Plugins != null)
             {
-                foreach (Table_PlugIn plugin in plugins.ToList())
+                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
                 {
-                    //Table_PlugIn tp = ltp.Value;
-                    TablePlugIn_Closing_Worker(plugin);
-
-                    //if (tp.IsValueCreated)
-                    //{
-                    //    TablePlugIn_Closing_Worker
-                    //    ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Closing_Worker), tp.Value);
-                    //}
+                    IServerPlugin plugin = lplugin.Value;
+                    Plugin_Closing_Worker(plugin);
                 }
             }
-
-            //if (TablePlugIns != null)
-            //{
-            //    foreach (Lazy<Table_PlugIn> ltp in TablePlugIns.ToList())
-            //    {
-            //        Table_PlugIn tp = ltp.Value;
-            //        TablePlugIn_Closing_Worker(tp);
-
-            //        //if (tp.IsValueCreated)
-            //        //{
-            //        //    TablePlugIn_Closing_Worker
-            //        //    ThreadPool.QueueUserWorkItem(new WaitCallback(TablePlugIn_Closing_Worker), tp.Value);
-            //        //}
-            //    }
-            //}
         }
 
-        void TablePlugIn_Closing_Worker(object o)
+        void Plugin_Closing_Worker(object o)
         {
-            Table_PlugIn tp = (Table_PlugIn)o;
+            IServerPlugin tp = (IServerPlugin)o;
 
             try
             {

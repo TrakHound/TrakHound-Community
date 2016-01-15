@@ -35,23 +35,23 @@ namespace TH_Device_Server
                 var probeData = RunProbe();
                 if (probeData != null)
                 {
-                    TablePlugIns_Update_Probe(probeData);
+                    Plugins_Update_Probe(probeData);
 
                     while (!stopRequests.WaitOne(0, true))
                     {
                         var currentData = RunCurrent();
                         if (currentData != null)
                         {
-                            TablePlugIns_Update_Current(currentData);
+                            Plugins_Update_Current(currentData);
 
                             var sampleData = RunSample(currentData.header);
                             if (sampleData != null)
                             {
-                                TablePlugIns_Update_Sample(sampleData);
+                                Plugins_Update_Sample(sampleData);
                             }
                             else
                             {
-                                TablePlugIns_Update_Sample(null);
+                                Plugins_Update_Sample(null);
                             }
                         }
 

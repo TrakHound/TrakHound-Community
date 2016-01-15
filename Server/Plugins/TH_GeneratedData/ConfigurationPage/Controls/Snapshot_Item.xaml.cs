@@ -134,7 +134,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
             DependencyProperty.Register("SelectedVariableLink", typeof(string), typeof(Snapshot_Item), new PropertyMetadata(null));
 
         
-
         public string SelectedLink
         {
             get { return (string)GetValue(SelectedLinkProperty); }

@@ -6,7 +6,7 @@
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
         
         Title="TrakHound Server Login"
-        Height="315"
+        Height="330"
         Width="400" 
         
         ResizeMode="NoResize" 
@@ -154,19 +154,55 @@
                 </Grid>
 
             </Border>
+            
+            <Grid Margin="10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
-            <!--Remember Me Enabled Text and Checkbox-->
+                <!--Remember Me Enabled Text and Checkbox-->
+                <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
+
+                <CheckBox x:Name="rememberme_CHK" Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
+
+
+                <!--Start Server on Login-->
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Start Server on Login" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
+
+                <CheckBox x:Name="autostart_CHK" Grid.Column="1" Grid.Row="1" Checked="autostart_Checked" Unchecked="autostart_Unchecked" Height="40"/>
+                
+            </Grid>
+
+            
+            <!--<Grid Margin="10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                
+
+                
+
+            </Grid>
+
+            
             <Grid Margin="10,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0" Text="Keep me logged in" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
+                
 
-                <CheckBox x:Name="rememberme_CHK" Grid.Column="1" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40"/>
+                
 
-            </Grid>
+            </Grid>-->
 
         </StackPanel>
 

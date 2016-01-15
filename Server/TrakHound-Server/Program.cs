@@ -44,7 +44,7 @@ namespace TrakHound_Server
 
         public ServerGroup()
         {
-            System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            //System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             OutputConsole = new Output_Console();
 
@@ -60,7 +60,10 @@ namespace TrakHound_Server
 
             userDatabaseSettings = GetRememberMe();
 
-            StartServer();
+            //DEBUG $$$$
+            //OpenDeviceManager();
+
+            if (Properties.Settings.Default.autostart) StartServer();
 
             Application.Run(Controller);
 

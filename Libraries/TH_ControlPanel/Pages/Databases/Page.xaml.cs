@@ -23,7 +23,7 @@ using System.Collections.ObjectModel;
 
 using TH_Configuration;
 using TH_Global.Functions;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 using TH_WPF;
 using TH_UserManagement;
 using TH_UserManagement.Management;
@@ -42,7 +42,7 @@ namespace TH_DeviceManager.Pages.Databases
 
             // Read Database plugins and create 'Add' buttons for each
             TH_Database.DatabasePluginReader dpr = new TH_Database.DatabasePluginReader();
-            plugins = new List<TH_Database.Database_Plugin>();
+            plugins = new List<TH_Database.IDatabasePlugin>();
             CreateAddDatabaseButtons(dpr);
         }
 
@@ -107,7 +107,7 @@ namespace TH_DeviceManager.Pages.Databases
         #endregion
 
 
-        List<TH_Database.Database_Plugin> plugins;
+        List<TH_Database.IDatabasePlugin> plugins;
 
         DataTable configurationTable;
 
@@ -172,9 +172,9 @@ namespace TH_DeviceManager.Pages.Databases
 
         void CreateAddDatabaseButtons(TH_Database.DatabasePluginReader dpr)
         {
-            foreach (Lazy<TH_Database.Database_Plugin> lplugin in dpr.plugins)
+            foreach (Lazy<TH_Database.IDatabasePlugin> lplugin in dpr.plugins)
             {
-                TH_Database.Database_Plugin plugin = lplugin.Value;
+                TH_Database.IDatabasePlugin plugin = lplugin.Value;
                 plugins.Add(plugin);
 
                 TH_WPF.Button bt = new TH_WPF.Button();
@@ -191,7 +191,7 @@ namespace TH_DeviceManager.Pages.Databases
         {
             if (configurationTable != null)
             {
-                TH_Database.Database_Plugin plugin = (TH_Database.Database_Plugin)bt.DataObject;
+                TH_Database.IDatabasePlugin plugin = (TH_Database.IDatabasePlugin)bt.DataObject;
 
                 // Find Id that is not used
                 //string test = "/Databases/" + plugin.Type + "||";
@@ -221,30 +221,32 @@ namespace TH_DeviceManager.Pages.Databases
 
                     object o = Activator.CreateInstance(config_type);
 
-                    TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)o;
+                    TH_Database.DatabaseConfigurationPage page = o as TH_Database.DatabaseConfigurationPage;
+                    if (page != null)
+                    {
+                        if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
+                        else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
 
-                    if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
-                    else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
+                        page.prefix = address;
+                        page.SettingChanged += Configuration_Page_SettingChanged;
+                        databaseConfigurationPages.Add(page);
 
-                    page.prefix = address;
-                    page.SettingChanged += Configuration_Page_SettingChanged;
-                    databaseConfigurationPages.Add(page);
+                        Controls.DatabaseItemContainer item = new Controls.DatabaseItemContainer();
+                        item.prefix = address;
+                        item.ItemContent = configButton;
+                        item.Clicked += item_Clicked;
+                        item.RemoveClicked += item_RemoveClicked;
 
-                    Controls.DatabaseItemContainer item = new Controls.DatabaseItemContainer();
-                    item.prefix = address;
-                    item.ItemContent = configButton;
-                    item.Clicked += item_Clicked;
-                    item.RemoveClicked += item_RemoveClicked;
+                        CollapseButton cbt = new CollapseButton();
+                        item.collapseButton = cbt;
+                        cbt.ButtonContent = item;
+                        cbt.PageContent = page;
 
-                    CollapseButton cbt = new CollapseButton();
-                    item.collapseButton = cbt;
-                    cbt.ButtonContent = item;
-                    cbt.PageContent = page;
+                        foreach (CollapseButton ocbt in DatabaseList.OfType<CollapseButton>().ToList()) ocbt.IsExpanded = false;
+                        cbt.IsExpanded = true;
 
-                    foreach (CollapseButton ocbt in DatabaseList.OfType<CollapseButton>().ToList()) ocbt.IsExpanded = false;
-                    cbt.IsExpanded = true;
-
-                    DatabaseList.Add(cbt);
+                        DatabaseList.Add(cbt);
+                    } 
                 }
             }
 
@@ -263,7 +265,7 @@ namespace TH_DeviceManager.Pages.Databases
 
             bool openfirst = true;
 
-            foreach (TH_Database.Database_Plugin plugin in plugins)
+            foreach (TH_Database.IDatabasePlugin plugin in plugins)
             {
                 string prefix = null;
                 if (PageType == Page_Type.Client) prefix = "/Databases_Client/" + plugin.Type + "||";

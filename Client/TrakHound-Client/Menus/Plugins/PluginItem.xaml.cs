@@ -33,7 +33,7 @@ namespace TrakHound_Client.Menus.Plugins
             DataContext = this;
         }
 
-        public Plugin plugin;
+        public IClientPlugin plugin;
 
         public ImageSource Image
         {

@@ -55,7 +55,7 @@ namespace TrakHound_Client.Splash
             DependencyProperty.Register("Version", typeof(string), typeof(Screen), new PropertyMetadata(""));
 
 
-        public void AddPlugin(Plugin plugin)
+        public void AddPlugin(IClientPlugin plugin)
         {
             ImageBrush NavIMGBRUSH = new ImageBrush();
             NavIMGBRUSH.ImageSource = plugin.Image;

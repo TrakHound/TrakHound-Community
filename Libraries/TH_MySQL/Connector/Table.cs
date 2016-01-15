@@ -12,7 +12,7 @@ namespace TH_MySQL.Connector
     public static class Table
     {
 
-        public static bool Create(MySQL_Configuration config, string tableName, TH_Database.ColumnDefinition[] columnDefinitions, string primaryKey)
+        public static bool Create(MySQL_Configuration config, string tableName, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
 
             bool Result = false;
@@ -44,8 +44,22 @@ namespace TH_MySQL.Connector
                         if (x < columnDefinitions.Length - 1) coldef += ",";
                     }
 
+                    //string Keydef = "";
+                    //if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+
                     string Keydef = "";
-                    if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+                    if (primaryKey != null)
+                    {
+                        Keydef = ", PRIMARY KEY (";
+
+                        for (var k = 0; k <= primaryKey.Length - 1; k++)
+                        {
+                            Keydef += primaryKey[k];
+                            if (k < primaryKey.Length - 1) Keydef += ", ";
+                        }
+
+                        Keydef += ")";
+                    }
 
 
                     string[] queries = new string[4];

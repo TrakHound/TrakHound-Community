@@ -22,5 +22,17 @@ namespace TrakHound_Server.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool autostart {
+            get {
+                return ((bool)(this["autostart"]));
+            }
+            set {
+                this["autostart"] = value;
+            }
+        }
     }
 }

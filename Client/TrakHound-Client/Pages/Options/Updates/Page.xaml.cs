@@ -227,10 +227,10 @@ namespace TrakHound_Client.Pages.Options.Updates
                         {
                             try
                             {
-                                Lazy<Plugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
+                                Lazy<IClientPlugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
                                 if (lplugin != null)
                                 {
-                                    Plugin plugin = lplugin.Value;
+                                    IClientPlugin plugin = lplugin.Value;
 
                                     UpdateItem ui = new UpdateItem();
                                     ui.PluginTitle = config.Name;
@@ -264,12 +264,12 @@ namespace TrakHound_Client.Pages.Options.Updates
                         {
                             foreach (PluginConfiguration subConfig in subcat.PluginConfigurations)
                             {
-                                Lazy<Plugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
+                                Lazy<IClientPlugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
                                 if (lplugin != null)
                                 {
                                     try
                                     {
-                                        Plugin plugin = lplugin.Value;
+                                        IClientPlugin plugin = lplugin.Value;
 
                                         UpdateItem ui = new UpdateItem();
                                         ui.PluginTitle = subConfig.Name;

@@ -38,7 +38,7 @@ namespace TH_DeviceCompare
     /// <summary>
     /// Interaction logic for DeviceCompare.xaml
     /// </summary>
-    public partial class DeviceCompare : UserControl, Plugin
+    public partial class DeviceCompare : UserControl, IClientPlugin
     {
         public DeviceCompare()
         {
@@ -95,7 +95,7 @@ namespace TH_DeviceCompare
 
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<Plugin> Plugins { get; set; }
+        public List<IClientPlugin> Plugins { get; set; }
 
         #endregion
 

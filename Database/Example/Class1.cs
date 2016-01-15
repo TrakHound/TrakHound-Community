@@ -8,7 +8,7 @@ using TH_Database;
 
 namespace TH_Example
 {
-    public class Plugin : Database_Plugin
+    public class Plugin : IDatabasePlugin
     {
         public string Name { get { return "Example Database Plugin"; } }
 

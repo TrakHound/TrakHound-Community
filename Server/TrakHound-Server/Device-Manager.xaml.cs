@@ -23,7 +23,6 @@ using TH_Configuration;
 using TH_Database;
 using TH_DeviceManager;
 using TH_Global;
-using TH_PlugIns_Server;
 using TH_WPF;
 using TH_UserManagement;
 using TH_UserManagement.Management;

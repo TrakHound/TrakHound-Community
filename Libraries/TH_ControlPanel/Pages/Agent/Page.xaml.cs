@@ -26,7 +26,7 @@ using TH_Global;
 using TH_Global.Functions;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 using TH_UserManagement;
 using TH_UserManagement.Management;
 

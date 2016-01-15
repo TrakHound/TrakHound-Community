@@ -65,6 +65,72 @@ namespace TH_Global.Functions
             return result;
         }
 
+        public static void UpdateTableValue(object table, string keyColumn, string key, string valueColumn, string value)
+        {
+            DataTable dt = table as DataTable;
+            if (dt != null)
+            {
+                DataRow[] rows = dt.Select(keyColumn + "='" + key + "'");
+                if (rows.Length > 0)
+                {
+                    foreach (var row in rows)
+                    {
+                        if (row.Table.Columns.Contains(valueColumn))
+                        {
+                            row[valueColumn] = value;
+                        }
+                    }
+                }
+                else
+                {
+                    DataRow row = dt.NewRow();
+                    row[keyColumn] = key;
+                    row[valueColumn] = value;
+                    dt.Rows.Add(row);
+                }
+            }
+        }
+
+
+
+        public static void WriteRowstoConsole(string Title, DataTable DT)
+        {
+
+            Console.WriteLine(Title + " ------------------------------------------------------");
+
+            string Columns = "";
+            foreach (DataColumn Col in DT.Columns)
+                Columns += Col.ColumnName + " : ";
+
+            Console.WriteLine("Columns ::: " + Columns);
+
+            foreach (DataRow Row in DT.Rows)
+            {
+                string Display = "";
+                for (int x = 0; x <= Row.ItemArray.Length - 1; x++)
+                {
+                    Display += Row.ItemArray[x].ToString() + " : ";
+                }
+                Console.WriteLine(Display);
+
+            }
+
+            Console.WriteLine(" --------------------------------------------------------------");
+
+        }
+
+        public static void WriteRowValuesToConsole(object[] ItemArray)
+        {
+            string full = "";
+            for (int x = 0; x <= ItemArray.Length - 1; x++)
+                full += ItemArray[x].ToString() + " : ";
+
+            Console.WriteLine(full);
+
+        }
+
+
+
 
         //public static string GetTableValue(string key, DataTable dt)
         //{

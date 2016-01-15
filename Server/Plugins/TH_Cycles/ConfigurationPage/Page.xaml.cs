@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Collections.ObjectModel;
 
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 using TH_Configuration;
 using TH_UserManagement;
 using TH_UserManagement.Management;
@@ -28,7 +28,7 @@ namespace TH_Cycles.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_PlugIns_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
     {
         public Page()
         {

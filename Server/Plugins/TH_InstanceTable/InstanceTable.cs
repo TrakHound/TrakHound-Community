@@ -16,11 +16,11 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_MTC_Data;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 
 namespace TH_InstanceTable
 {
-    public class InstanceTable : Table_PlugIn
+    public class InstanceTable : IServerPlugin
     {
 
         bool firstPass = true;
@@ -287,6 +287,7 @@ namespace TH_InstanceTable
         #region "Database"
 
         public string TableName = TableNames.Instance;
+        string[] primaryKey = null;
 
         void CreateInstanceTable(List<string> variablesToRecord)
         {
@@ -302,7 +303,7 @@ namespace TH_InstanceTable
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableName, ColArray, null);  
+            Table.Create(config.Databases_Server, TableName, ColArray, primaryKey);  
 
         }
 
@@ -377,7 +378,7 @@ namespace TH_InstanceTable
 
                     countLeft -= interval;
 
-                    Row.Insert(config.Databases_Server, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), false);
+                    Row.Insert(config.Databases_Server, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), primaryKey, false);
                 }
             }
         }

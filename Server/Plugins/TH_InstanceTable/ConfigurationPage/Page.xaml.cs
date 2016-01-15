@@ -17,7 +17,7 @@ using System.Data;
 using System.Collections.ObjectModel;
 
 using TH_Configuration;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 using TH_MTC_Data.Components;
 using TH_MTC_Requests;
 using TH_UserManagement.Management;
@@ -29,7 +29,7 @@ namespace TH_InstanceTable.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_PlugIns_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
     {
         public Page()
         {

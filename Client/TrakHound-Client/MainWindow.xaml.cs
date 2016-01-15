@@ -147,9 +147,9 @@ namespace TrakHound_Client
 
         void Splash_UpdateStatus_GUI(string Status) { SPLSH.Status = Status; }
 
-        void Splash_AddPlugin(Plugin plugin) { this.Dispatcher.Invoke(new Action<Plugin>(Splash_AddPlugin_GUI), Priority, new object[] { plugin }); }
+        void Splash_AddPlugin(IClientPlugin plugin) { this.Dispatcher.Invoke(new Action<IClientPlugin>(Splash_AddPlugin_GUI), Priority, new object[] { plugin }); }
 
-        void Splash_AddPlugin_GUI(Plugin plugin) { SPLSH.AddPlugin(plugin); }
+        void Splash_AddPlugin_GUI(IClientPlugin plugin) { SPLSH.AddPlugin(plugin); }
 
         bool SplashWait = true;
 
@@ -619,13 +619,13 @@ namespace TrakHound_Client
                     {
                         if (config.Enabled && plugins != null)
                         {
-                            foreach (Lazy<Plugin> lplugin in plugins.ToList())
+                            foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
                             {
                                 if (lplugin != null)
                                 {
                                     try
                                     {
-                                        Plugin plugin = lplugin.Value;
+                                        IClientPlugin plugin = lplugin.Value;
                                         plugin.Closing();
                                     }
                                     catch (Exception ex) { }
@@ -1135,7 +1135,7 @@ namespace TrakHound_Client
             PluginLauncher_BT.IsSelected = val;
         }
 
-        void AddAppToList(Plugin plugin)
+        void AddAppToList(IClientPlugin plugin)
         {
             if (plugin.ShowInAppMenu)
             {
@@ -1155,7 +1155,7 @@ namespace TrakHound_Client
             PluginLauncher.Shown = false;
         }
 
-        void RemoveAppFromList(Plugin plugin)
+        void RemoveAppFromList(IClientPlugin plugin)
         {
 
 
@@ -1294,9 +1294,9 @@ namespace TrakHound_Client
         {
             EnabledPlugins = new List<PluginConfiguration>();
 
-            Splash_UpdateStatus("...Loading Page Plugins");
+            Splash_UpdateStatus("...Loading Plugins");
 
-            PagePlugins_Find();
+            Plugins_Find();
 
             Plugins_Load();
         }
@@ -1308,16 +1308,16 @@ namespace TrakHound_Client
         class Plugin_Container
         {
             // Store Plugins
-            [ImportMany(typeof(Plugin))]
-            public IEnumerable<Lazy<Plugin>> plugins { get; set; }
+            [ImportMany(typeof(IClientPlugin))]
+            public IEnumerable<Lazy<IClientPlugin>> plugins { get; set; }
         }
 
-        public List<Lazy<Plugin>> plugins;
+        public List<Lazy<IClientPlugin>> plugins;
 
-        public void PagePlugins_Find()
+        public void Plugins_Find()
         {
 
-            plugins = new List<Lazy<Plugin>>();
+            plugins = new List<Lazy<IClientPlugin>>();
 
             string path;
 
@@ -1357,7 +1357,6 @@ namespace TrakHound_Client
 
                 if (plugin_container.plugins != null)
                 {
-
                     List<PluginConfiguration> configs;
 
                     if (Properties.Settings.Default.Plugin_Configurations != null)
@@ -1369,11 +1368,11 @@ namespace TrakHound_Client
                         configs = new List<PluginConfiguration>();
                     }
 
-                    foreach (Lazy<Plugin> lplugin in plugin_container.plugins.ToList())
+                    foreach (Lazy<IClientPlugin> lplugin in plugin_container.plugins.ToList())
                     {
                         try
                         {
-                            Plugin plugin = lplugin.Value;
+                            IClientPlugin plugin = lplugin.Value;
 
                             Console.WriteLine(plugin.Title + " Found in '" + Path + "'");
 
@@ -1442,7 +1441,6 @@ namespace TrakHound_Client
                                             {
                                                 match2.PluginConfigurations.Add(config);
                                             }
-
                                         }
                                     }
                                 }
@@ -1500,12 +1498,12 @@ namespace TrakHound_Client
                     {
                         if (plugins != null)
                         {
-                            Lazy<Plugin> lplugin = plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
+                            Lazy<IClientPlugin> lplugin = plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
                             if (lplugin != null)
                             {
                                 try
                                 {
-                                    Plugin plugin = lplugin.Value;
+                                    IClientPlugin plugin = lplugin.Value;
 
                                     Splash_UpdateStatus("...Loading Plugin : " + plugin.Title);
                                     Splash_AddPlugin(plugin);
@@ -1515,7 +1513,7 @@ namespace TrakHound_Client
                                     plugin.ShowRequested += Plugin_ShowRequested;
                                     plugin.SubCategories = config.SubCategories;
 
-                                    plugin.Plugins = new List<Plugin>();
+                                    plugin.Plugins = new List<IClientPlugin>();
 
                                     if (plugin.SubCategories != null)
                                     {
@@ -1523,7 +1521,7 @@ namespace TrakHound_Client
                                         {
                                             foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
                                             {
-                                                Lazy<Plugin> clplugin = plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
+                                                Lazy<IClientPlugin> clplugin = plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
                                                 if (clplugin != null)
                                                 {
                                                     plugin.Plugins.Add(clplugin.Value);
@@ -1563,11 +1561,11 @@ namespace TrakHound_Client
 
         void Plugin_ShowRequested(PluginShowInfo info)
         {
-            Plugin plugin = null;
+            IClientPlugin plugin = null;
 
-            if (info.Page.GetType() == typeof(Plugin))
+            if (info.Page.GetType() == typeof(IClientPlugin))
             {
-                plugin = (Plugin)info.Page;
+                plugin = (IClientPlugin)info.Page;
             }
 
             string title = info.PageTitle;
@@ -1591,10 +1589,10 @@ namespace TrakHound_Client
                 {
                     if (config.Enabled)
                     {
-                        Lazy<Plugin> lplugin = plugins.ToList().Find(x => x.Value.Title == config.Name);
+                        Lazy<IClientPlugin> lplugin = plugins.ToList().Find(x => x.Value.Title == config.Name);
                         if (lplugin != null)
                         {
-                            Plugin plugin = lplugin.Value;
+                            IClientPlugin plugin = lplugin.Value;
                             plugin.Update_DataEvent(de_d);
                         }
                     }
@@ -1641,31 +1639,12 @@ namespace TrakHound_Client
             }
         }
 
-        void Plugins_CreateOptionsPage(Plugin plugin)
+        void Plugins_CreateOptionsPage(IClientPlugin plugin)
         {
 
             if (plugin.Options != null) optionsManager.AddPage(plugin.Options);
 
         }
-
-
-        //void UpdatePluginDevices(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (plugins != null)
-        //    {
-        //        foreach (Lazy<Plugin> lplugin in plugins.ToList())
-        //        {
-        //            Plugin plugin = lplugin.Value;
-
-        //            this.Dispatcher.BeginInvoke(new Action<Plugin, object, NotifyCollectionChangedEventArgs>(UpdatePluginDevices), Priority, new object[] { plugin, sender, e });
-        //        }
-        //    }       
-        //}
-
-        //void UpdatePluginDevices(Plugin plugin, object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    plugin.Devices = Devices.ToList();
-        //}
 
         void UpdatePluginDevices(List<Configuration> devices)
         {
@@ -1674,9 +1653,9 @@ namespace TrakHound_Client
 
             if (plugins != null)
             {
-                foreach (Lazy<Plugin> lplugin in plugins.ToList())
+                foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
                 {
-                    Plugin plugin = lplugin.Value;
+                    IClientPlugin plugin = lplugin.Value;
 
                     plugin.Devices = devices;
                 }
@@ -1692,16 +1671,16 @@ namespace TrakHound_Client
         {
             if (plugins != null)
             {
-                foreach (Lazy<Plugin> lplugin in plugins.ToList())
+                foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
                 {
-                    Plugin plugin = lplugin.Value;
+                    IClientPlugin plugin = lplugin.Value;
 
-                    this.Dispatcher.BeginInvoke(new Action<Plugin, UserConfiguration, Database_Settings>(UpdatePluginUser), Priority, new object[] { plugin, userConfig, userDatabaseSettings });
+                    this.Dispatcher.BeginInvoke(new Action<IClientPlugin, UserConfiguration, Database_Settings>(UpdatePluginUser), Priority, new object[] { plugin, userConfig, userDatabaseSettings });
                 }
             }
         }
 
-        void UpdatePluginUser(Plugin plugin, UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        void UpdatePluginUser(IClientPlugin plugin, UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
             plugin.UserDatabaseSettings = userDatabaseSettings;
             plugin.CurrentUser = userConfig;

@@ -37,7 +37,7 @@ namespace TH_TableManager
     /// <summary>
     /// Interaction logic for TableManager.xaml
     /// </summary>
-    public partial class TableManager : UserControl, Plugin
+    public partial class TableManager : UserControl, IClientPlugin
     {
         public TableManager()
         {
@@ -90,7 +90,7 @@ namespace TH_TableManager
 
         public List<PluginConfigurationCategory> SubCategories { get; set; }
 
-        public List<Plugin> Plugins { get; set; }
+        public List<IClientPlugin> Plugins { get; set; }
 
         #endregion
 

@@ -17,7 +17,7 @@ using System.Data;
 using System.Collections.ObjectModel;
 
 using TH_Global.Functions;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 using TH_UserManagement.Management;
 
 namespace TH_ShiftTable.ConfigurationPage
@@ -25,7 +25,7 @@ namespace TH_ShiftTable.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_PlugIns_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
     {
         public Page()
         {

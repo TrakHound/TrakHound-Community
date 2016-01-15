@@ -24,6 +24,7 @@ namespace TH_UserManagement.Management
         public static class Users
         {
             public const string tablename = "users";
+            static string[] primaryKey = { "username" };
 
             public static void CreateUserTable(Database_Settings config)
             {
@@ -46,7 +47,7 @@ namespace TH_UserManagement.Management
                 new ColumnDefinition("last_login", DataType.DateTime)
             };
 
-                Table.Create(config, tablename, Columns, "username");
+                Table.Create(config, tablename, Columns, primaryKey);
             }
 
             public static UserConfiguration Login(string username, string password, Database_Settings db)
@@ -123,7 +124,7 @@ namespace TH_UserManagement.Management
                 values.Add(TH_Global.Formatting.UppercaseFirst(userConfig.country));
                 values.Add(userConfig.zipcode);
 
-                Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
+                Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), primaryKey, true);
             }
 
             public static void UpdateLoginTime(UserConfiguration userConfig, Database_Settings db)
@@ -137,7 +138,7 @@ namespace TH_UserManagement.Management
                 values.Add(userConfig.username.ToLower());
                 values.Add(userConfig.last_login);
 
-                Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
+                Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), primaryKey, true);
             }
 
             public static void UpdateImageURL(string imageURL, UserConfiguration userConfig, Database_Settings db)
@@ -152,7 +153,7 @@ namespace TH_UserManagement.Management
                 values.Add(userConfig.username.ToLower());
                 values.Add(imageURL);
 
-                Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), true);
+                Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), primaryKey, true);
             }
 
             public static bool VerifyUsername(string username, Database_Settings db)
@@ -172,11 +173,11 @@ namespace TH_UserManagement.Management
 
         public static class Configurations
         {
+            static string[] primaryKey = { "address" };
+
             public static void AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration, Database_Settings db)
             {
                 Users.CreateUserTable(db);
-
-                //CreateUser(userConfig, db, configuration);
 
                 CreateConfigurationTable(userConfig, db, configuration);
             }
@@ -225,7 +226,7 @@ namespace TH_UserManagement.Management
 
                 string table = GetConfigurationTableName(userConfig, configuration);
 
-                Table.Create(db, table, Columns, "address");
+                Table.Create(db, table, Columns, primaryKey);
             }
 
             public static void Configuration_UpdateRows(UserConfiguration userConfig, Database_Settings db, Configuration configuration)
@@ -247,7 +248,7 @@ namespace TH_UserManagement.Management
 
                 string table = GetConfigurationTableName(userConfig, configuration);
 
-                Row.Insert(db, table, columns.ToArray(), rowValues, true);
+                Row.Insert(db, table, columns.ToArray(), rowValues, primaryKey, true);
             }
 
 

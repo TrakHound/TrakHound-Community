@@ -20,5 +20,20 @@ namespace TH_Global.Functions
             return builder.ToString();
         }
 
+        public static string ToString(object o)
+        {
+            if (o != null) return o.ToString();
+            return null;
+        }
+
+        public static string ToLower(object o)
+        {
+            if (o != null)
+            {
+                return o.ToString().ToLower();
+            }
+            return null;
+        }
+
     }
 }

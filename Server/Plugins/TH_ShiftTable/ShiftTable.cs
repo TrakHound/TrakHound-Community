@@ -18,11 +18,11 @@ using TH_Database;
 using TH_GeneratedData;
 using TH_Global;
 using TH_MTC_Data;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 
 namespace TH_ShiftTable
 {
-    public class ShiftTable : Table_PlugIn
+    public class ShiftTable : IServerPlugin
     {
 
         #region "PlugIn"
@@ -156,6 +156,7 @@ namespace TH_ShiftTable
         #region "Database"
 
         public string TableName = TableNames.Shifts;
+        string[] primaryKey = { "ID" };
 
         List<string> ShiftTableColumns;
 
@@ -180,7 +181,7 @@ namespace TH_ShiftTable
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableName, ColArray, "ID");  
+            Table.Create(config.Databases_Server, TableName, ColArray, primaryKey);  
         }
 
         void GetTableColumns()
@@ -355,7 +356,7 @@ namespace TH_ShiftTable
                 rowValues.Add(values);
             }
 
-            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, primaryKey, true);
         }
 
         #endregion

@@ -17,13 +17,13 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_MTC_Data;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 
 using TH_ShiftTable;
 
 namespace TH_OEE
 {
-    public class OEE : Table_PlugIn
+    public class OEE : IServerPlugin
     {
 
         #region "PlugIn"
@@ -261,6 +261,7 @@ namespace TH_OEE
         #region "Database"
 
         string TableName = TableNames.OEE;
+        string[] primaryKey = { "SHIFT_ID" };
 
         void CreateTable()
         {
@@ -289,7 +290,7 @@ namespace TH_OEE
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableName, ColArray, "SHIFT_ID");  
+            Table.Create(config.Databases_Server, TableName, ColArray, primaryKey);  
         }
 
         void UpdateRows(List<OeeRowInfo> infos)
@@ -336,7 +337,7 @@ namespace TH_OEE
             }
 
 
-            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, primaryKey, true);
         }
 
         #endregion

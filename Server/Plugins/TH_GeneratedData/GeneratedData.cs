@@ -18,11 +18,11 @@ using TH_Database;
 using TH_Global;
 using TH_InstanceTable;
 using TH_MTC_Data;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 
 namespace TH_GeneratedData
 {
-    public class GeneratedData : Table_PlugIn
+    public class GeneratedData : IServerPlugin
     {
 
         #region "PlugIn"
@@ -839,6 +839,7 @@ namespace TH_GeneratedData
         #region "Snapshot"
 
         public string SnapshotsTableName = TableNames.SnapShots;
+        string[] snapshotsPrimaryKey = { "NAME" };
 
         void CreateSnapShotTable()
         {
@@ -855,7 +856,7 @@ namespace TH_GeneratedData
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, SnapshotsTableName, ColArray, "NAME");
+            Table.Create(config.Databases_Server, SnapshotsTableName, ColArray, snapshotsPrimaryKey);
         }
 
         void IntializeRows()
@@ -882,7 +883,7 @@ namespace TH_GeneratedData
 
                 }
 
-                Row.Insert(config.Databases_Server, SnapshotsTableName, Columns.ToArray(), rowValues, true);
+                Row.Insert(config.Databases_Server, SnapshotsTableName, Columns.ToArray(), rowValues, snapshotsPrimaryKey, true);
 
             }
 
@@ -908,7 +909,11 @@ namespace TH_GeneratedData
                 values.Add(ssi.name);
                 values.Add(ssi.timestamp);
                 values.Add(ssi.value);
-                values.Add(ssi.previous_timestamp);
+
+                DateTime prev_timestamp = ssi.previous_timestamp;
+                if (prev_timestamp > DateTime.MinValue) values.Add(prev_timestamp);
+                else values.Add(null);
+
                 values.Add(ssi.previous_value);
                 
 
@@ -916,7 +921,7 @@ namespace TH_GeneratedData
                 if (ssi.value != ssi.previous_value) rowValues.Add(values);
             }
 
-            Row.Insert(config.Databases_Server, SnapshotsTableName, columns.ToArray(), rowValues, true);
+            Row.Insert(config.Databases_Server, SnapshotsTableName, columns.ToArray(), rowValues, snapshotsPrimaryKey, true);
 
         }
 
@@ -965,11 +970,12 @@ namespace TH_GeneratedData
                     rowValues.Add(defaultValues);
                 }
 
-                Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, true);
+                Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, null, true);
             }
         }
 
         public const string GenTablePrefix = TableNames.Gen_Events_TablePrefix;
+        string[] genEventsPrimaryKey = { "TIMESTAMP" };
 
         void CreateGeneratedEventTable(GeneratedEvents.Event e)
         {
@@ -982,7 +988,7 @@ namespace TH_GeneratedData
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name, ColArray, "TIMESTAMP");
+            Table.Create(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name, ColArray, genEventsPrimaryKey);
 
 
             // Make sure each of the CaptureItem Columns are in the table
@@ -1045,7 +1051,7 @@ namespace TH_GeneratedData
 
                     }
 
-                    Row.Insert(config.Databases_Server, TablePrefix + GenTablePrefix + eventName, columns.ToArray(), rowValues, true);
+                    Row.Insert(config.Databases_Server, TablePrefix + GenTablePrefix + eventName, columns.ToArray(), rowValues, genEventsPrimaryKey, true);
 
                 }
 

@@ -20,7 +20,7 @@ using System.IO;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_PlugIns_Server;
+using TH_Plugins_Server;
 using TH_UserManagement;
 using TH_UserManagement.Management;
 

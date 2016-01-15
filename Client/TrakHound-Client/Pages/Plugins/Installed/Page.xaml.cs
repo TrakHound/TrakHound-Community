@@ -49,10 +49,10 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         {
             if (mw != null)
             {
-                Lazy<Plugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
+                Lazy<IClientPlugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
                 if (lplugin != null)
                 {
-                    Plugin plugin = lplugin.Value;
+                    IClientPlugin plugin = lplugin.Value;
 
                     ListContainer lc = new ListContainer();
 
@@ -87,12 +87,12 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
                             foreach (PluginConfiguration subConfig in subcat.PluginConfigurations)
                             {
-                                Lazy<Plugin> lcplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
+                                Lazy<IClientPlugin> lcplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
                                 if (lcplugin != null)
                                 {
                                     try
                                     {
-                                        Plugin cplugin = lcplugin.Value;
+                                        IClientPlugin cplugin = lcplugin.Value;
 
                                         ListItem sli = new ListItem();
                                         sli.Plugin_Title = subConfig.Name;
@@ -213,7 +213,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
                     File.Copy(filename, test);
                 }
 
-                if (mw != null) mw.PagePlugins_Find();
+                if (mw != null) mw.Plugins_Find();
 
                 LoadPluginConfigurations();
             }

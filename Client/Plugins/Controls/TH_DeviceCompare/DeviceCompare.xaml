@@ -21,25 +21,25 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!--<ResourceDictionary Source="/TH_Styles;component/All.xaml" />-->
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
                 <ResourceDictionary Source="Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+   
 
-    <Grid Background="{StaticResource Accent_Normal}">
-    <!--<Grid Background="{StaticResource Window_Background}">-->
+        <Grid Background="{StaticResource Accent_Normal}">
 
-        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" MinHeight="30"/>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 
                 <Grid>
-                    <!--<Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="30"/>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <!--<Grid.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#18000000" Offset="0"/>
                             <GradientStop Color="#11000000" Offset="0.4"/>
@@ -48,14 +48,14 @@
                         </LinearGradientBrush>
                     </Grid.Background>-->
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="149"/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <Grid Height="30" VerticalAlignment="Bottom">
-                        <!--<Grid.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="149"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Height="30" VerticalAlignment="Bottom">
+                            <!--<Grid.Style>
                             <Style TargetType="Grid">
                                 <Setter Property="VerticalAlignment" Value="Bottom"/>
                                 <Style.Triggers>
@@ -65,35 +65,35 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>-->
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <th_wpf:Button_02 Image="Resources/Carrot_Arrow_Down_01.png" Clicked="ColumnHeaderMaximize_Clicked"/>
+                            <th_wpf:Button_02 Image="Resources/Carrot_Arrow_Down_01.png" Clicked="ColumnHeaderMaximize_Clicked"/>
 
-                        <th_wpf:Button_02 Grid.Column="1" Image="Resources/Carrot_Arrow_Up_01.png" Clicked="ColumnHeaderMinimize_Clicked"/>
+                            <th_wpf:Button_02 Grid.Column="1" Image="Resources/Carrot_Arrow_Up_01.png" Clicked="ColumnHeaderMinimize_Clicked"/>
+
+                        </Grid>
+
+                        <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}"/>
+
+                        <!--Column Headers-->
+                        <ItemsControl Grid.Column="2" ItemsSource="{Binding ColumnHeaders}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
 
                     </Grid>
 
-                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}"/>
+                    <!--<Grid Grid.Row="1" Background="#88000000">-->
+                    <Grid Grid.Row="1" Background="{StaticResource Window_Background_Dark}">
 
-                    <!--Column Headers-->
-                    <ItemsControl Grid.Column="2" ItemsSource="{Binding ColumnHeaders}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                    
-                </Grid>
-
-                <!--<Grid Grid.Row="1" Background="#88000000">-->
-                <Grid Grid.Row="1" Background="{StaticResource Window_Background_Dark}">
-
-                    <Grid Grid.Row="1">
-                        <!--<Grid.Background>
+                        <Grid Grid.Row="1">
+                            <!--<Grid.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#10000000" Offset="0"/>
                                 <GradientStop Color="#00000000" Offset="0.4"/>
@@ -101,7 +101,7 @@
                                 <GradientStop Color="#10000000" Offset="1"/>
                             </LinearGradientBrush>
                         </Grid.Background>-->
-                        <!--<Grid.Background>
+                            <!--<Grid.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#77000000" Offset="0"/>
                                 <GradientStop Color="#88000000" Offset="0.4"/>
@@ -109,49 +109,49 @@
                                 <GradientStop Color="#77000000" Offset="1"/>
                             </LinearGradientBrush>
                         </Grid.Background>-->
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-                        <Rectangle Grid.Row="0" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
+                            <Rectangle Grid.Row="0" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
 
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">
 
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="149" />
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="149" />
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <!--Row Headers-->
-                                <ItemsControl ItemsSource="{Binding RowHeaders}"/>
+                                    <!--Row Headers-->
+                                    <ItemsControl ItemsSource="{Binding RowHeaders}"/>
 
-                                <!--Separator-->
-                                <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
+                                    <!--Separator-->
+                                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
 
-                                <!--Columns-->
-                                <ItemsControl ItemsSource="{Binding Columns}" Grid.Column="2">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal"/>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
+                                    <!--Columns-->
+                                    <ItemsControl ItemsSource="{Binding Columns}" Grid.Column="2">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
 
-                            </Grid>
+                                </Grid>
 
-                        </ScrollViewer>
+                            </ScrollViewer>
+
+                        </Grid>
 
                     </Grid>
 
                 </Grid>
 
-            </Grid>
+            </ScrollViewer>
 
-        </ScrollViewer>
-
-    </Grid>
+        </Grid>
 
 </UserControl>
