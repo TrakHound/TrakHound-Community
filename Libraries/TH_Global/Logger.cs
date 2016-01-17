@@ -63,25 +63,8 @@ namespace TH_Global
 
         static LogQueue logQueue = new LogQueue();
 
-        //public static void Log(string text, string file = "", string member = "", int line = 0)
-        //{
-        //    LogQueue.Line queueLine = new LogQueue.Line();
-        //    queueLine.text = text;
-        //    queueLine.file = file;
-        //    queueLine.member = member;
-        //    queueLine.lineNumber = line;
-
-        //    logQueue.LineQueue.Add(queueLine);
-
-        //    Console.WriteLine(text);
-        //}
-
-        public static void Log(string text,
-                        [CallerFilePath] string file = "",
-                        [CallerMemberName] string member = "",
-                        [CallerLineNumber] int line = 0)
+        public static void Log(string text, [CallerFilePath] string file = "", [CallerMemberName] string member = "", [CallerLineNumber] int line = 0)
         {
-
             LogQueue.Line queueLine = new LogQueue.Line();
             queueLine.text = text;
             queueLine.file = file;
@@ -91,7 +74,6 @@ namespace TH_Global
             logQueue.LineQueue.Add(queueLine);
 
             Console.WriteLine(text);
-
         }
     }
 
@@ -113,14 +95,12 @@ namespace TH_Global
 
         public LogQueue()
         {
-
             LineQueue = new List<Line>();
 
             queue_TIMER = new System.Timers.Timer();
             queue_TIMER.Interval = 5000;
             queue_TIMER.Elapsed += queue_TIMER_Elapsed;
             queue_TIMER.Enabled = true;
-
         }
 
         void queue_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -150,12 +130,10 @@ namespace TH_Global
                 LineQueue.Clear();
             }
             catch (Exception ex) { Console.WriteLine("Logger.queue_TIMER_Elapsed() :: Exception :: " + ex.Message); }
-            //catch { }
         }
 
         void AddToLog(XmlDocument doc, Line line)
         {
-
             string text = line.text;
             string file = line.file;
             string member = line.member;
@@ -215,12 +193,10 @@ namespace TH_Global
             itemNode.Attributes.Append(textAttribute);
 
             memberNode.AppendChild(itemNode);
-
         }
 
         static void WriteDocument(XmlDocument doc, string LogFile)
         {
-
             XmlWriterSettings settings = new XmlWriterSettings();
             //settings.Async = true;
             settings.Indent = true;
@@ -233,13 +209,10 @@ namespace TH_Global
                 }
             }
             catch (Exception ex) { Console.WriteLine("Logger.WriteDocument() :: Exception :: " + ex.Message); }
-            //catch { }
-
         }
 
         static XmlDocument CreateDocument(string LogFile)
         {
-
             XmlDocument Result = new XmlDocument();
 
             if (!File.Exists(LogFile))
@@ -257,17 +230,14 @@ namespace TH_Global
                 {
                     Result.Load(LogFile);
                 }
-                catch (Exception ex) { Console.WriteLine("Logger.CreateDocument() :: Exception :: " + ex.Message); }
-                //catch { }            
+                catch (Exception ex) { Console.WriteLine("Logger.CreateDocument() :: Exception :: " + ex.Message); }         
             }
 
             return Result;
-
         }
 
         static XmlNode CreateRoot(XmlDocument doc)
         {
-
             XmlNode Result;
 
             if (doc.DocumentElement == null)
@@ -278,14 +248,11 @@ namespace TH_Global
             else Result = doc.DocumentElement;
 
             return Result;
-
         }
 
         static string FormatDate(DateTime date)
         {
-
             return date.Year.ToString() + "-" + date.Month.ToString() + "-" + date.Day.ToString();
-
         }
 
     }

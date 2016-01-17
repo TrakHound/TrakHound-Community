@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" 
              d:DesignWidth="30"
-                         
+
              >
 
     <UserControl.Resources>
@@ -22,103 +22,132 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border x:Name="bd" Padding="{Binding Padding}" CornerRadius="{Binding CornerRadius}">
+    <Border x:Name="bd">
 
-        <Grid>
+        <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}">
 
-            <Grid.ColumnDefinitions>
-
-                <!--Image-->
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="auto"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                    <Setter Property="Width" Value="*"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-
-                <!--Blank Space (Between Image and Text)-->
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{Binding ImageTextPadding}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-
-                <!--Text-->
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="auto"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
-                                    <Setter Property="Width" Value="*"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-
-            </Grid.ColumnDefinitions>
-
-            <!--Image-->
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Visible"/>
+            <Border Padding="{Binding Padding}">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#20ffffff" Offset="0"/>
+                                    <GradientStop Color="#20ffffff" Offset="0.3"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                            <DataTrigger Binding="{Binding Background}" Value="{x:Null}">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Background}" Value="Transparent">
+                                <Setter Property="Background" Value="Transparent"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Grid.Style>
+                </Border.Style>
 
-                <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
-                    <Grid.Resources>
-                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
-                    </Grid.Resources>
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Background" Value="{Binding Foreground}"/>
-                        </Style>
-                    </Grid.Style>
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+
+                        <!--Image-->
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="auto"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+
+                        <!--Blank Space (Between Image and Text)-->
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="{Binding ImageTextPadding}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="0"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+
+                        <!--Text-->
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="auto"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+
+                    <!--Image-->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
+                            <Grid.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                            </Grid.Resources>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Background" Value="{Binding Foreground}"/>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Text Label-->
+                    <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="{Binding FontSize}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
                 </Grid>
 
-            </Grid>
+            </Border>
 
-            <!--Text Label-->
-            <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="{Binding FontSize}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                        <Style.Triggers>
-                            
-                            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-
-        </Grid>
+        </Border>
 
     </Border>
 

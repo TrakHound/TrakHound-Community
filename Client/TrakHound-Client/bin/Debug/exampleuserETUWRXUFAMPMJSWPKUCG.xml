@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent />
+  <Databases />
+  <Description>
+    <Description>MTConnect Demo Agent</Description>
+    <Device_Type />
+    <Manufacturer />
+    <Device_ID />
+    <Model />
+    <Serial />
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path />
+    <Image_Path />
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>false</Conditions>
+      <Events>true</Events>
+      <Samples>false</Samples>
+      <Omit />
+    </DataItems>
+  </InstanceTable>
+  <GeneratedData>
+    <SnapShotData />
+    <GeneratedEvents>
+      <UploadToMySQL>true</UploadToMySQL>
+    </GeneratedEvents>
+  </GeneratedData>
+  <ShiftData>
+    <Shifts />
+    <GeneratedEvents />
+  </ShiftData>
+  <Cycles />
+  <OEE>
+    <Availability />
+  </OEE>
+  <ClientUpdateId>JZSJFXYBCZOLEFJBBMXA</ClientUpdateId>
+  <UniqueId>GWJUPBCHOYNQTREKUGFW</UniqueId>
+  <ClientEnabled>True</ClientEnabled>
+  <Databases_Client>
+    <SQL id="00">
+      <Database>local_test_01</Database>
+      <Server>192.168.1.10</Server>
+      <Port>1433</Port>
+      <Username>trakhoundtest</Username>
+      <Password>ethan123</Password>
+    </SQL>
+    <SQL_Server id="00">
+      <Database>local_test_01</Database>
+      <Server>192.168.1.10</Server>
+      <Port>1433</Port>
+      <Username>trakhoundtest</Username>
+      <Password>ethan123</Password>
+    </SQL_Server>
+  </Databases_Client>
+</Settings>

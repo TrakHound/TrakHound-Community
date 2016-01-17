@@ -1,25 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.IO;
+using System.Net;
+using System.Collections.Specialized;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-using System.IO;
-using System.Net;
-
 using TH_Global;
-using TH_Global.Functions;
+using TH_Global.Web;
 
-using TH_UserManagement.Management;
-
-namespace TH_UserManagement
+namespace TH_UserManagement.Management.Remote
 {
+
     public static class Images
     {
+        const int connectionAttempts = 3;
 
         public static string OpenImageBrowse(string title)
         {
@@ -53,6 +48,7 @@ namespace TH_UserManagement
 
             if (File.Exists(localpath))
             {
+
                 Image img = Image.FromFile(localpath);
                 if (img != null)
                 {
@@ -65,7 +61,7 @@ namespace TH_UserManagement
                     else if (ImageFormat.Tiff.Equals(img.RawFormat)) contentFormat = "image/tiff";
 
                     NameValueCollection nvc = new NameValueCollection();
-                    if (Web.HttpUploadFile("http://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
+                    if (HTTP.UploadFile("https://www.feenux.com/php/configurations/uploadimage.php", localpath, "file", contentFormat, nvc))
                     {
                         result = true;
                     }
@@ -81,28 +77,38 @@ namespace TH_UserManagement
 
             if (filename != String.Empty)
             {
-                using (WebClient webClient = new WebClient())
-                {
-                    try
-                    {
-                        byte[] data = webClient.DownloadData("http://www.feenux.com/trakhound/users/files/" + filename);
+                int attempts = 0;
+                bool success = false;
 
-                        using (MemoryStream mem = new MemoryStream(data))
+                while (attempts < connectionAttempts && !success)
+                {
+                    attempts += 1;
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        try
                         {
-                            result = System.Drawing.Image.FromStream(mem);
+                            byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/users/files/" + filename);
+
+                            using (MemoryStream mem = new MemoryStream(data))
+                            {
+                                result = System.Drawing.Image.FromStream(mem);
+                            }
+
+                            success = true;
                         }
+                        catch (Exception ex) { Logger.Log("GetImage() : Exception : " + ex.Message); }
                     }
-                    catch (Exception ex) { Logger.Log("GetImage() : Exception : " + ex.Message); }
                 }
             }
 
             return result;
         }
-
     }
 
     public static class ProfileImages
     {
+        const int connectionAttempts = 3;
 
         public static string OpenImageBrowse()
         {
@@ -125,20 +131,19 @@ namespace TH_UserManagement
             return result;
         }
 
-        public static System.Drawing.Image ProcessImage(string path)
-        {
-            System.Drawing.Image result = null;
+        //public static System.Drawing.Image ProcessImage(string path)
+        //{
+        //    System.Drawing.Image result = null;
 
-            if (File.Exists(path))
-            {
-                System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
+        //    if (File.Exists(path))
+        //    {
+        //        System.Drawing.Image img = Image_Functions.CropImageToCenter(System.Drawing.Image.FromFile(path));
 
-                result = Image_Functions.SetImageSize(img, 200, 200);
-            }
+        //        result = Image_Functions.SetImageSize(img, 200, 200);
+        //    }
 
-            return result;
-        }
-
+        //    return result;
+        //}
 
         /// <summary>
         /// Uploads a Profile Image to the TrakHound Server
@@ -151,7 +156,7 @@ namespace TH_UserManagement
             bool result = false;
 
             NameValueCollection nvc = new NameValueCollection();
-            if (Web.HttpUploadFile("http://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
+            if (HTTP.UploadFile("https://www.feenux.com/php/users/uploadprofileimage.php", localpath, "file", "image/jpeg", nvc))
             {
                 result = true;
             }
@@ -159,30 +164,39 @@ namespace TH_UserManagement
             return result;
         }
 
-
         public static System.Drawing.Image GetProfileImage(UserConfiguration userConfig)
         {
             System.Drawing.Image result = null;
 
             if (userConfig.image_url != String.Empty)
             {
-                using (WebClient webClient = new WebClient())
-                {
-                    try
-                    {
-                        byte[] data = webClient.DownloadData("http://www.feenux.com/trakhound/users/files/" + userConfig.image_url);
+                int attempts = 0;
+                bool success = false;
 
-                        using (MemoryStream mem = new MemoryStream(data))
+                while (attempts < connectionAttempts && !success)
+                {
+                    attempts += 1;
+
+                    using (WebClient webClient = new WebClient())
+                    {
+                        try
                         {
-                            result = System.Drawing.Image.FromStream(mem);
+                            byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/users/files/" + userConfig.image_url);
+
+                            using (MemoryStream mem = new MemoryStream(data))
+                            {
+                                result = System.Drawing.Image.FromStream(mem);
+                            }
+
+                            success = true;
                         }
+                        catch (Exception ex) { Logger.Log("GetProfileImage() : Exception : " + ex.Message); }
                     }
-                    catch (Exception ex) { Logger.Log("GetProfileImage() : Exception : " + ex.Message); }
                 }
             }
 
             return result;
         }
-
     }
+
 }

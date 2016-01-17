@@ -57,8 +57,6 @@ namespace TH_UserManagement.Management
         }
     }
 
-
-
     public class UserManagementSettings
     {
         public UserManagementSettings()

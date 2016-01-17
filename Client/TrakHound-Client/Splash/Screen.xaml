@@ -138,24 +138,17 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Border Grid.Column="1" CornerRadius="5" Background="#0080ff" Margin="-2">
-
+            <Border Grid.Column="1" CornerRadius="5" Margin="-2" Background="#0080ff">
+                
                 <Border CornerRadius="5">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#00000000" Offset="0"/>
                             <GradientStop Color="#20ffffff" Offset="0.5"/>
-                            <!--<GradientStop Color="#66ffffff" Offset="0.6"/>-->
                             <GradientStop Color="#00000000" Offset="1"/>
                         </LinearGradientBrush>
-                        <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#10ffffff" Offset="0"/>
-                            <GradientStop Color="#66ffffff" Offset="0.4"/>
-                            <GradientStop Color="#66ffffff" Offset="0.6"/>
-                            <GradientStop Color="#10ffffff" Offset="1"/>
-                        </LinearGradientBrush>-->
                     </Border.Background>
-                    
+
                     <Border BorderBrush="#0060ff" BorderThickness="1" CornerRadius="5" Margin="1">
 
                         <Grid>
@@ -174,7 +167,7 @@
                                 <TextBlock Text="TM" FontSize="4pt" Foreground="#fff" VerticalAlignment="Bottom" Margin="2,0,0,0"/>
 
                             </StackPanel>
-                            
+
                             <Grid Grid.Column="1" Margin="20,30">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
@@ -207,11 +200,11 @@
                         </Grid>
 
                     </Border>
-                    
+
                 </Border>
 
             </Border>
-            
+
             <Rectangle Grid.Column="2">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />

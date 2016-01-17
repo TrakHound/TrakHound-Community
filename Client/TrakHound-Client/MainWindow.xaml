@@ -583,6 +583,16 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
+                                        
+                                        <Grid Grid.ColumnSpan="2">
+                                            <Grid.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#00ffffff" Offset="0"/>
+                                                    <GradientStop Color="#00ffffff" Offset="0.5"/>
+                                                    <GradientStop Color="#20ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Grid.Background>
+                                        </Grid>
 
                                         <!--UserName-->
                                         <TextBlock Text="{Binding CurrentUsername}" Foreground="{StaticResource Foreground_Opposite_Normal}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
@@ -752,7 +762,7 @@
                                         <th_wpf:Button.Style>
                                             <Style TargetType="th_wpf:Button">
                                                 <Setter Property="Foreground" Value="White"/>
-                                                <Setter Property="Background" Value="#00000000"/>
+                                                <Setter Property="Background" Value="Transparent"/>
                                                 <Setter Property="Height" Value="30"/>
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="true">
@@ -772,17 +782,11 @@
                                         <th_wpf:Button.Style>
                                             <Style TargetType="th_wpf:Button">
                                                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                                <!--<Setter Property="Width" Value="35"/>
-                                                <Setter Property="Height" Value="35"/>
-                                                <Setter Property="Padding" Value="2"/>-->
+                                                <Setter Property="Background" Value="Transparent"/>
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="true">
-                                                        <!--<Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>-->
                                                         <Setter Property="Background" Value="#33ffffff"/>
                                                     </Trigger>
-                                                    <!--<Trigger Property="IsSelected" Value="true">
-                                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                                    </Trigger>-->
                                                 </Style.Triggers>
                                             </Style>
                                         </th_wpf:Button.Style>

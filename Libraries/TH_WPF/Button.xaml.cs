@@ -58,14 +58,46 @@ namespace TH_WPF
 
 
 
-        public Thickness Padding
+
+        public Brush Background
+        {
+            get { return (Brush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background", typeof(Brush), typeof(Button), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
+
+
+        public new Brush BorderBrush
+        {
+            get { return (Brush)GetValue(BorderBrushProperty); }
+            set { SetValue(BorderBrushProperty, value); }
+        }
+
+        public static readonly new DependencyProperty BorderBrushProperty =
+            DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Button), new PropertyMetadata(null));
+
+
+        public new Thickness BorderThickness
+        {
+            get { return (Thickness)GetValue(BorderThicknessProperty); }
+            set { SetValue(BorderThicknessProperty, value); }
+        }
+
+        public static readonly new DependencyProperty BorderThicknessProperty =
+            DependencyProperty.Register("BorderThickness", typeof(Thickness), typeof(Button), new PropertyMetadata(new Thickness(0d)));
+
+
+
+        public new Thickness Padding
         {
             get { return (Thickness)GetValue(PaddingProperty); }
             set { SetValue(PaddingProperty, value); }
         }
 
-        public static readonly DependencyProperty PaddingProperty =
-            DependencyProperty.Register("Padding", typeof(Thickness), typeof(Button), new PropertyMetadata(new Thickness(5)));
+        public static readonly new DependencyProperty PaddingProperty =
+            DependencyProperty.Register("Padding", typeof(Thickness), typeof(Button), new PropertyMetadata(new Thickness(5d)));
 
 
         public double ImageTextPadding
@@ -78,17 +110,15 @@ namespace TH_WPF
             DependencyProperty.Register("ImageTextPadding", typeof(double), typeof(Button), new PropertyMetadata(5d));
 
 
-        public Thickness CornerRadius
+
+        public CornerRadius CornerRadius
         {
-            get { return (Thickness)GetValue(CornerRadiusProperty); }
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
             set { SetValue(CornerRadiusProperty, value); }
         }
 
         public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register("CornerRadius", typeof(Thickness), typeof(Button), new PropertyMetadata(new Thickness(0)));
-
-        
-
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(Button), new PropertyMetadata(new CornerRadius(2d)));
 
 
         public delegate void Clicked_Handler(Button bt);

@@ -154,65 +154,6 @@ namespace TH_DeviceCompare
             }
         }
 
-        //ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
-
-        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
-
-        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-        //    {
-        //        Devices.Clear();
-        //        DeviceDisplays.Clear();
-        //        ColumnHeaders.Clear();
-        //        Columns.Clear();
-        //    }
-
-        //    if (e.NewItems != null)
-        //    {
-        //        foreach (Configuration newConfig in e.NewItems)
-        //        {
-        //            if (newConfig != null)
-        //            {
-        //                Devices.Add(newConfig);
-
-        //                CreateDeviceDisplay(newConfig);
-        //            }
-        //        }
-        //    }
-
-        //    if (e.OldItems != null)
-        //    {
-        //        foreach (Configuration oldConfig in e.OldItems)
-        //        {
-        //            if (oldConfig != null) Devices.Add(oldConfig);
-        //        }
-        //    }
-        //}
-
-        //private int lSelectedDeviceIndex;
-        //public int SelectedDeviceIndex
-        //{
-        //    get { return lSelectedDeviceIndex; }
-
-        //    set
-        //    {
-        //        lSelectedDeviceIndex = value;
-
-        //        // Unselect other headers and columns
-        //        for (int x = 0; x <= DeviceDisplays.Count - 1; x++) if (x != lSelectedDeviceIndex)
-        //            {
-        //                DeviceDisplays[x].ComparisonGroup.header.IsSelected = false;
-        //                DeviceDisplays[x].ComparisonGroup.column.IsSelected = false;
-        //            }
-
-        //        // Select header and column at SelectedDeviceIndex
-        //        DeviceDisplays[lSelectedDeviceIndex].ComparisonGroup.header.IsSelected = true;
-        //        DeviceDisplays[lSelectedDeviceIndex].ComparisonGroup.column.IsSelected = true;
-
-        //    }
-        //}
-
         #endregion
 
         #region "Options"
@@ -2017,7 +1958,7 @@ namespace TH_DeviceCompare
         bool collapsed = false;
         bool minimized = true;
 
-        private void ColumnHeaderMinimize_Clicked(TH_WPF.Button_02 bt)
+        private void ColumnHeaderMinimize_Clicked(TH_WPF.Button bt)
         {
             if (!minimized)
             {
@@ -2031,7 +1972,7 @@ namespace TH_DeviceCompare
             }
         }
 
-        private void ColumnHeaderMaximize_Clicked(TH_WPF.Button_02 bt)
+        private void ColumnHeaderMaximize_Clicked(TH_WPF.Button bt)
         {
             if (collapsed)
             {

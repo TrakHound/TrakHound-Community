@@ -6,6 +6,7 @@
              
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              xmlns:local="clr-namespace:TH_InstanceTable.ConfigurationPage"
+             xmlns:controls="clr-namespace:TH_InstanceTable.ConfigurationPage.Controls"
              
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
@@ -420,7 +421,11 @@
 
                                 <TextBlock Text="Events" FontSize="10pt" Foreground="#888" Margin="10"/>
 
-                                <ItemsControl Grid.Column="1" ItemsSource="{Binding EventItems}"/>
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding EventItems}">
+                                    <ItemsControl.Resources>
+                                        <Style TargetType="controls:CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"/>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>
 
                             </StackPanel>
 
@@ -429,7 +434,11 @@
 
                                 <TextBlock Text="Samples" FontSize="10pt" Foreground="#888" Margin="10"/>
 
-                                <ItemsControl Grid.Column="1" ItemsSource="{Binding SampleItems}"/>
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding SampleItems}">
+                                    <ItemsControl.Resources>
+                                        <Style TargetType="controls:CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"/>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>
 
                             </StackPanel>
 
@@ -438,7 +447,11 @@
 
                                 <TextBlock Text="Conditions" FontSize="10pt" Foreground="#888" Margin="10"/>
 
-                                <ItemsControl Grid.Column="1" ItemsSource="{Binding ConditionItems}"/>
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding ConditionItems}">
+                                    <ItemsControl.Resources>
+                                        <Style TargetType="controls:CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"/>
+                                    </ItemsControl.Resources>
+                                </ItemsControl>
 
                             </StackPanel>
 

@@ -68,12 +68,8 @@ namespace TH_UserManagement.Management
             {
                 try
                 {
-
-                    //RegistryKey key = Registry.ClassesRoot.OpenSubKey("Software", true);
-
                     // Open CURRENT_USER/Software Key
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
-                    //RegistryKey key = Registry.LocalMachine.OpenSubKey("Software", true);
 
                     // Create/Open CURRENT_USER/Software/TrakHound Key
                     RegistryKey rootKey = key.CreateSubKey("TrakHound");
@@ -99,11 +95,8 @@ namespace TH_UserManagement.Management
 
                 try
                 {
-                    //RegistryKey key = Registry.ClassesRoot.OpenSubKey("Software", true);
-
                     // Open CURRENT_USER/Software Key
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
-                    //RegistryKey key = Registry.LocalMachine.OpenSubKey("Software", true);
 
                     // Open CURRENT_USER/Software/TrakHound Key
                     RegistryKey rootKey = key.OpenSubKey("TrakHound");
@@ -131,11 +124,8 @@ namespace TH_UserManagement.Management
 
                 try
                 {
-                    //RegistryKey key = Registry.ClassesRoot.OpenSubKey("Software", true);
-
                     // Open CURRENT_USER/Software Key
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
-                    //RegistryKey key = Registry.LocalMachine.OpenSubKey("Software", true);
 
                     // Open CURRENT_USER/Software/TrakHound Key
                     RegistryKey rootKey = key.OpenSubKey("TrakHound");
@@ -157,11 +147,8 @@ namespace TH_UserManagement.Management
             {
                 try
                 {
-                    //RegistryKey key = Registry.ClassesRoot.OpenSubKey("Software", true);
-
                     // Open CURRENT_USER/Software Key
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
-                    //RegistryKey key = Registry.LocalMachine.OpenSubKey("Software", true);
 
                     // Open CURRENT_USER/Software/TrakHound Key
                     RegistryKey rootKey = key.OpenSubKey("TrakHound", true);

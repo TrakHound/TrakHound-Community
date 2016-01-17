@@ -1,0 +1,545 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Xml;
+
+using System.Collections.Specialized;
+using System.Data;
+
+using TH_Configuration;
+using TH_Global;
+using TH_Global.Functions;
+using TH_Global.Web;
+
+namespace TH_UserManagement.Management.Remote
+{
+    public static class Configurations
+    {
+
+        const int connectionAttempts = 3;
+
+        public static bool AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration)
+        {
+            bool result = false;
+
+            string tableName = CreateConfigurationTableName(userConfig);
+
+            configuration.TableName = tableName;
+
+            result = CreateConfigurationTable(tableName);
+            if (result)
+            {
+                string uniqueId = String_Functions.RandomString(20);
+
+                configuration.UniqueId = uniqueId;
+
+                // Set new Unique Id
+                XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
+
+                DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
+
+                // Set new Unique Id
+                //Table_Functions.UpdateTableValue(uniqueId, "/UniqueId", dt);
+
+                result = UpdateConfigurationTable(tableName, dt);
+            }
+
+            return result;
+        }
+
+        public static string[] GetConfigurationsForUser(UserConfiguration userConfig)
+        {
+            NameValueCollection values = new NameValueCollection();
+
+            values["username"] = userConfig.username;
+
+            string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null)
+            {
+                DataTable DT = JSON.ToTable(responseString);
+                if (DT != null)
+                {
+                    List<string> result = new List<string>();
+
+                    foreach (DataRow Row in DT.Rows)
+                    {
+                        string tablename = Row[0].ToString();
+
+                        result.Add(tablename);
+                    }
+
+                    return result.ToArray();
+                }
+                else return new string[0];
+            }
+            else return null;
+        }
+
+        public static List<Configuration> GetConfigurationsListForUser(UserConfiguration userConfig)
+        {
+            List<Configuration> result = null;
+
+            NameValueCollection values = new NameValueCollection();
+
+            values["username"] = userConfig.username;
+
+            string url = "https://www.feenux.com/php/configurations/getconfigurationslist.php";
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null)
+            {
+                result = new List<Configuration>();
+
+                string[] tables = responseString.Split('%');
+
+                foreach (string table in tables)
+                {
+                    if (!String.IsNullOrEmpty(table))
+                    {
+                        var delimiter = table.IndexOf('~');
+                        if (delimiter > 0)
+                        {
+                            string tablename = table.Substring(0, delimiter);
+                            string tabledata = table.Substring(delimiter + 1);
+
+                            DataTable dt = JSON.ToTable(tabledata);
+                            if (dt != null)
+                            {
+                                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                                if (xml != null)
+                                {
+                                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+                                    if (config != null)
+                                    {
+                                        config.Remote = true;
+                                        config.TableName = tablename;
+                                        result.Add(config);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig)
+        //{
+        //    List<Configuration> result = null;
+
+        //    NameValueCollection values = new NameValueCollection();
+
+        //    values["username"] = userConfig.username;
+
+        //    string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
+
+
+        //    string responseString = HTTP.SendData(url, values);
+
+        //    DataTable DT = JSON.ToTable(responseString);
+
+        //    if (DT != null)
+        //    {
+        //        result = new List<Configuration>();
+
+        //        foreach (DataRow Row in DT.Rows)
+        //        {
+        //            string tablename = Row[0].ToString();
+
+        //            DataTable dt = GetConfigurationTable(tablename);
+        //            if (dt != null)
+        //            {
+        //                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+        //                if (xml != null)
+        //                {
+        //                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+        //                    if (config != null)
+        //                    {
+        //                        //if (getImages)
+        //                        //{
+        //                        //    if (config.FileLocations.Manufacturer_Logo_Path != null)
+        //                        //    {
+        //                        //        System.Drawing.Image manufacturer_logo = Images.GetImage(config.FileLocations.Manufacturer_Logo_Path);
+        //                        //        if (manufacturer_logo != null) config.Manufacturer_Logo = manufacturer_logo;
+        //                        //    }
+
+        //                        //    if (config.FileLocations.Image_Path != null)
+        //                        //    {
+        //                        //        System.Drawing.Image device_image = Images.GetImage(config.FileLocations.Image_Path);
+        //                        //        if (device_image != null) config.Device_Image = device_image;
+        //                        //    }
+        //                        //}
+
+        //                        config.Remote = true;
+        //                        config.TableName = tablename;
+        //                        result.Add(config);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        public static DataTable GetConfigurationTable(string table)
+        {
+            DataTable Result = null;
+
+            NameValueCollection values = new NameValueCollection();
+            values["tablename"] = table;
+
+            string url = "https://www.feenux.com/php/configurations/getconfigurationtable.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            Result = JSON.ToTable(responseString);
+
+            return Result;
+        }
+
+        public static Management.Configurations.UpdateInfo GetClientUpdateInfo(string table)
+        {
+            Management.Configurations.UpdateInfo result = null;
+
+            NameValueCollection values = new NameValueCollection();
+            values["tablename"] = table;
+
+            string url = "https://www.feenux.com/php/configurations/getclientupdateinfo.php";
+
+            string responseString = HTTP.SendData(url, values);
+
+            result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
+
+            return result;
+        }
+
+        public static Management.Configurations.UpdateInfo GetServerUpdateInfo(string table)
+        {
+            Management.Configurations.UpdateInfo result = null;
+
+            NameValueCollection values = new NameValueCollection();
+            values["tablename"] = table;
+
+            string url = "https://www.feenux.com/php/configurations/getserverupdateinfo.php";
+
+            string responseString = HTTP.SendData(url, values);
+
+            result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
+
+            return result;
+        }
+
+        public static bool UpdateConfigurationTable(string tableName, DataTable dt)
+        {
+            bool result = false;
+
+
+            if (dt != null)
+            {
+                // Add Columns
+                List<string> columnsList = new List<string>();
+                foreach (DataColumn col in dt.Columns) columnsList.Add(col.ColumnName);
+                object[] columns = columnsList.ToArray();
+
+                List<List<object>> rowValues = new List<List<object>>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    List<object> values = new List<object>();
+                    foreach (object val in row.ItemArray) values.Add(val);
+                    rowValues.Add(values);
+                }
+
+
+                //Create Columns string
+                string cols = "";
+                for (int x = 0; x <= columns.Length - 1; x++)
+                {
+                    cols += columns[x].ToString().ToUpper();
+                    if (x < columns.Length - 1) cols += ", ";
+                }
+
+                //Create Values string
+                string vals = "VALUES ";
+                for (int i = 0; i <= rowValues.Count - 1; i++)
+                {
+                    vals += "(";
+
+                    for (int x = 0; x <= rowValues[i].Count - 1; x++)
+                    {
+
+                        List<object> ValueSet = rowValues[i];
+
+                        // Dont put the ' characters if the value is null
+                        if (ValueSet[x] == null) vals += "null";
+                        else
+                        {
+                            object val = ValueSet[x];
+                            if (val.GetType() == typeof(DateTime)) val = ConvertDateStringtoMySQL(val.ToString());
+
+                            if (val.ToString().ToLower() != "null") vals += "'" + ConvertToSafe(val.ToString()) + "'";
+                            else vals += val.ToString();
+                        }
+
+
+                        if (x < ValueSet.Count - 1) vals += ", ";
+                    }
+
+                    vals += ")";
+
+                    if (i < rowValues.Count - 1) vals += ",";
+
+                }
+
+                //Create Update string
+                string update = "";
+                update = " ON DUPLICATE KEY UPDATE ";
+                for (int x = 0; x <= columns.Length - 1; x++)
+                {
+                    update += columns[x].ToString().ToUpper();
+                    update += "=";
+
+                    update += "VALUES(" + columns[x].ToString().ToUpper() + ")";
+                    if (x < columns.Length - 1) update += ", ";
+                }
+
+                //string query = "INSERT IGNORE INTO " + tableName + " (" + cols + ") " + vals + update;
+
+                string query = "INSERT IGNORE INTO " + tableName + " (" + cols + ") " + vals;
+
+
+                NameValueCollection postValues = new NameValueCollection();
+
+                postValues["query"] = query;
+
+                string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
+
+
+                string responseString = HTTP.SendData(url, postValues);
+
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
+            }
+
+            return result;
+        }
+
+        public static bool UpdateConfigurationTable(string address, string value, string tableName)
+        {
+            bool result = false;
+
+            if (address != null && value != null)
+            {
+
+                string columns = " (address, value) ";
+
+                string set = " VALUES ('" + address + "', '" + value + "')";
+
+                string update = " ON DUPLICATE KEY UPDATE address='" + address + "', value='" + value + "'";
+
+                string query = "INSERT IGNORE INTO " + tableName + columns + set + update;
+
+                NameValueCollection values = new NameValueCollection();
+
+                values["query"] = query;
+
+                string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
+
+
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
+            }
+
+            return result;
+        }
+
+        public static bool UpdateConfigurationTable(string address, string value, string attributes, string tableName)
+        {
+            bool result = false;
+
+            if (address != null && value != null && attributes != null)
+            {
+
+                string columns = " (address, value, attributes) ";
+
+                string set = " VALUES ('" + address + "', '" + value + "', '" + attributes + "')";
+
+                string update = " ON DUPLICATE KEY UPDATE address='" + address + "', value='" + value + "', attributes='" + attributes + "'";
+
+                string query = "INSERT IGNORE INTO " + tableName + columns + set + update;
+
+                NameValueCollection values = new NameValueCollection();
+
+                values["query"] = query;
+
+                string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
+
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
+            }
+
+            return result;
+        }
+
+        public static bool ClearConfigurationTable(string tableName)
+        {
+            bool result = false;
+
+            NameValueCollection values = new NameValueCollection();
+
+            values["query"] = "TRUNCATE TABLE " + tableName;
+
+            string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+            if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
+            return result;
+        }
+
+        public static bool CreateConfigurationTable(string tableName)
+        {
+            bool result = false;
+
+            object[] columns = new object[] 
+            {
+                "address varchar(90)",
+                "name varchar(90)",
+                "value varchar(90)",
+                "attributes mediumtext"
+            };
+
+            string primaryKey = "address";
+
+            NameValueCollection values = new NameValueCollection();
+
+            string coldef = "";
+
+            //Create Column Definition string
+            for (int x = 0; x <= columns.Length - 1; x++)
+            {
+                coldef += columns[x].ToString();
+                if (x < columns.Length - 1) coldef += ",";
+            }
+
+            string Keydef = "";
+            if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+
+            values["query"] = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
+
+            string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
+            return result;
+        }
+
+        public static bool CreateConfigurationTable(UserConfiguration userConfig, Configuration configuration)
+        {
+            bool result = false;
+
+            object[] columns = new object[] 
+            {
+                "address varchar(90)",
+                "name varchar(90)",
+                "value varchar(90)",
+                "attributes varchar(90)"
+            };
+
+            string primaryKey = "address";
+
+            string table = GetConfigurationTableName(userConfig, configuration);
+
+            NameValueCollection values = new NameValueCollection();
+
+            string coldef = "";
+
+            //Create Column Definition string
+            for (int x = 0; x <= columns.Length - 1; x++)
+            {
+                coldef += columns[x].ToString();
+                if (x < columns.Length - 1) coldef += ",";
+            }
+
+            string Keydef = "";
+            if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+
+            values["query"] = "CREATE TABLE IF NOT EXISTS " + table + " (" + coldef + Keydef + ")";
+
+            string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
+            return result;
+        }
+
+        public static string GetConfigurationTableName(UserConfiguration userConfig, Configuration configuration)
+        {
+            string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Device_Type + "_" + configuration.Description.Device_ID + "_Configuration";
+            table = table.Replace(' ', '_');
+
+            return table;
+        }
+
+        public static string CreateConfigurationTableName(UserConfiguration userConfig)
+        {
+            return userConfig.username + "_" + String_Functions.RandomString(20);
+        }
+
+        public static bool RemoveConfigurationTable(string tableName)
+        {
+            bool result = false;
+
+            NameValueCollection values = new NameValueCollection();
+
+            values["tablename"] = tableName;
+
+            string url = "https://www.feenux.com/php/configurations/removeconfigurationtable.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+
+            return result;
+        }
+
+
+
+        static string ConvertDateStringtoMySQL(string DateString)
+        {
+            string Result = "null";
+
+            DateTime TS;
+            if (DateTime.TryParse(DateString, out TS)) Result = TS.ToString("yyyy-MM-dd H:mm:ss");
+
+            return Result;
+        }
+
+        static string ConvertToSafe(string s)
+        {
+            string r = s;
+            if (r.Contains("'")) r = r.Replace("'", "\'");
+            return r;
+        }
+
+    }
+}

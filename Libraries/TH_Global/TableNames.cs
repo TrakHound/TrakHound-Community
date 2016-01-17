@@ -39,33 +39,6 @@ namespace TH_Global
         public const string OEE = "oee";
         // ------------------------------------------------
         
-
-        
-
-        
-
-
-
-
-        //public const string ConfigTableName = "about_config";
-
-        //public const string AgentInfo_TableName = "Agent_Info";
-        //public const string Finances_TableName = "Finances";
-
-        //public const string Gen_Data_TableName = "Gen_Data";
-
-        //public const string Gen_Event_Durations_TableName = "Durations_Gen_Events";
-        //public const string Gen_Events_TablePrefix = "Gen_Event_";
-
-        //public const string Instances_TableName = "Instance";
-
-        //public const string PartsCount_TableName = "Parts_Count_ID";
-        //public const string ProgramsList_TableName = "Programs_List";
-
-        //public const string ProductionInfo_TableName = "ProductionInfo";
-        //public const string Shifts_TableName = "Shifts";
-        //public const string Timers_TableName = "Timers";
-
     }
 
 }

@@ -277,6 +277,26 @@ namespace TH_MySQL
             return result;
         }
 
+        public DataTable Table_Get(object settings, string tablename, Int64 limit, Int64 offset)
+        {
+            DataTable result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.UsePHP)
+                {
+                    result = PHP.Table.Get(config, tablename, limit, offset);
+                }
+                else
+                {
+                    result = Connector.Table.Get(config, tablename, limit, offset);
+                }
+            }
+
+            return result;
+        }
+
         public DataTable Table_Get(object settings, string tablename, string filterExpression)
         {
             DataTable result = null;

@@ -29,34 +29,19 @@
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Cursor" Value="Hand"/>
                             <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                            <!--<Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#00aaff">
-                                            <ColorAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseOut"/>
-                                            </ColorAnimation.EasingFunction>
-                                        </ColorAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard FillBehavior="Stop">
-                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Background.Color" To="#0080ff">
-                                            <ColorAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseOut"/>
-                                            </ColorAnimation.EasingFunction>
-                                        </ColorAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>-->
                         </Trigger>
                     </Style.Triggers>
                 </Style>
             </Border.Style>
 
             <Grid>
+                <Grid.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#00000000" Offset="0"/>
+                        <GradientStop Color="#10ffffff" Offset="0.5"/>
+                        <GradientStop Color="#00000000" Offset="1"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="auto"/>
@@ -83,30 +68,6 @@
                                 <Setter Property="OpacityMask" Value="{StaticResource Expand_IMG}" />
                                 <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
                                 <Style.Triggers>
-                                    <!--<DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Fill.Color" To="#fff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                        <DataTrigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Fill.Color" To="#eeffffff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>-->
                                     <DataTrigger Binding="{Binding IsExpanded}" Value="true">
                                         <DataTrigger.EnterActions>
                                             <BeginStoryboard>
@@ -175,16 +136,6 @@
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <!--<Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsExpanded}" Value="false">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>-->
 
             <!--Page Content-->
             <ContentControl Content="{Binding PageContent}" Margin="20"/>

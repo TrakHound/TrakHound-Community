@@ -56,6 +56,7 @@
                             <Setter Property="FontSize" Value="14"/>
                             <Setter Property="Image" Value="/TH_DeviceManager;component/Resources/Add_01.png"/>
                             <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="CornerRadius" Value="2"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
                                     <Setter Property="Background" Value="{StaticResource Accent_Light}"/>

@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TrakHound_Client.Pages.About.Information
 {
@@ -66,7 +67,7 @@ namespace TrakHound_Client.Pages.About.Information
 
             Usage_MemoryUsed = GetMemoryUsed();
 
-            Usage_MostMemoryUsed_Value = Formatting.SizeSuffix(Properties.Settings.Default.Usage_MemoryUsed_Value);
+            Usage_MostMemoryUsed_Value = String_Functions.FileSizeSuffix(Properties.Settings.Default.Usage_MemoryUsed_Value);
 
             Usage_MostMemoryUsed_Date = Properties.Settings.Default.Usage_MemoryUsed_Date.ToString();
 
@@ -137,7 +138,7 @@ namespace TrakHound_Client.Pages.About.Information
                 Properties.Settings.Default.Save();
             }
 
-            return Formatting.SizeSuffix(memory);
+            return String_Functions.FileSizeSuffix(memory);
 
         }
 

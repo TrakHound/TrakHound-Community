@@ -464,6 +464,32 @@ namespace TH_Database
             return result;
         }
 
+        public static DataTable Get(Database_Settings settings, string tablename, Int64 limit, Int64 offset)
+        {
+            DataTable result = null;
+
+            if (settings.Databases.Count > 0)
+            {
+                Database_Configuration primary = settings.Databases[0];
+
+                if (Global.Plugins != null)
+                {
+                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    {
+                        IDatabasePlugin dp = ldp.Value;
+
+                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        {
+                            result = dp.Table_Get(primary.Configuration, tablename, limit, offset);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static DataTable Get(Database_Settings settings, string tablename, string filterExpression)
         {
             DataTable result = null;

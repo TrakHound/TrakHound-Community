@@ -48,6 +48,8 @@ namespace TH_Database
 
         DataTable Table_Get(object settings, string tablename);
 
+        DataTable Table_Get(object settings, string tablename, Int64 limit, Int64 offset);
+
         DataTable Table_Get(object settings, string tablename, string filterExpression);
 
         DataTable Table_Get(object settings, string tablename, string filterExpression, string columns);

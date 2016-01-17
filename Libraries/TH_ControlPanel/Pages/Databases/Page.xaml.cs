@@ -193,12 +193,11 @@ namespace TH_DeviceManager.Pages.Databases
             {
                 TH_Database.IDatabasePlugin plugin = (TH_Database.IDatabasePlugin)bt.DataObject;
 
-                // Find Id that is not used
-                //string test = "/Databases/" + plugin.Type + "||";
+                string type = plugin.Type.Replace(' ', '_');
 
                 string test = null;
-                if (PageType == Page_Type.Client) test = "/Databases_Client/" + plugin.Type + "||";
-                else if (PageType == Page_Type.Server) test = "/Databases_Server/" + plugin.Type + "||";
+                if (PageType == Page_Type.Client) test = "/Databases_Client/" + type + "||";
+                else if (PageType == Page_Type.Server) test = "/Databases_Server/" + type + "||";
 
                 int i = 0;
                 string address = test + i.ToString("00");
@@ -267,9 +266,11 @@ namespace TH_DeviceManager.Pages.Databases
 
             foreach (TH_Database.IDatabasePlugin plugin in plugins)
             {
+                string type = plugin.Type.Replace(' ', '_');
+
                 string prefix = null;
-                if (PageType == Page_Type.Client) prefix = "/Databases_Client/" + plugin.Type + "||";
-                else if (PageType == Page_Type.Server) prefix = "/Databases_Server/" + plugin.Type + "||";
+                if (PageType == Page_Type.Client) prefix = "/Databases_Client/" + type + "||";
+                else if (PageType == Page_Type.Server) prefix = "/Databases_Server/" + type + "||";
 
                 List<string> addresses = GetAddressesForDatabase(prefix, dt);
 

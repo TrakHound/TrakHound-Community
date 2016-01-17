@@ -21,13 +21,13 @@
 
             <Style TargetType="th_wpf:Button">
                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
-                <Setter Property="Background" Value="#00000000"/>
+                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Width" Value="35"/>
                 <Setter Property="Height" Value="35"/>
                 <Setter Property="Padding" Value="8"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="#18000000"/>
+                        <Setter Property="Background" Value="#18ffffff"/>
                     </Trigger>
                     <DataTrigger Binding="{Binding DeviceEnabled}" Value="true">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>

@@ -40,6 +40,7 @@ using TH_Configuration;
 using TH_DeviceManager;
 using TH_Database;
 using TH_Global;
+using TH_Global.Functions;
 using TH_Plugins_Client;
 using TH_WPF;
 using TH_Updater;
@@ -932,13 +933,13 @@ namespace TrakHound_Client
 
         public PageManager accountManager;
 
-        TH_UserManagement.Create.Page accountpage;
+        TH_UserManagement.MyAccountPage accountpage;
 
         void AccountManager_Initialize()
         {
             accountManager = new PageManager();
 
-            accountpage = new TH_UserManagement.Create.Page();
+            accountpage = new TH_UserManagement.MyAccountPage();
             accountpage.UserChanged += accountpage_UserChanged;
             accountManager.AddPage(accountpage);
         }
@@ -1070,7 +1071,7 @@ namespace TrakHound_Client
              
                 if (currentuser != null)
                 {
-                    CurrentUsername = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+                    CurrentUsername = String_Functions.UppercaseFirst(currentuser.username);
                     LoggedIn = true;
                 }
                 else

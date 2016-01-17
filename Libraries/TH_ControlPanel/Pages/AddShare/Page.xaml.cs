@@ -70,7 +70,7 @@ namespace TH_DeviceManager.Pages.AddShare
 
             if (currentuser != null)
             {
-                Author = TH_Global.Formatting.UppercaseFirst(currentuser.username);
+                Author = String_Functions.UppercaseFirst(currentuser.username);
 
                 imageFileName = currentuser.image_url;
 

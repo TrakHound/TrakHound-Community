@@ -26,14 +26,14 @@ using TH_WPF;
 using TH_UserManagement.Management;
 
 
-namespace TH_UserManagement.Create
+namespace TH_UserManagement
 {
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.Page
+    public partial class MyAccountPage : UserControl, TH_Global.Page
     {
-        public Page()
+        public MyAccountPage()
         {
             InitializeComponent();
             DataContext = this;
@@ -46,7 +46,6 @@ namespace TH_UserManagement.Create
 
             PageName = "Create Account";
             Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
-
         }
 
         public Database_Settings UserDatabaseSettings = null;
@@ -61,7 +60,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty CurrentUserProperty =
-            DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public delegate void UserChanged_Handler(UserConfiguration userConfig);
@@ -79,45 +78,32 @@ namespace TH_UserManagement.Create
             LoadUserConfiguration(CurrentUser, UserDatabaseSettings);
         }
 
+
         public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
-
             CurrentUser = userConfig;
             UserDatabaseSettings = userDatabaseSettings;
-
-            if (userConfig != null)
-            {
-                PageName = "Edit Account";
-                Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
-            }
-            else
-            {
-                PageName = "Create Account";
-                Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
-
-            }
-
-                
+                 
             if (this.IsLoaded)
             {
                 if (userConfig != null)
                 {
-                    FirstName = Formatting.UppercaseFirst(userConfig.first_name);
-                    LastName = Formatting.UppercaseFirst(userConfig.last_name);
+                    FirstName = String_Functions.UppercaseFirst(userConfig.first_name);
+                    LastName = String_Functions.UppercaseFirst(userConfig.last_name);
 
-                    Username = Formatting.UppercaseFirst(userConfig.username);
+                    Username = String_Functions.UppercaseFirst(userConfig.username);
                     Email = userConfig.email;
 
-                    Company = Formatting.UppercaseFirst(userConfig.company);
+                    Company = String_Functions.UppercaseFirst(userConfig.company);
                     Phone = userConfig.phone;
                     Address1 = userConfig.address1;
                     Address2 = userConfig.address2;
-                    City = Formatting.UppercaseFirst(userConfig.city);
+                    City = String_Functions.UppercaseFirst(userConfig.city);
 
-                    int country = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.country));
+                    int country = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.country));
                     if (country >= 0) country_COMBO.SelectedIndex = country;
 
-                    int state = CountryList.ToList().FindIndex(x => x == Formatting.UppercaseFirst(userConfig.state));
+                    int state = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.state));
                     if (state >= 0) state_COMBO.SelectedIndex = state;
 
                     ZipCode = userConfig.zipcode;
@@ -131,9 +117,23 @@ namespace TH_UserManagement.Create
             }
         }
 
+
+        void SetPageType(UserConfiguration userConfig)
+        {
+            if (userConfig != null)
+            {
+                PageName = "Edit Account";
+                Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
+            }
+            else
+            {
+                PageName = "Create Account";
+                Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
+            }
+        }
+
         public void CleanForm()
         {
-
             UsernameVerified = false;
             PasswordEntered = false;
             ConfirmPasswordEntered = false;
@@ -157,11 +157,9 @@ namespace TH_UserManagement.Create
             state_COMBO.SelectedIndex = -1;
 
             ClearProfileImage();
-
         }
 
-
-        #region "Form"
+        #region "Form Properties"
 
         public string FirstName
         {
@@ -170,7 +168,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty FirstNameProperty =
-            DependencyProperty.Register("FirstName", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("FirstName", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string LastName
@@ -180,7 +178,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty LastNameProperty =
-            DependencyProperty.Register("LastName", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("LastName", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string Username
@@ -190,7 +188,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty UsernameProperty =
-            DependencyProperty.Register("Username", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("Username", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string Company
@@ -200,7 +198,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty CompanyProperty =
-            DependencyProperty.Register("Company", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("Company", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string Email
@@ -210,7 +208,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty EmailProperty =
-            DependencyProperty.Register("Email", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("Email", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string Phone
@@ -220,7 +218,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty PhoneProperty =
-            DependencyProperty.Register("Phone", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("Phone", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string Address1
@@ -230,7 +228,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty Address1Property =
-            DependencyProperty.Register("Address1", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("Address1", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string Address2
@@ -240,7 +238,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty Address2Property =
-            DependencyProperty.Register("Address2", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("Address2", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string City
@@ -250,7 +248,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty CityProperty =
-            DependencyProperty.Register("City", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("City", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public string ZipCode
@@ -260,7 +258,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty ZipCodeProperty =
-            DependencyProperty.Register("ZipCode", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("ZipCode", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         ObservableCollection<string> countrylist;
@@ -302,7 +300,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty ShowStatesProperty =
-            DependencyProperty.Register("ShowStates", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("ShowStates", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
 
         private void country_COMBO_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -319,12 +317,6 @@ namespace TH_UserManagement.Create
             }
         }
 
-        private void state_COMBO_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-
         #region "Password"
 
         public bool PasswordEntered
@@ -334,7 +326,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty PasswordEnteredProperty =
-            DependencyProperty.Register("PasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("PasswordEntered", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
 
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
@@ -360,7 +352,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty ConfirmPasswordEnteredProperty =
-            DependencyProperty.Register("ConfirmPasswordEntered", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("ConfirmPasswordEntered", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
         private void confirmpassword_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
@@ -371,12 +363,6 @@ namespace TH_UserManagement.Create
         }
 
         #endregion
-
-
-        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
 
         #endregion
 
@@ -389,7 +375,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty SavingProperty =
-            DependencyProperty.Register("Saving", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("Saving", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
       
 
         private void Apply_Clicked(TH_WPF.Button bt)
@@ -420,8 +406,6 @@ namespace TH_UserManagement.Create
             if (state_COMBO.SelectedItem != null) userConfig.state = state_COMBO.SelectedItem.ToString();
 
             userConfig.zipcode = ZipCode;
-
-            //UploadProfileImage(profileImageFilename, UserDatabaseSettings);
 
             return userConfig;
         }
@@ -486,31 +470,22 @@ namespace TH_UserManagement.Create
 
         void UpdateUser_GUI(UpdateUser_Return result)
         {
-            //if (result) MessageBox.Show("User Created / Updated Successfully!");
-            //else MessageBox.Show("Error during User Creation!");
-
             if (result.success)
             {
                 if (UserChanged != null) UserChanged(result.userConfig);
             }
             else
             {
-
                 TH_WPF.MessageBox.Show("Error during User Creation! Try Again.");
             }
 
             Saving = false;
         }
 
-        void UpdateUser_Finished()
-        {
-
-        }
-
         #endregion
 
 
-        #region "Username"
+        #region "Username Verification"
 
         public bool UsernameVerified
         {
@@ -519,7 +494,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty UsernameVerifiedProperty =
-            DependencyProperty.Register("UsernameVerified", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("UsernameVerified", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
         public string UsernameMessage
         {
@@ -528,7 +503,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty UsernameMessageProperty =
-            DependencyProperty.Register("UsernameMessage", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("UsernameMessage", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
     
 
         System.Timers.Timer username_TIMER;
@@ -555,7 +530,7 @@ namespace TH_UserManagement.Create
             // If no userconfiguration database configuration found then use default TrakHound User Database
             if (UserDatabaseSettings == null)
             {
-                VerifyUsernameReturn usernameReturn = Remote.Users.VerifyUsername(Username);
+                VerifyUsernameReturn usernameReturn = TH_UserManagement.Management.Remote.Users.VerifyUsername(Username);
                 if (usernameReturn != null)
                 {
                     UsernameVerified = usernameReturn.available;
@@ -580,7 +555,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty ShowChangePasswordProperty =
-            DependencyProperty.Register("ShowChangePassword", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("ShowChangePassword", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
         private void ChangePassword_Clicked(TH_WPF.Button bt)
         {
@@ -594,7 +569,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty PasswordVerifiedProperty =
-            DependencyProperty.Register("PasswordVerified", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("PasswordVerified", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
 
         public bool PasswordShort
@@ -604,7 +579,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty PasswordShortProperty =
-            DependencyProperty.Register("PasswordShort", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("PasswordShort", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
 
         public bool PasswordLong
@@ -614,7 +589,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty PasswordLongProperty =
-            DependencyProperty.Register("PasswordLong", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("PasswordLong", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
         System.Timers.Timer password_TIMER;
 
@@ -683,7 +658,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty ProfileImageProperty =
-            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public bool ProfileImageSet
@@ -693,7 +668,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty ProfileImageSetProperty =
-            DependencyProperty.Register("ProfileImageSet", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("ProfileImageSet", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
 
         public bool ProfileImageLoading
@@ -703,7 +678,7 @@ namespace TH_UserManagement.Create
         }
 
         public static readonly DependencyProperty ProfileImageLoadingProperty =
-            DependencyProperty.Register("ProfileImageLoading", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("ProfileImageLoading", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
@@ -853,7 +828,6 @@ namespace TH_UserManagement.Create
             }
             catch (Exception ex) { TH_WPF.MessageBox.Show("Error Opening Privacy Policy. Please try again or open a browser and navigate to 'http://www.feenux.com/trakhound/docs/privacypolicy_desktopapp.html'"); }
         }
-
 
     }
 }

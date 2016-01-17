@@ -347,11 +347,11 @@ namespace TH_UserManagement
         {
             if (userConfig != null)
             {
-                Fullname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name) + " " + TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
-                Firstname = TH_Global.Formatting.UppercaseFirst(userConfig.first_name);
-                Lastname = TH_Global.Formatting.UppercaseFirst(userConfig.last_name);
+                Fullname = String_Functions.UppercaseFirst(userConfig.first_name) + " " + String_Functions.UppercaseFirst(userConfig.last_name);
+                Firstname = String_Functions.UppercaseFirst(userConfig.first_name);
+                Lastname = String_Functions.UppercaseFirst(userConfig.last_name);
 
-                Username = TH_Global.Formatting.UppercaseFirst(userConfig.username);
+                Username = String_Functions.UppercaseFirst(userConfig.username);
                 EmailAddress = userConfig.email;
 
                 username_TXT.Clear();
@@ -384,7 +384,7 @@ namespace TH_UserManagement
         public void Login(string username, string password)
         {
             Loading = true;
-            LoadingMessage = Formatting.UppercaseFirst(username);
+            LoadingMessage = String_Functions.UppercaseFirst(username);
 
             LoginError = false;
             ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
@@ -406,19 +406,9 @@ namespace TH_UserManagement
             {
                 Login_Info info = (Login_Info)o;
 
-                UserConfiguration userConfig = null;
+                UserConfiguration userConfig = Users.Login(info.username, info.password, userDatabaseSettings);
 
-                //If no userconfiguration database configuration found then use default TrakHound User Database
-                if (userDatabaseSettings == null)
-                {
-                    userConfig = Remote.Users.Login(info.username, info.password);
-                }
-                else
-                {
-                    userConfig = Local.Users.Login(info.username, info.password, userDatabaseSettings);
-                }
-
-                if (userConfig != null && info.rememberMe) Remote.Users.RememberMe.Set(userConfig, rememberMeType);
+                if (userConfig != null && info.rememberMe) TH_UserManagement.Management.RememberMe.Set(userConfig, rememberMeType, userDatabaseSettings);
 
                 this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
             }
@@ -468,7 +458,7 @@ namespace TH_UserManagement
 
         void Logout_Worker()
         {
-            Remote.Users.RememberMe.Clear(rememberMeType);
+            TH_UserManagement.Management.RememberMe.Clear(rememberMeType, userDatabaseSettings);
 
             this.Dispatcher.BeginInvoke(new Action(Logout_Finished), priority, new object[] { });
         }
@@ -538,9 +528,9 @@ namespace TH_UserManagement
 
         void LoadRememberMe_Worker()
         {
-            UserConfiguration RememberUser = Remote.Users.RememberMe.Get(rememberMeType);
+            UserConfiguration RememberUser = TH_UserManagement.Management.RememberMe.Get(rememberMeType, userDatabaseSettings);
 
-            if (RememberUser != null) Remote.Users.RememberMe.Set(RememberUser, rememberMeType);
+            if (RememberUser != null) TH_UserManagement.Management.RememberMe.Set(RememberUser, rememberMeType, userDatabaseSettings);
 
             this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
         }
@@ -655,7 +645,7 @@ namespace TH_UserManagement
 
                         if (ProfileImages.UploadProfileImage(filename, localPath, userDatabaseSettings))
                         {
-                            Remote.Users.UpdateImageURL(filename, CurrentUser);
+                            Users.UpdateImageURL(filename, CurrentUser, userDatabaseSettings);
 
                             LoadProfileImage(CurrentUser);
 
@@ -718,11 +708,6 @@ namespace TH_UserManagement
             focus_TIMER.Interval = 50;
             focus_TIMER.Elapsed += focus_TIMER_Elapsed;
             focus_TIMER.Enabled = true;
-
-            //Keyboard.Focus(username_TXT);
-
-            //username_TXT.Focus();
-            //username_TXT.Select(0, 0);
         }
 
         void focus_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -736,8 +721,6 @@ namespace TH_UserManagement
         {
             username_TXT.Focus();
         }
-
-
 
     }
 }

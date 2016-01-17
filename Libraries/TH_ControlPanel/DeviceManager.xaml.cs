@@ -313,27 +313,6 @@ namespace TH_DeviceManager
             if (currentuser != null)
             {
                 configs = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
-
-
-                //string[] tablenames = Remote.Configurations.GetConfigurationsForUser(currentuser);
-
-                //if (tablenames != null)
-                //{
-                //    foreach (string tablename in tablenames)
-                //    {
-                //        DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
-                //        if (dt != null)
-                //        {
-                //            XmlDocument xml = Converter.TableToXML(dt);
-                //            Configuration config = Configuration.ReadConfigFile(xml);
-                //            if (config != null)
-                //            {
-                //                config.TableName = tablename;
-                //                configs.Add(config);
-                //            }
-                //        }
-                //    }
-                //}
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else
@@ -464,22 +443,8 @@ namespace TH_DeviceManager
                             catch (Exception ex) { Logger.Log("Error during Configuration Xml Backup"); }                
                         }
 
-
-
                         success = Configurations.ClearConfigurationTable(tablename, userDatabaseSettings);
                         if (success) success = Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);
-
-                        // If DeviceManager is opened as 'Server' then clear the old data so 
-                        //if (ManagerType == DeviceManagerType.Server)
-                        //{
-                        //    success = Configurations.ClearConfigurationTable(tablename, userDatabaseSettings);
-                        //    if (success) success = Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);
-                        //}
-                        //else
-                        //{
-                        //    success = Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);
-                        //}
-  
                     }
                     // If not logged in Save to File in 'C:\TrakHound\'
                     else
@@ -521,50 +486,6 @@ namespace TH_DeviceManager
             Saving = false;
         }
 
-        //public void SaveConfiguration(DataTable dt)
-        //{
-        //    string tablename = null;
-
-        //    if (dt != null)
-        //    {
-        //        tablename = dt.TableName;
-
-        //        if (currentuser != null)
-        //        {
-        //            // Reset Update ID
-        //            Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UpdateId", dt);
-
-        //            // Add Unique Id (ONLY if one not already set)
-        //            if (Table_Functions.GetTableValue("/UniqueId", dt) == null) Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UniqueId", dt);
-
-        //            Configurations.ClearConfigurationTable(tablename, userDatabaseSettings);
-
-        //            Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);
-        //        }
-        //        // If not logged in Save to File in 'C:\TrakHound\'
-        //        else
-        //        {
-
-        //        }
-        //    }
-
-        //    ConfigurationTable = dt.Copy();
-
-        //    XmlDocument xml = Converter.TableToXML(dt);
-        //    if (xml != null)
-        //    {
-        //        SelectedDevice = Configuration.ReadConfigFile(xml);
-        //        SelectedDevice.TableName = tablename;
-
-        //        if (SelectedDeviceButton != null)
-        //        {
-        //            SelectedDeviceButton.Config = SelectedDevice;
-        //        }
-
-                
-        //    }
-        //}
-      
         #endregion
 
         #region "Remove Device"
@@ -582,12 +503,6 @@ namespace TH_DeviceManager
             {
                 ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevice_Worker), bt);
             }
-
-            //MessageBoxResult result = MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-            //if (result == MessageBoxResult.Yes)
-            //{
-            //    ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevice_Worker), bt);
-            //}
         }
 
         void RemoveDevice_Worker(object o)
@@ -691,11 +606,14 @@ namespace TH_DeviceManager
 
         void CopyDevice(Configuration config)
         {
+            bool? result = TH_WPF.MessageBox.Show("Create a copy of this device?", "Copy Device", TH_WPF.MessageBoxButtons.YesNo);
+            if (result == true)
+            {
+                if (CopyDevice_THREAD != null) CopyDevice_THREAD.Abort();
 
-            if (CopyDevice_THREAD != null) CopyDevice_THREAD.Abort();
-
-            CopyDevice_THREAD = new Thread(new ParameterizedThreadStart(CopyDevice_Worker));
-            CopyDevice_THREAD.Start(config);
+                CopyDevice_THREAD = new Thread(new ParameterizedThreadStart(CopyDevice_Worker));
+                CopyDevice_THREAD.Start(config);
+            }
         }
 
         void CopyDevice_Worker(object o)
@@ -932,12 +850,7 @@ namespace TH_DeviceManager
             info.bt = bt;
             info.tablename = tableName;
 
-            //if (enable_THREAD != null) enable_THREAD.Abort();
-
             ThreadPool.QueueUserWorkItem(new WaitCallback(EnableDevice_Worker), info);
-
-            //enable_THREAD = new Thread(new ParameterizedThreadStart(EnableDevice_Worker));
-            //enable_THREAD.Start(info);
         }
 
         void EnableDevice_Worker(object o)
@@ -946,14 +859,14 @@ namespace TH_DeviceManager
             {
                 EnableDevice_Info info = (EnableDevice_Info)o;
 
-                if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "True", info.tablename);
-                else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "True", info.tablename);
+                if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientEnabled", "True", info.tablename, userDatabaseSettings);
+                else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerEnabled", "True", info.tablename, userDatabaseSettings);
 
                 // Reset Update ID
                 if (info.success)
                 {
-                    if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename);
-                    else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename);
+                    if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
+                    else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
                 }
 
                 this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), priority, new object[] { info });
@@ -979,8 +892,6 @@ namespace TH_DeviceManager
 
         #region "Disable Device"
 
-        //Thread disable_THREAD;
-
         void DisableDevice(DeviceButton bt, string tableName)
         {
             bt.EnableLoading = true;
@@ -990,11 +901,6 @@ namespace TH_DeviceManager
             info.tablename = tableName;
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(DisableDevice_Worker), info);
-
-            //if (disable_THREAD != null) disable_THREAD.Abort();
-
-            //disable_THREAD = new Thread(new ParameterizedThreadStart(DisableDevice_Worker));
-            //disable_THREAD.Start(info);
         }
 
         void DisableDevice_Worker(object o)
@@ -1003,30 +909,17 @@ namespace TH_DeviceManager
             {
                 EnableDevice_Info info = (EnableDevice_Info)o;
 
-                if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "False", info.tablename);
-                else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "False", info.tablename);
+                if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientEnabled", "False", info.tablename, userDatabaseSettings);
+                else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerEnabled", "False", info.tablename, userDatabaseSettings);
 
                 // Reset Update ID
                 if (info.success)
                 {
-                    if (ManagerType == DeviceManagerType.Client) info.success = Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename);
-                    else if (ManagerType == DeviceManagerType.Server) info.success = Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename);
+                    if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
+                    else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
                 }
 
                 this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), priority, new object[] { info });
-
-
-
-                //string tableName = o.ToString();
-
-                //if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientEnabled", "False", tableName);
-                //else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerEnabled", "False", tableName);
-
-                ////Remote.Configurations.UpdateConfigurationTable("/Enabled", "False", tableName);
-
-                //// Reset Update ID
-                //if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), tableName);
-                //else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), tableName);
             }
         }
 
@@ -1074,8 +967,6 @@ namespace TH_DeviceManager
                     if (SelectedDevice != db.Config)
                     {
                         SelectedDevice = db.Config;
-
-                        //InitializePages(ManagerType);
 
                         SelectDevice(db.Config);
                     }
@@ -1165,21 +1056,6 @@ namespace TH_DeviceManager
                         page.configurationtable = ConfigurationTable;
                         CurrentPage = page;
                     }
-
-                    //if (lb.DataObject != null)
-                    //{
-                    //    if (lb.DataObject.GetType() == typeof(Configuration))
-                    //    {
-                    //        Configuration config = (Configuration)lb.DataObject;
-
-                    //        Pages.AddShare.Page page = new Pages.AddShare.Page();
-                    //        page.devicemanager = this;
-                    //        page.currentuser = CurrentUser;
-                    //        page.LoadConfiguration(config);
-                    //        page.configurationtable = ConfigurationTable;
-                    //        CurrentPage = page;
-                    //    }
-                    //}
                 }
             }
         }
@@ -1220,12 +1096,9 @@ namespace TH_DeviceManager
 
         void InitializePages(DeviceManagerType type)
         {
-            //PageListShown = false;
-
             PageList.Clear();
 
             bool useTrakHoundCloud = false;
-            //if (SelectedDevice != null) useTrakHoundCloud = SelectedDevice.UseTrakHoundCloud;
 
             ConfigurationPages = new List<ConfigurationPage>();
 
@@ -1605,11 +1478,11 @@ namespace TH_DeviceManager
             {
                 SetDeviceIndex_Info info = (SetDeviceIndex_Info)o;
 
-                Remote.Configurations.UpdateConfigurationTable("/Index", info.index.ToString(), info.tablename);
+                Configurations.UpdateConfigurationTable("/Index", info.index.ToString(), info.tablename, userDatabaseSettings);
 
                 // Reset Update ID
-                if (ManagerType == DeviceManagerType.Client) Remote.Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename);
-                else if (ManagerType == DeviceManagerType.Server) Remote.Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename);
+                if (ManagerType == DeviceManagerType.Client) Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
+                else if (ManagerType == DeviceManagerType.Server) Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
             }
         }
 

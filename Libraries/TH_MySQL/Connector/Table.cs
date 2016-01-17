@@ -545,6 +545,56 @@ namespace TH_MySQL.Connector
 
         }
 
+        public static DataTable Get(MySQL_Configuration config, string tableName, Int64 limit, Int64 offset)
+        {
+
+            DataTable Result = null;
+
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    string query = "SELECT * FROM " + tableName + " LIMIT " + limit.ToString() + " OFFSET " + offset.ToString();
+                    MySql.Data.MySqlClient.MySqlCommand cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
+
+                    DataTable t1 = new DataTable();
+                    using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                    {
+                        if (a != null) a.Fill(t1);
+                    }
+
+                    conn.Close();
+
+                    cmd.Dispose();
+                    conn.Dispose();
+
+                    t1.TableName = tableName;
+
+                    Result = t1.Copy();
+
+                    success = true;
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
+            }
+
+            return Result;
+
+        }
+
         public static DataTable Get(MySQL_Configuration config, string tableName, string filterExpression)
         {
 

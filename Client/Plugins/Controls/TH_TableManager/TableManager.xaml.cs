@@ -53,7 +53,7 @@ namespace TH_TableManager
 
         public string Title { get { return "Table Manager"; } }
 
-        public string Description { get { return "Display and Manage MySQL Tables associated with Device"; } }
+        public string Description { get { return "Display and Manage Database Tables associated with Device"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_TableManager;component/Resources/Table_01.png")); ; } }
 
@@ -780,13 +780,13 @@ namespace TH_TableManager
             int limit = rowLimits[Properties.Settings.Default.RowDisplayIndex];
 
             // Calculate Offset based on selected page
-            string offset = "";
+            //string offset = "";
             Int64 page = Math.Max(0, ltp.page - 1);
-            Int64 o = page * limit;
-            offset = " OFFSET " + o.ToString();
+            Int64 offset = page * limit;
+            //offset = " OFFSET " + o.ToString();
                 
             // Get MySQL table
-            DataTable dt = TH_Database.Table.Get(ltp.config.Databases_Client, ltp.tablename, "LIMIT " + limit.ToString() + offset);
+            DataTable dt = TH_Database.Table.Get(ltp.config.Databases_Client, ltp.tablename, limit, offset);
 
             this.Dispatcher.BeginInvoke(new Action<DataTable>(LoadTable_Finished), Priority, new object[] { dt });
         }

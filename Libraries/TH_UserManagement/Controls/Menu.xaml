@@ -729,7 +729,7 @@
                             </th_wpf:Button>
 
                             <!--My Account-->
-                            <th_wpf:Button Grid.Column="0" Height="40" Text="My Account"  Margin="10" VerticalAlignment="Bottom" Clicked="MyAccount_Clicked">
+                            <th_wpf:Button Grid.Column="0" Height="40" Text="My Account" Margin="10" VerticalAlignment="Bottom" Clicked="MyAccount_Clicked">
                                 <th_wpf:Button.Style>
                                     <Style TargetType="th_wpf:Button">
                                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>

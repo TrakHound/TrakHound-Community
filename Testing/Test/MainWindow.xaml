@@ -18,11 +18,11 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="dummy">
+    <Grid x:Name="dummy" Background="#0080ff">
         
         <!--<th_wpf:ProgressBar Width="40" Value="{Binding ProgressValue}" Maximum="{Binding ProgressMaximum}" Orientation="Vertical" Background="Green"/>-->
         
-        <th_wpf:ListButton Text="Test Text" Selected="ListButton_Selected">
+        <!--<th_wpf:ListButton Text="Test Text" Selected="ListButton_Selected">
             <th_wpf:ListButton.Style>
                 <Style TargetType="th_wpf:ListButton">
                     <Setter Property="Foreground" Value="#fff"/>
@@ -38,21 +38,36 @@
                     </Style.Triggers>
                 </Style>
             </th_wpf:ListButton.Style>
-        </th_wpf:ListButton>
+        </th_wpf:ListButton>-->
 
-        <!--<th_wpf:Button Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" Image="Resources/Camera_01.png" Padding="2" FontSize="16">
+        <th_wpf:Button VerticalAlignment="Top" HorizontalAlignment="Left" Image="Resources/Camera_01.png" >
             <th_wpf:Button.Style>
                 <Style TargetType="th_wpf:Button">
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                    <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>-->
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Height" Value="35"/>
+                    <Setter Property="ImageTextPadding" Value="10"/>
+                    <Setter Property="Padding" Value="10,5"/>
+                    <Setter Property="Margin" Value="10"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="CornerRadius" Value="1"/>
+                    <!--<Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="2"/>-->
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            <!--<Setter Property="Background" Value="{StaticResource Accent_Light}"/>-->
+                            <Setter Property="Background" Value="#18ffffff"/>
                         </Trigger>
+                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </th_wpf:Button.Style>
-        </th_wpf:Button>-->
+        </th_wpf:Button>
         
         <!--<levelindicator:Indicator x:Name="levels_LI" Foreground="Blue" BorderBrush="Red" HorizontalAlignment="Center" Width="50" Height="50"/>-->
         

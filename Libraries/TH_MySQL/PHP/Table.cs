@@ -350,6 +350,35 @@ namespace TH_MySQL.PHP
 
         }
 
+        public static DataTable Get(MySQL_Configuration config, string tablename, Int64 limit, Int64 offset)
+        {
+
+            DataTable Result = null;
+
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
+
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
+
+            values["query"] = "SELECT * FROM " + tablename + " LIMIT " + limit.ToString() + " OFFSET " + offset.ToString();
+
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/Retrieve.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            Result = JSON.ToTable(responseString);
+
+            return Result;
+
+        }
+
         public static DataTable Get(MySQL_Configuration config, string tablename, string FilterExpression)
         {
 

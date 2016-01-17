@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TH_UserManagement.Create.Page"
+﻿<UserControl x:Class="TH_UserManagement.MyAccountPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -84,10 +84,10 @@
                         </Grid.Resources>
 
                         <!--First Name-->
-                        <th_wpf:TextBox Text="{Binding FirstName, Mode=TwoWay}" Title="Name" Instructions="First" TextChanged="TXT_TextChanged" Margin="0,0,0,0"/>
+                        <th_wpf:TextBox Text="{Binding FirstName, Mode=TwoWay}" Title="Name" Instructions="First" Margin="0,0,0,0"/>
 
                         <!--Last Name-->
-                        <th_wpf:TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay}" Instructions="Last" TextChanged="TXT_TextChanged"/>
+                        <th_wpf:TextBox Grid.Column="1" Text="{Binding LastName, Mode=TwoWay}" Instructions="Last"/>
 
                     </Grid>
 
@@ -296,25 +296,25 @@
 
 
                     <!--Company-->
-                    <th_wpf:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company" TextChanged="TXT_TextChanged"/>
+                    <th_wpf:TextBox Text="{Binding Company, Mode=TwoWay}" Title="Company"/>
 
 
                     <!--Email-->
-                    <th_wpf:TextBox Text="{Binding Email, Mode=TwoWay}" Title="Email" TextChanged="TXT_TextChanged"/>
+                    <th_wpf:TextBox Text="{Binding Email, Mode=TwoWay}" Title="Email"/>
 
 
                     <!--Phone-->
-                    <th_wpf:TextBox Text="{Binding Phone, Mode=TwoWay}" Title="Phone" TextChanged="TXT_TextChanged"/>
+                    <th_wpf:TextBox Text="{Binding Phone, Mode=TwoWay}" Title="Phone"/>
 
 
                     <!--Address-->
-                    <th_wpf:TextBox Text="{Binding Address1, Mode=TwoWay}" Title="Address" TextChanged="TXT_TextChanged"/>
+                    <th_wpf:TextBox Text="{Binding Address1, Mode=TwoWay}" Title="Address"/>
 
-                    <th_wpf:TextBox Text="{Binding Address2, Mode=TwoWay}" TextChanged="TXT_TextChanged"/>
+                    <th_wpf:TextBox Text="{Binding Address2, Mode=TwoWay}"/>
 
 
                     <!--City-->
-                    <th_wpf:TextBox Text="{Binding City, Mode=TwoWay}" Title="City" TextChanged="TXT_TextChanged"/>
+                    <th_wpf:TextBox Text="{Binding City, Mode=TwoWay}" Title="City"/>
 
 
                     <!--Country-->
@@ -338,13 +338,13 @@
 
                         <TextBlock Text="State" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" FontSize="12pt"/>
 
-                        <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" SelectionChanged="state_COMBO_SelectionChanged" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
+                        <ComboBox x:Name="state_COMBO" Height="35" Margin="0,5,15,5" ItemsSource="{Binding StateList}" VerticalContentAlignment="Center" FontSize="14" IsTextSearchEnabled="True" IsEditable="True"/>
 
                     </StackPanel>
 
 
                     <!--Zip Code-->
-                    <th_wpf:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code" TextChanged="TXT_TextChanged"/>
+                    <th_wpf:TextBox Text="{Binding ZipCode, Mode=TwoWay}" Title="Zip Code"/>
 
                 </StackPanel>
 
@@ -450,44 +450,6 @@
                                     </th_wpf:Button.Style>
 
                                 </th_wpf:Button>
-
-                                <!--Disabled Shade-->
-                                <!--<Grid>
-                                    <Grid.Style>
-                                        <Style TargetType="Grid">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding CurrentUser}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-                                    <Grid>
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Setter Property="Background" Value="#88000000"/>
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding UsernameVerified}" Value="true"/>
-                                                            <Condition Binding="{Binding PasswordEntered}" Value="true"/>
-                                                            <Condition Binding="{Binding ConfirmPasswordEntered}" Value="true"/>
-                                                            <Condition Binding="{Binding PasswordVerified}" Value="true"/>
-                                                        </MultiDataTrigger.Conditions>
-
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-
-                                                    </MultiDataTrigger>
-
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-
-                                    </Grid>
-
-                                </Grid>-->
 
                             </Grid>
 
