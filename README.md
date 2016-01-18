@@ -59,4 +59,4 @@ Important messages are displayed as Windows Notifications and others are written
 ![TrakHound Server Console] (http://feenux.com/github/images/server_console_01.png)
 
 ##Contributions
-TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at [info@TrakHound.org]:info@TrakHound.org.
+TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at info@TrakHound.org.
