@@ -95,6 +95,15 @@ namespace TH_WPF
             DependencyProperty.Register("ShowBorder", typeof(bool), typeof(ImageBox), new PropertyMetadata(false));
 
 
+        public bool ShowClear
+        {
+            get { return (bool)GetValue(ShowClearProperty); }
+            set { SetValue(ShowClearProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowClearProperty =
+            DependencyProperty.Register("ShowClear", typeof(bool), typeof(ImageBox), new PropertyMetadata(true));
+
         #endregion
 
         #region "Events"
@@ -156,14 +165,19 @@ namespace TH_WPF
             }
         }
 
-        private void Upload_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (UploadClicked != null) UploadClicked(this);
-        }
+        //private void Upload_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (UploadClicked != null) UploadClicked(this);
+        //}
 
         private void Clear_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (ClearClicked != null) ClearClicked(this);
+        }
+
+        private void Upload_Clicked(Button bt)
+        {
+            if (UploadClicked != null) UploadClicked(this);
         }
 
     }

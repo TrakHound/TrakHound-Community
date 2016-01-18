@@ -637,7 +637,7 @@ namespace TrakHound_Client
                 }
             }
 
-            DevicesMonitor_Stop();
+            DevicesMonitor_Close();
 
             Properties.Settings.Default.Save();
 

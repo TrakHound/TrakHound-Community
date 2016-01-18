@@ -454,9 +454,12 @@ namespace TH_UserManagement
                     bool success = Users.CreateUser(info.userConfig, info.password, info.userDatabaseSettings);
 
                     // Upload Profile Image
-                    if (profileImageChanged)
+                    if (success && profileImageChanged)
                     {
-                        if (success) success = UploadProfileImage(profileImage, info.userDatabaseSettings);
+                        if (profileImage != null)
+                        {
+                            success = UploadProfileImage(profileImage, info.userDatabaseSettings);
+                        }
                         if (success) success = Users.UpdateImageURL(profileImageFilename, info.userConfig, info.userDatabaseSettings);
                     }
                              
@@ -688,9 +691,8 @@ namespace TH_UserManagement
         {
             ProfileImageLoading = true;
             ProfileImageSet = false;
+            ProfileImage = null;
 
-            ProfileImage = NoProfileImage;
-            ProfileImageSet = true;
 
             if (profileimage_THREAD != null) profileimage_THREAD.Abort();
 

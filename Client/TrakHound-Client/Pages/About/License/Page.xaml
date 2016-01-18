@@ -24,6 +24,7 @@
     <Grid MaxWidth="800">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
@@ -33,14 +34,20 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
+            <!--Logo-->
             <Image Source="/TrakHound-Client;component/Resources/gplv3-127x51.png" Height="30" HorizontalAlignment="Left"/>
 
+            <!--License Note-->
             <TextBlock Grid.Column="1" Margin="20,0,0,0" FontSize="12" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" TextWrapping="Wrap" 
                        Text="TrakHound is licensed under the GPLv3 software license."/>
 
         </Grid>
 
-        <TextBlock Grid.Row="1" Text="{Binding LicenseText}" Foreground="{StaticResource Foreground_Normal}"/>
+        <!--Plugins Note-->
+        <TextBlock Grid.Row="1" Margin="0,0,0,20" FontSize="12" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" TextWrapping="Wrap" 
+                       Text="Note that plugins may be licensed differently than TrakHound itself."/>
+
+        <TextBlock Grid.Row="2" Text="{Binding LicenseText}" Foreground="{StaticResource Foreground_Normal}"/>
         
     </Grid>
     

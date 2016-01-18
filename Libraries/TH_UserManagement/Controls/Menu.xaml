@@ -308,11 +308,39 @@
                         </Grid.Style>
 
                         <!--Profile Image-->
-                        <Border x:Name="profileimage_BD" Margin="10" BorderThickness="1" BorderBrush="{StaticResource Shade_Normal}" CornerRadius="2" Height="120" Width="120" VerticalAlignment="Top">
+                        <th_wpf:ImageBox Image="{Binding ProfileImage}"
+                                         ImageSet="{Binding ProfileImageSet}"
+                                         Loading="{Binding ProfileImageLoading}"
+                                         UploadClicked="ProfileImage_UploadClicked"
+                                         ShowBorder="True"
+                                         ShowClear="False"
+                                         >
+                            <th_wpf:ImageBox.Style>
+                                <Style TargetType="th_wpf:ImageBox">
+                                    <Setter Property="Width" Value="120"/>
+                                    <Setter Property="Height" Value="120"/>
+                                    <Setter Property="Margin" Value="10,0"/>
+                                    <!--<Setter Property="VerticalAlignment" Value="Top"/>-->
+                                </Style>                               
+                            </th_wpf:ImageBox.Style>
+                        </th_wpf:ImageBox>
+
+                        <!--<th_wpf:ImageBox Title="Profile Image"
+                                 Height="255" 
+                                 Width="200"
+                                 UploadClicked="ProfileImage_UploadClicked" 
+                                 ClearClicked="ProfileImage_ClearClicked"
+                                 Image="{Binding ProfileImage}"
+                                 ImageSet="{Binding ProfileImageSet}"
+                                 Loading="{Binding ProfileImageLoading}"
+                                 ShowBorder="True"
+                                 />-->
+
+                        <!--<Border x:Name="profileimage_BD" Margin="10" BorderThickness="1" BorderBrush="{StaticResource Shade_Normal}" CornerRadius="2" Height="120" Width="120" VerticalAlignment="Top">
 
                             <Grid>
 
-                                <!--Profile Image-->
+                                --><!--Profile Image--><!--
                                 <Grid>
 
                                     <Image Source="{Binding ProfileImage}" />
@@ -340,7 +368,7 @@
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
-                                            <!--Camera Icon-->
+                                            --><!--Camera Icon--><!--
                                             <Rectangle x:Name="uploadphoto_image" Height="30"  Width="30" >
                                                 <Rectangle.Resources>
                                                     <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_UserManagement;component/Resources/Camera_01.png" />
@@ -355,7 +383,7 @@
                                                 </Rectangle.Style>
                                             </Rectangle>
 
-                                            <!--Change Text-->
+                                            --><!--Change Text--><!--
                                             <TextBlock Grid.Column="1" Text="Change" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap"/>
 
                                         </Grid>
@@ -364,7 +392,7 @@
 
                                 </Grid>
 
-                                <!--Loading Animation-->
+                                --><!--Loading Animation--><!--
                                 <Grid Background="{StaticResource Window_Background}">
                                     <Grid.Style>
                                         <Style TargetType="Grid">
@@ -438,7 +466,7 @@
 
                             </Grid>
 
-                        </Border>
+                        </Border>-->
 
                         <StackPanel Grid.Column="1" Margin="10" VerticalAlignment="Center">
 
@@ -574,6 +602,16 @@
 
                     <!--Bottom Bar-->
                     <Grid Grid.Row="2" Height="59" Background="{StaticResource Window_Background_Dark}">
+                        
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#20ffffff" Offset="0"/>
+                                    <GradientStop Color="#20ffffff" Offset="0.3"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                        </Grid>
 
                         <!--Logged Out-->
                         <Grid>

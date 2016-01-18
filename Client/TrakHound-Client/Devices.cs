@@ -18,8 +18,6 @@ namespace TrakHound_Client
     public partial class MainWindow
     {
 
-        //public ObservableCollection<Configuration> Devices { get; set; }
-
         public List<Configuration> Devices { get; set; }
 
         #region "Load Devices"
@@ -31,9 +29,6 @@ namespace TrakHound_Client
         void LoadDevices_Initialize()
         {
             Devices = new List<Configuration>();
-
-            //Devices = new ObservableCollection<Configuration>();
-            //Devices.CollectionChanged += Devices_CollectionChanged;
         }
 
 
@@ -80,65 +75,7 @@ namespace TrakHound_Client
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_Finished), priority, new object[] { configs });
 
         }
-
-        //void LoadDevices_Worker()
-        //{
-        //    System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
-        //    stpw.Start();
-
-        //    List<Configuration> configs = new List<Configuration>();
-
-        //    if (currentuser != null)
-        //    {
-        //        string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
-
-        //        stpw.Stop();
-        //        Console.WriteLine("LoadDevices_Worker() : GetConfigurationsForUser : " + stpw.ElapsedMilliseconds.ToString() + "ms");
-        //        stpw.Restart();
-
-        //        if (tablenames != null)
-        //        {
-        //            foreach (string tablename in tablenames)
-        //            {
-        //                Configurations.UpdateInfo info = Configurations.GetClientUpdateInfo(tablename, UserDatabaseSettings);
-
-        //                stpw.Stop();
-        //                Console.WriteLine("LoadDevices_Worker() : GetClientUpdateInfo : " + tablename + " : " + stpw.ElapsedMilliseconds.ToString() + "ms");
-        //                stpw.Restart();
-
-        //                if (info != null)
-        //                {
-        //                    bool enabled = false;
-        //                    bool.TryParse(info.Enabled, out enabled);
-
-        //                    if (enabled)
-        //                    {
-        //                        Configuration config = GetConfiguration(tablename);
-
-        //                        stpw.Stop();
-        //                        Console.WriteLine("LoadDevices_Worker() : GetConfiguration : " + tablename + " : " + stpw.ElapsedMilliseconds.ToString() + "ms");
-        //                        stpw.Restart();
-
-        //                        if (config != null) configs.Add(config);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    // If not logged in Read from File in 'C:\TrakHound\'
-        //    else
-        //    {
-        //        configs = ReadConfigurationFile();
-        //    }
-
-        //    this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_Finished), priority, new object[] { configs });
-
-        //    //this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), priority, new object[] { });
-
-        //    stpw.Stop();
-        //    Console.WriteLine("LoadDevices_Worker() : " + stpw.ElapsedMilliseconds.ToString() + "ms");
-        //}
-
+      
         Configuration GetConfiguration(string tablename)
         {
             Configuration result = null;
@@ -162,19 +99,21 @@ namespace TrakHound_Client
             return result;
         }
 
-        //void LoadDevices_GUI(List<Configuration> configs)
-        //{
-        //    Devices = configs;
-        //}
+        bool addDeviceOpened = false;
 
         void LoadDevices_Finished(List<Configuration> configs)
         {
             Devices = configs;
 
-            if (Devices.Count == 0 && currentuser != null)
+            if (!addDeviceOpened && Devices.Count == 0 && currentuser != null)
             {
+                addDeviceOpened = true;
                 if (devicemanager != null) devicemanager.AddDevice();
                 DeviceManager_Open();
+            }
+            else if (Devices.Count > 0)
+            {
+                addDeviceOpened = false;
             }
 
             UpdatePluginDevices(configs);
@@ -186,77 +125,6 @@ namespace TrakHound_Client
             de_d.id = "devicesloaded";
             Plugin_DataEvent(de_d);
         }
-
-        //List<Configuration> GetConfigurations()
-        //{
-        //    List<Configuration> result = new List<Configuration>();
-
-        //    string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
-
-        //    if (tablenames != null)
-        //    {
-        //        foreach (string tablename in tablenames)
-        //        {
-        //            DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
-        //            if (dt != null)
-        //            {
-        //                XmlDocument xml = Converter.TableToXML(dt);
-        //                Configuration config = Configuration.ReadConfigFile(xml);
-        //                if (config != null)
-        //                {
-        //                    config.TableName = tablename;
-
-        //                    if (config.ClientEnabled) result.Add(config);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
-        //void LoadDevices_GUI(List<Configuration> configs)
-        //{
-        //    Devices.Clear();
-
-        //    if (configs != null)
-        //    {
-        //        int index = 0;
-
-        //        DatabasePluginReader dpr = new DatabasePluginReader();
-
-        //        // Create DevicesList based on Configurations
-        //        foreach (Configuration config in configs)
-        //        {
-        //            config.Index = index;
-
-        //            //if (config.Remote) { StartMonitor(config); }
-
-        //            if (config.ClientEnabled)
-        //            {
-        //                Devices.Add(config);
-
-        //                // Initialize Database Configurations
-        //                Global.Initialize(config.Databases_Client);
-        //            }
-
-        //            index += 1;
-        //        }
-        //    }
-
-        //    // If a user is logged in but no Devices are found then open up Device Manager and Add Device page
-        //    if (CurrentUser != null && Devices.Count == 0)
-        //    {
-        //        if (devicemanager != null) devicemanager.AddDevice();
-
-        //        DeviceManager_Open();
-        //    }
-
-        //    //UpdatePlugInDevices();
-
-        //    DevicesMonitor_Initialize();
-        //}
-
 
         #region "Offline Configurations"
 
@@ -379,7 +247,7 @@ namespace TrakHound_Client
 
         #endregion
 
-        #region "New Devices Monitor"
+        #region "Devices Monitor"
 
         Thread devicesmonitor_THREAD;
         ManualResetEvent monitorstop = null;
@@ -407,6 +275,12 @@ namespace TrakHound_Client
         void DevicesMonitor_Stop()
         {
             if (monitorstop != null) monitorstop.Set();
+        }
+
+        void DevicesMonitor_Close()
+        {
+            DevicesMonitor_Stop();
+            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
         }
 
         void DevicesMonitor_Worker(List<Configuration> devices)
@@ -481,92 +355,6 @@ namespace TrakHound_Client
         }
 
         #endregion
-
-        #region "Devices Monitor"
-
-        //System.Timers.Timer devicesMonitor_TIMER;
-
-        //void DevicesMonitor_Initialize()
-        //{
-        //    //if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
-
-        //    //devicesMonitor_TIMER = new System.Timers.Timer();
-        //    //devicesMonitor_TIMER.Interval = 5000;
-        //    //devicesMonitor_TIMER.Elapsed += devicesMonitor_TIMER_Elapsed;
-        //    //devicesMonitor_TIMER.Enabled = true;
-        //}
-
-        //void devicesMonitor_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        //{
-        //    ThreadPool.QueueUserWorkItem(new WaitCallback(DevicesMonitor_Worker), Devices.ToList());
-        //}
-
-        //Thread devicesMonitor_THREAD;
-
-        //void DevicesMonitor_Start()
-        //{
-        //    if (devicesMonitor_THREAD != null) devicesMonitor_THREAD.Abort();
-
-        //    devicesMonitor_THREAD = new Thread(new ParameterizedThreadStart(DevicesMonitor_Worker));
-        //    devicesMonitor_THREAD.Start(Devices.ToList());
-        //}
-
-        //void DevicesMonitor_Worker(object o)
-        //{
-        //    bool changed = false;
-
-        //    if (o != null)
-        //    {
-        //        List<Configuration> devs = (List<Configuration>)o;
-
-        //        if (currentuser != null)
-        //        {
-        //            List<Configuration> userConfigs = GetConfigurations();
-        //            if (userConfigs != null)
-        //            {
-        //                foreach (Configuration userConfig in userConfigs)
-        //                {
-        //                    if (userConfig != null)
-        //                    {
-        //                        Configuration match = devs.Find(x => x.UniqueId == userConfig.UniqueId);
-        //                        if (match != null)
-        //                        {
-        //                            bool update = userConfig.ClientUpdateId == match.ClientUpdateId;
-        //                            if (!update)
-        //                            {
-        //                                // Configuration has been updated / changed
-        //                                changed = true;
-        //                                break;
-        //                            }
-        //                        }
-        //                        else if (userConfig.ClientEnabled)
-        //                        {
-        //                            // Configuration has been added or removed
-        //                            changed = true;
-        //                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //            else if (devs.Count > 0) changed = true;
-        //        }
-        //    }
-
-        //    this.Dispatcher.BeginInvoke(new Action<bool>(DevicesMonitor_Finished), priority, new object[] { changed });
-        //}
-
-        //void DevicesMonitor_Finished(bool changed)
-        //{
-        //    if (changed)
-        //    {
-        //        if (devicesMonitor_TIMER != null) devicesMonitor_TIMER.Enabled = false;
-
-        //        LoadDevices();
-        //    }
-        //}
-
-        #endregion
-
 
     }
 }

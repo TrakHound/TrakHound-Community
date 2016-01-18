@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation"
+             xmlns:th_wpf="clr-namespace:TH_WPF"
              
              mc:Ignorable="d" 
 
@@ -22,27 +23,29 @@
 
     <Grid x:Name="root_GRID">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <!--Title and Help-->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,5">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Title}" Value="">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center"/>
 
             <!--Help-->
             <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -67,30 +70,11 @@
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
-                                <!--<Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard FillBehavior="Stop">
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>-->
                             </Trigger>
                             <DataTrigger Binding="{Binding HelpText}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding HelpText}" Value="">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -176,7 +160,51 @@
                         </Border>
 
                         <!--Upload Button-->
-                        <Border Width="100" Height="30" CornerRadius="1" Margin="10,0" PreviewMouseDown="Upload_PreviewMouseDown">
+                        <th_wpf:Button Clicked="Upload_Clicked" Image="Resources/Camera_01.png" >
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Height" Value="35"/>
+                                    <Setter Property="Padding" Value="10,4"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Setter Property="CornerRadius" Value="2"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Text" Value="Upload"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                            <!--<Setter Property="Cursor" Value="Hand"/>-->
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding ImageSet}" Value="true">
+                                            <Setter Property="Background" Value="#33ffffff"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="VerticalAlignment" Value="Top"/>
+                                            <Setter Property="Margin" Value="5,5,0,0"/>
+                                            <Setter Property="Text" Value="{x:Null}"/>
+                                            <Setter Property="ToolTip" Value="Change Photo"/>
+                                        </DataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
+                                                <Condition Binding="{Binding ImageSet}" Value="true"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Background" Value="#aaffffff"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Light}"/>             
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
+                        
+                        
+                        <!--Upload Button-->
+                        <!--<Border Width="100" Height="30" CornerRadius="1" Margin="10,0" PreviewMouseDown="Upload_PreviewMouseDown">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="Visibility" Value="Visible"/>
@@ -210,7 +238,7 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <!--Camera Icon-->
+                                --><!--Camera Icon--><!--
                                 <Rectangle Height="30"  Width="30" >
                                     <Rectangle.Resources>
                                         <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Camera_01.png" />
@@ -230,7 +258,7 @@
                                     </Rectangle.Style>
                                 </Rectangle>
 
-                                <!--Upload Text-->
+                                --><!--Upload Text--><!--
                                 <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
@@ -248,7 +276,7 @@
 
                             </Grid>
 
-                        </Border>
+                        </Border>-->
 
                     </Grid>
 
@@ -310,6 +338,9 @@
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Cursor" Value="Hand"/>
                         </Trigger>
+                        <DataTrigger Binding="{Binding ShowClear}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </TextBlock.Style>

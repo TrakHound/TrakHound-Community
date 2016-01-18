@@ -236,16 +236,6 @@ namespace TH_UserManagement
         public static readonly DependencyProperty EmailAddressProperty =
             DependencyProperty.Register("EmailAddress", typeof(string), typeof(Menu), new PropertyMetadata(null));
 
-
-        public ImageSource ProfileImage
-        {
-            get { return (ImageSource)GetValue(ProfileImageProperty); }
-            set { SetValue(ProfileImageProperty, value); }
-        }
-
-        public static readonly DependencyProperty ProfileImageProperty =
-            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(Menu), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"))));
-
         #endregion
 
         #region "Animations"
@@ -334,10 +324,10 @@ namespace TH_UserManagement
             if (MyAccountClicked != null) MyAccountClicked();
         }
 
-        private void ProfileImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ChangeProfileImage();
-        }
+        //private void ProfileImage_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    ChangeProfileImage();
+        //}
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
@@ -560,6 +550,24 @@ namespace TH_UserManagement
 
         #region "Profile Image"
 
+        public ImageSource ProfileImage
+        {
+            get { return (ImageSource)GetValue(ProfileImageProperty); }
+            set { SetValue(ProfileImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageProperty =
+            DependencyProperty.Register("ProfileImage", typeof(ImageSource), typeof(Menu), new PropertyMetadata(null));
+
+        public bool ProfileImageSet
+        {
+            get { return (bool)GetValue(ProfileImageSetProperty); }
+            set { SetValue(ProfileImageSetProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProfileImageSetProperty =
+            DependencyProperty.Register("ProfileImageSet", typeof(bool), typeof(Menu), new PropertyMetadata(false));
+
         public bool ProfileImageLoading
         {
             get { return (bool)GetValue(ProfileImageLoadingProperty); }
@@ -575,8 +583,8 @@ namespace TH_UserManagement
         void LoadProfileImage(UserConfiguration userConfig)
         {
             ProfileImageLoading = true;
-
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
+            ProfileImageSet = false;
+            ProfileImage = null;
 
             if (profileimage_THREAD != null) profileimage_THREAD.Abort();
 
@@ -613,12 +621,18 @@ namespace TH_UserManagement
                 bmpSource.Freeze();
 
                 ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+                ProfileImageSet = true;
             }
         }
 
         void LoadProfileImage_Finished()
         {
             ProfileImageLoading = false;
+        }
+
+        private void ProfileImage_UploadClicked(ImageBox sender)
+        {
+            ChangeProfileImage();
         }
 
         void ChangeProfileImage()

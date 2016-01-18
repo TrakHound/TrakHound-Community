@@ -23,8 +23,30 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="#20ffffff" Offset="0"/>
+                            <GradientStop Color="#20ffffff" Offset="0.3"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Background}" Value="{x:Null}">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Background}" Value="Transparent">
+                        <Setter Property="Background" Value="Transparent"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
 
-        <Grid PreviewMouseDown="Main_GRID_MouseDown" Background="#00000000">
+        <Grid PreviewMouseDown="Main_GRID_MouseDown" Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2"/>
                 <ColumnDefinition Width="auto"/>

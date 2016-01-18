@@ -262,7 +262,7 @@
                     <StackPanel.Resources>
                         <Style TargetType="th_wpf:ListButton">
                             <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="#00000000"/>
+                            <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
                                     <Setter Property="Background" Value="#33ffffff"/>
@@ -294,7 +294,7 @@
                                 <th_wpf:Button.Style>
                                     <Style TargetType="th_wpf:Button">
                                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                        <Setter Property="Background" Value="#00000000"/>
+                                        <Setter Property="Background" Value="Transparent"/>
                                         <Setter Property="Width" Value="35"/>
                                         <Setter Property="Height" Value="35"/>
                                         <Setter Property="Padding" Value="8"/>
@@ -382,7 +382,7 @@
 
                                     <ItemsControl Grid.Row="0" ItemsSource="{Binding DeviceList}" Margin="5,0"/>
 
-                                    <Grid Grid.Row="1" Background="#00000000" PreviewMouseDown="TableList_MouseDown"/>
+                                    <Grid Grid.Row="1" Background="Transparent" PreviewMouseDown="TableList_MouseDown"/>
 
                                 </Grid>
 
@@ -462,10 +462,19 @@
                                 <Grid x:Name="AddDevice_GRID" Grid.Row="1" Margin="5,0" MinWidth="250" Height="100" VerticalAlignment="Top" PreviewMouseDown="AddDevice_GRID_PreviewMouseDown" Cursor="Hand">
                                     <Grid.Style>
                                         <Style TargetType="Grid">
-                                            <Setter Property="Background" Value="#00000000"/>
+                                            <Setter Property="Background" Value="Transparent"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter Property="Background" Value="#33ffffff"/>
+                                                    <!--<Setter Property="Background" Value="#33ffffff"/>-->
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#53ffffff" Offset="0"/>
+                                                                <GradientStop Color="#53ffffff" Offset="0.3"/>
+                                                                <GradientStop Color="#33ffffff" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -487,56 +496,6 @@
                                                 <Style TargetType="Rectangle">
                                                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                                                     <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                                    <!--<Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=AddDevice_GRID}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#eeffffff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#eeffffff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>-->
                                                 </Style>
                                             </Rectangle.Style>
                                         </Rectangle>
@@ -546,56 +505,6 @@
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                                    <!--<Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=AddDevice_GRID}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#fff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#fff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#eeffffff">
-                                                                            <ColorAnimation.EasingFunction>
-                                                                                <CubicEase EasingMode="EaseOut"/>
-                                                                            </ColorAnimation.EasingFunction>
-                                                                        </ColorAnimation>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>-->
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
@@ -657,7 +566,6 @@
                                 <TextBlock Text="Pages" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
                             </Grid>
-
 
                             <!--Seperator-->
                             <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Normal}"/>
