@@ -326,7 +326,7 @@ namespace TH_GeneratedData.ConfigurationPage
                     if (snapshot.name != null && snapshot.link != null)
                     {
                         int id = 0;
-                        string adr = "/GeneratedData/SnapShotData/" + TH_Global.Formatting.UppercaseFirst(snapshot.type) + "||";
+                        string adr = "/GeneratedData/SnapShotData/" + String_Functions.UppercaseFirst(snapshot.type) + "||";
                         string test = adr + id.ToString("00");
 
                         // Reassign Id (to keep everything in sequence)
@@ -415,7 +415,7 @@ namespace TH_GeneratedData.ConfigurationPage
                     break;
 
                 case "generated":
-                    item.generatedlink_COMBO.Text = TH_Global.Formatting.UppercaseFirst(snapshot.link.Replace('_', ' ')); 
+                    item.generatedlink_COMBO.Text = String_Functions.UppercaseFirst(snapshot.link.Replace('_', ' ')); 
                     break;
 
                 case "variable": item.SelectedVariableLink = snapshot.link; break;
@@ -1034,7 +1034,7 @@ namespace TH_GeneratedData.ConfigurationPage
             Controls.Event ev = CreateEvent(e);
 
             Controls.EventButton event_bt = new Controls.EventButton();
-            event_bt.EventName = TH_Global.Formatting.UppercaseFirst(e.name.Replace('_', ' '));
+            event_bt.EventName = String_Functions.UppercaseFirst(e.name.Replace('_', ' '));
             event_bt.SettingChanged += event_bt_SettingChanged;
             event_bt.RemoveClicked += Event_RemoveClicked;
             event_bt.ParentEvent = e;
@@ -1294,7 +1294,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
             if (ci.name != null)
             {
-                result.CaptureName = TH_Global.Formatting.UppercaseFirst(ci.name.Replace('_', ' '));
+                result.CaptureName = String_Functions.UppercaseFirst(ci.name.Replace('_', ' '));
             }
             
 
@@ -1406,7 +1406,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
             public override string ToString()
             {
-                return TH_Global.Formatting.UppercaseFirst(name.Replace('_',' '));
+                return String_Functions.UppercaseFirst(name.Replace('_', ' '));
             }
         }
 

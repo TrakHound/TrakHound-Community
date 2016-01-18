@@ -1317,7 +1317,6 @@ namespace TrakHound_Client
 
         public void Plugins_Find()
         {
-
             plugins = new List<Lazy<IClientPlugin>>();
 
             string path;
@@ -1330,18 +1329,18 @@ namespace TrakHound_Client
             path = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
 
-
             // Add Buttons for Plugins on PlugIn Options page
             if (Properties.Settings.Default.Plugin_Configurations != null && pluginsPage != null)
             {
                 pluginsPage.ClearInstalledItems();
+
+                Properties.Settings.Default.Plugin_Configurations.Sort((a, b) => a.Name.CompareTo(b.Name));
 
                 foreach (PluginConfiguration config in Properties.Settings.Default.Plugin_Configurations.ToList())
                 {
                     pluginsPage.AddInstalledItem(config);
                 }
             }
-
         }
 
         List<string> DefaultEnablePlugins = new List<string> { "dashboard", "device compare", "table manager", "status data" };
@@ -1482,7 +1481,10 @@ namespace TrakHound_Client
         {
             if (Properties.Settings.Default.Plugin_Configurations != null)
             {
-                foreach (PluginConfiguration config in Properties.Settings.Default.Plugin_Configurations.ToList())
+                var configs = Properties.Settings.Default.Plugin_Configurations.ToList();
+                //configs.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+                foreach (var config in configs)
                 {
                     Plugins_Load(config);
                 }
@@ -1509,7 +1511,6 @@ namespace TrakHound_Client
                                     Splash_UpdateStatus("...Loading Plugin : " + plugin.Title);
                                     Splash_AddPlugin(plugin);
 
-                                    //CP.Devices = Devices;
                                     plugin.DataEvent += Plugin_DataEvent;
                                     plugin.ShowRequested += Plugin_ShowRequested;
                                     plugin.SubCategories = config.SubCategories;

@@ -176,7 +176,7 @@ namespace TrakHound_Server
         public void LoginUser(string username, string password)
         {
             Loading = true;
-            LoadingMessage = Formatting.UppercaseFirst(username);
+            LoadingMessage = String_Functions.UppercaseFirst(username);
             LoginError = false;
 
             Login_Info info = new Login_Info();

@@ -16,5 +16,5 @@ DEBUG;TRACE
 19-1600322850
 Components\Cell.xaml;Components\Column.xaml;Components\Header.xaml;Components\Row_Header.xaml;Controls\CNC_Display.xaml;Controls\HistogramDisplay.xaml;Controls\NumberDisplay.xaml;Controls\OverrideDisplay.xaml;Controls\ShiftDisplay.xaml;Controls\ShiftSegmentIndicator.xaml;Controls\TextDisplay.xaml;Controls\TimeDisplay.xaml;DeviceCompare.xaml;Styles.xaml;
 
-False
+True
 

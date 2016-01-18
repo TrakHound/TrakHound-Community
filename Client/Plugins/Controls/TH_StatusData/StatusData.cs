@@ -281,10 +281,12 @@ namespace TH_StatusData
         static bool CheckDatabaseConnections(Configuration config)
         {
             bool result = false;
+            string msg = null;
 
             foreach (Database_Configuration db_config in config.Databases_Client.Databases)
             {
-                if (TH_Database.Global.Ping(db_config)) { result = true; break; }
+                if (TH_Database.Global.Ping(db_config, out msg)) { result = true; break; }
+                else Console.WriteLine("CheckDatabaseConnection() :: Error :: " + config.Description + " :: " + db_config.Type + " :: " + msg);
             }
 
             return result;

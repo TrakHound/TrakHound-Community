@@ -63,7 +63,7 @@
                 <StackPanel.Resources>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                        <Setter Property="Background" Value="#00000000"/>
+                        <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="Height" Value="35"/>
                         <Setter Property="Padding" Value="10,5"/>
@@ -85,7 +85,7 @@
                     <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
-                                <Setter Property="Background" Value="#00000000"/>
+                                <Setter Property="Background" Value="Transparent"/>
                                 <Setter Property="Opacity" Value="0.3"/>
                                 <Setter Property="IsEnabled" Value="false"/>
                                 <Style.Triggers>
@@ -136,7 +136,7 @@
                             <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20" Foreground="{StaticResource Foreground_Opposite_Normal}" Margin="5,0" />
 
                             <!--Text-->
-                            <TextBlock Text="Saving.." Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="10pt" VerticalAlignment="Center" Margin="5,0,10,0"/>
+                            <TextBlock Text="Saving.." Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="14" VerticalAlignment="Center" Margin="5,0,10,0"/>
 
                         </StackPanel>
 

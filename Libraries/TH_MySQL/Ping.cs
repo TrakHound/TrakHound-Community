@@ -81,9 +81,10 @@ namespace TH_MySQL
             return Result;
         }
 
-        public static bool PingHost(string nameOrAddress)
+        public static bool PingHost(string nameOrAddress, out string msg)
         {
-            bool result = false;    
+            bool result = false;
+            msg = null;
 
             try
             {
@@ -91,6 +92,7 @@ namespace TH_MySQL
 
                 PingReply reply = pinger.Send(nameOrAddress);
 
+                msg = "MySQL Successfully connected to : " + nameOrAddress;
                 result = reply.Status == IPStatus.Success;
             }
             catch (Exception ex)
@@ -145,8 +147,11 @@ namespace TH_MySQL
             if (handler != null) handler(Result);
         }
 
-        public static bool Ping(MySQL_Configuration config)
+        public static bool Ping(MySQL_Configuration config, out string msg)
         {
+            bool result = false;
+            msg = null;
+
             try
             {
                 MySqlConnection Ping;
@@ -156,12 +161,23 @@ namespace TH_MySQL
                 Ping.Open();
                 Ping.Close();
 
-                return true;
+                msg = "MySQL Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port;
+                result = true;
+            }
+            catch (MySqlException sqex)
+            {
+                msg = "MySQL Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
+                msg += sqex.Message;
+                result = false;
             }
             catch (Exception ex)
             {
-                return false;
+                msg = "MySQL Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
+                msg += ex.Message;
+                result = false;
             }
+
+            return result;
         }
 
     }

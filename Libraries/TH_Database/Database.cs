@@ -33,7 +33,7 @@ namespace TH_Database
                         {
                             IDatabasePlugin dp = ldp.Value;
 
-                            if (dp.Type.ToLower() == db.Type.ToLower())
+                            if (Global.CheckType(dp, db))
                             {
                                 dp.Initialize(db);
                                 break;
@@ -48,9 +48,10 @@ namespace TH_Database
             }
         }
 
-        public static bool Ping(Database_Configuration config)
+        public static bool Ping(Database_Configuration config, out string msg)
         {
             bool result = false;
+            msg = null;
 
             if (Global.Plugins != null)
             {
@@ -60,9 +61,9 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == config.Type.ToLower())
+                        if (CheckType(dp, config))
                         {
-                            result = dp.Ping(config.Configuration);
+                            result = dp.Ping(config.Configuration, out msg);
                             break;
                         }
                     }
@@ -88,7 +89,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == config.Type.ToLower())
+                        if (Global.CheckType(dp, config))
                         {
                             result = dp.CheckPermissions(config.Configuration, type);
                             break;
@@ -120,6 +121,18 @@ namespace TH_Database
             if (DateTime.TryParse(DateString, out TS)) Result = TS.ToString(DateString);
 
             return Result;
+        }
+
+        public static bool CheckType(IDatabasePlugin plugin, Database_Configuration config)
+        {
+            bool match = false;
+
+            if (plugin.Type.ToLower().Replace('_', ' ') == config.Type.ToLower().Replace('_', ' '))
+            {
+                match = true;
+            }
+
+            return match;
         }
 
     }
@@ -155,7 +168,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             CreateWorkerInfo info = new CreateWorkerInfo();
                             info.configuration = db.Configuration;
@@ -195,7 +208,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             DropWorkerInfo info = new DropWorkerInfo();
                             info.configuration = db.Configuration;
@@ -278,7 +291,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             CreateWorkerInfo info = new CreateWorkerInfo();
                             info.configuration = db.Configuration;
@@ -322,7 +335,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             DropWorkerInfo1 info = new DropWorkerInfo1();
                             info.configuration = db.Configuration;
@@ -364,7 +377,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             DropWorkerInfo2 info = new DropWorkerInfo2();
                             info.configuration = db.Configuration;
@@ -406,7 +419,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             TruncateWorkerInfo info = new TruncateWorkerInfo();
                             info.configuration = db.Configuration;
@@ -441,24 +454,25 @@ namespace TH_Database
         public static DataTable Get(Database_Settings settings, string tablename)
         {
             DataTable result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_Get(primary.Configuration, tablename);
+                            result = dp.Table_Get(database.Configuration, tablename);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -467,24 +481,25 @@ namespace TH_Database
         public static DataTable Get(Database_Settings settings, string tablename, Int64 limit, Int64 offset)
         {
             DataTable result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_Get(primary.Configuration, tablename, limit, offset);
+                            result = dp.Table_Get(database.Configuration, tablename, limit, offset);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -493,24 +508,25 @@ namespace TH_Database
         public static DataTable Get(Database_Settings settings, string tablename, string filterExpression)
         {
             DataTable result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_Get(primary.Configuration, tablename, filterExpression);
+                            result = dp.Table_Get(database.Configuration, tablename, filterExpression);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -519,24 +535,25 @@ namespace TH_Database
         public static DataTable Get(Database_Settings settings, string tablename, string filterExpression, string columns)
         {
             DataTable result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_Get(primary.Configuration, tablename, filterExpression, columns);
+                            result = dp.Table_Get(database.Configuration, tablename, filterExpression, columns);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -546,24 +563,25 @@ namespace TH_Database
         public static string[] List(Database_Settings settings)
         {
             string[] result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_List(primary.Configuration);
+                            result = dp.Table_List(database.Configuration);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -572,24 +590,25 @@ namespace TH_Database
         public static string[] List(Database_Settings settings, string filterExpression)
         {
             string[] result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_List(primary.Configuration, filterExpression);
+                            result = dp.Table_List(database.Configuration, filterExpression);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -599,24 +618,25 @@ namespace TH_Database
         public static Int64 GetRowCount(Database_Settings settings, string tablename)
         {
             Int64 result = -1;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_GetRowCount(primary.Configuration, tablename);
+                            result = dp.Table_GetRowCount(database.Configuration, tablename);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -625,24 +645,25 @@ namespace TH_Database
         public static Int64 GetSize(Database_Settings settings, string tablename)
         {
             Int64 result = -1;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_GetSize(primary.Configuration, tablename);
+                            result = dp.Table_GetSize(database.Configuration, tablename);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -669,24 +690,25 @@ namespace TH_Database
         public static List<string> Get(Database_Settings settings, string tablename)
         {
             List<string> result = new List<string>();
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Column_Get(primary.Configuration, tablename);
+                            result = dp.Column_Get(database.Configuration, tablename);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -702,7 +724,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             AddWorkerInfo info = new AddWorkerInfo();
                             info.configuration = db.Configuration;
@@ -797,7 +819,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             InsertWorkerInfo1 info = new InsertWorkerInfo1();
                             info.configuration = db.Configuration;
@@ -843,7 +865,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             InsertWorkerInfo2 info = new InsertWorkerInfo2();
                             info.configuration = db.Configuration;
@@ -889,7 +911,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             InsertWorkerInfo3 info = new InsertWorkerInfo3();
                             info.configuration = db.Configuration;
@@ -935,7 +957,7 @@ namespace TH_Database
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == db.Type.ToLower())
+                        if (Global.CheckType(dp, db))
                         {
                             InsertWorkerInfo4 info = new InsertWorkerInfo4();
                             info.configuration = db.Configuration;
@@ -970,24 +992,25 @@ namespace TH_Database
         public static DataRow Get(Database_Settings settings, string tablename, string tableKey, string rowKey)
         {
             DataRow result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Row_Get(primary.Configuration, tablename, tableKey, rowKey);
+                            result = dp.Row_Get(database.Configuration, tablename, tableKey, rowKey);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -996,24 +1019,25 @@ namespace TH_Database
         public static DataRow Get(Database_Settings settings, string tablename, string query)
         {
             DataRow result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Row_Get(primary.Configuration, tablename, query);
+                            result = dp.Row_Get(database.Configuration, tablename, query);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -1024,24 +1048,25 @@ namespace TH_Database
         public static bool Exists(Database_Settings settings, string tablename, string filterString)
         {
             bool result = false;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Row_Exists(primary.Configuration, tablename, filterString);
+                            result = dp.Row_Exists(database.Configuration, tablename, filterString);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -1081,7 +1106,7 @@ namespace TH_Database
                         {
                             IDatabasePlugin dp = ldp.Value;
 
-                            if (dp.Type.ToLower() == db.Type.ToLower())
+                            if (Global.CheckType(dp, db))
                             {
                                 if (x == 0) result = dp.CustomCommand(db.Configuration, commandText);
                                 else
@@ -1122,24 +1147,25 @@ namespace TH_Database
         public static object GetValue(Database_Settings settings, string tablename, string column, string filterExpression)
         {
             object result = null;
+            bool found = false;
 
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.GetValue(primary.Configuration, tablename, column, filterExpression);
+                            result = dp.GetValue(database.Configuration, tablename, column, filterExpression);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -1149,25 +1175,25 @@ namespace TH_Database
         public static DataTable GetGrants(Database_Settings settings, string username)
         {
             DataTable result = null;
+            bool found = false;
 
-
-            if (settings.Databases.Count > 0)
+            foreach (var database in settings.Databases)
             {
-                Database_Configuration primary = settings.Databases[0];
-
                 if (Global.Plugins != null)
                 {
                     foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
                     {
                         IDatabasePlugin dp = ldp.Value;
 
-                        if (dp.Type.ToLower() == primary.Type.ToLower())
+                        if (Global.CheckType(dp, database))
                         {
-                            result = dp.Table_Get(primary.Configuration, username);
+                            result = dp.Table_Get(database.Configuration, username);
+                            found = true;
                             break;
                         }
                     }
                 }
+                if (found) break;
             }
 
             return result;
@@ -1243,8 +1269,6 @@ namespace TH_Database
 
         void FindPlugins(string Path)
         {
-            //Logger.Log("Searching for Database Plugins in '" + Path + "'");
-
             if (Directory.Exists(Path))
             {
                 try
@@ -1261,20 +1285,13 @@ namespace TH_Database
                     {
                         if (plugins.ToList().Find(x => x.Value.Name.ToLower() == DBP.Value.Name.ToLower()) == null)
                         {
-                            //if (DBP.IsValueCreated) Logger.Log(DBP.Value.Name + " : PlugIn Found");
                             plugins.Add(DBP);
                         }
-                        else
-                        {
-                            //if (DBP.IsValueCreated) Logger.Log(DBP.Value.Name + " : PlugIn Already Found");
-                        }
                     }
-
                 }
                 catch (System.Reflection.ReflectionTypeLoadException rt)
                 {
-                    //foreach (var item in rt.LoaderExceptions)
-                    //    Logger.Log("DatabasePluginReader.GetPlugins() : LoaderException " + item.Message);
+
                 }
                 catch (Exception ex) { Logger.Log("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message); }
 
@@ -1284,7 +1301,6 @@ namespace TH_Database
                     FindPlugins(directory);
                 }
             }
-            //else Logger.Log("Database PlugIns Directory Doesn't Exist (" + Path + ")");
         }
 
     }

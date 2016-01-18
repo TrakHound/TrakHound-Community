@@ -11,6 +11,7 @@ using TH_Configuration;
 using TH_Database;
 using TH_Device_Server;
 using TH_Global;
+using TH_Global.Functions;
 using TH_UserManagement;
 using TH_UserManagement.Management;
 
@@ -45,7 +46,7 @@ namespace TrakHound_Server_Core
         {
             CurrentUser = userConfig;
 
-            Logger.Log(TH_Global.Formatting.UppercaseFirst(userConfig.username) + " Logged in Successfully");
+            Logger.Log(String_Functions.UppercaseFirst(userConfig.username) + " Logged in Successfully");
         }
 
         public void Logout()

@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 
 using TH_Plugins_Server;
 using TH_Configuration;
+using TH_Global.Functions;
 using TH_UserManagement.Management;
 
 namespace TH_OEE.ConfigurationPage
@@ -51,7 +52,7 @@ namespace TH_OEE.ConfigurationPage
             {
                 foreach (Event e in genEvents)
                 {
-                    GeneratedEvents.Add(TH_Global.Formatting.UppercaseFirst(e.name.Replace('_',' ')));
+                    GeneratedEvents.Add(String_Functions.UppercaseFirst(e.name.Replace('_', ' ')));
                 }
             }
 
@@ -95,9 +96,9 @@ namespace TH_OEE.ConfigurationPage
                 string node = Table_Functions.GetLastNode(row);
                 switch (node.ToLower())
                 {
-                    case "event": SelectedAvailabilityEvent = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_',' ')); break;
+                    case "event": SelectedAvailabilityEvent = String_Functions.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
 
-                    case "value": SelectedAvailabilityValue = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
+                    case "value": SelectedAvailabilityValue = String_Functions.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
                 }
             }
         }
@@ -152,7 +153,7 @@ namespace TH_OEE.ConfigurationPage
 
                 if (genEvents != null)
                 {
-                    Event ev = genEvents.Find(x => TH_Global.Formatting.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == selectedItem.ToLower());
+                    Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == selectedItem.ToLower());
                     if (ev != null)
                     {
                         if (ev.values != null)
@@ -161,7 +162,7 @@ namespace TH_OEE.ConfigurationPage
                             {
                                 if (v.result != null)
                                 {
-                                    AvailabilityEventValues.Add(TH_Global.Formatting.UppercaseFirst(v.result.value));
+                                    AvailabilityEventValues.Add(String_Functions.UppercaseFirst(v.result.value));
                                 }
                             }
                         }
@@ -170,7 +171,7 @@ namespace TH_OEE.ConfigurationPage
                         {
                             if (ev.Default.value != null)
                             {
-                                AvailabilityEventValues.Add(TH_Global.Formatting.UppercaseFirst(ev.Default.value));
+                                AvailabilityEventValues.Add(String_Functions.UppercaseFirst(ev.Default.value));
                             }
                         }
                     }

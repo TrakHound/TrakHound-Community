@@ -80,7 +80,7 @@
             </EventTrigger>
         </Border.Triggers>
 
-        <Grid Background="#00000000" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave">
+        <Grid Background="Transparent" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
@@ -142,7 +142,7 @@
 
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="Background" Value="#00000000"/>
+                        <Setter Property="Background" Value="Transparent"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                 <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
@@ -158,13 +158,12 @@
                     <StackPanel.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#40ffffff" Offset="0"/>
-                            <!--<GradientStop Color="#00000000" Offset="0.5"/>-->
-                            <GradientStop Color="#00ffffff" Offset="1"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
                         </LinearGradientBrush>
                     </StackPanel.Background>
 
                     <!--Icon and Text-->
-                    <Grid Grid.Column="0" Background="#00000000" PreviewMouseDown="Control_MouseDown">
+                    <Grid Grid.Column="0" Background="Transparent" PreviewMouseDown="Control_MouseDown">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto"/>
                             <ColumnDefinition Width="auto"/>
@@ -223,11 +222,18 @@
                     <!--Close Button-->
                     <Border x:Name="close_BD" Grid.Column="1" Margin="0,0,0,1" DockPanel.Dock="Right" Width="30" CornerRadius="1" MouseDown="TabItemClose_MouseDown" ToolTip="Close" >
                         <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background" Value="#00000000" />
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="Transparent" />
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Dark}"/>
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#40ffffff" Offset="0"/>
+                                                    <GradientStop Color="#20ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -246,7 +252,7 @@
                                 </Rectangle.RenderTransform>
                                 <Rectangle.Style>
                                     <Style TargetType="Rectangle">
-                                        <Setter Property="Fill" Value="#00000000"/>
+                                        <Setter Property="Fill" Value="Transparent"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                 <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
@@ -273,7 +279,7 @@
                                 </Rectangle.RenderTransform>
                                 <Rectangle.Style>
                                     <Style TargetType="Rectangle">
-                                        <Setter Property="Fill" Value="#00000000"/>
+                                        <Setter Property="Fill" Value="Transparent"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                 <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>

@@ -152,7 +152,7 @@ namespace TrakHound_Server
 
         void LoginMenu_MyAccountClicked()
         {
-            TH_UserManagement.Create.Page page = new TH_UserManagement.Create.Page();
+            TH_UserManagement.MyAccountPage page = new TH_UserManagement.MyAccountPage();
             page.LoadUserConfiguration(CurrentUser, userDatabaseSettings);
 
             TempPage = page;

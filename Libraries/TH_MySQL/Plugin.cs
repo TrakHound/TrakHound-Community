@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Net.NetworkInformation;
 using System.Data;
+
+using MySql.Data.MySqlClient;
 
 using TH_Configuration;
 using TH_Database;
@@ -42,25 +44,86 @@ namespace TH_MySQL
             }
         }
 
-        public bool Ping(object settings)
+        public bool Ping(object settings, out string msg)
         {
             bool result = false;
+            msg = null;
 
             MySQL_Configuration config = MySQL_Configuration.Get(settings);
             if (config != null)
             {
                 if (config.UsePHP)
                 {
-                    result = PHPPing.PingHost(config.PHP_Server);
+                    result = Ping_PHP(config, out msg);
                 }
                 else
                 {
-                    result = MySQLPing.Ping(config);
+                    result = Ping_Connector(config, out msg);
                 }
             }
 
             return result;          
         }
+
+        static bool Ping_PHP(MySQL_Configuration config, out string msg)
+        {
+            bool result = false;
+            msg = null;
+
+            try
+            {
+                var ping = new Ping();
+
+                PingReply reply = ping.Send(config.Server);
+
+                msg = "MySQL PHP Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port.ToString();
+                result = reply.Status == IPStatus.Success;
+            }
+            catch (Exception ex)
+            {
+                msg = "MySQL PHP Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
+                msg += ex.Message;
+                result = false;
+            }
+
+            return result;
+        }
+
+        static bool Ping_Connector(MySQL_Configuration config, out string msg)
+        {
+            bool result = false;
+            msg = null;
+
+            try
+            {
+                MySqlConnection Ping;
+                Ping = new MySqlConnection();
+                Ping.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+
+                Ping.Open();
+                Ping.Close();
+
+                msg = "MySQL Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port;
+                result = true;
+            }
+            catch (MySqlException sqex)
+            {
+                msg = "MySQL Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
+                msg += sqex.Message;
+                result = false;
+            }
+            catch (Exception ex)
+            {
+                msg = "MySQL Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
+                msg += ex.Message;
+                result = false;
+            }
+
+            return result;
+        }
+
+
+
 
         public bool CheckPermissions(object settings, Application_Type type)
         {

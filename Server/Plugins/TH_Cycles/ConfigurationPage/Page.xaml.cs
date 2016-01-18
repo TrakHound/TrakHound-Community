@@ -18,6 +18,7 @@ using System.Collections.ObjectModel;
 
 using TH_Plugins_Server;
 using TH_Configuration;
+using TH_Global.Functions;
 using TH_UserManagement;
 using TH_UserManagement.Management;
 
@@ -54,7 +55,7 @@ namespace TH_Cycles.ConfigurationPage
             {
                 foreach (TH_GeneratedData.ConfigurationPage.Page.Event ev in genEvents)
                 {
-                    GeneratedEvents.Add(TH_Global.Formatting.UppercaseFirst(ev.name.Replace('_', ' ')));
+                    GeneratedEvents.Add(String_Functions.UppercaseFirst(ev.name.Replace('_', ' ')));
                 }
             }
 
@@ -92,9 +93,9 @@ namespace TH_Cycles.ConfigurationPage
                 string node = Table_Functions.GetLastNode(row);
                 switch (node.ToLower())
                 {
-                    case "event": SelectedEvent = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
+                    case "event": SelectedEvent = String_Functions.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
 
-                    case "cycleidlink": SelectedCaptureLink = TH_Global.Formatting.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
+                    case "cycleidlink": SelectedCaptureLink = String_Functions.UppercaseFirst(row["value"].ToString().Replace('_', ' ')); break;
                 }
             }
         }
@@ -153,7 +154,7 @@ namespace TH_Cycles.ConfigurationPage
 
                 if (genEvents != null)
                 {
-                    TH_GeneratedData.ConfigurationPage.Page.Event ev = genEvents.Find(x => TH_Global.Formatting.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == selectedItem.ToLower());
+                    TH_GeneratedData.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == selectedItem.ToLower());
                     if (ev != null)
                     {
                         if (ev.captureItems != null)

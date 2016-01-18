@@ -23,7 +23,7 @@ namespace TH_Database
 
         void Initialize(Database_Configuration config);
 
-        bool Ping(object settings);
+        bool Ping(object settings, out string msg);
 
         bool CheckPermissions(object settings, Application_Type type);
 

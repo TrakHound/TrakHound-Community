@@ -9,6 +9,7 @@ using System.Diagnostics;
 
 using TH_Configuration;
 using TH_Global;
+using TH_Global.Functions;
 using TH_UserManagement.Management;
 
 using TrakHound_Server_Core;
@@ -187,7 +188,7 @@ namespace TrakHound_Server
         {
             if (userConfig != null)
             {
-                mUsernameLBL.Text = Formatting.UppercaseFirst(userConfig.username);
+                mUsernameLBL.Text = String_Functions.UppercaseFirst(userConfig.username);
                 mLoggedIn.Visible = true;
                 seperator1.Visible = true;
 
@@ -196,7 +197,7 @@ namespace TrakHound_Server
 
                 mNotifyIcon.BalloonTipIcon = ToolTipIcon.Info;
                 mNotifyIcon.BalloonTipTitle = "TrakHound Server";
-                mNotifyIcon.BalloonTipText = Formatting.UppercaseFirst(userConfig.username) + " Logged in Successfully!";
+                mNotifyIcon.BalloonTipText = String_Functions.UppercaseFirst(userConfig.username) + " Logged in Successfully!";
                 mNotifyIcon.ShowBalloonTip(3000);
             }
             else

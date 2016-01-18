@@ -14,7 +14,9 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_Styles.pd
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\Controls\MyAccountPage.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\Controls\Menu.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\Controls\MyAccountPage.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\Controls\Menu.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.g.resources
@@ -22,5 +24,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManag
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\Controls\MyAccountPage.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\Controls\MyAccountPage.g.cs

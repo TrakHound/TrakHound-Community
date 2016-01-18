@@ -80,10 +80,13 @@ namespace TH_Device_Server
                 {
                     // Ping Database connection for each Database Configuration
                     dbsuccess = true;
+                    string msg = null;
+
                     foreach (Database_Configuration db_config in configuration.Databases_Server.Databases)
                     {
                         //if (!TH_Database.Global.Ping(db_config)) { dbsuccess = false; break; }
-                        if (!TH_Database.Global.CheckPermissions(db_config, Application_Type.Server))
+                        //if (!TH_Database.Global.CheckPermissions(db_config, Application_Type.Server))
+                        if (!TH_Database.Global.Ping(db_config, out msg))
                         {
                             dbsuccess = false;
                             break;
@@ -93,15 +96,12 @@ namespace TH_Device_Server
                     if (dbsuccess) UpdateProcessingStatus("Database Connections Established");
                     else
                     {
-                        // Write to console that there was an error
-                        //if (first) WriteToConsole("Error in Database Connection... Retrying in " + interval.ToString() + "ms", ConsoleOutputType.Error);
-                        //first = false;
-
                         // Increase the interval by 25% until interval == interval_max
                         if (!first) interval = Math.Min(Convert.ToInt32(interval + (interval * 0.25)), interval_max);
                         first = false;
 
                         WriteToConsole("Error in Database Connection... Retrying in " + interval.ToString() + "ms", ConsoleOutputType.Error);
+                        if (msg != null) WriteToConsole(msg, ConsoleOutputType.Error);
 
                         // Sleep the current thread for the calculated interval
                         System.Threading.Thread.Sleep(interval);

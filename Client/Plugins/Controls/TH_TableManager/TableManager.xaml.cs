@@ -26,6 +26,7 @@ using System.Data;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
+using TH_Global.Functions;
 using TH_Plugins_Client;
 using TH_UserManagement.Management;
 using TH_WPF;
@@ -450,6 +451,13 @@ namespace TH_TableManager
 
             string[] tableNames = TH_Database.Table.List(config.Databases_Client);
 
+            if (tableNames != null)
+            {
+                var list = tableNames.ToList();
+                list.Sort();
+                tableNames = list.ToArray();
+            }
+
             this.Dispatcher.BeginInvoke(new Action<string[]>(LoadTableList_Finished), Priority, new object[] { tableNames });
         }
 
@@ -666,7 +674,7 @@ namespace TH_TableManager
 
             RowCount = rowCount;
             TableRowCount = rowCount.ToString("n0");
-            TableSize = Formatting.SizeSuffix(tablesize);
+            TableSize = String_Functions.FileSizeSuffix(tablesize);
 
             RowDisplayLimit = Math.Min(RowCount, rowLimits[rowLimitIndex]).ToString();
 
