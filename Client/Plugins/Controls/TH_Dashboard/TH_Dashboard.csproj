@@ -103,6 +103,10 @@
       <Name>TH_Global</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client\TH_Plugins_Client.csproj">
+      <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
+      <Name>TH_Plugins_Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>

@@ -588,12 +588,18 @@
                                             <Grid Grid.ColumnSpan="2">
                                                 <Grid.Background>
                                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="Transparent" Offset="0"/>
+                                                        <GradientStop Color="#40ffffff" Offset="1"/> 
+                                                    </LinearGradientBrush>
+                                                    <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                         <GradientStop Color="#00ffffff" Offset="0"/>
                                                         <GradientStop Color="#00ffffff" Offset="0.5"/>
                                                         <GradientStop Color="#40ffffff" Offset="1"/>
-                                                    </LinearGradientBrush>
+                                                    </LinearGradientBrush>-->
                                                 </Grid.Background>
                                             </Grid>
+
+                                            
 
                                             <!--UserName-->
                                             <TextBlock Text="{Binding CurrentUsername}" Foreground="{StaticResource Foreground_Opposite_Normal}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>

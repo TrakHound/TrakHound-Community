@@ -1236,7 +1236,8 @@ namespace TH_Database
             if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-            pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
+            //pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
+            pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
             if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
 
 

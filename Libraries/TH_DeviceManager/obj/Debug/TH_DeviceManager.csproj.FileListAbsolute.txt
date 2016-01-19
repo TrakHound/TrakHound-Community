@@ -58,11 +58,13 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_DeviceMana
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Global.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_MTConnect.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Plugins_Server.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Styles.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_MTConnect.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_Global.pdb
@@ -104,5 +106,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceMana
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_MTConnect.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\TH_MTConnect.pdb

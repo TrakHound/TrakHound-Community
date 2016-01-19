@@ -45,10 +45,6 @@
 			<Name>TH_Database</Name>
 			<Project>{00E275C4-3494-4FCC-8781-FD815024117E}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_ControlPanel\TH_DeviceManager.csproj">
-			<Name>TH_DeviceManager</Name>
-			<Project>{B5F883CC-0E97-468C-9CA4-84031F446EDF}</Project>
-		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_Device_Server\TH_Device_Server.csproj">
 			<Name>TH_Device_Server</Name>
 			<Project>{DE797C18-8530-40B6-964F-3164E34420F9}</Project>
@@ -64,14 +60,6 @@
 		<ProjectReference Include="..\Plugins\TH_InstanceTable\TH_InstanceTable.csproj">
 			<Name>TH_InstanceTable</Name>
 			<Project>{86A72F6D-0C7D-40FD-B7CE-D0B9D75EE99B}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_MTC_Data\TH_MTC_Data.csproj">
-			<Name>TH_MTC_Data</Name>
-			<Project>{318E6702-3C9E-4ACC-B326-E3EC903417A8}</Project>
-		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_MTC_Requests\TH_MTC_Requests.csproj">
-			<Name>TH_MTC_Requests</Name>
-			<Project>{DB59642F-24B7-4584-BCDF-288788040709}</Project>
 		</ProjectReference>
 		<ProjectReference Include="..\..\Libraries\TH_MySQL\TH_MySQL.csproj">
 			<Name>TH_MySQL</Name>

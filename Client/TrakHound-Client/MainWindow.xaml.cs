@@ -239,12 +239,12 @@ namespace TrakHound_Client
 
         private void Vertical_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.SizeNS;
+            //this.Cursor = Cursors.SizeNS;
         }
 
         private void Vertical_MouseLeave(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.Arrow;
+            //this.Cursor = Cursors.Arrow;
         }
 
         private bool _isResizing = false;
@@ -316,17 +316,17 @@ namespace TrakHound_Client
 
         private void Rectangle_TopLeft_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.SizeNWSE;
+            //this.Cursor = Cursors.SizeNWSE;
         }
 
         private void Rectangle_TopRight_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.SizeNESW;
+            //this.Cursor = Cursors.SizeNESW;
         }
 
         private void Rectangle_TopMiddle_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.SizeNS;
+            //this.Cursor = Cursors.SizeNS;
         }
 
         #endregion
@@ -335,7 +335,7 @@ namespace TrakHound_Client
 
         private void Rectangle_BottomLeft_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.SizeNESW;
+            //this.Cursor = Cursors.SizeNESW;
         }
 
         private void Rectangle_BottomRight_MouseEnter(object sender, MouseEventArgs e)
@@ -345,14 +345,14 @@ namespace TrakHound_Client
 
         private void Rectangle_BottomMiddle_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.SizeNS;
+            //this.Cursor = Cursors.SizeNS;
         }
 
         #endregion
 
         private void Rectangle_WE_MouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.SizeWE;
+            //this.Cursor = Cursors.SizeWE;
         }
 
         #endregion
@@ -1326,7 +1326,8 @@ namespace TrakHound_Client
             if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-            path = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
+            //path = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
+            path = AppDomain.CurrentDomain.BaseDirectory;
             if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
 
             // Add Buttons for Plugins on PlugIn Options page
@@ -2150,8 +2151,8 @@ namespace TrakHound_Client
         void Log_Initialize()
         {
             LogWriter logWriter = new LogWriter();
-            //logWriter.Updated += Log_Updated;
-            //Console.SetOut(logWriter);
+            logWriter.Updated += Log_Updated;
+            Console.SetOut(logWriter);
         }
 
         void Log_Updated(string newline)

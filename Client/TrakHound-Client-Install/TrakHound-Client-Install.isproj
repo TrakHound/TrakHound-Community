@@ -49,7 +49,7 @@
 			<Name>TH_DeviceCompare</Name>
 			<Project>{BEC8D2ED-3087-46FB-A552-619412472F6C}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_ControlPanel\TH_DeviceManager.csproj">
+		<ProjectReference Include="..\..\Libraries\TH_DeviceManager\TH_DeviceManager.csproj">
 			<Name>TH_DeviceManager</Name>
 			<Project>{B5F883CC-0E97-468C-9CA4-84031F446EDF}</Project>
 		</ProjectReference>
@@ -61,7 +61,7 @@
 			<Name>TH_MySQL</Name>
 			<Project>{0822B312-19ED-4556-A197-210F0CB15BF1}</Project>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Libraries\TH_PlugIns_Client_Control\TH_Plugins_Client.csproj">
+		<ProjectReference Include="..\..\Libraries\TH_PlugIns_Client\TH_Plugins_Client.csproj">
 			<Name>TH_Plugins_Client</Name>
 			<Project>{4DA60983-505E-463C-AB96-0A80D0CD1330}</Project>
 		</ProjectReference>
