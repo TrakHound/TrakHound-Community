@@ -143,9 +143,9 @@
                 <Border CornerRadius="5">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#00000000" Offset="0"/>
+                            <GradientStop Color="Transparent" Offset="0"/>
                             <GradientStop Color="#20ffffff" Offset="0.5"/>
-                            <GradientStop Color="#00000000" Offset="1"/>
+                            <GradientStop Color="Transparent" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
 

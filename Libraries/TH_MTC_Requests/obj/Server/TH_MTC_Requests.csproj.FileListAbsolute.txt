@@ -1,7 +1,0 @@
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Requests\bin\Server\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Requests\bin\Server\TH_MTC_Requests.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Requests\bin\Server\TH_Configuration.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Requests\bin\Server\TH_Global.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Requests\bin\Server\TH_MTC_Data.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Requests\obj\Server\TH_MTC_Requests.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Requests\obj\Server\TH_MTC_Requests.dll

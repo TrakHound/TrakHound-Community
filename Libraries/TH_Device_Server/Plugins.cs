@@ -121,13 +121,13 @@ namespace TH_Device_Server
 
         class ComponentWorkerInfo
         {
-            public TH_MTC_Data.Components.ReturnData returnData { get; set; }
+            public TH_MTConnect.Components.ReturnData returnData { get; set; }
             public IServerPlugin tablePlugin { get; set; }
         }
 
         class StreamWorkerInfo
         {
-            public TH_MTC_Data.Streams.ReturnData returnData { get; set; }
+            public TH_MTConnect.Streams.ReturnData returnData { get; set; }
             public IServerPlugin tablePlugin { get; set; }
         }
 
@@ -182,7 +182,7 @@ namespace TH_Device_Server
         }
 
 
-        void Plugins_Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
+        void Plugins_Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
             if (Plugins != null)
             {
@@ -222,7 +222,7 @@ namespace TH_Device_Server
         }
 
 
-        void Plugins_Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
+        void Plugins_Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
             if (Plugins != null)
             {
@@ -262,7 +262,7 @@ namespace TH_Device_Server
         }
 
 
-        void Plugins_Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
+        void Plugins_Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
         {
             if (Plugins != null)
             {

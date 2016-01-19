@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 
 using System.Data;
 using System.Collections.ObjectModel;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Plugins_Server;
-using TH_MTC_Data.Components;
-using TH_MTC_Requests;
+using TH_MTConnect.Components;
 using TH_UserManagement.Management;
 
 using TH_InstanceTable.ConfigurationPage;
@@ -457,43 +457,87 @@ namespace TH_InstanceTable.ConfigurationPage
             RunProbe(ip, port, devicename);
         }
 
+        Thread runProbe_THREAD;
+
+        class Probe_Info
+        {
+            public string address;
+            public int port;
+            public string deviceName;
+        }
+
         void RunProbe(string address, int port, string deviceName)
         {
-            // Run a Probe request
-            Probe probe = new Probe();
+            if (runProbe_THREAD != null) runProbe_THREAD.Abort();
 
-            probe.Address = address;
-            probe.Port = port;
-            probe.DeviceName = deviceName;
+            var info = new Probe_Info();
+            info.address = address;
+            info.port = port;
+            info.deviceName = deviceName;
 
-            probe.ProbeFinished += probe_ProbeFinished;
-            probe.ProbeError += probe_ProbeError;
-
-            probe.Start();
+            runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
+            runProbe_THREAD.Start(info);
         }
 
-        void probe_ProbeFinished(ReturnData returnData, Probe sender)
+        void RunProbe_Worker(object o)
         {
-            if (returnData != null)
+            if (o != null)
             {
-                foreach (Device device in returnData.devices)
+                var info = o as Probe_Info;
+                if (info != null)
                 {
-                    DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
+                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
 
-                    // Conditions
-                    foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { dataItem });
+                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, 2000, 1);
+                    if (returnData != null)
+                    {
+                        foreach (Device device in returnData.devices)
+                        {
+                            DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
 
-                    // Events
-                    foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { dataItem });
+                            // Conditions
+                            foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { dataItem });
 
-                    // Samples
-                    foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { dataItem });
+                            // Events
+                            foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { dataItem });
+
+                            // Samples
+                            foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { dataItem });
+                        }
+                    }
+                    else
+                    {
+
+                    }
+
+                    // Set 'Loading' to false
+                    this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
                 }
             }
-
-            // Set 'Loading' to false
-            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
         }
+
+        //void probe_ProbeFinished(ReturnData returnData, Probe sender)
+        //{
+        //    if (returnData != null)
+        //    {
+        //        foreach (Device device in returnData.devices)
+        //        {
+        //            DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
+
+        //            // Conditions
+        //            foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { dataItem });
+
+        //            // Events
+        //            foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { dataItem });
+
+        //            // Samples
+        //            foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { dataItem });
+        //        }
+        //    }
+
+        //    // Set 'Loading' to false
+        //    this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
+        //}
 
         void OmitProbeFinished()
         {
@@ -501,13 +545,13 @@ namespace TH_InstanceTable.ConfigurationPage
         }
 
         
-        void probe_ProbeError(Probe.ErrorData errorData)
-        {
+        //void probe_ProbeError(Probe.ErrorData errorData)
+        //{
 
-            // Set 'Loading' to false
-            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
+        //    // Set 'Loading' to false
+        //    this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
 
-        }
+        //}
 
         #endregion
 

@@ -44,7 +44,7 @@
         </Grid>
 
         <!--Plugins Note-->
-        <TextBlock Grid.Row="1" Margin="0,0,0,20" FontSize="12" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" TextWrapping="Wrap" 
+        <TextBlock Grid.Row="1" Margin="0,0,0,20" FontSize="12" FontWeight="Bold" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" TextWrapping="Wrap" 
                        Text="Note that plugins may be licensed differently than TrakHound itself."/>
 
         <TextBlock Grid.Row="2" Text="{Binding LicenseText}" Foreground="{StaticResource Foreground_Normal}"/>

@@ -16,7 +16,7 @@ using System.Data;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
-using TH_MTC_Data;
+using TH_MTConnect;
 using TH_Plugins_Server;
 
 using TH_ShiftTable;
@@ -42,17 +42,17 @@ namespace TH_OEE
         }
 
 
-        public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
+        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
 
         }
 
-        public void Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
             currentData = returnData;
         }
 
-        public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
         {
 
         }
@@ -633,7 +633,7 @@ namespace TH_OEE
 
         #endregion
 
-        TH_MTC_Data.Streams.ReturnData currentData;
+        TH_MTConnect.Streams.ReturnData currentData;
 
     }
 }

@@ -91,7 +91,8 @@
 
                         <Rectangle Grid.Row="0" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
 
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">
+                        <!--<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">-->
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
                             <Grid>
                                 <Grid.ColumnDefinitions>

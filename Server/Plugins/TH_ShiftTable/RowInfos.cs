@@ -53,7 +53,7 @@ namespace TH_ShiftTable
             return Result;
         }
 
-        public static List<ShiftRowInfo> Get(Configuration config, List<GenEventShiftItem> genEventShiftItems, TH_MTC_Data.Streams.ReturnData currentData)
+        public static List<ShiftRowInfo> Get(Configuration config, List<GenEventShiftItem> genEventShiftItems, TH_MTConnect.Streams.ReturnData currentData)
         {
             List<ShiftRowInfo> Result = new List<ShiftRowInfo>();
 

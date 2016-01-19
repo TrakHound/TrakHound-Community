@@ -59,10 +59,11 @@
                     <Setter Property="Background">
                         <Setter.Value>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="#18000000" Offset="0"/>
-                                <GradientStop Color="#11ffffff" Offset="0.2"/>
+                                <!--<GradientStop Color="#18000000" Offset="0"/>-->
+                                <!--<GradientStop Color="#11ffffff" Offset="0.2"/>-->
+                                <GradientStop Color="#20ffffff" Offset="0.2"/>
                                 <GradientStop Color="#11ffffff" Offset="0.8"/>
-                                <GradientStop Color="#22000000" Offset="1"/>
+                                <GradientStop Color="#40000000" Offset="1"/>
                             </LinearGradientBrush>
                         </Setter.Value>
                     </Setter>

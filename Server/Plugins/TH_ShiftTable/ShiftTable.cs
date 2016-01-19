@@ -17,7 +17,7 @@ using TH_Configuration;
 using TH_Database;
 using TH_GeneratedData;
 using TH_Global;
-using TH_MTC_Data;
+using TH_MTConnect;
 using TH_Plugins_Server;
 
 namespace TH_ShiftTable
@@ -52,9 +52,9 @@ namespace TH_ShiftTable
         }
 
 
-        public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData) { }
+        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData) { }
 
-        public void Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
             currentData = returnData;
 
@@ -105,7 +105,7 @@ namespace TH_ShiftTable
             if (DataEvent != null) DataEvent(de_dge);
         }
 
-        public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
         {
 
         }
@@ -151,7 +151,7 @@ namespace TH_ShiftTable
 
         #region "Methods"
 
-        TH_MTC_Data.Streams.ReturnData currentData;
+        TH_MTConnect.Streams.ReturnData currentData;
 
         #region "Database"
 

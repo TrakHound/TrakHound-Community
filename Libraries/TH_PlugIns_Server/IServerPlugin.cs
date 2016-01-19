@@ -7,7 +7,7 @@ using System;
 using System.ComponentModel.Composition;
 
 using TH_Configuration;
-using TH_MTC_Data;
+using TH_MTConnect;
 
 namespace TH_Plugins_Server
 {
@@ -37,19 +37,19 @@ namespace TH_Plugins_Server
         /// Called when a Probe is received
         /// </summary>
         /// <param name="returnData"></param>
-        void Update_Probe(TH_MTC_Data.Components.ReturnData returnData);
+        void Update_Probe(TH_MTConnect.Components.ReturnData returnData);
 
         /// <summary>
         /// Called when a Current is received
         /// </summary>
         /// <param name="returnData"></param>
-        void Update_Current(TH_MTC_Data.Streams.ReturnData returnData);
+        void Update_Current(TH_MTConnect.Streams.ReturnData returnData);
 
         /// <summary>
         /// Called when a Sample is received
         /// </summary>
         /// <param name="returnData"></param>
-        void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData);
+        void Update_Sample(TH_MTConnect.Streams.ReturnData returnData);
 
         /// <summary>
         /// Get Data from another plugin

@@ -2150,8 +2150,8 @@ namespace TrakHound_Client
         void Log_Initialize()
         {
             LogWriter logWriter = new LogWriter();
-            logWriter.Updated += Log_Updated;
-            Console.SetOut(logWriter);
+            //logWriter.Updated += Log_Updated;
+            //Console.SetOut(logWriter);
         }
 
         void Log_Updated(string newline)

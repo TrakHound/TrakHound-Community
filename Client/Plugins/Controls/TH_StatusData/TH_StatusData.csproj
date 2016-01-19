@@ -63,11 +63,6 @@
       <Name>TH_Global</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\Libraries\TH_PlugIns_Client_Control\TH_Plugins_Client.csproj">
-      <Project>{4da60983-505e-463c-ab96-0a80d0cd1330}</Project>
-      <Name>TH_Plugins_Client</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
       <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
       <Name>TH_UserManagement</Name>

@@ -82,6 +82,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\MTConnect\TH_MTConnect\TH_MTConnect\TH_MTConnect.csproj">
+      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
+      <Name>TH_MTConnect</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
@@ -96,15 +100,6 @@
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
       <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_MTC_Data\TH_MTC_Data.csproj">
-      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
-      <Name>TH_MTC_Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_MTC_Requests\TH_MTC_Requests.csproj">
-      <Project>{db59642f-24b7-4584-bcdf-288788040709}</Project>
-      <Name>TH_MTC_Requests</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
       <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>

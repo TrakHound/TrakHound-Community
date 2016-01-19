@@ -1,5 +1,0 @@
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Adapter\bin\Debug\TH_Adapter.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Adapter\bin\Debug\TH_Adapter.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Adapter\obj\Debug\TH_Adapter.dll
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Adapter\obj\Debug\TH_Adapter.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Adapter\obj\Debug\TH_Adapter.csprojResolveAssemblyReference.cache

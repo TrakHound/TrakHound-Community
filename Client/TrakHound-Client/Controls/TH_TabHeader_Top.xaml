@@ -220,7 +220,7 @@
                     </Grid>
 
                     <!--Close Button-->
-                    <Border x:Name="close_BD" Grid.Column="1" Margin="0,0,0,1" DockPanel.Dock="Right" Width="30" CornerRadius="1" MouseDown="TabItemClose_MouseDown" ToolTip="Close" >
+                    <Border x:Name="close_BD" Grid.Column="1" Margin="0,0,0,1" DockPanel.Dock="Right" Width="30" CornerRadius="1,1,0,0" MouseDown="TabItemClose_MouseDown" >
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background" Value="Transparent" />
@@ -249,11 +249,19 @@
                                                 <Setter Property="Background">
                                                     <Setter.Value>
                                                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                            <GradientStop Color="#40ffffff" Offset="0"/>
+                                                            <GradientStop Color="#20ffffff" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <!--<Setter Property="Background">
+                                                    <Setter.Value>
+                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                             <GradientStop Color="#20000000" Offset="0"/>
                                                             <GradientStop Color="#40000000" Offset="1"/>
                                                         </LinearGradientBrush>
                                                     </Setter.Value>
-                                                </Setter>
+                                                </Setter>-->
                                             </DataTrigger>
 
                                             <MultiDataTrigger>

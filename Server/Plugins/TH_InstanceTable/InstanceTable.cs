@@ -15,7 +15,7 @@ using System.Threading;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
-using TH_MTC_Data;
+using TH_MTConnect;
 using TH_Plugins_Server;
 
 namespace TH_InstanceTable
@@ -52,7 +52,7 @@ namespace TH_InstanceTable
             config = configuration;
         }
 
-        public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
+        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
 
             ColumnNames = GetVariablesFromProbeData(returnData);
@@ -61,7 +61,7 @@ namespace TH_InstanceTable
             
         }
 
-        public void Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
             //Console.WriteLine("InstanceTable.Update_Current()" + config.Description.Description + this.GetHashCode().ToString());
 
@@ -85,7 +85,7 @@ namespace TH_InstanceTable
              //--------------------------------------------         
         }
 
-        public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
         {
             //Console.WriteLine("InstanceTable.Update_Sample()" + config.Description.Description + this.GetHashCode().ToString());
 
@@ -155,7 +155,7 @@ namespace TH_InstanceTable
 
         List<string> ColumnNames { get; set; }
 
-        TH_MTC_Data.Streams.ReturnData CurrentData { get; set; }
+        TH_MTConnect.Streams.ReturnData CurrentData { get; set; }
 
         #endregion
 
@@ -568,12 +568,12 @@ namespace TH_InstanceTable
 
         #region "Processing"
 
-        List<string> GetVariablesFromProbeData(TH_MTC_Data.Components.ReturnData returnData)
+        List<string> GetVariablesFromProbeData(TH_MTConnect.Components.ReturnData returnData)
         {
 
             List<string> Result = new List<string>();
 
-            TH_MTC_Data.Components.DataItemCollection dataItems = TH_MTC_Data.Components.Tools.GetDataItemsFromDevice(returnData.devices[0]);
+            TH_MTConnect.Components.DataItemCollection dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(returnData.devices[0]);
 
             InstanceConfiguration ic = GetConfiguration(config);
             if (ic != null)
@@ -581,7 +581,7 @@ namespace TH_InstanceTable
                 if (ic.DataItems.Conditions)
                 {
                     // Conditions -------------------------------------------------------------------------
-                    foreach (TH_MTC_Data.Components.DataItem dataItem in dataItems.Conditions)
+                    foreach (TH_MTConnect.Components.DataItem dataItem in dataItems.Conditions)
                     {
                         string name = dataItem.id.ToUpper();
                         if (!Result.Contains(name)) Result.Add(name);
@@ -592,7 +592,7 @@ namespace TH_InstanceTable
                 if (ic.DataItems.Events)
                 {
                     // Events -----------------------------------------------------------------------------
-                    foreach (TH_MTC_Data.Components.DataItem dataItem in dataItems.Events)
+                    foreach (TH_MTConnect.Components.DataItem dataItem in dataItems.Events)
                     {
                         string name = dataItem.id.ToUpper();
                         if (!Result.Contains(name)) Result.Add(name);
@@ -603,7 +603,7 @@ namespace TH_InstanceTable
                 if (ic.DataItems.Samples)
                 {
                     // Samples ----------------------------------------------------------------------------
-                    foreach (TH_MTC_Data.Components.DataItem dataItem in dataItems.Samples)
+                    foreach (TH_MTConnect.Components.DataItem dataItem in dataItems.Samples)
                     {
                         string name = dataItem.id.ToUpper();
                         if (!Result.Contains(name)) Result.Add(name);
@@ -688,12 +688,12 @@ namespace TH_InstanceTable
 
         public class CurrentInstanceData
         {
-            public TH_MTC_Data.Streams.ReturnData currentData { get; set; }
+            public TH_MTConnect.Streams.ReturnData currentData { get; set; }
             public InstanceData data { get; set; }
         }
 
         // Process instance table after receiving Sample Data
-        List<InstanceData> ProcessInstances(TH_MTC_Data.Streams.ReturnData currentData, TH_MTC_Data.Streams.ReturnData sampleData)
+        List<InstanceData> ProcessInstances(TH_MTConnect.Streams.ReturnData currentData, TH_MTConnect.Streams.ReturnData sampleData)
         {
             List<InstanceData> Result = new List<InstanceData>();
 
@@ -704,7 +704,7 @@ namespace TH_InstanceTable
                 if (sampleData.deviceStreams != null && currentData.deviceStreams != null)
                 {
                     // Get all of the DataItems from the DeviceStream object
-                    TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(sampleData.deviceStreams[0]);
+                    TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(sampleData.deviceStreams[0]);
 
                     // Convert the DataItems to a List of InstanceVariableData objects
                     List<InstanceVariableData> values = GetVariableDataFromDataItemCollection(dataItems);
@@ -817,7 +817,7 @@ namespace TH_InstanceTable
         }
 
         // Process InstanceData after receiving Current Data
-        InstanceData ProcessSingleInstance(TH_MTC_Data.Streams.ReturnData currentData)
+        InstanceData ProcessSingleInstance(TH_MTConnect.Streams.ReturnData currentData)
         {
             InstanceData Result = new InstanceData(); ;
 
@@ -830,14 +830,14 @@ namespace TH_InstanceTable
             return Result;
         }
 
-        void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, TH_MTC_Data.Streams.ReturnData currentData)
+        void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, TH_MTConnect.Streams.ReturnData currentData)
         {
 
             // Get all of the DataItems from the DeviceStream object
-            TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
+            TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
 
             // Set Conditions
-            foreach (TH_MTC_Data.Streams.Condition condition_DI in dataItems.Conditions)
+            foreach (TH_MTConnect.Streams.Condition condition_DI in dataItems.Conditions)
             {
                 if (!usedVariables.Contains(condition_DI.dataItemId))
                 {
@@ -849,7 +849,7 @@ namespace TH_InstanceTable
             }
 
             // Set Events
-            foreach (TH_MTC_Data.Streams.Event event_DI in dataItems.Events)
+            foreach (TH_MTConnect.Streams.Event event_DI in dataItems.Events)
             {
                 if (!usedVariables.Contains(event_DI.dataItemId))
                 {
@@ -861,7 +861,7 @@ namespace TH_InstanceTable
             }
 
             // Set Samples
-            foreach (TH_MTC_Data.Streams.Sample sample_DI in dataItems.Samples)
+            foreach (TH_MTConnect.Streams.Sample sample_DI in dataItems.Samples)
             {
                 if (!usedVariables.Contains(sample_DI.dataItemId))
                 {
@@ -874,13 +874,13 @@ namespace TH_InstanceTable
 
         }
 
-        List<InstanceVariableData> GetVariableDataFromDataItemCollection(TH_MTC_Data.Streams.DataItemCollection dataItems)
+        List<InstanceVariableData> GetVariableDataFromDataItemCollection(TH_MTConnect.Streams.DataItemCollection dataItems)
         {
 
             List<InstanceVariableData> Result = new List<InstanceVariableData>();
 
             // Get Conditions
-            foreach (TH_MTC_Data.Streams.Condition condition_DI in dataItems.Conditions)
+            foreach (TH_MTConnect.Streams.Condition condition_DI in dataItems.Conditions)
             {
                 InstanceVariableData instanceData = new InstanceVariableData();
 
@@ -893,7 +893,7 @@ namespace TH_InstanceTable
             }
 
             // Get Events
-            foreach (TH_MTC_Data.Streams.Event event_DI in dataItems.Events)
+            foreach (TH_MTConnect.Streams.Event event_DI in dataItems.Events)
             {
                 InstanceVariableData instanceData = new InstanceVariableData();
 
@@ -906,7 +906,7 @@ namespace TH_InstanceTable
             }
 
             // Get Samples
-            foreach (TH_MTC_Data.Streams.Sample sample_DI in dataItems.Samples)
+            foreach (TH_MTConnect.Streams.Sample sample_DI in dataItems.Samples)
             {
                 InstanceVariableData instanceData = new InstanceVariableData();
 

@@ -91,7 +91,8 @@
             <!--Image-->
             <Grid>
 
-                <Rectangle Stroke="{StaticResource Shade_Normal}" StrokeThickness="2" SnapsToDevicePixels="True" StrokeDashArray="2">
+                <!--Dashed Outline (Empty Image)-->
+                <Rectangle Stroke="{StaticResource Shade_Normal}" StrokeThickness="2" SnapsToDevicePixels="True" StrokeDashArray="2" Margin="2">
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -184,7 +185,7 @@
                                             <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
                                             <Setter Property="HorizontalAlignment" Value="Right"/>
                                             <Setter Property="VerticalAlignment" Value="Top"/>
-                                            <Setter Property="Margin" Value="5,5,0,0"/>
+                                            <Setter Property="Margin" Value="0,5,5,0"/>
                                             <Setter Property="Text" Value="{x:Null}"/>
                                             <Setter Property="ToolTip" Value="Change Photo"/>
                                         </DataTrigger>
@@ -201,82 +202,6 @@
                                 </Style>
                             </th_wpf:Button.Style>
                         </th_wpf:Button>
-                        
-                        
-                        <!--Upload Button-->
-                        <!--<Border Width="100" Height="30" CornerRadius="1" Margin="10,0" PreviewMouseDown="Upload_PreviewMouseDown">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                    <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                            <Setter Property="Cursor" Value="Hand"/>
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding ImageSet, Mode=TwoWay}" Value="true">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Setter Property="Background" Value="#33ffffff"/>
-                                        </DataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
-                                                <Condition Binding="{Binding ImageSet, Mode=TwoWay}" Value="true"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Background" Value="#aaffffff"/>
-                                        </MultiDataTrigger>
-                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-
-                            <Grid Margin="5,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                --><!--Camera Icon--><!--
-                                <Rectangle Height="30"  Width="30" >
-                                    <Rectangle.Resources>
-                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Camera_01.png" />
-                                    </Rectangle.Resources>
-
-                                    <Rectangle.Style>
-                                        <Style TargetType="Rectangle">
-                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Setter Property="Fill" Value="#fff"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ImageSet, Mode=TwoWay}" Value="true">
-                                                    <Setter Property="Fill" Value="#333"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Rectangle.Style>
-                                </Rectangle>
-
-                                --><!--Upload Text--><!--
-                                <TextBlock Grid.Column="1" VerticalAlignment="Center" TextAlignment="Center" FontSize="10pt" TextWrapping="Wrap">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="Upload"/>
-                                            <Setter Property="Foreground" Value="#fff"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ImageSet, Mode=TwoWay}" Value="true">
-                                                    <Setter Property="Text" Value="Change"/>
-                                                    <Setter Property="Foreground" Value="#333"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                            </Grid>
-
-                        </Border>-->
 
                     </Grid>
 

@@ -17,7 +17,7 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_InstanceTable;
-using TH_MTC_Data;
+using TH_MTConnect;
 using TH_Plugins_Server;
 
 namespace TH_GeneratedData
@@ -64,18 +64,18 @@ namespace TH_GeneratedData
         }
 
 
-        public void Update_Probe(TH_MTC_Data.Components.ReturnData returnData)
+        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
 
 
         }
 
-        public void Update_Current(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
 
         }
 
-        public void Update_Sample(TH_MTC_Data.Streams.ReturnData returnData)
+        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
         {
 
 
@@ -1177,7 +1177,7 @@ namespace TH_GeneratedData
 
         List<SnapShotItem> previousSSI;
 
-        List<SnapShotItem> ProcessSnapShots(List<SnapShotItem> lpreviousSSI, TH_MTC_Data.Streams.ReturnData currentData, InstanceTable.InstanceData currentInstanceData)
+        List<SnapShotItem> ProcessSnapShots(List<SnapShotItem> lpreviousSSI, TH_MTConnect.Streams.ReturnData currentData, InstanceTable.InstanceData currentInstanceData)
         {
             List<SnapShotItem> Result = new List<SnapShotItem>();
 
@@ -1242,13 +1242,13 @@ namespace TH_GeneratedData
 
         }
 
-        static bool ProcessSnapshot_Collected(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.ReturnData currentData)
+        static bool ProcessSnapshot_Collected(Snapshots.Item item, SnapShotItem ssi, TH_MTConnect.Streams.ReturnData currentData)
         {
             bool result = false;
 
             if (currentData.deviceStreams != null)
             {
-                TH_MTC_Data.Streams.DataItemCollection dataItems = TH_MTC_Data.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
+                TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
 
                 bool found = false;
 
@@ -1267,11 +1267,11 @@ namespace TH_GeneratedData
             return result;
         }
 
-        static bool ProcessSnapshot_Collected_Condtion(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.DataItemCollection dataItems)
+        static bool ProcessSnapshot_Collected_Condtion(Snapshots.Item item, SnapShotItem ssi, TH_MTConnect.Streams.DataItemCollection dataItems)
         {
             bool result = false;
 
-            TH_MTC_Data.Streams.Condition condition_DI = dataItems.Conditions.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
+            TH_MTConnect.Streams.Condition condition_DI = dataItems.Conditions.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
             if (condition_DI != null)
             {
                 if (ssi.value != condition_DI.CDATA)
@@ -1289,11 +1289,11 @@ namespace TH_GeneratedData
             return result;
         }
 
-        static bool ProcessSnapshot_Collected_Event(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.DataItemCollection dataItems)
+        static bool ProcessSnapshot_Collected_Event(Snapshots.Item item, SnapShotItem ssi, TH_MTConnect.Streams.DataItemCollection dataItems)
         {
             bool result = false;
 
-            TH_MTC_Data.Streams.Event event_DI = dataItems.Events.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
+            TH_MTConnect.Streams.Event event_DI = dataItems.Events.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
             if (event_DI != null)
             {
                 if (ssi.value != event_DI.CDATA)
@@ -1311,11 +1311,11 @@ namespace TH_GeneratedData
             return result;
         }
 
-        static bool ProcessSnapshot_Collected_Sample(Snapshots.Item item, SnapShotItem ssi, TH_MTC_Data.Streams.DataItemCollection dataItems)
+        static bool ProcessSnapshot_Collected_Sample(Snapshots.Item item, SnapShotItem ssi, TH_MTConnect.Streams.DataItemCollection dataItems)
         {
             bool result = false;
 
-            TH_MTC_Data.Streams.Sample sample_DI = dataItems.Samples.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
+            TH_MTConnect.Streams.Sample sample_DI = dataItems.Samples.Find(x => x.dataItemId.ToLower() == item.link.ToLower());
             if (sample_DI != null)
             {
                 if (ssi.value != sample_DI.CDATA)

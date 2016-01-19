@@ -45,33 +45,33 @@ namespace TrakHound_Client.Pages.About.Information
 
             Build_Version = "v" + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
 
-            // Usage Information
-            Usage_TIMER = new System.Timers.Timer();
-            Usage_TIMER.Interval = 100;
-            Usage_TIMER.Elapsed += Usage_TIMER_Elapsed;
-            Usage_TIMER.Enabled = true;
+            //// Usage Information
+            //Usage_TIMER = new System.Timers.Timer();
+            //Usage_TIMER.Interval = 100;
+            //Usage_TIMER.Elapsed += Usage_TIMER_Elapsed;
+            //Usage_TIMER.Enabled = true;
 
         }
 
-        void Usage_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
+        //void Usage_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
 
-            Usage_TIMER.Interval = 3000;
+        //    Usage_TIMER.Interval = 3000;
 
-            this.Dispatcher.BeginInvoke(new Action(Usage_TIMER_Elapsed_GUI));
+        //    this.Dispatcher.BeginInvoke(new Action(Usage_TIMER_Elapsed_GUI));
 
-        }
+        //}
 
-        void Usage_TIMER_Elapsed_GUI()
-        {
+        //void Usage_TIMER_Elapsed_GUI()
+        //{
 
-            Usage_MemoryUsed = GetMemoryUsed();
+        //    Usage_MemoryUsed = GetMemoryUsed();
 
-            Usage_MostMemoryUsed_Value = String_Functions.FileSizeSuffix(Properties.Settings.Default.Usage_MemoryUsed_Value);
+        //    Usage_MostMemoryUsed_Value = String_Functions.FileSizeSuffix(Properties.Settings.Default.Usage_MemoryUsed_Value);
 
-            Usage_MostMemoryUsed_Date = Properties.Settings.Default.Usage_MemoryUsed_Date.ToString();
+        //    Usage_MostMemoryUsed_Date = Properties.Settings.Default.Usage_MemoryUsed_Date.ToString();
 
-        }
+        //}
 
         public string PageName { get { return "Information"; } }
 
@@ -94,53 +94,53 @@ namespace TrakHound_Client.Pages.About.Information
 
         #region "Usage Information"
 
-        System.Timers.Timer Usage_TIMER;
+        //System.Timers.Timer Usage_TIMER;
 
-        public string Usage_MemoryUsed
-        {
-            get { return (string)GetValue(Usage_MemoryUsedProperty); }
-            set { SetValue(Usage_MemoryUsedProperty, value); }
-        }
+        //public string Usage_MemoryUsed
+        //{
+        //    get { return (string)GetValue(Usage_MemoryUsedProperty); }
+        //    set { SetValue(Usage_MemoryUsedProperty, value); }
+        //}
 
-        public static readonly DependencyProperty Usage_MemoryUsedProperty =
-            DependencyProperty.Register("Usage_MemoryUsed", typeof(string), typeof(Page), new PropertyMetadata(null));
+        //public static readonly DependencyProperty Usage_MemoryUsedProperty =
+        //    DependencyProperty.Register("Usage_MemoryUsed", typeof(string), typeof(Page), new PropertyMetadata(null));
 
-        public string Usage_MostMemoryUsed_Value
-        {
-            get { return (string)GetValue(Usage_MostMemoryUsed_ValueProperty); }
-            set { SetValue(Usage_MostMemoryUsed_ValueProperty, value); }
-        }
+        //public string Usage_MostMemoryUsed_Value
+        //{
+        //    get { return (string)GetValue(Usage_MostMemoryUsed_ValueProperty); }
+        //    set { SetValue(Usage_MostMemoryUsed_ValueProperty, value); }
+        //}
 
-        public static readonly DependencyProperty Usage_MostMemoryUsed_ValueProperty =
-            DependencyProperty.Register("Usage_MostMemoryUsed_Value", typeof(string), typeof(Page), new PropertyMetadata(null));
+        //public static readonly DependencyProperty Usage_MostMemoryUsed_ValueProperty =
+        //    DependencyProperty.Register("Usage_MostMemoryUsed_Value", typeof(string), typeof(Page), new PropertyMetadata(null));
 
-        public string Usage_MostMemoryUsed_Date
-        {
-            get { return (string)GetValue(Usage_MostMemoryUsed_DateProperty); }
-            set { SetValue(Usage_MostMemoryUsed_DateProperty, value); }
-        }
+        //public string Usage_MostMemoryUsed_Date
+        //{
+        //    get { return (string)GetValue(Usage_MostMemoryUsed_DateProperty); }
+        //    set { SetValue(Usage_MostMemoryUsed_DateProperty, value); }
+        //}
 
-        public static readonly DependencyProperty Usage_MostMemoryUsed_DateProperty =
-            DependencyProperty.Register("Usage_MostMemoryUsed_Date", typeof(string), typeof(Page), new PropertyMetadata(null));
+        //public static readonly DependencyProperty Usage_MostMemoryUsed_DateProperty =
+        //    DependencyProperty.Register("Usage_MostMemoryUsed_Date", typeof(string), typeof(Page), new PropertyMetadata(null));
 
         
-        string GetMemoryUsed()
-        {
+        //string GetMemoryUsed()
+        //{
 
-            Process proc = Process.GetCurrentProcess();
+        //    Process proc = Process.GetCurrentProcess();
 
-            Int64 memory = proc.PrivateMemorySize64;
+        //    Int64 memory = proc.PrivateMemorySize64;
 
-            if (memory > Properties.Settings.Default.Usage_MemoryUsed_Value)
-            {
-                Properties.Settings.Default.Usage_MemoryUsed_Value = memory;
-                Properties.Settings.Default.Usage_MemoryUsed_Date = DateTime.Now;
-                Properties.Settings.Default.Save();
-            }
+        //    if (memory > Properties.Settings.Default.Usage_MemoryUsed_Value)
+        //    {
+        //        Properties.Settings.Default.Usage_MemoryUsed_Value = memory;
+        //        Properties.Settings.Default.Usage_MemoryUsed_Date = DateTime.Now;
+        //        Properties.Settings.Default.Save();
+        //    }
 
-            return String_Functions.FileSizeSuffix(memory);
+        //    return String_Functions.FileSizeSuffix(memory);
 
-        }
+        //}
 
         #endregion
 

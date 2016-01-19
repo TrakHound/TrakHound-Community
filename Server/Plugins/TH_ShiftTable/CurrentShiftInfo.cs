@@ -29,7 +29,7 @@ namespace TH_ShiftTable
 
         public Segment segment { get; set; }
 
-        public static CurrentShiftInfo Get(Configuration config, TH_MTC_Data.Streams.ReturnData rd)
+        public static CurrentShiftInfo Get(Configuration config, TH_MTConnect.Streams.ReturnData rd)
         {
             CurrentShiftInfo Result = null;
 

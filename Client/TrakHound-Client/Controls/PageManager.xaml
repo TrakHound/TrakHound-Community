@@ -33,7 +33,7 @@
                     <ItemsControl.Resources>
                         <Style TargetType="th_wpf:ListButton">
                             <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="#00000000"/>
+                            <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
                                     <Setter Property="Background" Value="#33ffffff"/>
@@ -52,7 +52,7 @@
 
                 <Grid Background="{StaticResource Window_Background}" >
 
-                    <Grid Margin="40,0">
+                    <Grid Margin="40,0,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="*"/>

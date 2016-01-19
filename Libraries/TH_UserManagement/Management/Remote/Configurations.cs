@@ -84,7 +84,7 @@ namespace TH_UserManagement.Management.Remote
 
             NameValueCollection values = new NameValueCollection();
 
-            values["username"] = userConfig.username;
+            if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
 
             string url = "https://www.feenux.com/php/configurations/getconfigurationslist.php";
             string responseString = HTTP.SendData(url, values);

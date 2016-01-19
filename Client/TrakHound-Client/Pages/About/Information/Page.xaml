@@ -89,7 +89,7 @@
         </Grid>
 
         <!--Usage Info-->
-        <Grid Margin="5,10">
+        <!--<Grid Margin="5,10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -122,7 +122,7 @@
 
             </Border>
 
-        </Grid>
+        </Grid>-->
 
     </StackPanel>
     
