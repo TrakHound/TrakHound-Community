@@ -14,10 +14,15 @@ F:\feenux\TrakHound\TH_Libraries\TH_WPF\obj\Debug\TH_WPF.Properties.Resources.re
 F:\feenux\TrakHound\TH_Libraries\TH_WPF\obj\Debug\TH_WPF.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TH_Libraries\TH_WPF\obj\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TH_Libraries\TH_WPF\obj\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_Styles.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_Styles.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_01.baml

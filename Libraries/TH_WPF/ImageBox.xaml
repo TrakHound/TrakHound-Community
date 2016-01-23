@@ -90,6 +90,8 @@
 
             <!--Image-->
             <Grid>
+                
+                <TextBlock Text="{Binding ImageBrightness}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
                 <!--Dashed Outline (Empty Image)-->
                 <Rectangle Stroke="{StaticResource Shade_Normal}" StrokeThickness="2" SnapsToDevicePixels="True" StrokeDashArray="2" Margin="2">
@@ -105,7 +107,7 @@
                     </Rectangle.Style>
                 </Rectangle>
 
-                <Border x:Name="bd">
+                <Border x:Name="bd" CornerRadius="2">
 
                     <Grid>
 

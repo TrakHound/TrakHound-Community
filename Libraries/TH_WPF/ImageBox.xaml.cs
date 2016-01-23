@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TH_Global.Functions;
+
 namespace TH_WPF
 {
     /// <summary>
@@ -38,16 +40,48 @@ namespace TH_WPF
             DependencyProperty.Register("Title", typeof(string), typeof(ImageBox), new PropertyMetadata(null));
 
 
+        public void SetBackgroundColor(ImageSource img)
+        {
+            double brightness = 0;
+
+            if (img != null)
+            {
+                BitmapImage bmpImg = img as BitmapImage;
+                if (bmpImg != null)
+                {
+                    System.Drawing.Bitmap bmp = TH_Global.Functions.Image_Functions.BitmapImage2Bitmap(bmpImg);
+                    if (bmp != null)
+                    {
+                        System.Drawing.Color color = TH_Global.Functions.Image_Functions.CalculateAverageColor(bmp);
+                        brightness = color.GetBrightness();
+                    }
+                }
+            }
+
+            if (brightness > 0.8) bd.Background = new SolidColorBrush(Color_Functions.GetColorFromString("#ddd"));
+            else bd.Background = null;
+        }
 
         public ImageSource Image
         {
             get { return (ImageSource)GetValue(ImageProperty); }
-            set { SetValue(ImageProperty, value); }
+            set 
+            {
+                SetValue(ImageProperty, value);
+                SetBackgroundColor(value);
+            }
         }
 
         public static readonly DependencyProperty ImageProperty =
-            DependencyProperty.Register("Image", typeof(ImageSource), typeof(ImageBox), new PropertyMetadata(null));
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(ImageBox), new PropertyMetadata(null, new PropertyChangedCallback(ImagePropertyChanged)));
 
+
+
+        private static void ImagePropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+        {
+            ImageBox imgBox = (ImageBox)dependencyObject;
+            imgBox.SetBackgroundColor(eventArgs.NewValue as ImageSource);
+        }
 
 
 

@@ -156,6 +156,16 @@
                             </Grid>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="11,0">
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Visibility" Value="Hidden"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding UserDatabaseSettings}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
 
                                 <!--Lock Icon-->
                                 <Rectangle Width="15" Height="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0">

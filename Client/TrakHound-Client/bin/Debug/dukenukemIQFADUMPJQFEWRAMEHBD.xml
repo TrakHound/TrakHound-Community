@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent>
+    <Current_Heartbeat>5000</Current_Heartbeat>
+    <Device_Name>OKUMA2</Device_Name>
+    <IP_Address>74.203.109.245</IP_Address>
+    <Port>5001</Port>
+    <Sample_Heartbeat>5000</Sample_Heartbeat>
+  </Agent>
+  <ClientEnabled>True</ClientEnabled>
+  <ClientUpdateId>VLSNFABAOEHOUCBUSJOL</ClientUpdateId>
+  <Cycles>
+    <CycleIdLink>program_name</CycleIdLink>
+    <Event>program_execution</Event>
+  </Cycles>
+  <Databases>
+    <MySQL id="00" />
+    <MySQL id="01">
+      <Database>feenuxco_example_okuma_mill_01</Database>
+      <Password>#mtconnect</Password>
+      <PHP_Directory>php</PHP_Directory>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <Port />
+      <Server>localhost</Server>
+      <UsePHP>True</UsePHP>
+      <Username>feenuxco_th</Username>
+    </MySQL>
+  </Databases>
+  <Databases_Client>
+    <MySQL id="00">
+      <Database>feenuxco_example_okuma_lathe_01</Database>
+      <Password>#reader</Password>
+      <PHP_Directory>php</PHP_Directory>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <Port />
+      <Server>localhost</Server>
+      <UsePHP>True</UsePHP>
+      <Username>feenuxco_reader</Username>
+      <UseTrakHoundCloudServer>True</UseTrakHoundCloudServer>
+    </MySQL>
+  </Databases_Client>
+  <Databases_Server>
+    <MySQL id="00">
+      <Database>feenuxco_example_okuma_lathe_01</Database>
+      <Password>#mtconnect</Password>
+      <PHP_Directory>php</PHP_Directory>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <Port />
+      <Server>localhost</Server>
+      <UsePHP>True</UsePHP>
+      <Username>feenuxco_th</Username>
+      <UseTrakHoundCloudServer>True</UseTrakHoundCloudServer>
+    </MySQL>
+  </Databases_Server>
+  <Description>
+    <Company />
+    <Controller>OPC</Controller>
+    <Control_Type />
+    <Customer_Name>MTConnect</Customer_Name>
+    <Description>Okuma Lathe</Description>
+    <Device_ID>01</Device_ID>
+    <Device_Type>CNC</Device_Type>
+    <Machine_ID>1</Machine_ID>
+    <Machine_Type>CNC</Machine_Type>
+    <Manufacturer>Okuma</Manufacturer>
+    <Model />
+    <Serial />
+  </Description>
+  <Enabled>True</Enabled>
+  <File_Locations>
+    <Image_Path>XXUGEPLRTJFRCZQJCDOW</Image_Path>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path>OICFGOBMQLHJQHBVCIFV</Manufacturer_Logo_Path>
+  </File_Locations>
+  <GeneratedData>
+    <GeneratedEvents>
+      <Event id="00" name="production_status" description="General status of production. Has three levels">
+        <Default numval="0">Alert</Default>
+        <Value id="00">
+          <Result numval="2">Full Production</Result>
+          <Triggers>
+            <Trigger id="00" link="Lavail" value="AVAILABLE" />
+            <Trigger id="01" link="Lestop" value="ARMED" />
+            <Trigger id="02" link="Lpexecution" value="ACTIVE" />
+          </Triggers>
+        </Value>
+        <Value id="01">
+          <Result numval="1">Idle</Result>
+          <Triggers>
+            <Trigger id="00" link="Lavail" value="AVAILABLE" />
+            <Trigger id="01" link="Lestop" value="ARMED" />
+          </Triggers>
+        </Value>
+      </Event>
+      <Event id="01" name="alert" description="Alert status of the device. If device is Not available or ">
+        <Default numval="0">True</Default>
+        <Value id="00">
+          <Result numval="1">False</Result>
+          <Triggers>
+            <Trigger id="00" link="Lavail" value="AVAILABLE" />
+            <Trigger id="01" link="Lestop" value="ARMED" />
+          </Triggers>
+        </Value>
+      </Event>
+      <Event id="02" name="program_execution" description="Program status of device. If device is current">
+        <Default numval="0">Program Stopped</Default>
+        <Value id="00">
+          <Result numval="1">Program Started</Result>
+          <Triggers>
+            <Trigger id="00" link="Lpmode" value="AUTOMATIC" />
+            <Trigger id="01" link="Lpexecution" value="ACTIVE" />
+          </Triggers>
+        </Value>
+      </Event>
+      <Event id="03" name="idle">
+        <Default numval="0">False</Default>
+        <Value id="00">
+          <Result numval="0">True</Result>
+          <Triggers>
+            <Trigger id="00" link="Lavail" value="AVAILABLE" />
+            <Trigger id="01" link="Lestop" value="ARMED" />
+            <Trigger id="02" link="Lpexecution" modifier="not" value="ACTIVE" />
+          </Triggers>
+        </Value>
+      </Event>
+      <Event id="04" name="production">
+        <Default numval="0">False</Default>
+        <Value id="00">
+          <Result numval="0">True</Result>
+          <Triggers>
+            <Trigger id="00" link="Lavail" value="AVAILABLE" />
+            <Trigger id="01" link="Lestop" value="ARMED" />
+            <Trigger id="02" link="Lpexecution" value="ACTIVE" />
+          </Triggers>
+        </Value>
+      </Event>
+    </GeneratedEvents>
+    <SnapShotData>
+      <Collected id="00" name="Execution Mode" link="Lpexecution" />
+      <Collected id="01" name="Controller Mode" link="Lpmode" />
+      <Collected id="02" name="Program Name" link="Lpprogram" />
+      <Collected id="03" name="Emergency Stop" link="Lestop" />
+      <Collected id="04" name="Line" link="Lp2line" />
+      <Collected id="05" name="Block" link="Lp1block" />
+      <Collected id="06" name="Connected" link="Lavail" />
+      <Generated id="00" name="Production Execution" link="program_execution" />
+      <Generated id="01" name="Alert" link="alert" />
+      <Generated id="02" name="Production Status" link="production_status" />
+      <Generated id="03" name="Idle" link="idle" />
+      <Generated id="04" name="Production" link="production" />
+      <Variable id="00" name="Current Shift Time UTC" link="shift_currenttime_utc" />
+      <Variable id="01" name="Current Shift End UTC" link="shift_endtime_utc" />
+      <Variable id="02" name="Current Shift Begin UTC" link="shift_begintime_utc" />
+      <Variable id="03" name="Current Shift Time" link="shift_currenttime" />
+      <Variable id="04" name="Current Shift End" link="shift_endtime" />
+      <Variable id="05" name="Current Shift Begin" link="shift_begintime" />
+      <Variable id="06" name="Current Shift Date" link="shift_date" />
+      <Variable id="07" name="Current Shift Type" link="shift_type" />
+      <Variable id="08" name="Current Shift Id" link="shift_id" />
+      <Variable id="09" name="Current Shift Name" link="shift_name" />
+    </SnapShotData>
+  </GeneratedData>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>False</Conditions>
+      <Events>False</Events>
+      <Omit>
+        <c2 />
+        <cl3 />
+        <dev2_block />
+        <dev2_line />
+        <Frt />
+        <LC5actm />
+        <LC5load />
+        <LC6actm />
+        <LC6load />
+        <Lp1Fact />
+        <Lp1Fcmd />
+        <Lp1LPathPos />
+        <Lp2Fact />
+        <Lp2Fcmd />
+        <Lp2LPathPos />
+        <LS1cmd />
+        <LS1load />
+        <LS1speed />
+        <LS2cmd />
+        <LS2speed />
+        <LX1actm />
+        <LX1load />
+        <LX2actm />
+        <LX2load />
+        <LZ1actm />
+        <LZ1load />
+        <LZ2actm />
+        <LZ2load />
+        <LZ4actm />
+        <LZ4load />
+        <LZ5actm />
+        <LZ5load />
+        <n3 />
+        <Ppos />
+        <x2 />
+        <x3 />
+        <y2 />
+        <y3 />
+        <y4 />
+        <z2 />
+        <z3 />
+        <z4 />
+      </Omit>
+      <Samples>False</Samples>
+    </DataItems>
+  </InstanceTable>
+  <OEE>
+    <Availability>
+      <Event>Production_Status</Event>
+      <Value>Full Production</Value>
+    </Availability>
+  </OEE>
+  <ServerEnabled>True</ServerEnabled>
+  <ServerUpdateId>YPLEEFKKTDGKQTFVRSUG</ServerUpdateId>
+  <Shared>True</Shared>
+  <SharedTableName>shared_QJBXZFCSXIGKZPGFSENF</SharedTableName>
+  <ShiftData>
+    <GeneratedEvents>
+      <Event id="00">production_status</Event>
+      <Event id="01">alert</Event>
+      <Event id="02">program_execution</Event>
+    </GeneratedEvents>
+    <Shifts>
+      <Shift id="00" name="1st Shift" begintime="06:00:00" endtime="16:00:00">
+        <Segments>
+          <Break id="02" begintime="08:00:00" endtime="08:15:00" />
+          <Break id="06" begintime="11:00:00" endtime="11:30:00" />
+          <Break id="10" begintime="14:00:00" endtime="14:15:00" />
+          <Work id="00" begintime="06:00:00" endtime="07:00:00" />
+          <Work id="01" begintime="07:00:00" endtime="08:00:00" />
+          <Work id="03" begintime="08:15:00" endtime="09:00:00" />
+          <Work id="04" begintime="09:00:00" endtime="10:00:00" />
+          <Work id="05" begintime="10:00:00" endtime="11:00:00" />
+          <Work id="07" begintime="11:30:00" endtime="12:00:00" />
+          <Work id="08" begintime="12:00:00" endtime="13:00:00" />
+          <Work id="09" begintime="13:00:00" endtime="14:00:00" />
+          <Work id="11" begintime="14:15:00" endtime="15:00:00" />
+          <Work id="12" begintime="15:00:00" endtime="16:00:00" />
+        </Segments>
+      </Shift>
+      <Shift id="01" name="2nd Shift" begintime="16:00:00" endtime="00:30:00">
+        <Segments>
+          <Break id="02" begintime="18:00:00" endtime="18:30:00" />
+          <Break id="04" begintime="19:00:00" endtime="20:00:00" />
+          <Work id="00" begintime="16:00:00" endtime="17:00:00" />
+          <Work id="01" begintime="17:00:00" endtime="18:00:00" />
+          <Work id="03" begintime="18:30:00" endtime="19:00:00" />
+          <Work id="05" begintime="20:00:00" endtime="21:00:00" />
+          <Work id="06" begintime="21:00:00" endtime="22:00:00" />
+          <Work id="07" begintime="22:00:00" endtime="23:00:00" />
+          <Work id="08" begintime="23:00:00" endtime="00:00:00" />
+          <Work id="09" begintime="00:00:00" endtime="00:30:00" />
+        </Segments>
+      </Shift>
+    </Shifts>
+  </ShiftData>
+  <UniqueId>THCCDJMDAJFARBIMFJSS</UniqueId>
+  <UpdateId>VTVXEQAMCVGNZUCGSDFK</UpdateId>
+</Settings>

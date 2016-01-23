@@ -44,11 +44,21 @@ namespace TH_UserManagement
             // Fill State List
             foreach (string state in States.Abbreviations) StateList.Add(state);
 
-            PageName = "Create Account";
-            Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
+            SetPageType(CurrentUser);
+
+            //PageName = "Create Account";
+            //Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
         }
 
-        public Database_Settings UserDatabaseSettings = null;
+        Database_Settings userDatabaseSettings;
+        public Database_Settings UserDatabaseSettings
+        {
+            get { return userDatabaseSettings; }
+            set
+            {
+                userDatabaseSettings = value;
+            }
+        }
 
         public UserConfiguration CurrentUser
         {
@@ -130,6 +140,8 @@ namespace TH_UserManagement
                 PageName = "Create Account";
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
             }
+
+            if (userDatabaseSettings == null) PageName = PageName + " (Local)";
         }
 
         public void CleanForm()
@@ -430,7 +442,7 @@ namespace TH_UserManagement
         {
             UpdateUser_Info info = new UpdateUser_Info();
             info.userConfig = userConfig;
-            info.userDatabaseSettings = UserDatabaseSettings;
+            info.userDatabaseSettings = userDatabaseSettings;
             info.password = password_TXT.PasswordText;
 
             Saving = true;
@@ -531,19 +543,16 @@ namespace TH_UserManagement
         void VerifyUsername()
         {
             // If no userconfiguration database configuration found then use default TrakHound User Database
-            if (UserDatabaseSettings == null)
+            VerifyUsernameReturn usernameReturn = TH_UserManagement.Management.Users.VerifyUsername(Username, userDatabaseSettings);
+            if (usernameReturn != null)
             {
-                VerifyUsernameReturn usernameReturn = TH_UserManagement.Management.Remote.Users.VerifyUsername(Username);
-                if (usernameReturn != null)
-                {
-                    UsernameVerified = usernameReturn.available;
-                    UsernameMessage = usernameReturn.message;
-                }
-                else
-                {
-                    UsernameVerified = false;
-                    UsernameMessage = null;
-                }
+                UsernameVerified = usernameReturn.available;
+                UsernameMessage = usernameReturn.message;
+            }
+            else
+            {
+                UsernameVerified = false;
+                UsernameMessage = null;
             }
         }
 

@@ -105,7 +105,8 @@ namespace TH_Global
             public static string ComputeHash(string text)
             {
                 // Create Byte array of password string
-                UTF8Encoding encoder = new UTF8Encoding();
+                //UTF8Encoding encoder = new UTF8Encoding();
+                ASCIIEncoding encoder = new ASCIIEncoding();
                 Byte[] _secretBytes = encoder.GetBytes(text);
 
                 // append the two arrays

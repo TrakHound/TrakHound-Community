@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="dummy" Background="#0080ff">
+    <Grid x:Name="dummy">
         
         <!--<th_wpf:ProgressBar Width="40" Value="{Binding ProgressValue}" Maximum="{Binding ProgressMaximum}" Orientation="Vertical" Background="Green"/>-->
         
@@ -40,12 +40,12 @@
             </th_wpf:ListButton.Style>
         </th_wpf:ListButton>-->
 
-        <th_wpf:Button VerticalAlignment="Top" HorizontalAlignment="Left" Image="Resources/Camera_01.png" >
+        <!--<th_wpf:Button VerticalAlignment="Top" HorizontalAlignment="Left" Image="Resources/Camera_01.png" >
             <th_wpf:Button.Style>
                 <Style TargetType="th_wpf:Button">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                    <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>-->
+                    --><!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>--><!--
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Height" Value="35"/>
                     <Setter Property="ImageTextPadding" Value="10"/>
@@ -54,11 +54,11 @@
                     <Setter Property="FontSize" Value="14"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="CornerRadius" Value="1"/>
-                    <!--<Setter Property="BorderBrush" Value="Red"/>
-                    <Setter Property="BorderThickness" Value="2"/>-->
+                    --><!--<Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="2"/>--><!--
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            <!--<Setter Property="Background" Value="{StaticResource Accent_Light}"/>-->
+                            --><!--<Setter Property="Background" Value="{StaticResource Accent_Light}"/>--><!--
                             <Setter Property="Background" Value="#18ffffff"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding Loading}" Value="true">
@@ -67,7 +67,7 @@
                     </Style.Triggers>
                 </Style>
             </th_wpf:Button.Style>
-        </th_wpf:Button>
+        </th_wpf:Button>-->
         
         <!--<levelindicator:Indicator x:Name="levels_LI" Foreground="Blue" BorderBrush="Red" HorizontalAlignment="Center" Width="50" Height="50"/>-->
         
@@ -79,6 +79,8 @@
             <ComboBoxItem Content="Test 5"/>
             <ComboBoxItem Content="Test 6"/>
         </ComboBox>-->
+        
+        <th_wpf:ImageBox Image="{Binding Image}" ImageSet="True" Width="300" Height="300" />
         
     </Grid>
     

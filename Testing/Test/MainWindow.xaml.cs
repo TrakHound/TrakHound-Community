@@ -28,14 +28,39 @@ namespace Test
             InitializeComponent();
             DataContext = this;
 
+
+            //Image = new BitmapImage(new Uri("https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1024px-Google_%22G%22_Logo.svg.png"));
+
+            //Image = new BitmapImage(new Uri("https://www.overkillshop.com/media/wysiwyg/Logos/NIKE_NSW_BRAND_LOGOwhite.png"));
+
+            Image = new BitmapImage(new Uri("http://www.iconsdb.com/icons/preview/color/EEEEEE/warning-33-xxl.png"));
+
+            
+
+
+
             //levels_LI.TotalLevelCount = 4;
             //levels_LI.ActiveLevelCount = 1;
 
-            test_TIMER = new System.Timers.Timer();
-            test_TIMER.Interval = 100;
-            test_TIMER.Elapsed += test_TIMER_Elapsed;
-            test_TIMER.Enabled = true;
+            //test_TIMER = new System.Timers.Timer();
+            //test_TIMER.Interval = 100;
+            //test_TIMER.Elapsed += test_TIMER_Elapsed;
+            //test_TIMER.Enabled = true;
         }
+
+
+
+        public ImageSource Image
+        {
+            get { return (ImageSource)GetValue(ImageProperty); }
+            set { SetValue(ImageProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Image.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ImageProperty =
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(MainWindow), new PropertyMetadata(null));
+
+        
 
         void test_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {

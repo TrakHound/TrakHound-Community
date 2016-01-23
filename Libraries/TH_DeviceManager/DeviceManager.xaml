@@ -76,7 +76,7 @@
                 </StackPanel.Resources>
 
                 <!--Restore-->
-                <th_wpf:Button Text="Restore" Clicked="Restore_Clicked" Image="/TH_DeviceManager;component/Resources/Refresh_01.png"/>
+                <th_wpf:Button Text="Restore" Clicked="Restore_Clicked" Padding="10,8" Image="/TH_DeviceManager;component/Resources/Refresh_01.png"/>
 
                 <!--Save-->
                 <Grid>
@@ -113,7 +113,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <th_wpf:Button Text="Save" Clicked="Save_Clicked" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
+                        <th_wpf:Button Text="Save" Clicked="Save_Clicked" Padding="10,8" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
 
                     </Grid>
 
@@ -605,7 +605,21 @@
             </TextBlock>
 
         </Grid>
-       
+
+        <!--Text-->
+        <TextBlock Text="Local" Foreground="#33ffffff" FontSize="14" VerticalAlignment="Bottom" Margin="10">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding UserDatabaseSettings}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
     </Grid>
 
 </UserControl>

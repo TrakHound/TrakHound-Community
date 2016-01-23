@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent />
+  <Cycles />
+  <Databases />
+  <Description>
+    <Description>Local Test Configuration</Description>
+    <Device_Type />
+    <Manufacturer />
+    <Device_ID />
+    <Model />
+    <Serial />
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path />
+    <Image_Path />
+  </File_Locations>
+  <GeneratedData>
+    <GeneratedEvents>
+      <UploadToMySQL>true</UploadToMySQL>
+    </GeneratedEvents>
+    <SnapShotData />
+  </GeneratedData>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>false</Conditions>
+      <Events>true</Events>
+      <Omit />
+      <Samples>false</Samples>
+    </DataItems>
+  </InstanceTable>
+  <OEE>
+    <Availability />
+  </OEE>
+  <ShiftData>
+    <GeneratedEvents />
+    <Shifts />
+  </ShiftData>
+  <ClientUpdateId>JEOEWQLBHAJKVZLSRGYH</ClientUpdateId>
+  <UniqueId>HHPXUEFXKPXDKJKZBJRW</UniqueId>
+</Settings>

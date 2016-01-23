@@ -19,6 +19,8 @@ namespace TH_Plugins_Server
 
         event SettingChanged_Handler SettingChanged;
 
+
+
         void LoadConfiguration(DataTable dt);
 
         void SaveConfiguration(DataTable dt);

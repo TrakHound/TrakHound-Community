@@ -42,7 +42,21 @@ namespace TH_UserManagement
 
         public UserManagementSettings userManagementSettings;
 
-        public Database_Settings userDatabaseSettings;
+        Database_Settings userDatabaseSettings;
+        public Database_Settings UserDatabaseSettings
+        {
+            get { return (Database_Settings)GetValue(UserDatabaseSettingsProperty); }
+            set 
+            { 
+                SetValue(UserDatabaseSettingsProperty, value);
+                userDatabaseSettings = value;
+            }
+        }
+
+        public static readonly DependencyProperty UserDatabaseSettingsProperty =
+            DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(Menu), new PropertyMetadata(null));
+
+        
 
         UserConfiguration currentuser;
         public UserConfiguration CurrentUser
@@ -377,7 +391,8 @@ namespace TH_UserManagement
             LoadingMessage = String_Functions.UppercaseFirst(username);
 
             LoginError = false;
-            ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
+            //ProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
+            ProfileImage = null;
 
             Login_Info info = new Login_Info();
             info.username = username;

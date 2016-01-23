@@ -86,5 +86,20 @@ namespace TrakHound_Client.Properties {
                 this["UpdateBehavior"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("false")]
+        public bool UseLocalConfiguration
+        {
+            get
+            {
+                return ((bool)(this["UseLocalConfiguration"]));
+            }
+            set
+            {
+                this["UseLocalConfiguration"] = value;
+            }
+        }
     }
 }

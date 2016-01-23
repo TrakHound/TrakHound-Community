@@ -98,7 +98,19 @@ namespace TH_DeviceManager
             DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
 
-        public Database_Settings userDatabaseSettings;
+        Database_Settings userDatabaseSettings;
+        public Database_Settings UserDatabaseSettings
+        {
+            get { return (Database_Settings)GetValue(UserDatabaseSettingsProperty); }
+            set 
+            { 
+                SetValue(UserDatabaseSettingsProperty, value);
+                userDatabaseSettings = value;
+            }
+        }
+
+        public static readonly DependencyProperty UserDatabaseSettingsProperty =
+            DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(DeviceManager), new PropertyMetadata(null));
 
         #endregion
 
@@ -118,7 +130,6 @@ namespace TH_DeviceManager
                 selecteddevice = value;
             }
         }
-
 
         DeviceButton selecteddevicebutton;
         public DeviceButton SelectedDeviceButton
@@ -575,6 +586,7 @@ namespace TH_DeviceManager
             page.deviceManager = this;
             page.DeviceAdded += page_DeviceAdded;
             page.currentuser = CurrentUser;
+            page.userDatabaseSettings = userDatabaseSettings;
             page.LoadCatalog();
         }
 

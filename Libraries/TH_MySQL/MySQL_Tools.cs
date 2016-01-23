@@ -123,18 +123,33 @@ namespace TH_MySQL
                 update = " ON DUPLICATE KEY UPDATE ";
                 for (int x = 0; x <= Columns.Length - 1; x++)
                 {
-                    if (Values[x] != null)
-                    {
-                        update += Columns[x].ToString().ToUpper();
-                        update += "=";
+                    update += Columns[x].ToString().ToUpper();
+                    update += "=";
 
-                        object val = Values[x];
+                    object val = Values[x];
+                    if (val != null)
+                    {
                         if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
 
                         update += "'" + MySQL_Tools.ConvertToSafe(val.ToString()) + "'";
-
-                        if (x < Columns.Length - 1) update += ", ";
                     }
+                    else update += "null";
+
+                    if (x < Columns.Length - 1) update += ", ";
+
+
+                    //if (Values[x] != null)
+                    //{
+                    //    update += Columns[x].ToString().ToUpper();
+                    //    update += "=";
+
+                    //    object val = Values[x];
+                    //    if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
+
+                    //    update += "'" + MySQL_Tools.ConvertToSafe(val.ToString()) + "'";
+
+                    //    if (x < Columns.Length - 1) update += ", ";
+                    //}
                 }
             }
 

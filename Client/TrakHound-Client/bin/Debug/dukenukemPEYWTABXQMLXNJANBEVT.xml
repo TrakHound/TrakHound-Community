@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent>
+    <IP_Address>agent.mtconnect.org</IP_Address>
+    <Device_Name>VMC-3Axis</Device_Name>
+    <Current_Heartbeat>5000</Current_Heartbeat>
+    <Sample_Heartbeat>5000</Sample_Heartbeat>
+    <Port />
+  </Agent>
+  <Description>
+    <Machine_Type>CNC</Machine_Type>
+    <Customer_Name>MTConnect</Customer_Name>
+    <Manufacturer />
+    <Control_Type />
+    <Machine_ID>1</Machine_ID>
+    <Description>MTConnect Demo Agent</Description>
+    <Device_Type>CNC</Device_Type>
+    <Device_ID />
+    <Model />
+    <Serial />
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Manufacturer_Logo_Path>ESUBMLAZLTZRSEABEKTG</Manufacturer_Logo_Path>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Image_Path />
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>False</Conditions>
+      <Events>False</Events>
+      <Samples>False</Samples>
+      <Omit>
+        <dev2_line />
+        <dev2_block />
+        <c2 />
+        <cl3 />
+        <x2 />
+        <x3 />
+        <n3 />
+        <y2 />
+        <y3 />
+        <y4 />
+        <z2 />
+        <z3 />
+        <z4 />
+        <Ppos />
+        <Frt />
+        <id3 />
+        <id4 />
+        <id5 />
+        <id6 />
+      </Omit>
+    </DataItems>
+  </InstanceTable>
+  <ShiftData>
+    <GeneratedEvents>
+      <Event id="00">production_status</Event>
+      <Event id="01">alert</Event>
+      <Event id="02">program_execution</Event>
+    </GeneratedEvents>
+    <Shifts>
+      <Shift id="00" name="1st Shift" begintime="06:00:00" endtime="18:00:00">
+        <Segments>
+          <Work id="00" begintime="06:00:00" endtime="07:00:00" />
+          <Work id="01" begintime="07:00:00" endtime="08:00:00" />
+          <Work id="02" begintime="08:00:00" endtime="09:00:00" />
+          <Work id="03" begintime="09:00:00" endtime="10:00:00" />
+          <Work id="04" begintime="10:00:00" endtime="11:00:00" />
+          <Work id="05" begintime="11:00:00" endtime="12:00:00" />
+          <Work id="06" begintime="12:00:00" endtime="13:00:00" />
+          <Work id="07" begintime="13:00:00" endtime="14:00:00" />
+          <Work id="08" begintime="14:00:00" endtime="15:00:00" />
+          <Work id="09" begintime="15:00:00" endtime="16:00:00" />
+          <Work id="10" begintime="16:00:00" endtime="17:00:00" />
+          <Work id="11" begintime="17:00:00" endtime="18:00:00" />
+        </Segments>
+      </Shift>
+      <Shift id="01" name="2nd Shift" begintime="18:00:00" endtime="06:00:00">
+        <Segments>
+          <Work id="00" begintime="18:00:00" endtime="19:00:00" />
+          <Work id="01" begintime="19:00:00" endtime="20:00:00" />
+          <Work id="02" begintime="20:00:00" endtime="21:00:00" />
+          <Work id="03" begintime="21:00:00" endtime="22:00:00" />
+          <Work id="04" begintime="22:00:00" endtime="23:00:00" />
+          <Work id="05" begintime="23:00:00" endtime="00:00:00" />
+          <Work id="06" begintime="00:00:00" endtime="01:00:00" />
+          <Work id="07" begintime="01:00:00" endtime="02:00:00" />
+          <Work id="08" begintime="02:00:00" endtime="03:00:00" />
+          <Work id="09" begintime="03:00:00" endtime="04:00:00" />
+          <Work id="10" begintime="04:00:00" endtime="05:00:00" />
+          <Work id="11" begintime="05:00:00" endtime="06:00:00" />
+        </Segments>
+      </Shift>
+    </Shifts>
+  </ShiftData>
+  <Cycles>
+    <Event />
+    <CycleIdLink />
+  </Cycles>
+  <OEE>
+    <Availability>
+      <Event>Production_Status</Event>
+      <Value>Full Production</Value>
+    </Availability>
+  </OEE>
+  <Enabled>True</Enabled>
+  <UniqueId>QUZCRQWOYENYYJALDAZS</UniqueId>
+  <UpdateId>ONRCLWDINDEMNWZYBWGK</UpdateId>
+  <Databases>
+    <MySQL id="00">
+      <Database>feenuxco_mtconnect_01</Database>
+      <Server>localhost</Server>
+      <Port />
+      <Username>feenuxco_th</Username>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <PHP_Directory>php</PHP_Directory>
+      <Password>#mtconnect</Password>
+      <UsePHP>True</UsePHP>
+    </MySQL>
+  </Databases>
+  <Shared>True</Shared>
+  <SharedTableName>shared_RLFVVRJMDBYUMQIWTLIJ</SharedTableName>
+  <Databases_Server>
+    <MySQL id="00">
+      <UseTrakHoundCloudServer>True</UseTrakHoundCloudServer>
+      <Database>feenuxco_mtconnect_demo_agent_01</Database>
+      <Server>localhost</Server>
+      <Port />
+      <Username>feenuxco_th</Username>
+      <Password>#mtconnect</Password>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <PHP_Directory>php</PHP_Directory>
+      <UsePHP>True</UsePHP>
+    </MySQL>
+  </Databases_Server>
+  <ServerUpdateId>TYKJFNMRJEGIOSJKTAMK</ServerUpdateId>
+  <ServerEnabled>True</ServerEnabled>
+  <GeneratedData>
+    <SnapShotData>
+      <Generated id="00" name="Idle" link="idle" />
+      <Generated id="01" name="Production" link="production" />
+      <Generated id="02" name="Alert" link="alert" />
+      <Generated id="03" name="Production Status" link="production_status" />
+      <Collected id="00" name="Connected" link="avail" />
+      <Variable id="00" name="Current Shift Name" link="shift_name" />
+      <Variable id="01" name="Current Shift Id" link="shift_id" />
+      <Variable id="02" name="Churrent Shift Type" link="shift_type" />
+      <Variable id="03" name="Current Shift Date" link="shift_date" />
+      <Variable id="04" name="Current Shift Begin" link="shift_begintime" />
+      <Variable id="05" name="Current Shift End" link="shift_endtime" />
+      <Variable id="06" name="Current Shift Time" link="shift_currenttime" />
+      <Variable id="07" name="Current Shift Begin UTC" link="shift_begintime_utc" />
+      <Variable id="08" name="Current Shift End UTC" link="shift_endtime_utc" />
+      <Variable id="09" name="Current Shift Time UTC" link="shift_currenttime_utc" />
+    </SnapShotData>
+    <GeneratedEvents>
+      <Event id="00" name="production_status">
+        <Value id="00">
+          <Triggers>
+            <Trigger id="00" link="avail" value="AVAILABLE" />
+            <Trigger id="01" link="cn3" value="AUTOMATIC" />
+            <Trigger id="02" link="estop" value="ARMED" />
+          </Triggers>
+          <Result numval="0">Full Production</Result>
+        </Value>
+        <Default numval="0">Alert</Default>
+      </Event>
+      <Event id="01" name="alert">
+        <Value id="00">
+          <Triggers>
+            <Trigger id="00" link="avail" value="AVAILABLE" />
+            <Trigger id="01" link="estop" value="ARMED" />
+          </Triggers>
+          <Result numval="0">False</Result>
+        </Value>
+        <Default numval="0">True</Default>
+      </Event>
+      <Event id="02" name="production">
+        <Value id="00">
+          <Triggers>
+            <Trigger id="00" link="avail" value="AVAILABLE" />
+            <Trigger id="01" link="estop" value="ARMED" />
+            <Trigger id="02" link="cn3" value="AUTOMATIC" />
+            <Trigger id="03" link="cn6" value="ACTIVE" />
+          </Triggers>
+          <Result numval="0">True</Result>
+        </Value>
+        <Default numval="0">False</Default>
+      </Event>
+      <Event id="03" name="idle">
+        <Value id="00">
+          <Triggers>
+            <Trigger id="00" link="avail" value="AVAILABLE" />
+            <Trigger id="01" link="estop" value="ARMED" />
+            <Trigger id="02" link="cn6" modifier="not" value="ACTIVE" />
+          </Triggers>
+          <Result numval="0">True</Result>
+        </Value>
+        <Default numval="0">False</Default>
+      </Event>
+    </GeneratedEvents>
+  </GeneratedData>
+  <Databases_Client>
+    <MySQL id="00">
+      <UseTrakHoundCloudServer>True</UseTrakHoundCloudServer>
+      <Database>feenuxco_local_test</Database>
+      <Server>localhost</Server>
+      <Port />
+      <Username>feenuxco_reader</Username>
+      <Password>#reader</Password>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <PHP_Directory>php</PHP_Directory>
+      <UsePHP>True</UsePHP>
+    </MySQL>
+  </Databases_Client>
+  <ClientUpdateId>YCTVHYPLZJVPUQXKDJJV</ClientUpdateId>
+  <ClientEnabled>True</ClientEnabled>
+</Settings>

@@ -49,7 +49,7 @@ namespace TH_UserManagement.Management
             }
             else
             {
-                //result = Local.Users.CreateUser(userConfig, password, userDatabaseSettings);
+                result = Local.Users.CreateUser(userConfig, password, userDatabaseSettings);
             }
             
             return result;
@@ -65,6 +65,9 @@ namespace TH_UserManagement.Management
             }
             else
             {
+                result = new VerifyUsernameReturn();
+                result.available = true;
+                result.message = "Available";
                 //result = Local.Users.VerifyUsername(username, userDatabaseSettings);
             }
 
@@ -115,11 +118,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.AddConfigurationToUser(userConfig, configuration);
+                result = Remote.Configurations.Add(userConfig, configuration);
             }
             else
             {
-                //result = Local.Configurations.AddConfigurationToUser(userConfig, configuration, userDatabaseSettings);
+                result = Local.Configurations.Add(userConfig, configuration, userDatabaseSettings);
             }
 
             return result;
@@ -131,11 +134,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.GetConfigurationsForUser(userConfig);
+                result = Remote.Configurations.GetList(userConfig);
             }
             else
             {
-                //result = Local.Configurations.GetConfigurationsForUser(userConfig, userDatabaseSettings);
+                result = Local.Configurations.GetList(userConfig, userDatabaseSettings);
             }
 
             return result;
@@ -147,11 +150,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.GetConfigurationsListForUser(userConfig);
+                result = Remote.Configurations.Get(userConfig);
             }
             else
             {
-                //result = Local.Configurations.GetConfigurationsForUser(userConfig, userDatabaseSettings);
+                result = Local.Configurations.Get(userConfig, userDatabaseSettings);
             }
 
             return result;
@@ -179,55 +182,55 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.GetConfigurationTable(table);
+                result = Remote.Configurations.GetTable(table);
             }
             else
             {
-                //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
+                result = Local.Configurations.GetTable(table, userDatabaseSettings);
             }
 
             return result;
         }
 
 
-        public class UpdateInfo
-        {
-            public string UniqueId { get; set; }
-            public string UpdateId { get; set; }
-            public string Enabled { get; set; }
-        }
+        //public class UpdateInfo
+        //{
+        //    public string UniqueId { get; set; }
+        //    public string UpdateId { get; set; }
+        //    public string Enabled { get; set; }
+        //}
 
-        public static UpdateInfo GetClientUpdateInfo(string table, Database_Settings userDatabaseSettings)
-        {
-            UpdateInfo result = null;
+        //public static UpdateInfo GetClientUpdateInfo(string table, Database_Settings userDatabaseSettings)
+        //{
+        //    UpdateInfo result = null;
 
-            if (userDatabaseSettings == null)
-            {
-                result = Remote.Configurations.GetClientUpdateInfo(table);
-            }
-            else
-            {
-                //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
-            }
+        //    if (userDatabaseSettings == null)
+        //    {
+        //        result = Remote.Configurations.GetClientUpdateInfo(table);
+        //    }
+        //    else
+        //    {
+        //        //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static UpdateInfo GetServerUpdateInfo(string table, Database_Settings userDatabaseSettings)
-        {
-            UpdateInfo result = null;
+        //public static UpdateInfo GetServerUpdateInfo(string table, Database_Settings userDatabaseSettings)
+        //{
+        //    UpdateInfo result = null;
 
-            if (userDatabaseSettings == null)
-            {
-                result = Remote.Configurations.GetServerUpdateInfo(table);
-            }
-            else
-            {
-                //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
-            }
+        //    if (userDatabaseSettings == null)
+        //    {
+        //        result = Remote.Configurations.GetServerUpdateInfo(table);
+        //    }
+        //    else
+        //    {
+        //        //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public static bool UpdateConfigurationTable(string tableName, DataTable dt, Database_Settings userDatabaseSettings)
         {
@@ -235,11 +238,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.UpdateConfigurationTable(tableName, dt);
+                result = Remote.Configurations.Update(tableName, dt);
             }
             else
             {
-                //result = Local.Configurations.UpdateConfigurationTable(tableName, dt, userDatabaseSettings);
+                result = Local.Configurations.Update(tableName, dt, userDatabaseSettings);
             }
 
             return result;
@@ -251,11 +254,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.UpdateConfigurationTable(address, value, tableName);
+                result = Remote.Configurations.Update(address, value, tableName);
             }
             else
             {
-                //result = Local.Configurations.UpdateConfigurationTable(address, value, tableName, userDatabaseSettings);
+                result = Local.Configurations.Update(address, value, tableName, userDatabaseSettings);
             }
 
             return result;
@@ -267,11 +270,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.UpdateConfigurationTable(address, value, attributes, tableName);
+                result = Remote.Configurations.Update(address, value, attributes, tableName);
             }
             else
             {
-                //result = Local.Configurations.UpdateConfigurationTable(address, value, attributes, tableName, userDatabaseSettings);
+                result = Local.Configurations.Update(address, value, attributes, tableName, userDatabaseSettings);
             }
 
             return result;
@@ -283,11 +286,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.ClearConfigurationTable(tableName);
+                result = Remote.Configurations.Clear(tableName);
             }
             else
             {
-                //result = Local.Configurations.ClearConfigurationTable(tableName, userDatabaseSettings);
+                result = Local.Configurations.Clear(tableName, userDatabaseSettings);
             }
 
             return result;
@@ -299,31 +302,31 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.CreateConfigurationTable(tableName);
+                result = Remote.Configurations.Create(tableName);
             }
             else
             {
-                //result = Local.Configurations.CreateConfigurationTable(tableName, userDatabaseSettings);
+                result = Local.Configurations.Create(tableName, userDatabaseSettings);
             }
 
             return result;
         }
 
-        public static bool CreateConfigurationTable(UserConfiguration userConfig, Configuration configuration, Database_Settings userDatabaseSettings)
-        {
-            bool result = false;
+        //public static bool CreateConfigurationTable(UserConfiguration userConfig, Configuration configuration, Database_Settings userDatabaseSettings)
+        //{
+        //    bool result = false;
 
-            if (userDatabaseSettings == null)
-            {
-                result = Remote.Configurations.CreateConfigurationTable(userConfig, configuration);
-            }
-            else
-            {
-                //result = Local.Configurations.CreateConfigurationTable(userConfig, configuration, userDatabaseSettings);
-            }
+        //    if (userDatabaseSettings == null)
+        //    {
+        //        result = Remote.Configurations.Create(userConfig, configuration);
+        //    }
+        //    else
+        //    {
+        //        //result = Local.Configurations.CreateConfigurationTable(userConfig, configuration, userDatabaseSettings);
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         //public static string GetConfigurationTableName(UserConfiguration userConfig, Configuration configuration)
         //{
@@ -344,11 +347,11 @@ namespace TH_UserManagement.Management
 
             if (userDatabaseSettings == null)
             {
-                result = Remote.Configurations.RemoveConfigurationTable(tableName);
+                result = Remote.Configurations.Remove(tableName);
             }
             else
             {
-                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
+                result = Local.Configurations.Remove(tableName, userDatabaseSettings);
             }
 
             return result;

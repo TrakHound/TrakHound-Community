@@ -53,7 +53,7 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
-                List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser, UserDatabaseSettings);
+                List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
                 if (configurations != null)
                 {
                     foreach (Configuration config in configurations)
@@ -306,7 +306,7 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
-                var configs = Configurations.GetConfigurationsListForUser(currentuser, UserDatabaseSettings);
+                var configs = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
                 if (configs != null)
                 {
                     foreach (var config in configs)

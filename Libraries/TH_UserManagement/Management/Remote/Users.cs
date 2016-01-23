@@ -69,27 +69,30 @@ namespace TH_UserManagement.Management.Remote
         {
             bool result = false;
 
-            NameValueCollection values = new NameValueCollection();
+            if (userConfig != null)
+            {
+                NameValueCollection values = new NameValueCollection();
 
-            values["password"] = password;
+                values["password"] = password;
 
-            values["username"] = userConfig.username;
-            values["first_name"] = userConfig.first_name;
-            values["last_name"] = userConfig.last_name;
-            values["company"] = userConfig.company;
-            values["email"] = userConfig.email;
-            values["phone"] = userConfig.phone;
-            values["address1"] = userConfig.address1;
-            values["address2"] = userConfig.address2;
-            values["city"] = userConfig.city;
-            values["state"] = userConfig.state;
-            values["country"] = userConfig.country;
-            values["zipcode"] = userConfig.zipcode;
+                values["username"] = userConfig.username;
+                values["first_name"] = userConfig.first_name;
+                values["last_name"] = userConfig.last_name;
+                values["company"] = userConfig.company;
+                values["email"] = userConfig.email;
+                values["phone"] = userConfig.phone;
+                values["address1"] = userConfig.address1;
+                values["address2"] = userConfig.address2;
+                values["city"] = userConfig.city;
+                values["state"] = userConfig.state;
+                values["country"] = userConfig.country;
+                values["zipcode"] = userConfig.zipcode;
 
-            string url = "https://www.feenux.com/php/users/createuser.php";
+                string url = "https://www.feenux.com/php/users/createuser.php";
 
-            string responseString = HTTP.SendData(url, values);
-            if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+                string responseString = HTTP.SendData(url, values);
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+            }
 
             return result;
         }

@@ -140,11 +140,11 @@ namespace TH_UserManagement.Management
 
             if (UpdateSharedConfiguration_ToList(userConfig, item))
             {
-                if (Remote.Configurations.CreateConfigurationTable(tablename))
+                if (Remote.Configurations.Create(tablename))
                 {
                     if (dt != null)
                     {
-                        if (Remote.Configurations.UpdateConfigurationTable(tablename, dt)) return true;
+                        if (Remote.Configurations.Update(tablename, dt)) return true;
                     }
                 }
             }

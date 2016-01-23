@@ -19,15 +19,15 @@ namespace TH_UserManagement.Management.Remote
 
         const int connectionAttempts = 3;
 
-        public static bool AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration)
+        public static bool Add(UserConfiguration userConfig, Configuration configuration)
         {
             bool result = false;
 
-            string tableName = CreateConfigurationTableName(userConfig);
+            string tableName = CreateTableName(userConfig);
 
             configuration.TableName = tableName;
 
-            result = CreateConfigurationTable(tableName);
+            result = Create(tableName);
             if (result)
             {
                 string uniqueId = String_Functions.RandomString(20);
@@ -42,13 +42,13 @@ namespace TH_UserManagement.Management.Remote
                 // Set new Unique Id
                 //Table_Functions.UpdateTableValue(uniqueId, "/UniqueId", dt);
 
-                result = UpdateConfigurationTable(tableName, dt);
+                result = Update(tableName, dt);
             }
 
             return result;
         }
 
-        public static string[] GetConfigurationsForUser(UserConfiguration userConfig)
+        public static string[] GetList(UserConfiguration userConfig)
         {
             NameValueCollection values = new NameValueCollection();
 
@@ -78,7 +78,7 @@ namespace TH_UserManagement.Management.Remote
             else return null;
         }
 
-        public static List<Configuration> GetConfigurationsListForUser(UserConfiguration userConfig)
+        public static List<Configuration> Get(UserConfiguration userConfig)
         {
             List<Configuration> result = null;
 
@@ -128,66 +128,7 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
-        //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig)
-        //{
-        //    List<Configuration> result = null;
-
-        //    NameValueCollection values = new NameValueCollection();
-
-        //    values["username"] = userConfig.username;
-
-        //    string url = "https://www.feenux.com/php/configurations/getconfigurations.php";
-
-
-        //    string responseString = HTTP.SendData(url, values);
-
-        //    DataTable DT = JSON.ToTable(responseString);
-
-        //    if (DT != null)
-        //    {
-        //        result = new List<Configuration>();
-
-        //        foreach (DataRow Row in DT.Rows)
-        //        {
-        //            string tablename = Row[0].ToString();
-
-        //            DataTable dt = GetConfigurationTable(tablename);
-        //            if (dt != null)
-        //            {
-        //                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
-        //                if (xml != null)
-        //                {
-        //                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
-        //                    if (config != null)
-        //                    {
-        //                        //if (getImages)
-        //                        //{
-        //                        //    if (config.FileLocations.Manufacturer_Logo_Path != null)
-        //                        //    {
-        //                        //        System.Drawing.Image manufacturer_logo = Images.GetImage(config.FileLocations.Manufacturer_Logo_Path);
-        //                        //        if (manufacturer_logo != null) config.Manufacturer_Logo = manufacturer_logo;
-        //                        //    }
-
-        //                        //    if (config.FileLocations.Image_Path != null)
-        //                        //    {
-        //                        //        System.Drawing.Image device_image = Images.GetImage(config.FileLocations.Image_Path);
-        //                        //        if (device_image != null) config.Device_Image = device_image;
-        //                        //    }
-        //                        //}
-
-        //                        config.Remote = true;
-        //                        config.TableName = tablename;
-        //                        result.Add(config);
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
-        public static DataTable GetConfigurationTable(string table)
+        public static DataTable GetTable(string table)
         {
             DataTable Result = null;
 
@@ -204,39 +145,39 @@ namespace TH_UserManagement.Management.Remote
             return Result;
         }
 
-        public static Management.Configurations.UpdateInfo GetClientUpdateInfo(string table)
-        {
-            Management.Configurations.UpdateInfo result = null;
+        //public static Management.Configurations.UpdateInfo GetClientUpdateInfo(string table)
+        //{
+        //    Management.Configurations.UpdateInfo result = null;
 
-            NameValueCollection values = new NameValueCollection();
-            values["tablename"] = table;
+        //    NameValueCollection values = new NameValueCollection();
+        //    values["tablename"] = table;
 
-            string url = "https://www.feenux.com/php/configurations/getclientupdateinfo.php";
+        //    string url = "https://www.feenux.com/php/configurations/getclientupdateinfo.php";
 
-            string responseString = HTTP.SendData(url, values);
+        //    string responseString = HTTP.SendData(url, values);
 
-            result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
+        //    result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static Management.Configurations.UpdateInfo GetServerUpdateInfo(string table)
-        {
-            Management.Configurations.UpdateInfo result = null;
+        //public static Management.Configurations.UpdateInfo GetServerUpdateInfo(string table)
+        //{
+        //    Management.Configurations.UpdateInfo result = null;
 
-            NameValueCollection values = new NameValueCollection();
-            values["tablename"] = table;
+        //    NameValueCollection values = new NameValueCollection();
+        //    values["tablename"] = table;
 
-            string url = "https://www.feenux.com/php/configurations/getserverupdateinfo.php";
+        //    string url = "https://www.feenux.com/php/configurations/getserverupdateinfo.php";
 
-            string responseString = HTTP.SendData(url, values);
+        //    string responseString = HTTP.SendData(url, values);
 
-            result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
+        //    result = JSON.ToType<Management.Configurations.UpdateInfo>(responseString);
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static bool UpdateConfigurationTable(string tableName, DataTable dt)
+        public static bool Update(string tableName, DataTable dt)
         {
             bool result = false;
 
@@ -331,7 +272,7 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
-        public static bool UpdateConfigurationTable(string address, string value, string tableName)
+        public static bool Update(string address, string value, string tableName)
         {
             bool result = false;
 
@@ -362,7 +303,7 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
-        public static bool UpdateConfigurationTable(string address, string value, string attributes, string tableName)
+        public static bool Update(string address, string value, string attributes, string tableName)
         {
             bool result = false;
 
@@ -392,7 +333,7 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
-        public static bool ClearConfigurationTable(string tableName)
+        public static bool Clear(string tableName)
         {
             bool result = false;
 
@@ -409,7 +350,7 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
-        public static bool CreateConfigurationTable(string tableName)
+        public static bool Create(string tableName)
         {
             bool result = false;
 
@@ -449,62 +390,58 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
-        public static bool CreateConfigurationTable(UserConfiguration userConfig, Configuration configuration)
-        {
-            bool result = false;
+        //public static bool Create(UserConfiguration userConfig, Configuration configuration)
+        //{
+        //    bool result = false;
 
-            object[] columns = new object[] 
-            {
-                "address varchar(90)",
-                "name varchar(90)",
-                "value varchar(90)",
-                "attributes varchar(90)"
-            };
+        //    object[] columns = new object[] 
+        //    {
+        //        "address varchar(90)",
+        //        "name varchar(90)",
+        //        "value varchar(90)",
+        //        "attributes varchar(90)"
+        //    };
 
-            string primaryKey = "address";
+        //    string primaryKey = "address";
 
-            string table = GetConfigurationTableName(userConfig, configuration);
+        //    string table = GetConfigurationTableName(userConfig, configuration);
 
-            NameValueCollection values = new NameValueCollection();
+        //    NameValueCollection values = new NameValueCollection();
 
-            string coldef = "";
+        //    string coldef = "";
 
-            //Create Column Definition string
-            for (int x = 0; x <= columns.Length - 1; x++)
-            {
-                coldef += columns[x].ToString();
-                if (x < columns.Length - 1) coldef += ",";
-            }
+        //    //Create Column Definition string
+        //    for (int x = 0; x <= columns.Length - 1; x++)
+        //    {
+        //        coldef += columns[x].ToString();
+        //        if (x < columns.Length - 1) coldef += ",";
+        //    }
 
-            string Keydef = "";
-            if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+        //    string Keydef = "";
+        //    if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
 
-            values["query"] = "CREATE TABLE IF NOT EXISTS " + table + " (" + coldef + Keydef + ")";
+        //    values["query"] = "CREATE TABLE IF NOT EXISTS " + table + " (" + coldef + Keydef + ")";
 
-            string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
+        //    string url = "https://www.feenux.com/php/configurations/createconfigurationtable.php";
 
 
-            string responseString = HTTP.SendData(url, values);
+        //    string responseString = HTTP.SendData(url, values);
 
-            if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+        //    if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static string GetConfigurationTableName(UserConfiguration userConfig, Configuration configuration)
-        {
-            string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Device_Type + "_" + configuration.Description.Device_ID + "_Configuration";
-            table = table.Replace(' ', '_');
+        //public static string GetConfigurationTableName(UserConfiguration userConfig, Configuration configuration)
+        //{
+        //    string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Device_Type + "_" + configuration.Description.Device_ID + "_Configuration";
+        //    table = table.Replace(' ', '_');
 
-            return table;
-        }
+        //    return table;
+        //}
 
-        public static string CreateConfigurationTableName(UserConfiguration userConfig)
-        {
-            return userConfig.username + "_" + String_Functions.RandomString(20);
-        }
 
-        public static bool RemoveConfigurationTable(string tableName)
+        public static bool Remove(string tableName)
         {
             bool result = false;
 
@@ -523,6 +460,10 @@ namespace TH_UserManagement.Management.Remote
         }
 
 
+        static string CreateTableName(UserConfiguration userConfig)
+        {
+            return userConfig.username + "_" + String_Functions.RandomString(20);
+        }
 
         static string ConvertDateStringtoMySQL(string DateString)
         {

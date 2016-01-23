@@ -212,7 +212,8 @@ namespace TH_DeviceManager.Pages.AddDevice
                 // Set Image --------------------------------------------
                 if (item.image_url != null)
                 {
-                    img = Images.GetImage(item.image_url, userDatabaseSettings);
+                    // Just use Remote.Images (don't look for local)
+                    img = TH_UserManagement.Management.Remote.Images.GetImage(item.image_url);
                 }
                 // ------------------------------------------------------
 
@@ -235,7 +236,8 @@ namespace TH_DeviceManager.Pages.AddDevice
                     // Set Image --------------------------------------------
                     if (item.image_url != null)
                     {
-                        img = Images.GetImage(item.image_url, userDatabaseSettings);
+                        // Just use Remote.Images (don't look for local)
+                        img = TH_UserManagement.Management.Remote.Images.GetImage(item.image_url);
                     }
                     // ------------------------------------------------------
 
@@ -353,7 +355,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                     {
                         Shared.UpdateDownloads(item.listitem);
 
-                        DataTable dt = Configurations.GetConfigurationTable(tablename, userDatabaseSettings);
+                        DataTable dt = Configurations.GetConfigurationTable(tablename, null);
                         if (dt != null)
                         {
                             XmlDocument xml = Converter.TableToXML(dt);
@@ -394,9 +396,8 @@ namespace TH_DeviceManager.Pages.AddDevice
             }
             else
             {
-                MessageBox.Show("Add device failed. Try Again.", "Add device failed", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            
+                TH_WPF.MessageBox.Show("Add device failed. Try Again.", "Add device failed", TH_WPF.MessageBoxButtons.Ok);
+            }        
         }
 
         #endregion
@@ -405,13 +406,11 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         void AddBlankConfiguration()
         {
-
             Configuration config = CreateBlankConfiguration();
 
             Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
 
             if (DeviceAdded != null) DeviceAdded(config);
-
         }
 
         Configuration CreateBlankConfiguration()
@@ -420,10 +419,6 @@ namespace TH_DeviceManager.Pages.AddDevice
 
             return result;
         }
-
-
-
-
 
         #endregion
 
