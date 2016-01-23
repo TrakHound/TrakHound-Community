@@ -71,16 +71,16 @@
         
         <!--<levelindicator:Indicator x:Name="levels_LI" Foreground="Blue" BorderBrush="Red" HorizontalAlignment="Center" Width="50" Height="50"/>-->
         
-        <!--<ComboBox Width="150" Height="30" IsEditable="True">
+        <ComboBox Width="150" Height="30" IsEditable="True">
             <ComboBoxItem Content="Test 1"/>
             <ComboBoxItem Content="Test 2"/>
             <ComboBoxItem Content="Test 3"/>
             <ComboBoxItem Content="Test 4"/>
             <ComboBoxItem Content="Test 5"/>
             <ComboBoxItem Content="Test 6"/>
-        </ComboBox>-->
+        </ComboBox>
         
-        <th_wpf:ImageBox Image="{Binding Image}" ImageSet="True" Width="300" Height="300" />
+        <!--<th_wpf:ImageBox Image="{Binding Image}" ImageSet="True" Width="300" Height="300" />-->
         
     </Grid>
     

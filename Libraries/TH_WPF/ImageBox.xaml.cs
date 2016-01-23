@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Threading;
+
 using TH_Global.Functions;
 
 namespace TH_WPF
@@ -22,6 +24,8 @@ namespace TH_WPF
     /// </summary>
     public partial class ImageBox : UserControl
     {
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
+
         public ImageBox()
         {
             InitializeComponent();
@@ -40,28 +44,6 @@ namespace TH_WPF
             DependencyProperty.Register("Title", typeof(string), typeof(ImageBox), new PropertyMetadata(null));
 
 
-        public void SetBackgroundColor(ImageSource img)
-        {
-            double brightness = 0;
-
-            if (img != null)
-            {
-                BitmapImage bmpImg = img as BitmapImage;
-                if (bmpImg != null)
-                {
-                    System.Drawing.Bitmap bmp = TH_Global.Functions.Image_Functions.BitmapImage2Bitmap(bmpImg);
-                    if (bmp != null)
-                    {
-                        System.Drawing.Color color = TH_Global.Functions.Image_Functions.CalculateAverageColor(bmp);
-                        brightness = color.GetBrightness();
-                    }
-                }
-            }
-
-            if (brightness > 0.8) bd.Background = new SolidColorBrush(Color_Functions.GetColorFromString("#ddd"));
-            else bd.Background = null;
-        }
-
         public ImageSource Image
         {
             get { return (ImageSource)GetValue(ImageProperty); }
@@ -76,13 +58,11 @@ namespace TH_WPF
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(ImageBox), new PropertyMetadata(null, new PropertyChangedCallback(ImagePropertyChanged)));
 
 
-
         private static void ImagePropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
         {
             ImageBox imgBox = (ImageBox)dependencyObject;
             imgBox.SetBackgroundColor(eventArgs.NewValue as ImageSource);
         }
-
 
 
         public string HelpText
@@ -93,7 +73,6 @@ namespace TH_WPF
 
         public static readonly DependencyProperty HelpTextProperty =
             DependencyProperty.Register("HelpText", typeof(string), typeof(ImageBox), new PropertyMetadata(null));
-
 
 
 
@@ -148,6 +127,92 @@ namespace TH_WPF
 
         #endregion
 
+        #region "Background Color (Shade)"
+
+        public bool DarkBackground
+        {
+            get { return (bool)GetValue(DarkBackgroundProperty); }
+            set { SetValue(DarkBackgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty DarkBackgroundProperty =
+            DependencyProperty.Register("DarkBackground", typeof(bool), typeof(ImageBox), new PropertyMetadata(false));
+
+        
+        Thread backgroundcolor_THREAD;
+
+        //public void SetBackgroundColor(ImageSource img)
+        //{
+        //    double brightness = 0;
+
+        //    if (img != null)
+        //    {
+        //        BitmapImage bmpImg = img as BitmapImage;
+        //        if (bmpImg != null)
+        //        {
+        //            System.Drawing.Bitmap bmp = TH_Global.Functions.Image_Functions.BitmapImage2Bitmap(bmpImg);
+        //            if (bmp != null)
+        //            {
+        //                System.Drawing.Color color = TH_Global.Functions.Image_Functions.CalculateAverageColor(bmp);
+        //                brightness = color.GetBrightness();
+        //            }
+        //        }
+        //    }
+
+        //    if (brightness > 0.8) bd.Background = new SolidColorBrush(Color_Functions.GetColorFromString("#ddd"));
+        //    else bd.Background = null;
+        //}
+
+        void SetBackgroundColor(ImageSource img)
+        {
+            if (img != null)
+            {
+                img.Freeze();
+
+                if (backgroundcolor_THREAD != null) backgroundcolor_THREAD.Abort();
+
+                backgroundcolor_THREAD = new Thread(new ParameterizedThreadStart(SetBackgroundColor_Worker));
+                backgroundcolor_THREAD.Start(img);
+            }
+        }
+
+        void SetBackgroundColor_Worker(object o)
+        {
+            if (o != null)
+            {
+                ImageSource img = (ImageSource)o;
+
+                double brightness = 0;
+
+                if (img != null)
+                {
+                    BitmapImage bmpImg = img as BitmapImage;
+                    if (bmpImg != null)
+                    {
+                        System.Drawing.Bitmap bmp = TH_Global.Functions.Image_Functions.BitmapImage2Bitmap(bmpImg);
+                        if (bmp != null)
+                        {
+                            System.Drawing.Color color = TH_Global.Functions.Image_Functions.CalculateAverageColor(bmp);
+                            brightness = color.GetBrightness();
+                        }
+                    }
+                }
+
+                this.Dispatcher.BeginInvoke(new Action<double>(LoadProfileImage_GUI), priority, new object[] { brightness });
+            }
+        }
+
+        void LoadProfileImage_GUI(double brightness)
+        {
+            //if (brightness > 0.8) bd.Background = new SolidColorBrush(Color_Functions.GetColorFromString("#ddd"));
+            //else bd.Background = null;
+
+            if (brightness > 0.8) DarkBackground = true;
+            else DarkBackground = false;
+        }
+
+        #endregion
+
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender.GetType() == typeof(Rectangle))
@@ -198,11 +263,6 @@ namespace TH_WPF
                 }
             }
         }
-
-        //private void Upload_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    if (UploadClicked != null) UploadClicked(this);
-        //}
 
         private void Clear_MouseDown(object sender, MouseButtonEventArgs e)
         {

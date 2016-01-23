@@ -521,110 +521,91 @@
 
                                 <!--Login-->
                                 <Grid x:Name="Login_GRID" DockPanel.Dock="Right" PreviewMouseDown="Login_GRID_PreviewMouseDown" Margin="5,0" Cursor="Hand">
-                                    
-                                    <StackPanel Orientation="Horizontal">
 
-                                        <!--Local User Text-->
-                                        <TextBlock Text="Local User Accounts" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20,0,40,0">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="#88000000"/>
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding UserDatabaseSettings}" Value="true">
-                                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                    <!--Logged In-->
+                                    <Border>
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Opacity" Value="0.0"/>
+                                                <Setter Property="MaxWidth" Value="200"/>
+                                                <Setter Property="CornerRadius" Value="0,0,2,2"/>
+                                                <Setter Property="Background" Value="{StaticResource Accent_Normal}" />
+                                                <Style.Triggers>
+
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="{StaticResource Accent_Light}" />
+                                                    </Trigger>
+
+                                                    <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="200" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="0" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
 
                                         <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
 
-                                            <!--Logged In-->
-                                            <Border>
-                                                <Border.Style>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="Opacity" Value="0.0"/>
-                                                        <Setter Property="MaxWidth" Value="200"/>
-                                                        <Setter Property="CornerRadius" Value="0,0,2,2"/>
-                                                        <Setter Property="Background" Value="{StaticResource Accent_Normal}" />
-                                                        <Style.Triggers>
-
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Background" Value="{StaticResource Accent_Light}" />
-                                                            </Trigger>
-
-                                                            <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                                                                <DataTrigger.EnterActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                                                <DoubleAnimation.EasingFunction>
-                                                                                    <CubicEase EasingMode="EaseIn"/>
-                                                                                </DoubleAnimation.EasingFunction>
-                                                                            </DoubleAnimation>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                                <DiscreteDoubleKeyFrame Value="200" />
-                                                                            </DoubleAnimationUsingKeyFrames>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </DataTrigger.EnterActions>
-                                                                <DataTrigger.ExitActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                                                <DoubleAnimation.EasingFunction>
-                                                                                    <CubicEase EasingMode="EaseIn"/>
-                                                                                </DoubleAnimation.EasingFunction>
-                                                                            </DoubleAnimation>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                                <DiscreteDoubleKeyFrame Value="0" />
-                                                                            </DoubleAnimationUsingKeyFrames>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </DataTrigger.ExitActions>
-                                                            </DataTrigger>
-
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Border.Style>
-
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="auto"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <Grid Grid.ColumnSpan="2">
-                                                        <Grid.Background>
-                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                <GradientStop Color="Transparent" Offset="0"/>
-                                                                <GradientStop Color="#40ffffff" Offset="1"/>
-                                                            </LinearGradientBrush>
-                                                            <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <Grid Grid.ColumnSpan="2">
+                                                <Grid.Background>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="Transparent" Offset="0"/>
+                                                        <GradientStop Color="#40ffffff" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                    <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                         <GradientStop Color="#00ffffff" Offset="0"/>
                                                         <GradientStop Color="#00ffffff" Offset="0.5"/>
                                                         <GradientStop Color="#40ffffff" Offset="1"/>
                                                     </LinearGradientBrush>-->
-                                                        </Grid.Background>
-                                                    </Grid>
+                                                </Grid.Background>
+                                            </Grid>
 
 
 
-                                                    <!--UserName-->
-                                                    <TextBlock Text="{Binding CurrentUsername}" Foreground="{StaticResource Foreground_Opposite_Normal}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
+                                            <!--UserName-->
+                                            <TextBlock Text="{Binding CurrentUsername}" Foreground="{StaticResource Foreground_Opposite_Normal}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
 
-                                                    <!--Arrow-->
-                                                    <Path 
+                                            <!--Arrow-->
+                                            <Path 
                                         Fill="{StaticResource Foreground_Opposite_Normal}"
                                         Margin="5"
                                         Grid.Column="1"     
@@ -633,126 +614,140 @@
                                           Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
                                           />
 
-                                                </Grid>
+                                        </Grid>
 
-                                            </Border>
+                                    </Border>
 
-                                            <!--Logged Out-->
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="auto"/>
-                                                </Grid.ColumnDefinitions>
+                                    <!--Logged Out-->
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                                                <Grid.Style>
-                                                    <Style TargetType="Grid">
-                                                        <Setter Property="Opacity" Value="1.0"/>
-                                                        <Setter Property="MaxWidth" Value="100"/>
-                                                        <!--<Setter Property="Opacity" Value="0.0"/>-->
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="Opacity" Value="1.0"/>
+                                                <Setter Property="MaxWidth" Value="100"/>
+                                                <!--<Setter Property="Opacity" Value="0.0"/>-->
 
-                                                        <Setter Property="Background" Value="#00000000" />
-                                                        <Style.Triggers>
+                                                <Setter Property="Background" Value="#00000000" />
+                                                <Style.Triggers>
 
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Trigger.EnterActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </Trigger.EnterActions>
-                                                                <Trigger.ExitActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard FillBehavior="Stop">
-                                                                            <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </Trigger.ExitActions>
-                                                            </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard FillBehavior="Stop">
+                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
 
-                                                            <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                                                                <DataTrigger.EnterActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                                                <DoubleAnimation.EasingFunction>
-                                                                                    <CubicEase EasingMode="EaseIn"/>
-                                                                                </DoubleAnimation.EasingFunction>
-                                                                            </DoubleAnimation>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                                <DiscreteDoubleKeyFrame Value="0" />
-                                                                            </DoubleAnimationUsingKeyFrames>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </DataTrigger.EnterActions>
-                                                                <DataTrigger.ExitActions>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                                                <DoubleAnimation.EasingFunction>
-                                                                                    <CubicEase EasingMode="EaseIn"/>
-                                                                                </DoubleAnimation.EasingFunction>
-                                                                            </DoubleAnimation>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                    <BeginStoryboard>
-                                                                        <Storyboard>
-                                                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                                <DiscreteDoubleKeyFrame Value="100" />
-                                                                            </DoubleAnimationUsingKeyFrames>
-                                                                        </Storyboard>
-                                                                    </BeginStoryboard>
-                                                                </DataTrigger.ExitActions>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Grid.Style>
+                                                    <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="0" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseIn"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
+                                                                        <DiscreteDoubleKeyFrame Value="100" />
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
 
-                                                <!--Text-->
-                                                <TextBlock Text="Login" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
-                                                                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
+                                        <!--Text-->
+                                        <TextBlock Text="Login" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
+                                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
 
-                                                <!--Arrow-->
-                                                <Path 
+                                        <!--Arrow-->
+                                        <Path 
                                         Margin="5"
                                         Grid.Column="1"     
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
                                           >
-                                                    <Path.Style>
-                                                        <Style TargetType="Path">
-                                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
-                                                                    <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Path.Style>
-                                                </Path>
+                                            <Path.Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
+                                                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Path.Style>
+                                        </Path>
 
-                                            </Grid>
+                                    </Grid>
 
-                                        </Grid>
-
-                                    </StackPanel>
-                                    
                                 </Grid>
+
+                                <!--Local User Database Indicator-->
+                                <TextBlock Text="Local" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="20,0,40,0">
+                                    <TextBlock.ToolTip>
+                                        User Accounts are set to load from a Local database
+                                    </TextBlock.ToolTip>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="#88000000"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding UserDatabaseSettings}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <!--TrakHound Icon-->
                                 <Image x:Name="Icon_IMG" DockPanel.Dock="Left" Width="23" Height="23" Margin="5,1,12,3" Source="Resources/TrakHound_Logo_Initials_10_30px.png"/>

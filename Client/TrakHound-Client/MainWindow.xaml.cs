@@ -95,6 +95,7 @@ namespace TrakHound_Client
             devicemanager.UserDatabaseSettings = UserDatabaseSettings;
 
             LoginMenu.rememberMeType = RememberMeType.Client;
+            LoginMenu.UserDatabaseSettings = UserDatabaseSettings;
             LoginMenu.LoadRememberMe();
 
             Splash_UpdateStatus("...Loading Plugins");

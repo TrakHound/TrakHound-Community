@@ -85,10 +85,22 @@ namespace TH_UserManagement.Management.Local
 
             CreateUserTable(db);
 
+            Security.Password pwd = null;
+
+            if (password != null)
+            {
+                pwd = new Security.Password(password);
+            }
+
             List<string> columns = new List<string>();
             columns.Add("username");
-            columns.Add("hash");
-            columns.Add("salt");
+
+            if (password != null)
+            {
+                columns.Add("hash");
+                columns.Add("salt");
+            }
+
             columns.Add("first_name");
             columns.Add("last_name");
             columns.Add("company");
@@ -101,12 +113,16 @@ namespace TH_UserManagement.Management.Local
             columns.Add("country");
             columns.Add("zipcode");
 
-            Security.Password pwd = new Security.Password(password);
 
             List<object> values = new List<object>();
             values.Add(userConfig.username.ToLower());
-            values.Add(pwd.hash);
-            values.Add(pwd.salt);
+
+            if (password != null)
+            {
+                values.Add(pwd.hash);
+                values.Add(pwd.salt);
+            }
+
             values.Add(String_Functions.ToLower(userConfig.first_name));
             values.Add(String_Functions.ToLower(userConfig.last_name));
             values.Add(String_Functions.ToLower(userConfig.company));
@@ -125,7 +141,7 @@ namespace TH_UserManagement.Management.Local
 
         }
 
-        public static void UpdateLoginTime(UserConfiguration userConfig, Database_Settings db)
+        public static bool UpdateLoginTime(UserConfiguration userConfig, Database_Settings db)
         {
 
             List<string> columns = new List<string>();
@@ -137,9 +153,11 @@ namespace TH_UserManagement.Management.Local
             values.Add(userConfig.last_login);
 
             Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), primaryKey, true);
+
+            return true;
         }
 
-        public static void UpdateImageURL(string imageURL, UserConfiguration userConfig, Database_Settings db)
+        public static bool UpdateImageURL(string imageURL, UserConfiguration userConfig, Database_Settings db)
         {
             userConfig.image_url = imageURL;
 
@@ -152,6 +170,8 @@ namespace TH_UserManagement.Management.Local
             values.Add(imageURL);
 
             Row.Insert(db, tablename, columns.ToArray(), values.ToArray(), primaryKey, true);
+
+            return true;
         }
 
         public static bool VerifyUsername(string username, Database_Settings db)

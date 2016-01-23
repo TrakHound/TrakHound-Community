@@ -6,9 +6,7 @@
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
-             
-             Loaded="UserControl_Loaded"
-             
+
              mc:Ignorable="d" 
              d:DesignWidth="800"
              >

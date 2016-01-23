@@ -33,6 +33,8 @@ namespace TH_UserManagement
     /// </summary>
     public partial class MyAccountPage : UserControl, TH_Global.Page
     {
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
+
         public MyAccountPage()
         {
             InitializeComponent();
@@ -45,9 +47,6 @@ namespace TH_UserManagement
             foreach (string state in States.Abbreviations) StateList.Add(state);
 
             SetPageType(CurrentUser);
-
-            //PageName = "Create Account";
-            //Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
         }
 
         Database_Settings userDatabaseSettings;
@@ -70,61 +69,77 @@ namespace TH_UserManagement
         }
 
         public static readonly DependencyProperty CurrentUserProperty =
-            DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(MyAccountPage), new PropertyMetadata(null));
+           DependencyProperty.Register("CurrentUser", typeof(UserConfiguration), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
         public delegate void UserChanged_Handler(UserConfiguration userConfig);
         public event UserChanged_Handler UserChanged;
 
-
-        public string PageName { get; set; }
-
-        public ImageSource Image { get; set; }
-
-        BitmapImage NoProfileImage = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01.png"));
-
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        public string PageName
         {
-            LoadUserConfiguration(CurrentUser, UserDatabaseSettings);
+            get { return (string)GetValue(PageNameProperty); }
+            set { SetValue(PageNameProperty, value); }
         }
 
+        public static readonly DependencyProperty PageNameProperty =
+            DependencyProperty.Register("PageName", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
+
+        public ImageSource Image
+        {
+            get { return (ImageSource)GetValue(ImageProperty); }
+            set { SetValue(ImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ImageProperty =
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(MyAccountPage), new PropertyMetadata(null));
+
+        
         public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {
             CurrentUser = userConfig;
             UserDatabaseSettings = userDatabaseSettings;
-                 
-            if (this.IsLoaded)
+
+            SetPageType(userConfig);
+
+            if (userConfig != null)
             {
-                if (userConfig != null)
-                {
-                    FirstName = String_Functions.UppercaseFirst(userConfig.first_name);
-                    LastName = String_Functions.UppercaseFirst(userConfig.last_name);
+                SetDependencyProperty(MyAccountPage.FirstNameProperty, String_Functions.UppercaseFirst(userConfig.first_name));
+                SetDependencyProperty(MyAccountPage.LastNameProperty, String_Functions.UppercaseFirst(userConfig.last_name));
 
-                    Username = String_Functions.UppercaseFirst(userConfig.username);
-                    Email = userConfig.email;
+                SetDependencyProperty(MyAccountPage.UsernameProperty, String_Functions.UppercaseFirst(userConfig.username));
+                SetDependencyProperty(MyAccountPage.EmailProperty, userConfig.email);
 
-                    Company = String_Functions.UppercaseFirst(userConfig.company);
-                    Phone = userConfig.phone;
-                    Address1 = userConfig.address1;
-                    Address2 = userConfig.address2;
-                    City = String_Functions.UppercaseFirst(userConfig.city);
+                SetDependencyProperty(MyAccountPage.CompanyProperty, String_Functions.UppercaseFirst(userConfig.company));
+                SetDependencyProperty(MyAccountPage.PhoneProperty, userConfig.phone);
+                SetDependencyProperty(MyAccountPage.Address1Property, userConfig.address1);
+                SetDependencyProperty(MyAccountPage.Address2Property, userConfig.address2);
+                SetDependencyProperty(MyAccountPage.CityProperty, userConfig.city);
 
-                    int country = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.country));
-                    if (country >= 0) country_COMBO.SelectedIndex = country;
+                int country = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.country));
+                if (country >= 0) country_COMBO.SelectedIndex = country;
 
-                    int state = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.state));
-                    if (state >= 0) state_COMBO.SelectedIndex = state;
+                int state = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.state));
+                if (state >= 0) state_COMBO.SelectedIndex = state;
 
-                    ZipCode = userConfig.zipcode;
+                SetDependencyProperty(MyAccountPage.ZipCodeProperty, userConfig.zipcode);
 
-                    LoadProfileImage(userConfig);
-                }
-                else
-                {
-                    CleanForm();
-                }
+                LoadProfileImage(userConfig);
             }
+            else
+            {
+                CleanForm();
+            }
+        }
+
+        void SetDependencyProperty(DependencyProperty dp, object value)
+        {
+            this.Dispatcher.BeginInvoke(new Action<DependencyProperty, object>(SetDependencyProperty_GUI), priority, new object[] { dp, value });
+        }
+
+        void SetDependencyProperty_GUI(DependencyProperty dp, object value)
+        {
+            SetValue(dp, value);
         }
 
 
@@ -153,15 +168,19 @@ namespace TH_UserManagement
             password_TXT.PasswordText = null;
             confirmpassword_TXT.PasswordText = null;
 
-            FirstName = null;
-            LastName = null;
-            Username = null;
-            Email = null;
-            Phone = null;
-            Address1 = null;
-            Address2 = null;
-            City = null;
-            ZipCode = null;
+            SetDependencyProperty(MyAccountPage.FirstNameProperty, null);
+            SetDependencyProperty(MyAccountPage.LastNameProperty, null);
+
+            SetDependencyProperty(MyAccountPage.UsernameProperty, null);
+            SetDependencyProperty(MyAccountPage.EmailProperty, null);
+
+            SetDependencyProperty(MyAccountPage.CompanyProperty, null);
+            SetDependencyProperty(MyAccountPage.PhoneProperty, null);
+            SetDependencyProperty(MyAccountPage.Address1Property, null);
+            SetDependencyProperty(MyAccountPage.Address2Property, null);
+            SetDependencyProperty(MyAccountPage.CityProperty, null);
+
+            SetDependencyProperty(MyAccountPage.ZipCodeProperty, null);
 
             int US = CountryList.ToList().FindIndex(x => x == "United States");
             if (US >= 0) country_COMBO.SelectedIndex = US;
@@ -692,8 +711,6 @@ namespace TH_UserManagement
         public static readonly DependencyProperty ProfileImageLoadingProperty =
             DependencyProperty.Register("ProfileImageLoading", typeof(bool), typeof(MyAccountPage), new PropertyMetadata(false));
 
-        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
         Thread profileimage_THREAD;
 
         void LoadProfileImage(UserConfiguration userConfig)
@@ -717,28 +734,31 @@ namespace TH_UserManagement
 
                 if (userConfig != null)
                 {
-                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, UserDatabaseSettings);
+                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, userDatabaseSettings);
+                    if (img != null)
+                    {
+                        System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 
-                    this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadProfileImage_GUI), priority, new object[] { img });
+                        IntPtr bmpPt = bmp.GetHbitmap();
+                        BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                        bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 200, 200);
+
+                        bmpSource.Freeze();
+
+                        this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
+                    }
                 }
 
                 this.Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), priority, new object[] { });
             }
         }
 
-        void LoadProfileImage_GUI(System.Drawing.Image img)
+        void LoadProfileImage_GUI(BitmapSource src)
         {
-            if (img != null)
+            if (src != null)
             {
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
-
-                IntPtr bmpPt = bmp.GetHbitmap();
-                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                bmpSource.Freeze();
-
-                ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 200, 200);
-
+                ProfileImage = src;
                 ProfileImageSet = true;
             }
         }

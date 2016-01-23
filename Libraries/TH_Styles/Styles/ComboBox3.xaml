@@ -4,8 +4,18 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Colors.xaml" />
     </ResourceDictionary.MergedDictionaries>
+    
+    
 
     <ControlTemplate TargetType="ToggleButton" x:Key="ComboBoxToggleButtonTemplate">
+        
+        <ControlTemplate.Resources>
+            <LinearGradientBrush x:Key="ShadeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#20ffffff" Offset="0"/>
+                <GradientStop Color="#20ffffff" Offset="0.3"/>
+                <GradientStop Color="Transparent" Offset="1"/>
+            </LinearGradientBrush>
+        </ControlTemplate.Resources>
         
         <Grid>
             <Grid.ColumnDefinitions>
@@ -21,6 +31,8 @@
             <Border Grid.Column="1" Margin="0, 0, 0, 0" BorderBrush="{StaticResource Shade_Normal}" Name="ButtonBorder"
               CornerRadius="0, 0, 0, 0" BorderThickness="0, 1, 1, 1" 
               Background="{StaticResource Window_Background}" />
+            
+            <Border Grid.Column="1" Name="ToggleShade" Background="Transparent"/>
 
             <Path Name="Arrow" Grid.Column="1" 
             Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
@@ -31,20 +43,30 @@
         
         <ControlTemplate.Triggers>
 
+            <DataTrigger Binding="{Binding IsMouseOver, ElementName=ToggleShade}" Value="True">
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </DataTrigger>
+
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=ButtonBorder}" Value="True">
                 <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
                 <Setter Property="Cursor" Value="Hand"/>
             </DataTrigger>
 
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=Arrow}" Value="True">
                 <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
                 <Setter Property="Cursor" Value="Hand"/>
             </DataTrigger>
 
             <Trigger Property="ToggleButton.IsChecked" Value="True">
                 <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Foreground_Opposite_Normal}"/>
             </Trigger>
 

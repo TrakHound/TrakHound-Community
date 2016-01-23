@@ -46,33 +46,32 @@ namespace TrakHound_Client.Controls
             }
         }
 
-
-        public string CurrentPageName
+        public TH_Global.Page PageContent
         {
-            get { return (string)GetValue(CurrentPageNameProperty); }
-            set { SetValue(CurrentPageNameProperty, value); }
-        }
-
-        public static readonly DependencyProperty CurrentPageNameProperty =
-            DependencyProperty.Register("CurrentPageName", typeof(string), typeof(PageManager), new PropertyMetadata(null));
-
-
-
-        public object PageContent
-        {
-            get { return (object)GetValue(PageContentProperty); }
+            get { return (TH_Global.Page)GetValue(PageContentProperty); }
             set { SetValue(PageContentProperty, value); }
         }
 
         public static readonly DependencyProperty PageContentProperty =
-            DependencyProperty.Register("PageContent", typeof(object), typeof(PageManager), new PropertyMetadata(null));
+            DependencyProperty.Register("PageContent", typeof(TH_Global.Page), typeof(PageManager), new PropertyMetadata(null));
 
 
         public void AddPage(TH_Global.Page page)
         {
             ListButton lb = new ListButton();
-            lb.Image = Image_Functions.SetImageSize(page.Image, 20);
-            lb.Text = page.PageName;
+
+            // Bind ListButton.Text to PageName property
+            var pageImageBinding = new Binding();
+            pageImageBinding.Source = this;
+            pageImageBinding.Path = new PropertyPath("PageContent.Image");
+            BindingOperations.SetBinding(lb, ListButton.ImageProperty, pageImageBinding);
+
+            // Bind ListButton.Text to PageName property
+            var pageNameBinding = new Binding();
+            pageNameBinding.Source = this;
+            pageNameBinding.Path = new PropertyPath("PageContent.PageName");
+            BindingOperations.SetBinding(lb, ListButton.TextProperty, pageNameBinding);
+
             lb.Selected += ListButton_Selected;
             lb.DataObject = page;
 
@@ -98,10 +97,7 @@ namespace TrakHound_Client.Controls
                 else oLB.IsSelected = false;
             }
 
-            UserControl page = LB.DataObject as UserControl;
-
-            CurrentPageName = LB.Text;
-
+            var page = LB.DataObject as TH_Global.Page;
             PageContent = page;
         }
 
@@ -117,10 +113,7 @@ namespace TrakHound_Client.Controls
                     else oLB.IsSelected = false;
                 }
 
-                UserControl page = lb.DataObject as UserControl;
-
-                CurrentPageName = lb.Text;
-
+                var page = lb.DataObject as TH_Global.Page;
                 PageContent = page;
             }
         }

@@ -32,6 +32,8 @@ namespace TH_UserManagement
     /// </summary>
     public partial class Menu : UserControl
     {
+        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
+
         public Menu()
         {
             InitializeComponent();
@@ -344,9 +346,6 @@ namespace TH_UserManagement
         //}
 
 
-        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
-
         public void LoadUserConfiguration(UserConfiguration userConfig)
         {
             if (userConfig != null)
@@ -536,6 +535,7 @@ namespace TH_UserManagement
             UserConfiguration RememberUser = TH_UserManagement.Management.RememberMe.Get(rememberMeType, userDatabaseSettings);
 
             if (RememberUser != null) TH_UserManagement.Management.RememberMe.Set(RememberUser, rememberMeType, userDatabaseSettings);
+            else TH_UserManagement.Management.RememberMe.Clear(rememberMeType, userDatabaseSettings);
 
             this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
         }
@@ -616,29 +616,66 @@ namespace TH_UserManagement
                 if (userConfig != null)
                 {
                     System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, userDatabaseSettings);
+                    if (img != null)
+                    {
+                        System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 
-                    this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadProfileImage_GUI), priority, new object[] { img });
+                        IntPtr bmpPt = bmp.GetHbitmap();
+                        BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+                        bmpSource = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+
+                        bmpSource.Freeze();
+
+                        this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadProfileImage_GUI), priority, new object[] { bmpSource });
+                    }
                 }
 
                 this.Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), priority, new object[] { });
             }
         }
 
-        void LoadProfileImage_GUI(System.Drawing.Image img)
+        void LoadProfileImage_GUI(BitmapSource src)
         {
-            if (img != null)
+            if (src != null)
             {
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
-
-                IntPtr bmpPt = bmp.GetHbitmap();
-                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                bmpSource.Freeze();
-
-                ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+                ProfileImage = src;
                 ProfileImageSet = true;
             }
         }
+
+        //void LoadProfileImage_Worker(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        UserConfiguration userConfig = (UserConfiguration)o;
+
+        //        if (userConfig != null)
+        //        {
+        //            System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, userDatabaseSettings);
+
+        //            this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadProfileImage_GUI), priority, new object[] { img });
+        //        }
+
+        //        this.Dispatcher.BeginInvoke(new Action(LoadProfileImage_Finished), priority, new object[] { });
+        //    }
+        //}
+
+        //void LoadProfileImage_GUI(System.Drawing.Image img)
+        //{
+        //    if (img != null)
+        //    {
+        //        System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+
+        //        IntPtr bmpPt = bmp.GetHbitmap();
+        //        BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+
+        //        bmpSource.Freeze();
+
+        //        ProfileImage = TH_WPF.Image_Functions.SetImageSize(bmpSource, 120, 120);
+        //        ProfileImageSet = true;
+        //    }
+        //}
 
         void LoadProfileImage_Finished()
         {
