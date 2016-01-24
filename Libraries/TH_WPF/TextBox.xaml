@@ -61,28 +61,6 @@
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
-                                <!--<Trigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.EnterActions>
-                                <Trigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard FillBehavior="Stop">
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </Trigger.ExitActions>-->
                             </Trigger>
                             <DataTrigger Binding="{Binding HelpText}" Value="{x:Null}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -117,6 +95,36 @@
                 </Border.Style>
 
                 <Grid Margin="10,0">
+
+                    <!--Example-->
+                    <TextBlock FontSize="12pt" FontStyle="Italic" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Text, ElementName=txt}" Value=""/>
+                                            <Condition Binding="{Binding Instructions}" Value=""/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Text, ElementName=txt}" Value=""/>
+                                            <Condition Binding="{Binding Instructions}" Value="{x:Null}"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        <Run Text="ex:" />
+                        <Run Text="{Binding Example}" />
+                    </TextBlock>
 
                     <!--Instructions-->
                     <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >

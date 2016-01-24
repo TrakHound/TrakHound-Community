@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
 
         <!--Top Bar-->
-        <Border x:Name="bd" CornerRadius="2">
+        <Border CornerRadius="2">
             <Border.Style>
                 <Style  TargetType="Border">
                     <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
@@ -98,6 +98,23 @@
                                       
                     </Rectangle>
                     
+                    <!--Button Text-->
+                    <TextBlock Grid.Column="1" Text="{Binding Text}" FontSize="14" Foreground="{StaticResource Foreground_Opposite_Normal}" VerticalAlignment="Center">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
                     <Grid Grid.ColumnSpan="2" MouseDown="Grid_PreviewMouseDown" Background="#00000000"/>
 
                     <!--Button Content-->
@@ -108,7 +125,6 @@
             </Grid>
 
         </Border>
-
 
         <!--Content-->
         <Grid Grid.Row="1">

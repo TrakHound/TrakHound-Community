@@ -22,12 +22,13 @@ namespace TH_Global
 
         // ShiftTable -------------------------------------
         public const string Shifts = "shifts";
-        public const string Gen_Events_TablePrefix = "gen_event_";
+        public const string ShiftSegments = "shiftsegments";
         // ------------------------------------------------
 
         // GeneratedData ----------------------------------
         public const string SnapShots = "snapshots";
         public const string GenEventValues = "geneventvalues";
+        public const string Gen_Events_TablePrefix = "gen_event_";
         // ------------------------------------------------
 
         // Cycles -----------------------------------------

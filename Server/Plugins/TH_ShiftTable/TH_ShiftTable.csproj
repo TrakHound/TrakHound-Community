@@ -118,6 +118,7 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Timer_01.png" />
     <Resource Include="Resources\Carrot_Arrow_Up_01.png" />
     <Resource Include="Resources\Add_01.png" />
   </ItemGroup>

@@ -156,7 +156,7 @@ namespace TH_UserManagement
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
             }
 
-            if (userDatabaseSettings == null) PageName = PageName + " (Local)";
+            if (userDatabaseSettings != null) PageName = PageName + " (Local)";
         }
 
         public void CleanForm()

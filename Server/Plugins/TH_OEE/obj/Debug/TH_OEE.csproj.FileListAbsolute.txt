@@ -11,3 +11,5 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\ConfigurationPage\
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\ConfigurationPage\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.g.resources
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.csproj.GenerateResource.Cache

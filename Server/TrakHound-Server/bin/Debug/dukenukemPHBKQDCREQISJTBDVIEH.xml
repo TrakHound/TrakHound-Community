@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent>
+    <IP_Address />
+    <Port />
+    <Device_Name />
+    <Current_Heartbeat>1000</Current_Heartbeat>
+    <Sample_Heartbeat>1000</Sample_Heartbeat>
+  </Agent>
+  <Databases />
+  <Description>
+    <Description>Local Test Configuration 01</Description>
+    <Device_Type />
+    <Manufacturer />
+    <Device_ID />
+    <Model />
+    <Serial />
+    <Controller />
+    <Company />
+  </Description>
+  <File_Locations>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path />
+    <Image_Path />
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>false</Conditions>
+      <Events>true</Events>
+      <Samples>false</Samples>
+      <Omit />
+    </DataItems>
+  </InstanceTable>
+  <GeneratedData>
+    <SnapShotData />
+    <GeneratedEvents>
+      <UploadToMySQL>true</UploadToMySQL>
+    </GeneratedEvents>
+  </GeneratedData>
+  <ShiftData>
+    <Shifts />
+    <GeneratedEvents />
+  </ShiftData>
+  <Cycles />
+  <OEE>
+    <Availability />
+  </OEE>
+  <ServerUpdateId>VYUZTPCBQAJUQFPJIPVB</ServerUpdateId>
+  <UniqueId>USDLVMMBTOPEUKLGGQMQ</UniqueId>
+</Settings>

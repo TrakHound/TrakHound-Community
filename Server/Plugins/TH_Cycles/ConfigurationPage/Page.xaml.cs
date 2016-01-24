@@ -39,7 +39,7 @@ namespace TH_Cycles.ConfigurationPage
 
         public string PageName { get { return "Cycles"; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_Cycles;component/Resources/Cycle_01.png")); } }
 
         public event SettingChanged_Handler SettingChanged;
 

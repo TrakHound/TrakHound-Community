@@ -35,7 +35,7 @@ namespace TH_ShiftTable.ConfigurationPage
 
         public string PageName { get { return "Shifts"; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_ShiftTable;component/Resources/Timer_01.png")); } }
 
         public event SettingChanged_Handler SettingChanged;
 

@@ -72,6 +72,16 @@ namespace TH_WPF
             DependencyProperty.Register("Instructions", typeof(string), typeof(TextBox), new PropertyMetadata(null));
 
 
+        public string Example
+        {
+            get { return (string)GetValue(ExampleProperty); }
+            set { SetValue(ExampleProperty, value); }
+        }
+
+        public static readonly DependencyProperty ExampleProperty =
+            DependencyProperty.Register("Example", typeof(string), typeof(TextBox), new PropertyMetadata(null));
+        
+
         public bool Required
         {
             get { return (bool)GetValue(RequiredProperty); }

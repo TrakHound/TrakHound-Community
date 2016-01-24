@@ -41,6 +41,14 @@ namespace TrakHound_Server
 
 
         Database_Settings userDatabaseSettings;
+        Database_Settings UserDatabaseSettings
+        {
+            get { return userDatabaseSettings; }
+            set
+            {
+                userDatabaseSettings = value;
+            }
+        }
 
         public ServerGroup()
         {
@@ -58,7 +66,9 @@ namespace TrakHound_Server
             Server.CurrentUserChanged += Server_CurrentUserChanged;
             Controller = new Controller(this);
 
-            userDatabaseSettings = GetRememberMe();
+            userDatabaseSettings = ReadUserManagementSettings();
+
+            GetRememberMe(userDatabaseSettings);
 
             //DEBUG $$$$
             //OpenDeviceManager();
@@ -99,15 +109,13 @@ namespace TrakHound_Server
         }
 
 
-        Database_Settings GetRememberMe()
+        void GetRememberMe(Database_Settings db)
         {
-            Database_Settings result = ReadUserManagementSettings();
-
             // Remember Me
-            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, result);
+            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, db);
             if (rememberUser != null)
             {
-                RememberMe.Set(rememberUser, RememberMeType.Server, result);
+                RememberMe.Set(rememberUser, RememberMeType.Server, db);
 
                 if (Server != null) Server.Login(rememberUser);
             }
@@ -115,8 +123,6 @@ namespace TrakHound_Server
             {
                 Login();
             }
-
-            return result;
         }
 
         Database_Settings ReadUserManagementSettings()
@@ -161,6 +167,7 @@ namespace TrakHound_Server
             if (login == null)
             {
                 login = new Login();
+                login.userDatabaseSettings = UserDatabaseSettings;
                 login.CurrentUserChanged += login_CurrentUserChanged;
             }
 

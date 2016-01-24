@@ -188,117 +188,67 @@ namespace TH_UserManagement.Management.Local
             return result;
         }
 
-        //public static class RememberMe
-        //{
-        //    public static bool Set(UserConfiguration userConfig, RememberMeType type)
-        //    {
-        //        bool result = false;
+        public static class RememberMe
+        {
+            public static bool Set(UserConfiguration userConfig, RememberMeType type)
+            {
+                string t = type.ToString().ToLower();
 
-        //        string id = userConfig.username;
+                // Set "id" registry key
+                TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_id", userConfig.username);
 
-        //        string t = type.ToString().ToLower();
+                // Set Date of Last Login using Remember Me
+                TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_last_login", DateTime.UtcNow.ToString());
 
-        //        NameValueCollection values = new NameValueCollection();
+                return true;
+            }
 
-        //        values["id"] = id;
-        //        values["type"] = type.ToString();
+            public static UserConfiguration Get(RememberMeType type, Database_Settings db)
+            {
+                UserConfiguration result = null;
 
-        //        string url = "https://www.feenux.com/php/users/setrememberme.php";
+                string t = type.ToString().ToLower();
 
+                string strLast_Login = TH_UserManagement.Management.RememberMe.Registry_Functions.GetRegistryKey(t + "_last_login");
+                DateTime last_login = DateTime.MinValue;
+                if (DateTime.TryParse(strLast_Login, out last_login))
+                {
+                    TimeSpan sinceLastLogin = DateTime.UtcNow - last_login;
+                    if (sinceLastLogin > TimeSpan.FromDays(14))
+                    {
+                        Clear(type);
+                    }
+                    else
+                    {
+                        string id = TH_UserManagement.Management.RememberMe.Registry_Functions.GetRegistryKey(t + "_id");
+                        DataRow dbrow = Row.Get(db, tablename, "WHERE username='" + id.ToLower() + "'");
+                        if (dbrow != null)
+                        {
+                            result = UserConfiguration.GetFromDataRow(dbrow);
 
-        //        string responseString = HTTP.SendData(url, values);
+                            if (result != null) Logger.Log(result.username + " Logged in Successfully!");
+                            
+                            UpdateLoginTime(result, db);
+                        }
+                    }
+                }
 
-        //        if (responseString != null) if (responseString.Trim() != "")
-        //            {
-        //                string hash = responseString.Trim();
+                return result;
+            }
 
-        //                // Set "id" registry key
-        //                TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_id", userConfig.username);
+            public static bool Clear(RememberMeType type)
+            {
+                bool result = false;
 
-        //                // Set Date of Last Login using Remember Me
-        //                TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_last_login", DateTime.UtcNow.ToString());
+                string t = type.ToString().ToLower();
 
-        //                // Set "hash" registry key
-        //                TH_UserManagement.Management.RememberMe.Registry_Functions.SetRegistryKey(t + "_hash", hash);
+                TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "_id");
+                TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "_last_login");
+                TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "__hash");
 
-        //                result = true;
-        //            }
-
-        //        return result;
-        //    }
-
-        //    public static UserConfiguration Get(RememberMeType type)
-        //    {
-        //        UserConfiguration result = null;
-
-        //        string t = type.ToString().ToLower();
-
-        //        string strLast_Login = TH_UserManagement.Management.RememberMe.Registry_Functions.GetRegistryKey(t + "_last_login");
-        //        DateTime last_login = DateTime.MinValue;
-        //        if (DateTime.TryParse(strLast_Login, out last_login))
-        //        {
-        //            TimeSpan sinceLastLogin = DateTime.UtcNow - last_login;
-        //            if (sinceLastLogin > TimeSpan.FromDays(14))
-        //            {
-        //                Clear(type);
-        //            }
-        //            else
-        //            {
-        //                string id = TH_UserManagement.Management.RememberMe.Registry_Functions.GetRegistryKey(t + "_id");
-        //                string hash = TH_UserManagement.Management.RememberMe.Registry_Functions.GetRegistryKey(t + "_hash");
-
-        //                if (hash != null)
-        //                {
-        //                    NameValueCollection values = new NameValueCollection();
-
-        //                    values["id"] = id;
-        //                    values["hash"] = hash;
-        //                    values["type"] = type.ToString();
-
-        //                    string url = "https://www.feenux.com/php/users/getrememberme.php";
-
-
-        //                    string responseString = HTTP.SendData(url, values);
-
-        //                    DataTable dt = JSON.ToTable(responseString);
-        //                    if (dt != null) if (dt.Rows.Count > 0) result = LoginSuccess(dt.Rows[0]);
-        //                }
-        //            }
-        //        }
-
-        //        return result;
-        //    }
-
-        //    public static bool Clear(RememberMeType type)
-        //    {
-        //        bool result = false;
-
-        //        string t = type.ToString().ToLower();
-
-        //        // Set "id" registry key
-        //        string key = TH_UserManagement.Management.RememberMe.Registry_Functions.GetRegistryKey(t + "_id");
-        //        if (key != null)
-        //        {
-        //            NameValueCollection values = new NameValueCollection();
-
-        //            values["id"] = key;
-        //            values["type"] = type.ToString();
-
-
-        //            string url = "https://www.feenux.com/php/users/clearrememberme.php";
-
-        //            string responseString = HTTP.SendData(url, values);
-
-        //            if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
-        //        }
-
-        //        TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "_id");
-        //        TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "_last_login");
-        //        TH_UserManagement.Management.RememberMe.Registry_Functions.DeleteRegistryKey(t + "__hash");
-
-        //        return result;
-        //    }
-        //}
+                return result;
+            }
+        }
     }
 
 }

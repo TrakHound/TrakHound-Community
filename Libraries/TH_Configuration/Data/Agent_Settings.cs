@@ -18,6 +18,9 @@ namespace TH_Configuration
 
         public string Device_Name { get; set; }
 
+        public int Heartbeat { get; set; }
+
+        // OBSOLETE 1-23-16
         public int Current_Heartbeat { get; set; }
         public int Sample_Heartbeat { get; set; }
 

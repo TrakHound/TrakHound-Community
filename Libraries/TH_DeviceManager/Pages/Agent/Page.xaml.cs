@@ -41,6 +41,7 @@ namespace TH_DeviceManager.Pages.Agent
         {
             InitializeComponent();
             DataContext = this;
+            ((StackPanel)AgentInfo.PageContent).DataContext = this;
         }
 
         #region "Page Interface"
@@ -81,15 +82,20 @@ namespace TH_DeviceManager.Pages.Agent
             // Load Device Name
             DeviceName = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
-            // Load Current Heartbeat
-            int currentHeartbeat;
-            if (int.TryParse(Table_Functions.GetTableValue(prefix + "Current_Heartbeat", dt), out currentHeartbeat)) CurrentHeartbeat = currentHeartbeat;
-
-            // Load Sample Heartbeat
-            int sampleHeartbeat;
-            if (int.TryParse(Table_Functions.GetTableValue(prefix + "Sample_Heartbeat", dt), out sampleHeartbeat)) SampleHeartbeat = sampleHeartbeat;
+            // Load Heartbeat
+            int heartbeat;
+            if (int.TryParse(Table_Functions.GetTableValue(prefix + "Heartbeat", dt), out heartbeat)) Heartbeat = heartbeat;
 
             MTCDeviceList.Clear();
+
+            // Agent Info
+            if (IpAddress != null)
+            {
+                int port;
+                int.TryParse(Port, out port);
+
+                GetAgentInfo(IpAddress, port);
+            }
 
             Loading = false;
         }
@@ -105,20 +111,8 @@ namespace TH_DeviceManager.Pages.Agent
             // Save Device Name
             Table_Functions.UpdateTableValue(DeviceName, prefix + "Device_Name", dt);
 
-            //// Save IP Address
-            //Table_Functions.UpdateTableValue(ipaddress_TXT.Text, prefix + "IP_Address", dt);
-
-            //// Save Port
-            //Table_Functions.UpdateTableValue(port_TXT.Text, prefix + "Port", dt);
-
-            //// Save Device Name
-            //Table_Functions.UpdateTableValue(devicename_TXT.Text, prefix + "Device_Name", dt);
-
-            // Save Current Heartbeat
-            Table_Functions.UpdateTableValue(CurrentHeartbeat.ToString(), prefix + "Current_Heartbeat", dt);
-
-            // Save Sample Heartbeat
-            Table_Functions.UpdateTableValue(SampleHeartbeat.ToString(), prefix + "Sample_Heartbeat", dt);
+            // Save Heartbeat
+            Table_Functions.UpdateTableValue(Heartbeat.ToString(), prefix + "Heartbeat", dt);
         }
 
         public Page_Type PageType { get; set; }
@@ -139,7 +133,6 @@ namespace TH_DeviceManager.Pages.Agent
 
         public static readonly DependencyProperty UseTrakHoundCloudProperty =
             DependencyProperty.Register("UseTrakHoundCloud", typeof(bool), typeof(Page), new PropertyMetadata(false));
-
 
 
         public bool Loading
@@ -183,7 +176,28 @@ namespace TH_DeviceManager.Pages.Agent
 
         public static readonly DependencyProperty DeviceNameProperty =
             DependencyProperty.Register("DeviceName", typeof(string), typeof(Page), new PropertyMetadata(null));
-        
+
+
+
+
+        public string ProxyAddress
+        {
+            get { return (string)GetValue(ProxyAddressProperty); }
+            set { SetValue(ProxyAddressProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProxyAddressProperty =
+            DependencyProperty.Register("ProxyAddress", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public int ProxyPort
+        {
+            get { return (int)GetValue(ProxyPortProperty); }
+            set { SetValue(ProxyPortProperty, value); }
+        }
+
+        public static readonly DependencyProperty ProxyPortProperty =
+            DependencyProperty.Register("ProxyPort", typeof(int), typeof(Page), new PropertyMetadata(0));
 
         #endregion
 
@@ -435,6 +449,133 @@ namespace TH_DeviceManager.Pages.Agent
 
         #endregion
 
+        #region "Agent Info"
+
+        #region "Properties"
+
+        public string InstanceId
+        {
+            get { return (string)GetValue(InstanceIdProperty); }
+            set { SetValue(InstanceIdProperty, value); }
+        }
+
+        public static readonly DependencyProperty InstanceIdProperty =
+            DependencyProperty.Register("InstanceId", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Sender
+        {
+            get { return (string)GetValue(SenderProperty); }
+            set { SetValue(SenderProperty, value); }
+        }
+
+        public static readonly DependencyProperty SenderProperty =
+            DependencyProperty.Register("Sender", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string Version
+        {
+            get { return (string)GetValue(VersionProperty); }
+            set { SetValue(VersionProperty, value); }
+        }
+
+        public static readonly DependencyProperty VersionProperty =
+            DependencyProperty.Register("Version", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string BufferSize
+        {
+            get { return (string)GetValue(BufferSizeProperty); }
+            set { SetValue(BufferSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty BufferSizeProperty =
+            DependencyProperty.Register("BufferSize", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string AssetBufferSize
+        {
+            get { return (string)GetValue(AssetBufferSizeProperty); }
+            set { SetValue(AssetBufferSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty AssetBufferSizeProperty =
+            DependencyProperty.Register("AssetBufferSize", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string AssetCount
+        {
+            get { return (string)GetValue(AssetCountProperty); }
+            set { SetValue(AssetCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty AssetCountProperty =
+            DependencyProperty.Register("AssetCount", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+
+        public string DeviceCount
+        {
+            get { return (string)GetValue(DeviceCountProperty); }
+            set { SetValue(DeviceCountProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceCountProperty =
+            DependencyProperty.Register("DeviceCount", typeof(string), typeof(Page), new PropertyMetadata(null));
+       
+
+        #endregion
+
+        Thread agentInfo_THREAD;
+
+        void GetAgentInfo(string address, int port)
+        {
+            if (agentInfo_THREAD != null) agentInfo_THREAD.Abort();
+
+            var info = new Probe_Info();
+            info.address = address;
+            info.port = port;
+
+            agentInfo_THREAD = new Thread(new ParameterizedThreadStart(GetAgentInfo_Worker));
+            agentInfo_THREAD.Start(info);
+        }
+
+        void GetAgentInfo_Worker(object o)
+        {
+            if (o != null)
+            {
+                var info = o as Probe_Info;
+                if (info != null)
+                {
+                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
+
+                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, 2000, 1);
+
+                    this.Dispatcher.BeginInvoke(new Action<ReturnData>(GetAgentInfo_GUI), priority, new object[] { returnData });
+                }
+            }
+        }
+
+        void GetAgentInfo_GUI(ReturnData returnData)
+        {
+            if (returnData != null)
+            {
+                var header = returnData.header;
+                if (returnData.header != null)
+                {
+                    InstanceId = header.instanceId.ToString();
+                    Sender = header.sender;
+                    Version = header.version;
+                    BufferSize = String_Functions.FileSizeSuffix(header.bufferSize);
+                    AssetBufferSize = String_Functions.FileSizeSuffix(header.assetBufferSize);
+                    AssetCount = header.assetCount.ToString();
+                    DeviceCount = returnData.devices.Count.ToString();
+                }
+            }
+        }
+
+
+        #endregion
+
         private void ipaddress_TXT_LostFocus(object sender, RoutedEventArgs e)
         {
             if (sender.GetType() == typeof(TextBox))
@@ -556,99 +697,51 @@ namespace TH_DeviceManager.Pages.Agent
             }
         }
 
-        #region "Current Heartbeat"
+        #region "Heartbeat"
 
-        public int CurrentHeartbeat
+        public int Heartbeat
         {
-            get { return (int)GetValue(CurrentHeartbeatProperty); }
-            set { SetValue(CurrentHeartbeatProperty, value); }
+            get { return (int)GetValue(HeartbeatProperty); }
+            set { SetValue(HeartbeatProperty, value); }
         }
 
-        public static readonly DependencyProperty CurrentHeartbeatProperty =
-            DependencyProperty.Register("CurrentHeartbeat", typeof(int), typeof(Page), new PropertyMetadata(1000));
+        public static readonly DependencyProperty HeartbeatProperty =
+            DependencyProperty.Register("Heartbeat", typeof(int), typeof(Page), new PropertyMetadata(5000));
 
 
-        public TimeSpan CurrentHeartbeat_TimeSpan
+        public TimeSpan Heartbeat_TimeSpan
         {
-            get { return (TimeSpan)GetValue(CurrentHeartbeat_TimeSpanProperty); }
-            set { SetValue(CurrentHeartbeat_TimeSpanProperty, value); }
+            get { return (TimeSpan)GetValue(Heartbeat_TimeSpanProperty); }
+            set { SetValue(Heartbeat_TimeSpanProperty, value); }
         }
 
-        public static readonly DependencyProperty CurrentHeartbeat_TimeSpanProperty =
-            DependencyProperty.Register("CurrentHeartbeat_TimeSpan", typeof(TimeSpan), typeof(Page), new PropertyMetadata(TimeSpan.FromMilliseconds(1000)));
+        public static readonly DependencyProperty Heartbeat_TimeSpanProperty =
+            DependencyProperty.Register("Heartbeat_TimeSpan", typeof(TimeSpan), typeof(Page), new PropertyMetadata(TimeSpan.FromMilliseconds(5000)));
 
 
-        private void currentHeartbeat_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        private void heartbeat_TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (currentHeartbeat_TXT.Text != String.Empty)
+            if (heartbeat_TXT.Text != String.Empty)
             {
-                TimeSpan ts = GetTimeSpanFromString(currentHeartbeat_TXT.Text);
-                CurrentHeartbeat_TimeSpan = ts;
+                TimeSpan ts = GetTimeSpanFromString(heartbeat_TXT.Text);
+                Heartbeat_TimeSpan = ts;
                 if (ts.TotalMilliseconds < int.MaxValue)
                 {
-                    CurrentHeartbeat = Convert.ToInt32(ts.TotalMilliseconds);
+                    Heartbeat = Convert.ToInt32(ts.TotalMilliseconds);
                 }
-                ChangeSetting("Current_Heartbeat", CurrentHeartbeat.ToString());
+                ChangeSetting("Heartbeat", Heartbeat.ToString());
             }
         }
 
         private void CurrentSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            CurrentHeartbeat_TimeSpan = TimeSpan.FromMilliseconds(CurrentHeartbeat);
-            ChangeSetting("Current_Heartbeat", CurrentHeartbeat.ToString());
+            Heartbeat_TimeSpan = TimeSpan.FromMilliseconds(Heartbeat);
+            ChangeSetting("Heartbeat", Heartbeat.ToString());
         }
 
-        private void currentHeartbeat_TXT_LostFocus(object sender, RoutedEventArgs e)
+        private void heartbeat_TXT_LostFocus(object sender, RoutedEventArgs e)
         {
-            currentHeartbeat_TXT.Clear();
-        }
-
-        #endregion
-
-        #region "Sample Heartbeat"
-
-        public int SampleHeartbeat
-        {
-            get { return (int)GetValue(SampleHeartbeatProperty); }
-            set { SetValue(SampleHeartbeatProperty, value); }
-        }
-
-        public static readonly DependencyProperty SampleHeartbeatProperty =
-            DependencyProperty.Register("SampleHeartbeat", typeof(int), typeof(Page), new PropertyMetadata(1000));
-
-        public TimeSpan SampleHeartbeat_TimeSpan
-        {
-            get { return (TimeSpan)GetValue(SampleHeartbeat_TimeSpanProperty); }
-            set { SetValue(SampleHeartbeat_TimeSpanProperty, value); }
-        }
-
-        public static readonly DependencyProperty SampleHeartbeat_TimeSpanProperty =
-            DependencyProperty.Register("SampleHeartbeat_TimeSpan", typeof(TimeSpan), typeof(Page), new PropertyMetadata(TimeSpan.FromMilliseconds(1000)));
-
-
-        private void sampleHeartbeat_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (sampleHeartbeat_TXT.Text != String.Empty)
-            {
-                TimeSpan ts = GetTimeSpanFromString(sampleHeartbeat_TXT.Text);
-                SampleHeartbeat_TimeSpan = ts;
-                if (ts.TotalMilliseconds < int.MaxValue)
-                {
-                    SampleHeartbeat = Convert.ToInt32(ts.TotalMilliseconds);
-                }
-                ChangeSetting("Sample_Heartbeat", SampleHeartbeat.ToString());
-            }
-        }
-
-        private void SampleSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            SampleHeartbeat_TimeSpan = TimeSpan.FromMilliseconds(SampleHeartbeat);
-            ChangeSetting("Sample_Heartbeat", SampleHeartbeat.ToString());
-        }
-
-        private void sampleHeartbeat_TXT_LostFocus(object sender, RoutedEventArgs e)
-        {
-            sampleHeartbeat_TXT.Clear();
+            heartbeat_TXT.Clear();
         }
 
         #endregion
@@ -656,7 +749,7 @@ namespace TH_DeviceManager.Pages.Agent
         TimeSpan GetTimeSpanFromString(string s)
         {
             TimeSpan result = TimeSpan.Zero;
-            if (TimeSpan.TryParse(currentHeartbeat_TXT.Text, out result)) return result;
+            if (TimeSpan.TryParse(heartbeat_TXT.Text, out result)) return result;
             else
             {
                 s = s.Trim();
@@ -689,7 +782,6 @@ namespace TH_DeviceManager.Pages.Agent
             }
             return result;
         }
-
 
     }
 }

@@ -103,6 +103,7 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Cycle_01.png" />
     <Resource Include="Resources\Help_01.png" />
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@
         
         <ControlTemplate.Resources>
             <LinearGradientBrush x:Key="ShadeGradient" EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#20ffffff" Offset="0"/>
+                <GradientStop Color="#40ffffff" Offset="0"/>
                 <GradientStop Color="#20ffffff" Offset="0.3"/>
                 <GradientStop Color="Transparent" Offset="1"/>
             </LinearGradientBrush>

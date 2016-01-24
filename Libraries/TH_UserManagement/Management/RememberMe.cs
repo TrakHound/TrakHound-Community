@@ -24,7 +24,7 @@ namespace TH_UserManagement.Management
             }
             else
             {
-                //result = Local.Users.RememberMe.Set(userConfig, type, userDatabaseSettings);
+                result = Local.Users.RememberMe.Set(userConfig, type);
             }
 
             return result;
@@ -40,7 +40,7 @@ namespace TH_UserManagement.Management
             }
             else
             {
-                //result = Local.Users.RememberMe.Get(type, userDatabaseSettings);
+                result = Local.Users.RememberMe.Get(type, userDatabaseSettings);
             }
 
             return result;
@@ -56,7 +56,7 @@ namespace TH_UserManagement.Management
             }
             else
             {
-                //result = Local.Users.RememberMe.Clear(type, userDatabaseSettings);
+                result = Local.Users.RememberMe.Clear(type);
             }
 
             return result;

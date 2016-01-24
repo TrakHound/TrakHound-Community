@@ -46,6 +46,16 @@ namespace TH_WPF
             DependencyProperty.Register("PageContent", typeof(object), typeof(CollapseButton), new PropertyMetadata(null));
 
 
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(CollapseButton), new PropertyMetadata(null));
+
+
         public object ButtonContent
         {
             get { return (object)GetValue(ButtonContentProperty); }

@@ -36,19 +36,20 @@ namespace TH_ShiftTable
             if (sc != null)
             {
                 configuration.CustomClasses.Add(sc);
+
+                config = configuration;
+
+                if (UseDatabases)
+                {
+                    CreateShiftSegmentsTable(sc.shifts);
+                    CreateTable();
+                    GetTableColumns();
+                }
+
+                AddGeneratedEventColumns();
+
+                rowInfos = GetExistingValues();
             }
-
-            config = configuration;
-
-            if (UseDatabases)
-            {
-                CreateTable();
-                GetTableColumns();
-            }
-
-            AddGeneratedEventColumns();
-
-            rowInfos = GetExistingValues();
         }
 
 
@@ -154,6 +155,58 @@ namespace TH_ShiftTable
         TH_MTConnect.Streams.ReturnData currentData;
 
         #region "Database"
+
+        void CreateShiftSegmentsTable(List<Shift> shifts)
+        {
+            Table.Truncate(config.Databases_Server, TableNames.ShiftSegments);
+
+            List<ColumnDefinition> columns = new List<ColumnDefinition>()
+            {
+                new ColumnDefinition("SHIFT", DataType.LargeText),
+                new ColumnDefinition("SEGMENTID", DataType.LargeText),
+                new ColumnDefinition("START", DataType.LargeText),
+                new ColumnDefinition("END", DataType.LargeText),
+                new ColumnDefinition("START_UTC", DataType.LargeText),
+                new ColumnDefinition("END_UTC", DataType.LargeText),
+                new ColumnDefinition("TYPE", DataType.LargeText)
+            };
+
+            Table.Create(config.Databases_Server, TableNames.ShiftSegments, columns.ToArray(), null);
+
+            if (shifts != null)
+            {
+                List<string> insertColumns = new List<string>();
+                insertColumns.Add("SHIFT");
+                insertColumns.Add("SEGMENTID");
+                insertColumns.Add("START");
+                insertColumns.Add("END");
+                insertColumns.Add("START_UTC");
+                insertColumns.Add("END_UTC");
+                insertColumns.Add("TYPE");
+
+                List<List<object>> rowValues = new List<List<object>>();
+
+                foreach (var shift in shifts)
+                {
+                    foreach (var segment in shift.segments)
+                    {
+                        List<object> values = new List<object>();
+                        values.Add(shift.name);
+                        values.Add(segment.id.ToString());
+                        values.Add(segment.beginTime.To24HourString());
+                        values.Add(segment.endTime.To24HourString());
+                        values.Add(segment.beginTime.ToUTC());
+                        values.Add(segment.endTime.ToUTC());
+                        values.Add(segment.type);
+                        rowValues.Add(values);
+                    }
+                }
+
+                Row.Insert(config.Databases_Server, TableNames.ShiftSegments, insertColumns.ToArray(), rowValues, null, true);
+            }
+        }
+
+
 
         public string TableName = TableNames.Shifts;
         string[] primaryKey = { "ID" };

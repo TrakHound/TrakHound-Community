@@ -75,6 +75,18 @@ namespace TrakHound_Client.Pages.About.Information
 
         public string PageName { get { return "Information"; } }
 
+
+        //public string PageName
+        //{
+        //    get { return (string)GetValue(PageNameProperty); }
+        //    //set { SetValue(PageNameProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty PageNameProperty =
+        //    DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Information"));
+
+        
+
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Pages/About/Information/Information_01.png")); } }
 
         public object PageContent { get; set; }

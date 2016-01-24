@@ -62,14 +62,14 @@ namespace TrakHound_Client.Controls
 
             // Bind ListButton.Text to PageName property
             var pageImageBinding = new Binding();
-            pageImageBinding.Source = this;
-            pageImageBinding.Path = new PropertyPath("PageContent.Image");
+            pageImageBinding.Source = page;
+            pageImageBinding.Path = new PropertyPath("Image");
             BindingOperations.SetBinding(lb, ListButton.ImageProperty, pageImageBinding);
 
             // Bind ListButton.Text to PageName property
             var pageNameBinding = new Binding();
-            pageNameBinding.Source = this;
-            pageNameBinding.Path = new PropertyPath("PageContent.PageName");
+            pageNameBinding.Source = page;
+            pageNameBinding.Path = new PropertyPath("PageName");
             BindingOperations.SetBinding(lb, ListButton.TextProperty, pageNameBinding);
 
             lb.Selected += ListButton_Selected;

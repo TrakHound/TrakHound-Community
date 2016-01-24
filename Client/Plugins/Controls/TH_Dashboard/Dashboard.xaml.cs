@@ -46,7 +46,8 @@ namespace TH_Dashboard
 
         public string Description { get { return "Contains and organizes pages for displaying Device data in various ways. Acts as the Home page for other Device Monitoring Plugins."; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Images/Dashboard.png")); } }
+        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Images/Dashboard.png")); } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/Dashboard_01.png")); } }
 
 
         public string Author { get { return "TrakHound"; } }

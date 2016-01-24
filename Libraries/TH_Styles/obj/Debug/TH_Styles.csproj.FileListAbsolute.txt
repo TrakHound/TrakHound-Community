@@ -23,4 +23,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\TH_Styles.Properties
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\TH_Styles.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\TH_Styles.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\TH_Styles.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Styles\obj\Debug\TH_Styles.csprojResolveAssemblyReference.cache

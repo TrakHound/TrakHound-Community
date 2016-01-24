@@ -36,7 +36,7 @@ namespace TH_OEE.ConfigurationPage
 
         public string PageName { get { return "OEE"; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_OEE;component/Resources/Chart_01.png")); } }
 
         public event SettingChanged_Handler SettingChanged;
 
