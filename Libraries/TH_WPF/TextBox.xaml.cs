@@ -30,6 +30,7 @@ namespace TH_WPF
 
         public event KeyEventHandler EnterPressed;
 
+        #region "Public Properties"
 
         public string Title
         {
@@ -50,7 +51,7 @@ namespace TH_WPF
         public static readonly DependencyProperty HelpTextProperty =
             DependencyProperty.Register("HelpText", typeof(string), typeof(TextBox), new PropertyMetadata(null));
 
-        
+
 
         public string Text
         {
@@ -80,7 +81,7 @@ namespace TH_WPF
 
         public static readonly DependencyProperty ExampleProperty =
             DependencyProperty.Register("Example", typeof(string), typeof(TextBox), new PropertyMetadata(null));
-        
+
 
         public bool Required
         {
@@ -91,15 +92,41 @@ namespace TH_WPF
         public static readonly DependencyProperty RequiredProperty =
             DependencyProperty.Register("Required", typeof(bool), typeof(TextBox), new PropertyMetadata(false));
 
-        
+        #endregion
 
+        #region "Public Methods"
+
+        public void Clear()
+        {
+            ClearText();
+        }
+
+        #endregion
+
+        #region "Private Methods"
+
+        void ClearText()
+        {
+            txt.Text = "";
+            txt.Clear();
+            FocusText();
+        }
+
+        void FocusText()
+        {
+            txt.Focus();
+            Keyboard.Focus(txt);
+            txt.Select(0, 0);
+        }
+
+        #endregion
+
+        #region "Private Event Handlers"
 
         private void txt_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TextChanged != null) TextChanged(sender, e);
         }
-
-
 
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -170,6 +197,13 @@ namespace TH_WPF
         {
             if (EnterPressed != null) EnterPressed(sender, e);
         }
+
+        private void Clear_Clicked(Button bt)
+        {
+            ClearText();
+        }
+
+        #endregion
 
     }
 }

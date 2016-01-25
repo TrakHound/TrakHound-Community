@@ -77,9 +77,14 @@ namespace TH_Device_Server
             int port = configuration.Agent.Port;
             string deviceName = configuration.Agent.Device_Name;
 
+            // Set Proxy Settings
+            var proxy = new HTTP.ProxySettings();
+            proxy.Address = configuration.Agent.ProxyAddress;
+            proxy.Port = configuration.Agent.ProxyPort;
+
             string url = HTTP.GetUrl(address, port, deviceName) + "probe";
 
-            result = TH_MTConnect.Components.Requests.Get(url);
+            result = TH_MTConnect.Components.Requests.Get(url, proxy);
             if (result != null)
             {
                 WriteToConsole("Probe Successful : " + url, ConsoleOutputType.Status);
@@ -100,9 +105,14 @@ namespace TH_Device_Server
             int port = configuration.Agent.Port;
             string deviceName = configuration.Agent.Device_Name;
 
+            // Set Proxy Settings
+            var proxy = new HTTP.ProxySettings();
+            proxy.Address = configuration.Agent.ProxyAddress;
+            proxy.Port = configuration.Agent.ProxyPort;
+
             string url = HTTP.GetUrl(address, port, deviceName) + "current";
 
-            result = TH_MTConnect.Streams.Requests.Get(url);
+            result = TH_MTConnect.Streams.Requests.Get(url, proxy);
             if (result != null)
             {
                 WriteToConsole("Current Successful : " + url, ConsoleOutputType.Status);
@@ -129,6 +139,11 @@ namespace TH_Device_Server
             int port = configuration.Agent.Port;
             string deviceName = configuration.Agent.Device_Name;
 
+            // Set Proxy Settings
+            var proxy = new HTTP.ProxySettings();
+            proxy.Address = configuration.Agent.ProxyAddress;
+            proxy.Port = configuration.Agent.ProxyPort;
+
             UpdateAgentInstanceID(header);
 
             SampleInfo info = GetSampleInfo(header);
@@ -138,7 +153,7 @@ namespace TH_Device_Server
                 {
                     string url = HTTP.GetUrl(address, port, deviceName) + "sample?from=" + info.From.ToString() + "&count=" + info.Count.ToString();
 
-                    result = TH_MTConnect.Streams.Requests.Get(url);
+                    result = TH_MTConnect.Streams.Requests.Get(url, proxy);
                     if (result != null)
                     {
                         WriteToConsole("Sample Successful : " + url, ConsoleOutputType.Status);

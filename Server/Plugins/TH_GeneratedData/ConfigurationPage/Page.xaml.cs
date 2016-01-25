@@ -39,9 +39,22 @@ namespace TH_GeneratedData.ConfigurationPage
             LoadEventValues();
         }
 
-        public string PageName { get { return "Generated Data"; } }
+        public string PageName
+        {
+            get { return (string)GetValue(PageNameProperty); }
+        }
 
-        public ImageSource Image { get { return null; } }
+        public static readonly DependencyProperty PageNameProperty =
+            DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Generated Data"));
+
+        public ImageSource Image
+        {
+            get { return (ImageSource)GetValue(ImageProperty); }
+        }
+
+        public static readonly DependencyProperty ImageProperty =
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_GeneratedData;component/Resources/Group_01.png"))));
+
 
         public event SettingChanged_Handler SettingChanged;
 
@@ -144,12 +157,28 @@ namespace TH_GeneratedData.ConfigurationPage
             string p = Table_Functions.GetTableValue(prefix + "Port", dt);
             string devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
+            string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
+            string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
+
             int port;
             int.TryParse(p, out port);
 
+            // Proxy Settings
+            TH_MTConnect.HTTP.ProxySettings proxy = null;
+            if (proxyPort != null)
+            {
+                int proxy_p = -1;
+                if (int.TryParse(proxyPort, out proxy_p))
+                {
+                    proxy = new TH_MTConnect.HTTP.ProxySettings();
+                    proxy.Address = proxyAddress;
+                    proxy.Port = proxy_p;
+                }
+            }
+
             CollectedItems.Clear();
 
-            RunProbe(ip, port, devicename);
+            RunProbe(ip, proxy, port, devicename);
         }
 
         Thread runProbe_THREAD;
@@ -159,9 +188,10 @@ namespace TH_GeneratedData.ConfigurationPage
             public string address;
             public int port;
             public string deviceName;
+            public TH_MTConnect.HTTP.ProxySettings proxy;
         }
 
-        void RunProbe(string address, int port, string deviceName)
+        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
         {
             if (runProbe_THREAD != null) runProbe_THREAD.Abort();
 
@@ -169,6 +199,7 @@ namespace TH_GeneratedData.ConfigurationPage
             info.address = address;
             info.port = port;
             info.deviceName = deviceName;
+            info.proxy = proxy;
 
             runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
             runProbe_THREAD.Start(info);
@@ -183,7 +214,7 @@ namespace TH_GeneratedData.ConfigurationPage
                 {
                     string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
 
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, 2000, 1);
+                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
                         foreach (Device device in returnData.devices)
@@ -214,50 +245,6 @@ namespace TH_GeneratedData.ConfigurationPage
                 }
             }
         }
-
-
-
-        //void RunProbe(string address, int port, string deviceName)
-        //{
-        //    // Run a Probe request
-        //    Probe probe = new Probe();
-
-        //    probe.Address = address;
-        //    probe.Port = port;
-        //    probe.DeviceName = deviceName;
-
-        //    probe.ProbeFinished += probe_ProbeFinished;
-        //    probe.ProbeError += probe_ProbeError;
-
-        //    probe.Start();
-        //}
-
-        //void probe_ProbeFinished(ReturnData returnData, Probe sender)
-        //{
-        //    if (returnData != null)
-        //    {
-        //        foreach (Device device in returnData.devices)
-        //        {
-        //            DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
-
-        //            List<DataItem> items = new List<DataItem>();
-
-        //            // Conditions
-        //            foreach (DataItem dataItem in dataItems.Conditions) items.Add(dataItem);
-
-        //            // Events
-        //            foreach (DataItem dataItem in dataItems.Events) items.Add(dataItem);
-
-        //            // Samples
-        //            foreach (DataItem dataItem in dataItems.Samples) items.Add(dataItem);
-
-        //            this.Dispatcher.BeginInvoke(new Action<List<DataItem>>(AddDataItems), priority, new object[] { items });
-        //        }
-        //    }
-
-        //    // Set 'Loading' to false
-        //    this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
-        //}
 
         void AddDataItems(List<DataItem> items)
         {
@@ -306,17 +293,6 @@ namespace TH_GeneratedData.ConfigurationPage
                 }
             }
         }
-
-        //void probe_ProbeError(Probe.ErrorData errorData)
-        //{
-
-        //    Logger.Log("TH_GeneratedData :: ConfigurationPage :: Probe Error :: " + errorData.message);
-
-        //    // Set 'Loading' to false
-        //    this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
-
-        //}
-
 
         public DataTable EventValues;
 
@@ -423,7 +399,6 @@ namespace TH_GeneratedData.ConfigurationPage
                         attr += "link||" + link + ";";
 
                         Table_Functions.UpdateTableValue(null, attr, adr, dt);
-
                     }
                 }
             }
@@ -473,8 +448,6 @@ namespace TH_GeneratedData.ConfigurationPage
             switch (item.SelectedType.ToLower())
             {
                 case "collected": 
-                    //CollectedItem ci = CollectedItems.ToList().Find(x => x.id == snapshot.link);
-                    //if (ci != null) item.collectedlink_COMBO.Text = ci.display;
                     item.collectedlink_COMBO.Text = snapshot.link;
                     break;
 
@@ -492,7 +465,6 @@ namespace TH_GeneratedData.ConfigurationPage
             item.Loading = false;
 
             SnapshotItems.Insert(0, item);
-            //SnapshotItems.Add(item);
 
             DisplaySnapshots = true;
         }
@@ -528,8 +500,6 @@ namespace TH_GeneratedData.ConfigurationPage
 
                 GeneratedEvents.Clear();
                 foreach (Event e in genEvents) GeneratedEvents.Add(e);
-
-                //GeneratedEvents = GetGeneratedEvents(configurationTable);
             }
         }
 
@@ -658,7 +628,6 @@ namespace TH_GeneratedData.ConfigurationPage
             attr += "description||" + e.description + ";";
 
 
-
             Table_Functions.UpdateTableValue(null, attr, adr, dt);
 
             int numval = e.values.Count;
@@ -776,8 +745,6 @@ namespace TH_GeneratedData.ConfigurationPage
                 }
 
                 attr += "value||" + t.value + ";";
-
-
 
                 Table_Functions.UpdateTableValue(null, attr, adr, dt);
             }
@@ -1361,7 +1328,6 @@ namespace TH_GeneratedData.ConfigurationPage
                 result.CaptureName = String_Functions.UppercaseFirst(ci.name.Replace('_', ' '));
             }
             
-
             result.link_COMBO.Text = ci.link;
 
             return result;
@@ -1409,17 +1375,6 @@ namespace TH_GeneratedData.ConfigurationPage
             GeneratedEvents.Add(e);
 
             AddEvent(e, true);
-            //LoadGeneratedEvents_GUI(e);
-
-            //if (EventButtons.Count > 0)
-            //{
-            //    TH_WPF.CollapseButton cbt = EventButtons[EventButtons.Count - 1];
-
-            //    foreach (TH_WPF.CollapseButton ocbt in EventButtons.OfType<TH_WPF.CollapseButton>().ToList()) if (ocbt != cbt) ocbt.IsExpanded = false;
-            //    cbt.IsExpanded = true;
-
-            //    cbt.BringIntoView();
-            //}
 
             DisplayEvents = true;
 

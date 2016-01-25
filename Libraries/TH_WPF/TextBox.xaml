@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF"
+             
              mc:Ignorable="d" 
              d:DesignWidth="100" 
              
              Focusable="True"
-
-
              >
 
     <UserControl.Resources>
@@ -93,55 +94,61 @@
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <Grid Margin="10,0">
+                    <Grid Margin="10,0">
 
-                    <!--Example-->
-                    <TextBlock FontSize="12pt" FontStyle="Italic" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Text, ElementName=txt}" Value=""/>
-                                            <Condition Binding="{Binding Instructions}" Value=""/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </MultiDataTrigger>
+                        <!--Example-->
+                        <TextBlock FontSize="12pt" FontStyle="Italic" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
 
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Text, ElementName=txt}" Value=""/>
-                                            <Condition Binding="{Binding Instructions}" Value="{x:Null}"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </MultiDataTrigger>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Text, ElementName=txt}" Value=""/>
+                                                <Condition Binding="{Binding Instructions}" Value=""/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
 
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Text, ElementName=txt}" Value=""/>
+                                                <Condition Binding="{Binding Instructions}" Value="{x:Null}"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
                         <Run Text="ex:" />
                         <Run Text="{Binding Example}" />
-                    </TextBlock>
+                        </TextBlock>
 
-                    <!--Instructions-->
-                    <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                        <!--Instructions-->
+                        <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
-                    <!--User Input-->
-                    <TextBox x:Name="txt" 
+                        <!--User Input-->
+                        <TextBox x:Name="txt" 
                              Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              TextChanged="txt_TextChanged"
                              BorderThickness="0"
@@ -155,18 +162,38 @@
                              Focusable="True"
                              PreviewKeyDown="txt_PreviewKeyDown"
                              >
-                        <TextBox.Style>
-                            <Style TargetType="TextBox">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsFocused}" Value="True">
+                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Self}}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+
+                    </Grid>
+                    
+                    <!--Clear Button-->
+                    <th_wpf:Button Grid.Column="1" Image="Resources/X_01.png" Width="25" Height="25" Margin="0,0,5,0" ToolTip="Clear" Clicked="Clear_Clicked">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFocused}" Value="True">
-                                        <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Self}}" />
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_STACK}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                    </Trigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
 
-                </Grid>
+                </Grid>              
 
             </Border>
 

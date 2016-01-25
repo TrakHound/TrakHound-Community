@@ -84,8 +84,6 @@ namespace TH_Device_Server
 
                     foreach (Database_Configuration db_config in configuration.Databases_Server.Databases)
                     {
-                        //if (!TH_Database.Global.Ping(db_config)) { dbsuccess = false; break; }
-                        //if (!TH_Database.Global.CheckPermissions(db_config, Application_Type.Server))
                         if (!TH_Database.Global.Ping(db_config, out msg))
                         {
                             dbsuccess = false;

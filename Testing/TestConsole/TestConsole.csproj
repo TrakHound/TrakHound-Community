@@ -51,6 +51,9 @@
     <Reference Include="TH_MicrosoftSQL">
       <HintPath>C:\TrakHound\Plugins\Database\TH_MicrosoftSQL.dll</HintPath>
     </Reference>
+    <Reference Include="TH_MTConnect">
+      <HintPath>..\..\..\MTConnect\TH_MTConnect\TH_MTConnect\bin\Debug\TH_MTConnect.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

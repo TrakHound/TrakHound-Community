@@ -61,10 +61,12 @@ namespace TrakHound_Server_Console
         {
             var server = new Server();
 
-            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, null);
+            var db = ReadUserManagementSettings();
+
+            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, db);
             if (rememberUser != null)
             {
-                RememberMe.Set(rememberUser, RememberMeType.Server, null);
+                RememberMe.Set(rememberUser, RememberMeType.Server, db);
 
                 if (server != null) server.Login(rememberUser);
             }
@@ -72,6 +74,35 @@ namespace TrakHound_Server_Console
             server.Start();
 
             Console.ReadLine();
+        }
+
+        static Database_Settings ReadUserManagementSettings()
+        {
+            Database_Settings result = null;
+
+            DatabasePluginReader dpr = new DatabasePluginReader();
+
+            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
+            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
+
+            string configPath;
+
+            // systemPath takes priority (easier for user to navigate to)
+            if (File.Exists(systemPath)) configPath = systemPath;
+            else configPath = localPath;
+
+            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
+
+            if (userSettings != null)
+            {
+                if (userSettings.Databases.Databases.Count > 0)
+                {
+                    result = userSettings.Databases;
+                    Global.Initialize(result);
+                }
+            }
+
+            return result;
         }
     }
 }

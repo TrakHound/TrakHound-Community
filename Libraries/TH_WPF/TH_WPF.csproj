@@ -276,6 +276,9 @@
   <ItemGroup>
     <Resource Include="Resources\TrakHound_Logo_Initials_10_30px.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\X_01.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

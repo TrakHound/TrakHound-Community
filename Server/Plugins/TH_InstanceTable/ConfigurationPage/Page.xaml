@@ -26,16 +26,34 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Instance Table" FontSize="20pt" Foreground="#333" Margin="0,0,0,10"/>
-     
+        <!--Title and Image-->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+            <!--Image-->
+            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,5,0,0" VerticalAlignment="Center">
+                <Grid.Resources>
+                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                </Grid.Resources>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                        <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                    </Style>
+                </Grid.Style>
+            </Grid>
+
+            <TextBlock Text="{Binding PageName}" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+
+        </StackPanel>
+
         <StackPanel Grid.Row="1" Width="1000" HorizontalAlignment="Left">
 
-            <TextBlock FontSize="10pt" Foreground="#888" Margin="0,10,10,20" TextWrapping="Wrap">
+            <TextBlock FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20" TextWrapping="Wrap">
                 The Instance Table is used to record all of the variables from the Agent at every Timestamp and/or Sequence captured.
                 This simplifies the process of interpreting the status of the device at any captured Timestamp.
             </TextBlock>
 
-            <TextBlock FontSize="12pt" Foreground="#333" Margin="0,0" Text="Example of Table Data :"/>
+            <TextBlock FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" Text="Example of Table Data :"/>
 
             <DataGrid ItemsSource="{Binding ExampleTableItems}"
                 Background="{x:Null}"

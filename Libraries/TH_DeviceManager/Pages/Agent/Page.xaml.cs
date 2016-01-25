@@ -41,6 +41,7 @@ namespace TH_DeviceManager.Pages.Agent
         {
             InitializeComponent();
             DataContext = this;
+            ((StackPanel)ProxySettings.PageContent).DataContext = this;
             ((StackPanel)AgentInfo.PageContent).DataContext = this;
         }
 
@@ -48,7 +49,7 @@ namespace TH_DeviceManager.Pages.Agent
 
         public string PageName { get { return "Agent"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Agent_02.png")); } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/MTConnect_01.png")); } }
 
         public UserConfiguration currentUser { get; set; }
 
@@ -86,16 +87,19 @@ namespace TH_DeviceManager.Pages.Agent
             int heartbeat;
             if (int.TryParse(Table_Functions.GetTableValue(prefix + "Heartbeat", dt), out heartbeat)) Heartbeat = heartbeat;
 
+            // Load Proxy Address
+            ProxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
+
+            // Load Proxy Port
+            ProxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
+
+            if (!String.IsNullOrEmpty(ProxyAddress) || !String.IsNullOrEmpty(ProxyPort)) ProxySettings.IsExpanded = true;
+            else ProxySettings.IsExpanded = false;
+
             MTCDeviceList.Clear();
 
             // Agent Info
-            if (IpAddress != null)
-            {
-                int port;
-                int.TryParse(Port, out port);
-
-                GetAgentInfo(IpAddress, port);
-            }
+            GetAgentInfo();
 
             Loading = false;
         }
@@ -113,6 +117,14 @@ namespace TH_DeviceManager.Pages.Agent
 
             // Save Heartbeat
             Table_Functions.UpdateTableValue(Heartbeat.ToString(), prefix + "Heartbeat", dt);
+
+
+            // Save Proxy Address
+            Table_Functions.UpdateTableValue(ProxyAddress, prefix + "ProxyAddress", dt);
+
+            // Save Proxy Port
+            Table_Functions.UpdateTableValue(ProxyPort, prefix + "ProxyPort", dt);
+            
         }
 
         public Page_Type PageType { get; set; }
@@ -179,7 +191,6 @@ namespace TH_DeviceManager.Pages.Agent
 
 
 
-
         public string ProxyAddress
         {
             get { return (string)GetValue(ProxyAddressProperty); }
@@ -190,14 +201,14 @@ namespace TH_DeviceManager.Pages.Agent
             DependencyProperty.Register("ProxyAddress", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-        public int ProxyPort
+        public string ProxyPort
         {
-            get { return (int)GetValue(ProxyPortProperty); }
+            get { return (string)GetValue(ProxyPortProperty); }
             set { SetValue(ProxyPortProperty, value); }
         }
 
         public static readonly DependencyProperty ProxyPortProperty =
-            DependencyProperty.Register("ProxyPort", typeof(int), typeof(Page), new PropertyMetadata(0));
+            DependencyProperty.Register("ProxyPort", typeof(string), typeof(Page), new PropertyMetadata(null));
 
         #endregion
 
@@ -230,7 +241,6 @@ namespace TH_DeviceManager.Pages.Agent
             {
                 // Get IP Address or URL
                 ip = IpAddress;
-                //ip = ipaddress_TXT.Text;
                 if (ip.Length > 7)
                 {
                     if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
@@ -242,35 +252,46 @@ namespace TH_DeviceManager.Pages.Agent
                     int.TryParse(Port, out port);
                 }
 
+                // Proxy Settings
+                TH_MTConnect.HTTP.ProxySettings proxy = null;                
+                if (ProxyPort != null)
+                {
+                    int proxyPort = -1;
+                    if (int.TryParse(ProxyPort, out proxyPort))
+                    {
+                        proxy = new TH_MTConnect.HTTP.ProxySettings();
+                        proxy.Address = ProxyAddress;
+                        proxy.Port = proxyPort;
+                    }
+                }
+
                 tryPortIndex = 0;
 
                 MTCDeviceList.Clear();
                 MessageList.Clear();
+                ClearAgentInfo();
 
-                RunProbe(ip, port, DeviceName);
+                RunProbe(ip, proxy, port, DeviceName);
             }
         }
-
-        Thread runProbe_THREAD;
 
         class Probe_Info
         {
             public string address;
             public int port;
             public string deviceName;
+            public TH_MTConnect.HTTP.ProxySettings proxy;
         }
 
-        void RunProbe(string address, int port, string deviceName)
+        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
         {
-            if (runProbe_THREAD != null) runProbe_THREAD.Abort();
-
             var info = new Probe_Info();
             info.address = address;
             info.port = port;
             info.deviceName = deviceName;
+            info.proxy = proxy;
 
-            runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
-            runProbe_THREAD.Start(info);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
         }
 
         void RunProbe_Worker(object o)
@@ -282,7 +303,7 @@ namespace TH_DeviceManager.Pages.Agent
                 {
                     string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
 
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, 2000, 1);
+                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
 
                     if (returnData != null)
                     {
@@ -295,19 +316,25 @@ namespace TH_DeviceManager.Pages.Agent
                         this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
 
                         this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+
+                        //this.Dispatcher.BeginInvoke(new Action<string, int>(GetAgentInfo), priority, new object[] { info.address, info.port });
                     }
                     else
                     {
+                        this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { info.address + ":" + info.port.ToString() });
+
                         // Run Probe again using other ports
                         if (tryPortIndex < tryPorts.Length - 1)
                         {
-                            RunProbe(info.address, tryPorts[tryPortIndex], info.deviceName);
+                            RunProbe(info.address, info.proxy, tryPorts[tryPortIndex], info.deviceName);
                             tryPortIndex += 1;
                         }
                         else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
                     }
                 }
             }
+
+            //this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
         }
 
         
@@ -342,6 +369,8 @@ namespace TH_DeviceManager.Pages.Agent
         void UpdateConnectionTestLoading(bool loading)
         {
             ConnectionTestLoading = loading;
+
+            GetAgentInfo();
         }
 
         int[] tryPorts = new int[] { 5000, 5001, 5002, 5003, 5004, 5005 };
@@ -422,7 +451,6 @@ namespace TH_DeviceManager.Pages.Agent
             foreach (Device device in returnData.devices)
             {
                 RadioButton radio = new RadioButton();
-                radio.Style = (Style)TryFindResource("TH_RadioButton_Style");
                 radio.Content = device.name;
                 radio.GroupName = "MTCDevices";
                 radio.Margin = new Thickness(0, 5, 0, 5);
@@ -527,13 +555,43 @@ namespace TH_DeviceManager.Pages.Agent
 
         Thread agentInfo_THREAD;
 
-        void GetAgentInfo(string address, int port)
+        void GetAgentInfo()
         {
             if (agentInfo_THREAD != null) agentInfo_THREAD.Abort();
 
+            string ip = null;
+            int port = -1;
+
+            // Get IP Address or URL
+            ip = IpAddress;
+            if (ip.Length > 7)
+            {
+                if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
+            }
+
+            // Get Port
+            if (Port != null)
+            {
+                int.TryParse(Port, out port);
+            }
+
             var info = new Probe_Info();
-            info.address = address;
+            info.address = ip;
             info.port = port;
+
+            TH_MTConnect.HTTP.ProxySettings proxy = null;
+            if (ProxyPort != null)
+            {
+                int proxyPort = -1;
+                if (int.TryParse(ProxyPort, out proxyPort))
+                {
+                    proxy = new TH_MTConnect.HTTP.ProxySettings();
+                    proxy.Address = ProxyAddress;
+                    proxy.Port = proxyPort;
+                }
+            }
+
+            info.proxy = proxy;
 
             agentInfo_THREAD = new Thread(new ParameterizedThreadStart(GetAgentInfo_Worker));
             agentInfo_THREAD.Start(info);
@@ -548,7 +606,7 @@ namespace TH_DeviceManager.Pages.Agent
                 {
                     string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
 
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, 2000, 1);
+                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
 
                     this.Dispatcher.BeginInvoke(new Action<ReturnData>(GetAgentInfo_GUI), priority, new object[] { returnData });
                 }
@@ -573,6 +631,16 @@ namespace TH_DeviceManager.Pages.Agent
             }
         }
 
+        void ClearAgentInfo()
+        {
+            InstanceId = null;
+            Sender = null;
+            Version = null;
+            BufferSize = null;
+            AssetBufferSize = null;
+            AssetCount = null;
+            DeviceCount = null;
+        }
 
         #endregion
 

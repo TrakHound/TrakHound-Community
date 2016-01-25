@@ -34,9 +34,26 @@ namespace TH_OEE.ConfigurationPage
             DataContext = this;
         }
 
-        public string PageName { get { return "OEE"; } }
+        public string PageName
+        {
+            get { return (string)GetValue(PageNameProperty); }
+        }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_OEE;component/Resources/Chart_01.png")); } }
+        public static readonly DependencyProperty PageNameProperty =
+            DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("OEE"));
+
+        public ImageSource Image
+        {
+            get { return (ImageSource)GetValue(ImageProperty); }
+        }
+
+        public static readonly DependencyProperty ImageProperty =
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_OEE;component/Resources/Chart_01.png"))));
+
+
+        //public string PageName { get { return "OEE"; } }
+
+        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_OEE;component/Resources/Chart_01.png")); } }
 
         public event SettingChanged_Handler SettingChanged;
 

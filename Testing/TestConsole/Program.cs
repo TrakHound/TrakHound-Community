@@ -5,12 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TH_MicrosoftSQL;
+using TH_MTConnect.Components;
 
 namespace TestConsole
 {
     class Program
     {
         static void Main(string[] args)
+        {
+            Probe();
+
+            Console.ReadLine();
+        }
+
+        static void Probe()
+        {
+
+            var result = Requests.Get("http://agent.mtconnect.org/probe", new TH_MTConnect.HTTP.ProxySettings("134.249.161.16", 80), 5000, 1);
+
+            if (result != null) Console.WriteLine("Probe Successful");
+            else Console.WriteLine("Probe Failed");
+
+        }
+
+        static void MySQL()
         {
             var plugin = new TH_MicrosoftSQL.Plugin();
 
@@ -65,7 +83,6 @@ namespace TestConsole
             TH_Global.Functions.DataTable_Functions.WriteRowstoConsole("exampletable", table);
 
             Console.ReadLine();
-
         }
     }
 }

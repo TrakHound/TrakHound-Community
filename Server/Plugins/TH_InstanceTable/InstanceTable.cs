@@ -63,8 +63,6 @@ namespace TH_InstanceTable
 
         public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
-            //Console.WriteLine("InstanceTable.Update_Current()" + config.Description.Description + this.GetHashCode().ToString());
-
             CurrentData = returnData;
 
             InstanceData instanceData = ProcessSingleInstance(returnData);
@@ -87,8 +85,6 @@ namespace TH_InstanceTable
 
         public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
         {
-            //Console.WriteLine("InstanceTable.Update_Sample()" + config.Description.Description + this.GetHashCode().ToString());
-
             List<InstanceData> instanceDatas = ProcessInstances(CurrentData, returnData);
 
             if (UseDatabases) if (AddMySQL) AddRowsToDatabase(ColumnNames, instanceDatas);
@@ -101,12 +97,7 @@ namespace TH_InstanceTable
             de_d.data01 = config;
             de_d.data02 = instanceDatas;
 
-            //if (DataEvent != null) DataEvent(de_d);
-
             SendDataEvent(de_d);
-
-            //instanceDatas.Clear();
-            // --------------------------------------------
         }
 
         void SendDataEvent(DataEvent_Data de_d)
@@ -116,15 +107,7 @@ namespace TH_InstanceTable
 
         public void Update_DataEvent(DataEvent_Data de_data)
         {
-            //if (de_data.data01 != null)
-            //{
-            //    Configuration updateConfig = de_data.data01 as Configuration;
-            //    if (updateConfig != null)
-            //    {
-            //        Console.WriteLine("InstanceTable.Update_DataEvent() : " + de_data.id + " : " + updateConfig.Description.Description + " = " + config.Description.Description + this.GetHashCode().ToString());
-            //    }
-            //}
-            
+
         }
 
         public event DataEvent_Handler DataEvent;

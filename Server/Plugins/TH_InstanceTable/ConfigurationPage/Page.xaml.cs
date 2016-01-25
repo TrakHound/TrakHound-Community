@@ -39,9 +39,26 @@ namespace TH_InstanceTable.ConfigurationPage
             CreateExampleTable();
         }
 
-        public string PageName { get { return "Instance Table"; } }
+        public string PageName
+        {
+            get { return (string)GetValue(PageNameProperty); }
+        }
 
-        public ImageSource Image { get { return null; } }
+        public static readonly DependencyProperty PageNameProperty =
+            DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Instance Table"));
+
+        public ImageSource Image
+        {
+            get { return (ImageSource)GetValue(ImageProperty); }
+        }
+
+        public static readonly DependencyProperty ImageProperty =
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_InstanceTable;component/Resources/Hourglass_01.png"))));
+
+
+        //public string PageName { get { return "Instance Table"; } }
+
+        //public ImageSource Image { get { return null; } }
 
         public event SettingChanged_Handler SettingChanged;
 
@@ -451,10 +468,26 @@ namespace TH_InstanceTable.ConfigurationPage
             string p = Table_Functions.GetTableValue(prefix + "Port", dt);
             string devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
+            string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
+            string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
+
             int port;
             int.TryParse(p, out port);
 
-            RunProbe(ip, port, devicename);
+            // Proxy Settings
+            TH_MTConnect.HTTP.ProxySettings proxy = null;
+            if (proxyPort != null)
+            {
+                int proxy_p = -1;
+                if (int.TryParse(proxyPort, out proxy_p))
+                {
+                    proxy = new TH_MTConnect.HTTP.ProxySettings();
+                    proxy.Address = proxyAddress;
+                    proxy.Port = proxy_p;
+                }
+            }
+
+            RunProbe(ip, proxy, port, devicename);
         }
 
         Thread runProbe_THREAD;
@@ -464,9 +497,10 @@ namespace TH_InstanceTable.ConfigurationPage
             public string address;
             public int port;
             public string deviceName;
+            public TH_MTConnect.HTTP.ProxySettings proxy;
         }
 
-        void RunProbe(string address, int port, string deviceName)
+        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
         {
             if (runProbe_THREAD != null) runProbe_THREAD.Abort();
 
@@ -474,6 +508,7 @@ namespace TH_InstanceTable.ConfigurationPage
             info.address = address;
             info.port = port;
             info.deviceName = deviceName;
+            info.proxy = proxy;
 
             runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
             runProbe_THREAD.Start(info);
@@ -488,7 +523,7 @@ namespace TH_InstanceTable.ConfigurationPage
                 {
                     string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
 
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, 2000, 1);
+                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
                         foreach (Device device in returnData.devices)
