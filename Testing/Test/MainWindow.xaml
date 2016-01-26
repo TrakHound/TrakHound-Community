@@ -18,9 +18,94 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="dummy">
-        
-        <th_wpf:CollapseButton Text="Proxy Settings" IsExpanded="True" Margin="10">
+    <Grid x:Name="dummy" Background="{StaticResource Accent_Normal}">
+
+        <Grid Height="200" Width=" 200">
+            
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Background" Value="Orange"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="Red"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+            </Grid>
+            
+            <Grid Background="#33000000" MouseMove="Grid_MouseMove" MouseDown="Grid_MouseDown" IsHitTestVisible="False"/>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            <!--<Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Image Source="c:\\TrakHound\Configuration Files\Mazak1-1\Images\Mazak-Logo1.png" Height="40" Margin="0,20,0,0"/>
+
+                <Image Grid.Row="1" Source="c:\\TrakHound\Configuration Files\Mazak1-1\Images\mazak1.png" Margin="10"/>
+
+            </Grid>
+
+            <Border BorderBrush="#33ffffff" BorderThickness="2" CornerRadius="5">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3.2*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border CornerRadius="5,5,100,100">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#11ffffff" Offset="0"/>
+                                <GradientStop Color="#66ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Grid.Row="1" CornerRadius="0,0,5,5">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0"/>
+                                <GradientStop Color="#66000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Grid.RowSpan="2" CornerRadius="5">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="#22000000" Offset="0"/>
+                                <GradientStop Color="#10ffffff" Offset="0.4"/>
+                                <GradientStop Color="#10ffffff" Offset="0.6"/>
+                                <GradientStop Color="#22000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                </Grid>
+
+            </Border>-->
+
+        </Grid>
+
+        <!--<th_wpf:CollapseButton Text="Proxy Settings" IsExpanded="True" Margin="10">
             <th_wpf:CollapseButton.PageContent>
                 
                 <StackPanel>
@@ -30,7 +115,9 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <!--Proxy Address-->
+                    -->
+        <!--Proxy Address-->
+        <!--
                     <th_wpf:TextBox Text="{Binding ProxyAddress, Mode=TwoWay}" Title="Proxy Address" Example="192.168.1.1 or proxy.company.com">
                         <th_wpf:TextBox.HelpText>
                             Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
@@ -38,7 +125,9 @@
                         </th_wpf:TextBox.HelpText>
                     </th_wpf:TextBox>
 
-                    <!--Proxy Number-->
+                    -->
+        <!--Proxy Number-->
+        <!--
                     <th_wpf:TextBox Text="{Binding ProxyPort, Mode=TwoWay}" Title="Proxy Port" Example="5555">
                         <th_wpf:TextBox.HelpText>
                             Enter the Device Name from the MTConnect Agent to collect data from. This can be found in the Agent's Probe XML file.
@@ -49,10 +138,10 @@
                 </StackPanel>
 
             </th_wpf:CollapseButton.PageContent>
-        </th_wpf:CollapseButton>
-        
+        </th_wpf:CollapseButton>-->
+
         <!--<th_wpf:ProgressBar Width="40" Value="{Binding ProgressValue}" Maximum="{Binding ProgressMaximum}" Orientation="Vertical" Background="Green"/>-->
-        
+
         <!--<th_wpf:ListButton Text="Test Text" Selected="ListButton_Selected">
             <th_wpf:ListButton.Style>
                 <Style TargetType="th_wpf:ListButton">
@@ -76,7 +165,9 @@
                 <Style TargetType="th_wpf:Button">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                    --><!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>--><!--
+                    -->
+        <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>-->
+        <!--
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="Height" Value="35"/>
                     <Setter Property="ImageTextPadding" Value="10"/>
@@ -85,11 +176,15 @@
                     <Setter Property="FontSize" Value="14"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="CornerRadius" Value="1"/>
-                    --><!--<Setter Property="BorderBrush" Value="Red"/>
-                    <Setter Property="BorderThickness" Value="2"/>--><!--
+                    -->
+        <!--<Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="2"/>-->
+        <!--
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
-                            --><!--<Setter Property="Background" Value="{StaticResource Accent_Light}"/>--><!--
+                            -->
+        <!--<Setter Property="Background" Value="{StaticResource Accent_Light}"/>-->
+        <!--
                             <Setter Property="Background" Value="#18ffffff"/>
                         </Trigger>
                         <DataTrigger Binding="{Binding Loading}" Value="true">
@@ -99,9 +194,9 @@
                 </Style>
             </th_wpf:Button.Style>
         </th_wpf:Button>-->
-        
+
         <!--<levelindicator:Indicator x:Name="levels_LI" Foreground="Blue" BorderBrush="Red" HorizontalAlignment="Center" Width="50" Height="50"/>-->
-        
+
         <!--<ComboBox Width="150" Height="30" IsEditable="True">
             <ComboBoxItem Content="Test 1"/>
             <ComboBoxItem Content="Test 2"/>
@@ -110,9 +205,9 @@
             <ComboBoxItem Content="Test 5"/>
             <ComboBoxItem Content="Test 6"/>
         </ComboBox>-->
-        
+
         <!--<th_wpf:ImageBox Image="{Binding Image}" ImageSet="True" Width="300" Height="300" />-->
-        
+
     </Grid>
-    
+
 </Window>

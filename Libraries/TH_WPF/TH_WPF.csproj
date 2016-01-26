@@ -55,21 +55,21 @@
     <Compile Include="Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Button_01.xaml.cs">
+    <None Include="Button_01.xaml.cs">
       <DependentUpon>Button_01.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Button_05.xaml.cs">
+    </None>
+    <None Include="Button_05.xaml.cs">
       <DependentUpon>Button_05.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Button_04.xaml.cs">
+    </None>
+    <None Include="Button_04.xaml.cs">
       <DependentUpon>Button_04.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Button_03.xaml.cs">
+    </None>
+    <None Include="Button_03.xaml.cs">
       <DependentUpon>Button_03.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Button_02.xaml.cs">
+    </None>
+    <None Include="Button_02.xaml.cs">
       <DependentUpon>Button_02.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="CollapseButton.xaml.cs">
       <DependentUpon>CollapseButton.xaml</DependentUpon>
     </Compile>
@@ -81,9 +81,9 @@
       <DependentUpon>ImageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Image_Functions.cs" />
-    <Compile Include="Info_BT.xaml.cs">
+    <None Include="Info_BT.xaml.cs">
       <DependentUpon>Info_BT.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="LevelIndicator\Indicator.xaml.cs">
       <DependentUpon>Indicator.xaml</DependentUpon>
     </Compile>
@@ -154,26 +154,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Button_01.xaml">
+    <None Include="Button_01.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Button_05.xaml">
+    </None>
+    <None Include="Button_05.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Button_04.xaml">
+    </None>
+    <None Include="Button_04.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Button_03.xaml">
+    </None>
+    <None Include="Button_03.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Button_02.xaml">
+    </None>
+    <None Include="Button_02.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="CollapseButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -186,10 +186,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Info_BT.xaml">
+    <None Include="Info_BT.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="LevelIndicator\Indicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

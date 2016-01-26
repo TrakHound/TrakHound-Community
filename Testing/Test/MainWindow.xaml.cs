@@ -27,5 +27,44 @@ namespace Test
             DataContext = this;
         }
 
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point pt = e.GetPosition(this);
+
+            VisualTreeHelper.HitTest(
+                this,
+                obj =>
+                {
+                    return HitTestFilterBehavior.Continue;
+                },
+                result => HitTestResultBehavior.Continue,
+                new PointHitTestParameters(pt));
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Point pt = e.GetPosition(this);
+
+            VisualTreeHelper.HitTest(
+                this,
+                obj =>
+                {
+                    return HitTestFilterBehavior.Continue;
+                },
+                new HitTestResultCallback(MyHitTestResult),
+                new PointHitTestParameters(pt));
+        }
+
+        private HitTestResultBehavior MyHitTestResult(HitTestResult result)
+        {
+
+
+            Console.WriteLine(result.VisualHit.GetType().ToString());
+
+
+            //Set the behavior to return visuals at all z-order levels. 
+            return HitTestResultBehavior.Continue;
+        }
+
     }
 }

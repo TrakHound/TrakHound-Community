@@ -41,6 +41,20 @@
                         <Setter Property="Background" Value="Transparent"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ItemsControl.Resources>
+                <!--<ItemsControl.Resources>
+                    <Style TargetType="th_wpf:ListButton">
+                        <Setter Property="Foreground" Value="#fff"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#33ffffff"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="true">
@@ -48,7 +62,7 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-                </ItemsControl.Resources>
+                </ItemsControl.Resources>-->
             </ItemsControl>
 
         </Border>

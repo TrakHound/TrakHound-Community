@@ -977,21 +977,35 @@ namespace TH_DeviceCompare
                 if (cellIndex >= 0)
                 {
                     //Controls.HistogramDisplay oeeTimeline;
+                    //Grid container;
+
                     TH_WPF.Histogram.Histogram oeeTimeline;
 
                     object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
-
                     if (ddData == null)
                     {
+                        //container = new Grid();
+
                         //oeeTimeline = new Controls.HistogramDisplay();
                         oeeTimeline = new TH_WPF.Histogram.Histogram();
+                        oeeTimeline.Name = "OEE";
                         oeeTimeline.Height = 100;
                         oeeTimeline.Width = 180;
                         oeeTimeline.Margin = new Thickness(0, 5, 0, 5);
+
+                        //container.Children.Add(oeeTimeline);
+                        //container.Children.Add(new Components.GlossOverlay());
+
+
                         dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeTimeline;
+                        //dd.ComparisonGroup.column.Cells[cellIndex].Data = container;
                     }
                     //else oeeTimeline = (Controls.HistogramDisplay)ddData;
                     else oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
+                    //else
+                    //{
+                    //    oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
+                    //}
 
 
                     foreach (OEE_TimelineInfo info in infos)
@@ -1029,6 +1043,7 @@ namespace TH_DeviceCompare
                 if (ddData != null)
                 {
                     oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
+                    //oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
 
                     // Get Segment Times (for ToolTip)
                     foreach (TH_WPF.Histogram.DataBar db in oeeTimeline.DataBars)
@@ -1061,6 +1076,7 @@ namespace TH_DeviceCompare
                     {
                         //oeeTimeline = (Controls.HistogramDisplay)ddData;
                         oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
+                        //oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
 
                         // Get Shift Name to check if still in the same shift as last update
                         string prev_shiftName = oeeTimeline.shiftName;

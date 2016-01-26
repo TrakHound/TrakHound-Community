@@ -22,7 +22,19 @@
         <Grid Background="#00000000" PreviewMouseDown="Grid_MouseDown" />
 
         <!--Remove-->
-        <th_wpf:Button_02 Grid.Column="1" Image="/TH_DeviceManager;component/Resources/X_01.png" Clicked="Remove_Clicked"/>
+        <th_wpf:Button Padding="0" Grid.Column="1" Image="/TH_DeviceManager;component/Resources/X_01.png" Clicked="Remove_Clicked">
+            <th_wpf:Button.Style>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#aaffffff"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="#fff"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </th_wpf:Button.Style>
+        </th_wpf:Button>
 
     </Grid>
     

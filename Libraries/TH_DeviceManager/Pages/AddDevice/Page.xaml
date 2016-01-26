@@ -489,7 +489,7 @@
                                             </Style>
                                         </Grid.Style>
 
-                                        <th_wpf:Button_04 Image="/TH_DeviceManager;component/Resources/X_01.png" ToolTip="Remove from the Shared Catalog" Clicked="Remove_Clicked"/>
+                                        <th_wpf:Button Foreground="{StaticResource Accent_Normal}" Image="/TH_DeviceManager;component/Resources/X_01.png" ToolTip="Remove from the Shared Catalog" Clicked="Remove_Clicked"/>
 
                                     </Grid>
 

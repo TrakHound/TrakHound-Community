@@ -53,7 +53,7 @@ namespace TH_DeviceManager.Pages.Databases.Controls
         public static readonly DependencyProperty ItemContentProperty =
             DependencyProperty.Register("ItemContent", typeof(object), typeof(DatabaseItemContainer), new PropertyMetadata(null));
 
-        private void Remove_Clicked(Button_02 bt)
+        private void Remove_Clicked(TH_WPF.Button bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
         }

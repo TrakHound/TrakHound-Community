@@ -8,7 +8,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             
+             xmlns:components="clr-namespace:TH_DeviceCompare.Components"
              
              Width="150"
              Height="50"
@@ -73,7 +74,10 @@
         <TextBlock Text="{Binding Text}" Foreground="{StaticResource Foreground_Light}" Margin="10" FontSize="12" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
 
         <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}"/>
-        
+
+        <!--Gloss Effect-->
+        <components:GlossOverlay />
+
     </Grid>
     
 </UserControl>

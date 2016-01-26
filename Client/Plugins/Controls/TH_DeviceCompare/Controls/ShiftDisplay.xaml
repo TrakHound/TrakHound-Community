@@ -11,7 +11,7 @@
              
              xmlns:local="clr-namespace:TH_DeviceCompare.Controls"
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
-             
+
              mc:Ignorable="d" 
              
              Margin="0,10"

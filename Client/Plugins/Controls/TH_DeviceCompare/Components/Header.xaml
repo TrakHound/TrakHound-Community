@@ -23,360 +23,182 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
-    <Grid x:Name="Main_GRID" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown" Height="150">
-        <Grid.Style>
-            <Style TargetType="Grid">
-                
+    
+    <Border CornerRadius="5" Margin="2">
+        <Border.Style>
+            <Style TargetType="Border">
                 <Setter Property="Background" Value="#00000000"/>
-                
                 <Style.Triggers>
 
                     <DataTrigger Binding="{Binding Production}" Value="true">
                         <Setter Property="Background" Value="#FF19B419"/>
                     </DataTrigger>
-                    
+
                     <DataTrigger Binding="{Binding Alert}" Value="true">
                         <Setter Property="Background" Value="Red"/>
                     </DataTrigger>
 
                 </Style.Triggers>
             </Style>
-        </Grid.Style>
+        </Border.Style>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid.RenderTransform>
-            <TranslateTransform />
-        </Grid.RenderTransform>
-
-        <Grid>
-            <Grid.Style>
+        <Grid x:Name="Main_GRID" MouseEnter="Control_MouseEnter" MouseLeave="Control_MouseLeave" PreviewMouseDown="Control_MouseDown" Height="150">
+            <!--<Grid.Style>
                 <Style TargetType="Grid">
-                    <Setter Property="Background">
+
+                    <Setter Property="Background" Value="#00000000"/>
+
+                    <Style.Triggers>
+
+                        <DataTrigger Binding="{Binding Production}" Value="true">
+                            <Setter Property="Background" Value="#FF19B419"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Alert}" Value="true">
+                            <Setter Property="Background" Value="Red"/>
+                        </DataTrigger>
+
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>-->
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RenderTransform>
+                <TranslateTransform />
+            </Grid.RenderTransform>
+
+            <Grid>
+                <!--<Grid.Style>
+                    <Style TargetType="Grid">
+                        --><!--<Setter Property="Background">
                         <Setter.Value>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <!--<GradientStop Color="#18000000" Offset="0"/>-->
-                                <!--<GradientStop Color="#11ffffff" Offset="0.2"/>-->
+                                -->
+                        <!--<GradientStop Color="#18000000" Offset="0"/>-->
+                        <!--<GradientStop Color="#11ffffff" Offset="0.2"/>-->
+                        <!--
                                 <GradientStop Color="#20ffffff" Offset="0.2"/>
                                 <GradientStop Color="#11ffffff" Offset="0.8"/>
                                 <GradientStop Color="#40000000" Offset="1"/>
                             </LinearGradientBrush>
                         </Setter.Value>
-                    </Setter>
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Production}" Value="false"/>
-                                <Condition Binding="{Binding Alert}" Value="false"/>
-                            </MultiDataTrigger.Conditions>
-                            
-                            <Setter Property="Background" Value="#00000000"/>
-                            
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+                    </Setter>--><!--
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Production}" Value="false"/>
+                                    <Condition Binding="{Binding Alert}" Value="false"/>
+                                </MultiDataTrigger.Conditions>
 
-            <Grid.RowDefinitions>
-                
-                <!--Updated Timestamp-->
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style TargetType="RowDefinition">
-                            <Setter Property="Height" Value="auto"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                    <Setter Property="Height" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                
-                <!--Device Logo-->
-                <RowDefinition >
-                    <RowDefinition.Style>
-                        <Style TargetType="RowDefinition">
-                            <Setter Property="Height" Value="*"/>
-                            <!--<Setter Property="Height" Value="3*"/>-->
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Alert}" Value="true">
-                                    <Setter Property="Height" Value="5*"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
-                                    <Setter Property="Height" Value="*"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                    <Setter Property="Height" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
-                        
-                <!--Device Image-->
-                <RowDefinition >
-                    <RowDefinition.Style>
-                        <Style TargetType="RowDefinition">
-                            <Setter Property="Height" Value="auto"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Alert}" Value="true">
-                                    <Setter Property="Height" Value="5*"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
-                                    <Setter Property="Height" Value="0"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                    <Setter Property="Height" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
+                                <Setter Property="Background" Value="#00000000"/>
 
-                <!--Description-->
-                <RowDefinition>
-                    <RowDefinition.Style>
-                        <Style TargetType="RowDefinition">
-                            <Setter Property="Height" Value="auto"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                    <Setter Property="Height" Value="*"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>-->
 
-                <!--Device Info-->
-                <RowDefinition >
-                    <RowDefinition.Style>
-                        <Style TargetType="RowDefinition">
-                            <Setter Property="Height" Value="auto"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                    <Setter Property="Height" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </RowDefinition.Style>
-                </RowDefinition>
+                <Grid.RowDefinitions>
 
-                <!--Break Indicator-->
-                <RowDefinition Height="auto" />
-                
-                <!--Alert Indicator-->
-                <RowDefinition Height="auto" />
-                
-            </Grid.RowDefinitions>
+                    <!--Updated Timestamp-->
+                    <RowDefinition>
+                        <RowDefinition.Style>
+                            <Style TargetType="RowDefinition">
+                                <Setter Property="Height" Value="auto"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                        <Setter Property="Height" Value="0"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </RowDefinition.Style>
+                    </RowDefinition>
 
-            
-            <!--Last Updated Timestamp-->
-            <TextBlock Grid.Row="0" Foreground="#33000000" FontSize="8pt" Margin="5,2" HorizontalAlignment="Right">
+                    <!--Device Logo-->
+                    <RowDefinition >
+                        <RowDefinition.Style>
+                            <Style TargetType="RowDefinition">
+                                <Setter Property="Height" Value="*"/>
+                                <!--<Setter Property="Height" Value="3*"/>-->
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                                        <Setter Property="Height" Value="5*"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
+                                        <Setter Property="Height" Value="*"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                        <Setter Property="Height" Value="0"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </RowDefinition.Style>
+                    </RowDefinition>
+
+                    <!--Device Image-->
+                    <RowDefinition >
+                        <RowDefinition.Style>
+                            <Style TargetType="RowDefinition">
+                                <Setter Property="Height" Value="auto"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                                        <Setter Property="Height" Value="5*"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Device_Image}" Value="{x:Null}">
+                                        <Setter Property="Height" Value="0"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                        <Setter Property="Height" Value="0"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </RowDefinition.Style>
+                    </RowDefinition>
+
+                    <!--Description-->
+                    <RowDefinition>
+                        <RowDefinition.Style>
+                            <Style TargetType="RowDefinition">
+                                <Setter Property="Height" Value="auto"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                        <Setter Property="Height" Value="*"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </RowDefinition.Style>
+                    </RowDefinition>
+
+                    <!--Device Info-->
+                    <RowDefinition >
+                        <RowDefinition.Style>
+                            <Style TargetType="RowDefinition">
+                                <Setter Property="Height" Value="auto"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                        <Setter Property="Height" Value="0"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </RowDefinition.Style>
+                    </RowDefinition>
+
+                    <!--Break Indicator-->
+                    <RowDefinition Height="auto" />
+
+                    <!--Alert Indicator-->
+                    <RowDefinition Height="auto" />
+
+                </Grid.RowDefinitions>
+
+
+                <!--Last Updated Timestamp-->
+                <TextBlock Grid.Row="0" Foreground="#33000000" FontSize="8pt" Margin="5,2" HorizontalAlignment="Right">
                 <Run Text="Last Updated : "/>
                 <Run Text="{Binding LastUpdatedTimestamp}"/>
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-
-            <!--Device Logo-->
-            <Image Grid.Row="1" Source="{Binding Device_Logo}" Margin="10,5" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="50" MaxWidth="160">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <!--<Setter Property="Opacity" Value="0.75"/>-->
-                        <Setter Property="Opacity" Value="1.0"/>
-                        <Style.Triggers>
-                            <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
-                                <Setter Property="Opacity" Value="1.0"/>
-                            </DataTrigger>-->
-                            <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
-                                <Setter Property="Opacity" Value="0.75"/>
-                            </DataTrigger>-->
-                            <!--<DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                <Setter Property="Opacity" Value="1.0"/>
-                            </DataTrigger>-->
-                            <DataTrigger Binding="{Binding Connected}" Value="false">
-                                <Setter Property="Opacity" Value="0.3"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Device_Logo}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-
-            <!--Device Image-->
-            <Image Grid.Row="2" Source="{Binding Device_Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image.Effect>
-                    <DropShadowEffect Direction="225" Color="#66000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
-                </Image.Effect>
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Setter Property="Opacity" Value="0.0"/>
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="MaxWidth" Value="0"/>
-                        <Setter Property="MaxHeight" Value="0"/>
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Minimized}" Value="false">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="MaxHeight" From="0" To="140" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="MaxWidth" From="0" To="140" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ThicknessAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Margin" From="0" To="10" >
-                                                <ThicknessAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ThicknessAnimation.EasingFunction>
-                                            </ThicknessAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxHeight" From="140" To="0" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseIn"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="MaxWidth" From="140" To="0" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseIn"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseIn"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ThicknessAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Margin" From="10" To="0" >
-                                                <ThicknessAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseIn"/>
-                                                </ThicknessAnimation.EasingFunction>
-                                            </ThicknessAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-
-
-
-
-                            <!--<DataTrigger Binding="{Binding Minimized}" Value="false">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>-->
-                            <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
-                                <Setter Property="Opacity" Value="1.0"/>
-                            </DataTrigger>-->
-                            <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
-                                    <Setter Property="Opacity" Value="0.75"/>
-                                </DataTrigger>-->
-                            <!--<DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                    <Setter Property="Opacity" Value="1.0"/>
-                                </DataTrigger>-->
-                            <DataTrigger Binding="{Binding Connected}" Value="false">
-                                <Setter Property="Opacity" Value="0.3"/>
-                            </DataTrigger>
-                            <!--<DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>-->
-                            
-                            <Trigger Property="MaxHeight" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </Trigger>
-                            
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-
-            <!--Device Description-->
-            <TextBlock Grid.Row="3" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5,10,0" TextAlignment="Center" VerticalAlignment="Center" Foreground="#fff"/>
-
-            <!--Device Info-->
-            <Grid Grid.Row="4">
-
-                <!--Device Info-->
-                <StackPanel Margin="10" VerticalAlignment="Bottom">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                    <TextBlock Text="{Binding Device_Manufacturer}" FontSize="8pt" Foreground="#aaffffff"/>
-
-                    <TextBlock Text="{Binding Device_Model}" FontSize="8pt" Foreground="#aaffffff"/>
-
-                    <TextBlock Text="{Binding Device_Serial}" FontSize="8pt" Foreground="#aaffffff"/>
-
-                </StackPanel>
-
-                <!--Device ID-->
-                <TextBlock Text="{Binding Device_ID}" 
-                                   FontSize="45pt"
-                                   TextAlignment="Right" VerticalAlignment="Bottom" Foreground="#33ffffff"
-                                   Margin="5,0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -389,104 +211,302 @@
                     </TextBlock.Style>
                 </TextBlock>
 
-            </Grid>
+                <!--Device Logo-->
+                <Image Grid.Row="1" Source="{Binding Device_Logo}" Margin="10,5" HorizontalAlignment="Center" VerticalAlignment="Center" MaxHeight="50" MaxWidth="160">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <!--<Setter Property="Opacity" Value="0.75"/>-->
+                            <Setter Property="Opacity" Value="1.0"/>
+                            <Style.Triggers>
+                                <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
+                                <Setter Property="Opacity" Value="1.0"/>
+                            </DataTrigger>-->
+                                <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
+                                <Setter Property="Opacity" Value="0.75"/>
+                            </DataTrigger>-->
+                                <!--<DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                <Setter Property="Opacity" Value="1.0"/>
+                            </DataTrigger>-->
+                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                    <Setter Property="Opacity" Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Device_Logo}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
 
-            <!--Break Indicator-->
-            <Grid Grid.Row="5" Background="#33ffffff">
+                <!--Device Image-->
+                <Image Grid.Row="2" Source="{Binding Device_Image}" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Image.Effect>
+                        <DropShadowEffect Direction="225" Color="#66000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
+                    </Image.Effect>
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Opacity" Value="0.0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="MaxWidth" Value="0"/>
+                            <Setter Property="MaxHeight" Value="0"/>
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Minimized}" Value="false">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="MaxHeight" From="0" To="140" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="MaxWidth" From="0" To="140" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ThicknessAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Margin" From="0" To="10" >
+                                                    <ThicknessAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </ThicknessAnimation.EasingFunction>
+                                                </ThicknessAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="MaxHeight" From="140" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="MaxWidth" From="140" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ThicknessAnimation Duration="00:00:0.5" Storyboard.TargetProperty="Margin" From="10" To="0" >
+                                                    <ThicknessAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </ThicknessAnimation.EasingFunction>
+                                                </ThicknessAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
 
-                <Grid.RenderTransform>
-                    <TranslateTransform Y="41"/>
-                </Grid.RenderTransform>
 
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Height" Value="0"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Break}" Value="true">
-                                <DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="41" To="0" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="0" To="40" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="0" To="41" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseIn"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="40" To="0" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
 
-                <!--Seperator-->
-                <Rectangle Grid.Row="0" Fill="#66ffffff" Height="1" />
+                                <!--<DataTrigger Binding="{Binding Minimized}" Value="false">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>-->
+                                <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
+                                <Setter Property="Opacity" Value="1.0"/>
+                            </DataTrigger>-->
+                                <!--<DataTrigger Binding="{Binding MouseOver}" Value="True">
+                                    <Setter Property="Opacity" Value="0.75"/>
+                                </DataTrigger>-->
+                                <!--<DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                </DataTrigger>-->
+                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                    <Setter Property="Opacity" Value="0.3"/>
+                                </DataTrigger>
+                                <!--<DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>-->
 
-                <!--Break and Time Display-->
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                                <Trigger Property="MaxHeight" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </Trigger>
 
-                    <!--Break Text-->
-                    <TextBlock Text="On Break" FontSize="16pt" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#aaffffff" Margin="10,0,10,5"/>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
 
-                    <!--Time Text-->
-                    <TextBlock Grid.Column="1" Text="(6:00 - 6:30)" Margin="5,0,5,5" FontSize="10pt" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#aaffffff"/>
+                <!--Device Description-->
+                <TextBlock Grid.Row="3" Text="{Binding Device_Description}" FontSize="10pt" FontWeight="Bold" Margin="10,5,10,0" TextAlignment="Center" VerticalAlignment="Center" Foreground="#fff"/>
+
+                <!--Device Info-->
+                <Grid Grid.Row="4">
+
+                    <!--Device Info-->
+                    <StackPanel Margin="10" VerticalAlignment="Bottom">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <TextBlock Text="{Binding Device_Manufacturer}" FontSize="8pt" Foreground="#aaffffff"/>
+
+                        <TextBlock Text="{Binding Device_Model}" FontSize="8pt" Foreground="#aaffffff"/>
+
+                        <TextBlock Text="{Binding Device_Serial}" FontSize="8pt" Foreground="#aaffffff"/>
+
+                    </StackPanel>
+
+                    <!--Device ID-->
+                    <TextBlock Text="{Binding Device_ID}" 
+                                   FontSize="45pt"
+                                   TextAlignment="Right" VerticalAlignment="Bottom" Foreground="#33ffffff"
+                                   Margin="5,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
                 </Grid>
 
-            </Grid>
+                <!--Break Indicator-->
+                <Grid Grid.Row="5" Background="#33ffffff">
 
-            <!--Alert Indicator-->
-            <Grid Grid.Row="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <!--<Grid.RenderTransform>
+                    <Grid.RenderTransform>
+                        <TranslateTransform Y="41"/>
+                    </Grid.RenderTransform>
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Height" Value="0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Break}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="41" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="0" To="40" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="0" To="41" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="40" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <!--Seperator-->
+                    <Rectangle Grid.Row="0" Fill="#66ffffff" Height="1" />
+
+                    <!--Break and Time Display-->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Break Text-->
+                        <TextBlock Text="On Break" FontSize="16pt" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#aaffffff" Margin="10,0,10,5"/>
+
+                        <!--Time Text-->
+                        <TextBlock Grid.Column="1" Text="(6:00 - 6:30)" Margin="5,0,5,5" FontSize="10pt" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#aaffffff"/>
+
+                    </Grid>
+
+                </Grid>
+
+                <!--Alert Indicator-->
+                <Grid Grid.Row="6">
+
+                    <!--<Grid.RenderTransform>
                     <TranslateTransform Y="41"/>
                 </Grid.RenderTransform>-->
-                
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Height" Value="0"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Alert}" Value="true">
-                                <DataTrigger.EnterActions>
-                                    <!--<BeginStoryboard>
+
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Height" Value="0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Alert}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <!--<BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="36" To="0" >
                                                 <DoubleAnimation.EasingFunction>
@@ -495,18 +515,18 @@
                                             </DoubleAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>-->
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="0" To="35" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <!--<BeginStoryboard>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="0" To="35" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <!--<BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.Y)" From="0" To="36" >
                                                 <DoubleAnimation.EasingFunction>
@@ -515,82 +535,137 @@
                                             </DoubleAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>-->
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="35" To="0" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-          
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition Width="*"/> 
-                    </Grid.ColumnDefinitions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.75" Storyboard.TargetProperty="Height" From="35" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseOut"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
-                    <!--Alert Indicator-->
-                    <Rectangle Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="White">
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG"  Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Warning_01_40px.png"  />
-                        </Rectangle.Resources>
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="Height" Value="35"/>
-                                <Setter Property="Width" Value="35"/>
-                                <Setter Property="Margin" Value="10,0"/>
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                        <Setter Property="Height" Value="25"/>
-                                        <Setter Property="Width" Value="25"/>
-                                        <Setter Property="Margin" Value="10,0,5,0"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-                    
-                    <!--Alert Text-->
-                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" TextWrapping="WrapWithOverflow">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Text" Value="Alert"/>
-                                <Setter Property="FontSize" Value="14pt"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                        <Setter Property="Text" Value="{Binding Device_Description}"/>
-                                        <Setter Property="FontSize" Value="10pt"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>                   
-                    </TextBlock>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                </Grid>
+                        <!--Alert Indicator-->
+                        <Rectangle Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="White">
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG"  Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Warning_01_40px.png"  />
+                            </Rectangle.Resources>
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="Height" Value="35"/>
+                                    <Setter Property="Width" Value="35"/>
+                                    <Setter Property="Margin" Value="10,0"/>
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                            <Setter Property="Height" Value="25"/>
+                                            <Setter Property="Width" Value="25"/>
+                                            <Setter Property="Margin" Value="10,0,5,0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+                        </Rectangle>
 
-                
-                
-                
+                        <!--Alert Text-->
+                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" TextWrapping="WrapWithOverflow">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="Alert"/>
+                                    <Setter Property="FontSize" Value="14pt"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Collapsed}" Value="true">
+                                            <Setter Property="Text" Value="{Binding Device_Description}"/>
+                                            <Setter Property="FontSize" Value="10pt"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
-                <!--<TH_WPF:ProductionIndicator Grid.Column="1" ProductionLevel="{Binding ProductionLevel}"
+                    </Grid>
+
+
+
+
+
+                    <!--<TH_WPF:ProductionIndicator Grid.Column="1" ProductionLevel="{Binding ProductionLevel}"
                                                 ProductionLevelCount="{Binding ProductionLevelCount}"
                                                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
                                                 Margin="10,5" MinHeight="30"/>-->
 
+                </Grid>
+
             </Grid>
+
+            <!--Gloss Effect-->
+            <Border BorderBrush="#33ffffff" BorderThickness="1" CornerRadius="5">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="#33ffffff" Offset="0" />
+                                    <GradientStop Color="#00ffffff" Offset="1.0" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border CornerRadius="5,5,100,100">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                <GradientStop Color="#44ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Grid.Row="1" CornerRadius="0,0,5,5">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0"/>
+                                <GradientStop Color="#33000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Grid.RowSpan="2" CornerRadius="5">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="#22000000" Offset="0"/>
+                                <GradientStop Color="#10ffffff" Offset="0.4"/>
+                                <GradientStop Color="#10ffffff" Offset="0.6"/>
+                                <GradientStop Color="#22000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                </Grid>
+
+            </Border>
+
+            <!--<Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>-->
 
         </Grid>
 
-        <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>
-
-    </Grid>
+    </Border>
 
 </UserControl>

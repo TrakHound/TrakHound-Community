@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:levelindicator="clr-namespace:TH_WPF.LevelIndicator;assembly=TH_WPF"
-             
+
              mc:Ignorable="d" 
              Width="200"
              Height="50">
@@ -25,9 +25,9 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="{Binding ValueText}" Margin="10,0" Foreground="{StaticResource Foreground_Normal}" FontSize="25pt" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        
+
         <levelindicator:Indicator x:Name="override_INDICATOR" Grid.Column="1" Width="75" Margin="5" ActiveLevelBrush="{StaticResource Accent_Normal}" InactiveLevelBrush="{StaticResource Accent_Hover}"/>
-        
+
     </Grid>
-    
+
 </UserControl>

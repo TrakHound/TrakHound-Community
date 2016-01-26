@@ -38,7 +38,70 @@
             Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
             HorizontalAlignment="Center" Fill="{StaticResource Accent_Normal}"
             VerticalAlignment="Center" />
-            
+
+            <!--Gloss Effect-->
+            <Border x:Name="gloss" Grid.Column="1" IsHitTestVisible="False" Visibility="Collapsed">
+                <!--<Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>-->
+
+                <Grid IsHitTestVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="#33ffffff" Offset="0" />
+                                    <GradientStop Color="#00ffffff" Offset="1.0" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                <GradientStop Color="#33ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Grid.Row="1" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0"/>
+                                <GradientStop Color="#08000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="#04000000" Offset="0"/>
+                                <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                --><!--<GradientStop Color="#10ffffff" Offset="0.6"/>--><!--
+                                <GradientStop Color="#04000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>-->
+
+                </Grid>
+
+            </Border>
+
         </Grid>
         
         <ControlTemplate.Triggers>
@@ -46,6 +109,7 @@
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=ToggleShade}" Value="True">
                 <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
                 <Setter Property="Cursor" Value="Hand"/>
             </DataTrigger>
@@ -53,6 +117,7 @@
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=ButtonBorder}" Value="True">
                 <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
                 <Setter Property="Cursor" Value="Hand"/>
             </DataTrigger>
@@ -60,6 +125,7 @@
             <DataTrigger Binding="{Binding IsMouseOver, ElementName=Arrow}" Value="True">
                 <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Window_Background}"/>
                 <Setter Property="Cursor" Value="Hand"/>
             </DataTrigger>
@@ -67,6 +133,7 @@
             <Trigger Property="ToggleButton.IsChecked" Value="True">
                 <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource Accent_Normal}"/>
                 <Setter Property="Panel.Background" TargetName="ToggleShade" Value="{StaticResource ShadeGradient}"/>
+                <Setter Property="Visibility" TargetName="gloss" Value="Visible"/>
                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="{StaticResource Foreground_Opposite_Normal}"/>
             </Trigger>
 

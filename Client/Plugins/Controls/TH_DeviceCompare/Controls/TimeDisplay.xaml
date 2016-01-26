@@ -10,7 +10,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
-             
              xmlns:system="clr-namespace:System;assembly=mscorlib"
          
              mc:Ignorable="d" 

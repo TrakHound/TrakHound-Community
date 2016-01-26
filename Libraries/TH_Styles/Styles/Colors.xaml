@@ -10,9 +10,20 @@
 
     <!--Accent-->
     <SolidColorBrush x:Key="Accent_Normal" Color="#0080ff"/>
-    <SolidColorBrush x:Key="Accent_Light" Color="#00aaff"/>
+    <!--<SolidColorBrush x:Key="Accent_Light" Color="#00aaff"/>-->
+    <SolidColorBrush x:Key="Accent_Light" Color="#40a0ff"/>
+    <!--<SolidColorBrush x:Key="Accent_Light" Color="#00c0ff"/>-->
     <SolidColorBrush x:Key="Accent_Dark" Color="#0060ff"/>
     <SolidColorBrush x:Key="Accent_Hover" Color="#200080ff"/>
+
+    
+
+    <RadialGradientBrush x:Key="Accent_LightGradient" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Color="#cc00aaff" Offset="0" />
+            <GradientStop Color="#6600aaff" Offset="1.0" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
 
     <!--<SolidColorBrush x:Key="Accent_Normal" Color="#FF5696D4"/>
     <SolidColorBrush x:Key="Accent_Light" Color="#FF65B3FF"/>

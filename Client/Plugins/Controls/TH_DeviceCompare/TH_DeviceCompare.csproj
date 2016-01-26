@@ -64,6 +64,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Include="app.config" />
+    <Page Include="Components\GlossOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\Header.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,6 +105,9 @@
     </Compile>
     <Compile Include="Components\Column.xaml.cs">
       <DependentUpon>Column.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\GlossOverlay.xaml.cs">
+      <DependentUpon>GlossOverlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\Header.xaml.cs">
       <DependentUpon>Header.xaml</DependentUpon>

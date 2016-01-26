@@ -88,7 +88,7 @@
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID">
         <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">0</GridLength>
+            <GridLength x:Key="ShadowWidth">10</GridLength>
 
             <Color x:Key="inside">#22000000</Color>
             <GradientStopCollection x:Key="gradient">
@@ -614,6 +614,68 @@
                                           Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
                                           />
 
+                                            <!--Gloss Effect-->
+                                            <Border Grid.ColumnSpan="2">
+
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="4.5*"/>
+                                                        <RowDefinition Height="5.5*"/>
+                                                    </Grid.RowDefinitions>
+
+                                                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                                        <Border.Background>
+                                                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                                <RadialGradientBrush.GradientStops>
+                                                                    <GradientStop Color="#22ffffff" Offset="0" />
+                                                                    <GradientStop Color="#00ffffff" Offset="1.0" />
+                                                                </RadialGradientBrush.GradientStops>
+                                                            </RadialGradientBrush>
+                                                        </Border.Background>
+                                                    </Border>
+
+                                                    <!--<Border CornerRadius="0,0,50,50">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                                                <GradientStop Color="#33ffffff" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Border.Background>
+                                                    </Border>-->
+
+                                                    <Border CornerRadius="0,0,50,50">
+                                                        <Border.Background>
+                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                                                <GradientStop Color="#33ffffff" Offset="1"/>
+                                                            </LinearGradientBrush>
+                                                        </Border.Background>
+                                                    </Border>
+
+                                                    <!--<Border Grid.Row="1">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#00ffffff" Offset="0"/>
+                                                                    <GradientStop Color="#66000000" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>-->
+
+                                                                                        <!--<Border Grid.RowSpan="2">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                                    <GradientStop Color="#66000000" Offset="0"/>
+                                                                    <GradientStop Color="#10ffffff" Offset="0.4"/>
+                                                                    <GradientStop Color="#10ffffff" Offset="0.6"/>
+                                                                    <GradientStop Color="#66000000" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>-->
+
+                                                </Grid>
+
+                                            </Border>
+
                                         </Grid>
 
                                     </Border>
@@ -793,7 +855,7 @@
                                                 <Setter Property="Height" Value="30"/>
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter Property="Background" Value="#33ffffff"/>
+                                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -812,7 +874,7 @@
                                                 <Setter Property="Background" Value="Transparent"/>
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter Property="Background" Value="#33ffffff"/>
+                                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
                                                     </Trigger>
                                                 </Style.Triggers>
                                             </Style>

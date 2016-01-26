@@ -605,7 +605,7 @@ namespace TH_DeviceManager.Pages.AddDevice
         }
 
 
-        private void Remove_Clicked(TH_WPF.Button_04 bt)
+        private void Remove_Clicked(TH_WPF.Button bt)
         {
             if (selectedItem != null)
             {

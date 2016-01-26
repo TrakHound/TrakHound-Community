@@ -25,11 +25,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\TH_Styles.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_01.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_05.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_04.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_03.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_02.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\CollapseButton.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Segment.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ListButton.baml
@@ -40,15 +35,9 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Styles\Colors.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TextBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TickMark.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_01.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_05.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_04.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_03.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button_02.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\CollapseButton.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Histogram\Histogram.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ImageBox.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Info_BT.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Indicator.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Segment.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ListButton.g.cs
@@ -67,7 +56,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF_MarkupCompile.ca
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Histogram\Histogram.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ImageBox.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Info_BT.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Indicator.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MessageBox.baml

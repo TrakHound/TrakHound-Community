@@ -265,10 +265,10 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
                                 </Trigger>
                                 <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
@@ -380,7 +380,22 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding DeviceList}" Margin="5,0"/>
+                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding DeviceList}" Margin="5,0">
+                                        <!--<ItemsControl.Resources>
+                                            <Style TargetType="th_wpf:ListButton">
+                                                <Setter Property="Foreground" Value="#fff"/>
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="true">
+                                                        <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ItemsControl.Resources>-->
+                                    </ItemsControl>
 
                                     <Grid Grid.Row="1" Background="Transparent" PreviewMouseDown="TableList_MouseDown"/>
 
@@ -511,6 +526,58 @@
 
                                     </Grid>
 
+                                    <!--Gloss Effect-->
+                                    <Border IsHitTestVisible="False">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=AddDevice_GRID}" Value="true">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid IsHitTestVisible="False">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="4*"/>
+                                                <RowDefinition Height="6*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                                <Border.Background>
+                                                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                        <RadialGradientBrush.GradientStops>
+                                                            <GradientStop Color="#20ffffff" Offset="0" />
+                                                            <GradientStop Color="#00ffffff" Offset="1.0" />
+                                                        </RadialGradientBrush.GradientStops>
+                                                    </RadialGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+
+                                            <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
+                                                <Border.Background>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                                        <GradientStop Color="#22ffffff" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+
+                                            <Border Grid.Row="1" IsHitTestVisible="False">
+                                                <Border.Background>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="#00ffffff" Offset="0"/>
+                                                        <GradientStop Color="#06000000" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Border.Background>
+                                            </Border>
+
+                                        </Grid>
+
+                                    </Border>
+
                                 </Grid>
 
                             </Grid>
@@ -574,7 +641,22 @@
 
                         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
-                            <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0"/>
+                            <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0">
+                                <!--<ItemsControl.Resources>
+                                    <Style TargetType="th_wpf:ListButton">
+                                        <Setter Property="Foreground" Value="#fff"/>
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ItemsControl.Resources>-->
+                            </ItemsControl>
 
                         </ScrollViewer>
 

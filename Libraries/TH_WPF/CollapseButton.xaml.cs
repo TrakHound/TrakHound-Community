@@ -23,7 +23,7 @@ namespace TH_WPF
         public CollapseButton()
         {
             InitializeComponent();
-            DataContext = this;
+            bd.DataContext = this;
         }
 
         public bool IsExpanded
