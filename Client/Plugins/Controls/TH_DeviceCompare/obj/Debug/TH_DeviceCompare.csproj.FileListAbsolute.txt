@@ -139,4 +139,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Controls\OverrideDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Components\GlossOverlay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\obj\Debug\Components\GlossOverlay.g.cs
-C:\TrakHound\Plugins\Pages\LICENSE.txt

@@ -74,29 +74,6 @@ namespace TrakHound_Client
 
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_Finished), priority, new object[] { configs });
         }
-      
-        //Configuration GetConfiguration(string tablename)
-        //{
-        //    Configuration result = null;
-
-        //    DataTable dt = Configurations.GetConfigurationTable(tablename, UserDatabaseSettings);
-        //    if (dt != null)
-        //    {
-        //        XmlDocument xml = Converter.TableToXML(dt);
-        //        Configuration config = Configuration.ReadConfigFile(xml);
-        //        if (config != null)
-        //        {
-        //            config.TableName = tablename;
-
-        //            // Initialize Database Configurations
-        //            Global.Initialize(config.Databases_Client);
-
-        //            result = config;
-        //        }
-        //    }
-
-        //    return result;
-        //}
 
         bool addDeviceOpened = false;
 
@@ -248,12 +225,13 @@ namespace TrakHound_Client
 
         #region "Devices Monitor"
 
+        //bool stopped = false;
         Thread devicesmonitor_THREAD;
-        ManualResetEvent monitorstop = null;
+        ManualResetEvent stop = null;
 
         void DevicesMonitor_Initialize()
         {
-            monitorstop = new ManualResetEvent(false);
+            stop = new ManualResetEvent(false);
 
             if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
 
@@ -263,7 +241,8 @@ namespace TrakHound_Client
 
         void DevicesMonitor_Start()
         {
-            while (!monitorstop.WaitOne(0, true))
+            while (!stop.WaitOne(0, true))
+
             {
                 bool changed = DevicesMonitor_Worker(Devices.ToList());
 
@@ -274,30 +253,31 @@ namespace TrakHound_Client
                 }
                 else
                 {
-                    Thread.Sleep(5000);
+                    if (!stop.WaitOne(0, true)) Thread.Sleep(5000);
                 }
             }
+            devicesmonitor_THREAD = null;
         }
 
         void DevicesMonitor_Stop()
         {
-            if (monitorstop != null) monitorstop.Set();
+            if (stop != null) stop.Set();
         }
 
         void DevicesMonitor_Close()
         {
             DevicesMonitor_Stop();
-            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
+            //if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
         }
 
         void DevicesMonitor_Close(bool wait)
         {
             DevicesMonitor_Stop();
-            if (devicesmonitor_THREAD != null)
-            {
-                if (wait) devicesmonitor_THREAD.Join(5000);
-                devicesmonitor_THREAD.Abort();
-            }
+            //if (devicesmonitor_THREAD != null)
+            //{
+            //    if (wait) devicesmonitor_THREAD.Join(5000);
+            //    devicesmonitor_THREAD.Abort();
+            //}
         }
 
         bool DevicesMonitor_Worker(List<Configuration> devices)
@@ -337,79 +317,6 @@ namespace TrakHound_Client
 
             return changed;
         }
-
-        //bool DevicesMonitor_Worker(List<Configuration> devices)
-        //{
-        //    bool changed = false;
-
-        //    Console.WriteLine("DevicesMonitor_Worker()");
-        //    if (currentuser != null)
-        //    {
-        //        Console.WriteLine("DevicesMonitor_Worker() : " + currentuser.username);
-
-        //        string[] tablenames = Configurations.GetConfigurationsForUser(currentuser, UserDatabaseSettings);
-        //        if (tablenames != null) // Connected to database properly
-        //        {
-        //            if (tablenames.Length > 0) // Has configurations
-        //            {
-        //                foreach (string tablename in tablenames)
-        //                {
-        //                    Console.WriteLine("DevicesMonitor_Worker() : tablename = " + tablename);
-        //                    if (tablename != null)
-        //                    {
-        //                        Configurations.UpdateInfo info = Configurations.GetClientUpdateInfo(tablename, UserDatabaseSettings);
-        //                        if (info != null)
-        //                        {
-        //                            bool enabled = false;
-        //                            bool.TryParse(info.Enabled, out enabled);
-
-        //                            int index = devices.FindIndex(x => x.UniqueId == info.UniqueId);
-        //                            if (index >= 0 && index <= Devices.Count - 1) // Device is already part of list
-        //                            {
-        //                                Configuration device = Devices[index];
-
-        //                                // Check if Device has changed
-        //                                if (device.ClientUpdateId != info.UpdateId)
-        //                                {
-        //                                    changed = true;
-        //                                    break;
-        //                                }
-        //                            }
-        //                            else // Device Added
-        //                            {
-        //                                if (enabled)
-        //                                {
-        //                                    changed = true;
-        //                                    break;
-        //                                }
-        //                            }  
-        //                        }
-        //                    }
-        //                }
-
-        //                // Remove any server that was removed from user
-        //                foreach (Configuration device in devices.ToList())
-        //                {
-        //                    string ExistingTable = tablenames.ToList().Find(x => x == device.TableName);
-        //                    if (ExistingTable == null)
-        //                    {
-        //                        changed = true;
-        //                        break;
-        //                    }
-        //                }
-        //            }
-        //            else // No configurations found
-        //            {
-        //                Console.WriteLine("DevicesMonitor_Worker() : No Configurations Found");
-        //                changed = true;
-        //            }
-        //        }
-
-        //        //this.Dispatcher.BeginInvoke(new Action<bool>(DevicesMonitor_Finished), priority, new object[] { changed });
-        //    }
-
-        //    return changed;
-        //}
 
         void DevicesMonitor_Finished(bool changed)
         {

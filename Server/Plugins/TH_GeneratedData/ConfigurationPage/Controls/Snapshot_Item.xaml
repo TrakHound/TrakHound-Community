@@ -170,14 +170,38 @@
 
                     </Grid>
 
-                    <th_wpf:Button_04 Margin="5" Cursor="Hand" ToolTip="Refresh Data Link List" Image="/TH_GeneratedData;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" />
+                    <th_wpf:Button Margin="5" Cursor="Hand" Padding="8" ToolTip="Refresh Data Link List" Image="/TH_GeneratedData;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" >
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
 
                 </StackPanel>
 
             </StackPanel>
 
             <!--Remove Button-->
-            <th_wpf:Button_04 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0" Clicked="Removed_Clicked"/>
+            <th_wpf:Button Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Padding="8" Cursor="Hand" Margin="5" Clicked="Removed_Clicked">
+                <th_wpf:Button.Style>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </th_wpf:Button.Style>
+            </th_wpf:Button>
 
         </Grid>
 

@@ -145,6 +145,9 @@
                             </TextBlock.Style>
                         </TextBlock>
 
+                        <!--Custom Content-->
+                        <ContentControl Grid.ColumnSpan="3" Content="{Binding ButtonContent}"/>
+
                     </Grid>
 
                 </Border>
@@ -153,10 +156,13 @@
                 <Border Grid.ColumnSpan="3" IsHitTestVisible="False">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
-                                    <Setter Property="Visibility" Value="Visible"/>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="false">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Background}" Value="Transparent">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -172,7 +178,7 @@
                             <Border.Background>
                                 <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
                                     <RadialGradientBrush.GradientStops>
-                                        <GradientStop Color="#33ffffff" Offset="0" />
+                                        <GradientStop Color="#20ffffff" Offset="0" />
                                         <GradientStop Color="#00ffffff" Offset="1.0" />
                                     </RadialGradientBrush.GradientStops>
                                 </RadialGradientBrush>
@@ -183,19 +189,19 @@
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#00ffffff" Offset="0.2"/>
-                                    <GradientStop Color="#22ffffff" Offset="1"/>
+                                    <GradientStop Color="#66ffffff" Offset="1"/>
                                 </LinearGradientBrush>
                             </Border.Background>
                         </Border>
 
-                        <Border Grid.Row="1" IsHitTestVisible="False">
+                        <!--<Border Grid.Row="1" IsHitTestVisible="False">
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#00ffffff" Offset="0"/>
                                     <GradientStop Color="#08000000" Offset="1"/>
                                 </LinearGradientBrush>
                             </Border.Background>
-                        </Border>
+                        </Border>-->
 
                         <!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
                             <Border.Background>

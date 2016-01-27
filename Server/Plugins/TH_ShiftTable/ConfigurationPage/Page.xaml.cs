@@ -474,7 +474,7 @@ namespace TH_ShiftTable.ConfigurationPage
             if (!Loading) if (SettingChanged != null) SettingChanged(null, null, null);
         }
 
-        private void AddShift_Clicked(TH_WPF.Button_01 bt)
+        private void AddShift_Clicked(TH_WPF.Button bt)
         {
             Shift shift = new Shift();
             shift.name = null;

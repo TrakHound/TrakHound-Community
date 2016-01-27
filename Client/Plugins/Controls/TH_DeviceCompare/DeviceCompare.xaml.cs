@@ -1866,6 +1866,7 @@ namespace TH_DeviceCompare
             }
 
             RowHeaders[index].MinHeight = height;
+            BlankRows[index].MinHeight = height;
         }
 
         void Result_Clicked(int Index)
@@ -1902,6 +1903,9 @@ namespace TH_DeviceCompare
                 rh.Index = i;
                 rh.Clicked += rh_Clicked;
                 RowHeaders.Add(rh);
+
+                var cell = new Cell();
+                BlankRows.Add(cell);
 
                 i += 1;
             }
@@ -1959,6 +1963,24 @@ namespace TH_DeviceCompare
 
                     column.Cells[index].IsSelected = true;
                 }
+            }
+        }
+
+        #endregion
+
+        #region "Blank Rows"
+
+        ObservableCollection<Cell> blankrows;
+        public ObservableCollection<Cell> BlankRows
+        {
+            get
+            {
+                if (blankrows == null) blankrows = new ObservableCollection<Cell>();
+                return blankrows;
+            }
+            set
+            {
+                blankrows = value;
             }
         }
 

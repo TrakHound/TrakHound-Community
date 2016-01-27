@@ -175,19 +175,19 @@
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#00ffffff" Offset="0.2"/>
-                            <GradientStop Color="#22ffffff" Offset="1"/>
+                            <GradientStop Color="#44ffffff" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
                 </Border>
 
-                <Border Grid.Row="1" IsHitTestVisible="False">
+                <!--<Border Grid.Row="1" IsHitTestVisible="False">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#00ffffff" Offset="0"/>
                             <GradientStop Color="#06000000" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
-                </Border>
+                </Border>-->
 
                 <!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
                     <Border.Background>

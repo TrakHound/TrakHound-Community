@@ -14,6 +14,7 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Updater.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server-Core.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_MTConnect.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\ICSharpCode.SharpZipLib.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Configuration.pdb
@@ -27,6 +28,7 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_Updater.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TrakHound-Server-Core.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_MTConnect.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound-Server.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Output-Console.baml
@@ -35,6 +37,7 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Device-Manager.b
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Output-Console.g.cs
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Login.g.cs
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\Device-Manager.g.cs
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\App.g.cs
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound-Server_Content.g.cs
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound-Server_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound-Server.g.resources
@@ -42,5 +45,3 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound_Server
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound-Server.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound-Server.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\obj\Debug\TrakHound-Server.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_MTConnect.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server\bin\Debug\TH_MTConnect.pdb

@@ -50,6 +50,9 @@ namespace TH_Device_Server
             if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+            pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
+            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 

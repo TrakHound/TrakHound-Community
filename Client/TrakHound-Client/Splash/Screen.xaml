@@ -7,6 +7,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         
+        xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
                 
         Title="TrakHound"
@@ -31,9 +32,13 @@
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style x:Key="TrakHoundFont">
+            <Style x:Key="TrakHoundFontBold">
                 <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
                 <Setter Property="TextElement.FontWeight" Value="Bold" />
+            </Style>
+
+            <Style x:Key="TrakHoundFont">
+                <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
             </Style>
 
             <Color x:Key="LightBlue_Color">#FFFFFFFF</Color>
@@ -141,17 +146,9 @@
             <Border Grid.Column="1" CornerRadius="10" Margin="-2" Background="#0080ff">
                 
                 <Border CornerRadius="5">
-                    <!--<Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Transparent" Offset="0"/>
-                            <GradientStop Color="#20ffffff" Offset="0.5"/>
-                            <GradientStop Color="Transparent" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>-->
 
                     <Border BorderBrush="#0060ff" BorderThickness="1" CornerRadius="10" Margin="0">
-                    <!--<Border CornerRadius="5">-->
-                        
+
                         <Grid>
 
                             <Grid>
@@ -176,27 +173,44 @@
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
                                     <!--Title-->
-                                    <TextBlock Style="{StaticResource TrakHoundFont}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#fff">
-                                <Run FontSize="36pt">TrakHound</Run>
-                                <Run FontSize="4pt" BaselineAlignment="Superscript">TM</Run>
+                                    <TextBlock Style="{StaticResource TrakHoundFontBold}"  VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="#fff">
+                                        <Run FontSize="36pt">TrakHound</Run>
+                                        <Run FontSize="4pt">TM</Run>
                                     </TextBlock>
 
-                                    <!--Version-->
-                                    <TextBlock Grid.Row="1" Text="{Binding Version}" Foreground="#fff" FontSize="10pt" />
+                                    <!--Loading Status-->
+                                    <Grid Grid.Row="1" Margin="0,-10,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!--Sub Title-->
+                                        <TextBlock Grid.Column="0" Style="{StaticResource TrakHoundFont}" Text="Client" Foreground="#fff" FontSize="26pt" Margin="0,0,10,0"/>
+
+                                        <!--Version-->
+                                        <TextBlock Grid.Column="1" Text="{Binding Version}" Foreground="#fff" FontSize="12pt" VerticalAlignment="Bottom" Margin="0,0,0,8"/>
+
+                                    </Grid>
 
                                     <!--Loading Status-->
-                                    <TextBlock Grid.Row="2" Text="{Binding Status}" FontSize="10pt" Foreground="#fff"/>
+                                    <StackPanel Grid.Row="2" Margin="0,10,0,0">
 
-                                    <Grid x:Name="Plugins_GRID" Grid.Row="3">
-                                        <StackPanel x:Name="Plugins_STACK" Orientation="Horizontal" Visibility="Collapsed">
-                                            <TextBlock Text="Pages" Foreground="#fff" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
-                                            <Rectangle Fill="#eee" Width="2" Margin="0,5,10,5" Height="30"/>
-                                        </StackPanel>
-                                    </Grid>
+                                        <TextBlock Text="{Binding Status3}" FontSize="10pt" Foreground="#33ffffff"/>
+
+                                        <TextBlock Text="{Binding Status2}" FontSize="10pt" Foreground="#88ffffff"/>
+
+                                        <TextBlock Text="{Binding Status1}" FontSize="10pt" Foreground="#fff"/>
+
+                                    </StackPanel>
+                                    
+                                    
+                                    <th_wpf:ProgressBar Grid.Row="3" Margin="0,5,0,0" Width="250" Height="4" Maximum="100" Value="{Binding LoadingProgress}" Foreground="#fff" Background="#33ffffff" HorizontalAlignment="Left"/>
 
                                 </Grid>
 
@@ -226,7 +240,7 @@
                                         <Border.Background>
                                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                 <GradientStop Color="#00ffffff" Offset="0.2"/>
-                                                <GradientStop Color="#66ffffff" Offset="1"/>
+                                                <GradientStop Color="#33ffffff" Offset="1"/>
                                             </LinearGradientBrush>
                                         </Border.Background>
                                     </Border>

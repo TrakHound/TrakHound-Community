@@ -8,6 +8,14 @@
              
              >
 
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Border CornerRadius="2" Background="#00000000">
         <Border.Style>
             <Style TargetType="Border">
@@ -81,7 +89,19 @@
             </StackPanel>
 
             <!--Remove Button-->
-            <th_wpf:Button_04 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0" Clicked="Remove_Clicked"/>
+            <th_wpf:Button Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Padding="10" Margin="10,0,0,0" Clicked="Remove_Clicked">
+                <th_wpf:Button.Style>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </th_wpf:Button.Style>
+            </th_wpf:Button>
 
         </Grid>
 

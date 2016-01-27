@@ -8,19 +8,27 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
-    
-    <Grid>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid FocusManager.IsFocusScope="False">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" FocusManager.IsFocusScope="False">
 
                 <!--Event Name-->
-                <Border BorderThickness="1" CornerRadius="1" Margin="5,5,0,5" MinWidth="120">
+                <Border BorderThickness="1" CornerRadius="1" Margin="5,5,0,5" MinWidth="120" FocusManager.IsFocusScope="False">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="BorderBrush" Value="#33ffffff"/>
@@ -37,7 +45,7 @@
                     <Grid Margin="10,0">
 
                         <!--User Input-->
-                        <TextBox x:Name="eventname_TXT" Text="{Binding EventName}" TextChanged="EventName_TextChanged" GotFocus="TXT_GotFocus" GotMouseCapture="TXT_GotMouseCapture" GotKeyboardFocus="TXT_GotKeyboardFocus" BorderThickness="0" Background="#00000000"  FontSize="14pt" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
+                        <TextBox x:Name="eventname_TXT" Text="{Binding EventName}" TextChanged="EventName_TextChanged" BorderThickness="0" Background="#00000000"  FontSize="14pt" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Setter Property="Foreground" Value="#fff"/>
@@ -61,7 +69,19 @@
         </StackPanel>
         
         <!--Remove-->
-        <th_wpf:Button_02 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Clicked="Remove_Clicked"/>
+        <th_wpf:Button Grid.Column="1" Padding="5" Margin="5" Image="/TH_GeneratedData;component/Resources/X_01.png" Clicked="Remove_Clicked">
+            <th_wpf:Button.Style>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Light}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </th_wpf:Button.Style>
+        </th_wpf:Button>
 
     </Grid>
     

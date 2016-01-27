@@ -193,9 +193,19 @@ namespace TH_StatusData
                     SendDataEvent(connected);
 
                     // Get Snapshot Data
-                    Snapshot_Return snapshotData = GetSnapShots(config);
+                    DataEvent_Data snapshotData = GetSnapShots(config);
                     // Send Snapshot Data
-                    SendDataEvent(snapshotData.de_data);
+                    SendDataEvent(snapshotData);
+
+                    // Get Variable Data
+                    DataEvent_Data variableData = GetVariables(config);
+                    // Send Variable Data
+                    SendDataEvent(variableData);
+
+
+                    // Get ShiftData from Variable Data
+                    ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
+
 
                     // Get Gen Event Values
                     DataEvent_Data genEventData = GetGenEventValues(config);
@@ -203,17 +213,17 @@ namespace TH_StatusData
                     SendDataEvent(genEventData);
 
                     // Get Shift Data
-                    DataEvent_Data shiftData = GetShifts(config, snapshotData.shiftData);
+                    DataEvent_Data shiftTableData = GetShifts(config, shiftData);
                     // Send Shift Data
-                    SendDataEvent(shiftData);
+                    SendDataEvent(shiftTableData);
 
                     // Get OEE Data
-                    DataEvent_Data oeeData = GetOEE(config, snapshotData.shiftData);
+                    DataEvent_Data oeeData = GetOEE(config, shiftData);
                     // Send OEE Data
                     SendDataEvent(oeeData);
 
                     // Get Production Status Data
-                    DataEvent_Data productionStatusData = GetProductionStatusList(config, snapshotData.shiftData);
+                    DataEvent_Data productionStatusData = GetProductionStatusList(config, shiftData);
                     // Send Production Status Data
                     SendDataEvent(productionStatusData);
 
@@ -225,13 +235,13 @@ namespace TH_StatusData
 
 
 
-        class Snapshot_Return
-        {
-            public Snapshot_Return() { shiftData = new ShiftData(); }
+        //class Snapshot_Return
+        //{
+        //    public Snapshot_Return() { shiftData = new ShiftData(); }
 
-            public DataEvent_Data de_data { get; set; }
-            public ShiftData shiftData { get; set; }
-        }
+        //    public DataEvent_Data de_data { get; set; }
+        //    public ShiftData shiftData { get; set; }
+        //}
 
 
         class ShiftData
@@ -293,27 +303,55 @@ namespace TH_StatusData
         }
 
 
-        static Snapshot_Return GetSnapShots(Configuration config)
+        static DataEvent_Data GetSnapShots(Configuration config)
         {
-            Snapshot_Return result = new Snapshot_Return();
+            var result = new DataEvent_Data();
 
             DataTable dt = Table.Get(config.Databases_Client, TableNames.SnapShots);
             if (dt != null)
             {
-                result.shiftData.shiftName = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
-                result.shiftData.shiftDate = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Date", "value");
-                result.shiftData.shiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
-                result.shiftData.shiftStart = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Begin", "value");
-                result.shiftData.shiftEnd = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End", "value");
-                result.shiftData.shiftStartUTC = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Begin UTC", "value");
-                result.shiftData.shiftEndUTC = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End UTC", "value");
-
                 DataEvent_Data de_d = new DataEvent_Data();
                 de_d.id = "StatusData_Snapshots";
                 de_d.data01 = config;
                 de_d.data02 = dt;
 
-                result.de_data = de_d;
+                result = de_d;
+            }
+
+            return result;
+        }
+
+        static DataEvent_Data GetVariables(Configuration config)
+        {
+            var result = new DataEvent_Data();
+
+            DataTable dt = Table.Get(config.Databases_Client, TableNames.Variables);
+            if (dt != null)
+            {
+                DataEvent_Data de_d = new DataEvent_Data();
+                de_d.id = "StatusData_Variables";
+                de_d.data01 = config;
+                de_d.data02 = dt;
+
+                result = de_d;
+            }
+
+            return result;
+        }
+
+        static ShiftData GetShiftData(DataTable dt)
+        {
+            var result = new ShiftData();
+
+            if (dt != null)
+            {
+                result.shiftName = DataTable_Functions.GetTableValue(dt, "variable", "shift_name", "value");
+                result.shiftDate = DataTable_Functions.GetTableValue(dt, "variable", "shift_date", "value");
+                result.shiftId = DataTable_Functions.GetTableValue(dt, "variable", "shift_id", "value");
+                result.shiftStart = DataTable_Functions.GetTableValue(dt, "variable", "shift_begintime", "value");
+                result.shiftEnd = DataTable_Functions.GetTableValue(dt, "variable", "shift_endtime", "value");
+                result.shiftStartUTC = DataTable_Functions.GetTableValue(dt, "variable", "shift_begintime_utc", "value");
+                result.shiftEndUTC = DataTable_Functions.GetTableValue(dt, "variable", "shift_endtime_utc", "value");
             }
 
             return result;

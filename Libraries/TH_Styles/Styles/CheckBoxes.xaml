@@ -65,7 +65,8 @@
                                   Opacity="0"
                                   Data="M9.07743946676476E-09,4.31805768640244L4.68740335877841,8.86361158398516C4.68740335877841,8.86361158398516,16.3281249985376,-2.42451336648723,16.3281249985376,-2.42451336648723L14.0622100581796,-4.77304938341948 4.68740335877846,4.31805791992662 2.22656251699567,1.93164208562579z"
                                   Fill="{StaticResource Accent_Normal}"
-                                  Stretch="Fill"/>
+                                  Stretch="Fill">
+                                </Path>
 
                                 <Path Name="InderminateMark"
                                   Grid.Column="3"
@@ -75,6 +76,62 @@
                                   Stretch="Fill"
                                   StrokeThickness="0"
                                   Fill="{StaticResource Shade_Normal}" />
+
+                                <!--Gloss Effect-->
+                                <Border x:Name="gloss" IsHitTestVisible="False"
+                                        Grid.Column="2" Grid.ColumnSpan="5"
+                                        Grid.Row="1" Grid.RowSpan="5"
+                                        >
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Opacity" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Opacity, ElementName=CheckMark}" Value="0">
+                                                    <Setter Property="Opacity" Value="0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid IsHitTestVisible="False">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="4*"/>
+                                            <RowDefinition Height="6*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                    <RadialGradientBrush.GradientStops>
+                                                        <GradientStop Color="#33ffffff" Offset="0" />
+                                                        <GradientStop Color="#00ffffff" Offset="1.0" />
+                                                    </RadialGradientBrush.GradientStops>
+                                                </RadialGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                                    <GradientStop Color="#33ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#00ffffff" Offset="0"/>
+                                                    <GradientStop Color="#08000000" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                    </Grid>
+
+                                </Border>
+
                             </Grid>
                         </BulletDecorator.Bullet>
                         <VisualStateManager.VisualStateGroups>
@@ -197,6 +254,62 @@
                                   Stretch="Fill"
                                   StrokeThickness="0"
                                   Fill="#aaffffff" />
+
+                                <!--Gloss Effect-->
+                                <Border x:Name="gloss" IsHitTestVisible="False"
+                                        Grid.Column="2" Grid.ColumnSpan="5"
+                                        Grid.Row="1" Grid.RowSpan="5"
+                                        >
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Opacity" Value="1"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Opacity, ElementName=CheckMark}" Value="0">
+                                                    <Setter Property="Opacity" Value="0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid IsHitTestVisible="False">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="4*"/>
+                                            <RowDefinition Height="6*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                    <RadialGradientBrush.GradientStops>
+                                                        <GradientStop Color="#33ffffff" Offset="0" />
+                                                        <GradientStop Color="#00ffffff" Offset="1.0" />
+                                                    </RadialGradientBrush.GradientStops>
+                                                </RadialGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                                    <GradientStop Color="#33ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#00ffffff" Offset="0"/>
+                                                    <GradientStop Color="#08000000" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                    </Grid>
+
+                                </Border>
+
                             </Grid>
                         </BulletDecorator.Bullet>
                         <VisualStateManager.VisualStateGroups>

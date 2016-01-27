@@ -29,7 +29,7 @@
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
             <!--Image-->
-            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,5,0,0" VerticalAlignment="Center">
+            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                 <Grid.Resources>
                     <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/About_01.png" />
                 </Grid.Resources>
@@ -41,7 +41,7 @@
                 </Grid.Style>
             </Grid>
 
-            <TextBlock Text="Description" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock Text="Description" FontSize="20pt" Height="30" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
         </StackPanel>
 
@@ -126,6 +126,13 @@
                     <th_wpf:TextBox.HelpText>
                         Used to record the Company that this machine belongs to. 
                         For example if TrakHound is used by a Machine Service Provider and monitors many different company's machines.
+                    </th_wpf:TextBox.HelpText>
+                </th_wpf:TextBox>
+
+                <!--Location-->
+                <th_wpf:TextBox Text="{Binding Location, Mode=TwoWay}" Title="Location" Example="Plant B or Cell 14" TextChanged="TXT_TextChanged">
+                    <th_wpf:TextBox.HelpText>
+                        Used to record the a note about the physical location of the device
                     </th_wpf:TextBox.HelpText>
                 </th_wpf:TextBox>
 

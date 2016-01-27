@@ -57,6 +57,16 @@ namespace TH_WPF
             DependencyProperty.Register("Text", typeof(string), typeof(Button), new PropertyMetadata(null));
 
 
+        public object ButtonContent
+        {
+            get { return (object)GetValue(ButtonContentProperty); }
+            set { SetValue(ButtonContentProperty, value); }
+        }
+
+        public static readonly DependencyProperty ButtonContentProperty =
+            DependencyProperty.Register("ButtonContent", typeof(object), typeof(Button), new PropertyMetadata(null));
+
+        
 
 
         public Brush Background

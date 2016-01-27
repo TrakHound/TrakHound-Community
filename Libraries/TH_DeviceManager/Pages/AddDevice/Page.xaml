@@ -36,7 +36,7 @@
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
                 <!--Image-->
-                <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,5,0,0" VerticalAlignment="Center">
+                <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                     <Grid.Resources>
                         <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Add_01.png" />
                     </Grid.Resources>
@@ -150,16 +150,16 @@
 
                         </Grid>
 
+                        <!--Refresh-->
                         <th_wpf:Button Grid.Column="1" Image="/TH_DeviceManager;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked">
                             <th_wpf:Button.Style>
                                 <Style TargetType="th_wpf:Button">
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    <Setter Property="Background" Value="#00000000"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Height" Value="35"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -261,18 +261,39 @@
 
                     <!--Buttons-->
                     <StackPanel Orientation="Horizontal">
-                        <StackPanel.Resources>
+                        <!--<StackPanel.Resources>
                             <Style TargetType="controls:PageItem">
                                 <Setter Property="Margin" Value="10"/>
+                            </Style>
+                        </StackPanel.Resources>-->
+                        <StackPanel.Resources>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Width" Value="100"/>
+                                <Setter Property="Height" Value="100"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </StackPanel.Resources>
 
                         <!--From File-->
-                        <controls:PageItem Clicked="DeviceFromFile_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
-
+                        <th_wpf:Button>
+                            <th_wpf:Button.ButtonContent>                              
+                                <controls:PageItem Clicked="DeviceFromFile_Clicked" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
+                            </th_wpf:Button.ButtonContent>
+                        </th_wpf:Button>
+                        
                         <!--New-->
-                        <controls:PageItem Clicked="NewDevice_Clicked" Height="100" Width="100" AlternateStyle="true" Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" />
-
+                        <th_wpf:Button>
+                            <th_wpf:Button.ButtonContent>
+                                <controls:PageItem Clicked="NewDevice_Clicked" AlternateStyle="true" Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" />
+                            </th_wpf:Button.ButtonContent>
+                        </th_wpf:Button>
+                        
                     </StackPanel>
 
                     <!--Details-->

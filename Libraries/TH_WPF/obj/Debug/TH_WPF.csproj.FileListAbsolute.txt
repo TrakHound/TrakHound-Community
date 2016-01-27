@@ -32,7 +32,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Block.
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\PasswordBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ProductionIndicator.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Styles\Colors.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TextBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TickMark.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Button.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\CollapseButton.g.cs
@@ -61,6 +60,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel.
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MessageBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ProgressBar.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Styles\Button.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TextBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\Segment.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TimeLine.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.g.resources

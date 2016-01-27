@@ -118,7 +118,19 @@
                 </StackPanel>
 
                 <!--Remove Button-->
-                <th_wpf:Button_04 Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="10,0,0,0" Clicked="RemoveShift_Clicked" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Remove this Shift"/>
+                <th_wpf:Button Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Height="30" Margin="10" Clicked="RemoveShift_Clicked" HorizontalAlignment="Right" VerticalAlignment="Top" ToolTip="Remove this Shift">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
             </Grid>
 
@@ -137,7 +149,19 @@
                     </ItemsControl.Resources>
                 </ItemsControl>
 
-                <th_wpf:Button_04 Image="/TH_ShiftTable;component/Resources/Add_01.png" Clicked="AddBreak_Clicked" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" ToolTip="Add Break Time"/>
+                <th_wpf:Button Image="/TH_ShiftTable;component/Resources/Add_01.png" Clicked="AddBreak_Clicked" Height="35" ImageTextPadding="10" Text="Add Break" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
             </StackPanel>
             

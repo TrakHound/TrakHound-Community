@@ -172,9 +172,17 @@ namespace TH_DeviceManager.Pages.Databases
 
         void CreateAddDatabaseButtons(TH_Database.DatabasePluginReader dpr)
         {
-            foreach (Lazy<TH_Database.IDatabasePlugin> lplugin in dpr.plugins)
+            var list = new List<TH_Database.IDatabasePlugin>();
+            foreach (var lplugin in dpr.plugins)
             {
                 TH_Database.IDatabasePlugin plugin = lplugin.Value;
+                list.Add(plugin);
+            }
+
+            list.Sort((a, b) => a.Type.CompareTo(b.Type));
+
+            foreach (var plugin in list)
+            {
                 plugins.Add(plugin);
 
                 TH_WPF.Button bt = new TH_WPF.Button();

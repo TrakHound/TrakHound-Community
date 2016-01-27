@@ -61,7 +61,19 @@
             </StackPanel>
 
             <!--Remove Button-->
-            <th_wpf:Button_04 Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="50,0,0,0" Clicked="RemoveBreak_Clicked" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Remove this Break"/>
+            <th_wpf:Button Grid.Column="1" Image="/TH_GeneratedData;component/Resources/X_01.png" Cursor="Hand" Margin="50,0,0,0" Height="30" Clicked="RemoveBreak_Clicked" HorizontalAlignment="Right" VerticalAlignment="Center" ToolTip="Remove this Break">
+                <th_wpf:Button.Style>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </th_wpf:Button.Style>
+            </th_wpf:Button>
 
         </Grid>
 

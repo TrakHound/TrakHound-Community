@@ -112,7 +112,7 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             namechanged = true;
         }
 
-        private void EditShiftName_Clicked(TH_WPF.Button_04 bt)
+        private void EditShiftName_Clicked(TH_WPF.Button bt)
         {
 
         }
@@ -162,7 +162,7 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
         public delegate void Clicked_Handler(ShiftListItem item);
         public event Clicked_Handler RemoveClicked;
 
-        private void RemoveShift_Clicked(TH_WPF.Button_04 bt)
+        private void RemoveShift_Clicked(TH_WPF.Button bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
         }
@@ -228,7 +228,7 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
             if (BreakRemoveClicked != null) BreakRemoveClicked(item);
         }
 
-        private void AddBreak_Clicked(TH_WPF.Button_04 bt)
+        private void AddBreak_Clicked(TH_WPF.Button bt)
         {
             AddBreakTime();
         }

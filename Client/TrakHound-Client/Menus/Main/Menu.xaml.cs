@@ -80,13 +80,13 @@ namespace TrakHound_Client.Menus.Main
 
         #region "Menu Items"
 
-        ObservableCollection<MenuItem> menuitems;
-        public ObservableCollection<MenuItem> MenuItems
+        ObservableCollection<object> menuitems;
+        public ObservableCollection<object> MenuItems
         {
             get
             {
                 if (menuitems == null)
-                    menuitems = new ObservableCollection<MenuItem>();
+                    menuitems = new ObservableCollection<object>();
                 return menuitems;
             }
 
@@ -104,7 +104,11 @@ namespace TrakHound_Client.Menus.Main
             mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png"));
             mi.Text = "Device Manager";
             mi.Clicked += DeviceManager_Clicked;
-            MenuItems.Add(mi);
+
+            var bt = new TH_WPF.Button();
+            bt.ButtonContent = mi;
+
+            MenuItems.Add(bt);
         }
 
         void DeviceManager_Clicked()
@@ -119,11 +123,15 @@ namespace TrakHound_Client.Menus.Main
 
         void AddOptions_MenuItem()
         {
-            MenuItem mi = new MenuItem();
+            var mi = new MenuItem();
             mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png"));
             mi.Text = "Options";
             mi.Clicked += Options_Clicked;
-            MenuItems.Add(mi);
+
+            var bt = new TH_WPF.Button();
+            bt.ButtonContent = mi;
+
+            MenuItems.Add(bt);
         }
 
         void Options_Clicked()
@@ -142,7 +150,11 @@ namespace TrakHound_Client.Menus.Main
             mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Rocket_02.png"));
             mi.Text = "Plugins";
             mi.Clicked += Plugins_Clicked;
-            MenuItems.Add(mi);
+
+            var bt = new TH_WPF.Button();
+            bt.ButtonContent = mi;
+
+            MenuItems.Add(bt);
         }
 
         void Plugins_Clicked()
@@ -161,7 +173,11 @@ namespace TrakHound_Client.Menus.Main
             mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Developer_01.png"));
             mi.Text = "Developer Console";
             mi.Clicked += DeveloperConsole_Clicked;
-            MenuItems.Add(mi);
+
+            var bt = new TH_WPF.Button();
+            bt.ButtonContent = mi;
+
+            MenuItems.Add(bt);
         }
 
         void DeveloperConsole_Clicked()
@@ -179,14 +195,16 @@ namespace TrakHound_Client.Menus.Main
             MenuItem mi = new MenuItem();
             mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png"));
             mi.Text = "My Account";
-            mi.Clicked += MyAccount_Clicked;
-            
-            if (MenuItems.ToList().Find(x => x.Text == mi.Text) == null) MenuItems.Add(mi);
+
+            var bt = new TH_WPF.Button();
+            bt.ButtonContent = mi;
+
+            if (MenuItems.OfType<TH_WPF.Button>().ToList().Find(x => x.Text == mi.Text) == null) MenuItems.Add(bt);
         }
 
         void RemoveMyAccount_MenuItem()
         {
-            int index = MenuItems.ToList().FindIndex(x => x.Text == "My Account");
+            int index = MenuItems.OfType<TH_WPF.Button>().ToList().FindIndex(x => x.Text == "My Account");
             if (index >= 0)
             {
                 MenuItems.RemoveAt(index);

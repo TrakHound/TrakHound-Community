@@ -15,7 +15,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Background="#00000000">
+    <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Background="Transparent">
 
         <!--Normal Style-->
         <Grid>
@@ -161,6 +161,58 @@
 
             </Grid>
 
+            <!--Gloss Effect--><!--
+            <Border IsHitTestVisible="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+
+                <Grid IsHitTestVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="#20ffffff" Offset="0" />
+                                    <GradientStop Color="#00ffffff" Offset="1.0" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                <GradientStop Color="#66ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                    <Border Grid.Row="1" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0"/>
+                                <GradientStop Color="#06000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
+
+                </Grid>
+
+            </Border>-->
+
         </Grid>
 
         <!--Alternate Style-->
@@ -180,10 +232,10 @@
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Background" Value="#00000000"/>
-                        <Style.Triggers>
+                        <!--<Style.Triggers>
                             <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
                                 <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                <!--<DataTrigger.EnterActions>
+                                --><!--<DataTrigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#100080ff">
@@ -204,9 +256,9 @@
                                             </ColorAnimation>
                                         </Storyboard>
                                     </BeginStoryboard>
-                                </DataTrigger.ExitActions>-->
+                                </DataTrigger.ExitActions>--><!--
                             </DataTrigger>
-                        </Style.Triggers>
+                        </Style.Triggers>-->
                     </Style>
                 </Grid.Style>
 

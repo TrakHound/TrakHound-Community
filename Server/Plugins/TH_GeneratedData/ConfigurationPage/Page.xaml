@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid FocusManager.IsFocusScope="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -27,10 +27,10 @@
         </Grid.RowDefinitions>
 
         <!--Title and Image-->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" FocusManager.IsFocusScope="False">
 
             <!--Image-->
-            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,5,0,0" VerticalAlignment="Center">
+            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                 <Grid.Resources>
                     <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
                 </Grid.Resources>
@@ -51,14 +51,14 @@
             The objective is to store the processed data so that any client that reads from the database displays the same data.
         </TextBlock>
 
-        <Grid Grid.Row="2" Margin="0,10">
-            
-            <TabControl Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="TabControl_SelectionChanged" >
+        <Grid Grid.Row="2" Margin="0,10" FocusManager.IsFocusScope="False">
+
+            <TabControl Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="TabControl_SelectionChanged" FocusManager.IsFocusScope="False">
                 <TabControl.Resources>
 
                     <Style TargetType="{x:Type TabItem}">
                         <Setter Property="Cursor" Value="Hand"/>
-                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="Height" Value="35"/>
                         <Setter Property="FontSize" Value="12pt"/>
                         <Setter Property="Margin" Value="0"/>
                         <Setter Property="Template">
@@ -72,16 +72,65 @@
                                                   RecognizesAccessKey="True">
                                             </ContentPresenter>
                                         </Border>
+
+                                        <!--Gloss Effect-->
+                                        <Border x:Name="gloss" IsHitTestVisible="False">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <!--<Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>-->
+                                                </Style>
+                                            </Border.Style>
+
+                                            <Grid IsHitTestVisible="False">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="4.5*"/>
+                                                    <RowDefinition Height="5.5*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                                    <Border.Background>
+                                                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                                            <RadialGradientBrush.GradientStops>
+                                                                <GradientStop Color="#22ffffff" Offset="0" />
+                                                                <GradientStop Color="#00ffffff" Offset="1.0" />
+                                                            </RadialGradientBrush.GradientStops>
+                                                        </RadialGradientBrush>
+                                                    </Border.Background>
+                                                </Border>
+
+                                                <Border CornerRadius="0,0,50,50" IsHitTestVisible="False">
+                                                    <Border.Background>
+                                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                            <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                                            <GradientStop Color="#33ffffff" Offset="1"/>
+                                                        </LinearGradientBrush>
+                                                    </Border.Background>
+                                                </Border>
+
+                                            </Grid>
+
+                                        </Border>
+
                                     </Grid>
                                     <ControlTemplate.Triggers>                                       
                                         <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True">
                                             <Setter Property="Panel.ZIndex" Value="100" />
                                             <Setter TargetName="bd" Property="Background" Value="#180080ff" />
+                                            <Setter TargetName="gloss" Property="Visibility" Value="Visible" />
                                             <Setter Property="Foreground" Value="#0080ff"/>
                                         </DataTrigger>                                    
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Panel.ZIndex" Value="100" />
                                             <Setter TargetName="bd" Property="Background" Value="#0080ff" />
+                                            <Setter TargetName="gloss" Property="Visibility" Value="Visible" />
                                             <Setter Property="Foreground" Value="#fff"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
@@ -168,7 +217,22 @@
                         <StackPanel Grid.Row="3" Orientation="Horizontal">
 
                             <!--Add Button-->
-                            <th_wpf:Button_01 Text="Add Item" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked"/>
+                            <th_wpf:Button Text="Add Item" Height="35" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddValue_Clicked">
+                                <th_wpf:Button.Style>
+                                    <Style TargetType="th_wpf:Button">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Padding" Value="10,5"/>
+                                        <Setter Property="ImageTextPadding" Value="10"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </th_wpf:Button.Style>
+                            </th_wpf:Button>
 
                             <!--Add Arrow-->
                             <Rectangle Fill="#0080ff" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -253,9 +317,9 @@
                 </TabItem>
                 
                 <!--Generated Events-->
-                <TabItem Header="Generated Events" BorderBrush="{x:Null}" >
-                    
-                    <Grid>
+                <TabItem Header="Generated Events" BorderBrush="{x:Null}" FocusManager.IsFocusScope="False" >
+
+                    <Grid FocusManager.IsFocusScope="False">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
@@ -277,10 +341,25 @@
                         </TextBlock>
                         
                         <!--Add Item-->
-                        <StackPanel Grid.Row="3" Orientation="Horizontal">
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" FocusManager.IsFocusScope="False">
                             
                             <!--Add Button-->
-                            <th_wpf:Button_01 Text="Add Event" Height="35" AlternateStyle="True" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddEvent_Clicked"/>
+                            <th_wpf:Button Text="Add Event" Height="35" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png" Clicked="AddEvent_Clicked" FocusManager.IsFocusScope="False">
+                                <th_wpf:Button.Style>
+                                    <Style TargetType="th_wpf:Button">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                        <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Padding" Value="10,5"/>
+                                        <Setter Property="ImageTextPadding" Value="10"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </th_wpf:Button.Style>
+                            </th_wpf:Button>
 
                             <!--Add Arrow-->
                             <Rectangle Fill="#0080ff" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -329,12 +408,12 @@
 
                         </StackPanel>
 
-                        <Rectangle Grid.Row="4" Height="1" Fill="#ccc" Margin="0,15,0,0"/>
-                        
-                        <Grid Grid.Row="5">
+                        <Rectangle Grid.Row="4" Height="1" Fill="#ccc" Margin="0,15,0,0" FocusManager.IsFocusScope="False"/>
+
+                        <Grid Grid.Row="5" FocusManager.IsFocusScope="False">
 
                             <!--Events List-->
-                            <ItemsControl ItemsSource="{Binding EventButtons}" Margin="0,20">
+                            <ItemsControl ItemsSource="{Binding EventButtons}" Margin="0,20" FocusManager.IsFocusScope="False">
                                 <ItemsControl.Resources>
                                     <Style TargetType="th_wpf:CollapseButton">
                                         <Setter Property="Margin" Value="0,10"/>

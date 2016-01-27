@@ -88,30 +88,9 @@ namespace TH_DeviceManager.Pages.Description
             // Load Company
             Company = Table_Functions.GetTableValue(dprefix + "Company", dt);
 
+            // Load Location
+            Location = Table_Functions.GetTableValue(dprefix + "Location", dt);
 
-            //// Load Description
-            //devicedescription_TXT.Text = Table_Functions.GetTableValue(dprefix + "Description", dt);
-
-            //// Load Type
-            //devicetype_TXT.Text = Table_Functions.GetTableValue(dprefix + "Device_Type", dt);
-
-            //// Load Manufacturer
-            //manufacturer_TXT.Text = Table_Functions.GetTableValue(dprefix + "Manufacturer", dt);
-
-            //// Load Id
-            //deviceid_TXT.Text = Table_Functions.GetTableValue(dprefix + "Device_ID", dt);
-
-            //// Load Model
-            //model_TXT.Text = Table_Functions.GetTableValue(dprefix + "Model", dt);
-
-            //// Load Serial
-            //serial_TXT.Text = Table_Functions.GetTableValue(dprefix + "Serial", dt);
-
-            //// Load Controller
-            //controller_TXT.Text = Table_Functions.GetTableValue(dprefix + "Controller", dt);
-
-            //// Load Company
-            //company_TXT.Text = Table_Functions.GetTableValue(dprefix + "Company", dt);
 
             // Load Manufacturer Logo
             manufacturerLogoFileName = Table_Functions.GetTableValue(fprefix + "Manufacturer_Logo_Path", dt);
@@ -150,42 +129,16 @@ namespace TH_DeviceManager.Pages.Description
             // Save Company
             Table_Functions.UpdateTableValue(Company, dprefix + "Company", dt);
 
+            // Save Location
+            Table_Functions.UpdateTableValue(Location, dprefix + "Location", dt);
+
+
             // Save Manufacturer Logo
             Table_Functions.UpdateTableValue(manufacturerLogoFileName, fprefix + "Manufacturer_Logo_Path", dt);
 
             // Save Device Image
             Table_Functions.UpdateTableValue(deviceImageFileName, fprefix + "Image_Path", dt);
 
-
-            //// Save Descritpion
-            //Table_Functions.UpdateTableValue(devicedescription_TXT.Text, dprefix + "Description", dt);
-
-            //// Save Type
-            //Table_Functions.UpdateTableValue(devicetype_TXT.Text, dprefix + "Device_Type", dt);
-
-            //// Save Manufacturer
-            //Table_Functions.UpdateTableValue(manufacturer_TXT.Text, dprefix + "Manufacturer", dt);
-
-            //// Save Id
-            //Table_Functions.UpdateTableValue(deviceid_TXT.Text, dprefix + "Device_ID", dt);
-
-            //// Save Model
-            //Table_Functions.UpdateTableValue(model_TXT.Text, dprefix + "Model", dt);
-
-            //// Save Serial
-            //Table_Functions.UpdateTableValue(serial_TXT.Text, dprefix + "Serial", dt);
-
-            //// Save Controller
-            //Table_Functions.UpdateTableValue(controller_TXT.Text, dprefix + "Controller", dt);
-
-            //// Save Company
-            //Table_Functions.UpdateTableValue(company_TXT.Text, dprefix + "Company", dt);
-
-            //// Save Manufacturer Logo
-            //Table_Functions.UpdateTableValue(manufacturerLogoFileName, fprefix + "Manufacturer_Logo_Path", dt);
-
-            //// Save Device Image
-            //Table_Functions.UpdateTableValue(deviceImageFileName, fprefix + "Image_Path", dt);
         }
 
         public Page_Type PageType { get; set; }
@@ -305,6 +258,15 @@ namespace TH_DeviceManager.Pages.Description
         public static readonly DependencyProperty CompanyProperty =
             DependencyProperty.Register("Company", typeof(string), typeof(Page), new PropertyMetadata(null));
 
+
+        public string Location
+        {
+            get { return (string)GetValue(LocationProperty); }
+            set { SetValue(LocationProperty, value); }
+        }
+
+        public static readonly DependencyProperty LocationProperty =
+            DependencyProperty.Register("Location", typeof(string), typeof(Page), new PropertyMetadata(null));
 
         #endregion
 

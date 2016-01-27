@@ -261,7 +261,7 @@ namespace TH_GeneratedData.ConfigurationPage
                 if (ci.name != null) ci.display = ci.id + " : " + ci.name;
                 else ci.display = ci.id;
 
-                list.Add(ci);
+                if (list.Find(x => x.id == ci.id) == null) list.Add(ci);
             }
 
             list.Sort((x, y) => string.Compare(x.id, y.id));
@@ -518,7 +518,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
         List<Controls.Snapshot_Item> Snapshot_RemoveList = new List<Controls.Snapshot_Item>();
     
-        private void AddValue_Clicked(TH_WPF.Button_01 bt)
+        private void AddValue_Clicked(TH_WPF.Button bt)
         {
             Snapshot snapshot = new Snapshot();
             snapshot.type = "Collected";
@@ -1076,7 +1076,9 @@ namespace TH_GeneratedData.ConfigurationPage
             if (select)
             {
                 event_bt.eventname_TXT.Focus();
-                event_bt.eventname_TXT.SelectAll();
+
+                foreach (var obt in EventButtons) obt.IsExpanded = false;
+                bt.IsExpanded = true;
             }
 
             bt.PageContent = ev;
@@ -1364,7 +1366,7 @@ namespace TH_GeneratedData.ConfigurationPage
 
         #endregion
 
-        private void AddEvent_Clicked(TH_WPF.Button_01 bt)
+        private void AddEvent_Clicked(TH_WPF.Button bt)
         {
             Event e = new Event();
             e.name = "EVENT";

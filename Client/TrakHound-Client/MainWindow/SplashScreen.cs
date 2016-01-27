@@ -6,51 +6,54 @@ namespace TrakHound_Client
 {
     public partial class MainWindow
     {
-        Splash.Screen SPLSH;
+        Splash.Screen splsh;
 
-        System.Timers.Timer Splash_TIMER;
+        System.Timers.Timer splash_TIMER;
 
         void Splash_Initialize()
         {
 
-            SPLSH = new Splash.Screen();
+            splsh = new Splash.Screen();
             Splash_Show();
 
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             Version version = assembly.GetName().Version;
 
-            SPLSH.Version = "Version " + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
+            splsh.Version = "Version " + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
 
-            Splash_TIMER = new System.Timers.Timer();
-            Splash_TIMER.Interval = 4000;
-            Splash_TIMER.Elapsed += Splash_TIMER_Elapsed;
-            Splash_TIMER.Enabled = true;
+            splash_TIMER = new System.Timers.Timer();
+            splash_TIMER.Interval = 4000;
+            splash_TIMER.Elapsed += splash_TIMER_Elapsed;
+            splash_TIMER.Enabled = true;
 
         }
 
         void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), Priority, new object[] { }); }
 
-        void Splash_Show_GUI() { SPLSH.Show(); }
+        void Splash_Show_GUI() { if (splsh != null) splsh.Show(); }
 
-        void Splash_Close() { if (SPLSH != null) SPLSH.Close(); }
+        void Splash_Close() { if (splsh != null) splsh.Close(); }
 
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
+        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Render;
+        //const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
 
-        void Splash_UpdateStatus(string Status) { this.Dispatcher.Invoke(new Action<string>(Splash_UpdateStatus_GUI), Priority, new object[] { Status }); }
+        void Splash_UpdateStatus(string status, double loadingProgress) { this.Dispatcher.Invoke(new Action<string, double>(Splash_UpdateStatus_GUI), Priority, new object[] { status, loadingProgress }); }
 
-        void Splash_UpdateStatus_GUI(string Status) { SPLSH.Status = Status; }
-
-        void Splash_AddPlugin(IClientPlugin plugin) { this.Dispatcher.Invoke(new Action<IClientPlugin>(Splash_AddPlugin_GUI), Priority, new object[] { plugin }); }
-
-        void Splash_AddPlugin_GUI(IClientPlugin plugin) { SPLSH.AddPlugin(plugin); }
-
-        bool SplashWait = true;
-
-        void Splash_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        void Splash_UpdateStatus_GUI(string status, double loadingProgress) 
         {
-            Splash_TIMER.Enabled = false;
-            SplashWait = false;
+            splsh.Status3 = splsh.Status2;
+            splsh.Status2 = splsh.Status1;
+            splsh.Status1 = status;
+            splsh.LoadingProgress = loadingProgress;
+        }
+
+        bool splashWait = true;
+
+        void splash_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            splash_TIMER.Enabled = false;
+            splashWait = false;
         }
 
     }

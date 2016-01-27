@@ -97,6 +97,8 @@ namespace TrakHound_Server
         {
             if (DeviceManager == null) DeviceManager = new Device_Manager(this);
 
+            DeviceManager.UserDatabaseSettings = UserDatabaseSettings;
+
             if (Server != null) DeviceManager.CurrentUser = Server.CurrentUser;
 
             if (login != null) login.Hide();
@@ -194,7 +196,11 @@ namespace TrakHound_Server
 
         public void StartServer()
         {
-            if (Server != null) Server.Start();
+            if (Server != null)
+            {
+                Server.UserDatabaseSettings = UserDatabaseSettings;
+                Server.Start();
+            }
         }
 
         public void StopServer()

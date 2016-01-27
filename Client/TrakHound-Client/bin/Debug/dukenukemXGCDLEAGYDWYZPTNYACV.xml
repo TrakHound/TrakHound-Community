@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent>
+    <Device_Name>VMC-3Axis</Device_Name>
+    <Heartbeat>5000</Heartbeat>
+    <IP_Address>agent.mtconnect.org</IP_Address>
+    <Port />
+    <ProxyAddress />
+    <ProxyPort />
+  </Agent>
+  <ClientEnabled>True</ClientEnabled>
+  <ClientUpdateId>JVSJPKGXNIHODWZGEHZW</ClientUpdateId>
+  <Cycles />
+  <Databases />
+  <Databases_Client>
+    <MySQL id="00">
+      <Database>local_mazak_test_01</Database>
+      <Password>user</Password>
+      <PHP_Directory />
+      <PHP_Server />
+      <Port>3306</Port>
+      <Server>192.168.1.10</Server>
+      <UsePHP>False</UsePHP>
+      <Username>TrakHound</Username>
+      <UseTrakHoundCloudServer>False</UseTrakHoundCloudServer>
+    </MySQL>
+  </Databases_Client>
+  <Databases_Server>
+    <MySQL id="00">
+      <Database>local_mazak_test_01</Database>
+      <Password>user</Password>
+      <PHP_Directory />
+      <PHP_Server />
+      <Port>3306</Port>
+      <Server>192.168.1.10</Server>
+      <UsePHP>False</UsePHP>
+      <Username>TrakHound</Username>
+      <UseTrakHoundCloudServer>False</UseTrakHoundCloudServer>
+    </MySQL>
+  </Databases_Server>
+  <Description>
+    <Company />
+    <Controller />
+    <Description>Local Test Configuration</Description>
+    <Device_ID />
+    <Device_Type />
+    <Location />
+    <Manufacturer />
+    <Model />
+    <Serial />
+  </Description>
+  <File_Locations>
+    <Image_Path />
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path />
+  </File_Locations>
+  <GeneratedData>
+    <GeneratedEvents>
+      <UploadToMySQL>true</UploadToMySQL>
+    </GeneratedEvents>
+    <SnapShotData />
+  </GeneratedData>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>false</Conditions>
+      <Events>true</Events>
+      <Omit />
+      <Samples>false</Samples>
+    </DataItems>
+  </InstanceTable>
+  <OEE>
+    <Availability />
+  </OEE>
+  <ServerEnabled>True</ServerEnabled>
+  <ServerUpdateId>XBRNEZWTXFSPJWMENTOF</ServerUpdateId>
+  <ShiftData>
+    <GeneratedEvents />
+    <Shifts />
+  </ShiftData>
+  <UniqueId>HHPXUEFXKPXDKJKZBJRW</UniqueId>
+</Settings>

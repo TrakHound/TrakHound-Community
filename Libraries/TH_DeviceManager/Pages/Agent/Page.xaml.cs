@@ -564,37 +564,40 @@ namespace TH_DeviceManager.Pages.Agent
 
             // Get IP Address or URL
             ip = IpAddress;
-            if (ip.Length > 7)
+            if (ip != null)
             {
-                if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
-            }
-
-            // Get Port
-            if (Port != null)
-            {
-                int.TryParse(Port, out port);
-            }
-
-            var info = new Probe_Info();
-            info.address = ip;
-            info.port = port;
-
-            TH_MTConnect.HTTP.ProxySettings proxy = null;
-            if (ProxyPort != null)
-            {
-                int proxyPort = -1;
-                if (int.TryParse(ProxyPort, out proxyPort))
+                if (ip.Length > 7)
                 {
-                    proxy = new TH_MTConnect.HTTP.ProxySettings();
-                    proxy.Address = ProxyAddress;
-                    proxy.Port = proxyPort;
+                    if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
                 }
+
+                // Get Port
+                if (Port != null)
+                {
+                    int.TryParse(Port, out port);
+                }
+
+                var info = new Probe_Info();
+                info.address = ip;
+                info.port = port;
+
+                TH_MTConnect.HTTP.ProxySettings proxy = null;
+                if (ProxyPort != null)
+                {
+                    int proxyPort = -1;
+                    if (int.TryParse(ProxyPort, out proxyPort))
+                    {
+                        proxy = new TH_MTConnect.HTTP.ProxySettings();
+                        proxy.Address = ProxyAddress;
+                        proxy.Port = proxyPort;
+                    }
+                }
+
+                info.proxy = proxy;
+
+                agentInfo_THREAD = new Thread(new ParameterizedThreadStart(GetAgentInfo_Worker));
+                agentInfo_THREAD.Start(info);
             }
-
-            info.proxy = proxy;
-
-            agentInfo_THREAD = new Thread(new ParameterizedThreadStart(GetAgentInfo_Worker));
-            agentInfo_THREAD.Start(info);
         }
 
         void GetAgentInfo_Worker(object o)

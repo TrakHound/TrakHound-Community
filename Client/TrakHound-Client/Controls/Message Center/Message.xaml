@@ -10,6 +10,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:local="clr-namespace:TrakHound_Client.Controls.Message_Center"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d"
              x:Name="msg"
@@ -111,7 +112,7 @@
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource Notification_IMG}" />
                             <Setter Property="Fill" Value="#aaffffff"/>
-                            <Style.Triggers>
+                            <!--<Style.Triggers>
                                 <DataTrigger Binding="{Binding Message_Type}" Value="{x:Static local:Message+MessageType.devicealert}">
                                     <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
                                     <Setter Property="Fill" Value="Red"/>
@@ -124,7 +125,7 @@
                                     <Setter Property="OpacityMask" Value="{StaticResource Error_IMG}" />
                                     <Setter Property="Fill" Value="Red"/>
                                 </DataTrigger>
-                            </Style.Triggers>
+                            </Style.Triggers>-->
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
@@ -182,9 +183,28 @@
                             </Style>
                         </TextBlock.Style>                       
                     </TextBlock>
+                    
+                    <!--Close Button-->
+                    <th_wpf:Button Grid.RowSpan="2" Height="30" Width="30" VerticalAlignment="Center" Clicked="Close_Clicked" Image="/TrakHound-Client;component/Resources/X_01.png">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#10ffffff"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=msg}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
 
                     <!--Close Button-->
-                    <Border x:Name="close_BD" DockPanel.Dock="Right" Width="30" PreviewMouseDown="close_BD_PreviewMouseDown" ToolTip="Close" >
+                    <!--<Border x:Name="close_BD" DockPanel.Dock="Right" Width="30" PreviewMouseDown="close_BD_PreviewMouseDown" ToolTip="Close" >
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -267,7 +287,7 @@
 
                         </Grid>
 
-                    </Border>
+                    </Border>-->
 
                 </Grid>
 

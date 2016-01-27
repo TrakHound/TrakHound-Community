@@ -41,16 +41,6 @@
 
             <!--Gloss Effect-->
             <Border x:Name="gloss" Grid.Column="1" IsHitTestVisible="False" Visibility="Collapsed">
-                <!--<Border.Style>
-                    <Style TargetType="Border">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="true">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>-->
 
                 <Grid IsHitTestVisible="False">
                     <Grid.RowDefinitions>
@@ -86,17 +76,6 @@
                             </LinearGradientBrush>
                         </Border.Background>
                     </Border>
-
-                    <!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
-                        <Border.Background>
-                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                <GradientStop Color="#04000000" Offset="0"/>
-                                <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                --><!--<GradientStop Color="#10ffffff" Offset="0.6"/>--><!--
-                                <GradientStop Color="#04000000" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                    </Border>-->
 
                 </Grid>
 

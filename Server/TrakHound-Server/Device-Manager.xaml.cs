@@ -54,7 +54,6 @@ namespace TrakHound_Server
             Hide();
         }
 
-
         DeviceManager devicemanager;
 
         public object CurrentPage
@@ -117,9 +116,18 @@ namespace TrakHound_Server
         public static readonly DependencyProperty LoadingProperty =
             DependencyProperty.Register("Loading", typeof(bool), typeof(Device_Manager), new PropertyMetadata(false));
 
-        
 
-        public Database_Settings userDatabaseSettings;
+        Database_Settings userDatabaseSettings;
+        public Database_Settings UserDatabaseSettings
+        {
+            get { return UserDatabaseSettings; }
+            set
+            {
+                userDatabaseSettings = value;
+
+                if (devicemanager != null) devicemanager.UserDatabaseSettings = userDatabaseSettings;
+            }
+        }
 
         void ReadUserManagementSettings()
         {
@@ -158,7 +166,7 @@ namespace TrakHound_Server
             TempPage = page;
         }
 
-        private void Back_Clicked(Button_04 bt)
+        private void Back_Clicked(TH_WPF.Button bt)
         {
             TempPage = null;
         }

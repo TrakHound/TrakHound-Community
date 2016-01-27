@@ -40,8 +40,8 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="149"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="150"/>
+                        <!--<ColumnDefinition Width="auto"/>-->
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -68,7 +68,7 @@
 
                     </Grid>
 
-                    <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>
+                    <!--<Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Light}"/>-->
 
                     <!--Column Headers-->
                     <ItemsControl Grid.Column="2" ItemsSource="{Binding ColumnHeaders}">
@@ -81,22 +81,29 @@
 
                 </Grid>
 
-                <Grid Grid.Row="1" Background="{StaticResource Window_Background_Dark}">
+                <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
 
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        <!--<Grid.Background>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="Transparent" Offset="0"/>
+                                <GradientStop Color="#20000000" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>-->
 
                         <Rectangle Grid.Row="0" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
 
                         <!--<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Padding="0">-->
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="149" />
+                                    <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
@@ -115,6 +122,9 @@
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>
+
+                                <!--Blank Rows-->
+                                <!--<ItemsControl ItemsSource="{Binding BlankRows}" Grid.Column="3"/>-->
 
                             </Grid>
 

@@ -71,17 +71,19 @@ namespace TrakHound_Client
             Log_Initialize();
             Splash_Initialize();
 
+            Splash_UpdateStatus("...Initializing", 10);
+
             devicemanager = new DeviceManager(DeviceManagerType.Client);
 
             InitializeComponent();
             DataContext = this;
 
-            Splash_UpdateStatus("...Initializing");
             this.SourceInitialized += new EventHandler(win_SourceInitialized);
 
             Application.Current.MainWindow = this;
 
             // Initialize Pages
+            Splash_UpdateStatus("...Creating Pages", 40);
             Pages_Initialize();
 
             // Set border thickness (maybe make this a static resource in XAML?)
@@ -90,7 +92,7 @@ namespace TrakHound_Client
             LoadDevices_Initialize();
 
             // Read Users and Login
-            Splash_UpdateStatus("...Logging in User");
+            Splash_UpdateStatus("...Logging in User", 60);
             ReadUserManagementSettings();
             devicemanager.UserDatabaseSettings = UserDatabaseSettings;
 
@@ -98,11 +100,14 @@ namespace TrakHound_Client
             LoginMenu.UserDatabaseSettings = UserDatabaseSettings;
             LoginMenu.LoadRememberMe();
 
-            Splash_UpdateStatus("...Loading Plugins");
+            Splash_UpdateStatus("...Loading Plugins", 70);
             LoadPlugins();
 
+            Splash_UpdateStatus("...Finishing Up", 100);
+
+
             // Wait for the minimum splash time to elapse, then close the splash dialog
-            while (SplashWait) { System.Threading.Thread.Sleep(200); }
+            //while (SplashWait) { System.Threading.Thread.Sleep(200); }
             Splash_Close();
         }
 

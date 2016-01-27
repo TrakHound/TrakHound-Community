@@ -29,7 +29,7 @@ namespace TrakHound_Client
         {
             EnabledPlugins = new List<PluginConfiguration>();
 
-            Splash_UpdateStatus("...Loading Plugins");
+            //Splash_UpdateStatus("...Loading Plugins");
 
             Plugins_Find();
 
@@ -60,8 +60,10 @@ namespace TrakHound_Client
             if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-            //path = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             path = AppDomain.CurrentDomain.BaseDirectory;
+            if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
+
+            path = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
 
             // Add Buttons for Plugins on PlugIn Options page
@@ -242,9 +244,6 @@ namespace TrakHound_Client
                                 try
                                 {
                                     IClientPlugin plugin = lplugin.Value;
-
-                                    Splash_UpdateStatus("...Loading Plugin : " + plugin.Title);
-                                    Splash_AddPlugin(plugin);
 
                                     plugin.DataEvent += Plugin_DataEvent;
                                     plugin.ShowRequested += Plugin_ShowRequested;

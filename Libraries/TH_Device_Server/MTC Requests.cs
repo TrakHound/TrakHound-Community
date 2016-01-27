@@ -53,12 +53,12 @@ namespace TH_Device_Server
                             }
                         }
 
-                        Thread.Sleep(configuration.Agent.Current_Heartbeat);
+                        Thread.Sleep(configuration.Agent.Heartbeat);
                     }
                 }
                 else
                 {
-                    Thread.Sleep(configuration.Agent.Current_Heartbeat);
+                    Thread.Sleep(configuration.Agent.Heartbeat);
                 }
             }
         }

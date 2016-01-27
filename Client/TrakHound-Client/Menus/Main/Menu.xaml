@@ -161,8 +161,17 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.Resources>
-                            <Style TargetType="local:MenuItem">
-                                <Setter Property="Margin" Value="5"/>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Width" Value="100"/>
+                                <Setter Property="Height" Value="100"/>
+                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                    </Trigger>
+                                </Style.Triggers>
                             </Style>
                         </ItemsControl.Resources>
                     </ItemsControl>

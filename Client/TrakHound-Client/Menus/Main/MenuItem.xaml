@@ -23,8 +23,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Cursor="Hand">
-        <Grid.Style>
+    <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Cursor="Hand" Background="Transparent">
+        <!--<Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="Transparent"/>
                 <Style.Triggers>
@@ -33,7 +33,7 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-        </Grid.Style>
+        </Grid.Style>-->
         
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
@@ -170,7 +170,7 @@
             
         </Grid>
 
-        <!--Gloss Effect-->
+        <!--Gloss Effect--><!--
         <Border IsHitTestVisible="False">
             <Border.Style>
                 <Style TargetType="Border">
@@ -179,9 +179,9 @@
                         <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
+                        --><!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
                             <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>-->
+                        </DataTrigger>--><!--
                     </Style.Triggers>
                 </Style>
             </Border.Style>
@@ -221,7 +221,7 @@
                     </Border.Background>
                 </Border>
 
-                <!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
+                --><!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
                     <Border.Background>
                         <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                             <GradientStop Color="#08000000" Offset="0"/>
@@ -232,11 +232,11 @@
                             <GradientStop Color="#08000000" Offset="1"/>
                         </LinearGradientBrush>
                     </Border.Background>
-                </Border>-->
+                </Border>--><!--
 
             </Grid>
 
-        </Border>
+        </Border>-->
 
     </Grid>
     

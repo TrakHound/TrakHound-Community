@@ -319,13 +319,23 @@ namespace TrakHound_Client.Controls.Message_Center
 
         }
 
-        private void ClearAll_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //Notifications.Clear();
-            //DeviceAlerts.Clear();
-            //Warnings.Clear();
-            //Errors.Clear();
+        //private void ClearAll_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    //Notifications.Clear();
+        //    //DeviceAlerts.Clear();
+        //    //Warnings.Clear();
+        //    //Errors.Clear();
 
+        //    foreach (Message msg in Notifications) msg.Shown = false;
+        //    foreach (Message msg in DeviceAlerts) msg.Shown = false;
+        //    foreach (Message msg in Warnings) msg.Shown = false;
+        //    foreach (Message msg in Errors) msg.Shown = false;
+
+        //    CheckForMessages();
+        //}
+
+        private void ClearAll_Clicked(TH_WPF.Button bt)
+        {
             foreach (Message msg in Notifications) msg.Shown = false;
             foreach (Message msg in DeviceAlerts) msg.Shown = false;
             foreach (Message msg in Warnings) msg.Shown = false;

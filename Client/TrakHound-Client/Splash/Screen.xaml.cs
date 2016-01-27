@@ -35,14 +35,35 @@ namespace TrakHound_Client.Splash
             DataContext = this;
         }
 
-        public string Status
+        public string Status1
         {
-            get { return (string)GetValue(StatusProperty); }
-            set { SetValue(StatusProperty, value); }
+            get { return (string)GetValue(Status1Property); }
+            set { SetValue(Status1Property, value); }
         }
 
-        public static readonly DependencyProperty StatusProperty =
-            DependencyProperty.Register("Status", typeof(string), typeof(Screen), new PropertyMetadata("Loading..."));
+        public static readonly DependencyProperty Status1Property =
+            DependencyProperty.Register("Status1", typeof(string), typeof(Screen), new PropertyMetadata(null));
+
+
+        public string Status2
+        {
+            get { return (string)GetValue(Status2Property); }
+            set { SetValue(Status2Property, value); }
+        }
+
+        public static readonly DependencyProperty Status2Property =
+            DependencyProperty.Register("Status2", typeof(string), typeof(Screen), new PropertyMetadata(null));
+
+
+        public string Status3
+        {
+            get { return (string)GetValue(Status3Property); }
+            set { SetValue(Status3Property, value); }
+        }
+
+        public static readonly DependencyProperty Status3Property =
+            DependencyProperty.Register("Status3", typeof(string), typeof(Screen), new PropertyMetadata(null));
+
 
 
         public string Version
@@ -55,24 +76,15 @@ namespace TrakHound_Client.Splash
             DependencyProperty.Register("Version", typeof(string), typeof(Screen), new PropertyMetadata(""));
 
 
-        public void AddPlugin(IClientPlugin plugin)
+        public double LoadingProgress
         {
-            ImageBrush NavIMGBRUSH = new ImageBrush();
-            NavIMGBRUSH.ImageSource = plugin.Image;
-            NavIMGBRUSH.Stretch = Stretch.Uniform;
-
-            Rectangle NavRECT = new Rectangle();
-            NavRECT.Fill = new SolidColorBrush(Color_Functions.GetColorFromString("#fff"));
-            NavRECT.Height = 30;
-            NavRECT.Width = 30;
-            NavRECT.Margin = new Thickness(5);
-            NavRECT.OpacityMask = NavIMGBRUSH;
-            NavRECT.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-
-            Plugins_STACK.Children.Add(NavRECT);
-
-            Plugins_STACK.Visibility = System.Windows.Visibility.Visible;
+            get { return (double)GetValue(LoadingProgressProperty); }
+            set { SetValue(LoadingProgressProperty, value); }
         }
+
+        public static readonly DependencyProperty LoadingProgressProperty =
+            DependencyProperty.Register("LoadingProgress", typeof(double), typeof(Screen), new PropertyMetadata(0d));
+
 
     }
 }

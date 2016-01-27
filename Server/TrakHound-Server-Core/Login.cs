@@ -40,7 +40,7 @@ namespace TrakHound_Server_Core
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
         public event CurrentUserChanged_Handler CurrentUserChanged;
 
-        Database_Settings userDatabaseSettings;
+        public Database_Settings UserDatabaseSettings { get; set; }
 
         public void Login(UserConfiguration userConfig)
         {
@@ -55,61 +55,61 @@ namespace TrakHound_Server_Core
             CurrentUser = null;
         }
 
-        void ReadUserManagementSettings()
-        {
-            DatabasePluginReader dpr = new DatabasePluginReader();
+        //void ReadUserManagementSettings()
+        //{
+        //    DatabasePluginReader dpr = new DatabasePluginReader();
 
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
 
-            string configPath;
+        //    string configPath;
 
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
 
-            //Logger.Log(configPath);
+        //    //Logger.Log(configPath);
 
-            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
+        //    UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
 
-            if (userSettings != null)
-            {
-                if (userSettings.Databases.Databases.Count > 0)
-                {
-                    userDatabaseSettings = userSettings.Databases;
-                    Global.Initialize(userDatabaseSettings);
-                }
-            }
-        }
+        //    if (userSettings != null)
+        //    {
+        //        if (userSettings.Databases.Databases.Count > 0)
+        //        {
+        //            userDatabaseSettings = userSettings.Databases;
+        //            Global.Initialize(userDatabaseSettings);
+        //        }
+        //    }
+        //}
 
-        #region "Remember Me Monitor"
+        //#region "Remember Me Monitor"
 
-        System.Timers.Timer rememberMe_TIMER;
+        //System.Timers.Timer rememberMe_TIMER;
 
-        void RememberMeMonitor_Start()
-        {
-            rememberMe_TIMER = new System.Timers.Timer();
-            rememberMe_TIMER.Interval = 5000;
-            rememberMe_TIMER.Elapsed += rememberMe_TIMER_Elapsed;
-            rememberMe_TIMER.Enabled = true;
-        }
+        //void RememberMeMonitor_Start()
+        //{
+        //    rememberMe_TIMER = new System.Timers.Timer();
+        //    rememberMe_TIMER.Interval = 5000;
+        //    rememberMe_TIMER.Elapsed += rememberMe_TIMER_Elapsed;
+        //    rememberMe_TIMER.Enabled = true;
+        //}
 
-        void rememberMe_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(RememberMeMonitor_Worker));
-        }
+        //void rememberMe_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        //{
+        //    ThreadPool.QueueUserWorkItem(new WaitCallback(RememberMeMonitor_Worker));
+        //}
 
-        void RememberMeMonitor_Worker(object o)
-        {
-           UserConfiguration rememberMe = RememberMe.Get(RememberMeType.Server, userDatabaseSettings);
-           if (rememberMe != null && CurrentUser == null)
-            {
-                if (rememberMe_TIMER != null) rememberMe_TIMER.Enabled = false;
-                Login(rememberMe);
-            }
-        }
+        //void RememberMeMonitor_Worker(object o)
+        //{
+        //   UserConfiguration rememberMe = RememberMe.Get(RememberMeType.Server, userDatabaseSettings);
+        //   if (rememberMe != null && CurrentUser == null)
+        //    {
+        //        if (rememberMe_TIMER != null) rememberMe_TIMER.Enabled = false;
+        //        Login(rememberMe);
+        //    }
+        //}
 
-        #endregion
+        //#endregion
 
     }
 }

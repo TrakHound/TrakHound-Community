@@ -110,7 +110,12 @@ namespace TH_DeviceManager
         }
 
         public static readonly DependencyProperty UserDatabaseSettingsProperty =
-            DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(DeviceManager), new PropertyMetadata(null));
+            DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(DeviceManager), new PropertyMetadata(null, new PropertyChangedCallback(UserDatabaseSettings_PropertyChanged)));
+
+        private static void UserDatabaseSettings_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            ((DeviceManager)obj).userDatabaseSettings = e.NewValue as Database_Settings;
+        }
 
         #endregion
 
@@ -320,6 +325,9 @@ namespace TH_DeviceManager
         void LoadDevices_Worker()
         {
             List<Configuration> configs = new List<Configuration>();
+
+            if (userDatabaseSettings != null) Console.WriteLine("DeviceManager.LoadDevices_Worker() :: userDatabaseSettings != null");
+            else Console.WriteLine("DeviceManager.LoadDevices_Worker() :: userDatabaseSettings = null");
 
             if (currentuser != null)
             {
@@ -1302,6 +1310,9 @@ namespace TH_DeviceManager
             if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+            pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
+            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 

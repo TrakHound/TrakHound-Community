@@ -82,7 +82,7 @@ namespace TrakHound_Server_Core
         {
             if (CurrentUser != null)
             {
-                List<Configuration> configs = Configurations.GetConfigurationsListForUser(CurrentUser, userDatabaseSettings);
+                List<Configuration> configs = Configurations.GetConfigurationsListForUser(CurrentUser, UserDatabaseSettings);
                 if (configs != null)
                 {
                     if (configs.Count > 0)

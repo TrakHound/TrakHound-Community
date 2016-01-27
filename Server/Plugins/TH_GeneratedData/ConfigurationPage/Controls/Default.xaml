@@ -9,26 +9,26 @@
              mc:Ignorable="d" 
              >
 
-    <Grid>
+    <Grid FocusManager.IsFocusScope="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--Title-->
-        <TextBlock Text="Default Value" FontSize="8pt" Foreground="#aaa" Margin="10,5"/>
+        <TextBlock Text="Default Value" FontSize="8pt" Foreground="#aaa" Margin="10,5" FocusManager.IsFocusScope="False"/>
 
         <!--Value Header-->
-        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" MinWidth="200">
+        <Border Grid.Row="1" CornerRadius="2" Background="#0080ff" MinWidth="200" FocusManager.IsFocusScope="False">
 
-            <StackPanel Margin="20,10" VerticalAlignment="Center">
+            <StackPanel Margin="20,10" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
 
                 <!--Value Name-->
-                <StackPanel>
+                <StackPanel FocusManager.IsFocusScope="False">
 
-                    <TextBlock Text="Value" Foreground="#66ffffff" FontSize="10pt" />
+                    <TextBlock Text="Value" Foreground="#66ffffff" FontSize="10pt"  FocusManager.IsFocusScope="False"/>
 
-                    <Border BorderThickness="1" CornerRadius="1" Margin="0,5,0,5">
+                    <Border BorderThickness="1" CornerRadius="1" Margin="0,5,0,5" FocusManager.IsFocusScope="False">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="BorderBrush" Value="#33ffffff"/>
@@ -42,7 +42,7 @@
                             </Style>
                         </Border.Style>
 
-                        <Grid Margin="10,0">
+                        <Grid Margin="10,0" FocusManager.IsFocusScope="False">
 
                             <!--User Input-->
                             <TextBox x:Name="valuename_TXT" Text="{Binding ValueName}" TextChanged="TextBox_TextChanged" GotFocus="TXT_GotFocus" LostFocus="TXT_LostFocus" GotKeyboardFocus="TXT_GotKeyboardFocus" GotMouseCapture="TXT_GotMouseCapture" BorderThickness="0" Background="#00000000"  FontSize="14pt" Height="35" VerticalAlignment="Center" VerticalContentAlignment="Center" MaxLines="1" CaretBrush="Black">

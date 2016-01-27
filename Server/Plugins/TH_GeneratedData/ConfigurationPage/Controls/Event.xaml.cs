@@ -70,7 +70,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public delegate void Clicked_Handler(Event e);
         public event Clicked_Handler AddValueClicked;
 
-        private void AddValue_Clicked(TH_WPF.Button_04 bt)
+        private void AddValue_Clicked(TH_WPF.Button bt)
         {
             if (AddValueClicked != null) AddValueClicked(this);
         }
@@ -131,7 +131,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public event Clicked_Handler AddCaptureItemClicked;
 
-        private void AddCaptureItem_Clicked(TH_WPF.Button_04 bt)
+        private void AddCaptureItem_Clicked(TH_WPF.Button bt)
         {
             if (AddCaptureItemClicked != null) AddCaptureItemClicked(this);
         }

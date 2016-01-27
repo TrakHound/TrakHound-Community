@@ -20,6 +20,7 @@ namespace TH_Configuration
         public string Serial { get; set; }
         public string Controller { get; set; }
         public string Company { get; set; }
+        public string Location { get; set; }
         
         // List of Custom Configurations for Plugins
         public List<Tuple<string, string>> Custom;

@@ -81,7 +81,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public delegate void Clicked_Handler(EventButton bt);
         public event Clicked_Handler RemoveClicked;
 
-        private void Remove_Clicked(TH_WPF.Button_02 bt)
+        private void Remove_Clicked(TH_WPF.Button bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
         }

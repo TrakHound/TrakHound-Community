@@ -145,7 +145,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public event Clicked_Handler AddTriggerClicked;
 
-        private void AddTrigger_Clicked(TH_WPF.Button_04 bt)
+        private void AddTrigger_Clicked(TH_WPF.Button bt)
         {
             if (AddTriggerClicked != null) AddTriggerClicked(this);
 
@@ -158,7 +158,7 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public event Clicked_Handler RemoveClicked;
 
-        private void Remove_Clicked(TH_WPF.Button_02 bt)
+        private void Remove_Clicked(TH_WPF.Button bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
 

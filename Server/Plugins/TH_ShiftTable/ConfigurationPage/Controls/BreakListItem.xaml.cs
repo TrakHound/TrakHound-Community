@@ -135,7 +135,7 @@ namespace TH_ShiftTable.ConfigurationPage.Controls
         public delegate void Clicked_Handler(BreakListItem item);
         public event Clicked_Handler RemoveClicked;
 
-        private void RemoveBreak_Clicked(TH_WPF.Button_04 bt)
+        private void RemoveBreak_Clicked(TH_WPF.Button bt)
         {
             if (RemoveClicked != null) RemoveClicked(this);
         }

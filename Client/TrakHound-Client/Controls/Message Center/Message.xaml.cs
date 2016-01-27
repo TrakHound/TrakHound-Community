@@ -109,7 +109,7 @@ namespace TrakHound_Client.Controls.Message_Center
         public event Clicked_Handler Clicked;
         public event Clicked_Handler CloseClicked;
 
-        private void close_BD_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void Close_Clicked(TH_WPF.Button bt)
         {
             if (CloseClicked != null) CloseClicked(this);
         }
