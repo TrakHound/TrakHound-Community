@@ -9,7 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             xmlns:local="clr-namespace:TrakHound_Client.Controls.Message_Center"
+             xmlns:locad="clr-namespace:TrakHound_Client.Controls.Message_Center;assembly=TrakHound-Client"
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d"
@@ -59,36 +59,23 @@
 
     <Grid MinWidth="100" MinHeight="45">
 
-        <Border MouseEnter="Border_MouseEnter" MouseLeave="Border_MouseLeave" PreviewMouseUp="Border_MouseUp">
+        <Border>
             <Border.Style>
                 <Style TargetType="Border">
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Opacity" Value="1.0"/>
                     <Setter Property="Background" Value="#00000000"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding MouseOver}" Value="true">
-                            <!--<Setter Property="Background" Value="#33ffffff"/>-->
-                            <DataTrigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Background.Color" To="#11ffffff">
-                                            <ColorAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseOut"/>
-                                            </ColorAnimation.EasingFunction>
-                                        </ColorAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.EnterActions>
-                            <DataTrigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard FillBehavior="Stop">
-                                        <ColorAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                            <ColorAnimation.EasingFunction>
-                                                <CubicEase EasingMode="EaseOut"/>
-                                            </ColorAnimation.EasingFunction>
-                                        </ColorAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </DataTrigger.ExitActions>
+                        <DataTrigger Binding="{Binding Data.Action}" Value="{x:Null}">
+                            <Setter Property="Cursor" Value="Arrow"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding Read}" Value="true">
+                            <Setter Property="Opacity" Value="0.3"/>
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Opacity" Value="1.0"/>
+                            <Setter Property="Background" Value="#11ffffff"/>
+                        </Trigger>
                     </Style.Triggers>
                 </Style>
             </Border.Style>
@@ -100,35 +87,61 @@
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
 
-                <!--Bell Icon-->
-                <Rectangle Height="20" Width="20" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top">
-                    <Rectangle.Resources>
-                        <ImageBrush x:Key="Notification_IMG"  Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Bell_01.png" />
-                        <ImageBrush x:Key="Warning_IMG"  Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Warning_01.png" />
-                        <ImageBrush x:Key="Error_IMG"  Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Error_01.png" />
-                    </Rectangle.Resources>
+                <!--Image-->
+                <StackPanel>
 
-                    <Rectangle.Style>
-                        <Style TargetType="Rectangle">
-                            <Setter Property="OpacityMask" Value="{StaticResource Notification_IMG}" />
-                            <Setter Property="Fill" Value="#aaffffff"/>
-                            <!--<Style.Triggers>
-                                <DataTrigger Binding="{Binding Message_Type}" Value="{x:Static local:Message+MessageType.devicealert}">
-                                    <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
-                                    <Setter Property="Fill" Value="Red"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Message_Type}" Value="{x:Static local:Message+MessageType.warning}">
-                                    <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
-                                    <Setter Property="Fill" Value="Yellow"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Message_Type}" Value="{x:Static local:Message+MessageType.error}">
-                                    <Setter Property="OpacityMask" Value="{StaticResource Error_IMG}" />
-                                    <Setter Property="Fill" Value="Red"/>
-                                </DataTrigger>
-                            </Style.Triggers>-->
-                        </Style>
-                    </Rectangle.Style>
-                </Rectangle>
+                    <Image Source="{Binding Data.Image}" Height="20" Width="20" Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Data.Image}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+
+                    <Rectangle Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="Custom_IMG"  Stretch="Uniform" ImageSource="{Binding Data.Image}" />
+                            <ImageBrush x:Key="Notification_IMG"  Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Bell_01.png" />
+                            <ImageBrush x:Key="Warning_IMG"  Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Warning_01.png" />
+                            <ImageBrush x:Key="Error_IMG"  Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Error_01.png" />
+                        </Rectangle.Resources>
+
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Height" Value="20"/>
+                                <Setter Property="Width" Value="20"/>
+                                <Setter Property="OpacityMask" Value="{StaticResource Notification_IMG}" />
+                                <Setter Property="Fill" Value="#aaffffff"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Data.Image}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <!--<Setter Property="Height" Value="20"/>
+                                        <Setter Property="Width" Value="20"/>-->
+                                    </DataTrigger>
+                                    <!--<DataTrigger Binding="{Binding Data.Type}" Value="{x:Static local:MessageType.devicealert}">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Data.Type}" Value="{x:Static local:MessageType.warning}">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Warning_IMG}" />
+                                        <Setter Property="Fill" Value="Yellow"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Data.Type}" Value="{x:Static local:MessageType.error}">
+                                        <Setter Property="OpacityMask" Value="{StaticResource Error_IMG}" />
+                                        <Setter Property="Fill" Value="Red"/>
+                                    </DataTrigger>-->
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
+                    </Rectangle>
+
+                </StackPanel>
 
                 <Grid Grid.Column="1" Margin="10,0">
                     <Grid.RowDefinitions>
@@ -138,10 +151,10 @@
                     </Grid.RowDefinitions>
 
                     <!--Notification Title-->
-                    <TextBlock Text="{Binding Message_Title}" TextWrapping="Wrap" FontSize="16" FontWeight="ExtraLight" Margin="0,5" Foreground="#aaffffff"/>
+                    <TextBlock Text="{Binding Data.Title}" TextWrapping="Wrap" FontSize="16" FontWeight="ExtraLight" Margin="0,5" Foreground="#aaffffff"/>
 
                     <!--Notification Text-->
-                    <TextBlock Grid.Row="1" Text="{Binding Message_Text}" TextWrapping="Wrap" FontSize="12" FontWeight="ExtraLight" Margin="0,0" Foreground="#66ffffff"/>
+                    <TextBlock Grid.Row="1" Text="{Binding Data.Text}" TextWrapping="Wrap" FontSize="12" FontWeight="ExtraLight" Margin="0,0" Foreground="#66ffffff"/>
 
                     <!--More Info-->
                     <TextBlock Grid.Row="2" Text="More Info" FontSize="8" Margin="0,2" MouseDown="MoreInfo_MouseDown">
@@ -154,7 +167,7 @@
                                         <Setter Property="Foreground" Value="#ffffff"/>
                                         <Setter Property="Cursor" Value="Hand"/>
                                     </Trigger>
-                                    <DataTrigger Binding="{Binding Message_AdditionalInfo}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding Data.AdditionalInfo}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -164,6 +177,8 @@
 
                 </Grid>
                 
+                <Grid Grid.ColumnSpan="3" Background="Transparent" MouseDown="Grid_MouseDown"/>
+                
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
@@ -171,7 +186,7 @@
                     </Grid.RowDefinitions>
 
                     <!--Time-->
-                    <TextBlock Text="{Binding Time}" Foreground="#88ffffff" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Data.AddedTime, StringFormat=d}" Foreground="#88ffffff" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Visible"/>
@@ -202,92 +217,6 @@
                             </Style>
                         </th_wpf:Button.Style>
                     </th_wpf:Button>
-
-                    <!--Close Button-->
-                    <!--<Border x:Name="close_BD" DockPanel.Dock="Right" Width="30" PreviewMouseDown="close_BD_PreviewMouseDown" ToolTip="Close" >
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Setter Property="Background" Value="#00000000" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=msg}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Background.Color" To="#22ffffff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <Grid>
-
-                            <Rectangle Width="12" Height="1.5" RenderTransformOrigin="0.5,0.5">
-                                <Rectangle.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="135"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </Rectangle.RenderTransform>
-                                <Rectangle.Style>
-                                    <Style TargetType="{x:Type Rectangle}">
-                                        <Setter Property="Fill" Value="#88ffffff" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="True">
-                                                <Setter Property="Fill" Value="#aaffffff" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Rectangle.Style>
-                            </Rectangle>
-
-                            <Rectangle Width="12" Height="1.5" RenderTransformOrigin="0.5,0.5" >
-                                <Rectangle.RenderTransform>
-                                    <TransformGroup>
-                                        <ScaleTransform/>
-                                        <SkewTransform/>
-                                        <RotateTransform Angle="45"/>
-                                        <TranslateTransform/>
-                                    </TransformGroup>
-                                </Rectangle.RenderTransform>
-                                <Rectangle.Style>
-                                    <Style TargetType="{x:Type Rectangle}">
-                                        <Setter Property="Fill" Value="#88ffffff" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=close_BD}" Value="True">
-                                                <Setter Property="Fill" Value="#aaffffff" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Rectangle.Style>
-                            </Rectangle>
-
-                        </Grid>
-
-                    </Border>-->
 
                 </Grid>
 

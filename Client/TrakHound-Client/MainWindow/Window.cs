@@ -445,47 +445,6 @@ namespace TrakHound_Client
             LoginMenu.Hide();
         }
 
-
-        private void Main_Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Main_Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (Properties.Settings.Default.Plugin_Configurations != null)
-            {
-                List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-
-                if (configs != null)
-                {
-                    foreach (PluginConfiguration config in configs)
-                    {
-                        if (config.Enabled && plugins != null)
-                        {
-                            foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
-                            {
-                                if (lplugin != null)
-                                {
-                                    try
-                                    {
-                                        IClientPlugin plugin = lplugin.Value;
-                                        plugin.Closing();
-                                    }
-                                    catch (Exception ex) { }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            DevicesMonitor_Close();
-
-            Properties.Settings.Default.Save();
-
-        }
-
         #region "Single Instance"
 
         public bool SignalExternalCommandLineArgs(IList<string> args)

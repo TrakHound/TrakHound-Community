@@ -46,7 +46,7 @@ namespace TrakHound_Client.Menus.Main
             Root_GRID.Width = 0;
             Root_GRID.Height = 0;
            
-            AddOptions_MenuItem();
+            //AddOptions_MenuItem();
             AddPlugins_MenuItem();
             AddDeviceManager_MenuItem();
             AddDeveloperConsole_MenuItem();
@@ -195,11 +195,23 @@ namespace TrakHound_Client.Menus.Main
             MenuItem mi = new MenuItem();
             mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png"));
             mi.Text = "My Account";
+            mi.Clicked += MyAccount_Clicked;
 
             var bt = new TH_WPF.Button();
             bt.ButtonContent = mi;
 
-            if (MenuItems.OfType<TH_WPF.Button>().ToList().Find(x => x.Text == mi.Text) == null) MenuItems.Add(bt);
+            if (MenuItems.OfType<TH_WPF.Button>().ToList().Find(x => CheckButtonText(x, mi)) == null) MenuItems.Add(bt);
+        }
+
+        bool CheckButtonText(TH_WPF.Button bt, MenuItem mi)
+        {
+            object obj = bt.ButtonContent;
+            if (obj != null)
+            {
+                var content = (MenuItem)obj;
+                return content.Text == mi.Text;
+            }
+            return false;
         }
 
         void RemoveMyAccount_MenuItem()

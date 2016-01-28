@@ -119,11 +119,11 @@ namespace TrakHound_Client.Pages.Plugins.Installed
                                     catch (Exception ex)
                                     {
                                         Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                                        mData.title = "Plugin Error";
-                                        mData.text = "Error during plugin Configuration Load";
-                                        mData.additionalInfo = ex.Message;
+                                        mData.Title = "Plugin Error";
+                                        mData.Text = "Error during plugin Configuration Load";
+                                        mData.AdditionalInfo = ex.Message;
 
-                                        mw.messageCenter.AddError(mData);
+                                        mw.messageCenter.AddMessage(mData);
                                     }
                                 }
                             }

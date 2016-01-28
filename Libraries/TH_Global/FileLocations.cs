@@ -33,9 +33,51 @@ namespace TH_Global
             if (!Directory.Exists(tempDirectory)) Directory.CreateDirectory(tempDirectory);
         }
 
-        public static void CleanTempDirectory()
+        public static void CleanTempDirectory(int days)
         {
-            if (!Directory.Exists(TrakHoundTemp)) Directory.Delete(TrakHoundTemp, true);
+            if (days == 0)
+            {
+                // Delete everything
+                if (!Directory.Exists(TrakHoundTemp)) Directory.Delete(TrakHoundTemp, true);
+            }
+            else
+            {
+                // Only delete files older than the days set in parameter
+                DateTime threshold = DateTime.Now - TimeSpan.FromDays(days);
+
+                if (Directory.Exists(TrakHoundTemp))
+                {
+                    string[] filePaths = Directory.GetFiles(TrakHoundTemp, "*.*", SearchOption.AllDirectories);
+                    if (filePaths.Length > 0)
+                    {
+                        foreach (var filePath in filePaths)
+                        {
+                            var fileInfo = new FileInfo(filePath);
+                            if (fileInfo != null)
+                            {
+                                if (fileInfo.LastWriteTime < threshold) File.Delete(filePath);
+                            }
+                        }
+                    }
+
+                    CleanSubDirectories(TrakHoundTemp);
+                }
+            }
+        }
+
+        private static void CleanSubDirectories(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                foreach (var directory in Directory.GetDirectories(path))
+                {
+                    CleanSubDirectories(directory);
+                    if (Directory.GetFiles(directory).Length == 0 && Directory.GetDirectories(directory).Length == 0)
+                    {
+                        Directory.Delete(directory, false);
+                    }
+                }
+            }
         }
 
         #endregion

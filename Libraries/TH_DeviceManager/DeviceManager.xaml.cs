@@ -453,12 +453,14 @@ namespace TH_DeviceManager
                         {
                             string temp_filename = currentuser.username + String_Functions.RandomString(20) + ".xml";
 
-                            string tempdir = FileLocations.TrakHound + @"\temp";
-                            if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
+                            //string tempdir = FileLocations.TrakHound + @"\temp";
+                            //if (!Directory.Exists(tempdir)) Directory.CreateDirectory(tempdir);
 
-                            string localPath = tempdir + @"\" + temp_filename;
+                            TH_Global.FileLocations.CreateTempDirectory();
 
-                            try { backupXml.Save(temp_filename); }
+                            string localPath = TH_Global.FileLocations.TrakHoundTemp + @"\" + temp_filename;
+
+                            try { backupXml.Save(localPath); }
                             catch (Exception ex) { Logger.Log("Error during Configuration Xml Backup"); }                
                         }
 

@@ -184,19 +184,20 @@
                                     </TextBlock>
 
                                     <!--Loading Status-->
-                                    <Grid Grid.Row="1" Margin="0,-10,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Row="1" Margin="0,-10,0,0" Orientation="Horizontal">
 
                                         <!--Sub Title-->
-                                        <TextBlock Grid.Column="0" Style="{StaticResource TrakHoundFont}" Text="Client" Foreground="#fff" FontSize="26pt" Margin="0,0,10,0"/>
+                                        <TextBlock Style="{StaticResource TrakHoundFont}" Text="Client" Foreground="#fff" FontSize="26pt" Margin="0,0,10,0"/>
 
+                                        <!--Type-->
+                                        <TextBlock Text="Beta" Foreground="#fff" FontSize="16pt" Style="{StaticResource TrakHoundFont}" VerticalAlignment="Bottom" Margin="0,0,5,4"/>
+                                        
                                         <!--Version-->
-                                        <TextBlock Grid.Column="1" Text="{Binding Version}" Foreground="#fff" FontSize="12pt" VerticalAlignment="Bottom" Margin="0,0,0,8"/>
+                                        <TextBlock Foreground="#fff" FontSize="12pt" VerticalAlignment="Bottom" Margin="0,0,0,8">
+                                            <Run Text="v"/><Run Text="{Binding Version}"/>
+                                        </TextBlock>
 
-                                    </Grid>
+                                    </StackPanel>
 
                                     <!--Loading Status-->
                                     <StackPanel Grid.Row="2" Margin="0,10,0,0">

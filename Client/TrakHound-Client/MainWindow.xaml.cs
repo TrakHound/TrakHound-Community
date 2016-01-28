@@ -105,16 +105,63 @@ namespace TrakHound_Client
 
             Splash_UpdateStatus("...Finishing Up", 100);
 
+            WelcomeMessage();
 
             // Wait for the minimum splash time to elapse, then close the splash dialog
             //while (SplashWait) { System.Threading.Thread.Sleep(200); }
             Splash_Close();
         }
 
+        private void Main_Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Main_Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (Properties.Settings.Default.Plugin_Configurations != null)
+            {
+                List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
+
+                if (configs != null)
+                {
+                    foreach (PluginConfiguration config in configs)
+                    {
+                        if (config.Enabled && plugins != null)
+                        {
+                            foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
+                            {
+                                if (lplugin != null)
+                                {
+                                    try
+                                    {
+                                        IClientPlugin plugin = lplugin.Value;
+                                        plugin.Closing();
+                                    }
+                                    catch (Exception ex) { }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            DevicesMonitor_Close();
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void Main_Window_Closed(object sender, EventArgs e)
+        {
+            TH_Global.FileLocations.CleanTempDirectory(1);
+        }
+
         void currentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             System.Windows.MessageBox.Show(e.ExceptionObject.ToString());
         }
+
+        
 
     }
 

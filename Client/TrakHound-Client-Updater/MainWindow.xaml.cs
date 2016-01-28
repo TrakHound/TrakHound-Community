@@ -42,10 +42,6 @@ namespace TrakHound_Client_Updater
             Update_Start();
         }
 
-
-
-
-
         Thread update_THREAD;
 
         void Update_Start()

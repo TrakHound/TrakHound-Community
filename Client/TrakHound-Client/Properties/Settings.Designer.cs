@@ -8,9 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
 namespace TrakHound_Client.Properties {
     
     
@@ -25,17 +22,14 @@ namespace TrakHound_Client.Properties {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public List<TH_Plugins_Client.PluginConfiguration> Plugin_Configurations
-        {
-            get
-            {
-                return ((List<TH_Plugins_Client.PluginConfiguration>)(this["Plugin_Configurations"]));
+        public global::System.Collections.Generic.List<TH_Plugins_Client.PluginConfiguration> Plugin_Configurations {
+            get {
+                return ((global::System.Collections.Generic.List<TH_Plugins_Client.PluginConfiguration>)(this["Plugin_Configurations"]));
             }
-            set
-            {
+            set {
                 this["Plugin_Configurations"] = value;
             }
         }
@@ -86,19 +80,16 @@ namespace TrakHound_Client.Properties {
                 this["UpdateBehavior"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("false")]
-        public bool UseLocalConfiguration
-        {
-            get
-            {
-                return ((bool)(this["UseLocalConfiguration"]));
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FirstOpen {
+            get {
+                return ((bool)(this["FirstOpen"]));
             }
-            set
-            {
-                this["UseLocalConfiguration"] = value;
+            set {
+                this["FirstOpen"] = value;
             }
         }
     }

@@ -320,13 +320,13 @@ namespace TrakHound_Client
 
         void Options_Initialize()
         {
-            optionsManager = new PageManager();
-            optionsManager.AddPage(new Pages.Options.Updates.Page());
+            //optionsManager = new PageManager();
+            //optionsManager.AddPage(new Pages.Options.Updates.Page());
         }
 
         public void Options_Open()
         {
-            AddPageAsTab(optionsManager, "Options", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png")));
+            //AddPageAsTab(optionsManager, "Options", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png")));
         }
 
         #endregion

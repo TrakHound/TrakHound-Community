@@ -69,7 +69,6 @@
     <Compile Include="Controls\TabManager.xaml.cs">
       <DependentUpon>TabManager.xaml</DependentUpon>
     </Compile>
-    <None Include="MainWindow\Constructor.cs" />
     <Compile Include="MainWindow\DeveloperConsole.cs" />
     <Compile Include="MainWindow\Devices.cs" />
     <Compile Include="MainWindow\MainMenu.cs" />
@@ -79,6 +78,7 @@
     <Compile Include="MainWindow\Plugins.cs" />
     <Compile Include="MainWindow\SplashScreen.cs" />
     <Compile Include="MainWindow\Users.cs" />
+    <Compile Include="MainWindow\WelcomeMessage.cs" />
     <Compile Include="MainWindow\Window.cs" />
     <Compile Include="Pages\About\Information\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>

@@ -20,6 +20,9 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.Reflection;
 
+using System.Diagnostics;
+using System.IO;
+
 using TH_Plugins_Client;
 using TH_Updater;
 using TH_Global;
@@ -50,6 +53,30 @@ namespace TrakHound_Client.Pages.Options.Updates
         public string PageName { get { return "Updates"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Up_01.png")); } }
+
+
+        void LaunchUpdater()
+        {
+            //string appStartPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+
+            //string appStartPath = @"F:\feenux\TrakHound\TrakHound\Client\AppStart\bin\Debug\AppStart.exe";
+
+            string appStartPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "AppStart.exe";
+
+            if (File.Exists(appStartPath))
+            {
+                var p = new Process();
+
+                p.StartInfo.FileName = appStartPath;
+                p.StartInfo.Arguments = Process.GetCurrentProcess().ProcessName;
+
+                p.Start();
+            }
+            else
+            {
+                Console.WriteLine("LaunchUpdater() :: Can't find " + appStartPath);
+            }
+        }
 
 
         void AutoUpdater_Start()
@@ -104,10 +131,10 @@ namespace TrakHound_Client.Pages.Options.Updates
 
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.text = "Reopen TrakHound to apply update";
+                    mData.Title = "Version " + latestVersion.ToString() + " is Available";
+                    mData.Text = "Reopen TrakHound to apply update";
 
-                    mw.messageCenter.AddNotification(mData);
+                    mw.messageCenter.AddMessage(mData);
 
                     
                     ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
@@ -183,10 +210,10 @@ namespace TrakHound_Client.Pages.Options.Updates
 
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.text = "Click to Update";
+                    mData.Title = "Version " + latestVersion.ToString() + " is Available";
+                    mData.Text = "Click to Update";
 
-                    mw.messageCenter.AddNotification(mData);
+                    mw.messageCenter.AddMessage(mData);
 
                     ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
                     ClientCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));

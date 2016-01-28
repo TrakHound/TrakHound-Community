@@ -20,7 +20,7 @@ namespace TrakHound_Client
 
             Version version = assembly.GetName().Version;
 
-            splsh.Version = "Version " + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
+            splsh.Version = version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
 
             splash_TIMER = new System.Timers.Timer();
             splash_TIMER.Interval = 4000;

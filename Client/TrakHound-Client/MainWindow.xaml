@@ -25,6 +25,7 @@
         
         Loaded="Main_Window_Loaded"
         Closing="Main_Window_Closing"
+        Closed="Main_Window_Closed"
         
         Height="750"
         Width="1200"
@@ -65,7 +66,7 @@
 
             <Style x:Key="PageTabItem" TargetType="{x:Type controls:TH_TabItem}">
 
-                <Setter Property="FontSize" Value="10pt"/>
+                <Setter Property="FontSize" Value="0pt"/>
 
                 <Setter Property="Template">
                     <Setter.Value>
@@ -88,7 +89,7 @@
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID">
         <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">10</GridLength>
+            <GridLength x:Key="ShadowWidth">0</GridLength>
 
             <Color x:Key="inside">#22000000</Color>
             <GradientStopCollection x:Key="gradient">

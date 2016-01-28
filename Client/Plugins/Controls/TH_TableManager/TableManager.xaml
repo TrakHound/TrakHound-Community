@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="root_GRID" Background="{StaticResource Window_Background_Accent_Gradient}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -79,67 +79,51 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" MinWidth="200"/>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!--Device List-->
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <Border Grid.Column="0" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,0,1,0">
 
-                <TextBlock Text="Devices" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Light}"/>
+                    <TextBlock Text="Devices" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}" HorizontalAlignment="Center" Margin="0,10,0,0"/>
 
-                <ItemsControl Grid.Row="2" ItemsSource="{Binding DeviceList}" Margin="5,0">
-                    <ItemsControl.Resources>
-                        <Style TargetType="th_wpf:ListButton">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ItemsControl.Resources>
-                    <!--<ItemsControl.Resources>
-                        <Style TargetType="th_wpf:ListButton">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ItemsControl.Resources>-->
-                </ItemsControl>
+                    <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Light}"/>
 
-                <Grid Grid.Row="3" Background="#00000000" PreviewMouseDown="TableList_MouseDown"/>
+                    <ItemsControl Grid.Row="2" ItemsSource="{Binding DeviceList}" Margin="5,0">
+                        <ItemsControl.Resources>
+                            <Style TargetType="th_wpf:ListButton">
+                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ItemsControl.Resources>
+                    </ItemsControl>
 
-            </Grid>
+                    <Grid Grid.Row="3" Background="#00000000" PreviewMouseDown="TableList_MouseDown"/>
 
+                </Grid>
+
+            </Border>
+            
             <!--Table List-->
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                
-                <Grid.Style>
-                    <Style TargetType="Grid">
+            <Border Grid.Column="1" BorderBrush="{StaticResource Shade_Light}" BorderThickness="0,0,1,0">
+                <Border.Style>
+                    <Style TargetType="Border">
                         <Setter Property="Width" Value="0"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding TableListShown}" Value="true">
@@ -168,57 +152,51 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Grid.Style>
-                
-                <!--Header-->
-                <StackPanel>
+                </Border.Style>
 
-                    <TextBlock Grid.Row="0" Text="Tables" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <!--Seperator-->
-                    <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Light}"/>
+                    <!--Header-->
+                    <StackPanel>
 
-                </StackPanel>
-                
-                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                        <TextBlock Grid.Row="0" Text="Tables" FontSize="12pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                    <ItemsControl ItemsSource="{Binding TableList}" Margin="5,0">
-                        <ItemsControl.Resources>
-                            <Style TargetType="th_wpf:ListButton">
-                                <Setter Property="Foreground" Value="#fff"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ItemsControl.Resources>
-                        <!--<ItemsControl.Resources>
-                            <Style TargetType="th_wpf:ListButton">
-                                <Setter Property="Foreground" Value="#fff"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="#33ffffff"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="true">
-                                        <Setter Property="Background" Value="#33ffffff"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ItemsControl.Resources>-->
-                    </ItemsControl>
+                        <!--Seperator-->
+                        <Rectangle Grid.Row="1" Height="0.5" Margin="5,10" Fill="{StaticResource Shade_Light}"/>
 
-                </ScrollViewer>
-                
-            </Grid>
+                    </StackPanel>
 
+                    <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+
+                        <ItemsControl ItemsSource="{Binding TableList}" Margin="5,0">
+                            <ItemsControl.Resources>
+                                <Style TargetType="th_wpf:ListButton">
+                                    <Setter Property="Foreground" Value="#fff"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.Resources>
+                        </ItemsControl>
+
+                    </ScrollViewer>
+
+                </Grid>
+
+            </Border>
+               
             <!--Table View-->
-            <Grid Grid.Column="3">
+            <Grid Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
@@ -226,15 +204,7 @@
 
                 <!--Table Info-->
                 <Grid Margin="0,0,10,5">
-                    <!--<Grid.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#00000000" Offset="0"/>
-                            <GradientStop Color="#00000000" Offset="0.4"/>
-                            --><!--<GradientStop Color="#22000000" Offset="0.6"/>--><!--
-                            <GradientStop Color="#20000000" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Grid.Background>-->
-                    
+
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
@@ -356,24 +326,6 @@
 
                     </StackPanel>
                     
-                    <!--Info Refresh Button-->
-                    <!--<th_wpf:Button Grid.Row="2" Image="Resources/Refresh_01.png" ToolTip="Refresh Table Info"
-                                     Height="30" Width="30" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5,0"
-                                     Clicked="TableInfoRefresh_Button_Clicked" >
-                        <th_wpf:Button.Style>
-                            <Style TargetType="th_wpf:Button">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Height" Value="30"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="#33ffffff"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </th_wpf:Button.Style>
-                    </th_wpf:Button>-->
-
                 </Grid>
                 
                 <!--Loading Animation Wheel-->
@@ -445,9 +397,9 @@
                     </StackPanel>
         
                 </Grid>
-                
-                    <!--Table Data-->
-                    <DataGrid Grid.Row="1" ItemsSource="{Binding TableDataView}"
+
+                <!--Table Data-->
+                <DataGrid Grid.Row="1" ItemsSource="{Binding TableDataView}"
                             Background="{StaticResource Window_Background_Dark}"
                             Margin="0,0,10,10"
                             BorderBrush="#33000000" BorderThickness="1,0,1,1"
@@ -456,21 +408,22 @@
                             SelectionChanged="DataGrid_SelectionChanged"
                             >
 
-                        <DataGrid.Style>
-                            <Style TargetType="DataGrid">
-                                <Setter Property="Opacity" Value="1.0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding TableDataLoading}" Value="true">
-                                        <Setter Property="Opacity" Value="0.3"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.Style>
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid">
+                            <Setter Property="Opacity" Value="1.0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TableDataLoading}" Value="true">
+                                    <Setter Property="Opacity" Value="0.3"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding TableDataView}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
 
-                        <DataGrid.ColumnHeaderStyle>
-                            <Style TargetType="DataGridColumnHeader">
-                                <!--<Setter Property="Background" Value="#0052a3"/>-->
-                            <!--<Setter Property="Background" Value="#FF0062C3"/>-->
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
                             <Setter Property="Background">
                                 <Setter.Value>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -481,94 +434,153 @@
                                 </Setter.Value>
                             </Setter>
                             <Setter Property="MinHeight" Value="35"/>
-                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                <Setter Property="FontSize" Value="12"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-                                            <Border Background="{TemplateBinding Background}"
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                                        <Border Background="{TemplateBinding Background}"
+                                                            Margin="0"
+                                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                                            BorderThickness="0"
+                                                            >
+                                            <Grid>
+
+                                                <!--Content-->
+                                                <Border Name="bd" Padding="10,0">
+
+                                                    <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                                                </Border>
+                                                
+                                                <!--Gloss Effect-->
+                                                <Border>
+
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="4.5*"/>
+                                                            <RowDefinition Height="5.5*"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <Border>
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                                    <GradientStop Color="#30ffffff" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <Border Grid.Row="1">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#00ffffff" Offset="0"/>
+                                                                    <GradientStop Color="#33000000" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <!--<Border Grid.RowSpan="2">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                                    <GradientStop Color="#15000000" Offset="0"/>
+                                                                    <GradientStop Color="#10ffffff" Offset="0.4"/>
+                                                                    <GradientStop Color="#10ffffff" Offset="0.6"/>
+                                                                    <GradientStop Color="#15000000" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>-->
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </Grid>
+
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Panel.Background" Value="#33ffffff" TargetName="bd"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="#00000000" />
+                            <Setter Property="BorderBrush" Value="#33000000" />
+                            <Setter Property="BorderThickness" Value="0,0,0,0" />
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
+                            <Setter Property="MinHeight" Value="30"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                    <Setter Property="BorderBrush" Value="#00000000"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                    <Setter Property="BorderBrush" Value="#00000000"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Border Background="{TemplateBinding Background}"
                                                             Margin="0"
                                                             Padding="10,0"
                                                             BorderBrush="{TemplateBinding BorderBrush}" 
                                                             BorderThickness="0"
                                                             >
-                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </DataGrid.ColumnHeaderStyle>
+                                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsFocused" Value="false">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="true">
+                                    <Setter Property="Background" Value="#00000000"/>
+                                    <Setter Property="BorderBrush" Value="#00000000"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.CellStyle>
 
-                        <DataGrid.RowStyle>
-                            <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="#00000000" />
-                                <Setter Property="BorderBrush" Value="#33000000" />
-                                <Setter Property="BorderThickness" Value="0,0,0,0" />
-                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
-                                <Setter Property="MinHeight" Value="30"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                        <Setter Property="BorderBrush" Value="#00000000"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="true">
-                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                        <Setter Property="BorderBrush" Value="#00000000"/>
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.RowStyle>
-
-                        <DataGrid.CellStyle>
-                            <Style TargetType="DataGridCell">
-                                <Setter Property="BorderThickness" Value="0,0,0,0"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                            <Border Background="{TemplateBinding Background}"
-                                                            Margin="0"
-                                                            Padding="10,0"
-                                                            BorderBrush="{TemplateBinding BorderBrush}" 
-                                                            BorderThickness="0"
-                                                            >
-                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="IsFocused" Value="false">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="true">
-                                        <Setter Property="Background" Value="#00000000"/>
-                                        <Setter Property="BorderBrush" Value="#00000000"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.CellStyle>
-
-                    </DataGrid>
+                </DataGrid>
 
             </Grid>
 
             <!--No Table Selected Text-->
-            <Grid Grid.Column="3" Background="{StaticResource Window_Background}">
+            <Grid Grid.Column="2">
                 <Grid.Style>
                     <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding TableIsSelected}" Value="false">
-                                <Setter Property="Visibility" Value="Visible"/>
+                            <DataTrigger Binding="{Binding TableIsSelected}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding SelectedDevice}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Grid.Style>
 
-                <TextBlock  FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">          
+                <TextBlock  FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">          
                     No Table Selected <LineBreak/>
                     Select a table to the left to view content
                 </TextBlock>
@@ -576,7 +588,7 @@
             </Grid>
 
             <!--No Device Selected Text-->
-            <Grid Grid.Column="3" Background="{StaticResource Window_Background}">
+            <Grid Grid.Column="2">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -588,7 +600,7 @@
                     </Style>
                 </Grid.Style>
 
-                <TextBlock  FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">           
+                <TextBlock  FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">           
                     No Device Selected <LineBreak/>
                     Select a device to the left
                 </TextBlock>
@@ -598,7 +610,7 @@
         </Grid>
 
         <!--No Devices-->
-        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
+        <Grid Grid.Row="1" Background="{Binding Background, ElementName=root_GRID}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -618,7 +630,7 @@
         </Grid>
 
         <!--Loading Devices-->
-        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
+        <Grid Grid.Row="1" Background="{Binding Background, ElementName=root_GRID}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -643,7 +655,7 @@
         </Grid>
 
         <!--Not Logged in Panel-->
-        <Grid Grid.Row="1" Background="{StaticResource Accent_Normal}">
+        <Grid Grid.Row="1" Background="{Binding Background, ElementName=root_GRID}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>

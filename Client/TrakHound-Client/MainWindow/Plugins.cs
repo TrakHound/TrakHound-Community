@@ -29,8 +29,6 @@ namespace TrakHound_Client
         {
             EnabledPlugins = new List<PluginConfiguration>();
 
-            //Splash_UpdateStatus("...Loading Plugins");
-
             Plugins_Find();
 
             Plugins_Load();
@@ -146,11 +144,12 @@ namespace TrakHound_Client
                         catch (Exception ex)
                         {
                             Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                            mData.title = "PlugIn Error";
-                            mData.text = "Error during plugin intialization";
-                            mData.additionalInfo = ex.Message;
+                            mData.Title = "PlugIn Error";
+                            mData.Text = "Error during plugin intialization";
+                            mData.AdditionalInfo = ex.Message;
+                            mData.Type = Controls.Message_Center.MessageType.error;
 
-                            messageCenter.AddError(mData);
+                            messageCenter.AddMessage(mData);
                         }
                     }
 
@@ -197,11 +196,12 @@ namespace TrakHound_Client
             catch (Exception ex)
             {
                 Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                mData.title = "Plugin Load Error";
-                mData.text = "Error loading Plugins from " + Path;
-                mData.additionalInfo = ex.Message;
+                mData.Title = "Plugin Load Error";
+                mData.Text = "Error loading Plugins from " + Path;
+                mData.AdditionalInfo = ex.Message;
+                mData.Type = Controls.Message_Center.MessageType.error;
 
-                messageCenter.AddError(mData);
+                messageCenter.AddMessage(mData);
             }
         }
 
@@ -282,11 +282,12 @@ namespace TrakHound_Client
                                 catch (Exception ex)
                                 {
                                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                                    mData.title = "Plugin Error";
-                                    mData.text = "Error during plugin load";
-                                    mData.additionalInfo = ex.Message;
+                                    mData.Title = "Plugin Error";
+                                    mData.Text = "Error during plugin load";
+                                    mData.AdditionalInfo = ex.Message;
+                                    mData.Type = Controls.Message_Center.MessageType.error;
 
-                                    messageCenter.AddError(mData);
+                                    messageCenter.AddMessage(mData);
                                 }
                             }
                         }

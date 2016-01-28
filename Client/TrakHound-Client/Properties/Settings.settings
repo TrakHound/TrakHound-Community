@@ -2,10 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TrakHound_Client.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="PagePlugIn_Configurations" Type="TH_PlugIns_Client.PlugInConfiguration" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="GlobalPlugIn_Configurations" Type="TH_PlugIns_Client.PlugInConfiguration" Scope="User">
+    <Setting Name="Plugin_Configurations" Type="System.Collections.Generic.List&lt;TH_Plugins_Client.PluginConfiguration&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Usage_MemoryUsed_Value" Type="System.Int64" Scope="User">
@@ -19,6 +16,9 @@
     </Setting>
     <Setting Name="UpdateBehavior" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="FirstOpen" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

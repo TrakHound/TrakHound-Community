@@ -95,12 +95,12 @@ namespace TrakHound_Client.Pages.Options.Updates
 
                     Console.WriteLine("Update Available : " + latestVersion.ToString());
 
-                    // Add Notification to Message Center
-                    Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.text = "Reopen TrakHound to apply update";
+                    //// Add Notification to Message Center
+                    //Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
+                    //mData.Title = "Version " + latestVersion.ToString() + " is Available";
+                    //mData.Text = "Reopen TrakHound to apply update";
 
-                    mw.messageCenter.AddNotification(mData);
+                    //mw.messageCenter.AddMessage(mData);
 
                     UpdateCheckResult = "Version " + latestVersion.ToString() + " is available";
                     UpdateCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));
@@ -168,10 +168,10 @@ namespace TrakHound_Client.Pages.Options.Updates
 
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.text = "Click to Update";
+                    mData.Title = "Version " + latestVersion.ToString() + " is Available";
+                    mData.Text = "Click to Update";
 
-                    mw.messageCenter.AddNotification(mData);
+                    mw.messageCenter.AddMessage(mData);
 
 
                     UpdateCheckResult = "Version " + latestVersion.ToString() + " is available";

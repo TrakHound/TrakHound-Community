@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Settings>
+  <Agent />
+  <Databases />
+  <Description>
+    <Description>MTConnect Demo Agent</Description>
+    <Device_Type>CNC</Device_Type>
+    <Manufacturer>Mazak</Manufacturer>
+    <Device_ID>01</Device_ID>
+    <Model>Integrex i-3000</Model>
+    <Serial>05631975a11</Serial>
+    <Controller>Mazatrol</Controller>
+    <Company />
+    <Location />
+  </Description>
+  <File_Locations>
+    <Log_File_Path>Logs</Log_File_Path>
+    <Manufacturer_Logo_Path>PCZXLQGCKRJFNCAZUYHZ</Manufacturer_Logo_Path>
+    <Image_Path>QKSFQHTYQRZWWXSAVJFY</Image_Path>
+  </File_Locations>
+  <InstanceTable>
+    <DataItems>
+      <Conditions>false</Conditions>
+      <Events>true</Events>
+      <Samples>false</Samples>
+      <Omit />
+    </DataItems>
+  </InstanceTable>
+  <GeneratedData>
+    <SnapShotData />
+    <GeneratedEvents>
+      <UploadToMySQL>true</UploadToMySQL>
+    </GeneratedEvents>
+  </GeneratedData>
+  <ShiftData>
+    <Shifts />
+    <GeneratedEvents />
+  </ShiftData>
+  <Cycles />
+  <OEE>
+    <Availability />
+  </OEE>
+  <ClientUpdateId>MXAGRDHIORODPNVZYTYU</ClientUpdateId>
+  <UniqueId>GWJUPBCHOYNQTREKUGFW</UniqueId>
+  <ClientEnabled>True</ClientEnabled>
+  <Databases_Client>
+    <SQL id="00">
+      <Database>local_test_01</Database>
+      <Server>192.168.1.10</Server>
+      <Port>1433</Port>
+      <Username>trakhoundtest</Username>
+      <Password>ethan123</Password>
+    </SQL>
+    <MySQL id="00">
+      <UseTrakHoundCloudServer>True</UseTrakHoundCloudServer>
+      <Database>feenuxco_local_test</Database>
+      <Server>localhost</Server>
+      <Port />
+      <Username>feenuxco_reader</Username>
+      <Password>#reader</Password>
+      <PHP_Server>www.feenux.com</PHP_Server>
+      <PHP_Directory>php</PHP_Directory>
+      <UsePHP>True</UsePHP>
+    </MySQL>
+  </Databases_Client>
+</Settings>

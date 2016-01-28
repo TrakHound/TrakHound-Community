@@ -179,15 +179,15 @@ namespace TrakHound_Client
                 if (Result == null)
                 {
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.title = "Device Configuration Error";
-                    mData.text = "Could not load device configuration from " + configPath;
-                    mData.additionalInfo = "Check to make sure the file exists at "
+                    mData.Title = "Device Configuration Error";
+                    mData.Text = "Could not load device configuration from " + configPath;
+                    mData.AdditionalInfo = "Check to make sure the file exists at "
                         + configPath
                         + " and that the format is correct and restart TrakHound Client."
                         + Environment.NewLine
                         + Environment.NewLine
                         + "For more information please contact us at info@TrakHound.org";
-                    if (messageCenter != null) messageCenter.AddError(mData);
+                    if (messageCenter != null) messageCenter.AddMessage(mData);
                 }
             }
 
@@ -225,7 +225,6 @@ namespace TrakHound_Client
 
         #region "Devices Monitor"
 
-        //bool stopped = false;
         Thread devicesmonitor_THREAD;
         ManualResetEvent stop = null;
 

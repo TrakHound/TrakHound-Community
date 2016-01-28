@@ -17,7 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.Configuration;
 using System.Collections.ObjectModel;
 
 namespace TrakHound_Client.Controls.Message_Center
@@ -107,105 +107,52 @@ namespace TrakHound_Client.Controls.Message_Center
 
         const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
 
-        public void AddNotification(Message_Data data)
+        public void AddMessage(Message_Data data)
         {
-            this.Dispatcher.BeginInvoke(new Action<Message_Data>(AddNotification_GUI), Priority, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<Message_Data>(AddMessage_GUI), Priority, new object[] { data });
         }
 
-        void AddNotification_GUI(Message_Data data)
-        {
-             Message m = new Message();
-            m.Message_Type = Message.MessageType.notification;
-            m.Message_Title = data.title;
-            m.Message_Text = data.text;
-            m.Message_AdditionalInfo = data.additionalInfo;
-            m.Time = DateTime.Now.ToShortTimeString();
-            m.CloseClicked += Notification_CloseClicked;        
-            Notifications.Add(m);
+        void AddMessage_GUI(Message_Data data)
+        {        
+            Message m = new Message(data);
+            m.Clicked += Message_Clicked;
+            m.CloseClicked += Message_CloseClicked;
+
+            switch (data.Type)
+            {
+                case MessageType.notification:
+                    Notifications.Add(m);
+                    break;
+                case MessageType.devicealert:
+                    DeviceAlerts.Add(m);
+                    break;
+                case MessageType.warning:
+                    Warnings.Add(m);
+                    break;
+                case MessageType.error:
+                    Errors.Add(m);
+                    break;
+            }
+
             m.Shown = true;
 
             CheckForMessages();
         }
 
-        public void AddDeviceAlert(Message_Data data)
+        void Message_Clicked(Message message)
         {
-            this.Dispatcher.BeginInvoke(new Action<Message_Data>(AddDeviceAlert_GUI), Priority, new object[] { data });
+            message.Data.Read = true;
+
+            if (message.Data != null)
+            {
+                if (message.Data.Action != null)
+                {
+                    message.Data.Action(message.Data.ActionParameter);
+                }
+            }
         }
 
-        void AddDeviceAlert_GUI(Message_Data data)
-        {
-            Message m = new Message();
-            m.Message_Type = Message.MessageType.devicealert;
-            m.Message_Title = data.title;
-            m.Message_Text = data.text;
-            m.Message_AdditionalInfo = data.additionalInfo;
-            m.Time = DateTime.Now.ToShortTimeString();
-            m.CloseClicked += DeviceAlert_CloseClicked;
-            DeviceAlerts.Add(m);
-            m.Shown = true;
-
-            CheckForMessages();
-        }
-
-        public void AddWarning(Message_Data data)
-        {
-            this.Dispatcher.BeginInvoke(new Action<Message_Data>(AddWarning_GUI), Priority, new object[] { data });
-        }
-
-        void AddWarning_GUI(Message_Data data)
-        {
-            Message m = new Message();
-            m.Message_Type = Message.MessageType.warning;
-            m.Message_Title = data.title;
-            m.Message_Text = data.text;
-            m.Message_AdditionalInfo = data.additionalInfo;
-            m.Time = DateTime.Now.ToShortTimeString();
-            m.CloseClicked += Warning_CloseClicked;
-            Warnings.Add(m);
-            m.Shown = true;
-
-            CheckForMessages();
-        }
-
-        public void AddError(Message_Data data)
-        {
-            this.Dispatcher.BeginInvoke(new Action<Message_Data>(AddError_GUI), Priority, new object[] { data });
-        }
-
-        void AddError_GUI(Message_Data data)
-        {
-            Message m = new Message();
-            m.Message_Type = Message.MessageType.error;
-            m.Message_Title = data.title;
-            m.Message_Text = data.text;
-            m.Message_AdditionalInfo = data.additionalInfo;
-            m.Time = DateTime.Now.ToShortTimeString();
-            m.CloseClicked += Error_CloseClicked;
-            Errors.Add(m);
-            m.Shown = true;
-
-            CheckForMessages();
-        }
-
-        void Notification_CloseClicked(Message message)
-        {
-            message.Shown = false;
-            CheckForMessages();
-        }
-
-        void DeviceAlert_CloseClicked(Message message)
-        {
-            message.Shown = false;
-            CheckForMessages();
-        }
-
-        void Warning_CloseClicked(Message message)
-        {
-            message.Shown = false;
-            CheckForMessages();
-        }
-
-        void Error_CloseClicked(Message message)
+        void Message_CloseClicked(Message message)
         {
             message.Shown = false;
             CheckForMessages();
@@ -319,21 +266,6 @@ namespace TrakHound_Client.Controls.Message_Center
 
         }
 
-        //private void ClearAll_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    //Notifications.Clear();
-        //    //DeviceAlerts.Clear();
-        //    //Warnings.Clear();
-        //    //Errors.Clear();
-
-        //    foreach (Message msg in Notifications) msg.Shown = false;
-        //    foreach (Message msg in DeviceAlerts) msg.Shown = false;
-        //    foreach (Message msg in Warnings) msg.Shown = false;
-        //    foreach (Message msg in Errors) msg.Shown = false;
-
-        //    CheckForMessages();
-        //}
-
         private void ClearAll_Clicked(TH_WPF.Button bt)
         {
             foreach (Message msg in Notifications) msg.Shown = false;
@@ -346,10 +278,23 @@ namespace TrakHound_Client.Controls.Message_Center
 
     }
 
+    public enum MessageType
+    {
+        notification, devicealert, warning, error
+    }
+
+    [SettingsSerializeAs(SettingsSerializeAs.Xml)]
     public class Message_Data
     {
-        public string title { get; set; }
-        public string text { get; set; }
-        public string additionalInfo { get; set; }
+        public string Id { get; set; }
+        public MessageType Type { get; set; }
+        public string Title { get; set; }
+        public string Text { get; set; }
+        public string AdditionalInfo { get; set; }
+        public BitmapImage Image { get; set; }
+        public System.Action<object> Action { get; set; }
+        public object ActionParameter { get; set; }
+        public bool Read { get; set; }
+        public DateTime AddedTime { get; set; }
     }
 }
