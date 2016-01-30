@@ -23,6 +23,9 @@ namespace TH_UserManagement.Management.Local
 
             string tableName = CreateTableName(userConfig);
 
+            configuration.TableName = tableName;
+            XML_Functions.SetInnerText(configuration.ConfigurationXML, "TableName", tableName);
+
             string uniqueId = String_Functions.RandomString(20);
 
             configuration.UniqueId = uniqueId;
@@ -182,7 +185,6 @@ namespace TH_UserManagement.Management.Local
 
             return true;
         }
-
 
         static string CreateTableName(UserConfiguration userConfig)
         {

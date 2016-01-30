@@ -56,7 +56,9 @@ namespace TrakHound_Client
                 List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
                 if (configurations != null)
                 {
-                    foreach (Configuration config in configurations)
+                    var orderedConfigs = configurations.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
+
+                    foreach (Configuration config in orderedConfigs)
                     {
                         if (config.ClientEnabled)
                         {

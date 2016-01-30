@@ -35,7 +35,7 @@ namespace TH_UserManagement.Management.Remote
                 configuration.UniqueId = uniqueId;
 
                 // Set new Unique Id
-                XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
+                //XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 
                 DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
 

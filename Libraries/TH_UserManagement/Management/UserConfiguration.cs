@@ -77,21 +77,28 @@ namespace TH_UserManagement.Management
 
             if (System.IO.File.Exists(filepath))
             {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(filepath);
-
-                result = new UserManagementSettings();
-
-                foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+                try
                 {
-                    switch (node.Name.ToLower())
-                    {
-                        //case "users": result.Users = Process_Users(node); break;
-                        case "databases": result.Databases = Process_Databases(node); break;
-                    }
-                }
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(filepath);
 
-                Logger.Log("User Configuration Successfully Read From : " + filepath);
+                    result = new UserManagementSettings();
+
+                    foreach (XmlNode node in doc.DocumentElement.ChildNodes)
+                    {
+                        switch (node.Name.ToLower())
+                        {
+                            //case "users": result.Users = Process_Users(node); break;
+                            case "databases": result.Databases = Process_Databases(node); break;
+                        }
+                    }
+
+                    Logger.Log("User Configuration Successfully Read From : " + filepath);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Error During User Configuration Read :: " + filepath);
+                }
             }
 
             return result;

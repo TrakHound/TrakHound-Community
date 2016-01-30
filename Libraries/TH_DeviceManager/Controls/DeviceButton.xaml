@@ -9,7 +9,7 @@
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
-             d:DesignWidth="300" Height="100"          
+             d:DesignWidth="300" MinHeight="100"          
              >
 
     <UserControl.Resources>
@@ -60,6 +60,18 @@
             
 
             <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
 
                 <TextBlock Text="{Binding Description}" FontSize="12pt" Margin="0,0,0,5" TextWrapping="Wrap"/>
                 

@@ -116,6 +116,14 @@ namespace TH_UserManagement.Management
         {
             bool result = false;
 
+
+            //string tableName = CreateTableName(userConfig);
+
+            //// Set new Unique Id
+            //string uniqueId = String_Functions.RandomString(20);
+            //configuration.UniqueId = uniqueId;
+            //XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
+
             if (userDatabaseSettings == null)
             {
                 result = Remote.Configurations.Add(userConfig, configuration);
@@ -127,6 +135,12 @@ namespace TH_UserManagement.Management
 
             return result;
         }
+
+        //static string CreateTableName(UserConfiguration userConfig)
+        //{
+        //    return userConfig.username + "_" + String_Functions.RandomString(20);
+        //}
+
 
         public static string[] GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
         {

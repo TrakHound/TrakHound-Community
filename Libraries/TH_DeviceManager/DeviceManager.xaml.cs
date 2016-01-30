@@ -85,6 +85,7 @@ namespace TH_DeviceManager
                 LoadDevices();
 
                 AddDevice_Initialize();
+                CopyDevice_Initialize();
             }
         }
 
@@ -326,9 +327,6 @@ namespace TH_DeviceManager
         {
             List<Configuration> configs = new List<Configuration>();
 
-            if (userDatabaseSettings != null) Console.WriteLine("DeviceManager.LoadDevices_Worker() :: userDatabaseSettings != null");
-            else Console.WriteLine("DeviceManager.LoadDevices_Worker() :: userDatabaseSettings = null");
-
             if (currentuser != null)
             {
                 configs = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
@@ -348,10 +346,10 @@ namespace TH_DeviceManager
 
             if (configs != null)
             {
-                configs.OrderBy(x => x.Index);
+               var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
 
                 // Create DevicesList based on Configurations
-                foreach (Configuration config in configs)
+               foreach (Configuration config in orderedConfigs)
                 {
                     this.Dispatcher.BeginInvoke(new Action<Configuration>(AddDeviceButton), background, new object[] { config });
                 }
@@ -588,16 +586,16 @@ namespace TH_DeviceManager
             AddDevice();
         }
 
-        Pages.AddDevice.Page page;
+        Pages.AddDevice.Page addPage;
 
         void AddDevice_Initialize()
         {
-            page = new Pages.AddDevice.Page();
-            page.deviceManager = this;
-            page.DeviceAdded += page_DeviceAdded;
-            page.currentuser = CurrentUser;
-            page.userDatabaseSettings = userDatabaseSettings;
-            page.LoadCatalog();
+            addPage = new Pages.AddDevice.Page();
+            addPage.deviceManager = this;
+            addPage.DeviceAdded += page_DeviceAdded;
+            addPage.currentuser = CurrentUser;
+            addPage.userDatabaseSettings = userDatabaseSettings;
+            addPage.LoadCatalog();
         }
 
         public void AddDevice()
@@ -609,10 +607,10 @@ namespace TH_DeviceManager
             {
                 if (CurrentPage.GetType() != typeof(Pages.AddDevice.Page))
                 {
-                    CurrentPage = page;
+                    CurrentPage = addPage;
                 }
             }
-            else CurrentPage = page;
+            else CurrentPage = addPage;
         }
 
         void page_DeviceAdded(Configuration config)
@@ -624,49 +622,78 @@ namespace TH_DeviceManager
 
         #region "Copy Device"
 
-        Thread CopyDevice_THREAD;
+        Pages.CopyDevice.Page copyPage;
 
-        void CopyDevice(Configuration config)
+        void CopyDevice_Initialize()
         {
-            bool? result = TH_WPF.MessageBox.Show("Create a copy of this device?", "Copy Device", TH_WPF.MessageBoxButtons.YesNo);
-            if (result == true)
-            {
-                if (CopyDevice_THREAD != null) CopyDevice_THREAD.Abort();
-
-                CopyDevice_THREAD = new Thread(new ParameterizedThreadStart(CopyDevice_Worker));
-                CopyDevice_THREAD.Start(config);
-            }
+            copyPage = new Pages.CopyDevice.Page();
+            //copyPage.deviceManager = this;
+            //copyPage.DeviceAdded += page_DeviceAdded;
+            copyPage.currentuser = CurrentUser;
+            copyPage.userDatabaseSettings = userDatabaseSettings;
+            //copyPage.LoadCatalog();
         }
 
-        void CopyDevice_Worker(object o)
+        public void CopyDevice(Configuration config)
         {
-            bool success = false;
+            PageListShown = false;
+            ToolbarShown = false;
 
-            if (o != null)
+            copyPage.LoadConfiguration(config);
+
+            if (CurrentPage != null)
             {
-                Configuration config = (Configuration)o;
-
-                if (currentuser != null)
+                if (CurrentPage.GetType() != typeof(Pages.CopyDevice.Page))
                 {
-                    success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+                    CurrentPage = copyPage;
                 }
-                else
-                {
-                    success = false;
-                }
-
-                this.Dispatcher.BeginInvoke(new Action<bool, Configuration>(CopyDevice_GUI), priority, new object[] { success, config });
             }
+            else CurrentPage = copyPage;
         }
 
-        void CopyDevice_GUI(bool success, Configuration config)
-        {
-            if (success) AddDeviceButton(config);
-            else
-            {
-                TH_WPF.MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButtons.Ok);
-            }
-        }
+        //Thread CopyDevice_THREAD;
+
+        //void CopyDevice(Configuration config)
+        //{
+        //    bool? result = TH_WPF.MessageBox.Show("Create a copy of this device?", "Copy Device", TH_WPF.MessageBoxButtons.YesNo);
+        //    if (result == true)
+        //    {
+        //        if (CopyDevice_THREAD != null) CopyDevice_THREAD.Abort();
+
+        //        CopyDevice_THREAD = new Thread(new ParameterizedThreadStart(CopyDevice_Worker));
+        //        CopyDevice_THREAD.Start(config);
+        //    }
+        //}
+
+        //void CopyDevice_Worker(object o)
+        //{
+        //    bool success = false;
+
+        //    if (o != null)
+        //    {
+        //        Configuration config = (Configuration)o;
+
+        //        if (currentuser != null)
+        //        {
+        //            success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+        //        }
+        //        else
+        //        {
+        //            success = false;
+        //        }
+
+        //        this.Dispatcher.BeginInvoke(new Action<bool, Configuration>(CopyDevice_GUI), priority, new object[] { success, config });
+        //    }
+        //}
+
+        //void CopyDevice_GUI(bool success, Configuration config)
+        //{
+        //    if (success) AddDeviceButton(config);
+        //    else
+        //    {
+        //        TH_WPF.MessageBox.Show("Error during Device Copy. Please try again", "Device Copy Error", MessageBoxButtons.Ok);
+        //    }
+        //}
 
         #endregion
 
@@ -834,6 +861,7 @@ namespace TH_DeviceManager
             if (bt.Config != null)
             {
                 CopyDevice(bt.Config);
+                //CopyDevice(bt.Config);
             }
 
             db_Clicked(bt);
@@ -887,8 +915,21 @@ namespace TH_DeviceManager
                 // Reset Update ID
                 if (info.success)
                 {
-                    if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
-                    else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
+                    if (ManagerType == DeviceManagerType.Client)
+                    {
+                        var updateId = String_Functions.RandomString(20);
+                        info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", updateId, info.tablename, userDatabaseSettings);
+                        info.bt.Config.ClientUpdateId = updateId;
+                        XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ClientUpdateId", updateId);
+                    }
+                    else if (ManagerType == DeviceManagerType.Server)
+                    {
+                        var updateId = String_Functions.RandomString(20);
+                        info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", updateId, info.tablename, userDatabaseSettings);
+                        info.bt.Config.ClientUpdateId = updateId;
+                        XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ServerUpdateId", updateId);
+                        //info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
+                    }
                 }
 
                 this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), priority, new object[] { info });
@@ -901,8 +942,16 @@ namespace TH_DeviceManager
             {
                 if (info.success)
                 {
-                    if (ManagerType == DeviceManagerType.Client) info.bt.Config.ClientEnabled = true;
-                    if (ManagerType == DeviceManagerType.Server) info.bt.Config.ServerEnabled = true;
+                    if (ManagerType == DeviceManagerType.Client)
+                    {
+                        info.bt.Config.ClientEnabled = true;
+                        XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ClientEnabled", "true");
+                    }
+                    else if (ManagerType == DeviceManagerType.Server)
+                    {
+                        info.bt.Config.ServerEnabled = true;
+                        XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ServerEnabled", "true");
+                    }
                     info.bt.DeviceEnabled = true;
                 }
 
@@ -951,8 +1000,16 @@ namespace TH_DeviceManager
             {
                 if (info.success && info.bt != null)
                 {
-                    if (ManagerType == DeviceManagerType.Client) info.bt.Config.ClientEnabled = false;
-                    if (ManagerType == DeviceManagerType.Server) info.bt.Config.ServerEnabled = false;
+                    if (ManagerType == DeviceManagerType.Client)
+                    {
+                        info.bt.Config.ClientEnabled = false;
+                        XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ClientEnabled", "false");
+                    }
+                    else if (ManagerType == DeviceManagerType.Server)
+                    {
+                        info.bt.Config.ServerEnabled = false;
+                        XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ServerEnabled", "false");
+                    }
                     info.bt.DeviceEnabled = false;
                 }
 
@@ -1001,6 +1058,15 @@ namespace TH_DeviceManager
 
         void SelectDevice(Configuration config)
         {
+            //if (SaveNeeded)
+            //{
+            //    bool? save = TH_WPF.MessageBox.Show("Do you want to Save changes?", "Save Changed", MessageBoxButtons.YesNo);
+            //    if (save == true)
+            //    {
+
+            //    }
+            //}
+
             if (config != null)
             {
                 DeviceLoading = true;

@@ -56,10 +56,6 @@ namespace TH_InstanceTable.ConfigurationPage
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_InstanceTable;component/Resources/Hourglass_01.png"))));
 
 
-        //public string PageName { get { return "Instance Table"; } }
-
-        //public ImageSource Image { get { return null; } }
-
         public event SettingChanged_Handler SettingChanged;
 
         public void LoadConfiguration(DataTable dt)
@@ -377,71 +373,80 @@ namespace TH_InstanceTable.ConfigurationPage
 
         void AddConditionItem(DataItem dataItem)
         {
-            Controls.CheckBox chk = new Controls.CheckBox();
+            if (ConditionItems.ToList().Find(x => x.id == dataItem.id) == null)
+            {
+                Controls.CheckBox chk = new Controls.CheckBox();
 
-            // Set text
-            if (dataItem.name == null) chk.Content = dataItem.id;
-            else chk.Content = dataItem.id + " : " + dataItem.name;
+                // Set text
+                if (dataItem.name == null) chk.Content = dataItem.id;
+                else chk.Content = dataItem.id + " : " + dataItem.name;
 
-            chk.id = dataItem.id;
-            chk.name = dataItem.name;
+                chk.id = dataItem.id;
+                chk.name = dataItem.name;
 
-            // Set Checked based on whether it is found in 'Omit' list
-            string prefix = "/InstanceTable/DataItems/Omit/";
-            string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
-            if (s != null) chk.IsChecked = false;
-            else chk.IsChecked = true;
+                // Set Checked based on whether it is found in 'Omit' list
+                string prefix = "/InstanceTable/DataItems/Omit/";
+                string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
+                if (s != null) chk.IsChecked = false;
+                else chk.IsChecked = true;
 
-            chk.Checked += Omit_Checked;
-            chk.Unchecked += Omit_Unchecked;
+                chk.Checked += Omit_Checked;
+                chk.Unchecked += Omit_Unchecked;
 
-            ConditionItems.Add(chk);
+                ConditionItems.Add(chk);
+            }
         }
 
         void AddEventItem(DataItem dataItem)
         {
-            Controls.CheckBox chk = new Controls.CheckBox();
-            
-            // Set text
-            if (dataItem.name == null) chk.Content = dataItem.id;
-            else chk.Content = dataItem.id + " : " + dataItem.name;
+            if (EventItems.ToList().Find(x => x.id == dataItem.id) == null)
+             {
+                 Controls.CheckBox chk = new Controls.CheckBox();
 
-            chk.id = dataItem.id;
-            chk.name = dataItem.name;
+                 // Set text
+                 if (dataItem.name == null) chk.Content = dataItem.id;
+                 else chk.Content = dataItem.id + " : " + dataItem.name;
 
-            // Set Checked based on whether it is found in 'Omit' list
-            string prefix = "/InstanceTable/DataItems/Omit/";
-            string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
-            if (s != null) chk.IsChecked = false;
-            else chk.IsChecked = true;
+                 chk.id = dataItem.id;
+                 chk.name = dataItem.name;
 
-            chk.Checked += Omit_Checked;
-            chk.Unchecked += Omit_Unchecked;
+                 // Set Checked based on whether it is found in 'Omit' list
+                 string prefix = "/InstanceTable/DataItems/Omit/";
+                 string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
+                 if (s != null) chk.IsChecked = false;
+                 else chk.IsChecked = true;
 
-            EventItems.Add(chk);
+                 chk.Checked += Omit_Checked;
+                 chk.Unchecked += Omit_Unchecked;
+
+                 EventItems.Add(chk);
+             }
         }
 
         void AddSampleItem(DataItem dataItem)
         {
-            Controls.CheckBox chk = new Controls.CheckBox();
+            if (SampleItems.ToList().Find(x => x.id == dataItem.id) == null)
+            {
+                Controls.CheckBox chk = new Controls.CheckBox();
 
-            // Set text
-            if (dataItem.name == null) chk.Content = dataItem.id;
-            else chk.Content = dataItem.id + " : " + dataItem.name;
+                // Set text
+                if (dataItem.name == null) chk.Content = dataItem.id;
+                else chk.Content = dataItem.id + " : " + dataItem.name;
 
-            chk.id = dataItem.id;
-            chk.name = dataItem.name;
+                chk.id = dataItem.id;
+                chk.name = dataItem.name;
 
-            // Set Checked based on whether it is found in 'Omit' list
-            string prefix = "/InstanceTable/DataItems/Omit/";
-            string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
-            if (s != null) chk.IsChecked = false;
-            else chk.IsChecked = true;
+                // Set Checked based on whether it is found in 'Omit' list
+                string prefix = "/InstanceTable/DataItems/Omit/";
+                string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
+                if (s != null) chk.IsChecked = false;
+                else chk.IsChecked = true;
 
-            chk.Checked += Omit_Checked;
-            chk.Unchecked += Omit_Unchecked;
+                chk.Checked += Omit_Checked;
+                chk.Unchecked += Omit_Unchecked;
 
-            SampleItems.Add(chk);
+                SampleItems.Add(chk);
+            }
         }
 
 

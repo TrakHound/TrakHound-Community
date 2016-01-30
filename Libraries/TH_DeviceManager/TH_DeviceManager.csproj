@@ -62,6 +62,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\CopyDevice\Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Databases\Controls\DatabaseItemContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -97,6 +101,9 @@
       <DependentUpon>SharedItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\AddShare\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CopyDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Databases\Controls\DatabaseItemContainer.xaml.cs">

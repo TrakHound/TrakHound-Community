@@ -76,6 +76,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\bin\Debug\Newtonsoft.Js
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\AddDevice\Controls\SharedItem.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\AddShare\Page.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\CopyDevice\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Controls\PageItem.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Agent\Controls\MessageItem.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager.baml
@@ -84,6 +85,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Descrip
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\General\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\AddDevice\Controls\SharedItem.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\AddShare\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\CopyDevice\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Databases\Controls\DatabaseItemContainer.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Controls\DeviceButton.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Controls\PageItem.g.cs
