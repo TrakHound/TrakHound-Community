@@ -282,6 +282,7 @@ namespace TrakHound_Client
 
         public void DeviceManager_Open()
         {
+            devicemanager.UserDatabaseSettings = UserDatabaseSettings;
             AddPageAsTab(devicemanager, "Device Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
         }
 

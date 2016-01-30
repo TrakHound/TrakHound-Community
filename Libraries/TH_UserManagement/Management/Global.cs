@@ -412,7 +412,7 @@ namespace TH_UserManagement.Management
             }
             else
             {
-                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
+                result = Local.Images.UploadImage(localpath);
             }
 
             return result;
@@ -428,7 +428,7 @@ namespace TH_UserManagement.Management
             }
             else
             {
-                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
+                result = Local.Images.GetImage(filename);
             }
 
             return result;
@@ -496,16 +496,17 @@ namespace TH_UserManagement.Management
         {
             bool result = false;
 
-            result = Remote.ProfileImages.UploadProfileImage(filename, localpath);
+            //result = Remote.ProfileImages.UploadProfileImage(filename, localpath);
 
-            //if (userDatabaseSettings == null)
-            //{
-            //    result = Remote.ProfileImages.UploadProfileImage(filename, localpath);
-            //}
-            //else
-            //{
-            //    //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
-            //}
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.ProfileImages.UploadProfileImage(filename, localpath);
+            }
+            else
+            {
+                result = Local.Images.UploadImage(filename, localpath);
+                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
+            }
 
             return result;
         }
@@ -515,16 +516,17 @@ namespace TH_UserManagement.Management
         {
             System.Drawing.Image result = null;
 
-            result = Remote.ProfileImages.GetProfileImage(userConfig);
+            //result = Remote.ProfileImages.GetProfileImage(userConfig);
 
-            //if (userDatabaseSettings == null)
-            //{
-            //    result = Remote.ProfileImages.GetProfileImage(userConfig);
-            //}
-            //else
-            //{
-            //    //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
-            //}
+            if (userDatabaseSettings == null)
+            {
+                result = Remote.ProfileImages.GetProfileImage(userConfig);
+            }
+            else
+            {
+                result = Local.ProfileImages.GetProfileImage(userConfig);
+                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
+            }
 
             return result;
         }

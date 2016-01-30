@@ -107,6 +107,8 @@ namespace TH_DeviceManager
             { 
                 SetValue(UserDatabaseSettingsProperty, value);
                 userDatabaseSettings = value;
+
+                if (descriptionPage != null) descriptionPage.userDatabaseSettings = userDatabaseSettings;
             }
         }
 
@@ -1182,6 +1184,8 @@ namespace TH_DeviceManager
 
         int selectedPageIndex = 0;
 
+        Pages.Description.Page descriptionPage;
+
         void InitializePages(DeviceManagerType type)
         {
             PageList.Clear();
@@ -1191,7 +1195,9 @@ namespace TH_DeviceManager
             ConfigurationPages = new List<ConfigurationPage>();
 
             //ConfigurationPages.Add(new Pages.General.Page());
-            ConfigurationPages.Add(new Pages.Description.Page());
+            descriptionPage = new Pages.Description.Page();
+            //description.userDatabaseSettings = UserDatabaseSettings;
+            ConfigurationPages.Add(descriptionPage);
 
             // Agent
             if (type == DeviceManagerType.Server || useTrakHoundCloud) ConfigurationPages.Add(new Pages.Agent.Page());

@@ -48,6 +48,7 @@
     <Compile Include="Controls\MyAccountPage.xaml.cs">
       <DependentUpon>MyAccountPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Management\Local\Images.cs" />
     <Compile Include="Management\UserConfiguration.cs" />
     <Compile Include="Management\Global.cs" />
     <Compile Include="Management\Local\Configurations.cs" />

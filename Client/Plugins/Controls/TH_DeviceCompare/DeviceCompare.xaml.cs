@@ -1145,7 +1145,7 @@ namespace TH_DeviceCompare
             DataTable dt = snapshotData as DataTable;
             if (dt != null)
             {
-                string value = DataTable_Functions.GetTableValue(dt, "name", "Program", "value");
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Current Program", "value");
 
                 int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "currentprogram");
                 if (cellIndex >= 0)
