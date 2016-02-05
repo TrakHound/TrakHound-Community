@@ -100,6 +100,8 @@ namespace TH_UserManagement
             CurrentUser = userConfig;
             UserDatabaseSettings = userDatabaseSettings;
 
+            profileImageLoaded = false;
+
             SetPageType(userConfig);
 
             if (userConfig != null)
@@ -124,7 +126,7 @@ namespace TH_UserManagement
 
                 SetDependencyProperty(MyAccountPage.ZipCodeProperty, userConfig.zipcode);
 
-                LoadProfileImage(userConfig);
+                if (this.IsLoaded) LoadProfileImage(userConfig);
             }
             else
             {
@@ -761,6 +763,8 @@ namespace TH_UserManagement
                 ProfileImage = src;
                 ProfileImageSet = true;
             }
+
+            profileImageLoaded = true;
         }
 
         void LoadProfileImage_Finished()
@@ -773,6 +777,14 @@ namespace TH_UserManagement
         System.Drawing.Image profileImage;
 
         bool profileImageChanged = false;
+
+        bool profileImageLoaded = false;
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!profileImageLoaded && CurrentUser != null) LoadProfileImage(CurrentUser);
+        }
+
 
         void SetProfileImage()
         {
@@ -859,6 +871,7 @@ namespace TH_UserManagement
             }
             catch (Exception ex) { TH_WPF.MessageBox.Show("Error Opening Privacy Policy. Please try again or open a browser and navigate to 'http://www.feenux.com/trakhound/docs/privacypolicy_desktopapp.html'"); }
         }
+
 
     }
 }

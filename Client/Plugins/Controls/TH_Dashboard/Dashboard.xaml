@@ -26,7 +26,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="root_GRID" Background="{StaticResource Window_Background_Accent_Gradient}">
+    <Grid x:Name="root_GRID">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>

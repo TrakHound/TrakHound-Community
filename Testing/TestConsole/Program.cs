@@ -13,7 +13,22 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            Probe();
+            //Probe();
+
+            string s = null;
+            
+
+            if (s != null && s[0] == 'a')
+            {
+                Console.WriteLine("YES");
+            }
+            else
+            {
+                Console.WriteLine("NO");
+            }
+           
+
+
 
             Console.ReadLine();
         }

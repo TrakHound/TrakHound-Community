@@ -18,6 +18,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Xml;
+
+using Microsoft.Win32;
+
+using TH_Configuration;
+
 namespace TH_DeviceManager.Controls
 {
     /// <summary>
@@ -37,19 +43,19 @@ namespace TH_DeviceManager.Controls
 
         const System.Windows.Threading.DispatcherPriority contextidle = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
-        TH_Configuration.Configuration config;
-        public TH_Configuration.Configuration Config
+        Configuration config;
+        public Configuration Config
         {
             get { return config; }
             set
             {
                 config = value;
 
-                this.Dispatcher.BeginInvoke(new Action<TH_Configuration.Configuration>(SetDeviceConfig), contextidle, new object[] { config });
+                this.Dispatcher.BeginInvoke(new Action<Configuration>(SetDeviceConfig), contextidle, new object[] { config });
             }
         }
 
-        void SetDeviceConfig(TH_Configuration.Configuration config)
+        void SetDeviceConfig(Configuration config)
         {
             if (config != null)
             {
@@ -156,7 +162,10 @@ namespace TH_DeviceManager.Controls
 
         private void Grid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Clicked != null) Clicked(this);
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                if (Clicked != null) Clicked(this);
+            } 
         }
 
         public event Clicked_Handler RemoveClicked;
@@ -198,6 +207,69 @@ namespace TH_DeviceManager.Controls
 
 
 
+        private void SaveToFile_MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (config != null)
+            {
+                
+                var saveFileDialog = new SaveFileDialog();
+                saveFileDialog.InitialDirectory = TH_Global.FileLocations.TrakHoundTemp;
+                saveFileDialog.Filter = "XML File (*.xml)|*.xml";
+                saveFileDialog.Title = "Save Device Configuration File";
+                saveFileDialog.FileName = config.Description.Description + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xml";
+                bool? result = saveFileDialog.ShowDialog();
+                if (result == true)
+                {
+                    string savePath = saveFileDialog.FileName;
+
+                    if (savePath != null)
+                    {
+                        config.ConfigurationXML.Save(savePath);
+
+                        System.Diagnostics.Process.Start("explorer.exe", savePath);
+                    }
+                }
+            }
+        }
+
+        //Thread saveDevice_THREAD;
+
+        //void SaveDevice(Configuration config)
+        //{
+        //    if (config != null)
+        //    {
+        //        DeviceLoading = true;
+
+        //        if (saveDevice_THREAD != null) saveDevice_THREAD.Abort();
+
+        //        saveDevice_THREAD = new Thread(new ParameterizedThreadStart(SaveDevice_Worker));
+        //        saveDevice_THREAD.Start(config);
+        //    }
+        //}
+
+        //void SaveDevice_Worker(object o)
+        //{
+        //    Configuration config = (Configuration)o;
+
+        //    DataTable dt = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
+        //    if (dt != null)
+        //    {
+        //        dt.TableName = config.TableName;
+
+        //        if (ConfigurationPages != null)
+        //        {
+        //            foreach (ConfigurationPage page in ConfigurationPages)
+        //            {
+        //                this.Dispatcher.BeginInvoke(new Action<DataTable, ConfigurationPage>(SelectDevice_GUI), background, new object[] { dt, page });
+        //            }
+        //        }
+        //    }
+
+        //    this.Dispatcher.BeginInvoke(new Action<DataTable>(SelectDevice_Finished), background, new object[] { dt });
+        //}
+
+
+
         public bool EnableLoading
         {
             get { return (bool)GetValue(EnableLoadingProperty); }
@@ -206,6 +278,8 @@ namespace TH_DeviceManager.Controls
 
         public static readonly DependencyProperty EnableLoadingProperty =
             DependencyProperty.Register("EnableLoading", typeof(bool), typeof(DeviceButton), new PropertyMetadata(false));
+
+
 
 
     }

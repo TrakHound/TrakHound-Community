@@ -52,6 +52,8 @@
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="OEE.cs" />
+    <None Include="OEEConfiguration.cs" />
+    <Compile Include="OEEData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -63,6 +65,7 @@
     <ProjectReference Include="..\..\..\..\MTConnect\TH_MTConnect\TH_MTConnect\TH_MTConnect.csproj">
       <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
       <Name>TH_MTConnect</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
@@ -87,14 +90,22 @@
     <ProjectReference Include="..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
       <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
       <Name>TH_UserManagement</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_Cycles\TH_Cycles.csproj">
+      <Project>{ad70962e-e836-494b-8dff-444d7bc74c80}</Project>
+      <Name>TH_Cycles</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\TH_ShiftTable\TH_ShiftTable.csproj">
       <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>

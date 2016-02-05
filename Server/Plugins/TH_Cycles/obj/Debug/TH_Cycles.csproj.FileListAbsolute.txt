@@ -13,3 +13,9 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles_Marku
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.g.resources
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\ConfigurationPage\Controls\OverrideLinkItem.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\ConfigurationPage\Controls\OverrideLinkItem.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\GeneratedInternalTypeHelper.g.cs
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\TH_Cycles_MarkupCompile.lref
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\ConfigurationPage\Controls\ProductionTypeItem.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_Cycles\obj\Debug\ConfigurationPage\Controls\ProductionTypeItem.g.cs

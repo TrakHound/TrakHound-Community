@@ -704,7 +704,5 @@ namespace TH_DeviceManager.Pages.AddDevice
             return false;
         }
 
-
-
     }
 }

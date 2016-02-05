@@ -12,13 +12,17 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Reflection;
 using System.Data;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
+using TH_Global.Functions;
 using TH_MTConnect;
 using TH_Plugins_Server;
 
+using TH_GeneratedData;
+using TH_InstanceTable;
 using TH_ShiftTable;
 
 namespace TH_Cycles
@@ -30,26 +34,22 @@ namespace TH_Cycles
 
         public string Name { get { return "TH_Cycles"; } }
 
-        public int Priority { get { return 3; } }
-
         public void Initialize(Configuration configuration)
         {
-            CycleConfiguration cc = ReadXML(configuration.ConfigurationXML);
-
+            var cc = CycleConfiguration.Read(configuration.ConfigurationXML);
             if (cc != null)
             {
                 configuration.CustomClasses.Add(cc);
 
                 config = configuration;
 
-                cycleInfos = new List<CycleRowInfo>();
-
                 if (UseDatabases)
                 {
                     CreateCycleTable();
+                    AddOverrideColumns();
+
                     CreateSetupTable();
                 }
-
 
                 // $$$ DEBUG $$$
                 if (UseDatabases) DEBUG_AddSetupRows();
@@ -64,7 +64,7 @@ namespace TH_Cycles
 
         public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
-            currentData = returnData;
+
         }
 
         public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
@@ -77,14 +77,37 @@ namespace TH_Cycles
         {
             if (de_data != null)
             {
-                if (de_data.id.ToLower() == "shifttable_geneventshiftitems")
-                {
-                    if (de_data.data02.GetType() == typeof(List<GenEventShiftItem>))
-                    {
-                        List<GenEventShiftItem> items = (List<GenEventShiftItem>)de_data.data02;
+                List<CycleData> cycles = null;
 
-                        ProcessCycles(items);               
-                    }
+                switch (de_data.id.ToLower())
+                {                  
+                    // InstanceTable data after Sample received
+                    case "instancedata":
+
+                        var instanceDatas = (List<InstanceTable.InstanceData>)de_data.data02;
+
+                        cycles = ProcessCycles(instanceDatas);
+
+                        SendCycleData(cycles);
+
+                        break;
+
+
+                    // InstanceData object after current received
+                    case "currentinstancedata":
+
+                        var currentInstanceData = (InstanceTable.CurrentInstanceData)de_data.data02;
+
+                        var data = currentInstanceData.data;
+
+                        var list = new List<InstanceTable.InstanceData>();
+                        list.Add(data);
+
+                        cycles = ProcessCycles(list);
+
+                        SendCycleData(cycles);
+
+                        break;
                 }
             }
         }
@@ -118,65 +141,13 @@ namespace TH_Cycles
 
         #region "Configuration"
 
-        public class CycleConfiguration
-        {
-            public string Event { get; set; }
-            public string CycleIdLink { get; set; }
-        }
-
-        CycleConfiguration ReadXML(XmlDocument configXML)
-        {
-
-            CycleConfiguration Result = new CycleConfiguration();
-
-            XmlNodeList nodes = configXML.SelectNodes("/Settings/Cycles");
-
-            if (nodes != null)
-            {
-                if (nodes.Count > 0)
-                {
-
-                    XmlNode node = nodes[0];
-
-                    foreach (XmlNode Child in node.ChildNodes)
-                    {
-                        if (Child.NodeType == XmlNodeType.Element)
-                        {
-
-                            Type Setting = typeof(CycleConfiguration);
-                            PropertyInfo info = Setting.GetProperty(Child.Name);
-
-                            if (info != null)
-                            {
-                                Type t = info.PropertyType;
-                                info.SetValue(Result, Convert.ChangeType(Child.InnerText, t), null);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return Result;
-
-        }
-
-        public static CycleConfiguration GetConfiguration(Configuration configuration)
-        {
-            CycleConfiguration Result = null;
-
-            var customClass = configuration.CustomClasses.Find(x => x.GetType() == typeof(CycleConfiguration));
-            if (customClass != null) Result = (CycleConfiguration)customClass;
-
-            return Result;
-        }
-
-
+        
         #endregion
 
         #region "Database"
 
         string cycleTableName = TableNames.Cycles;
-        string[] cyclePrimaryKey = { "Shift_Id", "Cycle_Id" }; 
+        string[] cyclePrimaryKey = null; 
 
         void CreateCycleTable()
         {
@@ -184,64 +155,90 @@ namespace TH_Cycles
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
-            columns.Add(new ColumnDefinition("SHIFT_ID", DataType.LargeText, true, true));
             columns.Add(new ColumnDefinition("CYCLE_ID", DataType.LargeText, false, true));
-            columns.Add(new ColumnDefinition("DATE", DataType.LargeText));
+            columns.Add(new ColumnDefinition("INSTANCE_ID", DataType.LargeText, false, true));
+            columns.Add(new ColumnDefinition("NAME", DataType.LargeText, false, true));
+            columns.Add(new ColumnDefinition("Event", DataType.LargeText));
 
-            columns.Add(new ColumnDefinition("CYCLES_TOTAL", DataType.Long));
-            columns.Add(new ColumnDefinition("CYCLES_INTERRUPTED", DataType.Long));
+            columns.Add(new ColumnDefinition("START_TIME", DataType.DateTime));
+            columns.Add(new ColumnDefinition("STOP_TIME", DataType.DateTime));
 
-            columns.Add(new ColumnDefinition("IDEAL_CYCLE_TIME", DataType.Long));
-            columns.Add(new ColumnDefinition("AVG_CYCLE_TIME", DataType.Long));
+            columns.Add(new ColumnDefinition("SHIFT_ID", DataType.MediumText));
 
-            columns.Add(new ColumnDefinition("PARTS_PER_CYCLE", DataType.Long));
-
-            columns.Add(new ColumnDefinition("PARTS_TOTAL", DataType.Long));
-            columns.Add(new ColumnDefinition("PARTS_REJECTED", DataType.Long));
+            columns.Add(new ColumnDefinition("DURATION", DataType.Double));
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, cycleTableName, ColArray, cyclePrimaryKey);  
-
+            Table.Create(config.Databases_Server, cycleTableName, ColArray, cyclePrimaryKey);
         }
 
-        void AddCycleRows(List<CycleRowInfo> infos)
+        void AddOverrideColumns()
         {
-            List<List<object>> rowValues = new List<List<object>>();
-
-            List<string> columns = new List<string>();
-            columns.Add("shift_id");
-            columns.Add("cycle_id");
-            columns.Add("date");
-            columns.Add("cycles_total");
-            columns.Add("cycles_interrupted");
-            columns.Add("ideal_cycle_time");
-            columns.Add("avg_cycle_time");
-            columns.Add("parts_per_cycle");
-            columns.Add("parts_total");
-            columns.Add("parts_rejected");
-
-            foreach (CycleRowInfo info in infos)
+            var cc = CycleConfiguration.Get(config);
+            if (cc != null)
             {
+                var CycleColumns = Column.Get(config.Databases_Server, TableNames.Cycles);
+
+                foreach (var ovr in cc.OverrideLinks)
+                {
+                    if (!CycleColumns.Contains(ovr))
+                    {
+                        var columnName = FormatColumnName(ovr).ToUpper();
+
+                        Column.Add(config.Databases_Server, TableNames.Cycles, new ColumnDefinition(columnName, DataType.Double));
+                    }
+                }
+            }
+        }
+
+        static string FormatColumnName(string str)
+        {
+            return str.Replace(' ', '_');
+        }
+
+        void AddCycleRow(CycleData cycle)
+        {
+            var cc = CycleConfiguration.Get(config);
+            if (cc != null)
+            {
+                List<string> columns = new List<string>();
+                columns.Add("cycle_id");
+                columns.Add("instance_id");
+                columns.Add("name");
+                columns.Add("event");
+                columns.Add("start_time");
+                columns.Add("stop_time");
+                columns.Add("shift_id");
+                columns.Add("duration");
+
+                // Add Override Column Names
+                foreach (var ovr in cc.OverrideLinks)
+                {
+                    var columnName = FormatColumnName(ovr).ToLower();
+                    columns.Add(columnName);
+                }
+
                 List<object> values = new List<object>();
 
-                values.Add(info.shift_id);
-                values.Add(info.cycle_id);
-                values.Add(info.date);
-                values.Add(info.cycles_total);
-                values.Add(info.cycles_interrupted);
-                values.Add(info.ideal_cycle_time);
-                values.Add(info.avg_cycle_time);
-                values.Add(info.parts_per_cycle);
-                values.Add(info.parts_total);
-                values.Add(info.parts_rejected);
+                values.Add(cycle.CycleId);
+                values.Add(cycle.InstanceId);
+                values.Add(cycle.Name);
+                values.Add(cycle.Event);
+                values.Add(cycle.StartTime);
+                values.Add(cycle.StopTime);
+                values.Add(cycle.ShiftId);
+                values.Add(cycle.Duration.TotalSeconds);
 
-                rowValues.Add(values);
+                // Add Override Values
+                foreach (var ovr in cycle.CycleOverrides)
+                {
+                    values.Add(ovr.Value);
+                }
+
+                Row.Insert(config.Databases_Server, cycleTableName, columns.ToArray(), values.ToArray(), cyclePrimaryKey, true);
+
             }
-
-            Row.Insert(config.Databases_Server, cycleTableName, columns.ToArray(), rowValues, cyclePrimaryKey, true);
         }
-
 
         string SetupTableName = TableNames.Cycles_Setup;
         string[] setupPrimaryKey = { "Cycle_Id" };
@@ -298,137 +295,253 @@ namespace TH_Cycles
 
         #region "Processing"
 
-        class CycleRowInfo
+        // $$ DEBUG $$
+        //const string eventName = "Program_Execution";
+
+        //const string startValue = "Program Started";
+        //const string stoppedValue = "Program Stopped";
+
+        //const string programNameLink = "program";
+        ////const string programNameLink = "cn5";
+
+        //List<string> overrideLinks = new List<string>() { "feed_ovr", "rapid_ovr" };
+
+        //// Comboboxes for each Event Value
+        //List<Tuple<string, CycleData.CycleProductionType>> productionTypes = new List<Tuple<string, CycleData.CycleProductionType>>() 
+        //{ 
+        //    new Tuple<string, CycleData.CycleProductionType>("Program Started", CycleData.CycleProductionType.IN_PRODUCTION),
+        //    new Tuple<string, CycleData.CycleProductionType>("Toolchange", CycleData.CycleProductionType.TOOLING_CHANGEOVER),
+        //    new Tuple<string, CycleData.CycleProductionType>("Feedhold", CycleData.CycleProductionType.PAUSED),
+        //    new Tuple<string, CycleData.CycleProductionType>("Program Stopped", CycleData.CycleProductionType.STOPPED)
+        //};
+
+        
+        // Local variables
+        CycleData cycleData;
+        DateTime lastTimestamp = DateTime.MinValue;
+
+        List<CycleData> ProcessCycles(List<TH_InstanceTable.InstanceTable.InstanceData> data)
         {
-            public string shift_id { get; set; }
-            public string cycle_id { get; set; }
+            var result = new List<CycleData>();
 
-            public string date { get; set; }
-
-            public int cycles_total { get; set; }
-            public int cycles_interrupted { get; set; }
-
-            public int ideal_cycle_time { get; set; }
-            public int avg_cycle_time { get; set; }
-
-            public int parts_per_cycle { get; set; }
-            public int parts_total { get; set; }
-            public int parts_rejected { get; set; }
-        }
-
-        class CycleSetupRowInfo
-        {
-            public string cycle_id { get; set; }
-            public int ideal_cycle_time { get; set; }
-            public int parts_per_cycle { get; set; }
-        }
-
-        List<CycleRowInfo> cycleInfos;
-
-        GenEventShiftItem previousItem;
-
-        void ProcessCycles(List<GenEventShiftItem> items)
-        {
-            // Get Setup Info
-            List<CycleSetupRowInfo> SetupInfos = new List<CycleSetupRowInfo>();
-            DataTable cycle_setup = Table.Get(config.Databases_Server, TableNames.Cycles_Setup);
-            if (cycle_setup != null)
+            if (data != null && data.Count > 0)
             {
-                foreach (DataRow row in cycle_setup.Rows)
+                var orderedData = data.OrderBy(x => x.timestamp).ToList();
+
+                if (config != null)
                 {
-                    CycleSetupRowInfo csri = new CycleSetupRowInfo();
-                    if (cycle_setup.Columns.Contains("Cycle_Id")) csri.cycle_id = row["Cycle_Id"].ToString();
-
-                    if (cycle_setup.Columns.Contains("Ideal_Cycle_Time"))
+                    var cc = CycleConfiguration.Get(config);
+                    if (cc != null)
                     {
-                        int ideal_cycle_time = -1;
-                        if (int.TryParse(row["Ideal_Cycle_Time"].ToString(), out ideal_cycle_time))
+                        if (cc.CycleEventName != null)
                         {
-                            csri.ideal_cycle_time = ideal_cycle_time;
-                        }
-                    }
+                            var gdc = TH_GeneratedData.GeneratedData.GetConfiguration(config);
+                            if (gdc != null)
+                            {
+                                var cycleEvent = gdc.generatedEvents.events.Find(x => x.Name.ToLower() == cc.CycleEventName.ToLower());
+                                if (cycleEvent != null)
+                                {
+                                    var latestData = orderedData.FindAll(x => x.timestamp > lastTimestamp);
 
-                    if (cycle_setup.Columns.Contains("Parts_Per_Cycle"))
-                    {
-                        int parts_per_cycle = -1;
-                        if (int.TryParse(row["Parts_Per_Cycle"].ToString(), out parts_per_cycle))
-                        {
-                            csri.parts_per_cycle = parts_per_cycle;
-                        }
-                    }
+                                    foreach (var instanceData in latestData)
+                                    {
+                                        var cycle = ProcessCycleEvent(cycleEvent, instanceData, cc);
+                                        if (cycle != null) result.Add(cycle);
 
-                    SetupInfos.Add(csri);
+                                        lastTimestamp = instanceData.timestamp;
+                                    }
+                                }
+                            }
+                        } 
+                    }
                 }
             }
 
+            return result;
+        }
 
-            CycleConfiguration cc = GetConfiguration(config);
+        CycleData ProcessCycleEvent(GeneratedData.GeneratedEvents.Event cycleEvent, InstanceTable.InstanceData instanceData, CycleConfiguration cc)
+        {
+            CycleData result = null;
 
-            if (cc != null)
+            // Search for cycle name link in InstanceData
+            var instanceValue = instanceData.values.Find(x => x.id == cc.CycleNameLink);
+            if (instanceValue != null)
             {
-                List<CycleRowInfo> newInfos = new List<CycleRowInfo>();
+                List<CycleOverride> cycleOverrides = new List<CycleOverride>();
 
-                // Get only the Items with the Cycle Event name
-                List<GenEventShiftItem> cycleEvents = items.FindAll(x => x.eventName.ToLower() == cc.Event.ToLower());
-
-                foreach (GenEventShiftItem item in cycleEvents)
+                // Get CycleOverride values from InstanceData
+                foreach (var ovr in cc.OverrideLinks)
                 {
-                    TH_GeneratedData.GeneratedData.GeneratedEvents.CaptureItem ci = item.CaptureItems.Find(x => x.id.ToLower() == cc.CycleIdLink.ToLower());
-                    if (ci != null)
+                    var cycleOverride = GetOverrideFromInstanceData(ovr, instanceData);
+                    if (cycleOverride != null) cycleOverrides.Add(cycleOverride);
+                }
+
+                // Process Cycle Event using instanceData
+                var eventReturn = cycleEvent.ProcessEvent(instanceData);
+                if (eventReturn != null)
+                {
+                    // Get the name of the cycle
+                    string cycleName = instanceValue.value;
+
+                    // Get the name of the cycleEvent (cycleEvent.Value)
+                    string cycleEventValue = eventReturn.Value;
+
+                    // Get ShiftId from Timestamp
+                    var shiftId = TH_ShiftTable.CurrentShiftInfo.Get(config, instanceData.timestamp);
+
+                    CycleData cycle = cycleData;
+
+                    // Check if new cycle is needed
+                    if (cycle != null &&
+                        (cycle.ShiftId == shiftId.id &&
+                        cycle.Name == cycleName &&
+                         cycle.Event == cycleEventValue &&
+                         CompareOverrideLists(cycle.CycleOverrides, cycleOverrides)
+                        ))
                     {
-                        //string shift_id = ShiftRowInfo.GetId(item.shiftDate, item.segment.shiftConfiguration.id, item.segment.id);
-                        string shift_id = Tools.GetShiftId(item.shiftDate, item.segment);
-                        string cycle_id = ci.value;
-
-                        CycleRowInfo info = null;
-                        info = cycleInfos.Find(x => (x.shift_id == shift_id && x.cycle_id == cycle_id));
-                        if (info == null)
+                        //Use current stored cycle
+                        UpdateCycleData(cycle, instanceData);
+                    }
+                    else
+                    {
+                        if (cycle != null)
                         {
-                            info = new CycleRowInfo();
-                            info.shift_id = shift_id;
-                            info.cycle_id = cycle_id;
-                            info.date = item.shiftDate.ToString();
-                            cycleInfos.Add(info);
-                        }
+                            ProcessPreviousCycle(cycle, instanceData);
 
-                        // Increment values if value is different than previousItem's value
-                        if (previousItem == null)
-                        {
-                            if (item.eventNumVal > 0)
+                            if (cycle.Name != cycleName || cycleEventValue == cc.StoppedEventValue)
                             {
-                                info.cycles_total += 1;
-                                info.parts_total += info.parts_per_cycle;
+                                cycle = CreateCycleData(cycleName);
                             }
                         }
-                        else if (item.eventNumVal != previousItem.eventNumVal && item.eventNumVal > 0)
-                        {    
-                            info.cycles_total += 1;
-                            info.parts_total += info.parts_per_cycle;
-                        }
-
-                        CycleSetupRowInfo setupinfo = SetupInfos.Find(x => x.cycle_id.ToLower() == info.cycle_id.ToLower());
-                        if (setupinfo != null)
+                        else
                         {
-                            info.ideal_cycle_time = setupinfo.ideal_cycle_time;
-                            info.parts_per_cycle = setupinfo.parts_per_cycle;
+                            cycle = CreateCycleData(cycleName);
                         }
 
-                        newInfos.Add(info);
+                        cycle.CycleOverrides = cycleOverrides.ToList();
 
-                        previousItem = item;
+                        //Update Cycle
+                        UpdateCycleDataEvent(cycle, eventReturn.Value, instanceData, cc);
+                        UpdateCycleData(cycle, instanceData);
                     }
-                }
 
-                // Upload new data to MySQL
-                if (UseDatabases) AddCycleRows(newInfos);
+                    cycleData = cycle.Copy();
+                    result = cycleData;
+                }
             }
+
+            return result;
+        }
+
+        private static bool CompareOverrideLists(List<CycleOverride> l1, List<CycleOverride> l2)
+        {
+            // Check if one is null and the other isn't
+            if (l1 == null && l2 != null) return false;
+            if (l1 != null && l2 == null) return false;
+            
+            // Check count
+            if (l1.Count != l2.Count) return false;
+
+            //Check Values and Id's
+            for (var x = 0; x <= l1.Count - 1; x++)
+            {
+                if (l1[x].Id != l2[x].Id ||
+                    l1[x].Value != l2[x].Value)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static CycleOverride GetOverrideFromInstanceData(string overrideId, InstanceTable.InstanceData instanceData)
+        {
+            CycleOverride result = null;
+
+            var val = instanceData.values.Find(x => x.id == overrideId);
+            if (val != null)
+            {
+                double d = -1;
+                if (double.TryParse(val.value, out d))
+                {
+                    result = new CycleOverride();
+                    result.Id = overrideId;
+                    result.Value = d;
+                }
+            }
+
+            return result;
+        }
+
+        CycleData CreateCycleData(string name)
+        {
+            var result = new CycleData();
+            result.CycleId = String_Functions.RandomString(80);
+            result.Name = name;
+
+            return result;
+        }
+
+        void UpdateCycleDataEvent(CycleData cycle, string eventValue, InstanceTable.InstanceData data, CycleConfiguration cc)
+        {
+            // Set new Event Value and InstanceId for Cycle 'Segment'
+            cycle.Event = eventValue;
+            cycle.InstanceId = String_Functions.RandomString(20);
+
+            // Set Production Type
+            var productionType = cc.ProductionTypes.Find(x => x.Item1 == eventValue);
+            if (productionType != null) cycle.ProductionType = productionType.Item2;
+            else cycle.ProductionType = CycleData.CycleProductionType.UNCATEGORIZED;
+
+            // Set/Reset Times & Duration
+            cycle.StartTime = data.timestamp;
+            cycle.StopTime = cycle.StartTime;
+
+            // Set to local variable
+            cycleData = cycle;
+        }
+
+        void ProcessPreviousCycle(CycleData cycle, InstanceTable.InstanceData data)
+        {
+            // Set Stop Time
+            cycle.StopTime = data.timestamp;
+
+            // Add to database
+            AddCycleRow(cycle);
+
+            // Set Shift Segment ID
+            SetCycleShiftId(cycle, data);
+        }
+
+        void UpdateCycleData(CycleData cycle, InstanceTable.InstanceData data)
+        {
+            // Set Stop Time
+            cycle.StopTime = data.timestamp;
+
+            // Set Shift Segment ID
+            SetCycleShiftId(cycle, data);
+        }
+
+        void SetCycleShiftId(CycleData cycle, InstanceTable.InstanceData data)
+        {         
+            var shiftId = TH_ShiftTable.CurrentShiftInfo.Get(config, data.timestamp);
+            if (shiftId != null) cycle.ShiftId = shiftId.id;
+        }
+
+        void SendCycleData(List<CycleData> data)
+        {
+            DataEvent_Data de_data = new DataEvent_Data();
+            de_data.id = "CycleData";
+            de_data.data01 = config;
+            de_data.data02 = data;
+            if (DataEvent != null) DataEvent(de_data);
         }
 
         #endregion
 
         #endregion
-
-        TH_MTConnect.Streams.ReturnData currentData;
 
     }
 }

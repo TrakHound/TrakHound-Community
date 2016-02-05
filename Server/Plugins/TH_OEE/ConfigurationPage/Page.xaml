@@ -78,6 +78,36 @@
 
             </Border>
 
+            <!--Performance-->
+            <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1" Margin="0,0,0,20">
+
+                <StackPanel Margin="0,10">
+                    <StackPanel.Resources>
+                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                            <Setter Property="Margin" Value="10,0,0,10"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <TextBlock Text="Performance" FontSize="12pt" Foreground="#333" Margin="10,0,0,20" VerticalAlignment="Center"/>
+                    
+                    <RadioButton Content="Read from Table" Margin="10,0,0,10" GroupName="PerformanceCalculationType"/>
+
+                    <RadioButton Content="Calculate from Overrides" GroupName="PerformanceCalculationType"/>
+
+                    <!--Override--><!--
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+
+                        --><!--DataItem Link--><!--
+                        <TextBlock Text="Override Data Item" FontSize="8pt" Foreground="#666666" Margin="10,0" VerticalAlignment="Center"/>
+
+                        <ComboBox Width="200" ItemsSource="{Binding DataItems}" SelectionChanged="PerformanceOverride_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+                    </StackPanel>-->
+
+                </StackPanel>
+
+            </Border>
+
         </StackPanel>
 
     </Grid>

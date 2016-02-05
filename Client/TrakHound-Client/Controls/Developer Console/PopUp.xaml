@@ -101,7 +101,8 @@
                 </LinearGradientBrush>
             </Grid.Background>-->
 
-            <DataGrid ItemsSource="{Binding Console_Output}" 
+            <DataGrid x:Name="dg"
+                    ItemsSource="{Binding Console_Output}" 
                     Loaded="DataGrid_Loaded"
                     LoadingRow="DataGrid_LoadingRow" 
                     AutoGenerateColumns="False"

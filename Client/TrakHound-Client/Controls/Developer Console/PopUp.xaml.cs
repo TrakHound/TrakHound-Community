@@ -98,7 +98,9 @@ namespace TrakHound_Client.Controls.Developer_Console
                 int first = Console_Output.Count - MaxLines;
 
                 for (int x = 0; x < first; x++) Console_Output.RemoveAt(0);
-            }  
+            }
+
+            dg.ScrollIntoView(ci);
         }
         
         private void Minimize_ToolBarItem_Clicked(TH_WPF.Button bt)

@@ -14,7 +14,7 @@
 
     <UserControl.Resources>
         <ResourceDictionary>
-            
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -38,7 +38,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Save to File" Click="SaveToFile_MenuItem_Click"/>
+        </ContextMenu>
+    </UserControl.ContextMenu>
+
+<Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>

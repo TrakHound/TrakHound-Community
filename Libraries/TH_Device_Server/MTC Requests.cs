@@ -40,7 +40,7 @@ namespace TH_Device_Server
                         var currentData = RunCurrent();
                         if (currentData != null)
                         {
-                            Plugins_Update_Current(currentData);
+                            //Plugins_Update_Current(currentData);
 
                             var sampleData = RunSample(currentData.header);
                             if (sampleData != null)
@@ -51,6 +51,8 @@ namespace TH_Device_Server
                             {
                                 Plugins_Update_Sample(null);
                             }
+
+                            Plugins_Update_Current(currentData);
                         }
 
                         Thread.Sleep(configuration.Agent.Heartbeat);

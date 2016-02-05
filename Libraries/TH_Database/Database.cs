@@ -1270,6 +1270,8 @@ namespace TH_Database
 
         void FindPlugins(string Path)
         {
+            Logger.Log("Searching for Database Plugins in : " + Path);
+
             if (Directory.Exists(Path))
             {
                 try
@@ -1290,10 +1292,10 @@ namespace TH_Database
                         }
                     }
                 }
-                catch (System.Reflection.ReflectionTypeLoadException rt)
-                {
+                //catch (System.Reflection.ReflectionTypeLoadException rt)
+                //{
 
-                }
+                //}
                 catch (Exception ex) { Logger.Log("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message); }
 
                 // Search Subdirectories

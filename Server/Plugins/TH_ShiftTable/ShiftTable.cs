@@ -60,7 +60,7 @@ namespace TH_ShiftTable
             currentData = returnData;
 
             // Update shift_current in "Variables" table
-            CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(config, returnData);
+            CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(config, returnData.header.creationTime);
             if (UseDatabases)
             {
                 if (shiftInfo != null)

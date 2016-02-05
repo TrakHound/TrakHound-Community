@@ -32,22 +32,22 @@ namespace TrakHound_Server
             DataContext = this;
         }
 
-        public class Console_Item
+        public class ConsoleItem : FrameworkElement
         {
             public Int64 Row { get; set; }
             public DateTime Timestamp { get; set; }
             public string Text { get; set; }
         }
 
-        ObservableCollection<Console_Item> console_output;
-        public ObservableCollection<Console_Item> Console_Output
+        ObservableCollection<ConsoleItem> consoleOutput;
+        public ObservableCollection<ConsoleItem> ConsoleOutput
         {
             get
             {
-                if (console_output == null) console_output = new ObservableCollection<Console_Item>();
-                return console_output;
+                if (consoleOutput == null) consoleOutput = new ObservableCollection<ConsoleItem>();
+                return consoleOutput;
             }
-            set { console_output = value; }
+            set { consoleOutput = value; }
         }
 
         Int64 rowIndex = 0;
@@ -56,28 +56,38 @@ namespace TrakHound_Server
 
         public void AddLine(string line)
         {
-            Console_Item ci = new Console_Item();
-            ci.Row = rowIndex;
-            ci.Timestamp = DateTime.Now;
-            ci.Text = line;
-
-            rowIndex++;
-
-            this.Dispatcher.BeginInvoke(new Action<Console_Item>(AddLine_GUI), new object[] { ci });
+            this.Dispatcher.BeginInvoke(new Action<string>(AddLine_GUI), new object[] { line });
         }
 
-        void AddLine_GUI(Console_Item ci)
+        void AddLine_GUI(string line)
         {
-            Console_Output.Add(ci);
+            string[] lines = line.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
-            if (Console_Output.Count > MaxLines)
+            foreach (var l in lines)
             {
-                int first = Console_Output.Count - MaxLines;
+                var item = new ConsoleItem();
+                item.Row = rowIndex;
+                item.Timestamp = DateTime.Now;
+                item.Text = l;
 
-                for (int x = 0; x < first; x++) Console_Output.RemoveAt(0);
+                rowIndex++;
+
+                ConsoleOutput.Add(item);
+
+                RemoveOldLines();
+
+                ScrollLastIntoView();
             }
+        }
 
-            dg.ScrollIntoView(ci);
+        void RemoveOldLines()
+        {
+            if (ConsoleOutput.Count > MaxLines)
+            {
+                int first = ConsoleOutput.Count - MaxLines;
+
+                for (int x = 0; x < first; x++) ConsoleOutput.RemoveAt(0);
+            }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -86,5 +96,44 @@ namespace TrakHound_Server
             Hide();
         }
 
+        private void ScrollLastIntoView()
+        {
+            var scroll = GetScrollViewer(dg);
+            if (scroll != null)
+            {
+                double bottomScrollPort = scroll.ScrollableHeight - 5;
+
+                if (scroll.VerticalOffset >= bottomScrollPort)
+                {
+                    if (ConsoleOutput.Count > 0)
+                    {
+                        ConsoleItem lastItem = ConsoleOutput[ConsoleOutput.Count - 1];
+                        dg.ScrollIntoView(lastItem);
+                    }
+                }
+            }
+        }
+
+        ScrollViewer GetScrollViewer(DependencyObject obj)
+        {
+            ScrollViewer result = null;
+
+            int childCount = VisualTreeHelper.GetChildrenCount(obj);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(obj, i);
+                if (child is ScrollViewer)
+                {
+                    result = (ScrollViewer)(VisualTreeHelper.GetChild(obj, i));
+                    break;
+                }
+                else
+                {
+                    result = GetScrollViewer(child);
+                    if (result != null) break;
+                }
+            }
+            return result;
+        }
     }
 }

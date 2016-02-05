@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0" Background="{StaticResource Accent_Normal}">
+            <Border Grid.Column="0">
 
                 <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40">
                     <ItemsControl.Resources>

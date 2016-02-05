@@ -286,7 +286,7 @@
                                 <controls:PageItem Clicked="DeviceFromFile_Clicked" AlternateStyle="true" Text="Read Device From File" Image="/TH_DeviceManager;component/Resources/List_01.png" />
                             </th_wpf:Button.ButtonContent>
                         </th_wpf:Button>
-                        
+
                         <!--New-->
                         <th_wpf:Button>
                             <th_wpf:Button.ButtonContent>
