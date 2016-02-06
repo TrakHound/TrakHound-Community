@@ -21,17 +21,21 @@ namespace TH_UserManagement.Management.Local
         {
             Users.CreateUserTable(db);
 
+            // Set Table Name
             string tableName = CreateTableName(userConfig);
-
             configuration.TableName = tableName;
             XML_Functions.SetInnerText(configuration.ConfigurationXML, "TableName", tableName);
 
-            string uniqueId = String_Functions.RandomString(20);
-
-            configuration.UniqueId = uniqueId;
-
             // Set new Unique Id
+            string uniqueId = String_Functions.RandomString(20);
+            configuration.UniqueId = uniqueId;
             XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
+
+            // Set Enabled to False
+            configuration.ClientEnabled = false;
+            configuration.ServerEnabled = false;
+            XML_Functions.SetInnerText(configuration.ConfigurationXML, "ClientEnabled", "false");
+            XML_Functions.SetInnerText(configuration.ConfigurationXML, "ServerEnabled", "false");
 
             DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
             if (dt != null)

@@ -160,7 +160,6 @@ namespace TH_DeviceCompare.Components
 
 
 
-
         public bool Production
         {
             get { return (bool)GetValue(ProductionProperty); }
@@ -191,14 +190,47 @@ namespace TH_DeviceCompare.Components
             DependencyProperty.Register("Alert", typeof(bool), typeof(Header), new PropertyMetadata(false));
 
 
-        public bool Break
+
+        public bool ScheduledDowntime
         {
-            get { return (bool)GetValue(BreakProperty); }
-            set { SetValue(BreakProperty, value); }
+            get { return (bool)GetValue(ScheduledDowntimeProperty); }
+            set { SetValue(ScheduledDowntimeProperty, value); }
         }
 
-        public static readonly DependencyProperty BreakProperty =
-            DependencyProperty.Register("Break", typeof(bool), typeof(Header), new PropertyMetadata(false));
+        public static readonly DependencyProperty ScheduledDowntimeProperty =
+            DependencyProperty.Register("ScheduledDowntime", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
+
+        public string ScheduledDowntime_Text
+        {
+            get { return (string)GetValue(ScheduledDowntime_TextProperty); }
+            set { SetValue(ScheduledDowntime_TextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScheduledDowntime_TextProperty =
+            DependencyProperty.Register("ScheduledDowntime_Text", typeof(string), typeof(Header), new PropertyMetadata(null));
+
+
+        public string ScheduledDowntime_Times
+        {
+            get { return (string)GetValue(ScheduledDowntime_TimesProperty); }
+            set { SetValue(ScheduledDowntime_TimesProperty, value); }
+        }
+
+        public static readonly DependencyProperty ScheduledDowntime_TimesProperty =
+            DependencyProperty.Register("ScheduledDowntime_Times", typeof(string), typeof(Header), new PropertyMetadata(null));
+
+        
+        
+
+        //public bool Break
+        //{
+        //    get { return (bool)GetValue(BreakProperty); }
+        //    set { SetValue(BreakProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty BreakProperty =
+        //    DependencyProperty.Register("Break", typeof(bool), typeof(Header), new PropertyMetadata(false));
 
         
 
@@ -246,6 +278,7 @@ namespace TH_DeviceCompare.Components
             animation.From = Main_GRID.RenderSize.Height;
             animation.To = 150;
             animation.Duration = new Duration(TimeSpan.FromMilliseconds(200));
+            animation.BeginTime = TimeSpan.FromMilliseconds(200);
             Main_GRID.BeginAnimation(HeightProperty, animation);
 
             Collapsed = false;
@@ -450,12 +483,21 @@ namespace TH_DeviceCompare.Components
 
                 if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                 {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 140);
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 250);
                 }
                 else
                 {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 140);
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 250);
                 }
+
+                //if (bmpSource.PixelWidth > bmpSource.PixelHeight)
+                //{
+                //    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 140);
+                //}
+                //else
+                //{
+                //    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 140);
+                //}
 
                 //ManufacturerLogoSet = true;
             }
@@ -470,5 +512,29 @@ namespace TH_DeviceCompare.Components
 
         #endregion
 
+    }
+
+    public class DesignTime_Header : Header
+    {
+        public DesignTime_Header()
+        {
+            //Minimized = false;
+            //Collapsed = false;
+            Connected = true;
+            Production = true;
+            Idle = false;
+            Alert = false;
+            ScheduledDowntime = true;
+            LastUpdatedTimestamp = DateTime.Now.ToString();
+            Device_Description = "Device Description";
+            Device_Manufacturer = "Manufacturer";
+            Device_Model = "Model";
+            Device_Serial = "Serial";
+            Device_ID = "01";
+
+            //Device_Logo = new BitmapImage(new Uri(@"C:\TrakHound\Configuration Files\Mazak1-1\Images\Mazak-Logo1.png"));
+
+            //Device_Image = new BitmapImage(new Uri(@"C:\TrakHound\Configuration Files\Mazak1-1\Images\mazak1.png"));
+        }
     }
 }

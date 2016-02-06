@@ -128,14 +128,14 @@ namespace TH_WPF.Histogram
             DependencyProperty.Register("SegmentTimes", typeof(string), typeof(DataBar), new PropertyMetadata(null));
 
 
-        public string ValueText
+        public object ToolTipData
         {
-            get { return (string)GetValue(ValueTextProperty); }
-            set { SetValue(ValueTextProperty, value); }
+            get { return (object)GetValue(ToolTipDataProperty); }
+            set { SetValue(ToolTipDataProperty, value); }
         }
 
-        public static readonly DependencyProperty ValueTextProperty =
-            DependencyProperty.Register("ValueText", typeof(string), typeof(DataBar), new PropertyMetadata(null));
+        public static readonly DependencyProperty ToolTipDataProperty =
+            DependencyProperty.Register("ToolTipData", typeof(object), typeof(DataBar), new PropertyMetadata(null));
 
 
         public double BarWidth

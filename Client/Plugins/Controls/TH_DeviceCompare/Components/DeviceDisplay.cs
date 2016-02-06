@@ -94,15 +94,34 @@ namespace TH_DeviceCompare
             dd.header = "Production Status Times";
             DataItems.Add(dd);
 
+            // OEE Values -----------------------
             dd = new DataItem();
-            dd.id = "OEEAverage";
-            dd.header = "Average Shift OEE";
+            dd.id = "OEE_Total";
+            dd.header = "OEE";
             DataItems.Add(dd);
 
             dd = new DataItem();
-            dd.id = "OEESegment";
-            dd.header = "Shift Segment OEE";
+            dd.id = "OEE_Availability";
+            dd.header = "Availability";
             DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "OEE_Performance";
+            dd.header = "Performance";
+            DataItems.Add(dd);
+            // ----------------------------------
+
+
+
+            //dd = new DataItem();
+            //dd.id = "OEEAverage";
+            //dd.header = "Average Shift OEE";
+            //DataItems.Add(dd);
+
+            //dd = new DataItem();
+            //dd.id = "OEESegment";
+            //dd.header = "Shift Segment OEE";
+            //DataItems.Add(dd);
 
             dd = new DataItem();
             dd.id = "OEETimeLine";
@@ -148,6 +167,11 @@ namespace TH_DeviceCompare
             dd = new DataItem();
             dd.id = "EmergencyStop";
             dd.header = "Emergency Stop";
+            DataItems.Add(dd);
+
+            dd = new DataItem();
+            dd.id = "ControllerMessage";
+            dd.header = "Controller Message";
             DataItems.Add(dd);
 
             dd = new DataItem();

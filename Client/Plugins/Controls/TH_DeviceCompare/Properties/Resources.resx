@@ -142,8 +142,14 @@
   <data name="Compare_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Compare_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ScheduledDownTime_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ScheduledDownTime_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="TrakHound_Logo_10_200px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\TrakHound_Logo_10_200px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Warning_01_200px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Warning_01_200px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Warning_01_40px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Warning_01_40px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

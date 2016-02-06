@@ -55,18 +55,40 @@
 
         <Border Grid.Column="1">
 
-            <ContentControl Content="{Binding PageContent}"/>
+            <ContentControl Content="{Binding PageContent}">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding LoggedIn}" Value="false">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
             
         </Border>
 
         <!--No Devices-->
-        <Grid Grid.Column="1" Background="{Binding Background, ElementName=root_GRID}">
+        <Grid Grid.Column="1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Devices.Count}" Value="0">
                             <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -80,13 +102,16 @@
         </Grid>
 
         <!--Loading Devices-->
-        <Grid Grid.Column="1" Background="{Binding Background, ElementName=root_GRID}">
+        <Grid Grid.Column="1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
                             <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding LoggedIn}" Value="false">
+                            <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -105,7 +130,7 @@
         </Grid>
 
         <!--Not Logged in Panel-->
-        <Grid Grid.Column="1" Background="{Binding Background, ElementName=root_GRID}">
+        <Grid Grid.Column="1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>

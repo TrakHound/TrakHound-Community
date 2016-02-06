@@ -34,16 +34,19 @@ namespace TH_Global.Functions
             DataTable dt = table as DataTable;
             if (dt != null)
             {
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = keyColumn + "='" + key + "'";
-                DataTable temp_dt = dv.ToTable(false, returnColumn);
-                if (temp_dt != null)
+                if (dt.Columns.Contains(keyColumn))
                 {
-                    if (temp_dt.Rows.Count > 0)
+                    DataView dv = dt.AsDataView();
+                    dv.RowFilter = keyColumn + "='" + key + "'";
+                    DataTable temp_dt = dv.ToTable(false, returnColumn);
+                    if (temp_dt != null)
                     {
-                        result = temp_dt.Rows[0][0].ToString();
+                        if (temp_dt.Rows.Count > 0)
+                        {
+                            result = temp_dt.Rows[0][0].ToString();
+                        }
                     }
-                }
+                }   
             }
 
             return result;

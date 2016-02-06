@@ -359,6 +359,7 @@
 		<row><td>TH_InstanceTable.Primary_output1</td><td>{A1886426-823D-46EA-B4D0-30023A57FCC8}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_instancetable.primary_out1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_MTConnect.Content_Files</td><td>{14DB01E7-F2C1-44C1-8726-1C9833505470}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_mtconnect.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_MTConnect.Primary_output</td><td>{D2B614A4-E00C-41D1-AEDD-50EADC5BCFC4}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_mtconnect.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>TH_MicrosoftSQL.dll</td><td>{D30192A9-3466-445E-8F5C-3EEFCF4868E8}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_microsoftsql.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_MySQL.Content_Files2</td><td>{7A590F29-D8B6-4B94-82EB-2855B56E3A64}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_mysql.content_files2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_MySQL.Primary_output2</td><td>{6909E9A9-BF0F-454D-A952-8D3A3CEE2232}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_mysql.primary_output2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>TH_OEE.Content_Files2</td><td>{0E40876F-4EAB-47F6-8352-4950A01B965F}</td><td>INSTALLDIR</td><td>2</td><td/><td>th_oee.content_files2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1911,6 +1912,7 @@
 		<row><td>AlwaysInstall</td><td>TH_InstanceTable.Primary_output1</td></row>
 		<row><td>AlwaysInstall</td><td>TH_MTConnect.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>TH_MTConnect.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>TH_MicrosoftSQL.dll</td></row>
 		<row><td>AlwaysInstall</td><td>TH_MySQL.Content_Files2</td></row>
 		<row><td>AlwaysInstall</td><td>TH_MySQL.Primary_output2</td></row>
 		<row><td>AlwaysInstall</td><td>TH_OEE.Content_Files2</td></row>
@@ -1952,6 +1954,7 @@
 		<row><td>th_global.primary_output</td><td>TH_Global.Primary_output</td><td>TH_Global.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_Global&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_instancetable.content_fil2</td><td>TH_InstanceTable.Content_Files2</td><td>TH_InstanceTable.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_InstanceTable&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>th_instancetable.primary_out1</td><td>TH_InstanceTable.Primary_output1</td><td>TH_InstanceTable.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_InstanceTable&gt;|Built</td><td>3</td><td/></row>
+		<row><td>th_microsoftsql.dll</td><td>TH_MicrosoftSQL.dll</td><td>TH_MIC~1.DLL|TH_MicrosoftSQL.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\TrakHound\Plugins\Database\TH_MicrosoftSQL.dll</td><td>1</td><td/></row>
 		<row><td>th_mtconnect.content_files</td><td>TH_MTConnect.Content_Files</td><td>TH_MTConnect.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MTConnect&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>th_mtconnect.primary_output</td><td>TH_MTConnect.Primary_output</td><td>TH_MTConnect.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MTConnect&gt;|Built</td><td>3</td><td/></row>
 		<row><td>th_mysql.content_files2</td><td>TH_MySQL.Content_Files2</td><td>TH_MySQL.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;TH_MySQL&gt;|ContentFiles</td><td>3</td><td/></row>
@@ -2127,6 +2130,7 @@
 		<row><td>TH_InstanceTable.Primary_output1</td><td/><td/><td>_E3D31596_4225_4C73_9A95_5BA445FFDA73_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_MTConnect.Content_Files</td><td/><td/><td>_6F1A3452_2D61_46A6_B1B3_EA2FF77EC9B3_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_MTConnect.Primary_output</td><td/><td/><td>_266F8C21_572E_420A_A392_EE3BB4C6FA80_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>TH_MicrosoftSQL.dll</td><td/><td/><td>_20DBA5E3_15A1_489E_B681_3A58B47C437D_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_MySQL.Content_Files2</td><td/><td/><td>_1F45DA0A_CEDF_41E5_9AF7_DA1B4F488D2F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_MySQL.Primary_output2</td><td/><td/><td>_832DC0BA_585D_47E9_BD9C_7B0DCBFA9BA2_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>TH_OEE.Content_Files2</td><td/><td/><td>_7E370726_AD94_43DB_8750_5DDCF3D7521A_FILTER</td><td/><td/><td/><td/></row>
@@ -4537,7 +4541,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{48C262CF-7EDE-43DB-B4FF-4D3D30A754F3}</td><td/></row>
 		<row><td>ProductName</td><td>TrakHound Server</td><td/></row>
-		<row><td>ProductVersion</td><td>1.5.0.4</td><td/></row>
+		<row><td>ProductVersion</td><td>1.5.0.9</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

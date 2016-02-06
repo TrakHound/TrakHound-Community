@@ -226,9 +226,6 @@ namespace TH_DeviceCompare
 
 
 
-                            // Shift Info
-                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_Snapshots), Priority_Context, new object[] { dd, de_d.data02 });
-
                             // OEE Timeline / Histogram
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Timeline_SnapshotData), Priority_Context, new object[] { dd, de_d.data02 });
 
@@ -265,7 +262,20 @@ namespace TH_DeviceCompare
                             // Emergency Stop
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateEmergencyStop), Priority_Context, new object[] { dd, de_d.data02 });
 
+                            // Controller Message
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateMessage), Priority_Context, new object[] { dd, de_d.data02 });
                         
+                        }
+
+                         // Variables Table Data
+                        if (de_d.id.ToLower() == "statusdata_variables")
+                        {
+                            // Shift Break
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateBreak), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            // Shift Info
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(UpdateShiftInfo_Variables), Priority_Context, new object[] { dd, de_d.data02 });
+
                         }
 
                         // Shifts Table Data
@@ -294,11 +304,13 @@ namespace TH_DeviceCompare
                         // OEE Table Data
                         if (de_d.id.ToLower() == "statusdata_oee")
                         {
-                            // OEE Average
-                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority_Context, new object[] { dd, de_d.data02 });
+                            // OEE Values
+                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(OEEValues_Update), Priority_Context, new object[] { dd, de_d.data02 });
+
+                            //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Avg), Priority_Context, new object[] { dd, de_d.data02 });
 
                             // Current Segment OEE
-                            this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, de_d.data02 });
+                            //this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Segment), Priority_Context, new object[] { dd, de_d.data02 });
 
                             // OEE Timeline / Histogram
                             this.Dispatcher.BeginInvoke(new Action<DeviceDisplay, object>(Update_OEE_Timeline_OEEData), Priority_Context, new object[] { dd, de_d.data02 });
@@ -394,21 +406,38 @@ namespace TH_DeviceCompare
 
         #region "Shift Break"
 
-        void UpdateBreak(DeviceDisplay dd, object snapshotData)
+        void UpdateBreak(DeviceDisplay dd, object variableData)
         {
-            DataTable dt = snapshotData as DataTable;
+            DataTable dt = variableData as DataTable;
             if (dt != null)
             {
                 Header header = dd.ComparisonGroup.header;
                 if (header != null)
                 {
-                    string value = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Type", "value");
+                    string value = DataTable_Functions.GetTableValue(dt, "variable", "shift_type", "value");
                     if (value != null)
                     {
-                        if (value.ToLower() == "break") header.Break = true;
-                        else header.Break = false;
+                        if (value.ToLower() == "break")
+                        {
+                            header.ScheduledDowntime = true;
+
+                            header.ScheduledDowntime_Text = "Break";
+
+                            string b = DataTable_Functions.GetTableValue(dt, "variable", "shift_begintime", "value");
+                            string e = DataTable_Functions.GetTableValue(dt, "variable", "shift_endtime", "value");
+
+                            DateTime begin = DateTime.MinValue;
+                            DateTime end = DateTime.MinValue;
+
+                            if (DateTime.TryParse(b, out begin) && DateTime.TryParse(e, out end))
+                            {
+                                string breakTimes = "(" + begin.ToShortTimeString() + " - " + end.ToShortTimeString() + ")";
+                                header.ScheduledDowntime_Times = breakTimes;
+                            }                          
+                        }
+                        else header.ScheduledDowntime = false;
                     }
-                    else header.Break = false;
+                    else header.ScheduledDowntime = false;
                 }
             }
         }
@@ -417,9 +446,9 @@ namespace TH_DeviceCompare
 
         #region "Shift Info"
 
-        void UpdateShiftInfo_Snapshots(DeviceDisplay dd, object snapshotData)
+        void UpdateShiftInfo_Variables(DeviceDisplay dd, object variableData)
         {
-            DataTable dt = snapshotData as DataTable;
+            DataTable dt = variableData as DataTable;
             if (dt != null)
             {
                 int cellIndex = -1;
@@ -441,12 +470,12 @@ namespace TH_DeviceCompare
                     // Update Shift Name
                     string prevShiftName = sd.Shift_Name;
                     bool shiftChanged = false;
-                    sd.Shift_Name = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
+                    sd.Shift_Name = DataTable_Functions.GetTableValue(dt, "variable", "shift_name", "value");
                     if (prevShiftName != sd.Shift_Name) shiftChanged = true;
 
                     // Update Shift Data
                     string date = "";
-                    string shiftdate = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Date", "value");
+                    string shiftdate = DataTable_Functions.GetTableValue(dt, "variable", "shift_date", "value");
                     if (shiftdate != null)
                     {
                         DateTime timestamp = DateTime.MinValue;
@@ -461,11 +490,11 @@ namespace TH_DeviceCompare
                     }
 
                     // Get Shift Progress Bar Maximum -------------------------------------------------
-                    string shiftBegin = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Begin", "value");
+                    string shiftBegin = DataTable_Functions.GetTableValue(dt, "variable", "shift_begintime", "value");
                     DateTime begin = DateTime.MinValue;
                     DateTime.TryParse(shiftBegin, out begin);
 
-                    string shiftEnd = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End", "value");
+                    string shiftEnd = DataTable_Functions.GetTableValue(dt, "variable", "shift_endtime", "value");
                     DateTime end = DateTime.MinValue;
                     DateTime.TryParse(shiftEnd, out end);
 
@@ -482,7 +511,7 @@ namespace TH_DeviceCompare
 
 
                     // Get Shift Progress Bar Value ---------------------------------------------------
-                    string shiftProgress = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Time", "value");
+                    string shiftProgress = DataTable_Functions.GetTableValue(dt, "variable", "shift_currenttime", "value");
                     DateTime progress = DateTime.MinValue;
                     DateTime.TryParse(shiftProgress, out progress);
 
@@ -497,7 +526,7 @@ namespace TH_DeviceCompare
                     // --------------------------------------------------------------------------------
 
 
-                    string CurrentShiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
+                    string CurrentShiftId = DataTable_Functions.GetTableValue(dt, "variable", "shift_id", "value");
 
                     foreach (Controls.ShiftSegmentIndicator indicator in sd.SegmentIndicators)
                     {
@@ -527,6 +556,117 @@ namespace TH_DeviceCompare
                 }
             }
         }
+
+        //void UpdateShiftInfo_Snapshots(DeviceDisplay dd, object snapshotData)
+        //{
+        //    DataTable dt = snapshotData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        int cellIndex = -1;
+        //        cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "shiftinfo");
+        //        if (cellIndex >= 0)
+        //        {
+        //            object data = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+        //            Controls.ShiftDisplay sd;
+        //            if (data != null)
+        //            {
+        //                sd = (Controls.ShiftDisplay)data;
+        //            }
+        //            else
+        //            {
+        //                sd = new Controls.ShiftDisplay();
+        //                dd.ComparisonGroup.column.Cells[cellIndex].Data = sd;
+        //            }
+
+        //            // Update Shift Name
+        //            string prevShiftName = sd.Shift_Name;
+        //            bool shiftChanged = false;
+        //            sd.Shift_Name = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
+        //            if (prevShiftName != sd.Shift_Name) shiftChanged = true;
+
+        //            // Update Shift Data
+        //            string date = "";
+        //            string shiftdate = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Date", "value");
+        //            if (shiftdate != null)
+        //            {
+        //                DateTime timestamp = DateTime.MinValue;
+        //                DateTime.TryParse(shiftdate, out timestamp);
+        //                if (timestamp > DateTime.MinValue)
+        //                {
+        //                    sd.Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(timestamp.Month);
+        //                    sd.Day = timestamp.Day.ToString();
+        //                }
+
+        //                date = shiftdate + " ";
+        //            }
+
+        //            // Get Shift Progress Bar Maximum -------------------------------------------------
+        //            string shiftBegin = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Begin", "value");
+        //            DateTime begin = DateTime.MinValue;
+        //            DateTime.TryParse(shiftBegin, out begin);
+
+        //            string shiftEnd = DataTable_Functions.GetTableValue(dt, "name", "Current Shift End", "value");
+        //            DateTime end = DateTime.MinValue;
+        //            DateTime.TryParse(shiftEnd, out end);
+
+        //            if (end < begin) end = end.AddDays(1);
+
+        //            sd.Shift_Times = "(" + begin.ToShortTimeString() + " - " + end.ToShortTimeString() + ")";
+
+        //            Int64 duration = Convert.ToInt64((end - begin).TotalSeconds);
+        //            if (duration <= int.MaxValue && duration >= int.MinValue)
+        //            {
+        //                sd.Bar_Maximum = Convert.ToInt32(duration);
+        //            }
+        //            // --------------------------------------------------------------------------------
+
+
+        //            // Get Shift Progress Bar Value ---------------------------------------------------
+        //            string shiftProgress = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Time", "value");
+        //            DateTime progress = DateTime.MinValue;
+        //            DateTime.TryParse(shiftProgress, out progress);
+
+        //            if (progress > DateTime.MinValue)
+        //            {
+        //                duration = Convert.ToInt64((end - progress).TotalSeconds);
+        //                if (duration <= int.MaxValue && duration >= int.MinValue)
+        //                {
+        //                    sd.Bar_Value = Convert.ToInt32(duration);
+        //                }
+        //            }
+        //            // --------------------------------------------------------------------------------
+
+
+        //            string CurrentShiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
+
+        //            foreach (Controls.ShiftSegmentIndicator indicator in sd.SegmentIndicators)
+        //            {
+        //                SegmentInfo segment = indicator.Segment;
+
+        //                if (CurrentShiftId == segment.id)
+        //                {
+        //                    indicator.CurrentShift = true;
+
+        //                    string sCurrentTime = shiftProgress;
+
+        //                    DateTime currentTime = DateTime.MinValue;
+        //                    if (DateTime.TryParse(sCurrentTime, out currentTime))
+        //                    {
+        //                        double segmentProgress = (currentTime - segment.segmentStart).TotalSeconds;
+        //                        indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentProgress));
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    double segmentDuration = (segment.segmentEnd - segment.segmentStart).TotalSeconds;
+
+        //                    indicator.BarValue = Math.Max(0, Convert.ToInt32(segmentDuration));
+        //                    indicator.CurrentShift = false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         void UpdateShiftInfo_ShiftData(DeviceDisplay dd, object shiftData)
         {
@@ -675,27 +815,30 @@ namespace TH_DeviceCompare
                         dv.RowFilter = "EVENT = 'production_status'";
                         DataTable temp_dt = dv.ToTable(false, "VALUE");
 
-                        List<Color> colors = TH_Styles.IndicatorColors.GetIndicatorColors(temp_dt.Rows.Count);
-                        int colorIndex = 0;
+                        //List<Color> colors = TH_Styles.IndicatorColors.GetIndicatorColors(temp_dt.Rows.Count);
+                        //int colorIndex = 0;
 
-                        foreach (DataRow row in temp_dt.Rows)
+                        if (temp_dt != null)
                         {
-                            Controls.TimeDisplay td = new Controls.TimeDisplay();
+                            foreach (DataRow row in temp_dt.Rows)
+                            {
+                                Controls.TimeDisplay td = new Controls.TimeDisplay();
 
-                            // Set Text
-                            td.Text = row[0].ToString();
+                                // Set Text
+                                td.Text = row[0].ToString();
 
-                            // Set Bar Color
-                            Color color = colors[colorIndex];
-                            td.BarBrush = new SolidColorBrush(Color.FromArgb(221, color.R, color.G, color.B));
-                            colorIndex += 1;
+                                // Set Bar Color
+                                //Color color = colors[colorIndex];
+                                //td.BarBrush = new SolidColorBrush(Color.FromArgb(221, color.R, color.G, color.B));
+                                //colorIndex += 1;
 
-                            // Initialize values
-                            td.Percentage = "0%";
-                            td.BarValue = 0;
-                            td.BarMaximum = 1;
+                                // Initialize values
+                                td.Percentage = "0%";
+                                td.BarValue = 0;
+                                td.BarMaximum = 1;
 
-                            stack.Children.Add(td);
+                                stack.Children.Add(td);
+                            }
                         }
                     }
                 }
@@ -792,13 +935,26 @@ namespace TH_DeviceCompare
         // Assign the TimeDisplay control changes
         void UpdateProductionStatusTimes_ShiftData_GUI(Controls.TimeDisplay td, int barvalue, int barmaximum)
         {
-            td.Time = TimeSpan.FromSeconds(barvalue).ToString();
+            if (td.BarMaximum > 0)
+            {
+                td.Time = TimeSpan.FromSeconds(barvalue).ToString();
 
-            double percentage = (double)barvalue / barmaximum;
-            td.Percentage = percentage.ToString("P1");
+                double percentage = (double)barvalue / barmaximum;
+                td.Percentage = percentage.ToString("P1");
 
-            td.BarValue = barvalue;
-            td.BarMaximum = barmaximum;
+                td.BarValue = barvalue;
+                td.BarMaximum = barmaximum;
+            }
+            else
+            {
+                td.Time = TimeSpan.Zero.ToString();
+
+                double percentage = 0;
+                td.Percentage = percentage.ToString("P1");
+
+                td.BarValue = 0;
+                td.BarMaximum = 1;
+            }
         }
 
         // Highlight the Current Production Status
@@ -834,7 +990,7 @@ namespace TH_DeviceCompare
 
         #endregion
 
-        #region "OEE Values"
+        #region "OEE Values (OLD 2-5-16)"
 
         void Update_OEE_Avg(DeviceDisplay dd, object oeedata)
         {
@@ -927,214 +1083,214 @@ namespace TH_DeviceCompare
 
         #region "OEE Timeline/Histogram"
 
-        class OEE_TimelineInfo
-        {
-            public string id { get; set; }
-            public double value { get; set; }
-            public string segmentTimes { get; set; }
-            public string valueText { get; set; }
-        }
+        //class OEE_TimelineInfo
+        //{
+        //    public string id { get; set; }
+        //    public double value { get; set; }
+        //    public string segmentTimes { get; set; }
+        //    public string valueText { get; set; }
+        //}
 
-        void Update_OEE_Timeline_OEEData(DeviceDisplay dd, object oeedata)
-        {
-            List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
+        //void Update_OEE_Timeline_OEEData(DeviceDisplay dd, object oeedata)
+        //{
+        //    List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
 
-            DataTable dt = oeedata as DataTable;
-            if (dt != null)
-            {
-                List<double> oees = new List<double>();
+        //    DataTable dt = oeedata as DataTable;
+        //    if (dt != null)
+        //    {
+        //        List<double> oees = new List<double>();
 
-                foreach (DataRow row in dt.Rows)
-                {
-                    string oee_str = DataTable_Functions.GetRowValue("oee", row);
+        //        foreach (DataRow row in dt.Rows)
+        //        {
+        //            string oee_str = DataTable_Functions.GetRowValue("oee", row);
 
-                    if (oee_str != null)
-                    {
-                        // Get OEE Value
-                        double oee = -1;
-                        double.TryParse(oee_str, out oee);
-                        if (oee >= 0)
-                        {
-                            // Get Segment Time Info
-                            string oee_shiftId = DataTable_Functions.GetRowValue("shift_id", row);
+        //            if (oee_str != null)
+        //            {
+        //                // Get OEE Value
+        //                double oee = -1;
+        //                double.TryParse(oee_str, out oee);
+        //                if (oee >= 0)
+        //                {
+        //                    // Get Segment Time Info
+        //                    string oee_shiftId = DataTable_Functions.GetRowValue("shift_id", row);
 
-                            if (oee_shiftId != null)
-                            {
-                                OEE_TimelineInfo info = new OEE_TimelineInfo();
-                                info.id = oee_shiftId;
+        //                    if (oee_shiftId != null)
+        //                    {
+        //                        OEE_TimelineInfo info = new OEE_TimelineInfo();
+        //                        info.id = oee_shiftId;
 
-                                info.value = oee;
-                                info.valueText = oee.ToString("P2");
+        //                        info.value = oee;
+        //                        info.valueText = oee.ToString("P2");
 
-                                infos.Add(info);
-                            }
-                        }
-                    }
-                }
-
-
-                int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
-                if (cellIndex >= 0)
-                {
-                    //Controls.HistogramDisplay oeeTimeline;
-                    //Grid container;
-
-                    TH_WPF.Histogram.Histogram oeeTimeline;
-
-                    object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
-                    if (ddData == null)
-                    {
-                        //container = new Grid();
-
-                        //oeeTimeline = new Controls.HistogramDisplay();
-                        oeeTimeline = new TH_WPF.Histogram.Histogram();
-                        oeeTimeline.Name = "OEE";
-                        oeeTimeline.Height = 100;
-                        oeeTimeline.Width = 180;
-                        oeeTimeline.Margin = new Thickness(0, 5, 0, 5);
-
-                        //container.Children.Add(oeeTimeline);
-                        //container.Children.Add(new Components.GlossOverlay());
+        //                        infos.Add(info);
+        //                    }
+        //                }
+        //            }
+        //        }
 
 
-                        dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeTimeline;
-                        //dd.ComparisonGroup.column.Cells[cellIndex].Data = container;
-                    }
-                    //else oeeTimeline = (Controls.HistogramDisplay)ddData;
-                    else oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
-                    //else
-                    //{
-                    //    oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
-                    //}
+        //        int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
+        //        if (cellIndex >= 0)
+        //        {
+        //            //Controls.HistogramDisplay oeeTimeline;
+        //            //Grid container;
+
+        //            TH_WPF.Histogram.Histogram oeeTimeline;
+
+        //            object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+        //            if (ddData == null)
+        //            {
+        //                //container = new Grid();
+
+        //                //oeeTimeline = new Controls.HistogramDisplay();
+        //                oeeTimeline = new TH_WPF.Histogram.Histogram();
+        //                oeeTimeline.Name = "OEE";
+        //                oeeTimeline.Height = 100;
+        //                oeeTimeline.Width = 180;
+        //                oeeTimeline.Margin = new Thickness(0, 5, 0, 5);
+
+        //                //container.Children.Add(oeeTimeline);
+        //                //container.Children.Add(new Components.GlossOverlay());
 
 
-                    foreach (OEE_TimelineInfo info in infos)
-                    {
-                        TH_WPF.Histogram.DataBar db;
+        //                dd.ComparisonGroup.column.Cells[cellIndex].Data = oeeTimeline;
+        //                //dd.ComparisonGroup.column.Cells[cellIndex].Data = container;
+        //            }
+        //            //else oeeTimeline = (Controls.HistogramDisplay)ddData;
+        //            else oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
+        //            //else
+        //            //{
+        //            //    oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
+        //            //}
 
-                        int dbIndex = oeeTimeline.DataBars.ToList().FindIndex(x => x.Id == info.id);
-                        if (dbIndex < 0)
-                        {
-                            db = new TH_WPF.Histogram.DataBar();
-                            db.Id = info.id;
-                            db.SegmentTimes = info.segmentTimes;
-                            //oeeTimeline.DataBars.Add(db);
-                            oeeTimeline.AddDataBar(db);
-                        }
-                        else db = oeeTimeline.DataBars[dbIndex];
 
-                        db.Value = info.value * 100;
-                        db.ValueText = info.valueText;
-                    }
-                }
+        //            foreach (OEE_TimelineInfo info in infos)
+        //            {
+        //                TH_WPF.Histogram.DataBar db;
 
-            }
-        }
+        //                int dbIndex = oeeTimeline.DataBars.ToList().FindIndex(x => x.Id == info.id);
+        //                if (dbIndex < 0)
+        //                {
+        //                    db = new TH_WPF.Histogram.DataBar();
+        //                    db.Id = info.id;
+        //                    db.SegmentTimes = info.segmentTimes;
+        //                    //oeeTimeline.DataBars.Add(db);
+        //                    oeeTimeline.AddDataBar(db);
+        //                }
+        //                else db = oeeTimeline.DataBars[dbIndex];
 
-        void Update_OEE_Timeline_ShiftData(DeviceDisplay dd, object shiftData)
-        {
-            int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
-            if (cellIndex >= 0)
-            {
-                TH_WPF.Histogram.Histogram oeeTimeline;
+        //                db.Value = info.value * 100;
+        //                db.ValueText = info.valueText;
+        //            }
+        //        }
 
-                object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+        //    }
+        //}
 
-                if (ddData != null)
-                {
-                    oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
-                    //oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
+        //void Update_OEE_Timeline_ShiftData(DeviceDisplay dd, object shiftData)
+        //{
+        //    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
+        //    if (cellIndex >= 0)
+        //    {
+        //        TH_WPF.Histogram.Histogram oeeTimeline;
 
-                    // Get Segment Times (for ToolTip)
-                    foreach (TH_WPF.Histogram.DataBar db in oeeTimeline.DataBars)
-                    {
-                        string segmentTimes = GetSegmentName(db.Id, shiftData);
-                        if (segmentTimes != null)
-                        {
-                            if (db.SegmentTimes != segmentTimes) db.SegmentTimes = segmentTimes;
-                        }
-                    }
-                }
-            }
-        }
+        //        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
-        void Update_OEE_Timeline_SnapshotData(DeviceDisplay dd, object snapshotData)
-        {
-            List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
+        //        if (ddData != null)
+        //        {
+        //            oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
+        //            //oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
 
-            DataTable dt = snapshotData as DataTable;
-            if (dt != null)
-            {
-                int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
-                if (cellIndex >= 0)
-                {
-                    TH_WPF.Histogram.Histogram oeeTimeline;
+        //            // Get Segment Times (for ToolTip)
+        //            foreach (TH_WPF.Histogram.DataBar db in oeeTimeline.DataBars)
+        //            {
+        //                string segmentTimes = GetSegmentName(db.Id, shiftData);
+        //                if (segmentTimes != null)
+        //                {
+        //                    if (db.SegmentTimes != segmentTimes) db.SegmentTimes = segmentTimes;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-                    object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+        //void Update_OEE_Timeline_SnapshotData(DeviceDisplay dd, object snapshotData)
+        //{
+        //    List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
 
-                    if (ddData != null)
-                    {
-                        //oeeTimeline = (Controls.HistogramDisplay)ddData;
-                        oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
-                        //oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
+        //    DataTable dt = snapshotData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
+        //        if (cellIndex >= 0)
+        //        {
+        //            TH_WPF.Histogram.Histogram oeeTimeline;
 
-                        // Get Shift Name to check if still in the same shift as last update
-                        string prev_shiftName = oeeTimeline.shiftName;
-                        oeeTimeline.shiftName = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
-                        if (prev_shiftName != oeeTimeline.shiftName) oeeTimeline.DataBars.Clear();
+        //            object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
 
-                        // Get Current Segment
-                        foreach (TH_WPF.Histogram.DataBar db in oeeTimeline.DataBars)
-                        {
-                            string currentShiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
-                            if (currentShiftId == db.Id) db.CurrentSegment = true;
-                            else db.CurrentSegment = false;
-                        }
-                    }
-                }
-            }
-        }
+        //            if (ddData != null)
+        //            {
+        //                //oeeTimeline = (Controls.HistogramDisplay)ddData;
+        //                oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
+        //                //oeeTimeline = (TH_WPF.Histogram.Histogram)((Grid)ddData).Children[0];
 
-        string GetSegmentName(string shiftId, object shiftData)
-        {
-            string Result = null;
+        //                // Get Shift Name to check if still in the same shift as last update
+        //                string prev_shiftName = oeeTimeline.shiftName;
+        //                oeeTimeline.shiftName = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
+        //                if (prev_shiftName != oeeTimeline.shiftName) oeeTimeline.DataBars.Clear();
 
-            DataTable dt = shiftData as DataTable;
-            if (dt != null)
-            {
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = "id='" + shiftId + "'";
-                DataTable temp_dt = dv.ToTable();
+        //                // Get Current Segment
+        //                foreach (TH_WPF.Histogram.DataBar db in oeeTimeline.DataBars)
+        //                {
+        //                    string currentShiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
+        //                    if (currentShiftId == db.Id) db.CurrentSegment = true;
+        //                    else db.CurrentSegment = false;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
-                // Should be max of one row
-                if (temp_dt.Rows.Count > 0)
-                {
-                    DataRow row = temp_dt.Rows[0];
+        //string GetSegmentName(string shiftId, object shiftData)
+        //{
+        //    string Result = null;
 
-                    //Get Segment start Time
-                    string start = DataTable_Functions.GetRowValue("start", row);
+        //    DataTable dt = shiftData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        DataView dv = dt.AsDataView();
+        //        dv.RowFilter = "id='" + shiftId + "'";
+        //        DataTable temp_dt = dv.ToTable();
 
-                    // Get Segment end Time
-                    string end = DataTable_Functions.GetRowValue("end", row);
+        //        // Should be max of one row
+        //        if (temp_dt.Rows.Count > 0)
+        //        {
+        //            DataRow row = temp_dt.Rows[0];
 
-                    // Create Segment Times string
-                    if (start != null && end != null)
-                    {
-                        DateTime timestamp = DateTime.MinValue;
-                        DateTime.TryParse(start, out timestamp);
-                        if (timestamp > DateTime.MinValue) start = timestamp.ToShortTimeString();
+        //            //Get Segment start Time
+        //            string start = DataTable_Functions.GetRowValue("start", row);
 
-                        timestamp = DateTime.MinValue;
-                        DateTime.TryParse(end, out timestamp);
-                        if (timestamp > DateTime.MinValue) end = timestamp.ToShortTimeString();
+        //            // Get Segment end Time
+        //            string end = DataTable_Functions.GetRowValue("end", row);
 
-                        Result = start + " - " + end;
-                    }
-                }
-            }
+        //            // Create Segment Times string
+        //            if (start != null && end != null)
+        //            {
+        //                DateTime timestamp = DateTime.MinValue;
+        //                DateTime.TryParse(start, out timestamp);
+        //                if (timestamp > DateTime.MinValue) start = timestamp.ToShortTimeString();
 
-            return Result;
-        }
+        //                timestamp = DateTime.MinValue;
+        //                DateTime.TryParse(end, out timestamp);
+        //                if (timestamp > DateTime.MinValue) end = timestamp.ToShortTimeString();
+
+        //                Result = start + " - " + end;
+        //            }
+        //        }
+        //    }
+
+        //    return Result;
+        //}
 
         #endregion
 
@@ -1662,6 +1818,47 @@ namespace TH_DeviceCompare
                             default:
                                 txt.Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                                 txt.Background = new SolidColorBrush(Colors.Red);
+                                break;
+                        }
+
+                        txt.Text = value;
+                    }
+                }
+            }
+        }
+
+        void UpdateMessage(DeviceDisplay dd, object snapshotData)
+        {
+            DataTable dt = snapshotData as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "name", "Controller Message", "value");
+
+                if (value != null)
+                {
+                    int cellIndex = dd.ComparisonGroup.column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "controllermessage");
+                    if (cellIndex >= 0)
+                    {
+                        Controls.TextDisplay txt;
+
+                        object ddData = dd.ComparisonGroup.column.Cells[cellIndex].Data;
+
+                        if (ddData == null)
+                        {
+                            txt = new Controls.TextDisplay();
+                            dd.ComparisonGroup.column.Cells[cellIndex].Data = txt;
+                        }
+                        else txt = (Controls.TextDisplay)ddData;
+
+                        switch (value)
+                        {
+                            case "":
+                                txt.Foreground = (Brush)TryFindResource("Foreground_Normal");
+                                txt.Background = new SolidColorBrush(Colors.Transparent); 
+                                break;
+                            default:
+                                txt.Foreground = new SolidColorBrush(Colors.Red);
+                                txt.Background = new SolidColorBrush(Colors.Yellow);
                                 break;
                         }
 

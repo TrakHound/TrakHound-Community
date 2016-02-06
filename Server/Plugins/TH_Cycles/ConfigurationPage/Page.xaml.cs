@@ -778,7 +778,7 @@ namespace TH_Cycles.ConfigurationPage
 
                 adr = test;
 
-                string val = null;
+                string val = item.collectedlink_COMBO.Text;
                 string text = item.collectedlink_COMBO.Text;
                 if (text != null)
                 {

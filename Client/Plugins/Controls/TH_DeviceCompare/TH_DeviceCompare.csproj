@@ -55,6 +55,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\OeeTimelineToolTip.xaml.cs">
+      <DependentUpon>OeeTimelineToolTip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Tools.cs" />
     <Page Include="Components\Cell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -92,6 +96,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Include="Controls\OeeTimelineToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\OverrideDisplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -115,6 +123,7 @@
     <Compile Include="Components\Row_Header.xaml.cs">
       <DependentUpon>Row_Header.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls.cs" />
     <Compile Include="Controls\CNC_Display.xaml.cs">
       <DependentUpon>CNC_Display.xaml</DependentUpon>
     </Compile>
@@ -174,7 +183,8 @@
     <Compile Include="DeviceCompare.xaml.cs">
       <DependentUpon>DeviceCompare.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceDisplay.cs" />
+    <Compile Include="Components\DeviceDisplay.cs" />
+    <Compile Include="OEE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -270,6 +280,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Carrot_Arrow_Up_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ScheduledDownTime_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01_200px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

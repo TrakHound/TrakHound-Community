@@ -82,15 +82,19 @@
                                 <Setter Property="ToolTipService.ShowDuration" Value="10000"/>
                                 <Setter Property="ToolTipService.BetweenShowDelay" Value="3000"/>
                                 <Setter Property="ToolTipService.InitialShowDelay" Value="1000"/>
+                                
+                                <Setter Property="ToolTip" Value="{Binding ToolTipData}"/>
 
-                                <Setter Property="ToolTip">
+                                <!--<Setter Property="ToolTip">
                                     <Setter.Value>
                                         <StackPanel>
                                             <TextBlock Text="{Binding SegmentTimes}" FontWeight="Bold" FontSize="8pt"/>
-                                            <TextBlock Text="{Binding ValueText, StringFormat=OEE {0:0}}" FontSize="8pt"/>
+                                            <TextBlock Text="{Binding OeeText, StringFormat=OEE {0:0}}" FontSize="10pt"/>
+                                            <TextBlock Text="{Binding AvailabiltyText, StringFormat=A {0:0}}" FontSize="8pt"/>
+                                            <TextBlock Text="{Binding PerformanceText, StringFormat=P {0:0}}" FontSize="8pt"/>
                                         </StackPanel>
                                     </Setter.Value>
-                                </Setter>
+                                </Setter>-->
 
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">

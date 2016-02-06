@@ -1,5 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    
+                    xmlns:histogram="clr-namespace:TH_WPF.Histogram;assembly=TH_WPF"
+
+                    >
 
     <!--Window Backgrounds-->
     <SolidColorBrush x:Key="Window_Background" Color="#fff"/>
@@ -48,5 +52,5 @@
     <SolidColorBrush x:Key="Shade_Normal" Color="#33000000"/>
     <SolidColorBrush x:Key="Shade_Light" Color="#33ffffff"/>
     <SolidColorBrush x:Key="Shade_Dark" Color="#66000000"/>
-
+    
 </ResourceDictionary>

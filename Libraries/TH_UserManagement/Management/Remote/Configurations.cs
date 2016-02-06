@@ -25,22 +25,27 @@ namespace TH_UserManagement.Management.Remote
 
             string tableName = CreateTableName(userConfig);
 
-            configuration.TableName = tableName;
+            //configuration.TableName = tableName;
 
             result = Create(tableName);
             if (result)
             {
-                string uniqueId = String_Functions.RandomString(20);
-
-                configuration.UniqueId = uniqueId;
+                // Set Table Name
+                configuration.TableName = tableName;
+                XML_Functions.SetInnerText(configuration.ConfigurationXML, "TableName", tableName);
 
                 // Set new Unique Id
-                //XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
+                string uniqueId = String_Functions.RandomString(20);
+                configuration.UniqueId = uniqueId;
+                XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
+
+                // Set Enabled to False
+                configuration.ClientEnabled = false;
+                configuration.ServerEnabled = false;
+                XML_Functions.SetInnerText(configuration.ConfigurationXML, "ClientEnabled", "false");
+                XML_Functions.SetInnerText(configuration.ConfigurationXML, "ServerEnabled", "false");
 
                 DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
-
-                // Set new Unique Id
-                //Table_Functions.UpdateTableValue(uniqueId, "/UniqueId", dt);
 
                 result = Update(tableName, dt);
             }

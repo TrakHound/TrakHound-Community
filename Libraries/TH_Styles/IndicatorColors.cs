@@ -14,10 +14,13 @@ namespace TH_Styles
             Color[] colors = GetColors();
 
             int[] colorArray = GetIndicatorColorSequence(numberOfIndicators);
-            for (int x = 0; x <= numberOfIndicators - 1; x++)
+            if (colorArray != null)
+            {
+                for (int x = 0; x <= numberOfIndicators - 1; x++)
                 {
                     Result.Add(colors[colorArray[x]]);
                 }
+            }
 
             return Result;
         }

@@ -81,7 +81,7 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1">
+            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2">
 
                 <Grid>
                     <Grid.RowDefinitions>

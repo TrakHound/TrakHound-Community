@@ -1292,11 +1292,19 @@ namespace TH_Database
                         }
                     }
                 }
-                //catch (System.Reflection.ReflectionTypeLoadException rt)
-                //{
+                catch (System.Reflection.ReflectionTypeLoadException rtex)
+                {
+                    Logger.Log("DatabasePluginReader.GetPlugins() : ReflectionTypeLoadException : " + rtex.Message);
 
-                //}
-                catch (Exception ex) { Logger.Log("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message); }
+                    foreach (var lex in rtex.LoaderExceptions)
+                    {
+                        Logger.Log("DatabasePluginReader.GetPlugins() : LoaderException : " + lex.Message);
+                    }                  
+                }
+                catch (Exception ex)
+                { 
+                    Logger.Log("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message);
+                }
 
                 // Search Subdirectories
                 foreach (string directory in Directory.GetDirectories(Path))
