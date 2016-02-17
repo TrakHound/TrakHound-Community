@@ -35,6 +35,9 @@ namespace TH_Cycles
         public DateTime StartTime { get; set; }
         public DateTime StopTime { get; set; }
 
+        public DateTime StartTimeUtc { get; set; }
+        public DateTime StopTimeUtc { get; set; }
+
         public string ShiftId { get; set; }
 
         public TimeSpan Duration
@@ -77,6 +80,8 @@ namespace TH_Cycles
             result.ProductionType = ProductionType;
             result.StartTime = StartTime;
             result.StopTime = StopTime;
+            result.StartTimeUtc = StartTimeUtc;
+            result.StopTimeUtc = StopTimeUtc;
             result.ShiftId = ShiftId;
             result.CycleOverrides = CycleOverrides.ToList();
             result.Overrides = Overrides.ToList();

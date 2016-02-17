@@ -71,7 +71,7 @@ namespace TH_DeviceManager.Controls
         public delegate void Clicked_Handler(PageItem item);
         public event Clicked_Handler Clicked;
 
-        private void root_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void root_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Clicked != null) Clicked(this);
         }

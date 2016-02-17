@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Windows.Media.Animation;
+
 namespace TH_WPF
 {
     /// <summary>
@@ -105,36 +107,24 @@ namespace TH_WPF
         {
             double controlWidth = this.ActualWidth;
 
-            double val = value;
-
-            // Perform Checks
-            if (val > Maximum) val = Maximum;
-            if (Maximum <= 0)
-            {
-                Maximum = 1;
-                val = Maximum;
-            }
+            double val = Math.Min(Maximum, value);
 
             // Get ProgressWidth by calculating proportion of Value and Maximum
-            ProgressWidth = (val * controlWidth) / Maximum;
+            val = (val * controlWidth) / Maximum;
+
+            Animate(val, ProgressWidthProperty);
         }
 
         void SetProgressHeight(double value)
         {
             double controlHeight = this.ActualHeight;
 
-            double val = value;
-
-            // Perform Checks
-            if (val > Maximum) val = Maximum;
-            if (Maximum <= 0)
-            {
-                Maximum = 1;
-                val = Maximum;
-            }
+            double val = Math.Min(Maximum, value);
 
             // Get ProgressWidth by calculating proportion of Value and Maximum
-            ProgressHeight = (val * controlHeight) / Maximum;
+            val = (val * controlHeight) / Maximum;
+
+            Animate(val, ProgressHeightProperty);
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -142,6 +132,17 @@ namespace TH_WPF
             SetProgressWidth(Value);
         }
 
+
+        void Animate(double to, DependencyProperty dp)
+        {
+            DoubleAnimation animation = new DoubleAnimation();
+
+            animation.From = (double)GetValue(dp);
+            animation.To = to;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
+            //animation.BeginTime = TimeSpan.FromMilliseconds(200);
+            this.BeginAnimation(dp, animation);
+        }
     }
 
     public enum ProgressBarOrientation

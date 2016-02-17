@@ -14,11 +14,11 @@ namespace TH_UserManagement.Management
     public static class RememberMe
     {
 
-        public static bool Set(UserConfiguration userConfig, RememberMeType type, Database_Settings userDatabaseSettings)
+        public static bool Set(UserConfiguration userConfig, RememberMeType type)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.RememberMe.Set(userConfig, type);
             }
@@ -30,27 +30,27 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static UserConfiguration Get(RememberMeType type, Database_Settings userDatabaseSettings)
+        public static UserConfiguration Get(RememberMeType type)
         {
             UserConfiguration result = null;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.RememberMe.Get(type);
             }
             else
             {
-                result = Local.Users.RememberMe.Get(type, userDatabaseSettings);
+                result = Local.Users.RememberMe.Get(type, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static bool Clear(RememberMeType type, Database_Settings userDatabaseSettings)
+        public static bool Clear(RememberMeType type)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.RememberMe.Clear(type);
             }

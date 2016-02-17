@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Collections.ObjectModel;
+
 namespace TrakHound_Client.Pages.Plugins.Installed
 {
     /// <summary>
@@ -28,7 +30,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         public SubCategory()
         {
             InitializeComponent();
-            DataContext = this;
+            root_GRID.DataContext = this;
         }
 
         public string Text
@@ -39,6 +41,22 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(SubCategory), new PropertyMetadata(null));
+
+
+        ObservableCollection<ListItem> listitems;
+        public ObservableCollection<ListItem> ListItems
+        {
+            get
+            {
+                if (listitems == null) listitems = new ObservableCollection<ListItem>();
+                return listitems;
+            }
+            set
+            {
+                listitems = value;
+            }
+        }
+
 
     }
 }

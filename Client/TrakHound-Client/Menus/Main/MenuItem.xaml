@@ -11,8 +11,7 @@
              mc:Ignorable="d" 
              
              Height="100"
-             Width="100"
-             
+             Width="100"         
              >
 
     <UserControl.Resources>
@@ -23,18 +22,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid x:Name="root_GRID" PreviewMouseDown="root_GRID_PreviewMouseDown" Cursor="Hand" Background="Transparent">
-        <!--<Grid.Style>
-            <Style TargetType="Grid">
-                <Setter Property="Background" Value="Transparent"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>-->
-        
+    <Grid x:Name="root" PreviewMouseDown="root_PreviewMouseDown" Cursor="Hand" Background="Transparent">
+
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -52,55 +41,8 @@
                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                         <Setter Property="Fill" Value="{StaticResource Foreground_Normal}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
                                 <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
-                                <!--<DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard FillBehavior="Stop">
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#333">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>-->
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
-                                <!--<DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard FillBehavior="Stop">
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#333">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -113,55 +55,8 @@
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
                                 <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                <!--<DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#0080ff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard FillBehavior="Stop">
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#333">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>-->
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                <!--<DataTrigger.EnterActions>
-                                    <BeginStoryboard>
-                                        <Storyboard>
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#0080ff">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard>
-                                        <Storyboard FillBehavior="Stop">
-                                            <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Foreground.Color" To="#333">
-                                                <ColorAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </ColorAnimation.EasingFunction>
-                                            </ColorAnimation>
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </DataTrigger.ExitActions>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -169,74 +64,6 @@
             </TextBlock>
             
         </Grid>
-
-        <!--Gloss Effect--><!--
-        <Border IsHitTestVisible="False">
-            <Border.Style>
-                <Style TargetType="Border">
-                    <Setter Property="Visibility" Value="Collapsed"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_GRID}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        --><!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
-                            <Setter Property="Visibility" Value="Visible"/>
-                        </DataTrigger>--><!--
-                    </Style.Triggers>
-                </Style>
-            </Border.Style>
-
-            <Grid IsHitTestVisible="False">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="4*"/>
-                    <RowDefinition Height="6*"/>
-                </Grid.RowDefinitions>
-
-                <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                    <Border.Background>
-                        <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                            <RadialGradientBrush.GradientStops>
-                                <GradientStop Color="#20ffffff" Offset="0" />
-                                <GradientStop Color="#00ffffff" Offset="1.0" />
-                            </RadialGradientBrush.GradientStops>
-                        </RadialGradientBrush>
-                    </Border.Background>
-                </Border>
-
-                <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#00ffffff" Offset="0.2"/>
-                            <GradientStop Color="#66ffffff" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                </Border>
-
-                <Border Grid.Row="1" IsHitTestVisible="False">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="#00ffffff" Offset="0"/>
-                            <GradientStop Color="#06000000" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                </Border>
-
-                --><!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
-                    <Border.Background>
-                        <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                            <GradientStop Color="#08000000" Offset="0"/>
-                            <GradientStop Color="#10ffffff" Offset="0.5"/>
-                            -->
-                <!--<GradientStop Color="#10ffffff" Offset="0.6"/>-->
-                <!--
-                            <GradientStop Color="#08000000" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                </Border>--><!--
-
-            </Grid>
-
-        </Border>-->
 
     </Grid>
     

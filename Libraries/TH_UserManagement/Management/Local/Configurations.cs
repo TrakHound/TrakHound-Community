@@ -55,25 +55,26 @@ namespace TH_UserManagement.Management.Local
 
         public static List<Configuration> Get(UserConfiguration userConfig, Database_Settings db)
         {
-
             List<Configuration> result = new List<Configuration>();
 
             string[] tables = Table.List(db, "LIKE '" + userConfig.username + "%'");
-
-            foreach (string table in tables)
+            if (tables != null)
             {
-                DataTable dt = Table.Get(db, table);
-                if (dt != null)
+                foreach (string table in tables)
                 {
-                    XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
-                    if (xml != null)
+                    DataTable dt = Table.Get(db, table);
+                    if (dt != null)
                     {
-                        Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
-                        if (config != null)
+                        XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                        if (xml != null)
                         {
-                            config.Remote = true;
-                            config.TableName = table;
-                            result.Add(config);
+                            Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+                            if (config != null)
+                            {
+                                config.Remote = true;
+                                config.TableName = table;
+                                result.Add(config);
+                            }
                         }
                     }
                 }
@@ -192,7 +193,7 @@ namespace TH_UserManagement.Management.Local
 
         static string CreateTableName(UserConfiguration userConfig)
         {
-            return userConfig.username + "_" + String_Functions.RandomString(20);
+            return userConfig.username.ToLower() + "_" + String_Functions.RandomString(20);
         }
 
     }

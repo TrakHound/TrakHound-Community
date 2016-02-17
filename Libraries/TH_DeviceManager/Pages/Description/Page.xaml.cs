@@ -52,8 +52,6 @@ namespace TH_DeviceManager.Pages.Description
 
         public UserConfiguration currentUser { get; set; }
 
-        public Database_Settings userDatabaseSettings;
-
         public event SaveRequest_Handler SaveRequest;
 
         public event SettingChanged_Handler SettingChanged;
@@ -427,7 +425,7 @@ namespace TH_DeviceManager.Pages.Description
             {
                 string filename = o.ToString();
 
-                System.Drawing.Image img = Images.GetImage(filename, userDatabaseSettings);
+                System.Drawing.Image img = Images.GetImage(filename);
 
                 this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadManufacturerLogo_GUI), priority, new object[] { img });
             }
@@ -498,7 +496,7 @@ namespace TH_DeviceManager.Pages.Description
 
                 if (File.Exists(localPath))
                 {
-                    Images.UploadImage(localPath, userDatabaseSettings);
+                    Images.UploadImage(localPath);
 
                     result = filename;
                 }
@@ -581,7 +579,7 @@ namespace TH_DeviceManager.Pages.Description
             {
                 string filename = o.ToString();
 
-                System.Drawing.Image img = Images.GetImage(filename, userDatabaseSettings);
+                System.Drawing.Image img = Images.GetImage(filename);
 
                 this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadDeviceImage_GUI), priority, new object[] { img });
             }
@@ -652,7 +650,7 @@ namespace TH_DeviceManager.Pages.Description
 
                 if (File.Exists(localPath))
                 {
-                    Images.UploadImage(localPath, userDatabaseSettings);
+                    Images.UploadImage(localPath);
 
                     result = filename;
                 }

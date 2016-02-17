@@ -56,9 +56,7 @@ namespace TH_DeviceManager
 
             ManagerType = type;
 
-            if (type == DeviceManagerType.Server) LoadPlugins();
-
-            InitializePages(type);
+            LoadPlugins();
         }
 
         void init()
@@ -99,26 +97,26 @@ namespace TH_DeviceManager
             DependencyProperty.Register("LoggedIn", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
 
-        Database_Settings userDatabaseSettings;
-        public Database_Settings UserDatabaseSettings
-        {
-            get { return (Database_Settings)GetValue(UserDatabaseSettingsProperty); }
-            set 
-            { 
-                SetValue(UserDatabaseSettingsProperty, value);
-                userDatabaseSettings = value;
+        //Database_Settings userDatabaseSettings;
+        //public Database_Settings UserDatabaseSettings
+        //{
+        //    get { return (Database_Settings)GetValue(UserDatabaseSettingsProperty); }
+        //    set 
+        //    { 
+        //        SetValue(UserDatabaseSettingsProperty, value);
+        //        userDatabaseSettings = value;
 
-                if (descriptionPage != null) descriptionPage.userDatabaseSettings = userDatabaseSettings;
-            }
-        }
+        //        if (descriptionPage != null) descriptionPage.userDatabaseSettings = userDatabaseSettings;
+        //    }
+        //}
 
-        public static readonly DependencyProperty UserDatabaseSettingsProperty =
-            DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(DeviceManager), new PropertyMetadata(null, new PropertyChangedCallback(UserDatabaseSettings_PropertyChanged)));
+        //public static readonly DependencyProperty UserDatabaseSettingsProperty =
+        //    DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(DeviceManager), new PropertyMetadata(null, new PropertyChangedCallback(UserDatabaseSettings_PropertyChanged)));
 
-        private static void UserDatabaseSettings_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
-        {
-            ((DeviceManager)obj).userDatabaseSettings = e.NewValue as Database_Settings;
-        }
+        //private static void UserDatabaseSettings_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        //{
+        //    ((DeviceManager)obj).userDatabaseSettings = e.NewValue as Database_Settings;
+        //}
 
         #endregion
 
@@ -317,7 +315,8 @@ namespace TH_DeviceManager
             PageListShown = false;
             DevicesLoading = true;
             DeviceListShown = false;
-            DeviceList.Clear();
+            AddedDeviceList.Clear();
+            SharedDeviceList.Clear();
 
             if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
 
@@ -327,11 +326,16 @@ namespace TH_DeviceManager
 
         void LoadDevices_Worker()
         {
-            List<Configuration> configs = new List<Configuration>();
+            var added = new List<Configuration>();
+            var shared = new List<Configuration>();
 
             if (currentuser != null)
             {
-                configs = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
+                // Get Added Configurations
+                added = Configurations.GetConfigurationsListForUser(currentuser);
+
+                // Get shared configurations that are owned by the user
+                shared = Shared.GetOwnedSharedConfigurations(currentuser);
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else
@@ -339,21 +343,34 @@ namespace TH_DeviceManager
                 //Configurations = ReadConfigurationFile();
             }
 
-            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), background, new object[] { configs });
+            this.Dispatcher.BeginInvoke(new Action<List<Configuration>, List<Configuration>>(LoadDevices_GUI), background, new object[] { added, shared });
         }
 
-        void LoadDevices_GUI(List<Configuration> configs)
+        void LoadDevices_GUI(List<Configuration> added, List<Configuration> shared)
         {
-            configurations = configs;
+            configurations = added;
 
-            if (configs != null)
+            // Add the 'added' configurations to the list
+            if (added != null)
             {
-               var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
+                var orderedAddedConfigs = added.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
 
                 // Create DevicesList based on Configurations
-               foreach (Configuration config in orderedConfigs)
+                foreach (Configuration config in orderedAddedConfigs)
                 {
                     this.Dispatcher.BeginInvoke(new Action<Configuration>(AddDeviceButton), background, new object[] { config });
+                }
+            }
+
+            // Add the owned configurations to the 'shared' list
+            if (shared != null)
+            {
+                var orderedSharedConfigs = shared.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
+
+                // Create DevicesList based on Configurations
+                foreach (Configuration config in orderedSharedConfigs)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<Configuration>(AddSharedDeviceButton), background, new object[] { config });
                 }
             }
 
@@ -362,6 +379,13 @@ namespace TH_DeviceManager
 
         void LoadDevices_Finished()
         {
+            ShowAdded_RADIO.IsChecked = true;
+            ShowAddedDevices();
+
+            // Show Shared device list option if SharedDeviceList is not empty
+            if (SharedDeviceList.Count > 0) DeviceListOptionsShown = true;
+            else DeviceListOptionsShown = false;
+
             DeviceListShown = true;
             DevicesLoading = false;
         }
@@ -464,8 +488,8 @@ namespace TH_DeviceManager
                             catch (Exception ex) { Logger.Log("Error during Configuration Xml Backup"); }                
                         }
 
-                        success = Configurations.ClearConfigurationTable(tablename, userDatabaseSettings);
-                        if (success) success = Configurations.UpdateConfigurationTable(tablename, dt, userDatabaseSettings);
+                        success = Configurations.ClearConfigurationTable(tablename);
+                        if (success) success = Configurations.UpdateConfigurationTable(tablename, dt);
                     }
                     // If not logged in Save to File in 'C:\TrakHound\'
                     else
@@ -540,7 +564,7 @@ namespace TH_DeviceManager
                 {
                     if (bt.Config.TableName != null)
                     {
-                        info.success = Configurations.RemoveConfigurationTable(bt.Config.TableName, userDatabaseSettings);
+                        info.success = Configurations.RemoveConfigurationTable(bt.Config.TableName);
                     }
                 }
             }
@@ -596,7 +620,6 @@ namespace TH_DeviceManager
             addPage.deviceManager = this;
             addPage.DeviceAdded += page_DeviceAdded;
             addPage.currentuser = CurrentUser;
-            addPage.userDatabaseSettings = userDatabaseSettings;
             addPage.LoadCatalog();
         }
 
@@ -632,7 +655,6 @@ namespace TH_DeviceManager
             //copyPage.deviceManager = this;
             //copyPage.DeviceAdded += page_DeviceAdded;
             copyPage.currentuser = CurrentUser;
-            copyPage.userDatabaseSettings = userDatabaseSettings;
             //copyPage.LoadCatalog();
         }
 
@@ -711,6 +733,16 @@ namespace TH_DeviceManager
             DependencyProperty.Register("DeviceListShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
 
+        public bool DeviceListOptionsShown
+        {
+            get { return (bool)GetValue(DeviceListOptionsShownProperty); }
+            set { SetValue(DeviceListOptionsShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceListOptionsShownProperty =
+            DependencyProperty.Register("DeviceListOptionsShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+
+
         ObservableCollection<ListButton> devicelist;
         public ObservableCollection<ListButton> DeviceList
         {
@@ -725,6 +757,60 @@ namespace TH_DeviceManager
             {
                 devicelist = value;
             }
+        }
+
+        List<ListButton> addeddevicelist;
+        public List<ListButton> AddedDeviceList
+        {
+            get
+            {
+                if (addeddevicelist == null)
+                    addeddevicelist = new List<ListButton>();
+                return addeddevicelist;
+            }
+
+            set
+            {
+                addeddevicelist = value;
+            }
+        }
+
+        List<ListButton> shareddevicelist;
+        public List<ListButton> SharedDeviceList
+        {
+            get
+            {
+                if (shareddevicelist == null)
+                    shareddevicelist = new List<ListButton>();
+                return shareddevicelist;
+            }
+
+            set
+            {
+                shareddevicelist = value;
+            }
+        }
+
+        private void ShowAdded_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowAddedDevices();
+        }
+
+        private void ShowShared_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowSharedDevices();
+        }
+
+        void ShowAddedDevices()
+        {
+            DeviceList.Clear();
+            foreach (var bt in AddedDeviceList) DeviceList.Add(bt);
+        }
+
+        void ShowSharedDevices()
+        {
+            DeviceList.Clear();
+            foreach (var bt in SharedDeviceList) DeviceList.Add(bt);
         }
 
         void AddDeviceButton(string uniqueId, string tableName)
@@ -769,10 +855,10 @@ namespace TH_DeviceManager
         {
             ListButton lb;
 
-            int index = DeviceList.ToList().FindIndex(x => GetDeviceButtonUniqueId(x) == config.UniqueId);
+            int index = AddedDeviceList.ToList().FindIndex(x => GetDeviceButtonUniqueId(x) == config.UniqueId);
             if (index >= 0)
             {
-                lb = DeviceList[index];
+                lb = AddedDeviceList[index];
                 Controls.DeviceButton db = lb.ButtonContent as Controls.DeviceButton;
                 if (db != null)
                 {
@@ -800,9 +886,50 @@ namespace TH_DeviceManager
 
                 db.Parent = lb;
 
-                DeviceList.Add(lb);
+                AddedDeviceList.Add(lb);
             }   
         }
+
+        void AddSharedDeviceButton(Configuration config)
+        {
+            ListButton lb;
+
+            int index = SharedDeviceList.ToList().FindIndex(x => GetDeviceButtonUniqueId(x) == config.UniqueId);
+            if (index >= 0)
+            {
+                lb = SharedDeviceList[index];
+                Controls.DeviceButton db = lb.ButtonContent as Controls.DeviceButton;
+                if (db != null)
+                {
+                    db.Config = config;
+                }
+            }
+            else
+            {
+                Controls.DeviceButton db = new Controls.DeviceButton();
+                db.devicemanager = this;
+
+                db.Config = config;
+
+                db.Enabled += db_Enabled;
+                db.Disabled += db_Disabled;
+                db.RemoveClicked += db_RemoveClicked;
+                db.ShareClicked += db_ShareClicked;
+                db.CopyClicked += db_CopyClicked;
+                db.Clicked += db_Clicked;
+
+                lb = new ListButton();
+                lb.ButtonContent = db;
+                lb.ShowImage = false;
+                lb.Selected += lb_Device_Selected;
+
+                db.Parent = lb;
+
+                SharedDeviceList.Add(lb);
+            }
+        }
+
+
 
         string GetDeviceButtonUniqueId(ListButton lb)
         {
@@ -911,8 +1038,8 @@ namespace TH_DeviceManager
             {
                 EnableDevice_Info info = (EnableDevice_Info)o;
 
-                if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientEnabled", "True", info.tablename, userDatabaseSettings);
-                else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerEnabled", "True", info.tablename, userDatabaseSettings);
+                if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientEnabled", "True", info.tablename);
+                else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerEnabled", "True", info.tablename);
 
                 // Reset Update ID
                 if (info.success)
@@ -920,14 +1047,14 @@ namespace TH_DeviceManager
                     if (ManagerType == DeviceManagerType.Client)
                     {
                         var updateId = String_Functions.RandomString(20);
-                        info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", updateId, info.tablename, userDatabaseSettings);
+                        info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", updateId, info.tablename);
                         info.bt.Config.ClientUpdateId = updateId;
                         XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ClientUpdateId", updateId);
                     }
                     else if (ManagerType == DeviceManagerType.Server)
                     {
                         var updateId = String_Functions.RandomString(20);
-                        info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", updateId, info.tablename, userDatabaseSettings);
+                        info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", updateId, info.tablename);
                         info.bt.Config.ClientUpdateId = updateId;
                         XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ServerUpdateId", updateId);
                         //info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
@@ -982,14 +1109,14 @@ namespace TH_DeviceManager
             {
                 EnableDevice_Info info = (EnableDevice_Info)o;
 
-                if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientEnabled", "False", info.tablename, userDatabaseSettings);
-                else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerEnabled", "False", info.tablename, userDatabaseSettings);
+                if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientEnabled", "False", info.tablename);
+                else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerEnabled", "False", info.tablename);
 
                 // Reset Update ID
                 if (info.success)
                 {
-                    if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
-                    else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
+                    if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename);
+                    else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename);
                 }
 
                 this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), priority, new object[] { info });
@@ -1164,6 +1291,17 @@ namespace TH_DeviceManager
             DependencyProperty.Register("CurrentPage", typeof(object), typeof(DeviceManager), new PropertyMetadata(null));
 
 
+        public bool PageListOptionsShown
+        {
+            get { return (bool)GetValue(PageListOptionsShownProperty); }
+            set { SetValue(PageListOptionsShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty PageListOptionsShownProperty =
+            DependencyProperty.Register("PageListOptionsShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+
+
+
         ObservableCollection<object> pagelist;
         public ObservableCollection<object> PageList
         {
@@ -1180,7 +1318,8 @@ namespace TH_DeviceManager
             }
         }
 
-        List<ConfigurationPage> ConfigurationPages;
+
+        List<ConfigurationPage> ConfigurationPages = new List<ConfigurationPage>();
 
         int selectedPageIndex = 0;
 
@@ -1188,11 +1327,13 @@ namespace TH_DeviceManager
 
         void InitializePages(DeviceManagerType type)
         {
+            CurrentPage = null;
+
             PageList.Clear();
 
             bool useTrakHoundCloud = false;
 
-            ConfigurationPages = new List<ConfigurationPage>();
+            ConfigurationPages.Clear();
 
             //ConfigurationPages.Add(new Pages.General.Page());
             descriptionPage = new Pages.Description.Page();
@@ -1206,7 +1347,10 @@ namespace TH_DeviceManager
             if (type == DeviceManagerType.Server || !useTrakHoundCloud) ConfigurationPages.Add(new Pages.Databases.Page());
 
             // Load configuration pages from plugins
-            if (type == DeviceManagerType.Server) ConfigurationPages.AddRange(AddConfigurationPageButtons(Plugins));
+            if (Plugins != null)
+            {
+                if (type == DeviceManagerType.Server) ConfigurationPages.AddRange(AddConfigurationPageButtons(Plugins));
+            }
 
             // Create PageItem and add to PageList
             foreach (ConfigurationPage page in ConfigurationPages)
@@ -1216,6 +1360,38 @@ namespace TH_DeviceManager
 
                 this.Dispatcher.BeginInvoke(new Action<ConfigurationPage>(AddPageButton), priority, new object[] { page });
             }
+
+            if (PageList.Count > 0)
+            {
+                if (PageList.Count > selectedPageIndex) Page_Selected((ListButton)PageList[selectedPageIndex]);
+                else Page_Selected((ListButton)PageList[0]);
+            }
+
+            //// If global DeviceManagerType is set to Server than show options for Client configuration
+            //if (ManagerType == DeviceManagerType.Server) PageListOptionsShown = true;
+            //else PageListOptionsShown = false;
+        }
+
+        void ShowClientPages()
+        {
+            InitializePages(DeviceManagerType.Client);
+            LoadConfiguration();
+        }
+
+        void ShowServerPages()
+        {
+            InitializePages(DeviceManagerType.Server);
+            LoadConfiguration();
+        }
+
+        private void ShowClient_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowClientPages();
+        }
+
+        private void ShowServer_Checked(object sender, RoutedEventArgs e)
+        {
+            ShowServerPages();
         }
 
         void AddPageButton(ConfigurationPage page)
@@ -1243,6 +1419,7 @@ namespace TH_DeviceManager
             PageList.Add(bt);
         }
 
+
         void item_Clicked(PageItem item)
         {
             if (item.Parent != null)
@@ -1266,10 +1443,10 @@ namespace TH_DeviceManager
             {
                 if (CurrentPage != null)
                 {
-                    if (CurrentPage.GetType() != lb.DataObject.GetType())
-                    {
+                    //if (CurrentPage.GetType() != lb.DataObject.GetType())
+                    //{
                         CurrentPage = lb.DataObject;
-                    }
+                    //}
                 }
                 else CurrentPage = lb.DataObject;
             }
@@ -1575,15 +1752,16 @@ namespace TH_DeviceManager
             {
                 SetDeviceIndex_Info info = (SetDeviceIndex_Info)o;
 
-                Configurations.UpdateConfigurationTable("/Index", info.index.ToString(), info.tablename, userDatabaseSettings);
+                Configurations.UpdateConfigurationTable("/Index", info.index.ToString(), info.tablename);
 
                 // Reset Update ID
-                if (ManagerType == DeviceManagerType.Client) Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
-                else if (ManagerType == DeviceManagerType.Server) Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename, userDatabaseSettings);
+                if (ManagerType == DeviceManagerType.Client) Configurations.UpdateConfigurationTable("/ClientUpdateId", String_Functions.RandomString(20), info.tablename);
+                else if (ManagerType == DeviceManagerType.Server) Configurations.UpdateConfigurationTable("/ServerUpdateId", String_Functions.RandomString(20), info.tablename);
             }
         }
 
         #endregion
+
 
     }
 

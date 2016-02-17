@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="TH_DeviceCompare_OEE.Timeline.Plugin"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF.Histogram;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignWidth="200">
+    
+    <Grid x:Name="root">
+          
+        <th_wpf:Histogram x:Name="histogram" Margin="5" Height="100"/>
+        
+    </Grid>
+    
+</UserControl>

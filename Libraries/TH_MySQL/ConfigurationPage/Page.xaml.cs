@@ -58,8 +58,9 @@ namespace TH_MySQL.ConfigurationPage
             if (strUseTrakHoundCloudServer != null)
             {
                 bool.TryParse(strUseTrakHoundCloudServer, out useTrakHoundCloudServer);
-                trakhoundserver_CHK.IsChecked = useTrakHoundCloudServer;
+                //trakhoundserver_CHK.IsChecked = useTrakHoundCloudServer;
             }
+            trakhoundserver_CHK.IsChecked = useTrakHoundCloudServer;
 
             // Load Database Name
             DatabaseName = Table_Functions.GetTableValue(prefix + "Database", dt);
@@ -99,7 +100,9 @@ namespace TH_MySQL.ConfigurationPage
         public void SaveConfiguration(DataTable dt)
         {
             // Save TrakHound Cloud Server
-            Table_Functions.UpdateTableValue(UseTrakHoundCloudServer.ToString(), prefix + "UseTrakHoundCloudServer", dt);
+            //Table_Functions.UpdateTableValue(UseTrakHoundCloudServer.ToString(), prefix + "UseTrakHoundCloudServer", dt);
+            if (trakhoundserver_CHK.IsChecked == true) Table_Functions.UpdateTableValue("true", prefix + "UseTrakHoundCloudServer", dt);
+            else Table_Functions.UpdateTableValue("false", prefix + "UseTrakHoundCloudServer", dt);
 
             // Save Database Name
             Table_Functions.UpdateTableValue(DatabaseName, prefix + "Database", dt);
@@ -131,6 +134,7 @@ namespace TH_MySQL.ConfigurationPage
 
         public Application_Type ApplicationType { get; set; }
 
+        public IDatabasePlugin Plugin { get { return new TH_MySQL.Plugin(); } }
 
         private void TXT_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -488,8 +492,10 @@ namespace TH_MySQL.ConfigurationPage
 
         void SetTrakHoundClourServer()
         {
-            if (UseTrakHoundCloudServer)
+            if (trakhoundserver_CHK.IsChecked == true)
             {
+                UseTrakHoundCloudServer = true;
+
                 Server = "localhost";
                 Port = null;
 
@@ -507,9 +513,49 @@ namespace TH_MySQL.ConfigurationPage
                 }
 
                 UsePHPServer = true;
+                usephp_CHK.IsChecked = true;
                 PhpServer = "www.feenux.com";
                 PhpDirectory = "php";
             }
+            else
+            {
+                UseTrakHoundCloudServer = false;
+
+                Server = null;
+                Port = null;
+
+                Username = null;
+                password_TXT.PasswordText = null;
+                confirmpassword_TXT.PasswordText = null;
+
+                UsePHPServer = false;
+                usephp_CHK.IsChecked = false;
+                PhpServer = null;
+                PhpDirectory = null;
+            }
+
+            //if (UseTrakHoundCloudServer)
+            //{
+            //    Server = "localhost";
+            //    Port = null;
+
+            //    if (ApplicationType == Application_Type.Client)
+            //    {
+            //        Username = "feenuxco_reader";
+            //        password_TXT.PasswordText = "#reader";
+            //        confirmpassword_TXT.PasswordText = "#reader";
+            //    }
+            //    else
+            //    {
+            //        Username = "feenuxco_th";
+            //        password_TXT.PasswordText = "#mtconnect";
+            //        confirmpassword_TXT.PasswordText = "#mtconnect";
+            //    }
+
+            //    UsePHPServer = true;
+            //    PhpServer = "www.feenux.com";
+            //    PhpDirectory = "php";
+            //}
         }
 
         public bool UseTrakHoundCloudServer
@@ -519,9 +565,9 @@ namespace TH_MySQL.ConfigurationPage
             {
                 SetValue(UseTrakHoundCloudServerProperty, value);
 
-                SetTrakHoundClourServer();
+                //SetTrakHoundClourServer();
 
-                ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
+                //ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
             }
         }
 
@@ -531,7 +577,11 @@ namespace TH_MySQL.ConfigurationPage
 
         private void trakhoundserver_CHK_Checked(object sender, RoutedEventArgs e)
         {
-            UseTrakHoundCloudServer = true;
+            SetTrakHoundClourServer();
+
+            ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
+
+            //UseTrakHoundCloudServer = true;
 
             //Server = "localhost";
             //Port = null;
@@ -559,20 +609,24 @@ namespace TH_MySQL.ConfigurationPage
 
         private void trakhoundserver_CHK_Unchecked(object sender, RoutedEventArgs e)
         {
-            UseTrakHoundCloudServer = false;
-
-            Server = null;
-            Port = null;
-
-            Username = null;
-            password_TXT.PasswordText = null;
-            confirmpassword_TXT.PasswordText = null;
-
-            UsePHPServer = false;
-            PhpServer = null;
-            PhpDirectory = null;
+            SetTrakHoundClourServer();
 
             ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
+
+            //UseTrakHoundCloudServer = false;
+
+            //Server = null;
+            //Port = null;
+
+            //Username = null;
+            //password_TXT.PasswordText = null;
+            //confirmpassword_TXT.PasswordText = null;
+
+            //UsePHPServer = false;
+            //PhpServer = null;
+            //PhpDirectory = null;
+
+            //ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
         }
 
         #endregion

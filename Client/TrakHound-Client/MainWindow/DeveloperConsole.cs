@@ -26,6 +26,8 @@ namespace TrakHound_Client
         private void developerConsole_ShownChanged(bool shown)
         {
             DevConsole_Shown = shown;
+
+            if (shown) developerConsole.ScrollLastIntoView();
         }
 
         void Log_Initialize()

@@ -49,15 +49,6 @@ namespace TH_UserManagement
             SetPageType(CurrentUser);
         }
 
-        Database_Settings userDatabaseSettings;
-        public Database_Settings UserDatabaseSettings
-        {
-            get { return userDatabaseSettings; }
-            set
-            {
-                userDatabaseSettings = value;
-            }
-        }
 
         public UserConfiguration CurrentUser
         {
@@ -95,10 +86,9 @@ namespace TH_UserManagement
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(MyAccountPage), new PropertyMetadata(null));
 
         
-        public void LoadUserConfiguration(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        public void LoadUserConfiguration(UserConfiguration userConfig)
         {
             CurrentUser = userConfig;
-            UserDatabaseSettings = userDatabaseSettings;
 
             profileImageLoaded = false;
 
@@ -158,7 +148,7 @@ namespace TH_UserManagement
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
             }
 
-            if (userDatabaseSettings != null) PageName = PageName + " (Local)";
+            if (UserManagementSettings.Database != null) PageName = PageName + " (Local)";
         }
 
         public void CleanForm()
@@ -447,7 +437,6 @@ namespace TH_UserManagement
         class UpdateUser_Info
         {
             public UserConfiguration userConfig { get; set; }
-            public Database_Settings userDatabaseSettings { get; set; }
             public string password { get; set; }
         }
 
@@ -463,7 +452,6 @@ namespace TH_UserManagement
         {
             UpdateUser_Info info = new UpdateUser_Info();
             info.userConfig = userConfig;
-            info.userDatabaseSettings = userDatabaseSettings;
             info.password = password_TXT.PasswordText;
 
             Saving = true;
@@ -484,16 +472,16 @@ namespace TH_UserManagement
 
                 if (info.userConfig != null)
                 {
-                    bool success = Users.CreateUser(info.userConfig, info.password, info.userDatabaseSettings);
+                    bool success = Users.CreateUser(info.userConfig, info.password);
 
                     // Upload Profile Image
                     if (success && profileImageChanged)
                     {
                         if (profileImage != null)
                         {
-                            success = UploadProfileImage(profileImage, info.userDatabaseSettings);
+                            success = UploadProfileImage(profileImage);
                         }
-                        if (success) success = Users.UpdateImageURL(profileImageFilename, info.userConfig, info.userDatabaseSettings);
+                        if (success) success = Users.UpdateImageURL(profileImageFilename, info.userConfig);
                     }
                              
                     result.success = success;
@@ -564,7 +552,7 @@ namespace TH_UserManagement
         void VerifyUsername()
         {
             // If no userconfiguration database configuration found then use default TrakHound User Database
-            VerifyUsernameReturn usernameReturn = TH_UserManagement.Management.Users.VerifyUsername(Username, userDatabaseSettings);
+            VerifyUsernameReturn usernameReturn = TH_UserManagement.Management.Users.VerifyUsername(Username);
             if (usernameReturn != null)
             {
                 UsernameVerified = usernameReturn.available;
@@ -736,7 +724,7 @@ namespace TH_UserManagement
 
                 if (userConfig != null)
                 {
-                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, userDatabaseSettings);
+                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
                     if (img != null)
                     {
                         System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
@@ -811,7 +799,7 @@ namespace TH_UserManagement
             }
         }
 
-        bool UploadProfileImage(System.Drawing.Image profileImg, Database_Settings userDatabaseSettings)
+        bool UploadProfileImage(System.Drawing.Image profileImg)
         {
             bool result = false;
 
@@ -832,7 +820,7 @@ namespace TH_UserManagement
 
                     img.Save(localPath);
 
-                    result = ProfileImages.UploadProfileImage(newFilename, localPath, userDatabaseSettings);
+                    result = ProfileImages.UploadProfileImage(newFilename, localPath);
                 }
             }
 

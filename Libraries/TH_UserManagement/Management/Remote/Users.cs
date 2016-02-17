@@ -109,26 +109,28 @@ namespace TH_UserManagement.Management.Remote
 
 
             string responseString = HTTP.SendData(url, values);
-
-            string output = responseString.Trim();
-
-            if (output != "")
+            if (responseString != null)
             {
-                result = new VerifyUsernameReturn();
+                string output = responseString.Trim();
 
-                if (output.Contains(';'))
+                if (output != "")
                 {
-                    int index = output.IndexOf(';');
+                    result = new VerifyUsernameReturn();
 
-                    bool available = false;
-                    string avail = output.Substring(0, index);
-                    bool.TryParse(avail, out available);
+                    if (output.Contains(';'))
+                    {
+                        int index = output.IndexOf(';');
 
-                    string message = null;
-                    if (output.Length > index + 1) message = output.Substring(index + 1);
+                        bool available = false;
+                        string avail = output.Substring(0, index);
+                        bool.TryParse(avail, out available);
 
-                    result.available = available;
-                    result.message = message;
+                        string message = null;
+                        if (output.Length > index + 1) message = output.Substring(index + 1);
+
+                        result.available = available;
+                        result.message = message;
+                    }
                 }
             }
 

@@ -236,53 +236,46 @@ namespace TrakHound_Client.Pages.Options.Updates
             }
         }
 
-
         public void LoadPluginConfigurations()
         {
             Plugin_STACK.Children.Clear();
 
-            // Load Plugin Configurations
-            if (Properties.Settings.Default.Plugin_Configurations != null)
+            if (mw != null)
             {
-                List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
+                var configs = mw.PluginConfigurations;
 
-                foreach (PluginConfiguration config in configs)
+                foreach (var config in configs)
                 {
-                    if (mw != null)
+                    if (mw.Plugins != null)
                     {
-                        if (mw.plugins != null)
+                        try
                         {
-                            try
+                            var plugin = mw.Plugins.Find(x => x.Title == config.Name);
+                            if (plugin != null)
                             {
-                                Lazy<IClientPlugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
-                                if (lplugin != null)
-                                {
-                                    IClientPlugin plugin = lplugin.Value;
+                                UpdateItem ui = new UpdateItem();
+                                ui.PluginTitle = config.Name;
+                                ui.PluginImage = plugin.Image;
 
-                                    UpdateItem ui = new UpdateItem();
-                                    ui.PluginTitle = config.Name;
-                                    ui.PluginImage = plugin.Image;
+                                // Build Information
+                                Assembly assembly = Assembly.GetAssembly(plugin.GetType());
+                                Version version = assembly.GetName().Version;
 
-                                    // Build Information
-                                    Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-                                    Version version = assembly.GetName().Version;
+                                ui.assembly = assembly;
+                                ui.version = version;
+                                ui.PluginVersion = "v" + version.ToString();
 
-                                    ui.assembly = assembly;
-                                    ui.version = version;
-                                    ui.PluginVersion = "v" + version.ToString();
+                                // Author Info
+                                ui.PluginAuthor = plugin.Author;
+                                ui.PluginAuthorInfo = plugin.AuthorText;
 
-                                    // Author Info
-                                    ui.PluginAuthor = plugin.Author;
-                                    ui.PluginAuthorInfo = plugin.AuthorText;
+                                // Update Info
+                                ui.UpdateFileUrl = plugin.UpdateFileURL;
 
-                                    // Update Info
-                                    ui.UpdateFileUrl = plugin.UpdateFileURL;
-
-                                    Plugin_STACK.Children.Add(ui);
-                                }
+                                Plugin_STACK.Children.Add(ui);
                             }
-                            catch (Exception ex) { Console.WriteLine("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
                         }
+                        catch (Exception ex) { Console.WriteLine("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
                     }
 
                     if (config.SubCategories != null)
@@ -291,13 +284,11 @@ namespace TrakHound_Client.Pages.Options.Updates
                         {
                             foreach (PluginConfiguration subConfig in subcat.PluginConfigurations)
                             {
-                                Lazy<IClientPlugin> lplugin = mw.plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
-                                if (lplugin != null)
+                                var plugin = mw.Plugins.Find(x => x.Title == subConfig.Name);
+                                if (plugin != null)
                                 {
                                     try
                                     {
-                                        IClientPlugin plugin = lplugin.Value;
-
                                         UpdateItem ui = new UpdateItem();
                                         ui.PluginTitle = subConfig.Name;
                                         ui.PluginImage = plugin.Image;
@@ -327,6 +318,93 @@ namespace TrakHound_Client.Pages.Options.Updates
                 }
             }
         }
+
+        //public void LoadPluginConfigurations()
+        //{
+        //    Plugin_STACK.Children.Clear();
+
+        //    // Load Plugin Configurations
+        //    if (Properties.Settings.Default.Plugin_Configurations != null)
+        //    {
+        //        List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
+
+        //        foreach (PluginConfiguration config in configs)
+        //        {
+        //            if (mw != null)
+        //            {
+        //                if (mw.Plugins != null)
+        //                {
+        //                    try
+        //                    {
+        //                        var plugin = mw.Plugins.Find(x => x.Title == config.Name);
+        //                        if (plugin != null)
+        //                        {
+        //                            UpdateItem ui = new UpdateItem();
+        //                            ui.PluginTitle = config.Name;
+        //                            ui.PluginImage = plugin.Image;
+
+        //                            // Build Information
+        //                            Assembly assembly = Assembly.GetAssembly(plugin.GetType());
+        //                            Version version = assembly.GetName().Version;
+
+        //                            ui.assembly = assembly;
+        //                            ui.version = version;
+        //                            ui.PluginVersion = "v" + version.ToString();
+
+        //                            // Author Info
+        //                            ui.PluginAuthor = plugin.Author;
+        //                            ui.PluginAuthorInfo = plugin.AuthorText;
+
+        //                            // Update Info
+        //                            ui.UpdateFileUrl = plugin.UpdateFileURL;
+
+        //                            Plugin_STACK.Children.Add(ui);
+        //                        }
+        //                    }
+        //                    catch (Exception ex) { Console.WriteLine("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
+        //                }
+        //            }
+
+        //            if (config.SubCategories != null)
+        //            {
+        //                foreach (PluginConfigurationCategory subcat in config.SubCategories)
+        //                {
+        //                    foreach (PluginConfiguration subConfig in subcat.PluginConfigurations)
+        //                    {
+        //                        var plugin = mw.Plugins.Find(x => x.Title == subConfig.Name);
+        //                        if (plugin != null)
+        //                        {
+        //                            try
+        //                            {
+        //                                UpdateItem ui = new UpdateItem();
+        //                                ui.PluginTitle = subConfig.Name;
+        //                                ui.PluginImage = plugin.Image;
+
+        //                                // Build Information
+        //                                Assembly assembly = Assembly.GetAssembly(plugin.GetType());
+        //                                Version version = assembly.GetName().Version;
+
+        //                                ui.assembly = assembly;
+        //                                ui.version = version;
+        //                                ui.PluginVersion = "v" + version.ToString();
+
+        //                                // Author Info
+        //                                ui.PluginAuthor = plugin.Author;
+        //                                ui.PluginAuthorInfo = plugin.AuthorText;
+
+        //                                // Update Info
+        //                                ui.UpdateFileUrl = plugin.UpdateFileURL;
+
+        //                                Plugin_STACK.Children.Add(ui);
+        //                            }
+        //                            catch { }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
 
         public string ClientVersion

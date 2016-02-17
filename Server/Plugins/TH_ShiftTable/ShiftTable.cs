@@ -163,7 +163,8 @@ namespace TH_ShiftTable
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("SHIFT", DataType.LargeText),
-                new ColumnDefinition("SEGMENTID", DataType.LargeText),
+                new ColumnDefinition("SHIFT_ID", DataType.LargeText),
+                new ColumnDefinition("SEGMENT_ID", DataType.LargeText),
                 new ColumnDefinition("START", DataType.LargeText),
                 new ColumnDefinition("END", DataType.LargeText),
                 new ColumnDefinition("START_UTC", DataType.LargeText),
@@ -177,7 +178,8 @@ namespace TH_ShiftTable
             {
                 List<string> insertColumns = new List<string>();
                 insertColumns.Add("SHIFT");
-                insertColumns.Add("SEGMENTID");
+                insertColumns.Add("SHIFT_ID");
+                insertColumns.Add("SEGMENT_ID");
                 insertColumns.Add("START");
                 insertColumns.Add("END");
                 insertColumns.Add("START_UTC");
@@ -192,6 +194,7 @@ namespace TH_ShiftTable
                     {
                         List<object> values = new List<object>();
                         values.Add(shift.name);
+                        values.Add(shift.id.ToString());
                         values.Add(segment.id.ToString());
                         values.Add(segment.beginTime.To24HourString());
                         values.Add(segment.endTime.To24HourString());

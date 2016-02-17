@@ -467,7 +467,7 @@ namespace TH_UserManagement.Management.Remote
 
         static string CreateTableName(UserConfiguration userConfig)
         {
-            return userConfig.username + "_" + String_Functions.RandomString(20);
+            return userConfig.username.ToLower() + "_" + String_Functions.RandomString(20);
         }
 
         static string ConvertDateStringtoMySQL(string DateString)

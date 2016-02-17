@@ -38,8 +38,6 @@ namespace TH_DeviceManager.Pages.CopyDevice
 
         public UserConfiguration currentuser;
 
-        public Database_Settings userDatabaseSettings;
-
         public DeviceManager devicemanager;
 
         public void LoadConfiguration(Configuration config)
@@ -202,7 +200,7 @@ namespace TH_DeviceManager.Pages.CopyDevice
                             }
                         }
 
-                        success = Configurations.AddConfigurationToUser(currentuser, copyConfig, userDatabaseSettings);
+                        success = Configurations.AddConfigurationToUser(currentuser, copyConfig);
                     } 
                 }
                 else

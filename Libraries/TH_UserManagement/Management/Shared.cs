@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Xml;
 using System.Data;
 using System.Net;
 using System.Collections.Specialized;
@@ -128,6 +129,56 @@ namespace TH_UserManagement.Management
                 }
             }
             catch (Exception ex) { Logger.Log(ex.Message); }
+
+            return result;
+        }
+
+        public static List<Configuration> GetOwnedSharedConfigurations(UserConfiguration userConfig)
+        {
+            List<Configuration> result = null;
+
+            NameValueCollection values = new NameValueCollection();
+
+            if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
+
+            string url = "https://www.feenux.com/php/configurations/getownedsharedconfigurations.php";
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null)
+            {
+                result = new List<Configuration>();
+
+                string[] tables = responseString.Split('%');
+
+                foreach (string table in tables)
+                {
+                    if (!String.IsNullOrEmpty(table))
+                    {
+                        var delimiter = table.IndexOf('~');
+                        if (delimiter > 0)
+                        {
+                            string tablename = table.Substring(0, delimiter);
+                            string tabledata = table.Substring(delimiter + 1);
+
+                            DataTable dt = JSON.ToTable(tabledata);
+                            if (dt != null)
+                            {
+                                XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
+                                if (xml != null)
+                                {
+                                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+                                    if (config != null)
+                                    {
+                                        config.Remote = true;
+                                        config.TableName = tablename;
+                                        result.Add(config);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             return result;
         }

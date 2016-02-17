@@ -99,32 +99,43 @@ namespace TrakHound_Client
 
                 LoadDevices();
 
-                if (accountpage != null) accountpage.LoadUserConfiguration(currentuser, UserDatabaseSettings);
+                if (accountpage != null) accountpage.LoadUserConfiguration(currentuser);
 
-                UpdatePluginUser(currentuser, UserDatabaseSettings);
+                Plugins_UpdateUser(currentuser);
 
                 if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }
         }
 
-        Database_Settings userDatabaseSettings;
         public Database_Settings UserDatabaseSettings
         {
             get { return (Database_Settings)GetValue(UserDatabaseSettingsProperty); }
-            set
-            {
-                SetValue(UserDatabaseSettingsProperty, value);
-
-                userDatabaseSettings = value;
-
-                if (LoginMenu != null) LoginMenu.UserDatabaseSettings = value;
-
-                if (accountpage != null) accountpage.UserDatabaseSettings = value;
-            }
+            set { SetValue(UserDatabaseSettingsProperty, value); }
         }
 
         public static readonly DependencyProperty UserDatabaseSettingsProperty =
             DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(MainWindow), new PropertyMetadata(null));
+
+        
+
+        //Database_Settings userDatabaseSettings;
+        //public Database_Settings UserDatabaseSettings
+        //{
+        //    get { return (Database_Settings)GetValue(UserDatabaseSettingsProperty); }
+        //    set
+        //    {
+        //        SetValue(UserDatabaseSettingsProperty, value);
+
+        //        userDatabaseSettings = value;
+
+        //        if (LoginMenu != null) LoginMenu.UserDatabaseSettings = value;
+
+        //        if (accountpage != null) accountpage.UserDatabaseSettings = value;
+        //    }
+        //}
+
+        //public static readonly DependencyProperty UserDatabaseSettingsProperty =
+        //    DependencyProperty.Register("UserDatabaseSettings", typeof(Database_Settings), typeof(MainWindow), new PropertyMetadata(null));
 
         void ReadUserManagementSettings()
         {
@@ -145,11 +156,17 @@ namespace TrakHound_Client
 
             if (userSettings != null)
             {
-                if (userSettings.Databases.Databases.Count > 0)
+                if (UserManagementSettings.Database != null)
                 {
-                    UserDatabaseSettings = userSettings.Databases;
-                    Global.Initialize(UserDatabaseSettings);
+                    Global.Initialize(UserManagementSettings.Database);
+                    UserDatabaseSettings = UserManagementSettings.Database;
                 }
+
+                //if (userSettings.Databases.Databases.Count > 0)
+                //{
+                //    UserDatabaseSettings = userSettings.Databases;
+                //    Global.Initialize(UserDatabaseSettings);
+                //}
             }
         }
 

@@ -185,6 +185,8 @@ namespace TH_Database
 
         Application_Type ApplicationType { get; set; }
 
+        IDatabasePlugin Plugin { get; }
+
     }
 
     public enum Application_Type

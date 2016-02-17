@@ -23,43 +23,43 @@ namespace TH_UserManagement.Management
 
     public static class Users
     {
-        public static UserConfiguration Login(string username, string password, Database_Settings userDatabaseSettings)
+        public static UserConfiguration Login(string username, string password)
         {
             UserConfiguration result = null;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.Login(username, password);
             }
             else
             {
-                result = Local.Users.Login(username, password, userDatabaseSettings);
+                result = Local.Users.Login(username, password, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static bool CreateUser(UserConfiguration userConfig, string password, Database_Settings userDatabaseSettings)
+        public static bool CreateUser(UserConfiguration userConfig, string password)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.CreateUser(userConfig, password);
             }
             else
             {
-                result = Local.Users.CreateUser(userConfig, password, userDatabaseSettings);
+                result = Local.Users.CreateUser(userConfig, password, UserManagementSettings.Database);
             }
             
             return result;
         }
 
-        public static VerifyUsernameReturn VerifyUsername(string username, Database_Settings userDatabaseSettings)
+        public static VerifyUsernameReturn VerifyUsername(string username)
         {
             VerifyUsernameReturn result = null;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.VerifyUsername(username);
             }
@@ -74,35 +74,35 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static bool UpdateLoginTime(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        public static bool UpdateLoginTime(UserConfiguration userConfig)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.UpdateLoginTime(userConfig);
             }
             else
             {
-                result = Local.Users.UpdateLoginTime(userConfig, userDatabaseSettings);
+                result = Local.Users.UpdateLoginTime(userConfig, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static bool UpdateImageURL(string imageURL, UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        public static bool UpdateImageURL(string imageURL, UserConfiguration userConfig)
         {
             userConfig.image_url = imageURL;
 
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Users.UpdateImageURL(imageURL, userConfig);
             }
             else
             {
-                result = Local.Users.UpdateImageURL(imageURL, userConfig, userDatabaseSettings);
+                result = Local.Users.UpdateImageURL(imageURL, userConfig, UserManagementSettings.Database);
             }
 
             return result;
@@ -112,7 +112,7 @@ namespace TH_UserManagement.Management
 
     public static class Configurations
     {
-        public static bool AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration, Database_Settings userDatabaseSettings)
+        public static bool AddConfigurationToUser(UserConfiguration userConfig, Configuration configuration)
         {
             bool result = false;
 
@@ -124,13 +124,13 @@ namespace TH_UserManagement.Management
             //configuration.UniqueId = uniqueId;
             //XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Add(userConfig, configuration);
             }
             else
             {
-                result = Local.Configurations.Add(userConfig, configuration, userDatabaseSettings);
+                result = Local.Configurations.Add(userConfig, configuration, UserManagementSettings.Database);
             }
 
             return result;
@@ -142,230 +142,150 @@ namespace TH_UserManagement.Management
         //}
 
 
-        public static string[] GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        public static string[] GetConfigurationsForUser(UserConfiguration userConfig)
         {
             string[] result = null;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.GetList(userConfig);
             }
             else
             {
-                result = Local.Configurations.GetList(userConfig, userDatabaseSettings);
+                result = Local.Configurations.GetList(userConfig, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static List<Configuration> GetConfigurationsListForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        public static List<Configuration> GetConfigurationsListForUser(UserConfiguration userConfig)
         {
             List<Configuration> result = null;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Get(userConfig);
             }
             else
             {
-                result = Local.Configurations.Get(userConfig, userDatabaseSettings);
+                result = Local.Configurations.Get(userConfig, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        //public static List<Configuration> GetConfigurationsForUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
-        //{
-        //    List<Configuration> result = null;
-
-        //    if (userDatabaseSettings == null)
-        //    {
-        //        result = Remote.Configurations.GetConfigurationsForUser(userConfig);
-        //    }
-        //    else
-        //    {
-        //        //result = Local.Configurations.GetConfigurationsForUser(userConfig, userDatabaseSettings);
-        //    }
-
-        //    return result;
-        //}
-
-        public static DataTable GetConfigurationTable(string table, Database_Settings userDatabaseSettings)
+        public static DataTable GetConfigurationTable(string table)
         {
             DataTable result = null;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.GetTable(table);
             }
             else
             {
-                result = Local.Configurations.GetTable(table, userDatabaseSettings);
+                result = Local.Configurations.GetTable(table, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-
-        //public class UpdateInfo
-        //{
-        //    public string UniqueId { get; set; }
-        //    public string UpdateId { get; set; }
-        //    public string Enabled { get; set; }
-        //}
-
-        //public static UpdateInfo GetClientUpdateInfo(string table, Database_Settings userDatabaseSettings)
-        //{
-        //    UpdateInfo result = null;
-
-        //    if (userDatabaseSettings == null)
-        //    {
-        //        result = Remote.Configurations.GetClientUpdateInfo(table);
-        //    }
-        //    else
-        //    {
-        //        //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
-        //    }
-
-        //    return result;
-        //}
-
-        //public static UpdateInfo GetServerUpdateInfo(string table, Database_Settings userDatabaseSettings)
-        //{
-        //    UpdateInfo result = null;
-
-        //    if (userDatabaseSettings == null)
-        //    {
-        //        result = Remote.Configurations.GetServerUpdateInfo(table);
-        //    }
-        //    else
-        //    {
-        //        //result = Local.Configurations.GetConfigurationTable(table, userDatabaseSettings);
-        //    }
-
-        //    return result;
-        //}
-
-        public static bool UpdateConfigurationTable(string tableName, DataTable dt, Database_Settings userDatabaseSettings)
+        public static bool UpdateConfigurationTable(string tableName, DataTable dt)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Update(tableName, dt);
             }
             else
             {
-                result = Local.Configurations.Update(tableName, dt, userDatabaseSettings);
+                result = Local.Configurations.Update(tableName, dt, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static bool UpdateConfigurationTable(string address, string value, string tableName, Database_Settings userDatabaseSettings)
+        public static bool UpdateConfigurationTable(string address, string value, string tableName)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Update(address, value, tableName);
             }
             else
             {
-                result = Local.Configurations.Update(address, value, tableName, userDatabaseSettings);
+                result = Local.Configurations.Update(address, value, tableName, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static bool UpdateConfigurationTable(string address, string value, string attributes, string tableName, Database_Settings userDatabaseSettings)
+        public static bool UpdateConfigurationTable(string address, string value, string attributes, string tableName)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Update(address, value, attributes, tableName);
             }
             else
             {
-                result = Local.Configurations.Update(address, value, attributes, tableName, userDatabaseSettings);
+                result = Local.Configurations.Update(address, value, attributes, tableName, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static bool ClearConfigurationTable(string tableName, Database_Settings userDatabaseSettings)
+        public static bool ClearConfigurationTable(string tableName)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Clear(tableName);
             }
             else
             {
-                result = Local.Configurations.Clear(tableName, userDatabaseSettings);
+                result = Local.Configurations.Clear(tableName, UserManagementSettings.Database);
             }
 
             return result;
         }
 
-        public static bool CreateConfigurationTable(string tableName, Database_Settings userDatabaseSettings)
+        public static bool CreateConfigurationTable(string tableName)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Create(tableName);
             }
             else
             {
-                result = Local.Configurations.Create(tableName, userDatabaseSettings);
+                result = Local.Configurations.Create(tableName, UserManagementSettings.Database);
             }
 
             return result;
         }
-
-        //public static bool CreateConfigurationTable(UserConfiguration userConfig, Configuration configuration, Database_Settings userDatabaseSettings)
-        //{
-        //    bool result = false;
-
-        //    if (userDatabaseSettings == null)
-        //    {
-        //        result = Remote.Configurations.Create(userConfig, configuration);
-        //    }
-        //    else
-        //    {
-        //        //result = Local.Configurations.CreateConfigurationTable(userConfig, configuration, userDatabaseSettings);
-        //    }
-
-        //    return result;
-        //}
-
-        //public static string GetConfigurationTableName(UserConfiguration userConfig, Configuration configuration)
-        //{
-        //    string table = userConfig.username + "_" + configuration.Description.Manufacturer + "_" + configuration.Description.Machine_Type + "_" + configuration.Description.Machine_ID + "_Configuration";
-        //    table = table.Replace(' ', '_');
-
-        //    return table;
-        //}
 
         public static string CreateConfigurationTableName(UserConfiguration userConfig)
         {
             return userConfig.username + "_" + String_Functions.RandomString(20);
         }
 
-        public static bool RemoveConfigurationTable(string tableName, Database_Settings userDatabaseSettings)
+        public static bool RemoveConfigurationTable(string tableName)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Configurations.Remove(tableName);
             }
             else
             {
-                result = Local.Configurations.Remove(tableName, userDatabaseSettings);
+                result = Local.Configurations.Remove(tableName, UserManagementSettings.Database);
             }
 
             return result;
@@ -402,11 +322,11 @@ namespace TH_UserManagement.Management
         /// </summary>
         /// <param name="localpath"></param>
         /// <returns></returns>
-        public static bool UploadImage(string localpath, Database_Settings userDatabaseSettings)
+        public static bool UploadImage(string localpath)
         {
             bool result = false;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Images.UploadImage(localpath);
             }
@@ -418,11 +338,11 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static System.Drawing.Image GetImage(string filename, Database_Settings userDatabaseSettings)
+        public static System.Drawing.Image GetImage(string filename)
         {
             System.Drawing.Image result = null;
 
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.Images.GetImage(filename);
             }
@@ -492,40 +412,34 @@ namespace TH_UserManagement.Management
         /// <param name="filename"></param>
         /// <param name="localpath"></param>
         /// <returns></returns>
-        public static bool UploadProfileImage(string filename, string localpath, Database_Settings userDatabaseSettings)
+        public static bool UploadProfileImage(string filename, string localpath)
         {
             bool result = false;
 
-            //result = Remote.ProfileImages.UploadProfileImage(filename, localpath);
-
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.ProfileImages.UploadProfileImage(filename, localpath);
             }
             else
             {
                 result = Local.Images.UploadImage(filename, localpath);
-                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
             }
 
             return result;
         }
 
 
-        public static System.Drawing.Image GetProfileImage(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        public static System.Drawing.Image GetProfileImage(UserConfiguration userConfig)
         {
             System.Drawing.Image result = null;
 
-            //result = Remote.ProfileImages.GetProfileImage(userConfig);
-
-            if (userDatabaseSettings == null)
+            if (UserManagementSettings.Database == null)
             {
                 result = Remote.ProfileImages.GetProfileImage(userConfig);
             }
             else
             {
                 result = Local.ProfileImages.GetProfileImage(userConfig);
-                //result = Local.Configurations.RemoveConfigurationTable(tableName, userDatabaseSettings);
             }
 
             return result;

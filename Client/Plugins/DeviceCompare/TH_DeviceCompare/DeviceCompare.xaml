@@ -1,0 +1,155 @@
+﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TH_DeviceCompare.DeviceCompare"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
+             xmlns:deviceDisplay="clr-namespace:TH_DeviceCompare.Controls.DeviceDisplay"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="800"
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!--Disable the Vertical ScrollBar and use the one for the Columns and RowHeaders (only applies if Page is zoomed)-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" MinHeight="30"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!--Top Panel containing the Column Headers-->
+            <Border HorizontalAlignment="Left" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,0,1">
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Header Size Controls-->
+                    <Grid Height="30" VerticalAlignment="Bottom">
+                        <Grid.Resources>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#20ffffff"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="false">
+                                        <Setter Property="Foreground" Value="#20ffffff"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Maximize Header Button-->
+                        <th_wpf:Button Image="Resources/Carrot_Arrow_Down_01.png" Clicked="ColumnHeaderMaximize_Clicked">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ViewType}" Value="{x:Static deviceDisplay:HeaderViewType.Large}">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
+
+                        <!--Minimize Header Button-->
+                        <th_wpf:Button Grid.Column="1" Image="Resources/Carrot_Arrow_Up_01.png" Clicked="ColumnHeaderMinimize_Clicked">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ViewType}" Value="{x:Static deviceDisplay:HeaderViewType.Minimized}">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
+
+                    </Grid>
+
+                    <!--Column Headers-->
+                    <ItemsControl Grid.Column="2" ItemsSource="{Binding Headers}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                </Grid>
+
+            </Border>
+
+            <!--Main Page Content-->
+            <Grid Grid.Row="1">
+
+                <!--Scrolling View-->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
+
+                    <Grid Background="{StaticResource Window_Background}" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="149" />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Row Headers-->
+                        <ItemsControl ItemsSource="{Binding RowHeaders}" />
+
+                        <!--Separator-->
+                        <Rectangle Grid.Column="1" Width="1" Fill="{StaticResource Shade_Normal}" Margin="0" />
+
+                        <!--Columns-->
+                        <ItemsControl ItemsSource="{Binding Columns}" Grid.Column="2" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+
+                    </Grid>
+
+                </ScrollViewer>
+
+                <!--Stationary (doens't scroll) overlays showing connection status-->
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Overlays}" Margin="150,0,0,0">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+            </Grid>
+
+        </Grid>
+
+    </ScrollViewer>
+
+</UserControl>

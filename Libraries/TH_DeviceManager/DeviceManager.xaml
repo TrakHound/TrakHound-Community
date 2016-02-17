@@ -338,11 +338,36 @@
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
                                     <RowDefinition Height="*" MinHeight="50"/>
                                 </Grid.RowDefinitions>
+                                
+                                <!--Device List Options (Show Added or Shared Device List)-->
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                            <Setter Property="Margin" Value="5,0,5,5"/>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DeviceListOptionsShown}" Value="false">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    
+                                    <RadioButton x:Name="ShowAdded_RADIO" Content="Added" Checked="ShowAdded_Checked" GroupName="DeviceListType" IsChecked="True"/>
+
+                                    <RadioButton x:Name="ShowShared_RADIO" Content="Shared" Checked="ShowShared_Checked" GroupName="DeviceListType"/>
+
+                                </StackPanel>
 
                                 <!--Devices-->
-                                <Grid Grid.Row="0">
+                                <Grid Grid.Row="1">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="*"/>
@@ -380,29 +405,14 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding DeviceList}" Margin="5,0">
-                                        <!--<ItemsControl.Resources>
-                                            <Style TargetType="th_wpf:ListButton">
-                                                <Setter Property="Foreground" Value="#fff"/>
-                                                <Setter Property="Background" Value="Transparent"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsSelected" Value="true">
-                                                        <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ItemsControl.Resources>-->
-                                    </ItemsControl>
+                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding DeviceList}" Margin="5,0"/>
 
                                     <Grid Grid.Row="1" Background="Transparent" PreviewMouseDown="TableList_MouseDown"/>
 
                                 </Grid>
 
                                 <!--Loading Devices-->
-                                <Grid>
+                                <Grid Grid.Row="1">
                                     <Grid.Style>
                                         <Style TargetType="Grid">
                                             <Setter Property="Opacity" Value="0.0"/>
@@ -474,13 +484,12 @@
                                 </Grid>
 
                                 <!--Add Device Button-->
-                                <Grid x:Name="AddDevice_GRID" Grid.Row="1" Margin="5,0" MinWidth="250" Height="100" VerticalAlignment="Top" PreviewMouseDown="AddDevice_GRID_PreviewMouseDown" Cursor="Hand">
+                                <Grid x:Name="AddDevice_GRID" Grid.Row="2" Margin="5,0" MinWidth="250" Height="100" VerticalAlignment="Top" PreviewMouseDown="AddDevice_GRID_PreviewMouseDown" Cursor="Hand">
                                     <Grid.Style>
                                         <Style TargetType="Grid">
                                             <Setter Property="Background" Value="Transparent"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <!--<Setter Property="Background" Value="#33ffffff"/>-->
                                                     <Setter Property="Background">
                                                         <Setter.Value>
                                                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -640,23 +649,36 @@
                         </StackPanel>
 
                         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+                            
+                            <StackPanel>
 
-                            <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0">
-                                <!--<ItemsControl.Resources>
-                                    <Style TargetType="th_wpf:ListButton">
-                                        <Setter Property="Foreground" Value="#fff"/>
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="true">
-                                                <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
-                                            </Trigger>
-                                            <Trigger Property="IsSelected" Value="true">
-                                                <Setter Property="Background" Value="{StaticResource Accent_LightGradient}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ItemsControl.Resources>-->
-                            </ItemsControl>
+                                <!--Show Client or Server List Option-->
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                                            <Setter Property="Margin" Value="5,0,5,5"/>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PageListOptionsShown}" Value="false">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+
+                                    <RadioButton x:Name="ShowClient_RADIO" Content="Client" Checked="ShowClient_Checked" GroupName="PageListType" IsChecked="True"/>
+
+                                    <RadioButton x:Name="ShowServer_RADIO" Content="Server" Checked="ShowServer_Checked" GroupName="PageListType"/>
+
+                                </StackPanel>
+
+                                <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0"/>
+
+                            </StackPanel>
 
                         </ScrollViewer>
 
@@ -669,7 +691,7 @@
         </Grid>
 
         <!--Not Logged in Panel-->
-        <Grid Background="{StaticResource Accent_Normal}">
+        <!--<Grid Background="{StaticResource Accent_Normal}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -686,7 +708,7 @@
                 Click the 'Login' button above to login
             </TextBlock>
 
-        </Grid>
+        </Grid>-->
 
         <!--Text-->
         <TextBlock Text="Local" Foreground="#33ffffff" FontSize="14" VerticalAlignment="Bottom" Margin="10">

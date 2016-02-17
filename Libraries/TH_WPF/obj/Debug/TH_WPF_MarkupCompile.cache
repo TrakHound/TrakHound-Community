@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-191469071727
+22-1232198963
 
-22-228732447
+25-749684159
 15-1379088364
-Button.xaml;CollapseButton.xaml;Histogram\Histogram.xaml;ImageBox.xaml;LevelIndicator\Indicator.xaml;LevelIndicator\Segment.xaml;ListButton.xaml;LoadingAnimation\Block.xaml;LoadingAnimation\Wheel.xaml;MessageBox.xaml;PasswordBox.xaml;ProductionIndicator.xaml;ProgressBar.xaml;Styles\Button.xaml;Styles\Colors.xaml;TextBox.xaml;TimeLine\Segment.xaml;TimeLine\TickMark.xaml;TimeLine\TimeLine.xaml;
+Button.xaml;CollapseButton.xaml;Histogram\Histogram.xaml;ImageBox.xaml;LevelIndicator\Indicator.xaml;LevelIndicator\Segment.xaml;ListButton.xaml;LoadingAnimation\Block.xaml;LoadingAnimation\Wheel.xaml;MessageBox.xaml;MeterDisplay.xaml;NumberDisplay.xaml;PasswordBox.xaml;ProductionIndicator.xaml;ProgressBar.xaml;Styles\Button.xaml;Styles\Colors.xaml;TextBox.xaml;TimeLine\Segment.xaml;TimeLine\TickMark.xaml;TimeLine\TimeLine.xaml;TimeProgress.xaml;
 
 False
 

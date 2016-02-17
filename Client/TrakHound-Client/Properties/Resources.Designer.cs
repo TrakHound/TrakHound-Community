@@ -83,39 +83,9 @@ namespace TrakHound_Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Arrow_Down_01 {
-            get {
-                object obj = ResourceManager.GetObject("Arrow_Down_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Arrow_Up_01 {
-            get {
-                object obj = ResourceManager.GetObject("Arrow_Up_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Bell_01 {
             get {
                 object obj = ResourceManager.GetObject("Bell_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap blank_profile_01 {
-            get {
-                object obj = ResourceManager.GetObject("blank_profile_01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -203,16 +173,6 @@ namespace TrakHound_Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap feenux_logo_06_50px {
-            get {
-                object obj = ResourceManager.GetObject("feenux_logo_06_50px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap FullScreen_02_30px {
             get {
                 object obj = ResourceManager.GetObject("FullScreen_02_30px", resourceCulture);
@@ -243,26 +203,6 @@ namespace TrakHound_Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Minus_01 {
-            get {
-                object obj = ResourceManager.GetObject("Minus_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Minus_02 {
-            get {
-                object obj = ResourceManager.GetObject("Minus_02", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Minus_04 {
             get {
                 object obj = ResourceManager.GetObject("Minus_04", resourceCulture);
@@ -273,39 +213,9 @@ namespace TrakHound_Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MTConnect_Logo {
-            get {
-                object obj = ResourceManager.GetObject("MTConnect_Logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap options_gear_30px {
             get {
                 object obj = ResourceManager.GetObject("options_gear_30px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Plus_01 {
-            get {
-                object obj = ResourceManager.GetObject("Plus_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Plus_02 {
-            get {
-                object obj = ResourceManager.GetObject("Plus_02", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -336,16 +246,6 @@ namespace TrakHound_Client.Properties {
         internal static System.Drawing.Bitmap Refresh_01 {
             get {
                 object obj = ResourceManager.GetObject("Refresh_01", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Rocket_01 {
-            get {
-                object obj = ResourceManager.GetObject("Rocket_01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -391,42 +291,12 @@ namespace TrakHound_Client.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TrakHound_Logo_Initials_08_30px {
-            get {
-                object obj = ResourceManager.GetObject("TrakHound_Logo_Initials_08_30px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon TrakHound_Logo_Initials_10 {
             get {
                 object obj = ResourceManager.GetObject("TrakHound_Logo_Initials_10", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TrakHound_Logo_Initials_10_200px_White {
-            get {
-                object obj = ResourceManager.GetObject("TrakHound_Logo_Initials_10_200px_White", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap TrakHound_Logo_Initials_10_260px {
-            get {
-                object obj = ResourceManager.GetObject("TrakHound_Logo_Initials_10_260px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

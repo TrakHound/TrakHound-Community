@@ -32,8 +32,19 @@ namespace TH_WPF
             Color Result = Colors.Transparent;
 
             object var = Parent.TryFindResource(ResourceName);
-            if (var != null) Result = (Color)var;
-
+            if (var != null)
+            {
+                if (var is Color)
+                {
+                    Result = (Color)var;
+                }
+                else if (var is System.Windows.Media.SolidColorBrush)
+                {
+                    var brush = var as System.Windows.Media.SolidColorBrush;
+                    Result = brush.Color;
+                }    
+            }
+                
             return Result;
 
             }

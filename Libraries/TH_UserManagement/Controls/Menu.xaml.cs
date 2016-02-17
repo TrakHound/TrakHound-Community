@@ -410,9 +410,9 @@ namespace TH_UserManagement
             {
                 Login_Info info = (Login_Info)o;
 
-                UserConfiguration userConfig = Users.Login(info.username, info.password, userDatabaseSettings);
+                UserConfiguration userConfig = Users.Login(info.username, info.password);
 
-                if (userConfig != null && info.rememberMe) TH_UserManagement.Management.RememberMe.Set(userConfig, rememberMeType, userDatabaseSettings);
+                if (userConfig != null && info.rememberMe) TH_UserManagement.Management.RememberMe.Set(userConfig, rememberMeType);
 
                 this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
             }
@@ -462,7 +462,7 @@ namespace TH_UserManagement
 
         void Logout_Worker()
         {
-            TH_UserManagement.Management.RememberMe.Clear(rememberMeType, userDatabaseSettings);
+            TH_UserManagement.Management.RememberMe.Clear(rememberMeType);
 
             this.Dispatcher.BeginInvoke(new Action(Logout_Finished), priority, new object[] { });
         }
@@ -532,10 +532,10 @@ namespace TH_UserManagement
 
         void LoadRememberMe_Worker()
         {
-            UserConfiguration RememberUser = TH_UserManagement.Management.RememberMe.Get(rememberMeType, userDatabaseSettings);
+            UserConfiguration RememberUser = TH_UserManagement.Management.RememberMe.Get(rememberMeType);
 
-            if (RememberUser != null) TH_UserManagement.Management.RememberMe.Set(RememberUser, rememberMeType, userDatabaseSettings);
-            else TH_UserManagement.Management.RememberMe.Clear(rememberMeType, userDatabaseSettings);
+            if (RememberUser != null) TH_UserManagement.Management.RememberMe.Set(RememberUser, rememberMeType);
+            else TH_UserManagement.Management.RememberMe.Clear(rememberMeType);
 
             this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(LoadRememberMe_Finished), priority, new object[] { RememberUser });
         }
@@ -615,7 +615,7 @@ namespace TH_UserManagement
 
                 if (userConfig != null)
                 {
-                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig, userDatabaseSettings);
+                    System.Drawing.Image img = ProfileImages.GetProfileImage(userConfig);
                     if (img != null)
                     {
                         System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
@@ -709,9 +709,9 @@ namespace TH_UserManagement
 
                         img.Save(localPath);
 
-                        if (ProfileImages.UploadProfileImage(filename, localPath, userDatabaseSettings))
+                        if (ProfileImages.UploadProfileImage(filename, localPath))
                         {
-                            Users.UpdateImageURL(filename, CurrentUser, userDatabaseSettings);
+                            Users.UpdateImageURL(filename, CurrentUser);
 
                             LoadProfileImage(CurrentUser);
 

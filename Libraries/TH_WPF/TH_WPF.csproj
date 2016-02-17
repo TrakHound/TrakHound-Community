@@ -55,6 +55,15 @@
     <Compile Include="Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MeterDisplay.xaml.cs">
+      <DependentUpon>MeterDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NumberDisplay.xaml.cs">
+      <DependentUpon>NumberDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimeProgress.xaml.cs">
+      <DependentUpon>TimeProgress.xaml</DependentUpon>
+    </Compile>
     <None Include="Button_01.xaml.cs">
       <DependentUpon>Button_01.xaml</DependentUpon>
     </None>
@@ -81,6 +90,10 @@
       <DependentUpon>ImageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Image_Functions.cs" />
+    <Resource Include="Fonts\DS-DIGI.TTF" />
+    <Resource Include="Fonts\DS-DIGIB.TTF" />
+    <Resource Include="Fonts\DS-DIGII.TTF" />
+    <Resource Include="Fonts\DS-DIGIT.TTF" />
     <None Include="Info_BT.xaml.cs">
       <DependentUpon>Info_BT.xaml</DependentUpon>
     </None>
@@ -214,6 +227,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MeterDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NumberDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PasswordBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -250,6 +271,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TimeProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Collapse_01.png" />
@@ -278,6 +303,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\X_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Carrot_Arrow_Down_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Carrot_Arrow_Up_02.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

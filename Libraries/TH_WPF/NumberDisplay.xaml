@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="TH_WPF.NumberDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+
+             mc:Ignorable="d" 
+             >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="root">
+
+        <Grid HorizontalAlignment="Center" Margin="0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Previous Values-->
+            <Grid Grid.Column="0" HorizontalAlignment="Center" Margin="5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!--Previous Value 3-->
+                <TextBlock Grid.Row="0" Text="{Binding PreviousValue3}" FontSize="10" Foreground="{StaticResource Foreground_Light}" Opacity="0.25"
+                       FontFamily="/TH_WPF;component/Fonts/#DS-Digital"/>
+
+                <!--Previous Value 2-->
+                <TextBlock Grid.Row="1" Text="{Binding PreviousValue2}" FontSize="10" Foreground="{StaticResource Foreground_Light}" Opacity="0.5"
+                       FontFamily="/TH_WPF;component/Fonts/#DS-Digital"/>
+
+                <!--Previous Value 1-->
+                <TextBlock Grid.Row="2" Text="{Binding PreviousValue1}" FontSize="10" Foreground="{StaticResource Foreground_Light}" Opacity="0.75"
+                       FontFamily="/TH_WPF;component/Fonts/#DS-Digital"/>
+            </Grid>
+
+            <!--Number Value-->
+            <TextBlock Grid.Column="1" Text="{Binding ValueText}" FontSize="24"
+                   Foreground="{StaticResource Foreground_Normal}"
+                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                   FontFamily="/TH_WPF;component/Fonts/#DS-Digital"
+                   Margin="5,0"
+                   />
+
+            <!--Trend Arrow-->
+            <Rectangle Grid.Column="2" Width="30" Height="30" Margin="5,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Rectangle.Resources>
+                    <ImageBrush x:Key="UP_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Carrot_Arrow_Up_02.png" />
+                    <ImageBrush x:Key="DOWN_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Carrot_Arrow_Down_02.png" />
+                </Rectangle.Resources>
+
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ValueIncreasing}" Value="true">
+                                <Setter Property="OpacityMask" Value="{StaticResource UP_Arrow_IMG}" />
+                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ValueDecreasing}" Value="true">
+                                <Setter Property="OpacityMask" Value="{StaticResource DOWN_Arrow_IMG}" />
+                                <Setter Property="Fill" Value="#ff0000"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

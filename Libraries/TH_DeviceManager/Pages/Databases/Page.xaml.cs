@@ -75,31 +75,62 @@ namespace TH_DeviceManager.Pages.Databases
 
         public void SaveConfiguration(DataTable dt)
         {
+
+            // Clear all old database rows first
+            ClearAddresses("/Databases/", dt); // OBSOLETE SO Make sure it clears it (2-11-16)
+
+            if (PageType == Page_Type.Client) ClearAddresses("/Databases_Client/", dt);
+            else if (PageType == Page_Type.Server) ClearAddresses("/Databases_Server/", dt);
+
             if (databaseConfigurationPages != null)
             {
-                // Add each of the root addresses to add
-                foreach (Tuple<string, string> root in AddRootList)
-                {
-                    Table_Functions.UpdateTableValue("", root.Item2, root.Item1, dt);
-                }
-
-                // Remove each of the addresses set to be removed
-                foreach (string address in RemoveList)
-                {
-                    Table_Functions.RemoveTableRow(address, dt);
-                }
-
                 // Loop through each page and save to the DataTable
                 foreach (TH_Database.DatabaseConfigurationPage page in databaseConfigurationPages)
                 {
+                    string address = SaveDatabaseRoot(page, dt);
                     page.SaveConfiguration(dt);
                 }
-
-                AddRootList.Clear();
-                RemoveList.Clear();
             }
 
             LoadConfiguration(dt);
+        }
+
+        static void ClearAddresses(string prefix, DataTable dt)
+        {
+            string filter = "address LIKE '" + prefix + "*'";
+            DataView dv = dt.AsDataView();
+            dv.RowFilter = filter;
+            DataTable temp_dt = dv.ToTable();
+            foreach (DataRow row in temp_dt.Rows)
+            {
+                DataRow dbRow = dt.Rows.Find(row["address"]);
+                if (dbRow != null) dt.Rows.Remove(dbRow);
+            }
+        }
+
+        string SaveDatabaseRoot(TH_Database.DatabaseConfigurationPage page, DataTable dt)
+        {
+            string type = page.Plugin.Type.Replace(' ', '_');
+
+            string test = null;
+            if (PageType == Page_Type.Client) test = "/Databases_Client/" + type + "||";
+            else if (PageType == Page_Type.Server) test = "/Databases_Server/" + type + "||";
+
+            int i = 0;
+            string address = test + i.ToString("00");
+            while (Table_Functions.GetTableValue(address, dt) != null)
+            {
+                i += 1;
+                address = test + i.ToString("00");
+            }
+
+            Table_Functions.UpdateTableValue("", "id||" + i.ToString("00"), address, dt);
+
+            address += "/";
+
+            page.prefix = address;
+
+            return address;
         }
 
         public Page_Type PageType { get; set; }
@@ -186,40 +217,18 @@ namespace TH_DeviceManager.Pages.Databases
                 plugins.Add(plugin);
 
                 TH_WPF.Button bt = new TH_WPF.Button();
-                bt.Text = plugin.Type;
+                bt.Text = plugin.Type.Replace('_',' ');
                 bt.DataObject = plugin;
                 bt.Clicked += AddDatabase_Clicked;
                 DatabaseTypeList.Add(bt);
             }
         }
 
-        List<Tuple<string, string>> AddRootList = new List<Tuple<string, string>>();
-
         void AddDatabase_Clicked(TH_WPF.Button bt)
         {
             if (configurationTable != null)
             {
                 TH_Database.IDatabasePlugin plugin = (TH_Database.IDatabasePlugin)bt.DataObject;
-
-                string type = plugin.Type.Replace(' ', '_');
-
-                string test = null;
-                if (PageType == Page_Type.Client) test = "/Databases_Client/" + type + "||";
-                else if (PageType == Page_Type.Server) test = "/Databases_Server/" + type + "||";
-
-                int i = 0;
-                string address = test + i.ToString("00");
-                while (Table_Functions.GetTableValue(address, configurationTable) != null || AddRootList.Find(x => x.Item1 == address) != null)
-                {
-                    i += 1;
-                    address = test + i.ToString("00");
-                }
-
-
-                // Add to list of root database address to add when saved
-                AddRootList.Add(new Tuple<string, string>(address, "id||" + i.ToString("00")));
-
-                address += "/";
 
                 object configButton = plugin.CreateConfigurationButton(null);
                 if (configButton != null)
@@ -234,12 +243,10 @@ namespace TH_DeviceManager.Pages.Databases
                         if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
                         else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
 
-                        page.prefix = address;
                         page.SettingChanged += Configuration_Page_SettingChanged;
                         databaseConfigurationPages.Add(page);
 
                         Controls.DatabaseItemContainer item = new Controls.DatabaseItemContainer();
-                        item.prefix = address;
                         item.ItemContent = configButton;
                         item.Clicked += item_Clicked;
                         item.RemoveClicked += item_RemoveClicked;
@@ -337,7 +344,6 @@ namespace TH_DeviceManager.Pages.Databases
             List<string> result = new List<string>();
 
             string filter = "Address LIKE '" + prefix + "*' AND Value <> ''";
-            //string filter = "address LIKE '" + prefix + "*'";
             DataView dv = dt.AsDataView();
             dv.RowFilter = filter;
             DataTable temp_dt = dv.ToTable();
@@ -367,36 +373,11 @@ namespace TH_DeviceManager.Pages.Databases
 
         #region "Remove Database"
 
-        List<string> RemoveList = new List<string>();
-
         void item_RemoveClicked(Controls.DatabaseItemContainer item)
         {
             if (configurationTable != null)
             {
-
-                string filter = "address LIKE '" + item.prefix + "*'";
-                DataView dv = configurationTable.AsDataView();
-                dv.RowFilter = filter;
-                DataTable temp_dt = dv.ToTable();
-                temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
-
-                // Get rid of last forward slash to get root database item
-                string root = item.prefix;
-                if (root[root.Length - 1] == '/') root = root.Substring(0, root.Length - 1);
-
-                // Add root to list of addresses to remove from datatable when saved
-                RemoveList.Add(root);
-
-                foreach (DataRow row in temp_dt.Rows)
-                {
-                    string address = row["address"].ToString();
-                    string oldVal = row["value"].ToString();
-
-                    // Add to list of addresses to remove from datatable when saved
-                    RemoveList.Add(address);
-
-                    if (SettingChanged != null) SettingChanged(address, oldVal, null);
-                }
+                if (SettingChanged != null) SettingChanged(null, null, null);
 
                 // Remove Configuration page from list
                 TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)item.collapseButton.PageContent;

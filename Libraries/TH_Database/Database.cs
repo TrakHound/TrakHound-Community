@@ -1270,7 +1270,7 @@ namespace TH_Database
 
         void FindPlugins(string Path)
         {
-            Logger.Log("Searching for Database Plugins in : " + Path);
+            Console.WriteLine("Searching for Database Plugins in : " + Path);
 
             if (Directory.Exists(Path))
             {
@@ -1294,16 +1294,16 @@ namespace TH_Database
                 }
                 catch (System.Reflection.ReflectionTypeLoadException rtex)
                 {
-                    Logger.Log("DatabasePluginReader.GetPlugins() : ReflectionTypeLoadException : " + rtex.Message);
+                    Console.WriteLine("DatabasePluginReader.GetPlugins() : ReflectionTypeLoadException : " + rtex.Message);
 
                     foreach (var lex in rtex.LoaderExceptions)
                     {
-                        Logger.Log("DatabasePluginReader.GetPlugins() : LoaderException : " + lex.Message);
+                        Console.WriteLine("DatabasePluginReader.GetPlugins() : LoaderException : " + lex.Message);
                     }                  
                 }
                 catch (Exception ex)
-                { 
-                    Logger.Log("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message);
+                {
+                    Console.WriteLine("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message);
                 }
 
                 // Search Subdirectories

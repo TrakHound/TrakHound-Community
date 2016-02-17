@@ -42,7 +42,7 @@
 
                     <TextBlock Text="Plugins" FontSize="16" Margin="0,0,0,10" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center"/>
 
-                    <Button Grid.Column="1" Content="Browse..." Width="100" Height="25" Margin="0,0,0,10" Click="Browse_Click"/>
+                    <!--<Button Grid.Column="1" Content="Browse..." Width="100" Height="25" Margin="0,0,0,10" Click="Browse_Click"/>-->
 
                 </Grid>
 

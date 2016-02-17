@@ -45,8 +45,6 @@ namespace TH_DeviceManager.Pages.General
 
         public UserConfiguration currentUser { get; set; }
 
-        public Database_Settings userDatabaseSettings;
-
         public event SaveRequest_Handler SaveRequest;
 
         public event SettingChanged_Handler SettingChanged;

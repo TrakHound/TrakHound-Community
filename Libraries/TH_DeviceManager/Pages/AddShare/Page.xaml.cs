@@ -47,8 +47,6 @@ namespace TH_DeviceManager.Pages.AddShare
 
         public UserConfiguration currentuser;
 
-        public Database_Settings userDatabaseSettings;
-
         public DeviceManager devicemanager;
 
         public void LoadConfiguration(Configuration config)
@@ -355,7 +353,7 @@ namespace TH_DeviceManager.Pages.AddShare
             {
                 string filename = o.ToString();
 
-                System.Drawing.Image img = Images.GetImage(filename, userDatabaseSettings);
+                System.Drawing.Image img = Images.GetImage(filename);
 
                 this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadImage_GUI), priority, new object[] { img });
             }
@@ -426,7 +424,7 @@ namespace TH_DeviceManager.Pages.AddShare
 
                 if (File.Exists(localPath))
                 {
-                    Images.UploadImage(localPath, userDatabaseSettings);
+                    Images.UploadImage(localPath);
 
                     result = filename;
                 }

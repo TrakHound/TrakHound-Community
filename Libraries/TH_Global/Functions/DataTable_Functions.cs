@@ -27,6 +27,18 @@ namespace TH_Global.Functions
             return result;
         }
 
+        public static double GetDoubleFromRow(string key, DataRow row)
+        {
+            double result = 0;
+
+            string val = null;
+            if (row.Table.Columns.Contains(key)) if (row[key] != null) val = row[key].ToString();
+
+            if (val != null) double.TryParse(val, out result);
+
+            return result;
+        }
+
         public static string GetTableValue(object table, string keyColumn, string key, string returnColumn)
         {
             string result = null;

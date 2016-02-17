@@ -15,6 +15,41 @@ namespace TH_MySQL.PHP
     public static class etc
     {
 
+        public static bool Ping(MySQL_Configuration config, out string msg)
+        {
+
+            bool result = false;
+            msg = null;
+
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
+
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
+
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/ping_database.php";
+
+            if (HTTP.SendData(url, values) == "true")
+            {
+                msg = "MySQL PHP Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port.ToString();
+                result = true;
+            }
+            else
+            {
+                msg = "MySQL PHP Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port.ToString();
+                result = false;
+            }
+
+            return result;
+
+        }
+
+
         public static string CustomCommand(MySQL_Configuration config, string commandText)
         {
             string Result = null;

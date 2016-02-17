@@ -23,279 +23,408 @@ namespace TrakHound_Client
     public partial class MainWindow
     {
 
-        List<PluginConfiguration> EnabledPlugins;
+        private List<IClientPlugin> _plugins;
+        /// <summary>
+        /// Flat list of IClientPlugin objects that were found
+        /// </summary>
+        public List<IClientPlugin> Plugins
+        {
+            get
+            {
+                if (_plugins == null) _plugins = new List<IClientPlugin>();
+                return _plugins;
+            }
+            set
+            {
+                _plugins = value;
+            }
+        }
+
+        private List<PluginConfiguration> _pluginConfigurations;
+        /// <summary>
+        /// Hierarchical List of PluginConfiguration objects
+        /// </summary>
+        public List<PluginConfiguration> PluginConfigurations
+        {
+            get
+            {
+                if (_pluginConfigurations == null) _pluginConfigurations = new List<PluginConfiguration>();
+                return _pluginConfigurations;
+            }
+            set
+            {
+                _pluginConfigurations = value;
+            }
+        }
+
+
+        // List of plugins enabled by default
+        List<string> defaultEnabledPlugins = new List<string> {
+            "Dashboard", 
+
+            "Device Compare",
+            "OEE",
+            "Availability",
+            "Performance",
+            "Timeline (OEE)",
+            "Production Status",
+            "Feedrate Override",
+            "Rapidrate Override",
+            "Spindle Override",
+            "Emergency Stop",
+            "Controller Mode",
+            "Execution Mode",
+
+            "Table Manager",
+            "Status Data" 
+        };
 
         void LoadPlugins()
         {
-            EnabledPlugins = new List<PluginConfiguration>();
+            Plugins = GetPlugins();
 
-            Plugins_Find();
+            PluginConfigurations = GetPluginConfigurations(Plugins); 
 
-            Plugins_Load();
+            foreach (var config in PluginConfigurations)
+            {
+                Plugin_Load(config);
+            }
+
+            Properties.Settings.Default.Plugin_Configurations = PluginConfigurations;
+            Properties.Settings.Default.Save();
         }
 
-        #region "Pages"
+        #region "IClientPlugins"
 
-        Plugin_Container plugin_container;
-
-        class Plugin_Container
+        /// <summary>
+        /// Get a list of IClientPlugins
+        /// </summary>
+        /// <returns></returns>
+        static List<IClientPlugin> GetPlugins()
         {
-            // Store Plugins
-            [ImportMany(typeof(IClientPlugin))]
-            public IEnumerable<Lazy<IClientPlugin>> plugins { get; set; }
-        }
-
-        public List<Lazy<IClientPlugin>> plugins;
-
-        public void Plugins_Find()
-        {
-            plugins = new List<Lazy<IClientPlugin>>();
+            var result = new List<IClientPlugin>();
 
             string path;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
             path = TH_Global.FileLocations.TrakHound + @"\Plugins\";
-            if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
+            if (Directory.Exists(path)) AddPlugins(GetPlugins(path), result);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
             path = AppDomain.CurrentDomain.BaseDirectory;
-            if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
+            if (Directory.Exists(path)) AddPlugins(GetPlugins(path), result);
 
-            path = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            if (Directory.Exists(path)) PagePlugins_Find_Recursive(path);
+            return result;
+        }
 
-            // Add Buttons for Plugins on PlugIn Options page
-            if (Properties.Settings.Default.Plugin_Configurations != null && pluginsPage != null)
+        /// <summary>
+        /// Add plugins to list making sure that plugins are not repeated in list
+        /// </summary>
+        /// <param name="newPlugins"></param>
+        /// <param name="oldPlugins"></param>
+        static void AddPlugins(List<IClientPlugin> newPlugins, List<IClientPlugin> oldPlugins)
+        {
+            foreach (var plugin in newPlugins)
+            {
+                if (oldPlugins.Find(x => x.Title == plugin.Title) == null) oldPlugins.Add(plugin);
+            }
+        }
+
+        /// <summary>
+        /// Get a list of plugins in the specified path
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        static List<IClientPlugin> GetPlugins(string path)
+        {
+            var result = new List<IClientPlugin>();
+
+            // Load files
+            var files = Directory.GetFiles(path);
+            if (files != null)
+            {
+                foreach (var filename in files)
+                {
+                    var plugins = PluginTools.FindPlugins(filename);
+                    foreach (var plugin in plugins)
+                    {
+                        // Only add if not already in returned list
+                        if (result.Find(x => x.Title == plugin.Title) == null)
+                        {
+                            result.Add(plugin);
+                        }    
+                    }
+                }
+            }
+
+            // Load from subdirectories
+            var subdirectories = Directory.GetDirectories(path);
+            if (subdirectories != null)
+            {
+                foreach (var subdirectory in subdirectories)
+                {
+                    result.AddRange(GetPlugins(subdirectory));
+                }
+            } 
+
+            return result;
+        }
+
+        #endregion
+
+        #region "PluginConfiguration"
+
+        /// <summary>
+        /// Get a list of PluginConfigurations
+        /// </summary>
+        /// <param name="plugins"></param>
+        /// <returns></returns>
+        List<PluginConfiguration> GetPluginConfigurations(List<IClientPlugin> plugins)
+        {
+            var result = new List<PluginConfiguration>();
+
+            List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations;
+
+            // Get list (not actual setting)
+            if (configs != null) configs = configs.ToList();
+            else configs = new List<PluginConfiguration>();
+
+            foreach (var plugin in plugins)
+            {
+                // See if config is already created
+                var config = FindPluginConfiguration(plugin.Title, configs);
+                if (config == null)
+                {
+                    config = new PluginConfiguration();
+                    config.Name = plugin.Title;
+                    config.Description = plugin.Description;
+                    config.SubCategories = plugin.SubCategories;
+
+                    // Automatically enable basic Plugins by TrakHound
+                    if (defaultEnabledPlugins.Find(x => x.ToLower() == config.Name.ToLower()) != null)
+                    {
+                        config.Enabled = true;
+                    }
+                    else config.Enabled = false;
+                }
+
+                config.EnabledChanged += config_EnabledChanged;
+
+                config.Parent = plugin.DefaultParent;
+                config.Category = plugin.DefaultParentCategory;
+
+                if (FindPluginConfiguration(plugin.Title, result) == null) result.Add(config);
+            }
+
+            result = ProcessPluginConfigurations(result);
+
+            // Add Buttons for Plugins on Plugin Options page
+            if (pluginsPage != null)
             {
                 pluginsPage.ClearInstalledItems();
 
-                Properties.Settings.Default.Plugin_Configurations.Sort((a, b) => a.Name.CompareTo(b.Name));
+                result.Sort((a, b) => a.Name.CompareTo(b.Name));
 
-                foreach (PluginConfiguration config in Properties.Settings.Default.Plugin_Configurations.ToList())
+                foreach (var config in result)
                 {
                     pluginsPage.AddInstalledItem(config);
                 }
             }
+
+            return result;
         }
 
-        List<string> DefaultEnablePlugins = new List<string> { "dashboard", "device compare", "table manager", "status data" };
-
-        void PagePlugins_Find_Recursive(string Path)
+        /// <summary>
+        /// Find a PluginConfiguration item in 'configs' using 'name' as an identifier
+        /// Searches all subpluginconfigurations also
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="configs"></param>
+        /// <returns></returns>
+        PluginConfiguration FindPluginConfiguration(string name, List<PluginConfiguration> configs)
         {
-            try
+            PluginConfiguration result = null;
+
+            foreach (var config in configs)
             {
-                plugin_container = new Plugin_Container();
-
-                var PageCatalog = new DirectoryCatalog(Path);
-                var PageContainer = new CompositionContainer(PageCatalog);
-                PageContainer.SatisfyImportsOnce(plugin_container);
-
-                if (plugin_container.plugins != null)
+                // See if root is a match
+                if (config.Name == name) result = config;
+                // if root is not a match, then search subconfigs
+                else
                 {
-                    List<PluginConfiguration> configs;
-
-                    if (Properties.Settings.Default.Plugin_Configurations != null)
+                    if (config.SubCategories != null)
                     {
-                        configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-                    }
-                    else
-                    {
-                        configs = new List<PluginConfiguration>();
-                    }
-
-                    foreach (Lazy<IClientPlugin> lplugin in plugin_container.plugins.ToList())
-                    {
-                        try
+                        foreach (var subcategory in config.SubCategories)
                         {
-                            IClientPlugin plugin = lplugin.Value;
-
-                            Console.WriteLine(plugin.Title + " Found in '" + Path + "'");
-
-                            PluginConfiguration config = configs.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
-                            if (config == null)
+                            var subConfig = FindPluginConfiguration(name, subcategory.PluginConfigurations);
+                            if (subConfig != null)
                             {
-                                Console.WriteLine("Plugin Configuration created for " + plugin.Title);
-                                config = new PluginConfiguration();
-                                config.Name = plugin.Title;
-                                config.Description = plugin.Description;
-
-                                // Automatically enable basic Plugins by TrakHound
-                                if (DefaultEnablePlugins.Contains(config.Name.ToLower()))
-                                {
-                                    config.Enabled = true;
-                                    Console.WriteLine("Default TrakHound Plugin Initialized as 'Enabled'");
-                                }
-                                else config.Enabled = false;
-
-                                config.Parent = plugin.DefaultParent;
-                                config.Category = plugin.DefaultParentCategory;
-
-                                config.SubCategories = plugin.SubCategories;
-
-                                configs.Add(config);
-                            }
-                            else Console.WriteLine("Plugin Configuration found for " + plugin.Title);
-
-                            if (config.Parent == null) config.EnabledChanged += PageConfig_EnabledChanged;
-
-                            plugins.Add(lplugin);
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                            mData.Title = "PlugIn Error";
-                            mData.Text = "Error during plugin intialization";
-                            mData.AdditionalInfo = ex.Message;
-                            mData.Type = Controls.Message_Center.MessageType.error;
-
-                            messageCenter.AddMessage(mData);
-                        }
-                    }
-
-
-                    // Create a copy of configs since we are modifying it
-                    List<PluginConfiguration> tempConfigs = new List<PluginConfiguration>();
-                    tempConfigs.AddRange(configs);
-
-                    foreach (PluginConfiguration config in tempConfigs)
-                    {
-                        if (configs.Contains(config))
-                        {
-                            if (config.Parent != null)
-                            {
-                                if (config.Category != null)
-                                {
-                                    PluginConfiguration match1 = configs.Find(x => x.Name.ToUpper() == config.Parent.ToUpper());
-                                    if (match1 != null)
-                                    {
-                                        PluginConfigurationCategory match2 = match1.SubCategories.Find(x => x.Name.ToUpper() == config.Category.ToUpper());
-                                        if (match2 != null)
-                                        {
-                                            configs.Remove(config);
-                                            if (match2.PluginConfigurations.Find(x => x.Name.ToUpper() == config.Name.ToUpper()) == null)
-                                            {
-                                                match2.PluginConfigurations.Add(config);
-                                            }
-                                        }
-                                    }
-                                }
+                                result = subConfig;
+                                break;
                             }
                         }
                     }
-
-                    Properties.Settings.Default.Plugin_Configurations = configs;
-                    Properties.Settings.Default.Save();
                 }
 
-                foreach (string directory in Directory.GetDirectories(Path, "*", SearchOption.AllDirectories))
-                {
-                    PagePlugins_Find_Recursive(directory);
-                }
+                if (result != null) break;
             }
-            catch (Exception ex)
-            {
-                Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                mData.Title = "Plugin Load Error";
-                mData.Text = "Error loading Plugins from " + Path;
-                mData.AdditionalInfo = ex.Message;
-                mData.Type = Controls.Message_Center.MessageType.error;
 
-                messageCenter.AddMessage(mData);
-            }
+            return result;
         }
 
-        void PageConfig_EnabledChanged(PluginConfiguration config)
+        /// <summary>
+        /// Process the PluginConfigurations for SubCategories
+        /// </summary>
+        /// <param name="configs"></param>
+        /// <returns></returns>
+        List<PluginConfiguration> ProcessPluginConfigurations(List<PluginConfiguration> configs)
         {
-            if (config.Enabled) Plugins_Load(config);
-            else Plugins_Unload(config);
+            var result = new List<PluginConfiguration>();
 
+            foreach (var config in configs)
+            {
+                // Find Parent and assign to Parent Category
+                if (config.Parent != null && config.Category != null)
+                {
+                    // Find Parent in configs
+                    var parent = configs.Find(x => x.Name.ToLower() == config.Parent.ToLower());
+                    if (parent != null && parent.SubCategories != null)
+                    {
+                        // Find category in parent's subcategories
+                        var category = parent.SubCategories.Find(x => x.Name.ToLower() == config.Category.ToLower());
+                        if (category != null)
+                        {
+                            category.PluginConfigurations.Add(config);
+                        }
+                    }
+                    // If Parent is not found (or if parent has no subcategories) just add to root
+                    else result.Add(config);
+                }
+                // If no parent is defined then add to root
+                else result.Add(config);
+            }
+
+            return result;
+        }
+
+        void config_EnabledChanged(PluginConfiguration sender)
+        {
+            Properties.Settings.Default.Plugin_Configurations = PluginConfigurations;
             Properties.Settings.Default.Save();
-
         }
 
-        public void Plugins_Load()
-        {
-            if (Properties.Settings.Default.Plugin_Configurations != null)
-            {
-                var configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-                //configs.Sort((a, b) => a.Name.CompareTo(b.Name));
+        #endregion
 
-                foreach (var config in configs)
+        /// <summary>
+        /// Load Plugin if Enabled
+        /// </summary>
+        /// <param name="config"></param>
+        public void Plugin_Load(PluginConfiguration config)
+        {
+            ///Check if Enabled
+            if (config.Enabled)
+            {
+                var plugin = Plugins.Find(x => x.Title == config.Name);
+                if (plugin != null)
                 {
-                    Plugins_Load(config);
+                    try
+                    {
+                        // Assign event handlers
+                        plugin.DataEvent += Plugin_DataEvent;
+                        plugin.ShowRequested += Plugin_ShowRequested;
+
+                        // Process SubPlugins
+                        plugin.SubCategories = config.SubCategories;
+                        Plugin_LoadSubPlugins(config);
+
+                        // Initialize plugin
+                        plugin.Initialize();
+
+                        // Add to Plugins List Menu
+                        AddAppToList(plugin);
+
+                        // If set to OpenOnStartUp then Open new Tab
+                        if (plugin.OpenOnStartUp) AddPageAsTab(plugin, plugin.Title, plugin.Image);
+
+                        // Create an Options page (if exists)
+                        Plugin_CreateOptionsPage(plugin);
+                    }
+                    catch (Exception ex)
+                    {
+                        Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
+                        mData.Title = "Plugin Error";
+                        mData.Text = "Error during plugin load";
+                        mData.AdditionalInfo = ex.Message;
+                        mData.Type = Controls.Message_Center.MessageType.error;
+
+                        messageCenter.AddMessage(mData);
+                    }
                 }
             }
         }
 
-        public void Plugins_Load(PluginConfiguration config)
+        /// <summary>
+        /// Process the SubPlugins
+        /// </summary>
+        /// <param name="plugin"></param>
+        void Plugin_LoadSubPlugins(IClientPlugin plugin)
         {
-            if (config != null)
+            plugin.Plugins = new List<IClientPlugin>();
+
+            if (plugin.SubCategories != null)
             {
-                if (!EnabledPlugins.Contains(config))
+                foreach (PluginConfigurationCategory subcategory in plugin.SubCategories)
                 {
-                    if (config.Enabled)
+                    foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
                     {
-                        if (plugins != null)
+                        var subplugin = Plugins.Find(x => x.Title == subConfig.Name);
+                        if (subplugin != null)
                         {
-                            Lazy<IClientPlugin> lplugin = plugins.Find(x => x.Value.Title.ToUpper() == config.Name.ToUpper());
-                            if (lplugin != null)
-                            {
-                                try
-                                {
-                                    IClientPlugin plugin = lplugin.Value;
+                            Plugin_LoadSubPlugins(subplugin);
 
-                                    plugin.DataEvent += Plugin_DataEvent;
-                                    plugin.ShowRequested += Plugin_ShowRequested;
-                                    plugin.SubCategories = config.SubCategories;
-
-                                    plugin.Plugins = new List<IClientPlugin>();
-
-                                    if (plugin.SubCategories != null)
-                                    {
-                                        foreach (PluginConfigurationCategory subcategory in plugin.SubCategories)
-                                        {
-                                            foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
-                                            {
-                                                Lazy<IClientPlugin> clplugin = plugins.Find(x => x.Value.Title.ToUpper() == subConfig.Name.ToUpper());
-                                                if (clplugin != null)
-                                                {
-                                                    plugin.Plugins.Add(clplugin.Value);
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    plugin.Initialize();
-
-                                    AddAppToList(plugin);
-
-                                    if (plugin.OpenOnStartUp)
-                                    {
-                                        AddPageAsTab(plugin, plugin.Title, plugin.Image);
-                                    }
-
-                                    Plugins_CreateOptionsPage(plugin);
-
-                                    EnabledPlugins.Add(config);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                                    mData.Title = "Plugin Error";
-                                    mData.Text = "Error during plugin load";
-                                    mData.AdditionalInfo = ex.Message;
-                                    mData.Type = Controls.Message_Center.MessageType.error;
-
-                                    messageCenter.AddMessage(mData);
-                                }
-                            }
+                            plugin.Plugins.Add(subplugin);
                         }
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Add the 'sub' plugins to the PluginConfiguration
+        /// </summary>
+        /// <param name="config"></param>
+        void Plugin_LoadSubPlugins(PluginConfiguration config)
+        {
+            var plugin = Plugins.Find(x => x.Title == config.Name);
+            if (plugin != null)
+            {
+                plugin.Plugins = new List<IClientPlugin>();
+
+                if (config.SubCategories != null)
+                {
+                    foreach (PluginConfigurationCategory subcategory in config.SubCategories)
+                    {
+                        foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
+                        {
+                            var subplugin = Plugins.Find(x => x.Title == subConfig.Name);
+                            if (subplugin != null)
+                            {
+                                Plugin_LoadSubPlugins(subConfig);
+
+                                plugin.Plugins.Add(subplugin);
+                            }
+                        }
+                    }
+                }
+            }
+
+            
+        }
+
+        /// <summary>
+        /// Plugin has requested to be shown
+        /// </summary>
+        /// <param name="info"></param>
         void Plugin_ShowRequested(PluginShowInfo info)
         {
             IClientPlugin plugin = null;
@@ -316,28 +445,30 @@ namespace TrakHound_Client
             AddPageAsTab(page, title, image);
         }
 
+        /// <summary>
+        /// Plugin has sent a DataEvent_Data object to other plugins
+        /// </summary>
+        /// <param name="de_d"></param>
         void Plugin_DataEvent(DataEvent_Data de_d)
         {
-            if (Properties.Settings.Default.Plugin_Configurations != null)
+            foreach (var config in PluginConfigurations)
             {
-                List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-
-                foreach (PluginConfiguration config in configs)
+                if (config.Enabled)
                 {
-                    if (config.Enabled)
+                    var plugin = Plugins.Find(x => x.Title == config.Name);
+                    if (plugin != null)
                     {
-                        Lazy<IClientPlugin> lplugin = plugins.ToList().Find(x => x.Value.Title == config.Name);
-                        if (lplugin != null)
-                        {
-                            IClientPlugin plugin = lplugin.Value;
-                            plugin.Update_DataEvent(de_d);
-                        }
+                        plugin.Update_DataEvent(de_d);
                     }
                 }
             }
         }
 
-        public void Plugins_Unload(PluginConfiguration config)
+        /// <summary>
+        /// Plugin has been signaled to be unloaded
+        /// </summary>
+        /// <param name="config"></param>
+        public void Plugin_Unload(PluginConfiguration config)
         {
             if (config != null)
             {
@@ -370,61 +501,65 @@ namespace TrakHound_Client
                             }
                         }
                     }
-
-                    if (EnabledPlugins.Contains(config)) EnabledPlugins.Remove(config);
                 }
             }
         }
 
-        void Plugins_CreateOptionsPage(IClientPlugin plugin)
+        /// <summary>
+        /// Create an Options page for the plugin and add it to the Options Manager
+        /// </summary>
+        /// <param name="plugin"></param>
+        void Plugin_CreateOptionsPage(IClientPlugin plugin)
         {
-
             if (plugin.Options != null) optionsManager.AddPage(plugin.Options);
-
         }
 
-        void UpdatePluginDevices(List<Configuration> devices)
+        /// <summary>
+        /// Update the devices list for each plugin
+        /// </summary>
+        /// <param name="devices"></param>
+        void Plugins_UpdateDevices(List<Configuration> devices)
         {
-            System.Diagnostics.Stopwatch stpw = new System.Diagnostics.Stopwatch();
-            stpw.Start();
-
-            if (plugins != null)
+            foreach (var plugin in Plugins)
             {
-                foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
-                {
-                    IClientPlugin plugin = lplugin.Value;
-
-                    plugin.Devices = devices;
-                }
-            }
-
-            stpw.Stop();
-
-            Console.WriteLine("UpdatePluginDevices() : " + stpw.ElapsedMilliseconds.ToString() + "ms");
-        }
-
-
-        void UpdatePluginUser(UserConfiguration userConfig, Database_Settings userDatabaseSettings)
-        {
-            if (plugins != null)
-            {
-                foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
-                {
-                    IClientPlugin plugin = lplugin.Value;
-
-                    this.Dispatcher.BeginInvoke(new Action<IClientPlugin, UserConfiguration, Database_Settings>(UpdatePluginUser), Priority, new object[] { plugin, userConfig, userDatabaseSettings });
-                }
+                plugin.Devices = devices;
             }
         }
 
-        void UpdatePluginUser(IClientPlugin plugin, UserConfiguration userConfig, Database_Settings userDatabaseSettings)
+        /// <summary>
+        /// Update the Current User for each plugin
+        /// </summary>
+        /// <param name="userConfig"></param>
+        void Plugins_UpdateUser(UserConfiguration userConfig)
         {
-            plugin.UserDatabaseSettings = userDatabaseSettings;
-            plugin.CurrentUser = userConfig;
+            var de_d = new DataEvent_Data();
 
+            if (userConfig != null)
+            {
+                de_d.id = "userloggedin";
+            }
+            else
+            {
+                de_d.id = "userloggedout";
+            }
+
+            Plugin_DataEvent(de_d);
         }
 
-        #endregion
+        /// <summary>
+        /// Signal plugins to close
+        /// </summary>
+        void Plugins_Closing()
+        {
+            foreach (var plugin in Plugins)
+            {
+                try
+                {
+                    plugin.Closing();
+                }
+                catch (Exception ex) { }
+            }
+        }
 
     }
 }

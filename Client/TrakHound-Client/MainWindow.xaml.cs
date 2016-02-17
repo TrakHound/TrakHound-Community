@@ -94,10 +94,8 @@ namespace TrakHound_Client
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User", 60);
             ReadUserManagementSettings();
-            devicemanager.UserDatabaseSettings = UserDatabaseSettings;
 
             LoginMenu.rememberMeType = RememberMeType.Client;
-            LoginMenu.UserDatabaseSettings = UserDatabaseSettings;
             LoginMenu.LoadRememberMe();
 
             Splash_UpdateStatus("...Loading Plugins", 70);
@@ -119,32 +117,7 @@ namespace TrakHound_Client
 
         private void Main_Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (Properties.Settings.Default.Plugin_Configurations != null)
-            {
-                List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-
-                if (configs != null)
-                {
-                    foreach (PluginConfiguration config in configs)
-                    {
-                        if (config.Enabled && plugins != null)
-                        {
-                            foreach (Lazy<IClientPlugin> lplugin in plugins.ToList())
-                            {
-                                if (lplugin != null)
-                                {
-                                    try
-                                    {
-                                        IClientPlugin plugin = lplugin.Value;
-                                        plugin.Closing();
-                                    }
-                                    catch (Exception ex) { }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            Plugins_Closing();
 
             DevicesMonitor_Close();
 
@@ -160,8 +133,7 @@ namespace TrakHound_Client
         {
             System.Windows.MessageBox.Show(e.ExceptionObject.ToString());
         }
-
-        
+      
 
     }
 

@@ -19,7 +19,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="50,0,0,0">
+    <Grid Margin="50,0,0,0" x:Name="root_GRID">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -37,8 +37,10 @@
             <TextBlock Grid.Column="1" Text="{Binding Text}" Foreground="{StaticResource Foreground_Light}" FontSize="14" Margin="5,0" VerticalAlignment="Center"/>
 
         </Grid>
-        
-        <StackPanel x:Name="SubCategorys_STACK" Grid.Column="1" Margin="20,0,0,0"/>
+
+        <ItemsControl Grid.Column="1" Margin="20,0,0,0" ItemsSource="{Binding ListItems}"/>
+
+        <!--<StackPanel x:Name="SubCategorys_STACK" Grid.Column="1" Margin="20,0,0,0"/>-->
 
     </Grid>
     

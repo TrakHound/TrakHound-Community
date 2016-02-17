@@ -18,9 +18,36 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid x:Name="dummy" Background="{StaticResource Accent_Normal}">
+    <Grid x:Name="dummy">
+        
+        <StackPanel>
+            
+            <th_wpf:NumberDisplay Value="{Binding Value}" Value_Format="P2"/>
 
-        <Grid Height="200" Width=" 200">
+            <th_wpf:Button Text="Value +" Foreground="Black" Clicked="Button_Clicked"/>
+
+            <th_wpf:Button Text="Value -" Foreground="Black" Clicked="Button_Clicked_1"/>
+
+            <th_wpf:Button Text="Max +" Foreground="Black" Clicked="Button_Clicked_2"/>
+
+            <th_wpf:Button Text="Max -" Foreground="Black" Clicked="Button_Clicked_3"/>
+
+            
+            <TextBlock Text="{Binding Value, StringFormat=Value {0:0}}"/>
+
+            <TextBlock Text="{Binding Maximum, StringFormat=Maximum {0:0}}"/>
+
+            <!--<th_wpf:ProgressBar  Foreground="Black" Value="{Binding Value}" Maximum="{Binding Maximum}" Height="30"/>-->
+
+        </StackPanel>
+        
+       
+        
+        
+        
+        
+
+        <!--<Grid Height="200" Width=" 200">
             
             <Grid>
                 <Grid.Style>
@@ -35,7 +62,7 @@
                 </Grid.Style>
             </Grid>
             
-            <Grid Background="#33000000" MouseMove="Grid_MouseMove" MouseDown="Grid_MouseDown" IsHitTestVisible="False"/>
+            <Grid Background="#33000000" MouseMove="Grid_MouseMove" MouseDown="Grid_MouseDown" IsHitTestVisible="False"/>-->
             
             
             
@@ -103,7 +130,7 @@
 
             </Border>-->
 
-        </Grid>
+        <!--</Grid>-->
 
         <!--<th_wpf:CollapseButton Text="Proxy Settings" IsExpanded="True" Margin="10">
             <th_wpf:CollapseButton.PageContent>

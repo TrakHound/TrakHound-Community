@@ -44,8 +44,6 @@ namespace TH_DeviceManager.Pages.AddDevice
 
         public UserConfiguration currentuser;
 
-        public Database_Settings userDatabaseSettings;
-
         public delegate void DeviceAdded_Handler(Configuration config);
         public event DeviceAdded_Handler DeviceAdded;
 
@@ -89,7 +87,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
                     if (deviceManager.CurrentUser != null)
                     {
-                        Configurations.AddConfigurationToUser(deviceManager.CurrentUser, config, userDatabaseSettings);
+                        Configurations.AddConfigurationToUser(deviceManager.CurrentUser, config);
                     }
                     // If not logged in Read from File in 'C:\TrakHound\'
                     else
@@ -355,7 +353,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                     {
                         Shared.UpdateDownloads(item.listitem);
 
-                        DataTable dt = Configurations.GetConfigurationTable(tablename, null);
+                        DataTable dt = TH_UserManagement.Management.Remote.Configurations.GetTable(tablename);
                         if (dt != null)
                         {
                             XmlDocument xml = Converter.TableToXML(dt);
@@ -368,7 +366,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
                                     if (currentuser != null)
                                     {
-                                        result.success = Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+                                        result.success = Configurations.AddConfigurationToUser(currentuser, config);
 
                                         result.config.TableName = config.TableName;
                                     }
@@ -408,7 +406,7 @@ namespace TH_DeviceManager.Pages.AddDevice
         {
             Configuration config = CreateBlankConfiguration();
 
-            Configurations.AddConfigurationToUser(currentuser, config, userDatabaseSettings);
+            Configurations.AddConfigurationToUser(currentuser, config);
 
             if (DeviceAdded != null) DeviceAdded(config);
         }
@@ -616,7 +614,7 @@ namespace TH_DeviceManager.Pages.AddDevice
 
                     if (Shared.RemoveSharedConfiguration_FromList(selectedItem))
                     {
-                        Configurations.RemoveConfigurationTable(selectedItem.tablename, null);
+                        Configurations.RemoveConfigurationTable(selectedItem.tablename);
                     }
 
                     DetailsShown = false;

@@ -18,6 +18,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Collections.ObjectModel;
+
 using TH_Plugins_Client;
 
 namespace TrakHound_Client.Pages.Plugins.Installed
@@ -30,7 +32,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         public ListItem()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
 
             mw = Application.Current.MainWindow as MainWindow;
         }
@@ -122,13 +124,17 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         public static readonly DependencyProperty Plugin_EnabledProperty =
             DependencyProperty.Register("Plugin_Enabled", typeof(bool), typeof(ListItem), new PropertyMetadata(false));
 
+        public delegate void EnabledChanged_Handler(PluginConfiguration sender, bool enabled);
+        public event EnabledChanged_Handler EnabledChanged;
         
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             if (config != null)
             {
-                config.Enabled = true;
-                Plugin_Enabled = config.Enabled;
+                if (EnabledChanged != null) EnabledChanged(config, true);
+
+                //config.Enabled = true;
+                //Plugin_Enabled = config.Enabled;
             }
         }
 
@@ -136,8 +142,10 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         {
             if (config != null)
             {
-                config.Enabled = false;
-                Plugin_Enabled = config.Enabled;
+                if (EnabledChanged != null) EnabledChanged(config, false);
+
+                //config.Enabled = false;
+                //Plugin_Enabled = config.Enabled;
             }
         }
 
@@ -152,6 +160,20 @@ namespace TrakHound_Client.Pages.Plugins.Installed
                 dummy.Background = new SolidColorBrush(Colors.Red);
 
                 mw.AddPageAsTab(dummy, "About | " + Plugin_Title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/About_01.png")));
+            }
+        }
+
+        ObservableCollection<SubCategory> subCategories;
+        public ObservableCollection<SubCategory> SubCategories
+        {
+            get
+            {
+                if (subCategories == null) subCategories = new ObservableCollection<SubCategory>();
+                return subCategories;
+            }
+            set
+            {
+                subCategories = value;
             }
         }
 

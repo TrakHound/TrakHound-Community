@@ -42,6 +42,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xaml" />
@@ -60,8 +61,11 @@
     <Compile Include="Functions\DataTable_Functions.cs" />
     <Compile Include="Functions\DateTime_Functions.cs" />
     <Compile Include="Functions\Image_Functions.cs" />
+    <Compile Include="Functions\List_Functions.cs" />
     <Compile Include="Functions\Math_Functions.cs" />
+    <Compile Include="Functions\Plugin_Functions.cs" />
     <Compile Include="Functions\String_Functions.cs" />
+    <Compile Include="Functions\TimeSpan_Functions.cs" />
     <Compile Include="Functions\Window_Functions.cs" />
     <Compile Include="Functions\XML_Functions.cs" />
     <Compile Include="Logger.cs" />

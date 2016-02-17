@@ -53,7 +53,7 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
-                List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
+                List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser);
                 if (configurations != null)
                 {
                     var orderedConfigs = configurations.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
@@ -94,7 +94,7 @@ namespace TrakHound_Client
                 addDeviceOpened = false;
             }
 
-            UpdatePluginDevices(configs);
+            Plugins_UpdateDevices(configs);
 
             DevicesMonitor_Initialize();
 
@@ -287,7 +287,7 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
-                var configs = Configurations.GetConfigurationsListForUser(currentuser, userDatabaseSettings);
+                var configs = Configurations.GetConfigurationsListForUser(currentuser);
                 if (configs != null)
                 {
                     foreach (var config in configs)

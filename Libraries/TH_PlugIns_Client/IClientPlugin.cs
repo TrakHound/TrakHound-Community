@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
+using System.Reflection;
 using System.Windows.Media;
 
 using TH_Configuration;
@@ -181,14 +183,6 @@ namespace TH_Plugins_Client
 
         #endregion
 
-        #region "User"
-
-        UserConfiguration CurrentUser { get; set; }
-
-        Database_Settings UserDatabaseSettings { get; set; }
-
-        #endregion
-
     }
 
     public delegate void DataEvent_Handler(DataEvent_Data de_d);
@@ -219,8 +213,104 @@ namespace TH_Plugins_Client
 
     public static class PluginTools
     {
+        public const string CLIENT_EXTENSION = ".cplugin";
+
         public delegate void SelectedDeviceChanged_Handler(int Index);
         public delegate void ShowRequested_Handler(PluginShowInfo info);
+
+
+        // Store plugins that are read from CompositionContainer
+        class PluginContainer
+        {
+            [ImportMany(typeof(IClientPlugin))]
+            public IEnumerable<Lazy<IClientPlugin>> Plugins { get; set; }
+        }
+
+
+        public static List<IClientPlugin> FindPlugins(string path)
+        {
+            var result = new List<IClientPlugin>();
+
+            var pluginContainer = new PluginContainer();
+         
+            CompositionContainer container = null;
+
+            // path is to an individual file
+            if (System.IO.File.Exists(path))
+            {
+                string ext = System.IO.Path.GetExtension(path);
+
+                // Check that the file extension is correct
+                if (ext != null)
+                {
+                    if (ext.ToLower() == CLIENT_EXTENSION)
+                    {
+                        var assembly = GetAssemblyFromPath(path);
+                        if (assembly != null)
+                        {
+                            var assemblyCatalog = new AssemblyCatalog(assembly);
+                            container = new CompositionContainer(assemblyCatalog);
+                        }
+                    }
+                } 
+            }
+            // path is to a directory
+            else if (System.IO.Directory.Exists(path))
+            {
+                var directoryCatalog = new DirectoryCatalog(path);
+                container = new CompositionContainer(directoryCatalog);
+            }
+
+            if (container != null)
+            {
+                // Try Loading the Imports (Plugins)
+                try
+                {
+                    container.SatisfyImportsOnce(pluginContainer);
+                }
+                catch (System.Reflection.ReflectionTypeLoadException rtex)
+                {
+                    Console.WriteLine("ReflectionTypeLoadException : " + rtex.Message);
+
+                    foreach (var lex in rtex.LoaderExceptions)
+                    {
+                        Console.WriteLine("LoaderException : " + lex.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Exception : " + ex.Message);
+                }
+
+                if (pluginContainer.Plugins != null)
+                {
+                    foreach (var lPlugin in pluginContainer.Plugins)
+                    {
+                        var plugin = lPlugin.Value;
+                        result.Add(plugin);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        static Assembly GetAssemblyFromPath(string path)
+        {
+            Assembly result = null;
+
+            try
+            {
+                result = Assembly.LoadFile(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(path + " :: " + ex.Message);
+            }          
+
+            return result;
+        }
+
     }
 
 }

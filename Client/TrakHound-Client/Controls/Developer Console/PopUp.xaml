@@ -102,7 +102,7 @@
             </Grid.Background>-->
 
             <DataGrid x:Name="dg"
-                    ItemsSource="{Binding Console_Output}" 
+                    ItemsSource="{Binding ConsoleOutput}" 
                     Loaded="DataGrid_Loaded"
                     LoadingRow="DataGrid_LoadingRow" 
                     AutoGenerateColumns="False"

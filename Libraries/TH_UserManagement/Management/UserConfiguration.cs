@@ -62,10 +62,10 @@ namespace TH_UserManagement.Management
         public UserManagementSettings()
         {
             //Users = new List<User_Settings>();
-            Databases = new Database_Settings();
+            Database = null;
         }
 
-        public Database_Settings Databases { get; set; }
+        public static Database_Settings Database { get; set; }
 
         public static UserManagementSettings ReadConfiguration(string filepath)
         {
@@ -89,7 +89,8 @@ namespace TH_UserManagement.Management
                         switch (node.Name.ToLower())
                         {
                             //case "users": result.Users = Process_Users(node); break;
-                            case "databases": result.Databases = Process_Databases(node); break;
+                            case "databases": Database = Process_Databases(node); break;
+                            case "database": Database = Process_Databases(node); break;
                         }
                     }
 

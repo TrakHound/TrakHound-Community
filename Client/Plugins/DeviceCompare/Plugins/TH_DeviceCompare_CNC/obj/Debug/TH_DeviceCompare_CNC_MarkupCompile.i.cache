@@ -1,0 +1,20 @@
+﻿TH_DeviceCompare_CNC
+
+
+library
+C#
+.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\
+TH_DeviceCompare_CNC
+none
+false
+DEBUG;TRACE
+
+7222870216
+
+20-2142403474
+17-1291308303
+Overrides\Feedrate\View.xaml;Overrides\Rapidrate\View.xaml;Overrides\SpindleSpeed\View.xaml;Text\Controller Mode\View.xaml;Text\Execution Mode\View.xaml;Text\Emergency Stop\View.xaml;Text\TextDisplay.xaml;
+
+True
+

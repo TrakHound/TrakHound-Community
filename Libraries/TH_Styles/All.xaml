@@ -11,6 +11,8 @@
 
         <ResourceDictionary Source="Styles/CheckBoxes.Xaml" />
 
+        <ResourceDictionary Source="Styles/ToggleButtons.Xaml" />
+
         <!--<ResourceDictionary Source="Styles/ComboBox1.Xaml" />-->
 
         <ResourceDictionary Source="Styles/ComboBox3.Xaml" />

@@ -80,5 +80,12 @@ namespace TH_Global.Functions
             return new DateTime(year, month, day, hour, minute, second, millisecond, DateTimeKind.Utc);
         }
 
+        public static DateTime Parse(string s)
+        {
+            DateTime result = DateTime.MinValue;
+            if (s != null) DateTime.TryParse(s, out result);
+            return result;
+        }
+
     }
 }

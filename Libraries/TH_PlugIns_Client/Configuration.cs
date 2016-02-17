@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Media;
 
@@ -38,6 +39,19 @@ namespace TH_Plugins_Client
 
         public delegate void EnabledChanged_Handler(PluginConfiguration config);
         public event EnabledChanged_Handler EnabledChanged;
+
+        public PluginConfiguration Copy()
+        {
+            var result = new PluginConfiguration();
+
+            result.Name = Name;
+            result.Description = Description;
+            result.Enabled = Enabled;
+            result.Parent = Parent;
+            result.SubCategories = SubCategories.ToList();
+
+            return result;
+        }
     }
 
     public class PluginConfigurationCategory

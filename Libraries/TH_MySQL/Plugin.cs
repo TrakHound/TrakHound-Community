@@ -54,7 +54,7 @@ namespace TH_MySQL
             {
                 if (config.UsePHP)
                 {
-                    result = Ping_PHP(config, out msg);
+                    result = PHP.etc.Ping(config, out msg);
                 }
                 else
                 {
@@ -65,29 +65,29 @@ namespace TH_MySQL
             return result;          
         }
 
-        static bool Ping_PHP(MySQL_Configuration config, out string msg)
-        {
-            bool result = false;
-            msg = null;
+        //static bool Ping_PHP(MySQL_Configuration config, out string msg)
+        //{
+        //    bool result = false;
+        //    msg = null;
 
-            try
-            {
-                var ping = new Ping();
+        //    try
+        //    {
+        //        var ping = new Ping();
 
-                PingReply reply = ping.Send(config.Server);
+        //        PingReply reply = ping.Send(config.Server);
 
-                msg = "MySQL PHP Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port.ToString();
-                result = reply.Status == IPStatus.Success;
-            }
-            catch (Exception ex)
-            {
-                msg = "MySQL PHP Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
-                msg += ex.Message;
-                result = false;
-            }
+        //        msg = "MySQL PHP Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port.ToString();
+        //        result = reply.Status == IPStatus.Success;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        msg = "MySQL PHP Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
+        //        msg += ex.Message;
+        //        result = false;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         static bool Ping_Connector(MySQL_Configuration config, out string msg)
         {

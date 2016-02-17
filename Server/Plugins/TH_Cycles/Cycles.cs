@@ -139,11 +139,6 @@ namespace TH_Cycles
 
         #region "Cycles"
 
-        #region "Configuration"
-
-        
-        #endregion
-
         #region "Database"
 
         string cycleTableName = TableNames.Cycles;
@@ -158,10 +153,13 @@ namespace TH_Cycles
             columns.Add(new ColumnDefinition("CYCLE_ID", DataType.LargeText, false, true));
             columns.Add(new ColumnDefinition("INSTANCE_ID", DataType.LargeText, false, true));
             columns.Add(new ColumnDefinition("NAME", DataType.LargeText, false, true));
-            columns.Add(new ColumnDefinition("Event", DataType.LargeText));
+            columns.Add(new ColumnDefinition("EVENT", DataType.LargeText));
 
             columns.Add(new ColumnDefinition("START_TIME", DataType.DateTime));
             columns.Add(new ColumnDefinition("STOP_TIME", DataType.DateTime));
+
+            columns.Add(new ColumnDefinition("START_TIME_UTC", DataType.DateTime));
+            columns.Add(new ColumnDefinition("STOP_TIME_UTC", DataType.DateTime));
 
             columns.Add(new ColumnDefinition("SHIFT_ID", DataType.MediumText));
 
@@ -208,6 +206,8 @@ namespace TH_Cycles
                 columns.Add("event");
                 columns.Add("start_time");
                 columns.Add("stop_time");
+                columns.Add("start_time_utc");
+                columns.Add("stop_time_utc");
                 columns.Add("shift_id");
                 columns.Add("duration");
 
@@ -226,6 +226,8 @@ namespace TH_Cycles
                 values.Add(cycle.Event);
                 values.Add(cycle.StartTime);
                 values.Add(cycle.StopTime);
+                values.Add(cycle.StartTimeUtc);
+                values.Add(cycle.StopTimeUtc);
                 values.Add(cycle.ShiftId);
                 values.Add(cycle.Duration.TotalSeconds);
 
@@ -496,8 +498,10 @@ namespace TH_Cycles
             else cycle.ProductionType = CycleData.CycleProductionType.UNCATEGORIZED;
 
             // Set/Reset Times & Duration
-            cycle.StartTime = data.timestamp;
+            cycle.StartTime = data.timestamp.ToLocalTime();
+            cycle.StartTimeUtc = data.timestamp;
             cycle.StopTime = cycle.StartTime;
+            cycle.StopTimeUtc = cycle.StartTimeUtc;
 
             // Set to local variable
             cycleData = cycle;
@@ -506,7 +510,8 @@ namespace TH_Cycles
         void ProcessPreviousCycle(CycleData cycle, InstanceTable.InstanceData data)
         {
             // Set Stop Time
-            cycle.StopTime = data.timestamp;
+            cycle.StopTime = data.timestamp.ToLocalTime();
+            cycle.StopTimeUtc = data.timestamp;
 
             // Add to database
             AddCycleRow(cycle);
@@ -518,7 +523,8 @@ namespace TH_Cycles
         void UpdateCycleData(CycleData cycle, InstanceTable.InstanceData data)
         {
             // Set Stop Time
-            cycle.StopTime = data.timestamp;
+            cycle.StopTime = data.timestamp.ToLocalTime();
+            cycle.StopTimeUtc = data.timestamp;
 
             // Set Shift Segment ID
             SetCycleShiftId(cycle, data);
