@@ -96,7 +96,7 @@ namespace TrakHound_Client
 
             Plugins_UpdateDevices(configs);
 
-            DevicesMonitor_Initialize();
+            //DevicesMonitor_Initialize();
 
             // Send message to plugins that Devices have been loaded
             TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();

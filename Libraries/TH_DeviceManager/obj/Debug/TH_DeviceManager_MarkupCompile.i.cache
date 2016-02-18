@@ -16,5 +16,5 @@ DEBUG;TRACE
 22587088619
 Pages\AddDevice\Controls\SharedItem.xaml;Pages\AddShare\Page.xaml;Pages\CopyDevice\Page.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\DeviceButton.xaml;Controls\PageItem.xaml;Pages\AddDevice\Page.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;DeviceManager.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;Pages\General\Page.xaml;
 
-True
+False
 

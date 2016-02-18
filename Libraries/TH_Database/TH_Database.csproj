@@ -47,6 +47,8 @@
     <Compile Include="Database.cs" />
     <Compile Include="DatabaseQueue.cs" />
     <Compile Include="IDatabasePlugin.cs" />
+    <Compile Include="PluginReader.cs" />
+    <Compile Include="PluginTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <None Include="Tables\Configurations\Shared.cs" />
     <None Include="Tables\Users.cs" />

@@ -27,7 +27,7 @@
 
         <Border BorderBrush="{StaticResource Shade_Normal}">
 
-            <!--PlugIns-->
+            <!--Installed Plugins-->
             <Grid Margin="0,0,0,50">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -40,19 +40,17 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Plugins" FontSize="16" Margin="0,0,0,10" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center"/>
-
-                    <!--<Button Grid.Column="1" Content="Browse..." Width="100" Height="25" Margin="0,0,0,10" Click="Browse_Click"/>-->
+                    <TextBlock Text="Installed Plugins" FontSize="16" Margin="0,0,0,10" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center"/>
 
                 </Grid>
-
-                <StackPanel x:Name="Installed_STACK" Grid.Row="1">
-                    <StackPanel.Resources>
+                
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding ListItems}">
+                    <ItemsControl.Resources>
                         <Style TargetType="local:ListItem">
                             <Setter Property="Margin" Value="0,5"/>
                         </Style>
-                    </StackPanel.Resources>
-                </StackPanel>
+                    </ItemsControl.Resources>
+                </ItemsControl>
 
             </Grid>
 

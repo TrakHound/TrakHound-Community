@@ -22,51 +22,20 @@ namespace TrakHound_Server_Console
         {
             var worker = new Worker();
         }
-
-        
-
-        //static Database_Settings ReadUserManagementSettings()
-        //{
-        //    Database_Settings result = null;
-
-        //    DatabasePluginReader dpr = new DatabasePluginReader();
-
-        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
-        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
-
-        //    string configPath;
-
-        //    // systemPath takes priority (easier for user to navigate to)
-        //    if (File.Exists(systemPath)) configPath = systemPath;
-        //    else configPath = localPath;
-
-        //    UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
-
-        //    if (userSettings != null)
-        //    {
-        //        if (userSettings.Databases.Databases.Count > 0)
-        //        {
-        //            result = userSettings.Databases;
-        //            Global.Initialize(result);
-        //        }
-        //    }
-
-        //    return result;
-        //}
     }
 
-    public class Worker
+    class Worker
     {
         public Worker()
         {
+            TH_Database.DatabasePluginReader.ReadPlugins();
+
             var server = new Server();
 
-            var db = ReadUserManagementSettings();
-
-            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, db);
+            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server);
             if (rememberUser != null)
             {
-                RememberMe.Set(rememberUser, RememberMeType.Server, db);
+                RememberMe.Set(rememberUser, RememberMeType.Server);
 
                 if (server != null) server.Login(rememberUser);
             }
@@ -74,35 +43,6 @@ namespace TrakHound_Server_Console
             server.Start();
 
             Console.ReadLine();
-        }
-
-        static Database_Settings ReadUserManagementSettings()
-        {
-            Database_Settings result = null;
-
-            DatabasePluginReader dpr = new DatabasePluginReader();
-
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
-
-            string configPath;
-
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
-
-            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
-
-            if (userSettings != null)
-            {
-                if (userSettings.Databases.Databases.Count > 0)
-                {
-                    result = userSettings.Databases;
-                    Global.Initialize(result);
-                }
-            }
-
-            return result;
         }
     }
 }

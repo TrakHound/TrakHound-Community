@@ -68,6 +68,7 @@ namespace TrakHound_Client
             "Performance",
             "Timeline (OEE)",
             "Production Status",
+            "Program Name",
             "Feedrate Override",
             "Rapidrate Override",
             "Spindle Override",
@@ -118,19 +119,6 @@ namespace TrakHound_Client
         }
 
         /// <summary>
-        /// Add plugins to list making sure that plugins are not repeated in list
-        /// </summary>
-        /// <param name="newPlugins"></param>
-        /// <param name="oldPlugins"></param>
-        static void AddPlugins(List<IClientPlugin> newPlugins, List<IClientPlugin> oldPlugins)
-        {
-            foreach (var plugin in newPlugins)
-            {
-                if (oldPlugins.Find(x => x.Title == plugin.Title) == null) oldPlugins.Add(plugin);
-            }
-        }
-
-        /// <summary>
         /// Get a list of plugins in the specified path
         /// </summary>
         /// <param name="path"></param>
@@ -139,21 +127,13 @@ namespace TrakHound_Client
         {
             var result = new List<IClientPlugin>();
 
-            // Load files
-            var files = Directory.GetFiles(path);
-            if (files != null)
+            var plugins = PluginTools.FindPlugins(path);
+            foreach (var plugin in plugins)
             {
-                foreach (var filename in files)
+                // Only add if not already in returned list
+                if (result.Find(x => x.Title == plugin.Title) == null)
                 {
-                    var plugins = PluginTools.FindPlugins(filename);
-                    foreach (var plugin in plugins)
-                    {
-                        // Only add if not already in returned list
-                        if (result.Find(x => x.Title == plugin.Title) == null)
-                        {
-                            result.Add(plugin);
-                        }    
-                    }
+                    result.Add(plugin);
                 }
             }
 
@@ -168,6 +148,19 @@ namespace TrakHound_Client
             } 
 
             return result;
+        }
+
+        /// <summary>
+        /// Add plugins to list making sure that plugins are not repeated in list
+        /// </summary>
+        /// <param name="newPlugins"></param>
+        /// <param name="oldPlugins"></param>
+        static void AddPlugins(List<IClientPlugin> newPlugins, List<IClientPlugin> oldPlugins)
+        {
+            foreach (var plugin in newPlugins)
+            {
+                if (oldPlugins.Find(x => x.Title == plugin.Title) == null) oldPlugins.Add(plugin);
+            }
         }
 
         #endregion
@@ -227,7 +220,7 @@ namespace TrakHound_Client
 
                 foreach (var config in result)
                 {
-                    pluginsPage.AddInstalledItem(config);
+                    pluginsPage.AddPlugin(config);
                 }
             }
 

@@ -112,7 +112,8 @@ namespace TH_WPF
             // Get ProgressWidth by calculating proportion of Value and Maximum
             val = (val * controlWidth) / Maximum;
 
-            Animate(val, ProgressWidthProperty);
+            if (AnimateValueChange) Animate(val, ProgressWidthProperty);
+            else ProgressWidth = val;
         }
 
         void SetProgressHeight(double value)
@@ -124,7 +125,8 @@ namespace TH_WPF
             // Get ProgressWidth by calculating proportion of Value and Maximum
             val = (val * controlHeight) / Maximum;
 
-            Animate(val, ProgressHeightProperty);
+            if (AnimateValueChange) Animate(val, ProgressHeightProperty);
+            else ProgressHeight = val;           
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -132,6 +134,19 @@ namespace TH_WPF
             SetProgressWidth(Value);
         }
 
+
+
+
+        public bool AnimateValueChange
+        {
+            get { return (bool)GetValue(AnimateValueChangeProperty); }
+            set { SetValue(AnimateValueChangeProperty, value); }
+        }
+
+        public static readonly DependencyProperty AnimateValueChangeProperty =
+            DependencyProperty.Register("AnimateValueChange", typeof(bool), typeof(ProgressBar), new PropertyMetadata(true));
+
+        
 
         void Animate(double to, DependencyProperty dp)
         {

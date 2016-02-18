@@ -52,7 +52,7 @@ namespace TrakHound_Server
 
         public ServerGroup()
         {
-            //System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            System.AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             OutputConsole = new Output_Console();
 
@@ -60,13 +60,13 @@ namespace TrakHound_Server
             logWriter.Updated += Log_Updated;
             Console.SetOut(logWriter);
 
+            TH_Database.DatabasePluginReader.ReadPlugins();
+
             //CheckForUpdates();
 
             Server = new Server();
             Server.CurrentUserChanged += Server_CurrentUserChanged;
             Controller = new Controller(this);
-
-            userDatabaseSettings = ReadUserManagementSettings();
 
             GetRememberMe(userDatabaseSettings);
 
@@ -114,10 +114,10 @@ namespace TrakHound_Server
         void GetRememberMe(Database_Settings db)
         {
             // Remember Me
-            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server, db);
+            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server);
             if (rememberUser != null)
             {
-                RememberMe.Set(rememberUser, RememberMeType.Server, db);
+                RememberMe.Set(rememberUser, RememberMeType.Server);
 
                 if (Server != null) Server.Login(rememberUser);
             }
@@ -126,36 +126,6 @@ namespace TrakHound_Server
                 Login();
             }
         }
-
-        Database_Settings ReadUserManagementSettings()
-        {
-            Database_Settings result = null;
-
-            DatabasePluginReader dpr = new DatabasePluginReader();
-
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
-
-            string configPath;
-
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
-
-            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
-
-            if (userSettings != null)
-            {
-                if (userSettings.Databases.Databases.Count > 0)
-                {
-                    result = userSettings.Databases;
-                    Global.Initialize(result);
-                }
-            }
-
-            return result;
-        }
-
 
         public void Login()
         {
@@ -189,7 +159,7 @@ namespace TrakHound_Server
 
         public void Logout()
         {
-            RememberMe.Clear(RememberMeType.Server, userDatabaseSettings);
+            RememberMe.Clear(RememberMeType.Server);
 
             if (Server != null) Server.Logout();
         }

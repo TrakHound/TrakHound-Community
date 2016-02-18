@@ -139,7 +139,7 @@ namespace TrakHound_Client
 
         void ReadUserManagementSettings()
         {
-            DatabasePluginReader dpr = new DatabasePluginReader();
+            //DatabasePluginReader dpr = new DatabasePluginReader();
 
             string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
             string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";

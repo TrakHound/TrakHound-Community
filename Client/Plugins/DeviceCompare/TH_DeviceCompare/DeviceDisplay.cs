@@ -130,6 +130,12 @@ namespace TH_DeviceCompare
                             overlay.ConnectionStatus = "Could Not Connect To Database";
                         }
                     }
+
+                    var header = Group.Header;
+                    if (header != null)
+                    {
+                        header.Connected = false;
+                    }
                 }
                 else
                 {
@@ -142,6 +148,12 @@ namespace TH_DeviceCompare
                         overlay.Loading = false;
                         overlay.ConnectionError = false;
                         overlay.ConnectionStatus = null;
+                    }
+
+                    var header = Group.Header;
+                    if (header != null)
+                    {
+                        header.Connected = true;
                     }
                 }
 
@@ -198,9 +210,12 @@ namespace TH_DeviceCompare
         {
             Cells.Clear();
 
-            foreach (var plugin in plugins)
+            if (plugins != null)
             {
-                AddPlugin(plugin, configs);
+                foreach (var plugin in plugins)
+                {
+                    AddPlugin(plugin, configs);
+                }
             }
         }
 

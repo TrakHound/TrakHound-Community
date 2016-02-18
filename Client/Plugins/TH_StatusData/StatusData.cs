@@ -73,6 +73,54 @@ namespace TH_StatusData
             public ManualResetEvent Stop { get; set; }
         }
 
+
+
+
+
+        //int interval_min = 3000;
+        //    int interval_max = 60000;
+        //    int interval = interval_min;
+
+        //    bool first = true;
+
+        //    if (UseDatabases)
+        //    {
+        //        while (!dbsuccess)
+        //        {
+        //            // Ping Database connection for each Database Configuration
+        //            dbsuccess = true;
+        //            string msg = null;
+
+        //            foreach (Database_Configuration db_config in configuration.Databases_Server.Databases)
+        //            {
+        //                if (!TH_Database.Global.Ping(db_config, out msg))
+        //                {
+        //                    dbsuccess = false;
+        //                    break;
+        //                }
+        //            }
+
+        //            if (dbsuccess) UpdateProcessingStatus("Database Connections Established");
+        //            else
+        //            {
+        //                // Increase the interval by 25% until interval == interval_max
+        //                if (!first) interval = Math.Min(Convert.ToInt32(interval + (interval * 0.25)), interval_max);
+        //                first = false;
+
+        //                WriteToConsole("Error in Database Connection... Retrying in " + interval.ToString() + "ms", ConsoleOutputType.Error);
+        //                if (msg != null) WriteToConsole(msg, ConsoleOutputType.Error);
+
+        //                // Sleep the current thread for the calculated interval
+        //                System.Threading.Thread.Sleep(interval);
+        //            }
+        //        }
+        //    } 
+
+
+
+        const int INTERVAL_MIN = 3000;
+        const int INTERVAL_MAX = 60000;
+
         void Update_Worker(object o)
         {
             if (o != null)
@@ -81,10 +129,14 @@ namespace TH_StatusData
 
                 Configuration config = info.Config;
 
+                int interval = INTERVAL_MIN;
+                bool first = true;
+
                 while (!info.Stop.WaitOne(0, true))
                 {
                     // Get Connection Status
                     DataEvent_Data connected = GetConnectionData(config);
+
                     // Send Connection Status
                     SendDataEvent(connected);
 
@@ -92,46 +144,62 @@ namespace TH_StatusData
                     {
                         if ((bool)connected.data02 == true)
                         {
-                            // Get Snapshot Data
-                            DataEvent_Data snapshotData = GetSnapShots(config);
-                            // Send Snapshot Data
-                            SendDataEvent(snapshotData);
+                            // Reset the interval back to the Minimum
+                            interval = INTERVAL_MIN;
 
-                            // Get Variable Data
-                            DataEvent_Data variableData = GetVariables(config);
-                            // Send Variable Data
-                            SendDataEvent(variableData);
-
-
-                            // Get ShiftData from Variable Data
-                            ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
-
-
-                            // Get Gen Event Values
-                            DataEvent_Data genEventData = GetGenEventValues(config);
-                            // Send Gen Event Values
-                            SendDataEvent(genEventData);
-
-                            // Get Shift Data
-                            DataEvent_Data shiftTableData = GetShifts(config, shiftData);
-                            // Send Shift Data
-                            SendDataEvent(shiftTableData);
-
-                            // Get OEE Data
-                            DataEvent_Data oeeData = GetOEE(config, shiftData);
-                            // Send OEE Data
-                            SendDataEvent(oeeData);
-
-                            // Get Production Status Data
-                            DataEvent_Data productionStatusData = GetProductionStatusList(config, shiftData);
-                            // Send Production Status Data
-                            SendDataEvent(productionStatusData);
+                            UpdateData(config);
+                        }
+                        else
+                        {
+                            // Increase the interval by 50% until interval == interval_max
+                            if (!first) interval = Math.Min(Convert.ToInt32(interval + (interval * 0.5)), INTERVAL_MAX);
+                            first = false;
                         }
                     }
 
                     Thread.Sleep(interval);
                 }
             }
+        }
+
+        private void UpdateData(Configuration config)
+        {
+
+            // Get Snapshot Data
+            DataEvent_Data snapshotData = GetSnapShots(config);
+            // Send Snapshot Data
+            SendDataEvent(snapshotData);
+
+            // Get Variable Data
+            DataEvent_Data variableData = GetVariables(config);
+            // Send Variable Data
+            SendDataEvent(variableData);
+
+
+            // Get ShiftData from Variable Data
+            ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
+
+
+            // Get Gen Event Values
+            DataEvent_Data genEventData = GetGenEventValues(config);
+            // Send Gen Event Values
+            SendDataEvent(genEventData);
+
+            // Get Shift Data
+            DataEvent_Data shiftTableData = GetShifts(config, shiftData);
+            // Send Shift Data
+            SendDataEvent(shiftTableData);
+
+            // Get OEE Data
+            DataEvent_Data oeeData = GetOEE(config, shiftData);
+            // Send OEE Data
+            SendDataEvent(oeeData);
+
+            // Get Production Status Data
+            DataEvent_Data productionStatusData = GetProductionStatusList(config, shiftData);
+            // Send Production Status Data
+            SendDataEvent(productionStatusData);
+
         }
 
 

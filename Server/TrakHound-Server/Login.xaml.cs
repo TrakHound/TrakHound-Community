@@ -197,10 +197,10 @@ namespace TrakHound_Server
                 Login_Info info = (Login_Info)o;
 
                 // Login
-                UserConfiguration userConfig = Users.Login(info.username, info.password, userDatabaseSettings);
+                UserConfiguration userConfig = Users.Login(info.username, info.password);
 
                 // Set Remember Me
-                if (userConfig != null && info.rememberMe) TH_UserManagement.Management.RememberMe.Set(userConfig, rememberMeType, userDatabaseSettings);
+                if (userConfig != null && info.rememberMe) TH_UserManagement.Management.RememberMe.Set(userConfig, rememberMeType);
 
                 this.Dispatcher.BeginInvoke(new Action<UserConfiguration>(Login_Finished), priority, new object[] { userConfig });
             }

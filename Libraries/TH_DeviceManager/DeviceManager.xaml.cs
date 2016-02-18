@@ -57,6 +57,9 @@ namespace TH_DeviceManager
             ManagerType = type;
 
             LoadPlugins();
+
+            if (type == DeviceManagerType.Client) ShowClient_RADIO.IsChecked = true;
+            else ShowServer_RADIO.IsChecked = true;
         }
 
         void init()
@@ -641,6 +644,7 @@ namespace TH_DeviceManager
         void page_DeviceAdded(Configuration config)
         {
             AddDeviceButton(config);
+            ShowAddedDevices();
         }
 
         #endregion
@@ -1298,7 +1302,7 @@ namespace TH_DeviceManager
         }
 
         public static readonly DependencyProperty PageListOptionsShownProperty =
-            DependencyProperty.Register("PageListOptionsShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+            DependencyProperty.Register("PageListOptionsShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(true));
 
 
 
@@ -1335,9 +1339,8 @@ namespace TH_DeviceManager
 
             ConfigurationPages.Clear();
 
-            //ConfigurationPages.Add(new Pages.General.Page());
             descriptionPage = new Pages.Description.Page();
-            //description.userDatabaseSettings = UserDatabaseSettings;
+
             ConfigurationPages.Add(descriptionPage);
 
             // Agent
@@ -1355,8 +1358,8 @@ namespace TH_DeviceManager
             // Create PageItem and add to PageList
             foreach (ConfigurationPage page in ConfigurationPages)
             {
-                if (ManagerType == DeviceManagerType.Client) page.PageType = TH_Plugins_Server.Page_Type.Client;
-                else if (ManagerType == DeviceManagerType.Server) page.PageType = TH_Plugins_Server.Page_Type.Server;
+                if (type == DeviceManagerType.Client) page.PageType = TH_Plugins_Server.Page_Type.Client;
+                else if (type == DeviceManagerType.Server) page.PageType = TH_Plugins_Server.Page_Type.Server;
 
                 this.Dispatcher.BeginInvoke(new Action<ConfigurationPage>(AddPageButton), priority, new object[] { page });
             }
@@ -1366,10 +1369,6 @@ namespace TH_DeviceManager
                 if (PageList.Count > selectedPageIndex) Page_Selected((ListButton)PageList[selectedPageIndex]);
                 else Page_Selected((ListButton)PageList[0]);
             }
-
-            //// If global DeviceManagerType is set to Server than show options for Client configuration
-            //if (ManagerType == DeviceManagerType.Server) PageListOptionsShown = true;
-            //else PageListOptionsShown = false;
         }
 
         void ShowClientPages()

@@ -59,6 +59,10 @@
     <Compile Include="Text\Emergency Stop\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Text\Program Name\Plugin.cs" />
+    <Compile Include="Text\Program Name\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Text\TextDisplay.xaml.cs">
       <DependentUpon>TextDisplay.xaml</DependentUpon>
     </Compile>
@@ -87,6 +91,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Text\Emergency Stop\View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Text\Program Name\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

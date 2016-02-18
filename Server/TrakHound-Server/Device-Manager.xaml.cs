@@ -125,43 +125,43 @@ namespace TrakHound_Server
             {
                 userDatabaseSettings = value;
 
-                if (devicemanager != null) devicemanager.UserDatabaseSettings = userDatabaseSettings;
+                //if (devicemanager != null) devicemanager.UserDatabaseSettings = userDatabaseSettings;
             }
         }
 
-        void ReadUserManagementSettings()
-        {
-            DatabasePluginReader dpr = new DatabasePluginReader();
+        //void ReadUserManagementSettings()
+        //{
+        //    //DatabasePluginReader dpr = new DatabasePluginReader();
 
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
 
-            string configPath;
+        //    string configPath;
 
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
 
-            Logger.Log(configPath);
+        //    Logger.Log(configPath);
 
-            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
+        //    UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
 
-            if (userSettings != null)
-            {
-                if (userSettings.Databases.Databases.Count > 0)
-                {
-                    userDatabaseSettings = userSettings.Databases;
-                    Global.Initialize(userDatabaseSettings);
-                }
-            }
-        }
+        //    if (userSettings != null)
+        //    {
+        //        if (userSettings.Database.Databases.Count > 0)
+        //        {
+        //            userDatabaseSettings = userSettings.Database;
+        //            Global.Initialize(userDatabaseSettings);
+        //        }
+        //    }
+        //}
 
         #endregion
 
         void LoginMenu_MyAccountClicked()
         {
             TH_UserManagement.MyAccountPage page = new TH_UserManagement.MyAccountPage();
-            page.LoadUserConfiguration(CurrentUser, userDatabaseSettings);
+            page.LoadUserConfiguration(CurrentUser);
 
             TempPage = page;
         }

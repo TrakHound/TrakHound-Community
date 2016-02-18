@@ -53,7 +53,7 @@
 
                         <Rectangle Height="25" Width="25" Fill="{StaticResource Foreground_Normal}" VerticalAlignment="Center">
                             <Rectangle.Resources>
-                                <ImageBrush x:Key="IMG" ImageSource="{Binding Plugin_Image}" Stretch="Uniform" />
+                                <ImageBrush x:Key="IMG" ImageSource="{Binding Plugin.Image}" Stretch="Uniform" />
                             </Rectangle.Resources>
 
                             <Rectangle.Style>
@@ -74,10 +74,10 @@
                         </Grid.RowDefinitions>
 
                         <!--Title-->
-                        <TextBlock Text="{Binding Plugin_Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Plugin.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center"/>
 
                         <!--Description-->
-                        <TextBlock Grid.Row="1" Margin="0,5" Text="{Binding Plugin_Description}" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" MaxWidth="400" TextWrapping="Wrap" HorizontalAlignment="Left" />
+                        <TextBlock Grid.Row="1" Margin="0,5" Text="{Binding Plugin.Description}" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" MaxWidth="400" TextWrapping="Wrap" HorizontalAlignment="Left" />
 
                     </Grid>
 
@@ -92,7 +92,7 @@
 
                     <TextBlock Grid.Column="0" Text="Enabled" VerticalAlignment="Center" Margin="5,0" FontSize="14" Foreground="{StaticResource Foreground_Normal}" />
 
-                    <CheckBox Grid.Column="1" IsChecked="{Binding Plugin_Enabled}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40" Cursor="Hand"/>
+                    <CheckBox Grid.Column="1" IsChecked="{Binding Enabled}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Height="40" Cursor="Hand"/>
 
                 </Grid>
 
@@ -100,7 +100,7 @@
 
         </Border>
 
-        <ItemsControl ItemsSource="{Binding SubCategories}"/>
+        <ItemsControl ItemsSource="{Binding Subcategories}"/>
 
     </StackPanel>
 

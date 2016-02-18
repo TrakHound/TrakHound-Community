@@ -85,7 +85,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("UserManagement_RememberMe_SetRegistryKey() : " + ex.Message);
+                    //Logger.Log("UserManagement_RememberMe_SetRegistryKey() : " + ex.Message);
                 }
             }
 
@@ -112,7 +112,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("UserManagement_RememberMe_GetRegistryKey() : " + ex.Message);
+                    //Logger.Log("UserManagement_RememberMe_GetRegistryKey() : " + ex.Message);
                 }
 
                 return Result;
@@ -137,7 +137,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("UserManagement_RememberMe_GetRegistryKeys() : " + ex.Message);
+                    //Logger.Log("UserManagement_RememberMe_GetRegistryKeys() : " + ex.Message);
                 }
 
                 return Result;
@@ -161,7 +161,7 @@ namespace TH_UserManagement.Management
                 }
                 catch (Exception ex)
                 {
-                   Logger.Log("UserManagement_RememberMe_DeleteRegistryKey() : " + ex.Message);
+                   //Logger.Log("UserManagement_RememberMe_DeleteRegistryKey() : " + ex.Message);
                 }
             }
         }

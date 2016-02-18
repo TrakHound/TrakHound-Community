@@ -35,8 +35,8 @@ namespace TrakHound_Client
 
         void Splash_Close() { if (splsh != null) splsh.Close(); }
 
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Render;
-        //const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
+        //const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Render;
+        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
 
         void Splash_UpdateStatus(string status, double loadingProgress) { this.Dispatcher.Invoke(new Action<string, double>(Splash_UpdateStatus_GUI), Priority, new object[] { status, loadingProgress }); }
 

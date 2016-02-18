@@ -670,7 +670,7 @@
                                         </Style>
                                     </StackPanel.Style>
 
-                                    <RadioButton x:Name="ShowClient_RADIO" Content="Client" Checked="ShowClient_Checked" GroupName="PageListType" IsChecked="True"/>
+                                    <RadioButton x:Name="ShowClient_RADIO" Content="Client" Checked="ShowClient_Checked" GroupName="PageListType"/>
 
                                     <RadioButton x:Name="ShowServer_RADIO" Content="Server" Checked="ShowServer_Checked" GroupName="PageListType"/>
 

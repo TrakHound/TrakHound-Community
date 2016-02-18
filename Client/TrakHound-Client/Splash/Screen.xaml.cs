@@ -32,7 +32,7 @@ namespace TrakHound_Client.Splash
         public Screen()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
         public string Status1

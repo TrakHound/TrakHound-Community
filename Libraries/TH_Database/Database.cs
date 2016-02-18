@@ -4,11 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.IO;
-using System.Reflection;
-
 using TH_Configuration;
 using TH_Global;
 
@@ -17,7 +12,7 @@ namespace TH_Database
     public static class Global
     {
 
-        public static List<Lazy<IDatabasePlugin>> Plugins;
+        public static List<IDatabasePlugin> Plugins;
 
         public static bool UseMultithreading = true;
 
@@ -27,15 +22,13 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins.ToList())
+                    foreach (var plugin in Global.Plugins)
                     {
                         try
                         {
-                            IDatabasePlugin dp = ldp.Value;
-
-                            if (Global.CheckType(dp, db))
+                            if (Global.CheckType(plugin, db))
                             {
-                                dp.Initialize(db);
+                                plugin.Initialize(db);
                                 break;
                             }
                         }
@@ -55,15 +48,13 @@ namespace TH_Database
 
             if (Global.Plugins != null)
             {
-                foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins.ToList())
+                foreach (var plugin in Global.Plugins)
                 {
                     try
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (CheckType(dp, config))
+                        if (CheckType(plugin, config))
                         {
-                            result = dp.Ping(config.Configuration, out msg);
+                            result = plugin.Ping(config.Configuration, out msg);
                             break;
                         }
                     }
@@ -83,15 +74,13 @@ namespace TH_Database
 
             if (Global.Plugins != null)
             {
-                foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins.ToList())
+                foreach (var plugin in Global.Plugins)
                 {
                     try
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, config))
+                        if (Global.CheckType(plugin, config))
                         {
-                            result = dp.CheckPermissions(config.Configuration, type);
+                            result = plugin.CheckPermissions(config.Configuration, type);
                             break;
                         }
                     }
@@ -164,15 +153,13 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             CreateWorkerInfo info = new CreateWorkerInfo();
                             info.configuration = db.Configuration;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
                             else Create_Worker(info);
@@ -204,15 +191,13 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             DropWorkerInfo info = new DropWorkerInfo();
                             info.configuration = db.Configuration;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker), info);
                             else Drop_Worker(info);
@@ -287,18 +272,16 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             CreateWorkerInfo info = new CreateWorkerInfo();
                             info.configuration = db.Configuration;
                             info.tablename = tablename;
                             info.columnDefinitions = columnDefinitions;
                             info.primaryKey = primaryKey;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Create_Worker), info);
                             else Create_Worker(info);
@@ -331,16 +314,14 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             DropWorkerInfo1 info = new DropWorkerInfo1();
                             info.configuration = db.Configuration;
                             info.tablename = tablename;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker1), info);
                             else Drop_Worker1(info);
@@ -373,16 +354,14 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             DropWorkerInfo2 info = new DropWorkerInfo2();
                             info.configuration = db.Configuration;
                             info.tablenames = tablenames;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Drop_Worker2), info);
                             else Drop_Worker2(info);
@@ -415,16 +394,14 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             TruncateWorkerInfo info = new TruncateWorkerInfo();
                             info.configuration = db.Configuration;
                             info.tablename = tablename;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Truncate_Worker), info);
                             else Truncate_Worker(info);
@@ -460,13 +437,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_Get(database.Configuration, tablename);
+                            result = plugin.Table_Get(database.Configuration, tablename);
                             found = true;
                             break;
                         }
@@ -487,13 +462,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_Get(database.Configuration, tablename, limit, offset);
+                            result = plugin.Table_Get(database.Configuration, tablename, limit, offset);
                             found = true;
                             break;
                         }
@@ -514,13 +487,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_Get(database.Configuration, tablename, filterExpression);
+                            result = plugin.Table_Get(database.Configuration, tablename, filterExpression);
                             found = true;
                             break;
                         }
@@ -541,13 +512,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_Get(database.Configuration, tablename, filterExpression, columns);
+                            result = plugin.Table_Get(database.Configuration, tablename, filterExpression, columns);
                             found = true;
                             break;
                         }
@@ -569,13 +538,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_List(database.Configuration);
+                            result = plugin.Table_List(database.Configuration);
                             found = true;
                             break;
                         }
@@ -596,13 +563,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_List(database.Configuration, filterExpression);
+                            result = plugin.Table_List(database.Configuration, filterExpression);
                             found = true;
                             break;
                         }
@@ -624,13 +589,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_GetRowCount(database.Configuration, tablename);
+                            result = plugin.Table_GetRowCount(database.Configuration, tablename);
                             found = true;
                             break;
                         }
@@ -651,13 +614,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_GetSize(database.Configuration, tablename);
+                            result = plugin.Table_GetSize(database.Configuration, tablename);
                             found = true;
                             break;
                         }
@@ -696,13 +657,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Column_Get(database.Configuration, tablename);
+                            result = plugin.Column_Get(database.Configuration, tablename);
                             found = true;
                             break;
                         }
@@ -720,17 +679,15 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             AddWorkerInfo info = new AddWorkerInfo();
                             info.configuration = db.Configuration;
                             info.tablename = tablename;
                             info.columnDefinition = columnDefinition;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(AddWorker), info);
                             else AddWorker(info);
@@ -815,11 +772,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             InsertWorkerInfo1 info = new InsertWorkerInfo1();
                             info.configuration = db.Configuration;
@@ -828,7 +783,7 @@ namespace TH_Database
                             info.values = values;
                             info.primaryKey = primaryKey;
                             info.update = update;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker1), info);
                             else InsertWorker1(info);
@@ -861,11 +816,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             InsertWorkerInfo2 info = new InsertWorkerInfo2();
                             info.configuration = db.Configuration;
@@ -874,7 +827,7 @@ namespace TH_Database
                             info.values = values;
                             info.primaryKey = primaryKey;
                             info.update = update;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker2), info);
                             else InsertWorker2(info);
@@ -907,11 +860,9 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             InsertWorkerInfo3 info = new InsertWorkerInfo3();
                             info.configuration = db.Configuration;
@@ -920,7 +871,7 @@ namespace TH_Database
                             info.valuesList = valuesList;
                             info.primaryKey = primaryKey;
                             info.update = update;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker3), info);
                             else InsertWorker3(info);
@@ -953,16 +904,14 @@ namespace TH_Database
             {
                 foreach (Database_Configuration db in settings.Databases)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, db))
+                        if (Global.CheckType(plugin, db))
                         {
                             InsertWorkerInfo4 info = new InsertWorkerInfo4();
                             info.configuration = db.Configuration;
                             info.query = query;
-                            info.plugin = dp;
+                            info.plugin = plugin;
 
                             if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(InsertWorker4), info);
                             else InsertWorker4(info);
@@ -998,13 +947,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Row_Get(database.Configuration, tablename, tableKey, rowKey);
+                            result = plugin.Row_Get(database.Configuration, tablename, tableKey, rowKey);
                             found = true;
                             break;
                         }
@@ -1025,13 +972,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Row_Get(database.Configuration, tablename, query);
+                            result = plugin.Row_Get(database.Configuration, tablename, query);
                             found = true;
                             break;
                         }
@@ -1054,13 +999,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Row_Exists(database.Configuration, tablename, filterString);
+                            result = plugin.Row_Exists(database.Configuration, tablename, filterString);
                             found = true;
                             break;
                         }
@@ -1102,19 +1045,17 @@ namespace TH_Database
                     {
                         Database_Configuration db = settings.Databases[x];
 
-                        foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                        foreach (var plugin in Global.Plugins)
                         {
-                            IDatabasePlugin dp = ldp.Value;
-
-                            if (Global.CheckType(dp, db))
+                            if (Global.CheckType(plugin, db))
                             {
-                                if (x == 0) result = dp.CustomCommand(db.Configuration, commandText);
+                                if (x == 0) result = plugin.CustomCommand(db.Configuration, commandText);
                                 else
                                 {
                                     CustomCommandWorkerInfo info = new CustomCommandWorkerInfo();
                                     info.configuration = db.Configuration;
                                     info.commandText = commandText;
-                                    info.plugin = dp;
+                                    info.plugin = plugin;
 
                                     if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(CustomCommandWorker), info);
                                     else CustomCommandWorker(info);
@@ -1153,13 +1094,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.GetValue(database.Configuration, tablename, column, filterExpression);
+                            result = plugin.GetValue(database.Configuration, tablename, column, filterExpression);
                             found = true;
                             break;
                         }
@@ -1181,13 +1120,11 @@ namespace TH_Database
             {
                 if (Global.Plugins != null)
                 {
-                    foreach (Lazy<IDatabasePlugin> ldp in Global.Plugins)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        IDatabasePlugin dp = ldp.Value;
-
-                        if (Global.CheckType(dp, database))
+                        if (Global.CheckType(plugin, database))
                         {
-                            result = dp.Table_Get(database.Configuration, username);
+                            result = plugin.Table_Get(database.Configuration, username);
                             found = true;
                             break;
                         }
@@ -1201,118 +1138,4 @@ namespace TH_Database
 
     }
 
-    public class DatabasePluginReader
-    {
-
-        public DatabasePluginReader()
-        {
-            GetPlugins();
-        }
-
-        public IEnumerable<Lazy<IDatabasePlugin>> databasePlugins { get; set; }
-
-        public List<Lazy<IDatabasePlugin>> plugins { get; set; }
-
-        DatabasePlugs DBPLUGS;
-
-        class DatabasePlugs
-        {
-            [ImportMany(typeof(IDatabasePlugin))]
-            public IEnumerable<Lazy<IDatabasePlugin>> PlugIns { get; set; }
-        }
-
-        public void GetPlugins()
-        {
-            string plugin_rootpath = FileLocations.Plugins;
-
-            if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
-
-            plugins = new List<Lazy<IDatabasePlugin>>();
-
-            string pluginsPath;
-
-            // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\Plugins')
-            pluginsPath = TH_Global.FileLocations.Plugins;
-            if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
-
-            // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-            //pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
-            if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
-
-
-            Console.WriteLine("Database Plugins --------------------------");
-            Console.WriteLine(plugins.Count.ToString() + " Plugins Found");
-            Console.WriteLine("------------------------------");
-            foreach (Lazy<IDatabasePlugin> lplugin in plugins)
-            {
-                IDatabasePlugin plugin = lplugin.Value;
-
-                string name = plugin.Name;
-                string version = null;
-
-                // Version Info
-                Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-                if (assembly != null)
-                {
-                    Version v = assembly.GetName().Version;
-                    version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
-                }
-
-                Console.WriteLine(plugin.Name + " : " + version);
-            }
-            Console.WriteLine("----------------------------------------");
-
-
-            Global.Plugins = plugins;
-
-        }
-
-        void FindPlugins(string Path)
-        {
-            Console.WriteLine("Searching for Database Plugins in : " + Path);
-
-            if (Directory.Exists(Path))
-            {
-                try
-                {
-                    DBPLUGS = new DatabasePlugs();
-
-                    var PageCatalog = new DirectoryCatalog(Path);
-                    var PageContainer = new CompositionContainer(PageCatalog);
-                    PageContainer.SatisfyImportsOnce(DBPLUGS);
-
-                    databasePlugins = DBPLUGS.PlugIns;
-
-                    foreach (Lazy<IDatabasePlugin> DBP in databasePlugins.ToList())
-                    {
-                        if (plugins.ToList().Find(x => x.Value.Name.ToLower() == DBP.Value.Name.ToLower()) == null)
-                        {
-                            plugins.Add(DBP);
-                        }
-                    }
-                }
-                catch (System.Reflection.ReflectionTypeLoadException rtex)
-                {
-                    Console.WriteLine("DatabasePluginReader.GetPlugins() : ReflectionTypeLoadException : " + rtex.Message);
-
-                    foreach (var lex in rtex.LoaderExceptions)
-                    {
-                        Console.WriteLine("DatabasePluginReader.GetPlugins() : LoaderException : " + lex.Message);
-                    }                  
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message);
-                }
-
-                // Search Subdirectories
-                foreach (string directory in Directory.GetDirectories(Path))
-                {
-                    FindPlugins(directory);
-                }
-            }
-        }
-
-    }
 }

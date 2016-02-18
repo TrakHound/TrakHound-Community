@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\App.xaml
-27-1774930385
+26-1483073507
 1436831558
-461874529773
+456044637
 24-36826544
-Controls\PageManager.xaml;Controls\TabManager.xaml;Pages\About\Information\Page.xaml;Pages\About\License\Page.xaml;Controls\Fullscreen.xaml;Controls\Developer Console\PopUp.xaml;Pages\Options\Updates\Page.xaml;Pages\Options\Updates\UpdateItem.xaml;Menus\Plugins\PluginItem.xaml;Menus\Plugins\Menu.xaml;Controls\Page.xaml;Controls\TH_TabHeader_Top.xaml;Controls\TH_ToolBarItem.xaml;Menus\Main\Menu.xaml;Menus\Main\Exit_BT.xaml;Menus\Main\MenuItem.xaml;MainWindow.xaml;Controls\Message Center\Message.xaml;Controls\Message Center\MessageCenter.xaml;Controls\Message Center\Notifications\Notification_Item.xaml;Pages\Options\General\Page.xaml;Pages\Plugins\Installed\ListContainer.xaml;Pages\Plugins\Installed\ListItem.xaml;Pages\Plugins\Installed\Page.xaml;Pages\Plugins\Installed\SubCategory.xaml;Splash\PluginIcon.xaml;Splash\Screen.xaml;
+Controls\PageManager.xaml;Controls\TabManager.xaml;Pages\About\Information\Page.xaml;Pages\About\License\Page.xaml;Controls\Fullscreen.xaml;Controls\Developer Console\PopUp.xaml;Pages\Options\Updates\Page.xaml;Pages\Options\Updates\UpdateItem.xaml;Menus\Plugins\PluginItem.xaml;Menus\Plugins\Menu.xaml;Controls\Page.xaml;Controls\TH_TabHeader_Top.xaml;Controls\TH_ToolBarItem.xaml;Menus\Main\Menu.xaml;Menus\Main\Exit_BT.xaml;Menus\Main\MenuItem.xaml;MainWindow.xaml;Controls\Message Center\Message.xaml;Controls\Message Center\MessageCenter.xaml;Controls\Message Center\Notifications\Notification_Item.xaml;Pages\Options\General\Page.xaml;Pages\Plugins\Installed\ListItem.xaml;Pages\Plugins\Installed\Page.xaml;Pages\Plugins\Installed\Subcategory.xaml;Splash\PluginIcon.xaml;Splash\Screen.xaml;
 
-True
+False
 

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-7222870216
+8-1019738878
 
-16-1764688678
+18753543149
 17-1291308303
-Overrides\Feedrate\View.xaml;Overrides\Rapidrate\View.xaml;Overrides\SpindleSpeed\View.xaml;Text\Controller Mode\View.xaml;Text\Execution Mode\View.xaml;Text\Emergency Stop\View.xaml;Text\TextDisplay.xaml;
+Overrides\Feedrate\View.xaml;Overrides\Rapidrate\View.xaml;Overrides\SpindleSpeed\View.xaml;Text\Controller Mode\View.xaml;Text\Execution Mode\View.xaml;Text\Emergency Stop\View.xaml;Text\Program Name\View.xaml;Text\TextDisplay.xaml;
 
 False
 

@@ -13,9 +13,10 @@ namespace TH_Global
 
         public static string TrakHound = Environment.GetEnvironmentVariable("SystemDrive") + @"\TrakHound";
 
-        public static string TrakHoundImages = Environment.GetEnvironmentVariable("SystemDrive") + @"\TrakHound\Images";
+        //public static string TrakHoundImages = Environment.GetEnvironmentVariable("SystemDrive") + @"\TrakHound\Images";
+        //public static string TrakHoundImages = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TrakHound\images";
 
-        public static string TrakHoundTemp = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TrakHound\\temp";
+        public static string TrakHoundTemp = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TrakHound\temp";
 
         public static string Plugins = TrakHound + @"\Plugins";
 

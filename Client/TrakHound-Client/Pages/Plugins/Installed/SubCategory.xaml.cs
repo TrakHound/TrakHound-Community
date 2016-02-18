@@ -25,9 +25,9 @@ namespace TrakHound_Client.Pages.Plugins.Installed
     /// <summary>
     /// Interaction logic for CategoryLabel.xaml
     /// </summary>
-    public partial class SubCategory : UserControl
+    public partial class Subcategory : UserControl
     {
-        public SubCategory()
+        public Subcategory()
         {
             InitializeComponent();
             root_GRID.DataContext = this;
@@ -40,20 +40,20 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         }
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(SubCategory), new PropertyMetadata(null));
+            DependencyProperty.Register("Text", typeof(string), typeof(Subcategory), new PropertyMetadata(null));
 
 
-        ObservableCollection<ListItem> listitems;
+        ObservableCollection<ListItem> _listItems;
         public ObservableCollection<ListItem> ListItems
         {
             get
             {
-                if (listitems == null) listitems = new ObservableCollection<ListItem>();
-                return listitems;
+                if (_listItems == null) _listItems = new ObservableCollection<ListItem>();
+                return _listItems;
             }
             set
             {
-                listitems = value;
+                _listItems = value;
             }
         }
 

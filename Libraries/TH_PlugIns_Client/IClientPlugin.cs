@@ -213,7 +213,7 @@ namespace TH_Plugins_Client
 
     public static class PluginTools
     {
-        public const string CLIENT_EXTENSION = ".cplugin";
+        public const string PLUGIN_EXTENSION = ".cplugin";
 
         public delegate void SelectedDeviceChanged_Handler(int Index);
         public delegate void ShowRequested_Handler(PluginShowInfo info);
@@ -243,7 +243,7 @@ namespace TH_Plugins_Client
                 // Check that the file extension is correct
                 if (ext != null)
                 {
-                    if (ext.ToLower() == CLIENT_EXTENSION)
+                    if (ext.ToLower() == PLUGIN_EXTENSION)
                     {
                         var assembly = GetAssemblyFromPath(path);
                         if (assembly != null)
@@ -257,7 +257,7 @@ namespace TH_Plugins_Client
             // path is to a directory
             else if (System.IO.Directory.Exists(path))
             {
-                var directoryCatalog = new DirectoryCatalog(path);
+                var directoryCatalog = new DirectoryCatalog(path, "*" + PLUGIN_EXTENSION);
                 container = new CompositionContainer(directoryCatalog);
             }
 

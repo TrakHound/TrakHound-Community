@@ -23,7 +23,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,1,0">
+    <Border Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,1,0" IsHitTestVisible="False">
         <Border.Style>
             <Style TargetType="Border">
                 <Setter Property="Opacity" Value="0.0"/>
@@ -46,8 +46,8 @@
             <Grid>
 
                 <!--Loading Animation-->
-                <Grid>
-                    <Grid.Style>
+                <!--<Grid>
+                    --><!--<Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="Opacity" Value="0.0"/>
                             <Style.Triggers>
@@ -69,11 +69,11 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
+                    </Grid.Style>--><!--
 
                     <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
 
-                </Grid>
+                </Grid>-->
 
                 <!--Connection Error Image-->
                 <Grid>

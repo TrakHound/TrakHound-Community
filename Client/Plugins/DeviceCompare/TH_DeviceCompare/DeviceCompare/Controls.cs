@@ -134,9 +134,12 @@ namespace TH_DeviceCompare
         {
             RowHeaders.Clear();
 
-            foreach (var plugin in plugins)
+            if (plugins != null)
             {
-                AddRowHeader(plugin, configs);
+                foreach (var plugin in plugins)
+                {
+                    AddRowHeader(plugin, configs);
+                }
             }
         }
 
@@ -325,6 +328,7 @@ namespace TH_DeviceCompare
             "Performance",
             "Timeline (OEE)",
             "Production Status", 
+            "Program Name",
             "Feedrate Override",
             "Rapidrate Override",
             "Spindle Override",

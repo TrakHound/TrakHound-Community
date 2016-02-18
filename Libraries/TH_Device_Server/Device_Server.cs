@@ -76,6 +76,7 @@ namespace TH_Device_Server
             bool first = true;
 
             if (UseDatabases)
+            {
                 while (!dbsuccess)
                 {
                     // Ping Database connection for each Database Configuration
@@ -105,6 +106,7 @@ namespace TH_Device_Server
                         System.Threading.Thread.Sleep(interval);
                     }
                 }
+            } 
         }
 
         public void Start() { start(); }

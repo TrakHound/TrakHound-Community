@@ -81,7 +81,7 @@ namespace TH_StatusData
 
         public event DataEvent_Handler DataEvent;
 
-        public event PluginTools.ShowRequested_Handler ShowRequested;
+        public event TH_Plugins_Client.PluginTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 

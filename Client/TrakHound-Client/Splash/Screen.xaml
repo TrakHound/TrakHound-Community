@@ -51,7 +51,7 @@
     </Window.Resources>
 
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
-    <Grid x:Name="Root_GRID">
+    <Grid x:Name="root">
         <Grid.Resources>
             <GridLength x:Key="ShadowWidth">10</GridLength>
 

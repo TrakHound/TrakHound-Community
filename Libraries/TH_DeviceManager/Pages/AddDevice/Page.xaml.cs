@@ -364,6 +364,12 @@ namespace TH_DeviceManager.Pages.AddDevice
                                 {
                                     result.config = config;
 
+                                    if (TH_UserManagement.Management.UserManagementSettings.Database != null)
+                                    {
+                                        SaveLocalImage(config.FileLocations.Manufacturer_Logo_Path);
+                                        SaveLocalImage(config.FileLocations.Image_Path);
+                                    }
+
                                     if (currentuser != null)
                                     {
                                         result.success = Configurations.AddConfigurationToUser(currentuser, config);
@@ -382,6 +388,20 @@ namespace TH_DeviceManager.Pages.AddDevice
             }
 
             this.Dispatcher.BeginInvoke(new Action<AddShared_Return>(AddSharedItem_GUI), priority, new object[] { result });
+        }
+
+        void SaveLocalImage(string filename)
+        {
+            if (filename != null)
+            {
+                var image = TH_UserManagement.Management.Remote.Images.GetImage(filename);
+                if (image != null)
+                {
+                    string savePath = FileLocations.TrakHoundTemp + "\\" + filename;
+
+                    image.Save(savePath);
+                }
+            }
         }
 
         void AddSharedItem_GUI(AddShared_Return result)

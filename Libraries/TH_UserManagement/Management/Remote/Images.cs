@@ -77,27 +77,42 @@ namespace TH_UserManagement.Management.Remote
 
             if (filename != String.Empty)
             {
-                int attempts = 0;
-                bool success = false;
+                string localPath = FileLocations.TrakHoundTemp + "\\" + filename;
 
-                while (attempts < connectionAttempts && !success)
+                // Look for file in local cache
+                if (File.Exists(localPath))
                 {
-                    attempts += 1;
+                    result = TH_UserManagement.Management.Local.Images.GetImage(filename);
+                }
+                // If not in local cache (already downloaded) then download it
+                else
+                {
+                    int attempts = 0;
+                    bool success = false;
 
-                    using (WebClient webClient = new WebClient())
+                    while (attempts < connectionAttempts && !success)
                     {
-                        try
+                        attempts += 1;
+
+                        using (WebClient webClient = new WebClient())
                         {
-                            byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/users/files/" + filename);
-
-                            using (MemoryStream mem = new MemoryStream(data))
+                            try
                             {
-                                result = System.Drawing.Image.FromStream(mem);
-                            }
+                                byte[] data = webClient.DownloadData("https://www.feenux.com/trakhound/users/files/" + filename);
 
-                            success = true;
+                                using (MemoryStream mem = new MemoryStream(data))
+                                {
+                                    result = System.Drawing.Image.FromStream(mem);
+
+                                    string localSavePath = FileLocations.TrakHoundTemp + "\\" + filename;
+
+                                    result.Save(localSavePath);
+                                }
+
+                                success = true;
+                            }
+                            catch (Exception ex) { Logger.Log("GetImage() : Exception : " + ex.Message); }
                         }
-                        catch (Exception ex) { Logger.Log("GetImage() : Exception : " + ex.Message); }
                     }
                 }
             }

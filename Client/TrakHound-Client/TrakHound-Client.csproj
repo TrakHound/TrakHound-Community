@@ -157,17 +157,14 @@
     <Compile Include="Pages\Options\General\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Plugins\Installed\ListContainer.xaml.cs">
-      <DependentUpon>ListContainer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Plugins\Installed\ListItem.xaml.cs">
       <DependentUpon>ListItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Plugins\Installed\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Plugins\Installed\SubCategory.xaml.cs">
-      <DependentUpon>SubCategory.xaml</DependentUpon>
+    <Compile Include="Pages\Plugins\Installed\Subcategory.xaml.cs">
+      <DependentUpon>Subcategory.xaml</DependentUpon>
     </Compile>
     <Compile Include="SingleInstance.cs" />
     <Compile Include="Splash\PluginIcon.xaml.cs">
@@ -269,10 +266,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Plugins\Installed\ListContainer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Pages\Plugins\Installed\ListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -281,7 +274,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Plugins\Installed\SubCategory.xaml">
+    <Page Include="Pages\Plugins\Installed\Subcategory.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

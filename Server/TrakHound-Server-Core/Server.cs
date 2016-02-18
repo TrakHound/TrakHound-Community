@@ -28,9 +28,6 @@ namespace TrakHound_Server_Core
         {
             PrintHeader();
 
-            Global.UseMultithreading = false;
-            DatabasePluginReader dpr = new DatabasePluginReader();
-
             LoadDevices();
 
             if (Started != null) Started();

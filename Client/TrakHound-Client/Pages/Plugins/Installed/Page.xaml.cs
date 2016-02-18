@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         public Page()
         {
             InitializeComponent();
+            DataContext = this;
 
             mw = Application.Current.MainWindow as MainWindow;
         }
@@ -44,51 +46,55 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/CheckMark_01.png")); } }
 
-
-        private void AddSubConfigurationListItem(PluginConfigurationCategory category, SubCategory subCategory)
+        ObservableCollection<ListItem> _listItems;
+        public ObservableCollection<ListItem> ListItems
         {
-            foreach (PluginConfiguration config in category.PluginConfigurations)
+            get
+            {
+                if (_listItems == null) _listItems = new ObservableCollection<ListItem>();
+                return _listItems;
+            }
+            set
+            {
+                _listItems = value;
+            }
+        }
+
+        /// <summary>
+        /// Create a ListItem control using a IClientPlugin and PluginConfiguration
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        private ListItem CreateListItem(IClientPlugin plugin, PluginConfiguration config)
+        {
+            // Create a new ListItem
+            var result = new ListItem();
+            result.Plugin = plugin;
+            result.PluginConfiguration = config;
+            result.Enabled = config.Enabled;
+
+            result.EnabledChanged += li_EnabledChanged;
+
+            AddSubConfigurations(config, result);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Add a ListItem control representing an Installed Plugin
+        /// </summary>
+        /// <param name="config"></param>
+        public void AddPlugin(PluginConfiguration config)
+        {
+            if (mw != null)
             {
                 var plugin = mw.Plugins.Find(x => x.Title == config.Name);
                 if (plugin != null)
                 {
-                    try
-                    {
-                        ListItem item = new ListItem();
-                        item.Plugin_Title = config.Name;
-                        item.Plugin_Description = config.Description;
-                        item.config = config;
-                        item.Plugin_Enabled = config.Enabled;
-                        item.Plugin_Image = plugin.Image;
-
-                        item.EnabledChanged += li_EnabledChanged;
-
-                        // Author Info
-                        item.Author_Name = plugin.Author;
-                        item.Author_Text = plugin.AuthorText;
-                        item.Author_Image = Image_Functions.SetImageSize(plugin.AuthorImage, 0, 30);
-
-                        // Version Info
-                        Assembly sassembly = Assembly.GetAssembly(plugin.GetType());
-                        if (sassembly != null)
-                        {
-                            Version sversion = sassembly.GetName().Version;
-                            item.Plugin_Version = "v" + sversion.Major.ToString() + "." + sversion.Minor.ToString() + "." + sversion.Build.ToString();
-                        }
-
-                        AddSubConfigurations(config, item);
-
-                        subCategory.ListItems.Add(item);
-                    }
-                    catch (Exception ex)
-                    {
-                        Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                        mData.Title = "Plugin Error";
-                        mData.Text = "Error during plugin Configuration Load";
-                        mData.AdditionalInfo = ex.Message;
-
-                        mw.messageCenter.AddMessage(mData);
-                    }
+                    // Create a new ListItem for the plugin
+                    var item = CreateListItem(plugin, config);
+                    ListItems.Add(item);
                 }
             }
         }
@@ -99,53 +105,26 @@ namespace TrakHound_Client.Pages.Plugins.Installed
             {
                 foreach (PluginConfigurationCategory category in config.SubCategories)
                 {
-                    SubCategory subCategory = new SubCategory();
-                    subCategory.Text = category.Name;
+                    var subcategory = new Subcategory();
+                    subcategory.Text = category.Name;
 
-                    AddSubConfigurationListItem(category, subCategory);
+                    AddSubConfigurationListItems(category, subcategory);
 
-                    item.SubCategories.Add(subCategory);
+                    item.Subcategories.Add(subcategory);
                 }
             }
         }
 
-        public void AddInstalledItem(PluginConfiguration config)
+        private void AddSubConfigurationListItems(PluginConfigurationCategory category, Subcategory subcategory)
         {
-            if (mw != null)
+            foreach (PluginConfiguration config in category.PluginConfigurations)
             {
                 var plugin = mw.Plugins.Find(x => x.Title == config.Name);
                 if (plugin != null)
                 {
-                    ListContainer lc = new ListContainer();
-
-                    ListItem li = new ListItem();
-                    li.Plugin_Title = config.Name;
-                    li.Plugin_Description = config.Description;
-                    li.config = config;
-                    li.Plugin_Enabled = config.Enabled;
-                    li.Plugin_Image = plugin.Image;
-
-                    li.EnabledChanged += li_EnabledChanged;
-                    
-
-                    // Author Info
-                    li.Author_Name = plugin.Author;
-                    li.Author_Text = plugin.AuthorText;
-                    li.Author_Image = Image_Functions.SetImageSize(plugin.AuthorImage, 0, 30);
-
-                    // Version Info
-                    Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-                    if (assembly != null)
-                    {
-                        Version version = assembly.GetName().Version;
-                        li.Plugin_Version = "v" + version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString();
-                    }
-
-                    AddSubConfigurations(config, li);
-
-                    lc.RootPlugin_GRID.Children.Add(li);
-
-                    Installed_STACK.Children.Add(lc);
+                    // Create a new ListItem for the plugin
+                    var item = CreateListItem(plugin, config);
+                    subcategory.ListItems.Add(item);
                 }
             }
         }
@@ -212,139 +191,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
         public void ClearInstalledItems()
         {
-            Installed_STACK.Children.Clear();
-        }
-
-        public void LoadPluginConfigurations()
-        {
-            //if (mw != null)
-            //{
-            //    var configs = mw.PluginConfigurations;
-                
-            //    foreach (var config in configs)
-            //    {
-
-
-
-            //    }
-
-            //}
-            
-
-
-            // Load Plugin Configurations
-            //if (Properties.Settings.Default.Plugin_Configurations != null)
-            //{
-            //    List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-
-            //    foreach (ListContainer lc in Installed_STACK.Children.OfType<ListContainer>())
-            //    {
-            //        foreach (ListItem root_li in lc.RootPlugin_GRID.Children.OfType<ListItem>())
-            //        {
-            //            PluginConfiguration config = configs.Find(x => x.Name.ToUpper() == root_li.Plugin_Title.ToUpper());
-            //            if (config != null)
-            //            {
-            //                root_li.Plugin_Enabled = config.Enabled;
-            //            }
-
-            //            List<ListItem> subitems = lc.SubPlugins_STACK.Children.OfType<ListItem>().ToList();
-
-            //            foreach (PluginConfigurationCategory subCat in config.SubCategories)
-            //            {
-            //                foreach (PluginConfiguration subConfig in subCat.PluginConfigurations)
-            //                {
-            //                    ListItem sub_li = subitems.Find(x => x.Plugin_Title.ToUpper() == subConfig.Name.ToUpper());
-            //                    if (sub_li != null)
-            //                    {
-            //                        sub_li.Plugin_Enabled = subConfig.Enabled;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-        }
-
-        //public void LoadPluginConfigurations()
-        //{
-
-
-        //    // Load Plugin Configurations
-        //    if (Properties.Settings.Default.Plugin_Configurations != null)
-        //    {
-        //        List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-
-        //        foreach (ListContainer lc in Installed_STACK.Children.OfType<ListContainer>())
-        //        {
-        //            foreach (ListItem root_li in lc.RootPlugin_GRID.Children.OfType<ListItem>())
-        //            {
-        //                PluginConfiguration config = configs.Find(x => x.Name.ToUpper() == root_li.Plugin_Title.ToUpper());
-        //                if (config != null)
-        //                {
-        //                    root_li.Plugin_Enabled = config.Enabled;
-        //                }
-
-        //                List<ListItem> subitems = lc.SubPlugins_STACK.Children.OfType<ListItem>().ToList();
-
-        //                foreach (PluginConfigurationCategory subCat in config.SubCategories)
-        //                {
-        //                    foreach (PluginConfiguration subConfig in subCat.PluginConfigurations)
-        //                    {
-        //                        ListItem sub_li = subitems.Find(x => x.Plugin_Title.ToUpper() == subConfig.Name.ToUpper());
-        //                        if (sub_li != null)
-        //                        {
-        //                            sub_li.Plugin_Enabled = subConfig.Enabled;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        private void Browse_Click(object sender, RoutedEventArgs e)
-        {
-            //Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            //dlg.InitialDirectory = Environment.GetEnvironmentVariable("system");
-            //dlg.Multiselect = true;
-            //dlg.Title = "Browse for Client Plugins";
-            //dlg.Filter = "Client Plugin (*.dll)|*.dll";
-
-            //dlg.ShowDialog();
-
-            //try
-            //{
-            //    foreach (string filename in dlg.FileNames.ToList())
-            //    {
-            //        string pluginPath = TH_Global.FileLocations.TrakHound + @"\PlugIns\";
-
-            //        string name = System.IO.Path.GetFileNameWithoutExtension(filename);
-            //        string ext = System.IO.Path.GetExtension(filename);
-
-            //        string suffix = "";
-            //        int suffixNum = 0;
-
-            //        string test = pluginPath + name + suffix + ext;
-
-            //        while (File.Exists(test))
-            //        {
-            //            suffixNum += 1;
-            //            suffix = "_" + suffixNum.ToString("00");
-            //            test = pluginPath + name + suffix + ext;
-            //        }
-
-            //        File.Copy(filename, test);
-            //    }
-
-            //    if (mw != null) mw.Plugins_Find();
-
-            //    LoadPluginConfigurations();
-            //}
-            //catch (Exception ex) 
-            //{
-            //    Console.WriteLine("Browse_Click() : " + ex.Message);
-            //}
+            ListItems.Clear();
         }
 
     }

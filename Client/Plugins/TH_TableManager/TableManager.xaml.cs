@@ -43,8 +43,6 @@ namespace TH_TableManager
         {
             InitializeComponent();
             DataContext = this;
-
-            DatabasePluginReader dpr = new DatabasePluginReader();
         }
 
         #region "PlugIn"
@@ -113,7 +111,7 @@ namespace TH_TableManager
 
         public event DataEvent_Handler DataEvent;
 
-        public event PluginTools.ShowRequested_Handler ShowRequested;
+        public event TH_Plugins_Client.PluginTools.ShowRequested_Handler ShowRequested;
 
         #endregion
 

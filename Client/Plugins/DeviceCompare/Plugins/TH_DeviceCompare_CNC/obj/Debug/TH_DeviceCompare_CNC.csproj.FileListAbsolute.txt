@@ -46,3 +46,5 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceComp
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.baml

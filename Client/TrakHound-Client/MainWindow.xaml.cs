@@ -71,9 +71,8 @@ namespace TrakHound_Client
             Log_Initialize();
             Splash_Initialize();
 
-            Splash_UpdateStatus("...Initializing", 10);
 
-            devicemanager = new DeviceManager(DeviceManagerType.Client);
+            Splash_UpdateStatus("...Initializing", 10);
 
             InitializeComponent();
             DataContext = this;
@@ -81,6 +80,11 @@ namespace TrakHound_Client
             this.SourceInitialized += new EventHandler(win_SourceInitialized);
 
             Application.Current.MainWindow = this;
+
+            // Read Database Plugins (stores to static list in TH_Database.Global.Plugins)
+            DatabasePluginReader.ReadPlugins();
+
+            devicemanager = new DeviceManager(DeviceManagerType.Client);
 
             // Initialize Pages
             Splash_UpdateStatus("...Creating Pages", 40);

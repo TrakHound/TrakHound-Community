@@ -39,7 +39,25 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
         TrakHound_Client.MainWindow mw;
 
-        public PluginConfiguration config;
+
+        public IClientPlugin Plugin
+        {
+            get { return (IClientPlugin)GetValue(PluginProperty); }
+            set { SetValue(PluginProperty, value); }
+        }
+
+        public static readonly DependencyProperty PluginProperty =
+            DependencyProperty.Register("Plugin", typeof(IClientPlugin), typeof(ListItem), new PropertyMetadata(null));
+
+
+        public PluginConfiguration PluginConfiguration
+        {
+            get { return (PluginConfiguration)GetValue(PluginConfigurationProperty); }
+            set { SetValue(PluginConfigurationProperty, value); }
+        }
+
+        public static readonly DependencyProperty PluginConfigurationProperty =
+            DependencyProperty.Register("PluginConfiguration", typeof(PluginConfiguration), typeof(ListItem), new PropertyMetadata(null));
 
 
         #region "Plugin Information"
@@ -115,37 +133,42 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         #endregion
 
 
-        public bool Plugin_Enabled
+        public bool Enabled
         {
-            get { return (bool)GetValue(Plugin_EnabledProperty); }
-            set { SetValue(Plugin_EnabledProperty, value); }
+            get { return (bool)GetValue(EnabledProperty); }
+            set { SetValue(EnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty Plugin_EnabledProperty =
-            DependencyProperty.Register("Plugin_Enabled", typeof(bool), typeof(ListItem), new PropertyMetadata(false));
+        public static readonly DependencyProperty EnabledProperty =
+            DependencyProperty.Register("Enabled", typeof(bool), typeof(ListItem), new PropertyMetadata(false));
+
+        
+
+        //public bool Plugin_Enabled
+        //{
+        //    get { return (bool)GetValue(Plugin_EnabledProperty); }
+        //    set { SetValue(Plugin_EnabledProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty Plugin_EnabledProperty =
+        //    DependencyProperty.Register("Plugin_Enabled", typeof(bool), typeof(ListItem), new PropertyMetadata(false));
 
         public delegate void EnabledChanged_Handler(PluginConfiguration sender, bool enabled);
         public event EnabledChanged_Handler EnabledChanged;
         
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (config != null)
+            if (PluginConfiguration != null)
             {
-                if (EnabledChanged != null) EnabledChanged(config, true);
-
-                //config.Enabled = true;
-                //Plugin_Enabled = config.Enabled;
+                if (EnabledChanged != null) EnabledChanged(PluginConfiguration, true);
             }
         }
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (config != null)
+            if (PluginConfiguration != null)
             {
-                if (EnabledChanged != null) EnabledChanged(config, false);
-
-                //config.Enabled = false;
-                //Plugin_Enabled = config.Enabled;
+                if (EnabledChanged != null) EnabledChanged(PluginConfiguration, false);
             }
         }
 
@@ -163,17 +186,17 @@ namespace TrakHound_Client.Pages.Plugins.Installed
             }
         }
 
-        ObservableCollection<SubCategory> subCategories;
-        public ObservableCollection<SubCategory> SubCategories
+        ObservableCollection<Subcategory> _subcategories;
+        public ObservableCollection<Subcategory> Subcategories
         {
             get
             {
-                if (subCategories == null) subCategories = new ObservableCollection<SubCategory>();
-                return subCategories;
+                if (_subcategories == null) _subcategories = new ObservableCollection<Subcategory>();
+                return _subcategories;
             }
             set
             {
-                subCategories = value;
+                _subcategories = value;
             }
         }
 
