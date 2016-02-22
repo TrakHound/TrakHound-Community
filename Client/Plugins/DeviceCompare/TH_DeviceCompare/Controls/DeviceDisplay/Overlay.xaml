@@ -34,6 +34,9 @@
                     <DataTrigger Binding="{Binding ConnectionError}" Value="true">
                         <Setter Property="Opacity" Value="1.0"/>
                     </DataTrigger>
+                    <!--<DataTrigger Binding="{Binding ConnectionStatus}" Value="{x:Null}">
+                        <Setter Property="Opacity" Value="0.0"/>
+                    </DataTrigger>-->
                     <Trigger Property="Opacity" Value="0.0">
                         <Setter Property="Visibility" Value="Collapsed"/>
                     </Trigger>
@@ -75,13 +78,13 @@
 
                 </Grid>-->
 
-                <!--Connection Error Image-->
+                <!--Connection Image-->
                 <Grid>
-                    <Grid.Style>
+                    <!--<Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="Opacity" Value="0.0"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ConnectionError}" Value="true">
+                                <DataTrigger Binding="{Binding ConnectionImage}" Value="{x:Null}">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
@@ -99,11 +102,11 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
+                    </Grid.Style>-->
 
-                    <Grid Width="40" Height="40">
+                    <Grid Width="35" Height="35">
                         <Grid.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Warning_01_40px.png" />
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding ConnectionImage}" />
                         </Grid.Resources>
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -118,7 +121,7 @@
             </Grid>
 
             <!--Connection Status-->
-            <TextBlock Text="{Binding ConnectionStatus}" Foreground="{StaticResource Accent_Normal}" FontSize="14" TextWrapping="Wrap" Margin="0,10" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="{Binding ConnectionStatus}" Foreground="{StaticResource Accent_Normal}" FontSize="14" TextWrapping="Wrap" Margin="0,15" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Visible"/>

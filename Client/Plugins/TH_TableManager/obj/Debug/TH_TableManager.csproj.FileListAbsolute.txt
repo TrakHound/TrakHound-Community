@@ -29,3 +29,4 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableM
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableManager.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableManager.pdb
+C:\TrakHound\Plugins\Pages\LICENSE.txt

@@ -250,7 +250,11 @@ namespace TrakHound_Client.Pages.Options.Updates
                     {
                         try
                         {
-                            var plugin = mw.Plugins.Find(x => x.Title == config.Name);
+                            var plugin = mw.Plugins.Find(x =>
+                                x.Title == config.Name &&
+                                x.DefaultParent == config.Parent &&
+                                x.DefaultParentCategory == config.Category
+                                );
                             if (plugin != null)
                             {
                                 UpdateItem ui = new UpdateItem();
@@ -284,7 +288,11 @@ namespace TrakHound_Client.Pages.Options.Updates
                         {
                             foreach (PluginConfiguration subConfig in subcat.PluginConfigurations)
                             {
-                                var plugin = mw.Plugins.Find(x => x.Title == subConfig.Name);
+                                var plugin = mw.Plugins.Find(x =>
+                                    x.Title == subConfig.Name &&
+                                    x.DefaultParent == subConfig.Parent &&
+                                    x.DefaultParentCategory == subConfig.Category
+                                    );
                                 if (plugin != null)
                                 {
                                     try

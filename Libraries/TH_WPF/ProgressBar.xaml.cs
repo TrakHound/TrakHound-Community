@@ -153,7 +153,8 @@ namespace TH_WPF
             DoubleAnimation animation = new DoubleAnimation();
 
             animation.From = (double)GetValue(dp);
-            animation.To = to;
+            if (!double.IsNaN(to)) animation.To = Math.Max(0, to);
+            else animation.To = 0;
             animation.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
             //animation.BeginTime = TimeSpan.FromMilliseconds(200);
             this.BeginAnimation(dp, animation);

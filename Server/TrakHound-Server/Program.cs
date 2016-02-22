@@ -62,6 +62,8 @@ namespace TrakHound_Server
 
             TH_Database.DatabasePluginReader.ReadPlugins();
 
+            ReadUserManagementSettings();
+
             //CheckForUpdates();
 
             Server = new Server();
@@ -73,11 +75,34 @@ namespace TrakHound_Server
             //DEBUG $$$$
             //OpenDeviceManager();
 
-            if (Properties.Settings.Default.autostart) StartServer();
-
             Application.Run(Controller);
 
             Environment.ExitCode = 0;
+        }
+
+        void ReadUserManagementSettings()
+        {
+            string localPath = AppDomain.CurrentDomain.BaseDirectory + "UserConfiguration.Xml";
+            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "UserConfiguration.Xml";
+
+            string configPath;
+
+            // systemPath takes priority (easier for user to navigate to)
+            if (File.Exists(systemPath)) configPath = systemPath;
+            else configPath = localPath;
+
+            Logger.Log(configPath);
+
+            UserManagementSettings userSettings = UserManagementSettings.ReadConfiguration(configPath);
+
+            if (userSettings != null)
+            {
+                if (UserManagementSettings.Database != null)
+                {
+                    Global.Initialize(UserManagementSettings.Database);
+                    UserDatabaseSettings = UserManagementSettings.Database;
+                }
+            }
         }
 
         public void Close()
@@ -120,6 +145,8 @@ namespace TrakHound_Server
                 RememberMe.Set(rememberUser, RememberMeType.Server);
 
                 if (Server != null) Server.Login(rememberUser);
+
+                if (Properties.Settings.Default.autostart) StartServer();
             }
             else
             {
@@ -155,6 +182,8 @@ namespace TrakHound_Server
         void login_CurrentUserChanged(TH_UserManagement.Management.UserConfiguration userConfig)
         {
             if (Server != null) Server.Login(userConfig);
+
+            if (Properties.Settings.Default.autostart) StartServer();
         }
 
         public void Logout()

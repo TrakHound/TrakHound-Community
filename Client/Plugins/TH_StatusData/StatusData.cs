@@ -25,8 +25,6 @@ namespace TH_StatusData
 
         int interval = 5000;
 
-        //ManualResetEvent stop = null;
-
         List<ManualResetEvent> stops = new List<ManualResetEvent>();
 
         void Update_Start()
@@ -37,8 +35,6 @@ namespace TH_StatusData
 
             if (Devices != null)
             {
-                //stop = new ManualResetEvent(false);
-
                 foreach (Configuration device in Devices.ToList())
                 {
                     Thread thread = new Thread(new ParameterizedThreadStart(Update_Worker));
@@ -56,9 +52,6 @@ namespace TH_StatusData
 
         void Update_Stop()
         {
-            // Set Update thread to stop
-            //if (stop != null) stop.Set();
-
             foreach (var stop in stops)
             {
                 if (stop != null) stop.Set();
@@ -72,51 +65,6 @@ namespace TH_StatusData
             public Configuration Config { get; set; }
             public ManualResetEvent Stop { get; set; }
         }
-
-
-
-
-
-        //int interval_min = 3000;
-        //    int interval_max = 60000;
-        //    int interval = interval_min;
-
-        //    bool first = true;
-
-        //    if (UseDatabases)
-        //    {
-        //        while (!dbsuccess)
-        //        {
-        //            // Ping Database connection for each Database Configuration
-        //            dbsuccess = true;
-        //            string msg = null;
-
-        //            foreach (Database_Configuration db_config in configuration.Databases_Server.Databases)
-        //            {
-        //                if (!TH_Database.Global.Ping(db_config, out msg))
-        //                {
-        //                    dbsuccess = false;
-        //                    break;
-        //                }
-        //            }
-
-        //            if (dbsuccess) UpdateProcessingStatus("Database Connections Established");
-        //            else
-        //            {
-        //                // Increase the interval by 25% until interval == interval_max
-        //                if (!first) interval = Math.Min(Convert.ToInt32(interval + (interval * 0.25)), interval_max);
-        //                first = false;
-
-        //                WriteToConsole("Error in Database Connection... Retrying in " + interval.ToString() + "ms", ConsoleOutputType.Error);
-        //                if (msg != null) WriteToConsole(msg, ConsoleOutputType.Error);
-
-        //                // Sleep the current thread for the calculated interval
-        //                System.Threading.Thread.Sleep(interval);
-        //            }
-        //        }
-        //    } 
-
-
 
         const int INTERVAL_MIN = 3000;
         const int INTERVAL_MAX = 60000;
@@ -164,54 +112,64 @@ namespace TH_StatusData
 
         private void UpdateData(Configuration config)
         {
-
-            // Get Snapshot Data
-            DataEvent_Data snapshotData = GetSnapShots(config);
-            // Send Snapshot Data
-            SendDataEvent(snapshotData);
-
             // Get Variable Data
             DataEvent_Data variableData = GetVariables(config);
             // Send Variable Data
             SendDataEvent(variableData);
 
+            DataEvent_Data availablityData = GetAvailability(config, (DataTable)variableData.data02);
+            SendDataEvent(availablityData);
+            if ((bool)availablityData.data02)
+            {
+                // Get Snapshot Data
+                DataEvent_Data snapshotData = GetSnapShots(config);
+                // Send Snapshot Data
+                SendDataEvent(snapshotData);
 
-            // Get ShiftData from Variable Data
-            ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
+
+                // Get ShiftData from Variable Data
+                ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
 
 
-            // Get Gen Event Values
-            DataEvent_Data genEventData = GetGenEventValues(config);
-            // Send Gen Event Values
-            SendDataEvent(genEventData);
+                // Get Gen Event Values
+                DataEvent_Data genEventData = GetGenEventValues(config);
+                // Send Gen Event Values
+                SendDataEvent(genEventData);
 
-            // Get Shift Data
-            DataEvent_Data shiftTableData = GetShifts(config, shiftData);
-            // Send Shift Data
-            SendDataEvent(shiftTableData);
+                // Get Shift Data
+                DataEvent_Data shiftTableData = GetShifts(config, shiftData);
+                // Send Shift Data
+                SendDataEvent(shiftTableData);
 
-            // Get OEE Data
-            DataEvent_Data oeeData = GetOEE(config, shiftData);
-            // Send OEE Data
-            SendDataEvent(oeeData);
+                // Get OEE Data
+                DataEvent_Data oeeData = GetOEE(config, shiftData);
+                // Send OEE Data
+                SendDataEvent(oeeData);
 
-            // Get Production Status Data
-            DataEvent_Data productionStatusData = GetProductionStatusList(config, shiftData);
-            // Send Production Status Data
-            SendDataEvent(productionStatusData);
-
+                // Get Production Status Data
+                //DataEvent_Data productionStatusData = GetProductionStatusList(config, shiftData);
+                // Send Production Status Data
+                //SendDataEvent(productionStatusData);
+            }
         }
 
+        DataEvent_Data GetAvailability(Configuration config, DataTable dt)
+        {
+            bool available = false;
 
+            var val = DataTable_Functions.GetTableValue(dt, "variable", "device_available", "value");
+            // If found then parse string for boolean
+            if (val != null) bool.TryParse(val, out available);
+            // If not found in table, assume that it is available (for compatibility purposes)
+            else available = true;
 
-        //class Snapshot_Return
-        //{
-        //    public Snapshot_Return() { shiftData = new ShiftData(); }
+            var result = new DataEvent_Data();
+            result.id = "StatusData_Availability";
+            result.data01 = config;
+            result.data02 = available;
 
-        //    public DataEvent_Data de_data { get; set; }
-        //    public ShiftData shiftData { get; set; }
-        //}
-
+            return result;
+        }
 
         class ShiftData
         {

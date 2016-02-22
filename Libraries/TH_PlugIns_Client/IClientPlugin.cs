@@ -286,8 +286,15 @@ namespace TH_Plugins_Client
                 {
                     foreach (var lPlugin in pluginContainer.Plugins)
                     {
-                        var plugin = lPlugin.Value;
-                        result.Add(plugin);
+                        try
+                        {
+                            var plugin = lPlugin.Value;
+                            result.Add(plugin);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log("Plugin Initialization Error :: " + ex.Message);
+                        }
                     }
                 }
             }

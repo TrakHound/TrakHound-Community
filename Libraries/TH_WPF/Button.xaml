@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:local="clr-namespace:TH_WPF"
+             
              Cursor="Hand"
              
              PreviewMouseDown="Border_PreviewMouseDown"
@@ -54,14 +56,16 @@
                     <Grid>
 
                         <Grid.ColumnDefinitions>
-
-                            <!--Image-->
+                            
                             <ColumnDefinition>
                                 <ColumnDefinition.Style>
                                     <Style TargetType="ColumnDefinition">
                                         <Setter Property="Width" Value="auto"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                                <Setter Property="Width" Value="*"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
                                                 <Setter Property="Width" Value="*"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -86,7 +90,6 @@
                                 </ColumnDefinition.Style>
                             </ColumnDefinition>
 
-                            <!--Text-->
                             <ColumnDefinition>
                                 <ColumnDefinition.Style>
                                     <Style TargetType="ColumnDefinition">
@@ -94,6 +97,9 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                                 <Setter Property="Width" Value="*"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                                <Setter Property="Width" Value="auto"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -110,6 +116,9 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                            <Setter Property="Grid.Column" Value="2"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -130,20 +139,41 @@
                         </Grid>
 
                         <!--Text Label-->
-                        <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="{Binding FontSize}" HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="{Binding TextBottomPadding}"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Grid.Column" Value="2"/>
                                     <Style.Triggers>
-
-                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                            <Setter Property="Grid.Column" Value="0"/>
                                         </DataTrigger>
-
                                     </Style.Triggers>
                                 </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            </Grid.Style>
+
+                            <TextBlock Text="{Binding Text}" FontSize="{Binding FontSize}" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                                <Setter Property="Grid.Column" Value="0"/>
+                                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                        </Grid>
 
                         <!--Custom Content-->
                         <ContentControl Grid.ColumnSpan="3" Content="{Binding ButtonContent}"/>

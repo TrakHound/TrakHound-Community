@@ -121,6 +121,28 @@ namespace TH_WPF
 
 
 
+        public double TextBottomPadding
+        {
+            get { return (double)GetValue(TextBottomPaddingProperty); }
+            set { SetValue(TextBottomPaddingProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextBottomPaddingProperty =
+            DependencyProperty.Register("TextBottomPadding", typeof(double), typeof(Button), new PropertyMetadata(0d));
+
+        
+
+        public ImageTextRelationSetting ImageTextRelation
+        {
+            get { return (ImageTextRelationSetting)GetValue(ImageTextRelationProperty); }
+            set { SetValue(ImageTextRelationProperty, value); }
+        }
+
+        public static readonly DependencyProperty ImageTextRelationProperty =
+            DependencyProperty.Register("ImageTextRelation", typeof(ImageTextRelationSetting), typeof(Button), new PropertyMetadata(ImageTextRelationSetting.ImageBeforeText));        
+
+
+
         public CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }
@@ -139,6 +161,14 @@ namespace TH_WPF
             if (Clicked != null) Clicked(this);
         }   
 
+
+
+    }
+
+    public enum ImageTextRelationSetting
+    {
+        ImageBeforeText,
+        TextBeforeImage
     }
 
 }

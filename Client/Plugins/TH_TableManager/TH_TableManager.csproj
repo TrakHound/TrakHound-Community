@@ -149,9 +149,9 @@
     <Resource Include="TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="LICENSE.txt">
+    <EmbeddedResource Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\X_01.png" />

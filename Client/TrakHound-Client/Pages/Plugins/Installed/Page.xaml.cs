@@ -89,7 +89,11 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         {
             if (mw != null)
             {
-                var plugin = mw.Plugins.Find(x => x.Title == config.Name);
+                var plugin = mw.Plugins.Find(x =>
+                    x.Title == config.Name &&
+                    x.DefaultParent == config.Parent &&
+                    x.DefaultParentCategory == config.Category
+                    );
                 if (plugin != null)
                 {
                     // Create a new ListItem for the plugin
@@ -119,7 +123,11 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         {
             foreach (PluginConfiguration config in category.PluginConfigurations)
             {
-                var plugin = mw.Plugins.Find(x => x.Title == config.Name);
+                var plugin = mw.Plugins.Find(x =>
+                    x.Title == config.Name &&
+                    x.DefaultParent == config.Parent &&
+                    x.DefaultParentCategory == config.Category
+                    );
                 if (plugin != null)
                 {
                     // Create a new ListItem for the plugin
@@ -133,7 +141,11 @@ namespace TrakHound_Client.Pages.Plugins.Installed
         {
             if (mw != null)
             {
-                var config = mw.PluginConfigurations.Find(x => x.Name == sender.Name);
+                var config = mw.PluginConfigurations.Find(x =>
+                    x.Name == sender.Name &&
+                    x.Parent == sender.Parent &&
+                    x.Category == sender.Category
+                    );
                 if (config != null)
                 {
                     if (config.Enabled != enabled)
@@ -165,7 +177,11 @@ namespace TrakHound_Client.Pages.Plugins.Installed
                 {
                     if (subCategory.PluginConfigurations != null)
                     {
-                        var config = subCategory.PluginConfigurations.Find(x => x.Name == sender.Name);
+                        var config = subCategory.PluginConfigurations.Find(x =>
+                            x.Name == sender.Name &&
+                            x.Parent == sender.Parent &&
+                            x.Category == sender.Category
+                            );
                         if (config != null)
                         {
                             if (config.Enabled != enabled)

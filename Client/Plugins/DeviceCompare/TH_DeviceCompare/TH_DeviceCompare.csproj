@@ -184,9 +184,9 @@
     <Resource Include="TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="LICENSE.txt">
+    <EmbeddedResource Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Carrot_Arrow_Down_01.png" />
@@ -199,6 +199,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Warning_01_200px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Power_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

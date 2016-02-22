@@ -131,7 +131,11 @@ namespace TrakHound_Client
             foreach (var plugin in plugins)
             {
                 // Only add if not already in returned list
-                if (result.Find(x => x.Title == plugin.Title) == null)
+                if (result.Find(x =>
+                    x.Title == plugin.Title &&
+                    x.DefaultParent == plugin.DefaultParent &&
+                    x.DefaultParentCategory == plugin.DefaultParentCategory
+                    ) == null)
                 {
                     result.Add(plugin);
                 }
@@ -159,7 +163,12 @@ namespace TrakHound_Client
         {
             foreach (var plugin in newPlugins)
             {
-                if (oldPlugins.Find(x => x.Title == plugin.Title) == null) oldPlugins.Add(plugin);
+                if (oldPlugins.Find(x =>
+                    x.Title == plugin.Title &&
+                    x.DefaultParent == plugin.DefaultParent && 
+                    x.DefaultParentCategory == plugin.DefaultParentCategory
+                    ) == null) 
+                    oldPlugins.Add(plugin);
             }
         }
 
@@ -185,7 +194,7 @@ namespace TrakHound_Client
             foreach (var plugin in plugins)
             {
                 // See if config is already created
-                var config = FindPluginConfiguration(plugin.Title, configs);
+                var config = FindPluginConfiguration(plugin, configs);
                 if (config == null)
                 {
                     config = new PluginConfiguration();
@@ -206,7 +215,7 @@ namespace TrakHound_Client
                 config.Parent = plugin.DefaultParent;
                 config.Category = plugin.DefaultParentCategory;
 
-                if (FindPluginConfiguration(plugin.Title, result) == null) result.Add(config);
+                if (FindPluginConfiguration(plugin, result) == null) result.Add(config);
             }
 
             result = ProcessPluginConfigurations(result);
@@ -234,14 +243,17 @@ namespace TrakHound_Client
         /// <param name="name"></param>
         /// <param name="configs"></param>
         /// <returns></returns>
-        PluginConfiguration FindPluginConfiguration(string name, List<PluginConfiguration> configs)
+        PluginConfiguration FindPluginConfiguration(IClientPlugin plugin, List<PluginConfiguration> configs)
         {
             PluginConfiguration result = null;
 
             foreach (var config in configs)
             {
                 // See if root is a match
-                if (config.Name == name) result = config;
+                if (config.Name == plugin.Title &&
+                    config.Parent == plugin.DefaultParent &&
+                    config.Category == plugin.DefaultParentCategory 
+                    ) result = config;
                 // if root is not a match, then search subconfigs
                 else
                 {
@@ -249,7 +261,7 @@ namespace TrakHound_Client
                     {
                         foreach (var subcategory in config.SubCategories)
                         {
-                            var subConfig = FindPluginConfiguration(name, subcategory.PluginConfigurations);
+                            var subConfig = FindPluginConfiguration(plugin, subcategory.PluginConfigurations);
                             if (subConfig != null)
                             {
                                 result = subConfig;
@@ -317,7 +329,11 @@ namespace TrakHound_Client
             ///Check if Enabled
             if (config.Enabled)
             {
-                var plugin = Plugins.Find(x => x.Title == config.Name);
+                var plugin = Plugins.Find(x =>
+                    x.Title == config.Name &&
+                    x.DefaultParent == config.Parent &&
+                    x.DefaultParentCategory == config.Category
+                    );
                 if (plugin != null)
                 {
                     try
@@ -370,7 +386,11 @@ namespace TrakHound_Client
                 {
                     foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
                     {
-                        var subplugin = Plugins.Find(x => x.Title == subConfig.Name);
+                        var subplugin = Plugins.Find(x =>
+                            x.Title == subConfig.Name &&
+                            x.DefaultParent == subConfig.Parent &&
+                            x.DefaultParentCategory == subConfig.Category
+                            );
                         if (subplugin != null)
                         {
                             Plugin_LoadSubPlugins(subplugin);
@@ -388,7 +408,11 @@ namespace TrakHound_Client
         /// <param name="config"></param>
         void Plugin_LoadSubPlugins(PluginConfiguration config)
         {
-            var plugin = Plugins.Find(x => x.Title == config.Name);
+            var plugin = Plugins.Find(x =>
+                x.Title == config.Name &&
+                x.DefaultParent == config.Parent &&
+                x.DefaultParentCategory == config.Category
+                );
             if (plugin != null)
             {
                 plugin.Plugins = new List<IClientPlugin>();
@@ -399,7 +423,11 @@ namespace TrakHound_Client
                     {
                         foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
                         {
-                            var subplugin = Plugins.Find(x => x.Title == subConfig.Name);
+                            var subplugin = Plugins.Find(x =>
+                                x.Title == subConfig.Name &&
+                                x.DefaultParent == subConfig.Parent &&
+                                x.DefaultParentCategory == subConfig.Category
+                                );
                             if (subplugin != null)
                             {
                                 Plugin_LoadSubPlugins(subConfig);
@@ -448,7 +476,11 @@ namespace TrakHound_Client
             {
                 if (config.Enabled)
                 {
-                    var plugin = Plugins.Find(x => x.Title == config.Name);
+                    var plugin = Plugins.Find(x =>
+                        x.Title == config.Name &&
+                        x.DefaultParent == config.Parent &&
+                        x.DefaultParentCategory == config.Category
+                        );
                     if (plugin != null)
                     {
                         plugin.Update_DataEvent(de_d);

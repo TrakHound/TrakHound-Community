@@ -52,6 +52,10 @@ namespace TH_Device_Server
                                 Plugins_Update_Sample(null);
                             }
 
+                            // Update the 'device_available' variable in the Variables table
+                            bool available = GetAvailability(currentData);
+                            UpdateAvailability(available);
+
                             Plugins_Update_Current(currentData);
                         }
 
@@ -125,6 +129,26 @@ namespace TH_Device_Server
             }
 
             return result;
+        }
+
+        void UpdateAvailability(bool available)
+        {
+            Variables.Update(configuration.Databases_Server, "device_available", available.ToString(), DateTime.Now);
+        }
+
+        bool GetAvailability(TH_MTConnect.Streams.ReturnData data)
+        {
+            if (data.deviceStreams.Count > 0)
+            {
+                var deviceStream = data.deviceStreams[0];
+                var avail = deviceStream.dataItems.Events.Find(x => x.Type.ToLower() == "availability");
+                if (avail != null)
+                {
+                    if (avail.CDATA == "AVAILABLE") return true;
+                }
+            }
+
+            return false;
         }
 
         Int64 lastSequenceSampled = -1;

@@ -65,17 +65,28 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
         }
 
         public static readonly DependencyProperty ConnectionStatusProperty =
-            DependencyProperty.Register("ConnectionStatus", typeof(string), typeof(Overlay), new PropertyMetadata(null));
+            DependencyProperty.Register("ConnectionStatus", typeof(string), typeof(Overlay), new PropertyMetadata("Connnecting.."));
 
 
-        public bool ConnectionError
+        public ImageSource ConnectionImage
         {
-            get { return (bool)GetValue(ConnectionErrorProperty); }
-            set { SetValue(ConnectionErrorProperty, value); }
+            get { return (ImageSource)GetValue(ConnectionImageProperty); }
+            set { SetValue(ConnectionImageProperty, value); }
         }
 
-        public static readonly DependencyProperty ConnectionErrorProperty =
-            DependencyProperty.Register("ConnectionError", typeof(bool), typeof(Overlay), new PropertyMetadata(false));
+        public static readonly DependencyProperty ConnectionImageProperty =
+            DependencyProperty.Register("ConnectionImage", typeof(ImageSource), typeof(Overlay), new PropertyMetadata(null));
+
+        
+
+        //public bool ConnectionError
+        //{
+        //    get { return (bool)GetValue(ConnectionErrorProperty); }
+        //    set { SetValue(ConnectionErrorProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty ConnectionErrorProperty =
+        //    DependencyProperty.Register("ConnectionError", typeof(bool), typeof(Overlay), new PropertyMetadata(false));
  
 
     }

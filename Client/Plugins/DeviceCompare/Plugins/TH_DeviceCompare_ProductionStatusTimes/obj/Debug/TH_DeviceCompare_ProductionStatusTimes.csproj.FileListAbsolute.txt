@@ -18,3 +18,4 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceComp
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.pdb
+C:\TrakHound\Plugins\Pages\LICENSE.txt

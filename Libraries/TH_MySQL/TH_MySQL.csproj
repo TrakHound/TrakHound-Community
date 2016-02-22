@@ -46,6 +46,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -126,9 +127,7 @@
     <None Include="PHP Files\Send.php" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="LICENSE.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="LICENSE.txt" />
     <Resource Include="Resources\CheckMark_01.png" />
     <Resource Include="Resources\Help_01.png" />
     <Resource Include="Resources\MySQL_01.png" />

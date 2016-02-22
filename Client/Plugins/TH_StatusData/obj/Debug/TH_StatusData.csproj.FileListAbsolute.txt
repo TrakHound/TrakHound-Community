@@ -18,3 +18,4 @@ C:\TrakHound\Plugins\Pages\TH_StatusData.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.pdb
+C:\TrakHound\Plugins\Pages\LICENSE.txt
