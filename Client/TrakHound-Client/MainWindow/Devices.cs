@@ -95,7 +95,7 @@ namespace TrakHound_Client
             if (!addDeviceOpened && configs.Count == 0 && currentuser != null)
             {
                 addDeviceOpened = true;
-                if (devicemanager != null) devicemanager.AddDevice();
+                //if (devicemanager != null) devicemanager.AddDevice();
                 DeviceManager_Open();
             }
             else if (configs.Count > 0)

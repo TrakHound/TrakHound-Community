@@ -83,9 +83,9 @@ namespace TH_DeviceManager
                 if (currentuser != null) LoggedIn = true;
                 else LoggedIn = false;
 
-                LoadDevices();
+                //LoadDevices();
 
-                //LoadDeviceList();
+                LoadDeviceList();
 
                 AddDevice_Initialize();
                 CopyDevice_Initialize();

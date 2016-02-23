@@ -54,6 +54,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="DeviceManager - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\AddDevice\Controls\SharedItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,13 +94,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DeviceManager.xaml">
+    <None Include="DeviceManager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <None Include="Controls\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </None>
+    <Compile Include="Controls\DataGrid Controls.cs" />
+    <Compile Include="DeviceManager - Copy.xaml.cs">
+      <DependentUpon>DeviceManager - Copy.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AddDevice\Controls\SharedItem.xaml.cs">
       <DependentUpon>SharedItem.xaml</DependentUpon>
     </Compile>
@@ -124,10 +132,10 @@
     <Compile Include="Pages\Agent\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceManager.xaml.cs">
+    <None Include="DeviceManager.xaml.cs">
       <DependentUpon>DeviceManager.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
+    </None>
     <Page Include="Pages\Databases\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
