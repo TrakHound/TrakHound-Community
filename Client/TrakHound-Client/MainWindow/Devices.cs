@@ -53,7 +53,14 @@ namespace TrakHound_Client
 
             if (currentuser != null)
             {
+                var stpw = new System.Diagnostics.Stopwatch();
+                stpw.Start();
+
                 List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser);
+
+                stpw.Stop();
+                Console.WriteLine("LoadDevices_Worker() :: " + stpw.ElapsedMilliseconds + "ms");
+
                 if (configurations != null)
                 {
                     var orderedConfigs = configurations.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
@@ -67,6 +74,8 @@ namespace TrakHound_Client
                         }
                     }
                 }
+
+
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else

@@ -174,6 +174,22 @@ namespace TH_UserManagement.Management
             return result;
         }
 
+        public static List<DataTable> GetDeviceInfoList(UserConfiguration userConfig)
+        {
+            List<DataTable> result = null;
+
+            if (UserManagementSettings.Database == null)
+            {
+                result = Remote.Configurations.GetDeviceInfos(userConfig);
+            }
+            else
+            {
+                result = Local.Configurations.GetDeviceInfos(userConfig, UserManagementSettings.Database);
+            }
+
+            return result;
+        }
+
         public static DataTable GetConfigurationTable(string table)
         {
             DataTable result = null;

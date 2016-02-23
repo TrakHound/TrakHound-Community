@@ -191,7 +191,7 @@
                 <!--Side Panel-->
                 <StackPanel Grid.Column="1" Margin="40,0">
 
-                    <th_wpf:ImageBox Image="{Binding Image}" Title="Image" HelpText="Upload an image" Height="200" Width="200"/>
+                    <th_wpf:ImageBox Image="{Binding Image}" Title="Image" HelpText="Upload an image" Height="200" Width="200" UploadClicked="ImageBox_UploadClicked"/>
 
                     <!--Export Options-->
                     <StackPanel>

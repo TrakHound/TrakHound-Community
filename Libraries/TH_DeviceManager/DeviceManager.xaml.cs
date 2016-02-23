@@ -85,6 +85,8 @@ namespace TH_DeviceManager
 
                 LoadDevices();
 
+                //LoadDeviceList();
+
                 AddDevice_Initialize();
                 CopyDevice_Initialize();
             }
@@ -127,6 +129,17 @@ namespace TH_DeviceManager
         const System.Windows.Threading.DispatcherPriority background = System.Windows.Threading.DispatcherPriority.Background;
         const System.Windows.Threading.DispatcherPriority contextidle = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
+        #region "Device List"
+
+        void LoadDeviceList()
+        {
+            var deviceListPage = new TH_DeviceManager.Pages.DeviceList.Page();
+            deviceListPage.CurrentUser = currentuser;
+            //deviceListPage.LoadDevices();
+            CurrentPage = deviceListPage;
+        }
+
+        #endregion
 
         #region "Device Management"
 
@@ -170,7 +183,6 @@ namespace TH_DeviceManager
 
         public static readonly DependencyProperty DevicesLoadingProperty =
             DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
-
 
         #region "Configuration Files"
 
@@ -308,7 +320,6 @@ namespace TH_DeviceManager
         }
 
         #endregion
-
 
         Thread loaddevices_THREAD;
 

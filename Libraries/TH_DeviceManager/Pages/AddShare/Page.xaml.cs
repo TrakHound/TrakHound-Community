@@ -448,6 +448,13 @@ namespace TH_DeviceManager.Pages.AddShare
 
             LoadImage(imageFileName);
         }
+
+        private void ImageBox_UploadClicked(TH_WPF.ImageBox sender)
+        {
+            imageFileName = UploadImage();
+
+            LoadImage(imageFileName);
+        }
         
     }
 }

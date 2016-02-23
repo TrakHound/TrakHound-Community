@@ -133,6 +133,48 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
+        public static List<DataTable> GetDeviceInfos(UserConfiguration userConfig)
+        {
+            List<DataTable> result = null;
+
+            NameValueCollection values = new NameValueCollection();
+
+            if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
+
+            string url = "https://www.feenux.com/php/configurations/getdeviceinfolist.php";
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null)
+            {
+                result = new List<DataTable>();
+
+                string[] tables = responseString.Split('%');
+
+                foreach (string table in tables)
+                {
+                    if (!String.IsNullOrEmpty(table))
+                    {
+                        var delimiter = table.IndexOf('~');
+                        if (delimiter > 0)
+                        {
+                            string tablename = table.Substring(0, delimiter);
+                            string tabledata = table.Substring(delimiter + 1);
+
+                            DataTable dt = JSON.ToTable(tabledata);
+                            if (dt != null)
+                            {
+                                dt.TableName = tablename;
+
+                                result.Add(dt);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static DataTable GetTable(string table)
         {
             DataTable Result = null;

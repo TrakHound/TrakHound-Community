@@ -83,6 +83,27 @@ namespace TH_UserManagement.Management.Local
             return result;
         }
 
+        public static List<DataTable> GetDeviceInfos(UserConfiguration userConfig, Database_Settings db)
+        {
+            var result = new List<DataTable>();
+
+            string[] tables = Table.List(db, "LIKE '" + userConfig.username + "%'");
+            if (tables != null)
+            {
+                foreach (string table in tables)
+                {
+                    DataTable dt = Table.Get(db, table);
+                    if (dt != null)
+                    {
+                        dt.TableName = table;
+                        result.Add(dt);
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public static DataTable GetTable(string table, Database_Settings db)
         {
             return Table.Get(db, table);
