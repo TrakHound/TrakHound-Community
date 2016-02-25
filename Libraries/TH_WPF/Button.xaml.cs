@@ -25,7 +25,15 @@ namespace TH_WPF
             bd.DataContext = this;
         }
 
-        public object DataObject { get; set; }
+        public object DataObject
+        {
+            get { return (object)GetValue(DataObjectProperty); }
+            set { SetValue(DataObjectProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataObjectProperty =
+            DependencyProperty.Register("DataObject", typeof(object), typeof(Button), new PropertyMetadata(null));
+
 
         public bool IsSelected
         {

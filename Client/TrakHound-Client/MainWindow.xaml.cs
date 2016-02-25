@@ -85,6 +85,9 @@ namespace TrakHound_Client
             DatabasePluginReader.ReadPlugins();
 
             devicemanager = new DeviceManager(DeviceManagerType.Client);
+            devicemanager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
+            devicemanager.DeviceUpdated += Devicemanager_DeviceUpdated;
+            devicemanager.LoadingDevices += Devicemanager_LoadingDevices;
 
             // Initialize Pages
             Splash_UpdateStatus("...Creating Pages", 40);

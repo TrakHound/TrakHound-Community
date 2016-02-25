@@ -82,6 +82,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Agent\C
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Databases\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Description\Page.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\General\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\AddDevice\Controls\SharedItem.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\AddShare\Page.g.cs
@@ -95,6 +96,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Agent\P
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Databases\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Description\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\General\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager_MarkupCompile.cache
@@ -108,5 +110,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceMana
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.g.cs

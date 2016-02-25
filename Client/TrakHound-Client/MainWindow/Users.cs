@@ -97,11 +97,11 @@ namespace TrakHound_Client
                     CurrentUsername = null;
                 }
 
-                LoadDevices();
+                //LoadDevices();
 
                 if (accountpage != null) accountpage.LoadUserConfiguration(currentuser);
 
-                //Plugins_UpdateUser(currentuser);
+                Plugins_UpdateUser(currentuser);
 
                 if (CurrentUserChanged != null) CurrentUserChanged(currentuser);
             }

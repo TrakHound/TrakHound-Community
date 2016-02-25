@@ -11,6 +11,7 @@ using System.IO;
 
 using TH_Configuration;
 using TH_Database;
+using TH_DeviceManager;
 using TH_UserManagement.Management;
 
 namespace TrakHound_Client
@@ -19,6 +20,105 @@ namespace TrakHound_Client
     {
 
         public List<Configuration> Devices { get; set; }
+
+        private void Devicemanager_DeviceListUpdated(List<Configuration> configs)
+        {
+            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), priority, new object[] { configs });
+        }
+
+        private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
+        {
+            switch (args.Event)
+            {
+                case DeviceManager.DeviceUpdateEvent.Added:
+                    AddDevice(config);
+                    break;
+
+                case DeviceManager.DeviceUpdateEvent.Changed:
+                    UpdateDevice(config);
+                    break;
+
+                case DeviceManager.DeviceUpdateEvent.Removed:
+                    RemoveDevice(config);
+                    break;
+            }
+        }
+
+        private void Devicemanager_LoadingDevices()
+        {
+            // Send message to plugins that Devices are being loaded
+            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
+            de_d.id = "LoadingDevices";
+            Plugin_DataEvent(de_d);
+        }
+
+
+        /// <summary>
+        /// Method that loads devices from DeviceManager's DeviceLoaded event
+        /// </summary>
+        /// <param name="configs"></param>
+        private void UpdateDeviceList(List<Configuration> configs)
+        {
+            var enabledConfigs = new List<Configuration>();
+
+            var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
+
+            foreach (Configuration config in orderedConfigs)
+            {
+                if (config.ClientEnabled)
+                {
+                    Global.Initialize(config.Databases_Client);
+                    enabledConfigs.Add(config);
+                }
+            }
+
+            LoadDevices_Finished(enabledConfigs);
+        }
+
+        /// <summary>
+        /// Device Manager Added a device so add this device to Devices
+        /// </summary>
+        /// <param name="config"></param>
+        private void AddDevice(Configuration config)
+        {
+            Console.WriteLine("AddDevice() :: " + config.Description.Description);
+
+            if (Devices.Exists(x => x.UniqueId == config.UniqueId)) Devices.Add(config);
+        }
+
+        /// <summary>
+        /// Device Manager Updated a device so add this device to Devices
+        /// </summary>
+        /// <param name="config"></param>
+        private void UpdateDevice(Configuration config)
+        {
+            Console.WriteLine("UpdateDevice() :: " + config.Description.Description);
+
+            int index = Devices.FindIndex(x => x.UniqueId == config.UniqueId);
+            if (index >= 0)
+            {
+                Devices.RemoveAt(index);
+                Devices.Insert(index, config);
+            }
+        }
+
+        /// <summary>
+        /// Device Manager Removed a device so add this device to Devices
+        /// </summary>
+        /// <param name="config"></param>
+        private void RemoveDevice(Configuration config)
+        {
+            Console.WriteLine("RemoveDevice() :: " + config.Description.Description);
+
+            var match = Devices.Find(x => x.UniqueId == config.UniqueId);
+            if (match != null) Devices.Remove(match);
+        }
+
+
+
+
+
+
 
         #region "Load Devices"
 
@@ -30,6 +130,8 @@ namespace TrakHound_Client
         {
             Devices = new List<Configuration>();
         }
+
+        
 
         void LoadDevices()
         {
@@ -95,7 +197,7 @@ namespace TrakHound_Client
             if (!addDeviceOpened && configs.Count == 0 && currentuser != null)
             {
                 addDeviceOpened = true;
-                if (devicemanager != null) devicemanager.AddDevice();
+                //if (devicemanager != null) devicemanager.AddDevice();
                 DeviceManager_Open();
             }
             else if (configs.Count > 0)
@@ -103,7 +205,7 @@ namespace TrakHound_Client
                 addDeviceOpened = false;
             }
 
-            Plugins_UpdateDevices(configs);
+            Plugins_UpdateDeviceList(configs);
 
             //DevicesMonitor_Initialize();
 

@@ -19,8 +19,18 @@
     </Window.Resources>
 
     <Grid x:Name="dummy">
-        
+
         <StackPanel>
+
+            <th_wpf:PasswordBox x:Name="pswd" Title="Test Password" Required="True" Margin="20" PasswordChanged="pswd_PasswordChanged"/>
+
+            <TextBlock Text="{Binding PasswordText}" FontSize="14pt" TextAlignment="Center"/>
+
+        </StackPanel>
+
+
+
+        <!--<StackPanel>
             
             <th_wpf:NumberDisplay Value="{Binding Value}" Value_Format="P2"/>
 
@@ -37,9 +47,9 @@
 
             <TextBlock Text="{Binding Maximum, StringFormat=Maximum {0:0}}"/>
 
-            <!--<th_wpf:ProgressBar  Foreground="Black" Value="{Binding Value}" Maximum="{Binding Maximum}" Height="30"/>-->
+            --><!--<th_wpf:ProgressBar  Foreground="Black" Value="{Binding Value}" Maximum="{Binding Maximum}" Height="30"/>--><!--
 
-        </StackPanel>
+        </StackPanel>-->
         
        
         

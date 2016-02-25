@@ -54,6 +54,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <None Include="DeviceManager - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </None>
     <Page Include="Pages\AddDevice\Controls\SharedItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,6 +100,10 @@
     </Page>
     <None Include="Controls\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
+    </None>
+    <Compile Include="Controls\DataGrid Controls.cs" />
+    <None Include="DeviceManager - Copy.xaml.cs">
+      <DependentUpon>DeviceManager - Copy.xaml</DependentUpon>
     </None>
     <Compile Include="Pages\AddDevice\Controls\SharedItem.xaml.cs">
       <DependentUpon>SharedItem.xaml</DependentUpon>

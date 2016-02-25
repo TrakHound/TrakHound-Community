@@ -543,11 +543,53 @@ namespace TrakHound_Client
         /// Update the devices list for each plugin
         /// </summary>
         /// <param name="devices"></param>
-        void Plugins_UpdateDevices(List<Configuration> devices)
+        void Plugins_UpdateDeviceList(List<Configuration> devices)
         {
             foreach (var plugin in Plugins)
             {
                 plugin.Devices = devices;
+            }
+        }
+
+        /// <summary>
+        /// Update device for each plugin
+        /// </summary>
+        /// <param name="config"></param>
+        void Plugins_UpdateDevice(Configuration config)
+        {
+            foreach (var plugin in Plugins)
+            {
+                int index = plugin.Devices.FindIndex(x => x.UniqueId == config.UniqueId);
+                if (index >= 0)
+                {
+                    plugin.Devices.RemoveAt(index);
+                    plugin.Devices.Insert(index, config);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add device for each plugin
+        /// </summary>
+        /// <param name="config"></param>
+        void Plugins_AddDevice(Configuration config)
+        {
+            foreach (var plugin in Plugins)
+            {
+                if (plugin.Devices.Exists(x => x.UniqueId == config.UniqueId)) plugin.Devices.Add(config);
+            }
+        }
+
+        /// <summary>
+        /// Remove device for each plugin
+        /// </summary>
+        /// <param name="config"></param>
+        void Plugins_RemoveDevice(Configuration config)
+        {
+            foreach (var plugin in Plugins)
+            {
+                var match = plugin.Devices.Find(x => x.UniqueId == config.UniqueId);
+                if (match != null) plugin.Devices.Remove(match);
             }
         }
 
