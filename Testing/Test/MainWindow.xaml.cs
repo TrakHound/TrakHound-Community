@@ -30,21 +30,42 @@ namespace Test
 
             //TH_Global.Functions.Plugin_Functions.FindPlugins(@"C:\TrakHound\Plugins\Pages");
 
-            var files = System.IO.Directory.GetFiles(@"C:\Trakhound\plugins\pages");
+            //var files = System.IO.Directory.GetFiles(@"C:\Trakhound\plugins\pages");
 
-            if (files != null)
-            {
-                foreach (var filename in files)
-                {
-                    var plugins = TH_Plugins_Client.PluginTools.FindPlugins(filename);
-                    foreach (var plugin in plugins)
-                    {
-                        Console.WriteLine(plugin.Title);
-                    }
-                }
-            }
+            //if (files != null)
+            //{
+            //    foreach (var filename in files)
+            //    {
+            //        var plugins = TH_Plugins_Client.PluginTools.FindPlugins(filename);
+            //        foreach (var plugin in plugins)
+            //        {
+            //            Console.WriteLine(plugin.Title);
+            //        }
+            //    }
+            //}
+
+            pswd.PasswordText = "%PASSWORD$";
 
         }
+
+
+
+        public string PasswordText
+        {
+            get { return (string)GetValue(PasswordTextProperty); }
+            set { SetValue(PasswordTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty PasswordTextProperty =
+            DependencyProperty.Register("PasswordText", typeof(string), typeof(MainWindow), new PropertyMetadata(null));
+
+        private void pswd_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+
+            var txt = (PasswordBox)sender;
+            PasswordText = txt.Password;
+        }
+
 
 
 
@@ -59,7 +80,7 @@ namespace Test
         //public static readonly DependencyProperty ValueProperty =
         //    DependencyProperty.Register("Value", typeof(double), typeof(MainWindow), new PropertyMetadata(0d));
 
-        
+
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
@@ -145,6 +166,7 @@ namespace Test
         {
             Maximum -= incr;
         }
+
 
     }
 }

@@ -81,6 +81,8 @@ namespace TH_MySQL.ConfigurationPage
             // Load PHP Directory
             PhpDirectory = Table_Functions.GetTableValue(prefix + "PHP_Directory", dt);
 
+
+            // Load Password
             password_TXT.PasswordText = Table_Functions.GetTableValue(prefix + "Password", dt);
             confirmpassword_TXT.PasswordText = Table_Functions.GetTableValue(prefix + "Password", dt);
 
@@ -132,7 +134,17 @@ namespace TH_MySQL.ConfigurationPage
             Table_Functions.UpdateTableValue(UsePHPServer.ToString(), prefix + "UsePHP", dt);
         }
 
-        public Application_Type ApplicationType { get; set; }
+        private Application_Type _applicationType;
+        public Application_Type ApplicationType
+        {
+            get { return _applicationType; }
+            set
+            {
+                _applicationType = value;
+
+                SetTrakHoundClourServer();
+            }
+        }
 
         public IDatabasePlugin Plugin { get { return new TH_MySQL.Plugin(); } }
 
@@ -317,7 +329,9 @@ namespace TH_MySQL.ConfigurationPage
 
         private void password_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (!Loading)
+            var txt = (PasswordBox)sender;
+
+            if (txt.IsMouseCaptured || txt.IsKeyboardFocused)
             {
                 if (password_TXT.PasswordText != "") PasswordEntered = true;
                 else PasswordEntered = false;
@@ -325,13 +339,15 @@ namespace TH_MySQL.ConfigurationPage
                 PasswordShort = false;
                 PasswordLong = false;
 
-                ConfirmPassword(); 
+                ConfirmPassword();
             }
         }
 
         private void confirmpassword_TXT_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            if (!Loading)
+            var txt = (PasswordBox)sender;
+
+            if (txt.IsMouseCaptured || txt.IsKeyboardFocused)
             {
                 if (confirmpassword_TXT.PasswordText != "") ConfirmPasswordEntered = true;
                 else ConfirmPasswordEntered = false;
@@ -519,43 +535,24 @@ namespace TH_MySQL.ConfigurationPage
             }
             else
             {
-                UseTrakHoundCloudServer = false;
+                // Only clear data if previously set to UseTrakHoundCloudServer (this prevents cloud server settings from being displayed to user)
+                if (UseTrakHoundCloudServer)
+                {
+                    UseTrakHoundCloudServer = false;
 
-                Server = null;
-                Port = null;
+                    Server = null;
+                    Port = null;
 
-                Username = null;
-                password_TXT.PasswordText = null;
-                confirmpassword_TXT.PasswordText = null;
+                    Username = null;
+                    password_TXT.PasswordText = null;
+                    confirmpassword_TXT.PasswordText = null;
 
-                UsePHPServer = false;
-                usephp_CHK.IsChecked = false;
-                PhpServer = null;
-                PhpDirectory = null;
+                    UsePHPServer = false;
+                    usephp_CHK.IsChecked = false;
+                    PhpServer = null;
+                    PhpDirectory = null;
+                }
             }
-
-            //if (UseTrakHoundCloudServer)
-            //{
-            //    Server = "localhost";
-            //    Port = null;
-
-            //    if (ApplicationType == Application_Type.Client)
-            //    {
-            //        Username = "feenuxco_reader";
-            //        password_TXT.PasswordText = "#reader";
-            //        confirmpassword_TXT.PasswordText = "#reader";
-            //    }
-            //    else
-            //    {
-            //        Username = "feenuxco_th";
-            //        password_TXT.PasswordText = "#mtconnect";
-            //        confirmpassword_TXT.PasswordText = "#mtconnect";
-            //    }
-
-            //    UsePHPServer = true;
-            //    PhpServer = "www.feenux.com";
-            //    PhpDirectory = "php";
-            //}
         }
 
         public bool UseTrakHoundCloudServer
@@ -564,10 +561,6 @@ namespace TH_MySQL.ConfigurationPage
             set 
             {
                 SetValue(UseTrakHoundCloudServerProperty, value);
-
-                //SetTrakHoundClourServer();
-
-                //ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
             }
         }
 
@@ -580,31 +573,6 @@ namespace TH_MySQL.ConfigurationPage
             SetTrakHoundClourServer();
 
             ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
-
-            //UseTrakHoundCloudServer = true;
-
-            //Server = "localhost";
-            //Port = null;
-
-            //if (ApplicationType == Application_Type.Client)
-            //{
-            //    Username = "feenuxco_reader";
-            //    password_TXT.PasswordText = "#reader";
-            //    confirmpassword_TXT.PasswordText = "#reader";
-            //}
-            //else
-            //{
-            //    Username = "feenuxco_th";
-            //    password_TXT.PasswordText = "#mtconnect";
-            //    confirmpassword_TXT.PasswordText = "#mtconnect";
-            //}
-
-            //UsePHPServer = true;
-            //PhpServer = "www.feenux.com";
-            //PhpDirectory = "php";
-
-            //ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
-
         }
 
         private void trakhoundserver_CHK_Unchecked(object sender, RoutedEventArgs e)
@@ -612,21 +580,6 @@ namespace TH_MySQL.ConfigurationPage
             SetTrakHoundClourServer();
 
             ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
-
-            //UseTrakHoundCloudServer = false;
-
-            //Server = null;
-            //Port = null;
-
-            //Username = null;
-            //password_TXT.PasswordText = null;
-            //confirmpassword_TXT.PasswordText = null;
-
-            //UsePHPServer = false;
-            //PhpServer = null;
-            //PhpDirectory = null;
-
-            //ChangeSetting(prefix + "UseTrakHoundServer", UseTrakHoundCloudServer.ToString());
         }
 
         #endregion

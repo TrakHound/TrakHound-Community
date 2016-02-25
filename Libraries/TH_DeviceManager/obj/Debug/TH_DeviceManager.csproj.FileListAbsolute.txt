@@ -108,5 +108,5 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceMana
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager.pdb
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager - Copy.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager - Copy.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager.g.cs

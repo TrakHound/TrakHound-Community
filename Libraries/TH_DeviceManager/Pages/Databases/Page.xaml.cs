@@ -62,6 +62,8 @@ namespace TH_DeviceManager.Pages.Databases
 
             CreateDatabaseButtons(dt);
 
+            UpdatePageType(PageType);
+
             configurationTable = dt;
 
             if (DatabaseList.Count > 0) DisplayDatabases = true;
@@ -128,7 +130,17 @@ namespace TH_DeviceManager.Pages.Databases
             return address;
         }
 
-        public Page_Type PageType { get; set; }
+        private Page_Type _pageType;
+        public Page_Type PageType
+        {
+            get { return _pageType; }
+            set
+            {
+                _pageType = value;
+
+                UpdatePageType(_pageType);
+            }
+        }
 
         #endregion
 
@@ -304,8 +316,8 @@ namespace TH_DeviceManager.Pages.Databases
 
                             TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)o;
 
-                            if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
-                            else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
+                            //if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
+                            //else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
 
                             page.prefix = address;
                             page.LoadConfiguration(temp_dt);
@@ -366,6 +378,18 @@ namespace TH_DeviceManager.Pages.Databases
             result = distinct.ToList();
 
             return result;
+        }
+
+        void UpdatePageType(Page_Type pageType)
+        {
+            if (databaseConfigurationPages != null)
+            {
+                foreach (var page in databaseConfigurationPages)
+                {
+                    if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
+                    else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
+                }
+            }
         }
 
         #endregion

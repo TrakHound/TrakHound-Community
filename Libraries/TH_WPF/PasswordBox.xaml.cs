@@ -58,12 +58,30 @@ namespace TH_WPF
         public string PasswordText
         {
             get { return (string)GetValue(PasswordTextProperty); }
-            set { SetValue(PasswordTextProperty, value); }
+            set
+            {
+                SetValue(PasswordTextProperty, value);
+
+                UpdatePasswordText(value);
+            }
         }
 
         public static readonly DependencyProperty PasswordTextProperty =
-            DependencyProperty.Register("PasswordText", typeof(string), typeof(PasswordBox), new PropertyMetadata(null));
+            DependencyProperty.Register("PasswordText", typeof(string), typeof(PasswordBox), new PropertyMetadata(null, new PropertyChangedCallback(PasswordTextPropertyChanged)));
 
+        private static void PasswordTextPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+        {
+            var o = (PasswordBox)dependencyObject;
+            o.UpdatePasswordText((string)eventArgs.NewValue);
+        }
+
+        private void UpdatePasswordText(string value)
+        {
+            if (pswd.Password != value)
+            {
+                pswd.Password = value;
+            }
+        }
 
         public string Instructions
         {
@@ -153,13 +171,14 @@ namespace TH_WPF
             }
         }
 
+
         private void pswd_PasswordChanged(object sender, RoutedEventArgs e)
         {
             System.Windows.Controls.PasswordBox pbox = (System.Windows.Controls.PasswordBox)sender;
 
             SecurePassword = pbox.SecurePassword;
 
-           if (pbox.Password != "" && pbox.Password != null)
+            if (pbox.Password != "" && pbox.Password != null)
             {
                 PasswordText = pbox.Password;
             }

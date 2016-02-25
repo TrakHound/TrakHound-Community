@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-14852770114
+1431366378
 
-19771038460
+19-594223366
 22587088619
-DeviceManager - Copy.xaml;Pages\AddDevice\Controls\SharedItem.xaml;Pages\AddShare\Page.xaml;Pages\CopyDevice\Page.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\DeviceButton.xaml;Controls\PageItem.xaml;Pages\AddDevice\Page.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;Pages\DeviceList\Page.xaml;Pages\General\Page.xaml;
+Pages\AddDevice\Controls\SharedItem.xaml;Pages\AddShare\Page.xaml;Pages\CopyDevice\Page.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\DeviceButton.xaml;Controls\PageItem.xaml;Pages\AddDevice\Page.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;DeviceManager.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;Pages\DeviceList\Page.xaml;Pages\General\Page.xaml;
 
 True
 

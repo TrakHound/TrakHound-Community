@@ -83,9 +83,7 @@ namespace TH_DeviceManager
                 if (currentuser != null) LoggedIn = true;
                 else LoggedIn = false;
 
-                //LoadDevices();
-
-                LoadDeviceList();
+                LoadDevices();
 
                 AddDevice_Initialize();
                 CopyDevice_Initialize();
@@ -129,18 +127,7 @@ namespace TH_DeviceManager
         const System.Windows.Threading.DispatcherPriority background = System.Windows.Threading.DispatcherPriority.Background;
         const System.Windows.Threading.DispatcherPriority contextidle = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
-        #region "Device List"
-
-        void LoadDeviceList()
-        {
-            var deviceListPage = new TH_DeviceManager.Pages.DeviceList.Page();
-            deviceListPage.CurrentUser = currentuser;
-            //deviceListPage.LoadDevices();
-            CurrentPage = deviceListPage;
-        }
-
-        #endregion
-
+       
         #region "Device Management"
 
         Configuration selecteddevice;
@@ -173,7 +160,54 @@ namespace TH_DeviceManager
             }
         }
 
+        List<Configuration> _addedDevices;
+        List<Configuration> AddedDevices
+        {
+            get
+            {
+                if (_addedDevices == null) _addedDevices = new List<Configuration>();
+                return _addedDevices;
+            }
+            set
+            {
+                _addedDevices = value;
+            }
+        }
+
+        List<Configuration> _sharedDevices;
+        List<Configuration> SharedDevices
+        {
+            get
+            {
+                if (_sharedDevices == null) _sharedDevices = new List<Configuration>();
+                return _sharedDevices;
+            }
+            set
+            {
+                _sharedDevices = value;
+            }
+        }
+
         #region "Load Devices"
+
+        public delegate void DevicesStatus_Handler();
+        public event DevicesStatus_Handler LoadingDevices;
+
+        public delegate void DevicesLoaded_Handler(List<Configuration> configs);
+        public event DevicesLoaded_Handler DeviceListUpdated;
+
+        public enum DeviceUpdateEvent
+        {
+            Added,
+            Changed,
+            Removed
+        }
+        public class DeviceUpdateArgs
+        {
+            public DeviceUpdateEvent Event { get; set; }
+        }
+        public delegate void DeviceUpdated_Handler(Configuration config, DeviceUpdateArgs args);
+        public event DeviceUpdated_Handler DeviceUpdated;
 
         public bool DevicesLoading
         {
@@ -335,7 +369,9 @@ namespace TH_DeviceManager
             if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
 
             loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
-            loaddevices_THREAD.Start();      
+            loaddevices_THREAD.Start();
+
+            if (LoadingDevices != null) LoadingDevices();    
         }
 
         void LoadDevices_Worker()
@@ -364,6 +400,9 @@ namespace TH_DeviceManager
         {
             configurations = added;
 
+            AddedDevices.Clear();
+            SharedDevices.Clear();
+
             // Add the 'added' configurations to the list
             if (added != null)
             {
@@ -372,6 +411,7 @@ namespace TH_DeviceManager
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in orderedAddedConfigs)
                 {
+                    AddedDevices.Add(config);
                     this.Dispatcher.BeginInvoke(new Action<Configuration>(AddDeviceButton), background, new object[] { config });
                 }
             }
@@ -384,6 +424,7 @@ namespace TH_DeviceManager
                 // Create DevicesList based on Configurations
                 foreach (Configuration config in orderedSharedConfigs)
                 {
+                    SharedDevices.Add(config);
                     this.Dispatcher.BeginInvoke(new Action<Configuration>(AddSharedDeviceButton), background, new object[] { config });
                 }
             }
@@ -402,6 +443,20 @@ namespace TH_DeviceManager
 
             DeviceListShown = true;
             DevicesLoading = false;
+
+            UpdateDeviceList();
+        }
+
+        void UpdateDeviceList()
+        {
+            // Raise DevicesLoaded event to update devices for rest of TrakHound 
+            // (Client is the only one that uses this for now)
+            if (DeviceListUpdated != null) DeviceListUpdated(AddedDevices);
+        }
+
+        void UpdateDevice(Configuration config, DeviceUpdateArgs args)
+        {
+            if (DeviceUpdated != null) DeviceUpdated(config, args);
         }
 
         #endregion
@@ -543,6 +598,11 @@ namespace TH_DeviceManager
 
             SaveNeeded = false;
             Saving = false;
+
+            // Raise DeviceUpdated Event
+            var args = new DeviceUpdateArgs();
+            args.Event = DeviceUpdateEvent.Changed;
+            UpdateDevice(SelectedDevice, args);
         }
 
         #endregion
@@ -593,6 +653,18 @@ namespace TH_DeviceManager
                 if (info.bt != null)
                 {
                     DeviceButton bt = info.bt;
+
+                    if (bt.Config != null && SelectedDevice.UniqueId == bt.Config.UniqueId)
+                    {
+                        SelectedDevice = null;
+                        CurrentPage = null;
+                        PageListShown = false;
+
+                        // Raise DeviceUpdated Event
+                        var args = new DeviceUpdateArgs();
+                        args.Event = DeviceUpdateEvent.Removed;
+                        UpdateDevice(bt.Config, args);
+                    }
 
                     if (bt.Parent != null)
                     {
@@ -656,6 +728,11 @@ namespace TH_DeviceManager
         {
             AddDeviceButton(config);
             ShowAddedDevices();
+
+            // Raise DeviceUpdated Event
+            var args = new DeviceUpdateArgs();
+            args.Event = DeviceUpdateEvent.Added;
+            UpdateDevice(config, args);
         }
 
         #endregion
@@ -1090,6 +1167,11 @@ namespace TH_DeviceManager
                     {
                         info.bt.Config.ClientEnabled = true;
                         XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ClientEnabled", "true");
+
+                        // Raise DeviceUpdated Event
+                        var args = new DeviceUpdateArgs();
+                        args.Event = DeviceUpdateEvent.Added;
+                        UpdateDevice(info.bt.Config, args);
                     }
                     else if (ManagerType == DeviceManagerType.Server)
                     {
@@ -1148,6 +1230,11 @@ namespace TH_DeviceManager
                     {
                         info.bt.Config.ClientEnabled = false;
                         XML_Functions.SetInnerText(info.bt.Config.ConfigurationXML, "ClientEnabled", "false");
+
+                        // Raise DeviceUpdated Event
+                        var args = new DeviceUpdateArgs();
+                        args.Event = DeviceUpdateEvent.Removed;
+                        UpdateDevice(info.bt.Config, args);
                     }
                     else if (ManagerType == DeviceManagerType.Server)
                     {
@@ -1235,7 +1322,8 @@ namespace TH_DeviceManager
                 {
                     foreach (ConfigurationPage page in ConfigurationPages)
                     {
-                        this.Dispatcher.BeginInvoke(new Action<DataTable, ConfigurationPage>(SelectDevice_GUI), background, new object[] { dt, page });
+                        this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { dt });
+                        //this.Dispatcher.BeginInvoke(new Action<DataTable, ConfigurationPage>(SelectDevice_GUI), background, new object[] { dt, page });
                     }
                 }
             }
@@ -1243,10 +1331,10 @@ namespace TH_DeviceManager
             this.Dispatcher.BeginInvoke(new Action<DataTable>(SelectDevice_Finished), background, new object[] { dt });
         }
 
-        void SelectDevice_GUI(DataTable dt, ConfigurationPage page)
-        {
-            this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { dt });
-        }
+        //void SelectDevice_GUI(DataTable dt, ConfigurationPage page)
+        //{
+        //    this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), contextidle, new object[] { dt });
+        //}
 
         void SelectDevice_Finished(DataTable dt)
         {
@@ -1345,20 +1433,17 @@ namespace TH_DeviceManager
             CurrentPage = null;
 
             PageList.Clear();
-
-            bool useTrakHoundCloud = false;
-
             ConfigurationPages.Clear();
 
+            // Description
             descriptionPage = new Pages.Description.Page();
-
             ConfigurationPages.Add(descriptionPage);
 
             // Agent
-            if (type == DeviceManagerType.Server || useTrakHoundCloud) ConfigurationPages.Add(new Pages.Agent.Page());
+            if (type == DeviceManagerType.Server) ConfigurationPages.Add(new Pages.Agent.Page());
 
             // Databases
-            if (type == DeviceManagerType.Server || !useTrakHoundCloud) ConfigurationPages.Add(new Pages.Databases.Page());
+            ConfigurationPages.Add(new Pages.Databases.Page());
 
             // Load configuration pages from plugins
             if (Plugins != null)
@@ -1370,11 +1455,12 @@ namespace TH_DeviceManager
             foreach (ConfigurationPage page in ConfigurationPages)
             {
                 if (type == DeviceManagerType.Client) page.PageType = TH_Plugins_Server.Page_Type.Client;
-                else if (type == DeviceManagerType.Server) page.PageType = TH_Plugins_Server.Page_Type.Server;
+                else page.PageType = TH_Plugins_Server.Page_Type.Server;
 
                 this.Dispatcher.BeginInvoke(new Action<ConfigurationPage>(AddPageButton), priority, new object[] { page });
             }
 
+            // Select the first page
             if (PageList.Count > 0)
             {
                 if (PageList.Count > selectedPageIndex) Page_Selected((ListButton)PageList[selectedPageIndex]);
