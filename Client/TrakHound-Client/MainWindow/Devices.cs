@@ -72,8 +72,26 @@ namespace TrakHound_Client
                 }
             }
 
-            LoadDevices_Finished(enabledConfigs);
+            Devices = orderedConfigs.ToList();
+
+            if (!addDeviceOpened && enabledConfigs.Count == 0 && currentuser != null)
+            {
+                addDeviceOpened = true;
+                DeviceManager_Open();
+            }
+            else if (enabledConfigs.Count > 0)
+            {
+                addDeviceOpened = false;
+            }
+
+            Plugins_UpdateDeviceList(enabledConfigs);
+
+            // Send message to plugins that Devices have been loaded
+            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
+            de_d.id = "devicesloaded";
+            Plugin_DataEvent(de_d);
         }
+
 
         /// <summary>
         /// Device Manager Added a device so add this device to Devices
@@ -83,11 +101,19 @@ namespace TrakHound_Client
         {
             Console.WriteLine("AddDevice() :: " + config.Description.Description);
 
-            if (Devices.Exists(x => x.UniqueId == config.UniqueId)) Devices.Add(config);
+            if (!Devices.Exists(x => x.UniqueId == config.UniqueId))
+            {
+                if (config.ClientEnabled)
+                {
+                    Devices.Add(config);
+
+                    Plugins_AddDevice(config);
+                }
+            }
         }
 
         /// <summary>
-        /// Device Manager Updated a device so add this device to Devices
+        /// Device Manager Updated a device so remove old device and new device to Devices
         /// </summary>
         /// <param name="config"></param>
         private void UpdateDevice(Configuration config)
@@ -98,12 +124,17 @@ namespace TrakHound_Client
             if (index >= 0)
             {
                 Devices.RemoveAt(index);
-                Devices.Insert(index, config);
+                if (config.ClientEnabled)
+                {
+                    Devices.Insert(index, config);  
+                }
+
+                Plugins_UpdateDevice(config);
             }
         }
 
         /// <summary>
-        /// Device Manager Removed a device so add this device to Devices
+        /// Device Manager Removed a device so remove this device to Devices
         /// </summary>
         /// <param name="config"></param>
         private void RemoveDevice(Configuration config)
@@ -111,7 +142,12 @@ namespace TrakHound_Client
             Console.WriteLine("RemoveDevice() :: " + config.Description.Description);
 
             var match = Devices.Find(x => x.UniqueId == config.UniqueId);
-            if (match != null) Devices.Remove(match);
+            if (match != null)
+            {
+                Devices.Remove(match);
+
+                Plugins_RemoveDevice(config);
+            }
         }
 
 

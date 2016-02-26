@@ -27,7 +27,9 @@
     <UserControl.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Move Up" Click="MoveUp_Click" IsEnabled="{Binding MoveUpEnabled}"/>
-            <MenuItem Header="Move Down" Click="MoveDown_Click" IsEnabled="{Binding MoveDownEnabled}"/>            
+            <MenuItem Header="Move Down" Click="MoveDown_Click" IsEnabled="{Binding MoveDownEnabled}"/>
+            <Separator/>
+            <MenuItem Header="Reset Order" Click="ResetOrder_Click"/>
         </ContextMenu>
     </UserControl.ContextMenu>
 

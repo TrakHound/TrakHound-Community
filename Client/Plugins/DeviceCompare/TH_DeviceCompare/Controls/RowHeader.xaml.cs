@@ -89,6 +89,9 @@ namespace TH_DeviceCompare.Controls
         public delegate void IndexChanged_Hander(RowHeader sender, int newIndex, int oldIndex);
         public event IndexChanged_Hander IndexChanged;
 
+        public delegate void ResetOrder_Handler();
+        public event ResetOrder_Handler ResetOrder;
+
 
         public bool MoveUpEnabled
         {
@@ -124,6 +127,11 @@ namespace TH_DeviceCompare.Controls
             int newIndex = Index + 1;
 
             if (IndexChanged != null) IndexChanged(this, newIndex, oldIndex);
+        }
+
+        private void ResetOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (ResetOrder != null) ResetOrder();
         }
 
         #endregion

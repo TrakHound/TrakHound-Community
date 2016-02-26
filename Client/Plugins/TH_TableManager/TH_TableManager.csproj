@@ -58,6 +58,7 @@
     <Compile Include="Controls\DeviceButton.xaml.cs">
       <DependentUpon>DeviceButton.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
