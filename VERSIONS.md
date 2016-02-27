@@ -1,5 +1,5 @@
 # Versions
-### List of what is contained in each version and what is planned for future versions.
+List of what is contained in each version and what is planned for future versions.
 
 ## v1.6.2
 - [x] Fix TH_DeviceCompare_OEE timeline reset to accomodate issue #2
