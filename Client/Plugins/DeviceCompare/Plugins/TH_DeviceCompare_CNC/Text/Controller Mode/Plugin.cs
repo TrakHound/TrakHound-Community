@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -88,7 +89,8 @@ namespace TH_DeviceCompare_CNC.Text.Controller_Mode
 
         #region "Device Properties"
 
-        public List<Configuration> Devices { get; set; }
+        //public List<Configuration> Devices { get; set; }
+        public ObservableCollection<Configuration> Devices { get; set; }
 
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,16 +88,39 @@ namespace TH_StatusData
 
         #region "Devices"
 
-        List<Configuration> devices;
-        public List<Configuration> Devices
+        //List<Configuration> devices;
+        //public List<Configuration> Devices
+        //{
+        //    get { return devices; }
+        //    set
+        //    {
+        //        devices = value;
+
+        //        Update_Start();
+        //    }
+        //}
+
+        private ObservableCollection<Configuration> _devices;
+        public ObservableCollection<Configuration> Devices
         {
-            get { return devices; }
+            get
+            {
+                if (_devices == null)
+                {
+                    _devices = new ObservableCollection<Configuration>();
+                    _devices.CollectionChanged += Devices_CollectionChanged;
+                }
+                return _devices;
+            }
             set
             {
-                devices = value;
-
-                Update_Start();
+                _devices = value;
             }
+        }
+
+        public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Update_Start();
         }
 
         #endregion

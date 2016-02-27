@@ -47,11 +47,11 @@ namespace TH_DeviceCompare_OEE.Timeline
                     this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), Priority_Context, new object[] { de_d.data02 });
                 }
 
-                // Snapshot Table Data
-                if (de_d.id.ToLower() == "statusdata_snapshots")
+                // Variables Table Data
+                if (de_d.id.ToLower() == "statusdata_variables")
                 {
                     // OEE Timeline / Histogram
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_SnapshotData), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), Priority_Context, new object[] { de_d.data02 });
                 }
 
                 // Shifts Table Data
@@ -103,7 +103,6 @@ namespace TH_DeviceCompare_OEE.Timeline
                     {
                         db = new TH_WPF.Histogram.DataBar();
                         db.Id = info.id;
-                        db.SegmentTimes = info.segmentTimes;
                         histogram.AddDataBar(db);
                     }
                     else db = histogram.DataBars[dbIndex];
@@ -111,57 +110,12 @@ namespace TH_DeviceCompare_OEE.Timeline
                     db.Value = info.Oee * 100;
 
                     var toolTip = new OeeToolTip();
-                    toolTip.Times = db.SegmentTimes;
+                    toolTip.Times = info.segmentTimes;
                     toolTip.Oee = info.Oee.ToString("P2");
                     toolTip.Availability = info.Availability.ToString("P2");
                     toolTip.Performance = info.Performance.ToString("P2");
                     db.ToolTipData = toolTip;
                 }
-
-
-                //int cellIndex = dd.Group.Column.Cells.ToList().FindIndex(x => x.Link.ToLower() == "oeetimeline");
-                //if (cellIndex >= 0)
-                //{
-                //    TH_WPF.Histogram.Histogram oeeTimeline;
-
-                //    object ddData = dd.Group.Column.Cells[cellIndex].Data;
-                //    if (ddData == null)
-                //    {
-                //        oeeTimeline = new TH_WPF.Histogram.Histogram();
-                //        oeeTimeline.Name = "OEE";
-                //        oeeTimeline.Height = 100;
-                //        oeeTimeline.Width = 180;
-                //        oeeTimeline.Margin = new Thickness(0, 5, 0, 5);
-
-                //        dd.Group.Column.Cells[cellIndex].Data = oeeTimeline;
-                //    }
-                //    else oeeTimeline = (TH_WPF.Histogram.Histogram)ddData;
-
-                //    foreach (OEE_TimelineInfo info in infos)
-                //    {
-                //        TH_WPF.Histogram.DataBar db;
-
-                //        int dbIndex = oeeTimeline.DataBars.ToList().FindIndex(x => x.Id == info.id);
-                //        if (dbIndex < 0)
-                //        {
-                //            db = new TH_WPF.Histogram.DataBar();
-                //            db.Id = info.id;
-                //            db.SegmentTimes = info.segmentTimes;
-                //            oeeTimeline.AddDataBar(db);
-                //        }
-                //        else db = oeeTimeline.DataBars[dbIndex];
-
-                //        db.Value = info.Oee * 100;
-
-                //        var toolTip = new Controls.OeeTimelineToolTip();
-                //        toolTip.Times = db.SegmentTimes;
-                //        toolTip.Oee = info.Oee.ToString("P2");
-                //        toolTip.Availability = info.Availability.ToString("P2");
-                //        toolTip.Performance = info.Performance.ToString("P2");
-                //        db.ToolTipData = toolTip;
-                //    }
-                //}
-
             }
         }
 
@@ -173,29 +127,33 @@ namespace TH_DeviceCompare_OEE.Timeline
                 string segmentTimes = GetSegmentName(db.Id, shiftData);
                 if (segmentTimes != null)
                 {
-                    if (db.SegmentTimes != segmentTimes) db.SegmentTimes = segmentTimes;
+                    if (db.ToolTipData != null)
+                    {
+                        var tooltip = (OeeToolTip)db.ToolTipData;
+                        if (tooltip.Times != segmentTimes) tooltip.Times = segmentTimes;
+                    }
                 }
             }
         }
 
-        void Update_SnapshotData(object snapshotData)
+        void Update_VariablesData(object variableData)
         {
             List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
 
-            DataTable dt = snapshotData as DataTable;
+            DataTable dt = variableData as DataTable;
             if (dt != null)
             {
                 // Get Shift Name to check if still in the same shift as last update
-                string prev_shiftName = histogram.shiftName;
-                histogram.shiftName = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Name", "value");
-                if (prev_shiftName != histogram.shiftName) histogram.DataBars.Clear();
+                string prev_shiftName = histogram.Id;
+                histogram.Id = DataTable_Functions.GetTableValue(dt, "variable", "shift_name", "value");
+                if (prev_shiftName != histogram.Id) histogram.DataBars.Clear();
 
                 // Get Current Segment
                 foreach (TH_WPF.Histogram.DataBar db in histogram.DataBars)
                 {
-                    string currentShiftId = DataTable_Functions.GetTableValue(dt, "name", "Current Shift Id", "value");
-                    if (currentShiftId == db.Id) db.CurrentSegment = true;
-                    else db.CurrentSegment = false;
+                    string currentShiftId = DataTable_Functions.GetTableValue(dt, "variable", "shift_id", "value");
+                    if (currentShiftId == db.Id) db.IsSelected = true;
+                    else db.IsSelected = false;
                 }
             }
         }

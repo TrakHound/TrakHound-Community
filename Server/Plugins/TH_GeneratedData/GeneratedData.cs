@@ -931,7 +931,7 @@ namespace TH_GeneratedData
 
         void CreateValueTable(List<GeneratedEvents.Event> events)
         {
-            Table.Truncate(config.Databases_Server, TableNames.GenEventValues);
+            //Table.Truncate(config.Databases_Server, TableNames.GenEventValues);
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
@@ -940,7 +940,7 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            Table.Create(config.Databases_Server, TableNames.GenEventValues, columns.ToArray(), null);
+            Table.Replace(config.Databases_Server, TableNames.GenEventValues, columns.ToArray(), null);
 
             if (events != null)
             {

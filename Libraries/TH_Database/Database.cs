@@ -240,6 +240,16 @@ namespace TH_Database
             public IDatabasePlugin plugin { get; set; }
         }
 
+        class ReplaceWorkerInfo
+        {
+            public object configuration { get; set; }
+            public string tablename { get; set; }
+            public ColumnDefinition[] columnDefinitions { get; set; }
+            public string[] primaryKey { get; set; }
+
+            public IDatabasePlugin plugin { get; set; }
+        }
+
         class DropWorkerInfo1
         {
             public object configuration { get; set; }
@@ -305,6 +315,48 @@ namespace TH_Database
                 }
             }
             catch (Exception ex) { Logger.Log("Table.CreateWorker() : Exception : " + ex.Message); }
+        }
+
+
+        public static void Replace(Database_Settings settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey)
+        {
+            if (Global.Plugins != null)
+            {
+                foreach (Database_Configuration db in settings.Databases)
+                {
+                    foreach (var plugin in Global.Plugins)
+                    {
+                        if (Global.CheckType(plugin, db))
+                        {
+                            ReplaceWorkerInfo info = new ReplaceWorkerInfo();
+                            info.configuration = db.Configuration;
+                            info.tablename = tablename;
+                            info.columnDefinitions = columnDefinitions;
+                            info.primaryKey = primaryKey;
+                            info.plugin = plugin;
+
+                            if (Global.UseMultithreading) ThreadPool.QueueUserWorkItem(new WaitCallback(Replace_Worker), info);
+                            else Replace_Worker(info);
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        static void Replace_Worker(object o)
+        {
+            try
+            {
+                if (o.GetType() == typeof(ReplaceWorkerInfo))
+                {
+                    ReplaceWorkerInfo info = (ReplaceWorkerInfo)o;
+
+                    info.plugin.Table_Replace(info.configuration, info.tablename, info.columnDefinitions, info.primaryKey);
+                }
+            }
+            catch (Exception ex) { Logger.Log("Table.ReplaceWorker() : Exception : " + ex.Message); }
         }
 
 

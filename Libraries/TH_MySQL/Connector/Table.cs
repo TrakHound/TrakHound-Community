@@ -123,6 +123,121 @@ namespace TH_MySQL.Connector
 
         }
 
+        public static bool Replace(MySQL_Configuration config, string tableName, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
+        {
+
+            bool Result = false;
+
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    MySqlConnection conn;
+                    conn = new MySqlConnection();
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    MySqlCommand Command;
+                    Command = new MySqlCommand();
+                    Command.Connection = conn;
+
+                    string coldef = "";
+
+                    //Create Column Definition string
+                    for (int x = 0; x <= columnDefinitions.Length - 1; x++)
+                    {
+                        coldef += MySQL_Tools.ConvertColumnDefinition(columnDefinitions[x]).ToString();
+                        if (x < columnDefinitions.Length - 1) coldef += ",";
+                    }
+
+                    //string Keydef = "";
+                    //if (primaryKey != null) Keydef = ", PRIMARY KEY (" + primaryKey.ToLower() + ")";
+
+                    string Keydef = "";
+                    if (primaryKey != null)
+                    {
+                        Keydef = ", PRIMARY KEY (";
+
+                        for (var k = 0; k <= primaryKey.Length - 1; k++)
+                        {
+                            Keydef += primaryKey[k];
+                            if (k < primaryKey.Length - 1) Keydef += ", ";
+                        }
+
+                        Keydef += ")";
+                    }
+
+
+                    string[] queries = new string[5];
+
+                    // Drop Table (Replace)
+                    queries[0] = "DROP TABLE IF EXISTS " + tableName;
+
+                    // Create Table
+                    queries[1] = "CREATE TABLE IF NOT EXISTS " + tableName + " (" + coldef + Keydef + ")";
+
+                    // Drop Procedure (make sure doesn't already exist)
+                    queries[2] = "DROP PROCEDURE IF EXISTS addcolumns";
+
+                    // Create Procedure
+                    string procedure = "CREATE PROCEDURE addcolumns() BEGIN";
+
+                    for (int x = 0; x <= columnDefinitions.Length - 1; x++)
+                    {
+                        procedure += " IF NOT EXISTS(" +
+                            "(SELECT * FROM information_schema.COLUMNS" +
+                             " WHERE TABLE_SCHEMA=DATABASE()" +
+                             " AND COLUMN_NAME='" + columnDefinitions[x].ColumnName + "'" +
+                             " AND TABLE_NAME='" + tableName + "'))" +
+                             " THEN" +
+                             " ALTER TABLE " + tableName + " ADD " + MySQL_Tools.ConvertColumnDefinition(columnDefinitions[x]).ToString() + ";" +
+                             " END IF;";
+                    }
+
+                    procedure += "END";
+
+                    queries[3] = procedure;
+
+                    // Call Procedure
+                    queries[4] = "CALL addcolumns()";
+
+                    // Execute queries
+                    for (var x = 0; x <= queries.Length - 1; x++)
+                    {
+                        Command.CommandText = queries[x];
+                        Command.Prepare();
+                        Command.ExecuteNonQuery();
+                    }
+
+                    Command.Dispose();
+                    conn.Close();
+                    Command.Dispose();
+                    conn.Dispose();
+
+                    Result = true;
+
+                    success = true;
+                }
+                catch (MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+            }
+
+            return Result;
+
+        }
+
+
         public static bool Truncate(MySQL_Configuration config, string tableName)
         {
 

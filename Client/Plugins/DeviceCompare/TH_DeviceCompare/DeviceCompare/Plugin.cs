@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -94,15 +95,33 @@ namespace TH_DeviceCompare
 
         #region "Device Properties"
 
-        List<Configuration> devices;
-        public List<Configuration> Devices
+        //List<Configuration> devices;
+        //public List<Configuration> Devices
+        //{
+        //    get { return devices; }
+        //    set
+        //    {
+        //        devices = value;
+
+        //        UpdateDevices(devices);
+        //    }
+        //}
+
+        private ObservableCollection<Configuration> _devices;
+        public ObservableCollection<Configuration> Devices
         {
-            get { return devices; }
+            get
+            {
+                if (_devices == null)
+                {
+                    _devices = new ObservableCollection<Configuration>();
+                    _devices.CollectionChanged += Devices_CollectionChanged;
+                }
+                return _devices;
+            }
             set
             {
-                devices = value;
-
-                UpdateDevices(devices);
+                _devices = value;
             }
         }
 

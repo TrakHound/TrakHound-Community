@@ -29,7 +29,7 @@ namespace TH_Plugins_Client
     public interface IClientPlugin
     {
 
-        #region "Descriptive"
+        #region "Description"
 
         /// <summary>
         /// Sets the Title of the Plugin
@@ -65,7 +65,7 @@ namespace TH_Plugins_Client
 
         /// <summary>
         /// Name of the software license for the plugin
-        /// (ex. GPLv2)
+        /// (ex. GPLv3)
         /// </summary>
         string LicenseName { get; }
 
@@ -131,7 +131,7 @@ namespace TH_Plugins_Client
 
         /// <summary>
         /// Used to initialize the Plugin after the other properties have been set
-        /// (ex. called after DeviceData has been set)
+        /// (ex. called after Devices has been set)
         /// </summary>
         void Initialize();
 
@@ -169,7 +169,8 @@ namespace TH_Plugins_Client
         /// List of Device_Client objects
         /// </summary>
         //List<Device_Client> Devices { get; set; }
-        List<Configuration> Devices { get; set; }
+        //List<Configuration> Devices { get; set; }
+        ObservableCollection<Configuration> Devices { get; set; }
 
         #endregion
 
