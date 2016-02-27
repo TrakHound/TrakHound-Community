@@ -7,30 +7,126 @@ using System.Threading.Tasks;
 using TH_MicrosoftSQL;
 using TH_MTConnect.Components;
 
+using System.Data.SQLite;
+
 namespace TestConsole
 {
     class Program
     {
         static void Main(string[] args)
         {
-            //Probe();
 
-            string s = null;
-            
+            string dbPath = @"C:\TrakHound\Databases\test.db";
 
-            if (s != null && s[0] == 'a')
+            if (!System.IO.File.Exists(dbPath)) SQLiteConnection.CreateFile(dbPath);
+
+            string strconn = "Data Source=" + dbPath + "; Version=3;";
+
+            var conn = new SQLiteConnection(strconn);
+            conn.Open();
+
+            string sql;
+            SQLiteCommand command;
+            SQLiteDataReader reader;
+
+            //sql = "DROP TABLE IF EXISTS test_table";
+            //command = new SQLiteCommand(sql, conn);
+            //command.ExecuteNonQuery();
+
+            sql = "CREATE TABLE IF NOT EXISTS test_table (name varchar(90), value int, PRIMARY KEY(name))";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
+
+
+            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('patrick', 1)";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
+
+            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('bob', 2)";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
+
+            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('dave', 3)";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
+
+            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('john', 4)";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
+
+
+
+            sql = "SELECT * FROM test_table";
+            command = new SQLiteCommand(sql, conn);
+            reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                Console.WriteLine("YES");
+                PrintReaderRow(reader);
             }
-            else
+
+            sql = "SELECT name FROM sqlite_master WHERE type='table'";
+            command = new SQLiteCommand(sql, conn);
+            reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                Console.WriteLine("NO");
+                PrintReaderRow(reader);
             }
-           
+
+            sql = "SELECT Count(*) FROM test_table";
+            command = new SQLiteCommand(sql, conn);
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                PrintReaderRow(reader);
+            }
+
+            sql = "PRAGMA table_info(test_table)";
+            command = new SQLiteCommand(sql, conn);
+            reader = command.ExecuteReader();
+
+            var columns = new List<string>();
+
+            while (reader.Read())
+            {
+                PrintReaderRow(reader);
+                columns.Add(reader["name"].ToString());
+            }
+
+            var addColumns = new List<string>()
+            {
+                "oee",
+                "availability",
+                "performance",
+                "quality"
+            };
+
+            foreach (var column in addColumns)
+            {
+                if (!columns.Exists(x => x == column))
+                {
+                    sql = "ALTER TABLE test_table ADD COLUMN " + column;
+                    command = new SQLiteCommand(sql, conn);
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            conn.Close();
 
 
 
             Console.ReadLine();
+        }
+
+        static void PrintReaderRow(SQLiteDataReader reader)
+        {
+            string print = "";
+
+            for (var x = 0; x <= reader.FieldCount - 1; x++)
+            {
+                print += reader.GetName(x) + ": " + reader[x] + "; ";
+            }
+
+            Console.WriteLine(print);
         }
 
         static void Probe()
