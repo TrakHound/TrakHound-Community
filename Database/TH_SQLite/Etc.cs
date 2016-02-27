@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TH_SQLite
 {
-    public class Class1
+    class Etc
     {
     }
 }
