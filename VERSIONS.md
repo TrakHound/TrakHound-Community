@@ -1,7 +1,16 @@
 # Versions
 List of what is contained in each version and what is planned for future versions.
 
-## v1.6.2
+TrakHound build version scheme is defined below:
+
+[Major Revision].[Minor Revision].[Issue Fix]
+
+Note: Versions of TrakHound previous to Beta v1.7.0 may have not followed this pattern exactly.
+
+## v1.7.0
+- [ ] Add SQLite plugin to main project to enable use of SQLite databases
+
+## [v1.6.2](TrakHound/releases/tag/v1.6.2-beta)
 - [x] Fix TH_DeviceCompare_OEE timeline reset to accomodate issue #2
 - [x] Fix Database Configuration Page issues relating to password and username for UseTrakHoundCloud option
 - [x] Fix Database Configuration Page issues relating to showing that a password has been entered
