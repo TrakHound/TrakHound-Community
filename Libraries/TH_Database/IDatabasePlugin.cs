@@ -40,6 +40,8 @@ namespace TH_Database
 
         bool Table_Create(object settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey);
 
+        bool Table_Replace(object settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey);
+
         bool Table_Drop(object settings, string tablename);
 
         bool Table_Drop(object settings, string[] tablenames);

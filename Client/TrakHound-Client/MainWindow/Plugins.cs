@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,7 +60,7 @@ namespace TrakHound_Client
 
 
         // List of plugins enabled by default
-        List<string> defaultEnabledPlugins = new List<string> {
+        private List<string> defaultEnabledPlugins = new List<string> {
             "Dashboard", 
 
             "Device Compare",
@@ -80,7 +81,7 @@ namespace TrakHound_Client
             "Status Data" 
         };
 
-        void LoadPlugins()
+        private void LoadPlugins()
         {
             Plugins = GetPlugins();
 
@@ -95,13 +96,15 @@ namespace TrakHound_Client
             Properties.Settings.Default.Save();
         }
 
+
+
         #region "IClientPlugins"
 
         /// <summary>
         /// Get a list of IClientPlugins
         /// </summary>
         /// <returns></returns>
-        static List<IClientPlugin> GetPlugins()
+        private static List<IClientPlugin> GetPlugins()
         {
             var result = new List<IClientPlugin>();
 
@@ -123,7 +126,7 @@ namespace TrakHound_Client
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        static List<IClientPlugin> GetPlugins(string path)
+        private static List<IClientPlugin> GetPlugins(string path)
         {
             var result = new List<IClientPlugin>();
 
@@ -159,7 +162,7 @@ namespace TrakHound_Client
         /// </summary>
         /// <param name="newPlugins"></param>
         /// <param name="oldPlugins"></param>
-        static void AddPlugins(List<IClientPlugin> newPlugins, List<IClientPlugin> oldPlugins)
+        private static void AddPlugins(List<IClientPlugin> newPlugins, List<IClientPlugin> oldPlugins)
         {
             foreach (var plugin in newPlugins)
             {
@@ -181,7 +184,7 @@ namespace TrakHound_Client
         /// </summary>
         /// <param name="plugins"></param>
         /// <returns></returns>
-        List<PluginConfiguration> GetPluginConfigurations(List<IClientPlugin> plugins)
+        private List<PluginConfiguration> GetPluginConfigurations(List<IClientPlugin> plugins)
         {
             var result = new List<PluginConfiguration>();
 
@@ -200,7 +203,7 @@ namespace TrakHound_Client
                     config = new PluginConfiguration();
                     config.Name = plugin.Title;
                     config.Description = plugin.Description;
-                    config.SubCategories = plugin.SubCategories;
+                    //config.SubCategories = plugin.SubCategories;
 
                     // Automatically enable basic Plugins by TrakHound
                     if (defaultEnabledPlugins.Find(x => x.ToLower() == config.Name.ToLower()) != null)
@@ -209,6 +212,8 @@ namespace TrakHound_Client
                     }
                     else config.Enabled = false;
                 }
+
+                config.SubCategories = plugin.SubCategories;
 
                 config.EnabledChanged += config_EnabledChanged;
 
@@ -243,7 +248,7 @@ namespace TrakHound_Client
         /// <param name="name"></param>
         /// <param name="configs"></param>
         /// <returns></returns>
-        PluginConfiguration FindPluginConfiguration(IClientPlugin plugin, List<PluginConfiguration> configs)
+        private PluginConfiguration FindPluginConfiguration(IClientPlugin plugin, List<PluginConfiguration> configs)
         {
             PluginConfiguration result = null;
 
@@ -282,7 +287,7 @@ namespace TrakHound_Client
         /// </summary>
         /// <param name="configs"></param>
         /// <returns></returns>
-        List<PluginConfiguration> ProcessPluginConfigurations(List<PluginConfiguration> configs)
+        private List<PluginConfiguration> ProcessPluginConfigurations(List<PluginConfiguration> configs)
         {
             var result = new List<PluginConfiguration>();
 
@@ -312,7 +317,7 @@ namespace TrakHound_Client
             return result;
         }
 
-        void config_EnabledChanged(PluginConfiguration sender)
+        private void config_EnabledChanged(PluginConfiguration sender)
         {
             Properties.Settings.Default.Plugin_Configurations = PluginConfigurations;
             Properties.Settings.Default.Save();
@@ -376,7 +381,7 @@ namespace TrakHound_Client
         /// Process the SubPlugins
         /// </summary>
         /// <param name="plugin"></param>
-        void Plugin_LoadSubPlugins(IClientPlugin plugin)
+        private void Plugin_LoadSubPlugins(IClientPlugin plugin)
         {
             plugin.Plugins = new List<IClientPlugin>();
 
@@ -406,7 +411,7 @@ namespace TrakHound_Client
         /// Add the 'sub' plugins to the PluginConfiguration
         /// </summary>
         /// <param name="config"></param>
-        void Plugin_LoadSubPlugins(PluginConfiguration config)
+        private void Plugin_LoadSubPlugins(PluginConfiguration config)
         {
             var plugin = Plugins.Find(x =>
                 x.Title == config.Name &&
@@ -446,7 +451,7 @@ namespace TrakHound_Client
         /// Plugin has requested to be shown
         /// </summary>
         /// <param name="info"></param>
-        void Plugin_ShowRequested(PluginShowInfo info)
+        private void Plugin_ShowRequested(PluginShowInfo info)
         {
             IClientPlugin plugin = null;
 
@@ -470,7 +475,7 @@ namespace TrakHound_Client
         /// Plugin has sent a DataEvent_Data object to other plugins
         /// </summary>
         /// <param name="de_d"></param>
-        void Plugin_DataEvent(DataEvent_Data de_d)
+        private void Plugin_DataEvent(DataEvent_Data de_d)
         {
             foreach (var config in PluginConfigurations)
             {
@@ -534,7 +539,7 @@ namespace TrakHound_Client
         /// Create an Options page for the plugin and add it to the Options Manager
         /// </summary>
         /// <param name="plugin"></param>
-        void Plugin_CreateOptionsPage(IClientPlugin plugin)
+        private void Plugin_CreateOptionsPage(IClientPlugin plugin)
         {
             if (plugin.Options != null) optionsManager.AddPage(plugin.Options);
         }
@@ -543,11 +548,15 @@ namespace TrakHound_Client
         /// Update the devices list for each plugin
         /// </summary>
         /// <param name="devices"></param>
-        void Plugins_UpdateDeviceList(List<Configuration> devices)
+        private void Plugins_UpdateDeviceList(List<Configuration> configs)
         {
             foreach (var plugin in Plugins)
             {
-                plugin.Devices = devices;
+                if (plugin.Devices != null)
+                {
+                    plugin.Devices.Clear();
+                    foreach (var config in configs) plugin.Devices.Add(config);
+                }
             }
         }
 
@@ -555,15 +564,19 @@ namespace TrakHound_Client
         /// Update device for each plugin
         /// </summary>
         /// <param name="config"></param>
-        void Plugins_UpdateDevice(Configuration config)
+        private void Plugins_UpdateDevice(Configuration config)
         {
             foreach (var plugin in Plugins)
             {
-                int index = plugin.Devices.FindIndex(x => x.UniqueId == config.UniqueId);
-                if (index >= 0)
+                if (plugin.Devices != null)
                 {
-                    plugin.Devices.RemoveAt(index);
-                    plugin.Devices.Insert(index, config);
+                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (index >= 0)
+                    {
+                        plugin.Devices.RemoveAt(index);
+
+                        if (config.ClientEnabled) plugin.Devices.Insert(index, config);
+                    }
                 }
             }
         }
@@ -572,11 +585,15 @@ namespace TrakHound_Client
         /// Add device for each plugin
         /// </summary>
         /// <param name="config"></param>
-        void Plugins_AddDevice(Configuration config)
+        private void Plugins_AddDevice(Configuration config)
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices.Exists(x => x.UniqueId == config.UniqueId)) plugin.Devices.Add(config);
+                if (plugin.Devices != null)
+                {
+                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (index < 0) plugin.Devices.Add(config);
+                }
             }
         }
 
@@ -584,12 +601,15 @@ namespace TrakHound_Client
         /// Remove device for each plugin
         /// </summary>
         /// <param name="config"></param>
-        void Plugins_RemoveDevice(Configuration config)
+        private void Plugins_RemoveDevice(Configuration config)
         {
             foreach (var plugin in Plugins)
             {
-                var match = plugin.Devices.Find(x => x.UniqueId == config.UniqueId);
-                if (match != null) plugin.Devices.Remove(match);
+                if (plugin.Devices != null)
+                {
+                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                    if (index >= 0) plugin.Devices.RemoveAt(index);
+                }
             }
         }
 
@@ -597,7 +617,7 @@ namespace TrakHound_Client
         /// Update the Current User for each plugin
         /// </summary>
         /// <param name="userConfig"></param>
-        void Plugins_UpdateUser(UserConfiguration userConfig)
+        private void Plugins_UpdateUser(UserConfiguration userConfig)
         {
             var de_d = new DataEvent_Data();
 
@@ -616,7 +636,7 @@ namespace TrakHound_Client
         /// <summary>
         /// Signal plugins to close
         /// </summary>
-        void Plugins_Closing()
+        private void Plugins_Closing()
         {
             foreach (var plugin in Plugins)
             {

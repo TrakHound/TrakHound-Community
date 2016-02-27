@@ -156,6 +156,7 @@ namespace TH_DeviceCompare
                     header.Text = plugin.Title;
                     header.Index = RowHeaders.Count;
                     header.IndexChanged += RowHeader_IndexChanged;
+                    header.ResetOrder += Header_ResetOrder;
                     RowHeaders.Add(header);
                 }
             }
@@ -189,6 +190,11 @@ namespace TH_DeviceCompare
         {
             SortDataItems(sender, newIndex, oldIndex);
             SaveDataItemOrder();
+        }
+
+        private void Header_ResetOrder()
+        {
+            SortDataItems(true);
         }
 
         void RowHeaders_UnselectAll()
@@ -340,10 +346,12 @@ namespace TH_DeviceCompare
         /// <summary>
         /// Initial Sort of Data Items (this should be called when Device Displays are first created)
         /// </summary>
-        void SortDataItems()
+        void SortDataItems(bool reset = false)
         {
+            string[] titles = null;
+
             // Get order array from Application Settings
-            var titles = Properties.Settings.Default.DataItemOrder;
+            if (!reset) titles = Properties.Settings.Default.DataItemOrder;
 
             // If not found in Application Settings, then load from defaultDataItemOrder array
             if (titles == null) titles = defaultDataItemOrder;
@@ -359,7 +367,11 @@ namespace TH_DeviceCompare
                     RowHeaders[index].Index = i;
                     foreach (var deviceDisplay in DeviceDisplays)
                     {
-                        deviceDisplay.Cells[index].Index = i;
+                        index = deviceDisplay.Cells.ToList().FindIndex(x => x.Link == titles[i]);
+                        if (index >= 0)
+                        {
+                            deviceDisplay.Cells[index].Index = i;
+                        }
                     }
                 }
             }

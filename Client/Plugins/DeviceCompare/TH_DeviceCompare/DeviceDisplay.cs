@@ -273,6 +273,7 @@ namespace TH_DeviceCompare
                     IClientPlugin p = (IClientPlugin)Activator.CreateInstance(type);
 
                     var cell = new Cell();
+                    cell.Link = plugin.Title;
                     cell.Index = Cells.Count;
                     cell.Data = p;
                     cell.SizeChanged += Cell_SizeChanged;

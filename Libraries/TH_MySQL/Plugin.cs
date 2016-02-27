@@ -262,6 +262,27 @@ namespace TH_MySQL
             return result; 
         }
 
+        public bool Table_Replace(object settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey)
+        {
+            bool result = false;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.UsePHP)
+                {
+                    result = PHP.Table.Replace(config, tablename, columnDefinitions, primaryKey);
+                }
+                else
+                {
+                    result = Connector.Table.Replace(config, tablename, columnDefinitions, primaryKey);
+                }
+            }
+
+            return result;
+        }
+
+
         public bool Table_Drop(object settings, string tablename)
         {
             bool result = false;

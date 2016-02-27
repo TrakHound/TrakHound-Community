@@ -37,283 +37,13 @@ namespace TH_TableManager
     /// <summary>
     /// Interaction logic for TableManager.xaml
     /// </summary>
-    public partial class TableManager : UserControl, IClientPlugin
+    public partial class Plugin : UserControl
     {
-        public TableManager()
+        public Plugin()
         {
             InitializeComponent();
             DataContext = this;
         }
-
-        #region "PlugIn"
-
-        #region "Descriptive"
-
-        public string Title { get { return "Table Manager"; } }
-
-        public string Description { get { return "Display and Manage Database Tables associated with Device"; } }
-
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_TableManager;component/Resources/Table_01.png")); ; } }
-
-
-        public string Author { get { return "TrakHound"; } }
-
-        public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
-
-        public ImageSource AuthorImage { get { return new BitmapImage(new Uri("pack://application:,,,/TH_TableManager;component/Resources/TrakHound_Logo_10_200px.png")); } }
-
-
-        public string LicenseName { get { return "GPLv3"; } }
-
-        public string LicenseText { get { return File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\License\" + "License.txt"); } }
-
-        #endregion
-
-        #region "Update Information"
-
-        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/tablemanager-appinfo.json"; } }
-
-        #endregion
-
-        #region "Plugin Properties/Options"
-
-        public string DefaultParent { get { return null; } }
-        public string DefaultParentCategory { get { return null; } }
-
-        public bool AcceptsPlugins { get { return true; } }
-
-        public bool OpenOnStartUp { get { return false; } }
-
-        public bool ShowInAppMenu { get { return true; } }
-
-        public List<PluginConfigurationCategory> SubCategories { get; set; }
-
-        public List<IClientPlugin> Plugins { get; set; }
-
-        #endregion
-
-        #region "Methods"
-
-        public void Initialize() { }
-
-        public void Closing() {  }
-
-        #endregion
-
-        #region "Events"
-
-        public void Update_DataEvent(DataEvent_Data de_d)
-        {
-            UpdateLoggedInChanged(de_d);
-
-            UpdateDevicesLoading(de_d);
-        }
-
-        public event DataEvent_Handler DataEvent;
-
-        public event TH_Plugins_Client.PluginTools.ShowRequested_Handler ShowRequested;
-
-        #endregion
-
-        #region "Device Properties"
-
-        public List<Configuration> Devices
-        {
-            get { return (List<Configuration>)GetValue(DevicesProperty); }
-            set
-            {
-                SetValue(DevicesProperty, value);
-
-                DeviceList.Clear();
-
-                foreach (Configuration device in value)
-                {
-
-                    // Initialize Database Configurations
-                    Global.Initialize(device.Databases_Client);
-
-                    Controls.DeviceButton db = new DeviceButton();
-                    db.Description = device.Description.Description;
-                    db.Manufacturer = device.Description.Manufacturer;
-                    db.Model = device.Description.Model;
-                    db.Serial = device.Description.Serial;
-                    db.Id = device.Description.Device_ID;
-
-                    db.Clicked += db_Clicked;
-
-                    ListButton lb = new ListButton();
-                    lb.ButtonContent = db;
-                    lb.ShowImage = false;
-                    lb.Selected += lb_Device_Selected;
-                    lb.DataObject = device;
-
-                    db.Parent = lb;
-
-                    DeviceList.Add(lb);
-                }
-            }
-        }
-
-        public static readonly DependencyProperty DevicesProperty =
-            DependencyProperty.Register("Devices", typeof(List<Configuration>), typeof(TableManager), new PropertyMetadata(null));
-
-        //ObservableCollection<Configuration> Devices = new ObservableCollection<Configuration>();
-
-        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    Console.WriteLine("DeviceCompare :: Devices :: " + e.Action.ToString());
-
-        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-        //    {
-        //        Devices.Clear();
-        //        DeviceList.Clear();
-        //    }
-
-        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-        //    {
-        //        DeviceList.Clear();
-        //    }
-
-        //    if (e.NewItems != null)
-        //    {
-        //        foreach (Configuration newConfig in e.NewItems)
-        //        {
-        //            Devices.Add(newConfig);
-
-        //            if (newConfig != null)
-        //            {
-        //                // Initialize Database Configurations
-        //                Global.Initialize(newConfig.Databases_Client);
-
-        //                Controls.DeviceButton db = new DeviceButton();
-        //                db.Description = newConfig.Description.Description;
-        //                db.Manufacturer = newConfig.Description.Manufacturer;
-        //                db.Model = newConfig.Description.Model;
-        //                db.Serial = newConfig.Description.Serial;
-        //                db.Id = newConfig.Description.Machine_ID;
-
-        //                db.Clicked += db_Clicked;
-
-        //                ListButton lb = new ListButton();
-        //                lb.ButtonContent = db;
-        //                lb.ShowImage = false;
-        //                lb.Selected += lb_Device_Selected;
-        //                lb.DataObject = newConfig;
-
-        //                db.Parent = lb;
-
-        //                DeviceList.Add(lb);
-        //            }
-        //        }
-        //    }
-
-        //    if (e.OldItems != null)
-        //    {
-        //        foreach (Configuration oldConfig in e.OldItems)
-        //        {
-        //            Devices.Add(oldConfig);
-        //        }
-        //    }
-        //}
-
-        //private List<Configuration> devices;
-        //public List<Configuration> Devices
-        //{
-        //    get { return devices; }
-        //    set
-        //    {
-        //        devices = value;
-
-        //        DeviceList.Clear();
-
-        //        foreach (Configuration device in devices)
-        //        {
-
-        //            // Initialize Database Configurations
-        //            Global.Initialize(device.Databases_Client);
-
-        //            Controls.DeviceButton db = new DeviceButton();
-        //            db.Description = device.Description.Description;
-        //            db.Manufacturer = device.Description.Manufacturer;
-        //            db.Model = device.Description.Model;
-        //            db.Serial = device.Description.Serial;
-        //            db.Id = device.Description.Machine_ID;
-
-        //            db.Clicked += db_Clicked;
-
-        //            ListButton lb = new ListButton();
-        //            lb.ButtonContent = db;
-        //            lb.ShowImage = false;
-        //            lb.Selected += lb_Device_Selected;
-        //            lb.DataObject = device;
-
-        //            db.Parent = lb;
-
-        //            DeviceList.Add(lb);
-        //        }
-        //    }
-        //}
-
-        //private List<Device_Client> lDevices;
-        //public List<Device_Client> Devices
-        //{
-        //    get { return lDevices; }
-        //    set
-        //    {
-        //        lDevices = value;
-
-        //        DeviceList.Clear();
-
-        //        foreach (Device_Client device in lDevices)
-        //        {
-
-        //            // Initialize Database Configurations
-        //            Global.Initialize(device.configuration.Databases);
-
-        //            Controls.DeviceButton db = new DeviceButton();
-        //            db.Description = device.configuration.Description.Description;
-        //            db.Manufacturer = device.configuration.Description.Manufacturer;
-        //            db.Model = device.configuration.Description.Model;
-        //            db.Serial = device.configuration.Description.Serial;
-        //            db.Id = device.configuration.Description.Machine_ID;
-
-        //            db.Clicked += db_Clicked;
-
-        //            ListButton lb = new ListButton();
-        //            lb.ButtonContent = db;
-        //            lb.ShowImage = false;
-        //            lb.Selected += lb_Device_Selected;
-        //            lb.DataObject = device;
-
-        //            db.Parent = lb;
-
-        //            DeviceList.Add(lb);
-        //        }
-        //    }
-        //}
-
-        void db_Clicked(DeviceButton bt)
-        {
-            if (bt.Parent != null)
-            {
-                if (bt.Parent.GetType() == typeof(ListButton))
-                {
-                    ListButton lb = (ListButton)bt.Parent;
-
-                    lb_Device_Selected(lb);
-                }
-            }
-        }
-
-        #endregion
-
-        #region "Options"
-
-        public TH_Global.Page Options { get; set; }
-
-        #endregion
-
-        #endregion
 
         ObservableCollection<ListButton> devicelist;
         public ObservableCollection<ListButton> DeviceList
@@ -340,7 +70,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty LoadingDevicesProperty =
-            DependencyProperty.Register("LoadingDevices", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+            DependencyProperty.Register("LoadingDevices", typeof(bool), typeof(Plugin), new PropertyMetadata(false));
 
         public bool LoggedIn
         {
@@ -349,7 +79,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty LoggedInProperty =
-            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+            DependencyProperty.Register("LoggedIn", typeof(bool), typeof(Plugin), new PropertyMetadata(false));
 
         #endregion
 
@@ -397,7 +127,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty TableIsSelectedProperty =
-            DependencyProperty.Register("TableIsSelected", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+            DependencyProperty.Register("TableIsSelected", typeof(bool), typeof(Plugin), new PropertyMetadata(false));
 
        
         public bool TableListShown
@@ -407,7 +137,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty TableListShownProperty =
-            DependencyProperty.Register("TableListShown", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+            DependencyProperty.Register("TableListShown", typeof(bool), typeof(Plugin), new PropertyMetadata(false));
 
         Thread TableList_WORKER;
 
@@ -561,7 +291,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty SelectedDeviceProperty =
-            DependencyProperty.Register("SelectedDevice", typeof(Configuration), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedDevice", typeof(Configuration), typeof(Plugin), new PropertyMetadata(null));
 
         void lb_Device_Selected(TH_WPF.ListButton lb)
         {
@@ -593,7 +323,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty TableInfoShownProperty =
-            DependencyProperty.Register("TableInfoShown", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+            DependencyProperty.Register("TableInfoShown", typeof(bool), typeof(Plugin), new PropertyMetadata(false));
 
         public string SelectedTableName
         {
@@ -602,7 +332,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty SelectedTableNameProperty =
-            DependencyProperty.Register("SelectedTableName", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedTableName", typeof(string), typeof(Plugin), new PropertyMetadata(null));
 
         
         public string TableRowCount
@@ -612,7 +342,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty TableRowCountProperty =
-            DependencyProperty.Register("TableRowCount", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("TableRowCount", typeof(string), typeof(Plugin), new PropertyMetadata(null));
 
 
         public string TableSize
@@ -622,7 +352,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty TableSizeProperty =
-            DependencyProperty.Register("TableSize", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("TableSize", typeof(string), typeof(Plugin), new PropertyMetadata(null));
 
 
         public string SelectedRowCount
@@ -632,7 +362,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty SelectedRowCountProperty =
-            DependencyProperty.Register("SelectedRowCount", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedRowCount", typeof(string), typeof(Plugin), new PropertyMetadata(null));
 
 
         Thread Info_WORKER;
@@ -698,7 +428,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty TableDataViewProperty =
-            DependencyProperty.Register("TableDataView", typeof(DataView), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("TableDataView", typeof(DataView), typeof(Plugin), new PropertyMetadata(null));
 
         public bool TableDataLoading
         {
@@ -707,7 +437,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty TableDataLoadingProperty =
-            DependencyProperty.Register("TableDataLoading", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+            DependencyProperty.Register("TableDataLoading", typeof(bool), typeof(Plugin), new PropertyMetadata(false));
 
         public bool LoadingRowDisplay
         {
@@ -716,7 +446,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty LoadingRowDisplayProperty =
-            DependencyProperty.Register("LoadingRowDisplay", typeof(bool), typeof(TableManager), new PropertyMetadata(false));
+            DependencyProperty.Register("LoadingRowDisplay", typeof(bool), typeof(Plugin), new PropertyMetadata(false));
 
         public string LoadingRow
         {
@@ -725,7 +455,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty LoadingRowProperty =
-            DependencyProperty.Register("LoadingRow", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("LoadingRow", typeof(string), typeof(Plugin), new PropertyMetadata(null));
 
 
 
@@ -973,7 +703,7 @@ namespace TH_TableManager
         }
 
         public static readonly DependencyProperty RowDisplayLimitProperty =
-            DependencyProperty.Register("RowDisplayLimit", typeof(string), typeof(TableManager), new PropertyMetadata(null));
+            DependencyProperty.Register("RowDisplayLimit", typeof(string), typeof(Plugin), new PropertyMetadata(null));
 
         int rowLimitIndex = 0;
 

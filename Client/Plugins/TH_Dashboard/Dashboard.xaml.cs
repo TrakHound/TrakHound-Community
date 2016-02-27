@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -143,14 +144,72 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        public List<Configuration> Devices
+        //public List<Configuration> Devices
+        //{
+        //    get { return (List<Configuration>)GetValue(DevicesProperty); }
+        //    set { SetValue(DevicesProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty DevicesProperty =
+        //    DependencyProperty.Register("Devices", typeof(List<Configuration>), typeof(Dashboard), new PropertyMetadata(null));
+
+        private ObservableCollection<Configuration> _devices;
+        public ObservableCollection<Configuration> Devices
         {
-            get { return (List<Configuration>)GetValue(DevicesProperty); }
-            set { SetValue(DevicesProperty, value); }
+            get
+            {
+                if (_devices == null)
+                {
+                    _devices = new ObservableCollection<Configuration>();
+                    //_devices.CollectionChanged += Devices_CollectionChanged;
+                }
+                return _devices;
+            }
+            set
+            {
+                _devices = value;
+            }
         }
 
-        public static readonly DependencyProperty DevicesProperty =
-            DependencyProperty.Register("Devices", typeof(List<Configuration>), typeof(Dashboard), new PropertyMetadata(null));
+        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+        //    {
+        //        DeviceList.Clear();
+        //    }
+
+        //    if (e.NewItems != null)
+        //    {
+        //        foreach (Configuration newConfig in e.NewItems)
+        //        {
+        //            if (newConfig != null) AddDeviceButton(newConfig);
+        //        }
+        //    }
+
+        //    if (e.OldItems != null)
+        //    {
+        //        foreach (Configuration oldConfig in e.OldItems)
+        //        {
+        //            Devices.Remove(oldConfig);
+
+        //            int index = DeviceList.ToList().FindIndex(x => GetUniqueIdFromListButton(x) == oldConfig.UniqueId);
+        //            if (index >= 0) DeviceList.RemoveAt(index);
+        //        }
+        //    }
+        //}
+
+        //private static string GetUniqueIdFromListButton(ListButton bt)
+        //{
+        //    if (bt != null && bt.DataObject != null)
+        //    {
+        //        if (bt.DataObject.GetType() == typeof(Configuration))
+        //        {
+        //            return ((Configuration)bt.DataObject).UniqueId;
+        //        }
+        //    }
+        //    return null;
+        //}
+
 
         #endregion
 

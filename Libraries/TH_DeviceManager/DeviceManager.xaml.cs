@@ -654,11 +654,14 @@ namespace TH_DeviceManager
                 {
                     DeviceButton bt = info.bt;
 
-                    if (bt.Config != null && SelectedDevice.UniqueId == bt.Config.UniqueId)
+                    if (bt.Config != null)
                     {
-                        SelectedDevice = null;
-                        CurrentPage = null;
-                        PageListShown = false;
+                        if (SelectedDevice != null && SelectedDevice.UniqueId == bt.Config.UniqueId)
+                        {
+                            SelectedDevice = null;
+                            CurrentPage = null;
+                            PageListShown = false;
+                        }
 
                         // Raise DeviceUpdated Event
                         var args = new DeviceUpdateArgs();
@@ -1103,6 +1106,7 @@ namespace TH_DeviceManager
             }
         }
 
+        #endregion
 
         #region "Enable Device"
 
@@ -1247,9 +1251,6 @@ namespace TH_DeviceManager
                 info.bt.EnableLoading = false;
             }
         }
-
-        #endregion
-
 
         #endregion
 
