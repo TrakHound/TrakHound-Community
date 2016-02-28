@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.Data;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 
 using TH_Configuration;
 using TH_Database;
@@ -17,9 +17,9 @@ namespace TH_SQLite
     public partial class Plugin : IDatabasePlugin
     {
 
-        public string Name { get { return "Microsoft SQL Server Database Plugin"; } }
+        public string Name { get { return "SQLite Database Plugin"; } }
 
-        public string Type { get { return "SQL_Server"; } }
+        public string Type { get { return "SQLite"; } }
 
 
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
@@ -32,8 +32,7 @@ namespace TH_SQLite
             {
                 if (dt.Rows.Count > 0)
                 {
-                    //result.DatabaseName = GetTableValue("Database", dt);
-                    //result.Server = GetTableValue("Server", dt);
+                    result.DatabasePath = GetTableValue("database_path", dt);
                 }
             }
 
@@ -74,32 +73,7 @@ namespace TH_SQLite
                 var config = SQLite_Configuration.Get(settings);
                 if (config != null)
                 {
-                    try
-                    {
-                        string connectionString = GetConnectionString(config);
-                        if (connectionString != null)
-                        {
-                            using (SqlConnection con = new SqlConnection(connectionString))
-                            {
-                                con.Open();
-                            }
-
-                            msg = Type + " Successfully connected to : " + config.Database + " @ " + config.Server + ":" + config.Port;
-                            result = true;
-                        }
-                    }
-                    catch (SqlException sqex)
-                    {
-                        msg = Type + " Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
-                        msg += sqex.Message;
-                        result = false;
-                    }
-                    catch (Exception ex)
-                    {
-                        msg = Type + " Error connecting to : " + config.Database + " @ " + config.Server + ":" + config.Port + Environment.NewLine;
-                        msg += ex.Message;
-                        result = false;
-                    }
+                    if (System.IO.File.Exists(config.DatabasePath)) result = true;
                 }
             }
 
@@ -112,30 +86,20 @@ namespace TH_SQLite
         }
 
 
-
-        static string GetConnectionString(SQL_Configuration config, bool setDatabase = true)
+        static string GetConnectionString(SQLite_Configuration config)
         {
-            string result = null;
-
-            string server = config.Server;
-            if (config.Port > 0) server += ", " + config.Port.ToString();
-
-            if (setDatabase) result = "server=" + server + "; " + "database=" + config.Database + "; " + "user id=" + config.Username + "; " + "password=" + config.Password + ";";
-            else result = "server=" + server + "; " + "user id=" + config.Username + "; " + "password=" + config.Password + ";";
-
-
-            return result;
+            return "Data Source=" + config.DatabasePath + "; Version=3;";
         }
 
-        static object ExecuteQuery<T>(SQL_Configuration config, string query, bool setDatabase = true)
+        static object ExecuteQuery<T>(SQLite_Configuration config, string query)
         {
             object result = null;
 
             try
             {
-                var connectionString = GetConnectionString(config, setDatabase);
+                var connectionString = GetConnectionString(config);
 
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (var connection = new SQLiteConnection(connectionString))
                 {
                     connection.Open();
 
@@ -148,21 +112,21 @@ namespace TH_SQLite
                     connection.Close();
                 }
             }
-            catch (SqlException sqex)
+            catch (SQLiteException sqex)
             {
-                Logger.Log("SQL.Plugin.ExecuteQuery() :: SQLException :: " + sqex.Message);
+                Logger.Log("SQLite.Plugin.ExecuteQuery() :: SQLiteException :: " + sqex.Message);
                 if (typeof(T) == typeof(bool)) result = false;
             }
             catch (Exception ex)
             {
-                Logger.Log("SQL.Plugin.ExecuteQuery() :: Exception :: " + ex.Message);
+                Logger.Log("SQLite.Plugin.ExecuteQuery() :: Exception :: " + ex.Message);
                 if (typeof(T) == typeof(bool)) result = false;
             }
 
             return result;
         }
 
-        static object ProcessResult<T>(SqlCommand command)
+        static object ProcessResult<T>(SQLiteCommand command)
         {
             object result = null;
 
@@ -208,7 +172,7 @@ namespace TH_SQLite
             if (typeof(T) == typeof(DataTable))
             {
                 var dt = new DataTable();
-                using (SqlDataAdapter a = new SqlDataAdapter(command))
+                using (var a = new SQLiteDataAdapter(command))
                 {
                     a.Fill(dt);
                 }
@@ -218,7 +182,7 @@ namespace TH_SQLite
             // DataRow
             if (typeof(T) == typeof(DataRow))
             {
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {
@@ -254,7 +218,7 @@ namespace TH_SQLite
             if (typeof(T) == typeof(string[]))
             {
                 var tables = new List<string>();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {
@@ -268,7 +232,7 @@ namespace TH_SQLite
             if (typeof(T) == typeof(List<string>))
             {
                 var tables = new List<string>();
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {
@@ -284,7 +248,7 @@ namespace TH_SQLite
 
         public const string dateString = "yyyy-MM-dd H:mm:ss";
 
-        public static string ConvertToSQLDateTime(string s)
+        public static string ConvertToDateTime(string s)
         {
             string result = "null";
 
@@ -316,7 +280,7 @@ namespace TH_SQLite
 
         public const string VarChar = "varchar(1000)";
         public const string BigInt = "bigint";
-        public const string Double = "double precision";
+        public const string Double = "double";
         public const string Datetime = "datetime";
         public const string Bool = "boolean";
 
@@ -342,7 +306,7 @@ namespace TH_SQLite
             if (o != null)
             {
                 var val = o.ToString();
-                if (o.GetType() == typeof(DateTime)) val = ConvertToSQLDateTime(val);
+                if (o.GetType() == typeof(DateTime)) val = ConvertToDateTime(val);
 
                 val = "'" + val + "'";
 
@@ -352,6 +316,13 @@ namespace TH_SQLite
             {
                 return "null";
             }
+        }
+
+        static string ConvertToSafe(string s)
+        {
+            string r = s;
+            if (r.Contains("'")) r = r.Replace("'", "\'");
+            return r;
         }
 
     }

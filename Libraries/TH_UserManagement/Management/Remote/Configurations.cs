@@ -525,6 +525,7 @@ namespace TH_UserManagement.Management.Remote
         static string ConvertToSafe(string s)
         {
             string r = s;
+            if (r.Contains(@"\")) r = r.Replace(@"\", @"\\");
             if (r.Contains("'")) r = r.Replace("'", "\'");
             return r;
         }

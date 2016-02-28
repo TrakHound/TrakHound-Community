@@ -89,7 +89,6 @@ namespace TH_MySQL
 
         public static string Row_Insert_CreateQuery(string TableName, object[] Columns, object[] Values, bool Update)
         {
-
             //Create Columns string
             string cols = "";
             for (int x = 0; x <= Columns.Length - 1; x++)
@@ -136,25 +135,10 @@ namespace TH_MySQL
                     else update += "null";
 
                     if (x < Columns.Length - 1) update += ", ";
-
-
-                    //if (Values[x] != null)
-                    //{
-                    //    update += Columns[x].ToString().ToUpper();
-                    //    update += "=";
-
-                    //    object val = Values[x];
-                    //    if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
-
-                    //    update += "'" + MySQL_Tools.ConvertToSafe(val.ToString()) + "'";
-
-                    //    if (x < Columns.Length - 1) update += ", ";
-                    //}
                 }
             }
 
             return "INSERT IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")" + update;
-
         }
 
         public static string Row_Insert_CreateQuery(string TableName, object[] Columns, List<List<object>> Values, bool Update)

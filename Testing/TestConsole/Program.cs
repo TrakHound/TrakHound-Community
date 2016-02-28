@@ -33,65 +33,6 @@ namespace TestConsole
             //command = new SQLiteCommand(sql, conn);
             //command.ExecuteNonQuery();
 
-            sql = "CREATE TABLE IF NOT EXISTS test_table (name varchar(90), value int, PRIMARY KEY(name))";
-            command = new SQLiteCommand(sql, conn);
-            command.ExecuteNonQuery();
-
-
-            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('patrick', 1)";
-            command = new SQLiteCommand(sql, conn);
-            command.ExecuteNonQuery();
-
-            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('bob', 2)";
-            command = new SQLiteCommand(sql, conn);
-            command.ExecuteNonQuery();
-
-            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('dave', 3)";
-            command = new SQLiteCommand(sql, conn);
-            command.ExecuteNonQuery();
-
-            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('john', 4)";
-            command = new SQLiteCommand(sql, conn);
-            command.ExecuteNonQuery();
-
-
-
-            sql = "SELECT * FROM test_table";
-            command = new SQLiteCommand(sql, conn);
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                PrintReaderRow(reader);
-            }
-
-            sql = "SELECT name FROM sqlite_master WHERE type='table'";
-            command = new SQLiteCommand(sql, conn);
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                PrintReaderRow(reader);
-            }
-
-            sql = "SELECT Count(*) FROM test_table";
-            command = new SQLiteCommand(sql, conn);
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                PrintReaderRow(reader);
-            }
-
-            sql = "PRAGMA table_info(test_table)";
-            command = new SQLiteCommand(sql, conn);
-            reader = command.ExecuteReader();
-
-            var columns = new List<string>();
-
-            while (reader.Read())
-            {
-                PrintReaderRow(reader);
-                columns.Add(reader["name"].ToString());
-            }
-
             var addColumns = new List<string>()
             {
                 "oee",
@@ -100,15 +41,115 @@ namespace TestConsole
                 "quality"
             };
 
-            foreach (var column in addColumns)
+            sql = "CREATE TABLE IF NOT EXISTS test_table1 (name varchar(90), value int, PRIMARY KEY(name)); ";
+            sql += "CREATE TABLE IF NOT EXISTS test_table2 (name varchar(90), value int, PRIMARY KEY(name)); ";
+            sql += "CREATE TABLE IF NOT EXISTS test_table3 (name varchar(90), value int, PRIMARY KEY(name)); ";
+            sql += "CREATE TABLE IF NOT EXISTS test_table4 (name varchar(90), value int, PRIMARY KEY(name)); ";
+            sql += "CREATE TABLE IF NOT EXISTS test_table5 (timestamp datetime, name varchar(90), value double, PRIMARY KEY(name)); ";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
+
+
+            //sql = "PRAGMA table_info(test_table)";
+            //command = new SQLiteCommand(sql, conn);
+            //reader = command.ExecuteReader();
+
+            //// Add any missing columns
+            //foreach (var column in addColumns)
+            //{
+            //    sql = "SELECT * FROM ;
+            //    command = new SQLiteCommand(sql, conn);
+            //    reader = command.ExecuteReader();
+            //    while (reader.Read())
+            //    {
+            //        PrintReaderRow(reader);
+            //    }
+            //}
+
+
+
+
+
+            //sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('patrick', 1)";
+            //command = new SQLiteCommand(sql, conn);
+            //command.ExecuteNonQuery();
+
+            //sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('bob', 2)";
+            //command = new SQLiteCommand(sql, conn);
+            //command.ExecuteNonQuery();
+
+            //sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('dave', 3)";
+            //command = new SQLiteCommand(sql, conn);
+            //command.ExecuteNonQuery();
+
+            sql = "INSERT OR REPLACE INTO test_table5 (name, timestamp, value) VALUES ('john', '2016-02-27 23:15:00', 4)";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
+
+
+            //sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('patrick', 1); ";
+            //sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('bob', 2); ";
+            //sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('dave', 3); ";
+            //sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('john', 4); ";
+            //command = new SQLiteCommand(sql, conn);
+            //command.ExecuteNonQuery();
+
+
+            sql = "SELECT * FROM test_table5";
+            command = new SQLiteCommand(sql, conn);
+            reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                if (!columns.Exists(x => x == column))
-                {
-                    sql = "ALTER TABLE test_table ADD COLUMN " + column;
-                    command = new SQLiteCommand(sql, conn);
-                    command.ExecuteNonQuery();
-                }
+                PrintReaderRow(reader);
             }
+
+            //sql = "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '%2'";
+            //command = new SQLiteCommand(sql, conn);
+            //reader = command.ExecuteReader();
+            //while (reader.Read())
+            //{
+            //    PrintReaderRow(reader);
+            //}
+
+            //sql = "SELECT name FROM sqlite_master WHERE type='table'";
+            //command = new SQLiteCommand(sql, conn);
+            //reader = command.ExecuteReader();
+            //while (reader.Read())
+            //{
+            //    PrintReaderRow(reader);
+            //}
+
+            //sql = "SELECT Count(*) FROM test_table";
+            //command = new SQLiteCommand(sql, conn);
+            //reader = command.ExecuteReader();
+            //while (reader.Read())
+            //{
+            //    PrintReaderRow(reader);
+            //}
+
+            //sql = "PRAGMA table_info(test_table)";
+            //command = new SQLiteCommand(sql, conn);
+            //reader = command.ExecuteReader();
+
+            //var columns = new List<string>();
+
+            //while (reader.Read())
+            //{
+            //    PrintReaderRow(reader);
+            //    columns.Add(reader["name"].ToString());
+            //}
+
+
+
+            //foreach (var column in addColumns)
+            //{
+            //    if (!columns.Exists(x => x == column))
+            //    {
+            //        sql = "ALTER TABLE test_table ADD COLUMN " + column;
+            //        command = new SQLiteCommand(sql, conn);
+            //        command.ExecuteNonQuery();
+            //    }
+            //}
 
             conn.Close();
 

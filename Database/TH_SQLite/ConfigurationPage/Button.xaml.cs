@@ -23,6 +23,18 @@ namespace TH_SQLite.ConfigurationPage
         public Button()
         {
             InitializeComponent();
+            DataContext = this;
         }
+
+
+        public string DatabasePath
+        {
+            get { return (string)GetValue(DatabasePathProperty); }
+            set { SetValue(DatabasePathProperty, value); }
+        }
+
+        public static readonly DependencyProperty DatabasePathProperty =
+            DependencyProperty.Register("DatabasePath", typeof(string), typeof(Button), new PropertyMetadata(null));
+
     }
 }
