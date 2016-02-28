@@ -19,7 +19,7 @@ Below is a list of upcoming updates to TrakHound (mainly to fix current issues)
 ## Upcoming Projects
 Below is a list of upcoming projects to TrakHound that will add new Features and Functionality
 
-- Finalize Plugin interfaces and API documentation.
+- Finalize Plugin interfaces and API documentation. Add Plugin NuGet packages (Client, Server, and Database) to Nuget.org for ease of plugin development.
 - Add Automatic Updates functionality. This was previously implemented but some issues were found so it was removed.
 - Add Error Dialog to add Issues directly to Github from TrakHound. For example, if TrakHound Client throws an exception, a dialog will appear where the user can Add an issue or if the issue has already been added, the user can comment on the issue, and if the issue has been resolved, the user can click a link to either reference the Release that fixed the issue or offer to update to the latest release.
 - Revert TrakHound Server back to being run as a Windows Service. It was changed to a standard Windows Application when user accounts were introduced as the 'Remember Me' settings were stored in the Registry and a Registry location wasn't found that could be accessed by both the Service and any Forms that were run under the currrent Windows User (user might have limited privileges). Forms would include the TrakHound Login Dialog along with Device Manager. A standard Windows Application was the temporary solution to this problem. A better solution is needed that would most likely require using WCF to communicate between any user dialogs and the sever's service.
