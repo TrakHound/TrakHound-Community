@@ -1,4 +1,4 @@
-![TrakHound Logo] (http://feenux.com/github/images/header_01.png)
+![TrakHound Logo] (http://feenux.com/github/images/header_02.png)
 
 <p align="center">
   <a href="http://www.trakhound.org/">www.TrakHound.org</a>
