@@ -1,14 +1,16 @@
 C:\TrakHound\Server\Plugins\TH_GeneratedData\LICENSE.txt
 C:\TrakHound\Server\Plugins\TH_GeneratedData\TH_GeneratedData.dll
 C:\TrakHound\Server\Plugins\TH_GeneratedData\TH_GeneratedData.pdb
-C:\TrakHound\Plugins\Server\Generated Data\TH_GeneratedData.dll
 C:\TrakHound\Plugins\Server\Generated Data\LICENSE.txt
+C:\TrakHound\Plugins\Server\Generated Data\TH_GeneratedData.dll
 C:\TrakHound\Plugins\Server\Generated Data\TH_GeneratedData.pdb
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\CaptureItem.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\Default.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\EventButton.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\Snapshot_Item.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\Trigger.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\CaptureItem.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\Default.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\Event.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\EventButton.g.cs
@@ -27,5 +29,3 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_Gener
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData.dll
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData.pdb
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\CaptureItem.baml
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\ConfigurationPage\Controls\CaptureItem.g.cs

@@ -67,7 +67,7 @@ namespace TH_SQLite
 
                     if (!existingColumns.Exists(x => x == columnDefinition.ColumnName))
                     {
-                        query = "ALTER TABLE test_table ADD COLUMN " + ConvertColumnDefinition(columnDefinition);
+                        query = "ALTER TABLE " + tablename + " ADD COLUMN " + ConvertColumnDefinition(columnDefinition);
                         result = (bool)ExecuteQuery<bool>(config, query);
                     }
                 }

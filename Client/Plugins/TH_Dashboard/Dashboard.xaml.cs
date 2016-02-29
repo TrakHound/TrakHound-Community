@@ -123,9 +123,9 @@ namespace TH_Dashboard
 
         public void Update_DataEvent(DataEvent_Data de_d)
         {
-            UpdateLoggedInChanged(de_d);
+            this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(UpdateLoggedInChanged), Priority, new object[] { de_d });
 
-            UpdateDevicesLoading(de_d);
+            this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(UpdateDevicesLoading), Priority, new object[] { de_d });
 
             if (Plugins != null)
             {

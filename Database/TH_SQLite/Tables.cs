@@ -36,7 +36,7 @@ namespace TH_SQLite
 
                         for (var k = 0; k <= primaryKey.Length - 1; k++)
                         {
-                            keydef += primaryKey[k];
+                            keydef += "`" + primaryKey[k] + "`";
                             if (k < primaryKey.Length - 1) keydef += ", ";
                         }
 
@@ -107,15 +107,17 @@ namespace TH_SQLite
 
                         for (var k = 0; k <= primaryKey.Length - 1; k++)
                         {
-                            keydef += primaryKey[k];
+                            keydef += "`" + primaryKey[k] + "`";
                             if (k < primaryKey.Length - 1) keydef += ", ";
                         }
 
                         keydef += ")";
                     }
 
-                    var query = "DROP TABLE IF EXISTS " + tablename + "; ";
-                    query += "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + ")";
+                    var query = "DELETE FROM IF EXISTS " + tablename;
+                    result = (bool)ExecuteQuery<bool>(config, query);
+
+                    query = "CREATE TABLE " + tablename + " (" + coldef + keydef + ")";
                     result = (bool)ExecuteQuery<bool>(config, query);
                 }
             }

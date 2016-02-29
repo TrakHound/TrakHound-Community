@@ -95,33 +95,83 @@ namespace TH_SQLite
         {
             object result = null;
 
-            try
+            using (var connection = new SQLiteConnection(GetConnectionString(config)))
             {
-                var connectionString = GetConnectionString(config);
-
-                using (var connection = new SQLiteConnection(connectionString))
+                try
                 {
                     connection.Open();
 
-                    var command = connection.CreateCommand();
-                    command.CommandText = query;
-                    command.ExecuteNonQuery();
+                    using (var command = new SQLiteCommand(query, connection))
+                    {
+                        command.ExecuteNonQuery();
 
-                    result = ProcessResult<T>(command);
-
+                        result = ProcessResult<T>(command);
+                    }
+                }
+                catch (SQLiteException sqex)
+                {
+                    Logger.Log("SQLiteException :: " + sqex.Message);
+                    if (typeof(T) == typeof(bool)) result = false;
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Exception :: " + ex.Message);
+                    if (typeof(T) == typeof(bool)) result = false;
+                }
+                finally
+                {
                     connection.Close();
                 }
             }
-            catch (SQLiteException sqex)
-            {
-                Logger.Log("SQLite.Plugin.ExecuteQuery() :: SQLiteException :: " + sqex.Message);
-                if (typeof(T) == typeof(bool)) result = false;
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("SQLite.Plugin.ExecuteQuery() :: Exception :: " + ex.Message);
-                if (typeof(T) == typeof(bool)) result = false;
-            }
+
+
+
+
+
+
+
+
+
+
+            //using (var connection = new SQLiteConnection(connectionString))
+            //{
+            //    connection.Open();
+
+            //    using (var command = new SQLiteCommand(query, connection))
+            //    {
+            //        command.ExecuteNonQuery();
+
+            //        result = ProcessResult<T>(command);
+            //    }
+
+            //    //var command = connection.CreateCommand();
+            //    //command.CommandText = query;
+            //    //command.ExecuteNonQuery();
+
+            //    //result = ProcessResult<T>(command);
+            //}
+
+
+            //try
+            //{
+            //    var connectionString = GetConnectionString(config);
+
+                
+            //}
+            //catch (SQLiteException sqex)
+            //{
+            //    Logger.Log("SQLite.Plugin.ExecuteQuery() :: SQLiteException :: " + sqex.Message);
+            //    if (typeof(T) == typeof(bool)) result = false;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.Log("SQLite.Plugin.ExecuteQuery() :: Exception :: " + ex.Message);
+            //    if (typeof(T) == typeof(bool)) result = false;
+            //}
+            //finally
+            //{
+            //    connection
+            //}
 
             return result;
         }
@@ -275,13 +325,13 @@ namespace TH_SQLite
 
         public static string ConvertColumnDefinition(ColumnDefinition column)
         {
-            return "[" + column.ColumnName + "] " + ConvertColumnDataType(column.DataType);
+            return "`" + column.ColumnName + "` " + ConvertColumnDataType(column.DataType);
         }
 
         public const string VarChar = "varchar(1000)";
         public const string BigInt = "bigint";
         public const string Double = "double";
-        public const string Datetime = "datetime";
+        public const string Datetime = "varchar(90)";
         public const string Bool = "boolean";
 
         public static string ConvertColumnDataType(DataType dataType)
