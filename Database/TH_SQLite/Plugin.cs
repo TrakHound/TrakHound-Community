@@ -59,7 +59,7 @@ namespace TH_SQLite
 
             config.Configuration = c;
 
-            Console.WriteLine(Type + " Successfully Initialized : " + c.DatabasePath);
+            Console.WriteLine(Type + " Successfully Initialized : " + GetDatabasePath(c));
         }
 
         public bool Ping(object settings, out string msg)
@@ -73,7 +73,7 @@ namespace TH_SQLite
                 var config = SQLite_Configuration.Get(settings);
                 if (config != null)
                 {
-                    if (System.IO.File.Exists(config.DatabasePath)) result = true;
+                    if (System.IO.File.Exists(GetDatabasePath(config))) result = true;
                 }
             }
 
@@ -88,7 +88,7 @@ namespace TH_SQLite
 
         static string GetConnectionString(SQLite_Configuration config)
         {
-            return "Data Source=" + config.DatabasePath + "; Version=3;";
+            return "Data Source=" + GetDatabasePath(config) + "; Version=3;";
         }
 
         static object ExecuteQuery<T>(SQLite_Configuration config, string query)
@@ -123,56 +123,7 @@ namespace TH_SQLite
                     connection.Close();
                 }
             }
-
-
-
-
-
-
-
-
-
-
-            //using (var connection = new SQLiteConnection(connectionString))
-            //{
-            //    connection.Open();
-
-            //    using (var command = new SQLiteCommand(query, connection))
-            //    {
-            //        command.ExecuteNonQuery();
-
-            //        result = ProcessResult<T>(command);
-            //    }
-
-            //    //var command = connection.CreateCommand();
-            //    //command.CommandText = query;
-            //    //command.ExecuteNonQuery();
-
-            //    //result = ProcessResult<T>(command);
-            //}
-
-
-            //try
-            //{
-            //    var connectionString = GetConnectionString(config);
-
-                
-            //}
-            //catch (SQLiteException sqex)
-            //{
-            //    Logger.Log("SQLite.Plugin.ExecuteQuery() :: SQLiteException :: " + sqex.Message);
-            //    if (typeof(T) == typeof(bool)) result = false;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logger.Log("SQLite.Plugin.ExecuteQuery() :: Exception :: " + ex.Message);
-            //    if (typeof(T) == typeof(bool)) result = false;
-            //}
-            //finally
-            //{
-            //    connection
-            //}
-
+            
             return result;
         }
 

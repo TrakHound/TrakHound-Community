@@ -14,6 +14,11 @@ namespace TH_SQLite
             return Path.GetFileName(config.DatabasePath);
         }
 
+        public static string GetDatabasePath(SQLite_Configuration config)
+        {
+            return Environment.ExpandEnvironmentVariables(config.DatabasePath);
+        }
+
         public bool Database_Create(object settings)
         {
             bool result = false;
@@ -25,7 +30,10 @@ namespace TH_SQLite
                 {
                     try
                     {
-                        if (!File.Exists(config.DatabasePath)) SQLiteConnection.CreateFile(config.DatabasePath);
+                        string dir = Path.GetDirectoryName(GetDatabasePath(config));
+                        if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+                        if (!File.Exists(config.DatabasePath)) SQLiteConnection.CreateFile(GetDatabasePath(config));
                     }
                     catch (Exception ex)
                     {
@@ -48,7 +56,7 @@ namespace TH_SQLite
                 {
                     try
                     {
-                        if (File.Exists(config.DatabasePath)) File.Delete(config.DatabasePath);
+                        if (File.Exists(GetDatabasePath(config))) File.Delete(config.DatabasePath);
                     }
                     catch (Exception ex)
                     {

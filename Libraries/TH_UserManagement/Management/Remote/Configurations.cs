@@ -17,8 +17,29 @@ namespace TH_UserManagement.Management.Remote
     public static class Configurations
     {
 
+        const string PHP_PATH_PREFIX = "https://www.feenux.com/php/configurations/";
         const int connectionAttempts = 3;
+        const string TABLE_DELIMITER_START = "^^^";
+        const string TABLE_DELIMITER_END = "~~~";
 
+        /// <summary>
+        /// Sets the path to use for PHP files. 
+        /// References the Major Revision number in this assembly's version for the subdirectory to look in
+        /// ex. v2.3.0.1 would look in /v2/
+        /// </summary>
+        public static string PHPFilePath
+        {
+            get
+            {
+                var a = System.Reflection.Assembly.GetExecutingAssembly();
+                string path = "v" + a.GetName().Version.Major.ToString();
+                path = PHP_PATH_PREFIX + path + "/";
+
+                return path;
+            }
+        }
+
+        
         public static bool Add(UserConfiguration userConfig, Configuration configuration)
         {
             bool result = false;
@@ -91,24 +112,28 @@ namespace TH_UserManagement.Management.Remote
 
             if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
 
-            string url = "https://www.feenux.com/php/configurations/getconfigurationslist.php";
+            //string url = "https://www.feenux.com/php/configurations/getconfigurationslist.php";
+            string url = PHPFilePath + "getconfigurationslist.php";
             string responseString = HTTP.SendData(url, values);
 
             if (responseString != null)
             {
                 result = new List<Configuration>();
 
-                string[] tables = responseString.Split('%');
+                //string[] tables = responseString.Split('%');
+                string[] tables = responseString.Split(TABLE_DELIMITER_START.ToCharArray());
 
                 foreach (string table in tables)
                 {
                     if (!String.IsNullOrEmpty(table))
                     {
-                        var delimiter = table.IndexOf('~');
+                        //var delimiter = table.IndexOf('~');
+                        var delimiter = table.IndexOf(TABLE_DELIMITER_END);
                         if (delimiter > 0)
                         {
                             string tablename = table.Substring(0, delimiter);
-                            string tabledata = table.Substring(delimiter + 1);
+                            //string tabledata = table.Substring(delimiter + 1);
+                            string tabledata = table.Substring(delimiter + TABLE_DELIMITER_END.Length);
 
                             DataTable dt = JSON.ToTable(tabledata);
                             if (dt != null)
@@ -527,6 +552,7 @@ namespace TH_UserManagement.Management.Remote
             string r = s;
             if (r.Contains(@"\")) r = r.Replace(@"\", @"\\");
             if (r.Contains("'")) r = r.Replace("'", "\'");
+            //if (r.Contains("%")) r = r.Replace("%", @"\%");
             return r;
         }
 

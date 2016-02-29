@@ -1597,11 +1597,14 @@ namespace TH_DeviceManager
                 try
                 {
                     Type config_type = plugin.Config_Page;
-                    object o = Activator.CreateInstance(config_type);
+                    if (config_type != null)
+                    {
+                        object o = Activator.CreateInstance(config_type);
 
-                    ConfigurationPage page = (ConfigurationPage)o;
+                        ConfigurationPage page = (ConfigurationPage)o;
 
-                    result.Add(page);
+                        result.Add(page);
+                    }
                 }
                 catch (Exception ex) { Logger.Log("AddConfigurationPageButtons() :: Exception :: " + ex.Message); }
             }

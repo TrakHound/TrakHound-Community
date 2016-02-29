@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.IO;
+
 using TH_MicrosoftSQL;
 using TH_MTConnect.Components;
 
@@ -16,48 +18,62 @@ namespace TestConsole
         static void Main(string[] args)
         {
 
-            string dbPath = @"C:\TrakHound\Databases\test.db";
 
-            if (!System.IO.File.Exists(dbPath)) SQLiteConnection.CreateFile(dbPath);
 
-            string strconn = "Data Source=" + dbPath + "; Version=3;";
+            string dbPath = @"%SYSTEMDRIVE%\TrakHound\Databases\Test1\Test2\test.db";
+            //dbPath = Environment.ExpandEnvironmentVariables(dbPath);
 
-            //for (var x = 0; x < 5; x++)
-            //{
-                using (var conn = new SQLiteConnection(strconn))
-                {
-                    try
-                    {
-                        Console.WriteLine("Opened");
-                        conn.Open();
+            string dir = Environment.ExpandEnvironmentVariables(dbPath);
+            dir = Path.GetDirectoryName(dir);
 
-                        var sql = "DROP TABLE IF EXISTS snapshots";
-                        using (var command = new SQLiteCommand(sql, conn))
-                        {
-                            command.ExecuteNonQuery();
-                        }
+            Console.WriteLine(dir);
 
-                    sql = "CREATE TABLE IF NOT EXISTS snapshots (`TIMESTAMP` datetime,`NAME` varchar(1000),`VALUE` varchar(1000),`PREVIOUS_TIMESTAMP` datetime,`PREVIOUS_VALUE` varchar(1000), PRIMARY KEY('NAME'))";
-                    using (var command = new SQLiteCommand(sql, conn))
-                    {
-                        command.ExecuteNonQuery();
-                    }
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-                }
-                catch (SQLiteException sqex)
-                {
-                    Console.WriteLine(sqex.Message);
-                }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                    finally
-                    {
-                        conn.Close();
-                        Console.WriteLine("Closed");
-                    }
-                }
+            //string dir = Path.GetDirectoryName(dbPath);
+            //if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            //else Console.WriteLine(dbPath + " CREATED");
+
+            //if (!File.Exists(dbPath)) SQLiteConnection.CreateFile(dbPath);
+
+            //string strconn = "Data Source=" + dbPath + "; Version=3;";
+
+            ////for (var x = 0; x < 5; x++)
+            ////{
+            //    using (var conn = new SQLiteConnection(strconn))
+            //    {
+            //        try
+            //        {
+            //            Console.WriteLine("Opened");
+            //            conn.Open();
+
+            //            var sql = "DROP TABLE IF EXISTS snapshots";
+            //            using (var command = new SQLiteCommand(sql, conn))
+            //            {
+            //                command.ExecuteNonQuery();
+            //            }
+
+            //        //sql = "CREATE TABLE IF NOT EXISTS snapshots (`TIMESTAMP` datetime,`NAME` varchar(1000),`VALUE` varchar(1000),`PREVIOUS_TIMESTAMP` datetime,`PREVIOUS_VALUE` varchar(1000), PRIMARY KEY('NAME'))";
+            //        //using (var command = new SQLiteCommand(sql, conn))
+            //        //{
+            //        //    command.ExecuteNonQuery();
+            //        //}
+
+            //    }
+            //    catch (SQLiteException sqex)
+            //    {
+            //        Console.WriteLine(sqex.Message);
+            //    }
+            //        catch (Exception ex)
+            //        {
+            //            Console.WriteLine(ex.Message);
+            //        }
+            //        finally
+            //        {
+            //            conn.Close();
+            //            Console.WriteLine("Closed");
+            //        }
+            //    }
             //}
 
             

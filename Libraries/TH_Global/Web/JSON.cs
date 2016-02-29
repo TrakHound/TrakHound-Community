@@ -27,6 +27,8 @@ namespace TH_Global.Web
                     JSS.DateParseHandling = DateParseHandling.DateTime;
                     JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
+                    data = ConvertToSafe(data);
+
                     DataTable DT = (DataTable)JsonConvert.DeserializeObject(data, (typeof(DataTable)), JSS);
 
                     result = DT;
@@ -50,6 +52,8 @@ namespace TH_Global.Web
                         JSS.DateParseHandling = DateParseHandling.DateTime;
                         JSS.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
 
+                        data = ConvertToSafe(data);
+
                         return (T)JsonConvert.DeserializeObject(data, (typeof(T)), JSS);
                     }
                     catch (JsonException jex) { Logger.Log(jex.Message); }
@@ -57,6 +61,13 @@ namespace TH_Global.Web
                 }
 
             return default(T);
+        }
+
+        private static string ConvertToSafe(string s)
+        {
+            //if (s.Contains("%")) s = s.Replace("%", "%25");
+
+            return s;
         }
 
     }
