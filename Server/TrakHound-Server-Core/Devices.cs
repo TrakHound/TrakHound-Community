@@ -80,52 +80,59 @@ namespace TrakHound_Server_Core
 
         void DevicesMonitor_Worker(List<Device_Server> devs)
         {
+            List<Configuration> configs = null;
+
             if (CurrentUser != null)
             {
-                List<Configuration> configs = Configurations.GetConfigurationsListForUser(CurrentUser);
-                if (configs != null)
+                configs = Configurations.GetConfigurationsListForUser(CurrentUser);
+            }
+            else
+            {
+                configs = Configuration.ReadAll(FileLocations.Devices).ToList();
+            }
+
+            if (configs != null)
+            {
+                if (configs.Count > 0)
                 {
-                    if (configs.Count > 0)
+                    foreach (Configuration config in configs)
                     {
-                        foreach (Configuration config in configs)
+                        if (config != null)
                         {
-                            if (config != null)
+                            int index = Devices.FindIndex(x => x.configuration.UniqueId == config.UniqueId);
+                            if (index >= 0) // Server is already part of list
                             {
-                                int index = Devices.FindIndex(x => x.configuration.UniqueId == config.UniqueId);
-                                if (index >= 0) // Server is already part of list
+                                Device_Server server = Devices[index];
+
+                                // Check if Configuration has changed
+                                if (server.configuration.ServerUpdateId != config.ServerUpdateId)
                                 {
-                                    Device_Server server = Devices[index];
+                                    // If changed at all then stop the current server
+                                    server.Stop();
 
-                                    // Check if Configuration has changed
-                                    if (server.configuration.ServerUpdateId != config.ServerUpdateId)
+                                    // If changed and still enabled then restart server
+                                    if (config.ServerEnabled)
                                     {
-                                        // If changed at all then stop the current server
-                                        server.Stop();
+                                        server.configuration = config;
 
-                                        // If changed and still enabled then restart server
-                                        if (config.ServerEnabled)
-                                        {
-                                            server.configuration = config;
+                                        // Load/Reload Plugins
+                                        server.LoadPlugins();
 
-                                            // Load/Reload Plugins
-                                            server.LoadPlugins();
+                                        // Initialize Database Configurations
+                                        Global.Initialize(server.configuration.Databases_Server);
 
-                                            // Initialize Database Configurations
-                                            Global.Initialize(server.configuration.Databases_Server);
-
-                                            server.Start(false);
-                                        }
-                                        else // Remove from List
-                                        {
-                                            Devices.RemoveAt(index);
-                                            Logger.Log("Device[" + index.ToString() + "] Removed");
-                                        }
+                                        server.Start(false);
+                                    }
+                                    else // Remove from List
+                                    {
+                                        Devices.RemoveAt(index);
+                                        Logger.Log("Device[" + index.ToString() + "] Removed");
                                     }
                                 }
-                                else // Create & Add Device Server
-                                {
-                                    if (config.ServerEnabled) AddDevice(config);
-                                }
+                            }
+                            else // Create & Add Device Server
+                            {
+                                if (config.ServerEnabled) AddDevice(config);
                             }
                         }
                     }
@@ -135,162 +142,162 @@ namespace TrakHound_Server_Core
 
         #endregion
 
-        #region "Xml File"
+        //#region "Xml File"
 
-        List<Configuration> ReadConfigurationFile()
-        {
-            List<Configuration> result = new List<Configuration>();
+        //List<Configuration> ReadConfigurationFile()
+        //{
+        //    List<Configuration> result = new List<Configuration>();
 
-            string configPath;
+        //    string configPath;
 
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
 
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
 
-            if (System.IO.File.Exists(configPath))
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(configPath);
+        //    if (System.IO.File.Exists(configPath))
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(configPath);
 
-                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-                {
-                    if (Node.NodeType == XmlNodeType.Element)
-                    {
-                        switch (Node.Name.ToLower())
-                        {
-                            case "devices":
-                                foreach (XmlNode ChildNode in Node.ChildNodes)
-                                {
-                                    if (ChildNode.NodeType == XmlNodeType.Element)
-                                    {
-                                        switch (ChildNode.Name.ToLower())
-                                        {
-                                            case "device":
+        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
+        //        {
+        //            if (Node.NodeType == XmlNodeType.Element)
+        //            {
+        //                switch (Node.Name.ToLower())
+        //                {
+        //                    case "devices":
+        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
+        //                        {
+        //                            if (ChildNode.NodeType == XmlNodeType.Element)
+        //                            {
+        //                                switch (ChildNode.Name.ToLower())
+        //                                {
+        //                                    case "device":
 
-                                                Configuration config = GetSettingsFromNode(ChildNode);
-                                                if (config != null) result.Add(config);
+        //                                        Configuration config = GetSettingsFromNode(ChildNode);
+        //                                        if (config != null) result.Add(config);
 
-                                                break;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
+        //                                        break;
+        //                                }
+        //                            }
+        //                        }
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        private Configuration GetSettingsFromNode(XmlNode Node)
-        {
+        //private Configuration GetSettingsFromNode(XmlNode Node)
+        //{
 
-            Configuration Result = null;
+        //    Configuration Result = null;
 
-            string configPath = null;
+        //    string configPath = null;
 
-            foreach (XmlNode ChildNode in Node.ChildNodes)
-            {
-                switch (ChildNode.Name.ToLower())
-                {
-                    case "configuration_path": configPath = ChildNode.InnerText; break;
-                }
-            }
+        //    foreach (XmlNode ChildNode in Node.ChildNodes)
+        //    {
+        //        switch (ChildNode.Name.ToLower())
+        //        {
+        //            case "configuration_path": configPath = ChildNode.InnerText; break;
+        //        }
+        //    }
 
-            if (configPath != null)
-            {
-                configPath = GetConfigurationPath(configPath);
+        //    if (configPath != null)
+        //    {
+        //        configPath = GetConfigurationPath(configPath);
 
-                Result = Configuration.ReadConfigFile(configPath);
-            }
+        //        Result = Configuration.ReadConfigFile(configPath);
+        //    }
 
-            return Result;
+        //    return Result;
 
-        }
+        //}
 
-        static Device_Server ProcessDevice(int index, XmlNode node)
-        {
-            Device_Server Result = null;
+        //static Device_Server ProcessDevice(int index, XmlNode node)
+        //{
+        //    Device_Server Result = null;
 
-            string configPath = null;
+        //    string configPath = null;
 
-            foreach (XmlNode childNode in node.ChildNodes)
-            {
-                if (childNode.NodeType == XmlNodeType.Element)
-                {
-                    if (childNode.Name.ToLower() == "configuration_path")
-                    {
-                        configPath = childNode.InnerText;
-                    }
-                }
-            }
+        //    foreach (XmlNode childNode in node.ChildNodes)
+        //    {
+        //        if (childNode.NodeType == XmlNodeType.Element)
+        //        {
+        //            if (childNode.Name.ToLower() == "configuration_path")
+        //            {
+        //                configPath = childNode.InnerText;
+        //            }
+        //        }
+        //    }
 
-            if (configPath != null)
-            {
-                configPath = GetConfigurationPath(configPath);
+        //    if (configPath != null)
+        //    {
+        //        configPath = GetConfigurationPath(configPath);
 
-                Logger.Log("Reading Device Configuration File @ '" + configPath + "'");
+        //        Logger.Log("Reading Device Configuration File @ '" + configPath + "'");
 
-                if (File.Exists(configPath))
-                {
-                    Configuration config = new Configuration();
-                    config = Configuration.ReadConfigFile(configPath);
+        //        if (File.Exists(configPath))
+        //        {
+        //            Configuration config = new Configuration();
+        //            config = Configuration.ReadConfigFile(configPath);
 
-                    if (config != null)
-                    {
-                        config.Index = index;
+        //            if (config != null)
+        //            {
+        //                config.Index = index;
 
-                        Device_Server server = new Device_Server(config);
-                        server.configurationPath = configPath;
-                        server.updateConfigurationFile = false;
+        //                Device_Server server = new Device_Server(config);
+        //                server.configurationPath = configPath;
+        //                server.updateConfigurationFile = false;
 
-                        // Initialize Database Configurations
-                        Global.Initialize(server.configuration.Databases_Server);
+        //                // Initialize Database Configurations
+        //                Global.Initialize(server.configuration.Databases_Server);
 
-                        Result = server;
-                    }
-                    else Logger.Log("Error Occurred While Reading : " + configPath);
-                }
-                else Logger.Log("Can't find Device Configuration file @ " + configPath);
-            }
-            else Logger.Log("No Device Congifuration found");
+        //                Result = server;
+        //            }
+        //            else Logger.Log("Error Occurred While Reading : " + configPath);
+        //        }
+        //        else Logger.Log("Can't find Device Configuration file @ " + configPath);
+        //    }
+        //    else Logger.Log("No Device Congifuration found");
 
-            return Result;
+        //    return Result;
 
-        }
+        //}
 
-        static string GetConfigurationPath(string path)
-        {
-            // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-            if (!System.IO.Path.IsPathRooted(path))
-            {
-                // Remove initial Backslash if contained in "configuration_path"
-                if (path[0] == '\\' && path.Length > 1) path.Substring(1);
+        //static string GetConfigurationPath(string path)
+        //{
+        //    // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
+        //    if (!System.IO.Path.IsPathRooted(path))
+        //    {
+        //        // Remove initial Backslash if contained in "configuration_path"
+        //        if (path[0] == '\\' && path.Length > 1) path.Substring(1);
 
-                string original = path;
+        //        string original = path;
 
-                // Check System Path
-                path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-                else Logger.Log(path + " Not Found");
+        //        // Check System Path
+        //        path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
+        //        else Logger.Log(path + " Not Found");
 
 
-                // Check local app Path
-                path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-                else Logger.Log(path + " Not Found");
+        //        // Check local app Path
+        //        path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
+        //        else Logger.Log(path + " Not Found");
 
-                // if no files exist return null
-                return null;
-            }
-            else return path;
-        }
+        //        // if no files exist return null
+        //        return null;
+        //    }
+        //    else return path;
+        //}
 
-        #endregion
+        //#endregion
 
     }
 }

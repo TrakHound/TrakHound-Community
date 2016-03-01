@@ -141,7 +141,7 @@ namespace TH_Global
             int lineNumber = line.lineNumber;
 
             string assembly = "";
-            if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file));
+            if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file)).Replace(' ', '_');
             file = Path.GetFileName(file);
             member = member.Replace('.', '_');
 

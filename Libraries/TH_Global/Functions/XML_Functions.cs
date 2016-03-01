@@ -24,37 +24,24 @@ namespace TH_Global.Functions
                     node.InnerText = text;
                     result = true;
                 }
+            }
 
+            return result;
+        }
 
+        public static string GetInnerText(XmlDocument doc, string xPath)
+        {
+            string result = null;
 
-                //string[] names = address.Split('/');
-                ////foreach (string name in names)
-                //for (var x = 0; x <= names.Length - 1; x++)
-                //{
-                //    node = element.SelectSingleNode(names[x]);
-                //    if (node != null)
-                //    {
-                //        if (x == names.Length - 1)
-                //        {
-                //            node.InnerText = text;
-                //            result = true;
-                //            break;
-                //        }
-                //    }
-                //    else break;
+            if (doc != null)
+            {
+                XmlElement element = doc.DocumentElement;
 
-                //    //node = element.SelectSingleNode(names[x]);
-                //    //if (node != null)
-                //    //{
-                //    //    if (x == names.Length - 1)
-                //    //    {
-                //    //        node.InnerText = text;
-                //    //        result = true;
-                //    //        break;
-                //    //    }
-                //    //}
-                //    //else break;
-                //}
+                var node = element.SelectSingleNode(xPath);
+                if (node != null)
+                {
+                    result = node.InnerText;
+                }
             }
 
             return result;
@@ -86,6 +73,8 @@ namespace TH_Global.Functions
                 return stringWriter.GetStringBuilder().ToString();
             }
         }
+
+        
 
 
     }

@@ -145,7 +145,11 @@ namespace TH_Configuration
 
                 result = Read(doc);
 
-                Logger.Log("Configuration Successfully Read From : " + path);
+                // Set Unique Id to the filename
+                string filename = Path.GetFileNameWithoutExtension(path);
+                result.UniqueId = filename;
+
+                //Logger.Log("Configuration Successfully Read From : " + path);
             }
             else
             {
@@ -159,7 +163,7 @@ namespace TH_Configuration
         {
             var result = new List<Configuration>();
 
-            Logger.Log("Reading Configuration Files from : " + path);
+            //Logger.Log("Reading Configuration Files from : " + path);
 
             if (Directory.Exists(path))
             {
