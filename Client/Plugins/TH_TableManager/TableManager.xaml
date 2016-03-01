@@ -655,7 +655,7 @@
         </Grid>
 
         <!--Not Logged in Panel-->
-        <Grid Grid.Row="1" Background="{Binding Background, ElementName=root_GRID}">
+        <!--<Grid Grid.Row="1" Background="{Binding Background, ElementName=root_GRID}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -672,7 +672,7 @@
                 Click the 'Login' button above to login
             </TextBlock>
 
-        </Grid>
+        </Grid>-->
 
     </Grid>
 

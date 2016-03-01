@@ -390,7 +390,7 @@ namespace TH_DeviceManager
             // If not logged in Read from File in 'C:\TrakHound\'
             else
             {
-                //added = Configuration.ReadAll(FileLocations.Devices).ToList();
+                added = Configuration.ReadAll(FileLocations.Devices).ToList();
                 //Configurations = ReadConfigurationFile();
             }
 

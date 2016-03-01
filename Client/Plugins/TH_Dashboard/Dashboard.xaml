@@ -66,9 +66,9 @@
                             <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding LoggedIn}" Value="false">
+                            <!--<DataTrigger Binding="{Binding LoggedIn}" Value="false">
                                 <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
+                            </DataTrigger>-->
                         </Style.Triggers>
                     </Style>
                 </ContentControl.Style>
@@ -88,9 +88,9 @@
                         <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding LoggedIn}" Value="false">
+                        <!--<DataTrigger Binding="{Binding LoggedIn}" Value="false">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
+                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
@@ -111,9 +111,9 @@
                         <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding LoggedIn}" Value="false">
+                        <!--<DataTrigger Binding="{Binding LoggedIn}" Value="false">
                             <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
+                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
@@ -131,7 +131,7 @@
         </Grid>
 
         <!--Not Logged in Panel-->
-        <Grid Grid.Column="1">
+        <!--<Grid Grid.Column="1">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -148,7 +148,7 @@
                 Click the 'Login' button above to login
             </TextBlock>
 
-        </Grid>
+        </Grid>-->
 
     </Grid>
     
