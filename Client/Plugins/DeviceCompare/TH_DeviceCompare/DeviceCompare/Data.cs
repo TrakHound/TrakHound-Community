@@ -26,7 +26,7 @@ namespace TH_DeviceCompare
                     DeviceDisplay dd = DeviceDisplays.Find(x => x.UniqueId == config.UniqueId);
                     if (dd != null)
                     {
-                        dd.UpdateData(de_d);
+                        this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(dd.UpdateData), Priority_Background, new object[] { de_d });
                     }
                 }
             }

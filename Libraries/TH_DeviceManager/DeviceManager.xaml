@@ -691,7 +691,7 @@
         </Grid>
 
         <!--Not Logged in Panel-->
-        <!--<Grid Background="{StaticResource Accent_Normal}">
+        <Grid Background="{StaticResource Accent_Normal}">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -708,7 +708,7 @@
                 Click the 'Login' button above to login
             </TextBlock>
 
-        </Grid>-->
+        </Grid>
 
         <!--Text-->
         <TextBlock Text="Local" Foreground="#33ffffff" FontSize="14" VerticalAlignment="Bottom" Margin="10">

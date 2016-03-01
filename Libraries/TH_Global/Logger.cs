@@ -73,7 +73,8 @@ namespace TH_Global
 
             logQueue.LineQueue.Add(queueLine);
 
-            Console.WriteLine("Logger :: " + file + " : " + member + " : " + line + " :: " + text);
+            //Console.WriteLine("Logger :: " + file + " : " + member + " : " + line + " :: " + text);
+            Console.WriteLine(text);
         }
     }
 
