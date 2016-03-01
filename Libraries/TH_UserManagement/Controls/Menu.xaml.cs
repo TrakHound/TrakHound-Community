@@ -367,7 +367,17 @@ namespace TH_UserManagement
             }
             else
             {
+                LoginError = true;
                 LoggedIn = false;
+
+                Fullname = null;
+                Firstname = null;
+                Lastname = null;
+
+                Username = null;
+
+                username_TXT.Clear();
+                password_TXT.Clear();
             }
 
             CurrentUser = userConfig;
@@ -421,24 +431,26 @@ namespace TH_UserManagement
         void Login_Finished(UserConfiguration userConfig)
         {
             // If login was successful
-            if (userConfig != null)
-            {
-                LoadUserConfiguration(userConfig);
-            }
-            else
-            {
-                LoginError = true;
-                LoggedIn = false;
+            //if (userConfig != null)
+            //{
+            //    LoadUserConfiguration(userConfig);
+            //}
+            //else
+            //{
+            //    LoginError = true;
+            //    LoggedIn = false;
 
-                Fullname = null;
-                Firstname = null;
-                Lastname = null;
+            //    Fullname = null;
+            //    Firstname = null;
+            //    Lastname = null;
 
-                Username = null;
+            //    Username = null;
 
-                username_TXT.Clear();
-                password_TXT.Clear();
-            }
+            //    username_TXT.Clear();
+            //    password_TXT.Clear();
+            //}
+
+            LoadUserConfiguration(userConfig);
 
             Loading = false;
         }
@@ -542,21 +554,23 @@ namespace TH_UserManagement
 
         void LoadRememberMe_Finished(UserConfiguration userConfig)
         {
-            // If login was successful
-            if (userConfig != null)
-            {
-                LoadUserConfiguration(userConfig);
-            }
-            else
-            {
-                LoggedIn = false;
+            //// If login was successful
+            //if (userConfig != null)
+            //{
+            //    LoadUserConfiguration(userConfig);
+            //}
+            //else
+            //{
+            //    LoggedIn = false;
 
-                Fullname = null;
-                Firstname = null;
-                Lastname = null;
+            //    Fullname = null;
+            //    Firstname = null;
+            //    Lastname = null;
 
-                Username = null;
-            }
+            //    Username = null;
+            //}
+
+            LoadUserConfiguration(userConfig);
 
             Loading = false;
         }
