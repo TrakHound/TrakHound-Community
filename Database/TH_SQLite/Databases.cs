@@ -30,10 +30,18 @@ namespace TH_SQLite
                 {
                     try
                     {
-                        string dir = Path.GetDirectoryName(GetDatabasePath(config));
+                        string path = GetDatabasePath(config);
+
+                        string dir = Path.GetDirectoryName(path);
                         if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
 
-                        if (!File.Exists(config.DatabasePath)) SQLiteConnection.CreateFile(GetDatabasePath(config));
+                        if (!File.Exists(path))
+                        {
+                            SQLiteConnection.CreateFile(path);
+                            Logger.Log("SQLite Database File Created : " + path);
+                        }
+                        else Logger.Log("SQLite Database File Found : " + path);
+
                     }
                     catch (Exception ex)
                     {

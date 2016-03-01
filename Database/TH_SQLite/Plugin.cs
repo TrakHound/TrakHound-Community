@@ -88,7 +88,8 @@ namespace TH_SQLite
 
         static string GetConnectionString(SQLite_Configuration config)
         {
-            return "Data Source=" + GetDatabasePath(config) + "; Version=3;";
+            //return "Data Source=" + GetDatabasePath(config) + "; Version=3;";
+            return "Data Source=" + GetDatabasePath(config) + "; Version=3; Pooling=True; Max Pool Size=150";
         }
 
         static object ExecuteQuery<T>(SQLite_Configuration config, string query)

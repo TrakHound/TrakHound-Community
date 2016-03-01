@@ -194,6 +194,7 @@ namespace TH_SQLite
             //return "INSERT IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")" + update;
 
             return "INSERT OR REPLACE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")";
+            //return "REPLACE OR IGNORE INTO " + TableName + " (" + cols + ") VALUES (" + vals + ")";
         }
 
         public static string Row_Insert_CreateQuery(string TableName, object[] Columns, List<List<object>> Values, bool Update)
@@ -256,6 +257,7 @@ namespace TH_SQLite
             //return "INSERT IGNORE INTO " + TableName + " (" + cols + ") " + vals + update;
 
             return "INSERT OR REPLACE INTO " + TableName + " (" + cols + ") " + vals;
+            //return "REPLACE OR IGNORE INTO " + TableName + " (" + cols + ") " + vals;
         }
     }
 }

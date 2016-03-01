@@ -43,12 +43,14 @@ namespace TH_SQLite
                         keydef += ")";
                     }
 
-                    var query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + ")";
+                    var query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + "); ";
+                    //query = "PRAGMA table_info(" + tablename + ");";
+                    //var tableInfo = (DataTable)ExecuteQuery<DataTable>(config, query);
                     result = (bool)ExecuteQuery<bool>(config, query);
 
                     if (result)
                     {
-                        // Get list of existing columns (if table already existed, they may not be up to date)
+                        //Get list of existing columns(if table already existed, they may not be up to date)
                         query = "PRAGMA table_info(" + tablename + ")";
                         var tableInfo = (DataTable)ExecuteQuery<DataTable>(config, query);
 
@@ -58,7 +60,9 @@ namespace TH_SQLite
                         {
                             foreach (DataRow row in tableInfo.Rows)
                             {
-                                existingColumns.Add(DataTable_Functions.GetRowValue("name", row));
+                                string columnName = DataTable_Functions.GetRowValue("name", row);
+
+                                existingColumns.Add(columnName);
                             }
                         }
 
@@ -114,10 +118,9 @@ namespace TH_SQLite
                         keydef += ")";
                     }
 
-                    var query = "DELETE FROM IF EXISTS " + tablename;
-                    result = (bool)ExecuteQuery<bool>(config, query);
+                    var query = "DROP TABLE IF EXISTS " + tablename + "; ";
+                    query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + ")";
 
-                    query = "CREATE TABLE " + tablename + " (" + coldef + keydef + ")";
                     result = (bool)ExecuteQuery<bool>(config, query);
                 }
             }

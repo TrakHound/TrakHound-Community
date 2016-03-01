@@ -30,7 +30,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Width="400">
+                <StackPanel MinWidth="400">
                     <StackPanel.Resources>
                         <Style TargetType="StackPanel">
                             <Setter Property="Margin" Value="0,5"/>
