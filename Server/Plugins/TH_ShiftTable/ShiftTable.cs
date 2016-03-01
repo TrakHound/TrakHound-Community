@@ -39,12 +39,12 @@ namespace TH_ShiftTable
 
                 config = configuration;
 
-                if (UseDatabases)
-                {
+                //if (UseDatabases)
+                //{
                     CreateShiftSegmentsTable(sc.shifts);
                     CreateTable();
                     GetTableColumns();
-                }
+                //}
 
                 AddGeneratedEventColumns();
 
@@ -158,8 +158,6 @@ namespace TH_ShiftTable
 
         void CreateShiftSegmentsTable(List<Shift> shifts)
         {
-            Table.Truncate(config.Databases_Server, TableNames.ShiftSegments);
-
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("SHIFT", DataType.LargeText),
@@ -172,7 +170,7 @@ namespace TH_ShiftTable
                 new ColumnDefinition("TYPE", DataType.LargeText)
             };
 
-            Table.Create(config.Databases_Server, TableNames.ShiftSegments, columns.ToArray(), null);
+            Table.Replace(config.Databases_Server, TableNames.ShiftSegments, columns.ToArray(), null);
 
             if (shifts != null)
             {
@@ -208,7 +206,6 @@ namespace TH_ShiftTable
                 Row.Insert(config.Databases_Server, TableNames.ShiftSegments, insertColumns.ToArray(), rowValues, null, true);
             }
         }
-
 
 
         public string TableName = TableNames.Shifts;
