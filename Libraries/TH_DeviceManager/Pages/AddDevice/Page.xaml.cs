@@ -80,7 +80,7 @@ namespace TH_DeviceManager.Pages.AddDevice
             if (configPath != null)
             {
                 // Get Configuration from path
-                Configuration config = Configuration.ReadConfigFile(configPath);
+                Configuration config = Configuration.Read(configPath);
                 if (config != null)
                 {
                     //UserConfiguration currentuser = CurrentUser;
@@ -359,7 +359,7 @@ namespace TH_DeviceManager.Pages.AddDevice
                             XmlDocument xml = Converter.TableToXML(dt);
                             if (xml != null)
                             {
-                                Configuration config = Configuration.ReadConfigFile(xml);
+                                Configuration config = Configuration.Read(xml);
                                 if (config != null)
                                 {
                                     result.config = config;

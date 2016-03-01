@@ -10,6 +10,7 @@ using System.Text;
 using System.Reflection;
 using System.Drawing;
 using System.Data;
+using System.IO;
 
 using TH_Global;
 
@@ -103,7 +104,6 @@ namespace TH_Configuration
 
         #region "Methods"
 
-
         static Random random = new Random();
         public static string RandomString(int size)
         {
@@ -129,80 +129,61 @@ namespace TH_Configuration
         /// </summary>
         /// <param name="ConfigFilePath">Path to XML File</param>
         /// <returns>Returns a Machine_Settings object containing information found.</returns>
-        public static Configuration ReadConfigFile(string ConfigFilePath)
+        public static Configuration Read(string path)
         {
+            Configuration result = null;
 
-            Configuration Result = null;
+            //string RootPath;
+            //RootPath = Path.GetDirectoryName(path);
+            //RootPath += @"\";
+            //Logger.Log("Configuration File Root Path = " + RootPath);
 
-            string RootPath;
-            RootPath = System.IO.Path.GetDirectoryName(ConfigFilePath);
-            RootPath += @"\";
-            Logger.Log("Settings Root Path = " + RootPath);
-
-            if (System.IO.File.Exists(ConfigFilePath))
+            if (File.Exists(path))
             {
-
                 XmlDocument doc = new XmlDocument();
-                doc.Load(ConfigFilePath);
+                doc.Load(path);
 
-                Result = new Configuration();
+                result = Read(doc);
 
-                Result.SettingsRootPath = System.IO.Path.GetDirectoryName(ConfigFilePath) + @"\";
-                Result.ConfigurationXML = doc;
-
-                foreach (XmlNode node in doc.DocumentElement.ChildNodes)
-                {
-                    if (node.NodeType == XmlNodeType.Element)
-                    {
-                        if (node.InnerText != "")
-                        {
-                            Type Settings = typeof(Configuration);
-                            PropertyInfo info = Settings.GetProperty(node.Name);
-
-                            if (info != null)
-                            {
-                                Type t = info.PropertyType;
-                                info.SetValue(Result, Convert.ChangeType(node.InnerText, t), null);
-                            }
-                            else
-                            {
-                                switch (node.Name.ToLower())
-                                {
-                                    case "agent": Result.Agent = Process_Agent(node); break;
-
-                                    case "databases_client": Result.Databases_Client = Process_Databases(node); break;
-                                    case "databases_server": Result.Databases_Server = Process_Databases(node); break;
-                                    case "description": Result.Description = Process_Description(node); break;
-                                    case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
-                                    //case "server": Result.Server = Process_Server(node); break;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Result.UniqueId = GetUniqueID();
-
-                Logger.Log("Settings Successfully Read From : " + ConfigFilePath);
-
+                Logger.Log("Configuration Successfully Read From : " + path);
             }
             else
             {
-                Logger.Log("Settings File Not Found : " + ConfigFilePath);
+                Logger.Log("Configuration File Not Found : " + path);
             }
 
-            return Result;
-
+            return result;
         }
 
-        public static Configuration ReadConfigFile(XmlDocument xml)
+        public static Configuration[] ReadAll(string path)
         {
+            var result = new List<Configuration>();
 
-            Configuration Result = null;
+            Logger.Log("Reading Configuration Files from : " + path);
 
-            Result = new Configuration();
+            if (Directory.Exists(path))
+            {
+                foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
+                {
+                    var config = Read(file);
+                    if (config != null) result.Add(config);
+                }
+            }
+            else
+            {
+                Logger.Log("Configuration File Directory Not Found : " + path);
+            }
 
-            Result.ConfigurationXML = xml;
+            return result.ToArray();
+        }
+
+        public static Configuration Read(XmlDocument xml)
+        {
+            Configuration result = null;
+
+            result = new Configuration();
+
+            result.ConfigurationXML = xml;
 
             foreach (XmlNode node in xml.DocumentElement.ChildNodes)
             {
@@ -216,31 +197,24 @@ namespace TH_Configuration
                         if (info != null)
                         {
                             Type t = info.PropertyType;
-                            info.SetValue(Result, Convert.ChangeType(node.InnerText, t), null);
+                            info.SetValue(result, Convert.ChangeType(node.InnerText, t), null);
                         }
                         else
                         {
                             switch (node.Name.ToLower())
                             {
-                                case "agent": Result.Agent = Process_Agent(node); break;
-
-                                case "databases_client": Result.Databases_Client = Process_Databases(node); break;
-                                case "databases_server": Result.Databases_Server = Process_Databases(node); break;
-                                case "description": Result.Description = Process_Description(node); break;
-                                case "file_locations": Result.FileLocations = Process_File_Locations(node, Result.SettingsRootPath); break;
-                                //case "server": Result.Server = Process_Server(node); break;
+                                case "agent": result.Agent = Process_Agent(node); break;
+                                case "databases_client": result.Databases_Client = Process_Databases(node); break;
+                                case "databases_server": result.Databases_Server = Process_Databases(node); break;
+                                case "description": result.Description = Process_Description(node); break;
+                                case "file_locations": result.FileLocations = Process_File_Locations(node, result.SettingsRootPath); break;
                             }
                         }
                     }
                 } 
             }
 
-            //Result.UniqueId = GetUniqueID();
-
-            //Logger.Log("Configuration Successfully Read");
-
-            return Result;
-
+            return result;
         }
 
         private static Agent_Settings Process_Agent(XmlNode Node)
@@ -440,10 +414,12 @@ namespace TH_Configuration
                    
             xml.LoadXml(Properties.Resources.BlankConfiguration);
 
-            Configuration result = ReadConfigFile(xml);
+            Configuration result = Read(xml);
 
             return result;
         }
+
+
 
         #endregion
 

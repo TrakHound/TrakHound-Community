@@ -218,142 +218,142 @@ namespace TH_DeviceManager
         public static readonly DependencyProperty DevicesLoadingProperty =
             DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
-        #region "Configuration Files"
+        //#region "Configuration Files"
 
         List<Configuration> configurations;
 
-        static List<Configuration> ReadConfigurationFile()
-        {
-            List<Configuration> Result = new List<Configuration>();
+        //static List<Configuration> ReadConfigurationFile()
+        //{
+        //    List<Configuration> Result = new List<Configuration>();
 
-            string configPath;
+        //    string configPath;
 
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + "Configuration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + "Configuration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
 
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
 
-            Logger.Log(configPath);
+        //    Logger.Log(configPath);
 
-            if (System.IO.File.Exists(configPath))
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(configPath);
+        //    if (System.IO.File.Exists(configPath))
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(configPath);
 
-                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-                {
-                    if (Node.NodeType == XmlNodeType.Element)
-                    {
-                        switch (Node.Name.ToLower())
-                        {
-                            case "devices":
-                                foreach (XmlNode ChildNode in Node.ChildNodes)
-                                {
-                                    if (ChildNode.NodeType == XmlNodeType.Element)
-                                    {
-                                        switch (ChildNode.Name.ToLower())
-                                        {
-                                            case "device":
+        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
+        //        {
+        //            if (Node.NodeType == XmlNodeType.Element)
+        //            {
+        //                switch (Node.Name.ToLower())
+        //                {
+        //                    case "devices":
+        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
+        //                        {
+        //                            if (ChildNode.NodeType == XmlNodeType.Element)
+        //                            {
+        //                                switch (ChildNode.Name.ToLower())
+        //                                {
+        //                                    case "device":
 
-                                                Configuration device = ProcessDevice(ChildNode);
-                                                if (device != null)
-                                                {
-                                                    Result.Add(device);
-                                                }
-                                                break;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
+        //                                        Configuration device = ProcessDevice(ChildNode);
+        //                                        if (device != null)
+        //                                        {
+        //                                            Result.Add(device);
+        //                                        }
+        //                                        break;
+        //                                }
+        //                            }
+        //                        }
+        //                        break;
+        //                }
+        //            }
+        //        }
 
-                Logger.Log("Configuration File Successfully Read From : " + configPath);
-            }
-            else Logger.Log("Configuration File Not Found : " + configPath);
+        //        Logger.Log("Configuration File Successfully Read From : " + configPath);
+        //    }
+        //    else Logger.Log("Configuration File Not Found : " + configPath);
 
-            return Result;
-        }
+        //    return Result;
+        //}
 
-        static Configuration ProcessDevice(XmlNode node)
-        {
-            Configuration Result = null;
+        //static Configuration ProcessDevice(XmlNode node)
+        //{
+        //    Configuration Result = null;
 
-            string configPath = null;
+        //    string configPath = null;
 
-            foreach (XmlNode childNode in node.ChildNodes)
-            {
-                if (childNode.NodeType == XmlNodeType.Element)
-                {
-                    if (childNode.Name.ToLower() == "configuration_path")
-                    {
-                        configPath = childNode.InnerText;
-                    }
-                }
-            }
+        //    foreach (XmlNode childNode in node.ChildNodes)
+        //    {
+        //        if (childNode.NodeType == XmlNodeType.Element)
+        //        {
+        //            if (childNode.Name.ToLower() == "configuration_path")
+        //            {
+        //                configPath = childNode.InnerText;
+        //            }
+        //        }
+        //    }
 
-            if (configPath != null)
-            {
-                configPath = GetConfigurationPath(configPath);
+        //    if (configPath != null)
+        //    {
+        //        configPath = GetConfigurationPath(configPath);
 
-                Logger.Log("Reading Device Configuration File @ '" + configPath + "'");
+        //        Logger.Log("Reading Device Configuration File @ '" + configPath + "'");
 
-                if (File.Exists(configPath))
-                {
-                    Configuration config = new Configuration();
-                    config = Configuration.ReadConfigFile(configPath);
+        //        if (File.Exists(configPath))
+        //        {
+        //            Configuration config = new Configuration();
+        //            config = Configuration.Read(configPath);
 
-                    if (config != null)
-                    {
-                        Logger.Log("Device Congifuration Read Successfully!");
+        //            if (config != null)
+        //            {
+        //                Logger.Log("Device Congifuration Read Successfully!");
 
-                        // Initialize Database Configurations
-                        Global.Initialize(config.Databases_Client);
-                        Global.Initialize(config.Databases_Server);
+        //                // Initialize Database Configurations
+        //                Global.Initialize(config.Databases_Client);
+        //                Global.Initialize(config.Databases_Server);
 
-                        Result = config;
-                    }
-                    else Logger.Log("Error Occurred While Reading : " + configPath);
-                }
-                else Logger.Log("Can't find Device Configuration file @ " + configPath);
-            }
-            else Logger.Log("No Device Congifuration found");
+        //                Result = config;
+        //            }
+        //            else Logger.Log("Error Occurred While Reading : " + configPath);
+        //        }
+        //        else Logger.Log("Can't find Device Configuration file @ " + configPath);
+        //    }
+        //    else Logger.Log("No Device Congifuration found");
 
-            return Result;
+        //    return Result;
 
-        }
+        //}
 
-        static string GetConfigurationPath(string path)
-        {
-            // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-            if (!System.IO.Path.IsPathRooted(path))
-            {
-                // Remove initial Backslash if contained in "configuration_path"
-                if (path[0] == '\\' && path.Length > 1) path.Substring(1);
+        //static string GetConfigurationPath(string path)
+        //{
+        //    // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
+        //    if (!System.IO.Path.IsPathRooted(path))
+        //    {
+        //        // Remove initial Backslash if contained in "configuration_path"
+        //        if (path[0] == '\\' && path.Length > 1) path.Substring(1);
 
-                string original = path;
+        //        string original = path;
 
-                // Check System Path
-                path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-                else Logger.Log(path + " Not Found");
+        //        // Check System Path
+        //        path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
+        //        else Logger.Log(path + " Not Found");
 
 
-                // Check local app Path
-                path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
-                else Logger.Log(path + " Not Found");
+        //        // Check local app Path
+        //        path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
+        //        else Logger.Log(path + " Not Found");
 
-                // if no files exist return null
-                return null;
-            }
-            else return path;
-        }
+        //        // if no files exist return null
+        //        return null;
+        //    }
+        //    else return path;
+        //}
 
-        #endregion
+        //#endregion
 
         Thread loaddevices_THREAD;
 
@@ -390,6 +390,7 @@ namespace TH_DeviceManager
             // If not logged in Read from File in 'C:\TrakHound\'
             else
             {
+                //added = Configuration.ReadAll(FileLocations.Devices).ToList();
                 //Configurations = ReadConfigurationFile();
             }
 
@@ -572,7 +573,7 @@ namespace TH_DeviceManager
                 XmlDocument xml = Converter.TableToXML(dt);
                 if (xml != null)
                 {
-                    SelectedDevice = Configuration.ReadConfigFile(xml);
+                    SelectedDevice = Configuration.Read(xml);
                     SelectedDevice.TableName = tablename;
 
                     if (SelectedDeviceButton != null)

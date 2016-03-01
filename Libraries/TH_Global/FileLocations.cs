@@ -18,6 +18,8 @@ namespace TH_Global
 
         public static string TrakHoundTemp = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TrakHound\temp";
 
+        public static string Devices = TrakHound + @"\Devices";
+        public static string Databases = TrakHound + @"\Databases";
         public static string Plugins = TrakHound + @"\Plugins";
 
 

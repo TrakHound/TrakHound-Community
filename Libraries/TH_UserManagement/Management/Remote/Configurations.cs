@@ -141,7 +141,7 @@ namespace TH_UserManagement.Management.Remote
                                 XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
                                 if (xml != null)
                                 {
-                                    Configuration config = TH_Configuration.Configuration.ReadConfigFile(xml);
+                                    Configuration config = TH_Configuration.Configuration.Read(xml);
                                     if (config != null)
                                     {
                                         config.Remote = true;

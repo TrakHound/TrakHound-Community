@@ -152,10 +152,6 @@ namespace TrakHound_Client
 
 
 
-
-
-
-
         #region "Load Devices"
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
@@ -218,7 +214,7 @@ namespace TrakHound_Client
             // If not logged in Read from File in 'C:\TrakHound\'
             else
             {
-                configs = ReadConfigurationFile();
+                //configs = ReadConfigurationFile();
             }
 
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_Finished), priority, new object[] { configs });
@@ -251,124 +247,124 @@ namespace TrakHound_Client
             Plugin_DataEvent(de_d);
         }
 
-        #region "Offline Configurations"
+        //#region "Offline Configurations"
 
-        List<Configuration> ReadConfigurationFile()
-        {
-            List<Configuration> result = new List<Configuration>();
+        //List<Configuration> ReadConfigurationFile()
+        //{
+        //    List<Configuration> result = new List<Configuration>();
 
-            //UpdateExceptionsThrown = new List<string>();
+        //    //UpdateExceptionsThrown = new List<string>();
 
-            string configPath;
+        //    string configPath;
 
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
+        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
+        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
 
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
+        //    // systemPath takes priority (easier for user to navigate to)
+        //    if (File.Exists(systemPath)) configPath = systemPath;
+        //    else configPath = localPath;
 
-            if (System.IO.File.Exists(configPath))
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(configPath);
+        //    if (System.IO.File.Exists(configPath))
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(configPath);
 
-                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-                {
-                    if (Node.NodeType == XmlNodeType.Element)
-                    {
-                        switch (Node.Name.ToLower())
-                        {
-                            case "devices":
-                                foreach (XmlNode ChildNode in Node.ChildNodes)
-                                {
-                                    if (ChildNode.NodeType == XmlNodeType.Element)
-                                    {
-                                        switch (ChildNode.Name.ToLower())
-                                        {
-                                            case "device":
+        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
+        //        {
+        //            if (Node.NodeType == XmlNodeType.Element)
+        //            {
+        //                switch (Node.Name.ToLower())
+        //                {
+        //                    case "devices":
+        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
+        //                        {
+        //                            if (ChildNode.NodeType == XmlNodeType.Element)
+        //                            {
+        //                                switch (ChildNode.Name.ToLower())
+        //                                {
+        //                                    case "device":
 
-                                                Configuration config = GetSettingsFromNode(ChildNode);
-                                                if (config != null) result.Add(config);
+        //                                        Configuration config = GetSettingsFromNode(ChildNode);
+        //                                        if (config != null) result.Add(config);
 
-                                                break;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
+        //                                        break;
+        //                                }
+        //                            }
+        //                        }
+        //                        break;
+        //                }
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        private Configuration GetSettingsFromNode(XmlNode Node)
-        {
+        //private Configuration GetSettingsFromNode(XmlNode Node)
+        //{
 
-            Configuration Result = null;
+        //    Configuration Result = null;
 
-            string configPath = null;
+        //    string configPath = null;
 
-            foreach (XmlNode ChildNode in Node.ChildNodes)
-            {
-                switch (ChildNode.Name.ToLower())
-                {
-                    case "configuration_path": configPath = ChildNode.InnerText; break;
-                }
-            }
+        //    foreach (XmlNode ChildNode in Node.ChildNodes)
+        //    {
+        //        switch (ChildNode.Name.ToLower())
+        //        {
+        //            case "configuration_path": configPath = ChildNode.InnerText; break;
+        //        }
+        //    }
 
-            if (configPath != null)
-            {
-                configPath = GetConfigurationPath(configPath);
+        //    if (configPath != null)
+        //    {
+        //        configPath = GetConfigurationPath(configPath);
 
-                Result = Configuration.ReadConfigFile(configPath);
+        //        Result = Configuration.Read(configPath);
 
-                if (Result == null)
-                {
-                    Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.Title = "Device Configuration Error";
-                    mData.Text = "Could not load device configuration from " + configPath;
-                    mData.AdditionalInfo = "Check to make sure the file exists at "
-                        + configPath
-                        + " and that the format is correct and restart TrakHound Client."
-                        + Environment.NewLine
-                        + Environment.NewLine
-                        + "For more information please contact us at info@TrakHound.org";
-                    if (messageCenter != null) messageCenter.AddMessage(mData);
-                }
-            }
+        //        if (Result == null)
+        //        {
+        //            Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
+        //            mData.Title = "Device Configuration Error";
+        //            mData.Text = "Could not load device configuration from " + configPath;
+        //            mData.AdditionalInfo = "Check to make sure the file exists at "
+        //                + configPath
+        //                + " and that the format is correct and restart TrakHound Client."
+        //                + Environment.NewLine
+        //                + Environment.NewLine
+        //                + "For more information please contact us at info@TrakHound.org";
+        //            if (messageCenter != null) messageCenter.AddMessage(mData);
+        //        }
+        //    }
 
-            return Result;
+        //    return Result;
 
-        }
+        //}
 
-        static string GetConfigurationPath(string path)
-        {
-            // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-            if (!System.IO.Path.IsPathRooted(path))
-            {
-                // Remove initial Backslash if contained in "configuration_path"
-                if (path[0] == '\\' && path.Length > 1) path.Substring(1);
+        //static string GetConfigurationPath(string path)
+        //{
+        //    // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
+        //    if (!System.IO.Path.IsPathRooted(path))
+        //    {
+        //        // Remove initial Backslash if contained in "configuration_path"
+        //        if (path[0] == '\\' && path.Length > 1) path.Substring(1);
 
-                string original = path;
+        //        string original = path;
 
-                // Check System Path
-                path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
+        //        // Check System Path
+        //        path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
 
-                // Check local app Path
-                path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-                if (File.Exists(path)) return path;
+        //        // Check local app Path
+        //        path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
+        //        if (File.Exists(path)) return path;
 
-                // if no files exist return null
-                return null;
-            }
-            else return path;
-        }
+        //        // if no files exist return null
+        //        return null;
+        //    }
+        //    else return path;
+        //}
 
-        #endregion
+        //#endregion
 
         #endregion
 

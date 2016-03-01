@@ -170,7 +170,7 @@ namespace TH_DeviceManager.Pages.CopyDevice
                     // Iterate through copies
                     for (var x = 0; x <= info.Copies - 1; x++)
                     {
-                        Configuration copyConfig = Configuration.ReadConfigFile(info.Configuration.ConfigurationXML);
+                        Configuration copyConfig = Configuration.Read(info.Configuration.ConfigurationXML);
 
                         if (info.Replace != null)
                         {
@@ -183,7 +183,7 @@ namespace TH_DeviceManager.Pages.CopyDevice
 
                                     var xml = XML_Functions.StringToXmlDocument(xmlText);
 
-                                    copyConfig = Configuration.ReadConfigFile(xml);
+                                    copyConfig = Configuration.Read(xml);
                                 }
                             }                            
                         }
