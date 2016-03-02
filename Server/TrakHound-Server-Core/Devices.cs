@@ -205,7 +205,7 @@ namespace TrakHound_Server_Core
             {
                 configPath = GetConfigurationPath(configPath);
 
-                Result = Configuration.ReadConfigFile(configPath);
+                Result = Configuration.Read(configPath);
             }
 
             return Result;
@@ -238,7 +238,7 @@ namespace TrakHound_Server_Core
                 if (File.Exists(configPath))
                 {
                     Configuration config = new Configuration();
-                    config = Configuration.ReadConfigFile(configPath);
+                    config = Configuration.Read(configPath);
 
                     if (config != null)
                     {
