@@ -12,7 +12,7 @@ namespace TH_SQLite
 
         public List<string> Column_Get(object settings, string tablename)
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
             if (settings != null)
             {
@@ -27,8 +27,6 @@ namespace TH_SQLite
 
                     if (tableInfo != null && tableInfo.Rows.Count > 0)
                     {
-                        //result = new List<string>();
-
                         foreach (DataRow row in tableInfo.Rows)
                         {
                             var name = DataTable_Functions.GetRowValue("name", row);

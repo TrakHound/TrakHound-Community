@@ -44,8 +44,6 @@ namespace TH_SQLite
                     }
 
                     var query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + "); ";
-                    //query = "PRAGMA table_info(" + tablename + ");";
-                    //var tableInfo = (DataTable)ExecuteQuery<DataTable>(config, query);
                     result = (bool)ExecuteQuery<bool>(config, query);
 
                     if (result)
