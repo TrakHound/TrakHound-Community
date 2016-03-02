@@ -66,3 +66,4 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.pdb
 C:\TrakHound\Plugins\Pages\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.csprojResolveAssemblyReference.cache

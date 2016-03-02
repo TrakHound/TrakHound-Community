@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TH_DeviceManager.DeviceManager"
+﻿<UserControl x:Class="TH_DeviceManager.DeviceManagerList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -138,63 +138,6 @@
                 </Style.Triggers>
             </Style>
 
-            <!--<Style TargetType="ToggleButton">
-                <Setter Property="Padding" Value="3" />
-                <Setter Property="VerticalAlignment" Value="Top"/>
-                <Setter Property="VerticalContentAlignment" Value="Top"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="ToggleButton">
-
-                            --><!--Collapse/Expaned Image--><!--
-                            <Rectangle Width="20" Height="20"
-                                       Margin="5"
-                                       VerticalAlignment="Top"
-                                       RenderTransformOrigin="0.5, 0.5"
-                                       >
-                                <Rectangle.Resources>
-                                    <ImageBrush x:Key="Expand_IMG" Stretch="Uniform" ImageSource="/TH_History;component/Resources/Expand_01.png" />
-                                </Rectangle.Resources>
-
-                                <Rectangle.RenderTransform>
-                                    <RotateTransform/>
-                                </Rectangle.RenderTransform>
-
-                                <Rectangle.Style>
-                                    <Style TargetType="Rectangle">
-                                        <Setter Property="OpacityMask" Value="{StaticResource Expand_IMG}" />
-                                        <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource TemplatedParent}}" Value="true">
-                                                <Setter Property="Fill" Value="{StaticResource Accent_Light}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource TemplatedParent}}" Value="true">
-                                                <DataTrigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="0" To="-180" Duration="0:0:0.1"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.EnterActions>
-                                                <DataTrigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(Rectangle.RenderTransform).(RotateTransform.Angle)" From="-180" To="0" Duration="0:0:0.1"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </DataTrigger.ExitActions>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Rectangle.Style>
-
-                            </Rectangle>
-
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>-->
-
             <Style TargetType="DataGridRowHeader">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}"/>
@@ -238,7 +181,7 @@
                 <DataGridTemplateColumn Header="Test">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Button_Clicked"/>
+                            <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -246,7 +189,7 @@
                 <DataGridTemplateColumn Header="Client Enabled">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <controls:DataGridCellCheckBox DataObject="{Binding}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
+                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -254,7 +197,7 @@
                 <DataGridTemplateColumn Header="Server Enabled">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <controls:DataGridCellCheckBox DataObject="{Binding}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
+                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

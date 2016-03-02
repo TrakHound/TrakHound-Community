@@ -94,7 +94,7 @@ namespace TH_DeviceManager
                 if (type == DeviceManagerType.Client) page.PageType = TH_Plugins_Server.Page_Type.Client;
                 else page.PageType = TH_Plugins_Server.Page_Type.Server;
 
-                this.Dispatcher.BeginInvoke(new Action<ConfigurationPage>(AddPageButton), priority, new object[] { page });
+                this.Dispatcher.BeginInvoke(new Action<ConfigurationPage>(AddPageButton), PRIORITY_BACKGROUND, new object[] { page });
             }
 
             // Select the first page

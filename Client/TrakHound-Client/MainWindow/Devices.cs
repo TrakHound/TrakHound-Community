@@ -26,23 +26,41 @@ namespace TrakHound_Client
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), priority, new object[] { configs });
         }
 
-        private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
+        private void Devicemanager_DeviceUpdated(Configuration config, DeviceManagerList.DeviceUpdateArgs args)
         {
             switch (args.Event)
             {
-                case DeviceManager.DeviceUpdateEvent.Added:
+                case DeviceManagerList.DeviceUpdateEvent.Added:
                     AddDevice(config);
                     break;
 
-                case DeviceManager.DeviceUpdateEvent.Changed:
+                case DeviceManagerList.DeviceUpdateEvent.Changed:
                     UpdateDevice(config);
                     break;
 
-                case DeviceManager.DeviceUpdateEvent.Removed:
+                case DeviceManagerList.DeviceUpdateEvent.Removed:
                     RemoveDevice(config);
                     break;
             }
         }
+
+        //private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
+        //{
+        //    switch (args.Event)
+        //    {
+        //        case DeviceManager.DeviceUpdateEvent.Added:
+        //            AddDevice(config);
+        //            break;
+
+        //        case DeviceManager.DeviceUpdateEvent.Changed:
+        //            UpdateDevice(config);
+        //            break;
+
+        //        case DeviceManager.DeviceUpdateEvent.Removed:
+        //            RemoveDevice(config);
+        //            break;
+        //    }
+        //}
 
         private void Devicemanager_LoadingDevices()
         {

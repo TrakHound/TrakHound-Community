@@ -104,7 +104,7 @@ namespace TH_DeviceManager
                 }
             }
 
-            this.Dispatcher.BeginInvoke(new Action<bool>(Save_Finished), background, new object[] { success });
+            this.Dispatcher.BeginInvoke(new Action<bool>(Save_Finished), PRIORITY_BACKGROUND, new object[] { success });
         }
 
         void Save_GUI(ConfigurationPage page)

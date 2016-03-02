@@ -83,7 +83,7 @@ namespace TH_DeviceManager
                 added = Configuration.ReadAll(FileLocations.Devices).ToList();
             }
 
-            this.Dispatcher.BeginInvoke(new Action<List<Configuration>, List<Configuration>>(LoadDevices_GUI), background, new object[] { added, shared });
+            this.Dispatcher.BeginInvoke(new Action<List<Configuration>, List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { added, shared });
         }
 
         void LoadDevices_GUI(List<Configuration> added, List<Configuration> shared)
@@ -102,7 +102,7 @@ namespace TH_DeviceManager
                 foreach (Configuration config in orderedAddedConfigs)
                 {
                     AddedDevices.Add(config);
-                    this.Dispatcher.BeginInvoke(new Action<Configuration>(AddDeviceButton), background, new object[] { config });
+                    this.Dispatcher.BeginInvoke(new Action<Configuration>(AddDeviceButton), PRIORITY_BACKGROUND, new object[] { config });
                 }
             }
 
@@ -115,11 +115,11 @@ namespace TH_DeviceManager
                 foreach (Configuration config in orderedSharedConfigs)
                 {
                     SharedDevices.Add(config);
-                    this.Dispatcher.BeginInvoke(new Action<Configuration>(AddSharedDeviceButton), background, new object[] { config });
+                    this.Dispatcher.BeginInvoke(new Action<Configuration>(AddSharedDeviceButton), PRIORITY_BACKGROUND, new object[] { config });
                 }
             }
 
-            this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), background, null);
+            this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), PRIORITY_BACKGROUND, null);
         }
 
         void LoadDevices_Finished()

@@ -125,7 +125,8 @@ namespace TH_DeviceCompare
                 }
             }
 
-            RowHeaders[index].MinHeight = height;
+            var headerIndex = RowHeaders.ToList().FindIndex(x => x.Index == index);
+            if (headerIndex >= 0) RowHeaders[headerIndex].MinHeight = height;
         }
 
         #region "Row Headers"

@@ -3,36 +3,15 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 using System.Threading;
-
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-
-using System.IO;
-using System.Collections.ObjectModel;
-using System.Xml;
 using System.Data;
 
 using TH_Configuration;
-using TH_Database;
-using TH_Global;
 using TH_Global.Functions;
-using TH_Plugins_Server;
 using TH_UserManagement.Management;
 using TH_WPF;
 
@@ -72,11 +51,8 @@ namespace TH_DeviceManager
         public DeviceManagerType ManagerType { get; set; }
         public DeviceManagerType SelectedManagerType { get; set; }
 
+        const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
 
-        const System.Windows.Threading.DispatcherPriority background = System.Windows.Threading.DispatcherPriority.Background;
-        const System.Windows.Threading.DispatcherPriority contextidle = System.Windows.Threading.DispatcherPriority.ContextIdle;
-
-       
         private void Save_Clicked(TH_WPF.Button bt)
         {
             bt.Focus();
@@ -117,6 +93,8 @@ namespace TH_DeviceManager
             }
         }
 
+        #region "Properties"
+
         public bool Saving
         {
             get { return (bool)GetValue(SavingProperty); }
@@ -146,19 +124,19 @@ namespace TH_DeviceManager
         public static readonly DependencyProperty ToolbarShownProperty =
             DependencyProperty.Register("ToolbarShown", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
 
+        #endregion
 
         private void TableList_MouseDown(object sender, MouseButtonEventArgs e)
         {
             PageListShown = false;
         }
 
-
-        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
         private void RefreshDevices_Clicked(TH_WPF.Button bt)
         {
             LoadDevices();
         }
+
+        #region "Set Device Index (Needs to be finished)"
 
         private void IndexUp_Clicked(TH_WPF.Button bt)
         {
@@ -181,8 +159,6 @@ namespace TH_DeviceManager
                 }
             }
         }
-
-        #region "Set Device Index"
 
         class SetDeviceIndex_Info
         {
@@ -222,7 +198,6 @@ namespace TH_DeviceManager
         }
 
         #endregion
-
 
     }
 
