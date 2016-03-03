@@ -88,7 +88,6 @@ namespace TH_SQLite
 
         static string GetConnectionString(SQLite_Configuration config)
         {
-            //return "Data Source=" + GetDatabasePath(config) + "; Version=3;";
             return "Data Source=" + GetDatabasePath(config) + "; Version=3; Pooling=True; Max Pool Size=150";
         }
 
@@ -104,7 +103,7 @@ namespace TH_SQLite
 
                     using (var command = new SQLiteCommand(query, connection))
                     {
-                        command.ExecuteNonQuery();
+                        //command.ExecuteNonQuery();
 
                         result = ProcessResult<T>(command);
                     }
@@ -141,8 +140,12 @@ namespace TH_SQLite
             // Boolean
             if (typeof(T) == typeof(bool))
             {
-                // if it gets here without an throwing an exception then it was successful
-                result = true;
+                object o = command.ExecuteNonQuery();
+                var val = (int)(-1);
+                if (o != null) int.TryParse(o.ToString(), out val);
+
+                if (val >= 0) result = true;
+                else result = false;
             }
 
             // int

@@ -929,10 +929,10 @@ namespace TH_GeneratedData
 
         #region "Generated Events"
 
+        string[] genEventValuesPrimaryKey = { "EVENT, VALUE" };
+
         void CreateValueTable(List<GeneratedEvents.Event> events)
         {
-            //Table.Truncate(config.Databases_Server, TableNames.GenEventValues);
-
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("EVENT", DataType.LargeText),
@@ -970,7 +970,7 @@ namespace TH_GeneratedData
                     rowValues.Add(defaultValues);
                 }
 
-                Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, null, true);
+                Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, genEventValuesPrimaryKey, true);
             }
         }
 

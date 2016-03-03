@@ -116,10 +116,13 @@ namespace TH_SQLite
                         keydef += ")";
                     }
 
-                    var query = "DROP TABLE IF EXISTS " + tablename + "; ";
-                    query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + ")";
-
+                    var query = "DROP TABLE IF EXISTS " + tablename;
                     result = (bool)ExecuteQuery<bool>(config, query);
+
+                    query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + ")";
+                    result = (bool)ExecuteQuery<bool>(config, query);
+
+                    Console.WriteLine("Table_Replace() :: " + result.ToString());
                 }
             }
 

@@ -9,8 +9,8 @@ using System.IO;
 //using TH_MicrosoftSQL;
 using TH_MTConnect.Components;
 
-//using System.Data.SQLite;
-using TH_SQLite;
+using System.Data.SQLite;
+//using TH_SQLite;
 
 namespace TestConsole
 {
@@ -19,42 +19,54 @@ namespace TestConsole
         static void Main(string[] args)
         {
 
-            string dbPath = @"%SYSTEMDRIVE%\TrakHound\Databases\Test1\Test2\test.db";
+            string dbPath = @"C:\TrakHound\Databases\Test1\Test2\test.db";
 
-            var config = new SQLite_Configuration();
-            config.DatabasePath = dbPath;
+            //var config = new SQLite_Configuration();
+            //config.DatabasePath = dbPath;
 
-            var plugin = new Plugin();
+            //var plugin = new Plugin();
 
-            plugin.Database_Create(config);
+            //plugin.Database_Create(config);
 
-            var columns = new TH_Database.ColumnDefinition[]
-            {
-                new TH_Database.ColumnDefinition() { ColumnName = "First", DataType = TH_Database.DataType.LargeText },
-                new TH_Database.ColumnDefinition() { ColumnName = "Second", DataType = TH_Database.DataType.LargeText },
-                new TH_Database.ColumnDefinition() { ColumnName = "Third", DataType = TH_Database.DataType.LargeText },
-                new TH_Database.ColumnDefinition() { ColumnName = "Fourth", DataType = TH_Database.DataType.LargeText },
-            };
+            //var columns = new TH_Database.ColumnDefinition[]
+            //{
+            //    new TH_Database.ColumnDefinition() { ColumnName = "First", DataType = TH_Database.DataType.LargeText },
+            //    new TH_Database.ColumnDefinition() { ColumnName = "Second", DataType = TH_Database.DataType.LargeText },
+            //    new TH_Database.ColumnDefinition() { ColumnName = "Third", DataType = TH_Database.DataType.LargeText },
+            //    new TH_Database.ColumnDefinition() { ColumnName = "Fourth", DataType = TH_Database.DataType.LargeText },
+            //};
 
-            plugin.Table_Replace(config, "snapshots", columns, null);
+            //plugin.Table_Replace(config, "snapshots", columns, null);
+
+            //var dt = plugin.Table_Get(config, "snapshots");
+
+            //TH_Global.Functions.DataTable_Functions.WriteRowstoConsole("snapshots", dt);
 
 
+
+            //var sql = "SELECT * FROM snapshots";
+            //    var command = new SQLiteCommand(sql, conn);
+            // var reader = command.ExecuteReader();
+            // while (reader.Read())
+            // {
+            //     PrintReaderRow(reader);
+            // }
 
 
 
             ////dbPath = Environment.ExpandEnvironmentVariables(dbPath);
 
-            //string dir = Environment.ExpandEnvironmentVariables(dbPath);
-            //dir = Path.GetDirectoryName(dir);
+            string dir = Environment.ExpandEnvironmentVariables(dbPath);
+            dir = Path.GetDirectoryName(dir);
 
-            //Console.WriteLine(dir);
+            Console.WriteLine(dir);
 
-            //if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            //else Console.WriteLine(dbPath + " CREATED");
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            else Console.WriteLine(dbPath + " CREATED");
 
-            //if (!File.Exists(dbPath)) SQLiteConnection.CreateFile(dbPath);
+            if (!File.Exists(dbPath)) SQLiteConnection.CreateFile(dbPath);
 
-            //string strconn = "Data Source=" + dbPath + "; Version=3;";
+            string strconn = "Data Source=" + dbPath + "; Version=3; Pooling=True; Max Pool Size=150;";
 
             ////for (var x = 0; x < 5; x++)
             ////{
@@ -96,18 +108,18 @@ namespace TestConsole
 
 
 
-            //var conn = new SQLiteConnection(strconn);
-            //conn.Open();
+            var conn = new SQLiteConnection(strconn);
+            conn.Open();
 
-            //string sql;
-            //SQLiteCommand command;
-            //SQLiteDataReader reader;
+            string sql;
+            SQLiteCommand command;
+            SQLiteDataReader reader;
 
-            //sql = "DROP TABLE IF EXISTS test_table";
+            sql = "DROP TABLE IF EXISTS test_table; ";
             //command = new SQLiteCommand(sql, conn);
             //command.ExecuteNonQuery();
 
-            //sql = "CREATE TABLE IF NOT EXISTS snapshots (`TIMESTAMP` datetime,`NAME` varchar(1000),`VALUE` varchar(1000),`PREVIOUS_TIMESTAMP` datetime,`PREVIOUS_VALUE` varchar(1000), PRIMARY KEY('NAME'))";
+            //sql += "CREATE TABLE IF NOT EXISTS snapshots (`TIMESTAMP` datetime,`NAME` varchar(1000),`VALUE` varchar(1000),`PREVIOUS_TIMESTAMP` datetime,`PREVIOUS_VALUE` varchar(1000), PRIMARY KEY('NAME'))";
             //command = new SQLiteCommand(sql, conn);
             //command.ExecuteNonQuery();
 
@@ -120,13 +132,13 @@ namespace TestConsole
             //    "quality"
             //};
 
-            //sql = "CREATE TABLE IF NOT EXISTS test_table1 (name varchar(90), value int, PRIMARY KEY(name)); ";
+            sql += "CREATE TABLE IF NOT EXISTS test_table (name varchar(90), value int, PRIMARY KEY(name)); ";
             //sql += "CREATE TABLE IF NOT EXISTS test_table2 (name varchar(90), value int, PRIMARY KEY(name)); ";
             //sql += "CREATE TABLE IF NOT EXISTS test_table3 (name varchar(90), value int, PRIMARY KEY(name)); ";
             //sql += "CREATE TABLE IF NOT EXISTS test_table4 (name varchar(90), value int, PRIMARY KEY(name)); ";
             //sql += "CREATE TABLE IF NOT EXISTS test_table5 (timestamp datetime, name varchar(90), value double, PRIMARY KEY(name)); ";
-            //command = new SQLiteCommand(sql, conn);
-            //command.ExecuteNonQuery();
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
 
 
             //sql = "PRAGMA table_info(test_table)";
@@ -166,12 +178,12 @@ namespace TestConsole
             //command.ExecuteNonQuery();
 
 
-            //sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('patrick', 1); ";
-            //sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('bob', 2); ";
-            //sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('dave', 3); ";
-            //sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('john', 4); ";
-            //command = new SQLiteCommand(sql, conn);
-            //command.ExecuteNonQuery();
+            sql = "INSERT OR REPLACE INTO test_table (name, value) VALUES ('patrick', 1); ";
+            sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('bob', 2); ";
+            sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('dave', 3); ";
+            sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('john', 4); ";
+            command = new SQLiteCommand(sql, conn);
+            command.ExecuteNonQuery();
 
 
             //sql = "SELECT * FROM snapshots";
@@ -230,90 +242,25 @@ namespace TestConsole
             //    }
             //}
 
-            //conn.Close();
+            conn.Close();
 
 
 
             Console.ReadLine();
         }
 
-        //static void PrintReaderRow(SQLiteDataReader reader)
-        //{
-        //    string print = "";
-
-        //    for (var x = 0; x <= reader.FieldCount - 1; x++)
-        //    {
-        //        print += reader.GetName(x) + ": " + reader[x] + "; ";
-        //    }
-
-        //    Console.WriteLine(print);
-        //}
-
-        static void Probe()
+        static void PrintReaderRow(SQLiteDataReader reader)
         {
+            string print = "";
 
-            var result = Requests.Get("http://agent.mtconnect.org/probe", new TH_MTConnect.HTTP.ProxySettings("134.249.161.16", 80), 5000, 1);
+            for (var x = 0; x <= reader.FieldCount - 1; x++)
+            {
+                print += reader.GetName(x) + ": " + reader[x] + "; ";
+            }
 
-            if (result != null) Console.WriteLine("Probe Successful");
-            else Console.WriteLine("Probe Failed");
-
+            Console.WriteLine(print);
         }
 
-        static void MySQL()
-        {
-            var plugin = new TH_MicrosoftSQL.Plugin();
-
-            var config = new TH_MicrosoftSQL.SQL_Configuration();
-
-            config.Database = "local_test_01";
-            config.Server = "192.168.1.10";
-            config.Port = 1433;
-            config.Username = "trakhoundtest";
-            config.Password = "ethan123";
-
-            //Console.WriteLine(plugin.Table_GetSize(config, "exampletable").ToString());
-
-            //Console.WriteLine(plugin.Ping(config).ToString());
-
-            //Console.WriteLine(plugin.Database_Create(config).ToString());
-
-            //var cols = new List<TH_Database.ColumnDefinition>();
-            //cols.Add(new TH_Database.ColumnDefinition("timestamp", TH_Database.DataType.DateTime));
-            //cols.Add(new TH_Database.ColumnDefinition("name", TH_Database.DataType.MediumText));
-            //cols.Add(new TH_Database.ColumnDefinition("value", TH_Database.DataType.Double));
-
-            //Console.WriteLine(plugin.Table_Create(config, "exampletable", cols.ToArray(), "name").ToString());
-
-
-            ////var table = plugin.Table_Get(config, "exampletable");
-            ////TH_Global.Functions.DataTable_Functions.WriteRowstoConsole("exampletable", table);
-
-            //string[] tables = plugin.Table_List(config);
-
-            //foreach (var table in tables) Console.WriteLine(table);
-
-            //List<string> columns = plugin.Column_Get(config, "exampletable");
-            //if (columns != null) foreach (var column in columns) Console.WriteLine(column);
-
-            string tablename = "exampletable";
-            var columns = new List<object>();
-            columns.Add("timestamp");
-            columns.Add("name");
-            columns.Add("value");
-
-            var values = new List<object>();
-            values.Add("2015-01-20 01:02:03");
-            values.Add("testname");
-            values.Add("777");
-
-            bool update = false;
-
-            Console.WriteLine(plugin.Row_Insert(config, tablename, columns.ToArray(), values.ToArray(), "name", update).ToString());
-
-            var table = plugin.Table_Get(config, "exampletable");
-            TH_Global.Functions.DataTable_Functions.WriteRowstoConsole("exampletable", table);
-
-            Console.ReadLine();
-        }
+       
     }
 }
