@@ -92,6 +92,37 @@ namespace TH_DeviceManager
             else
             {
                 devices = Configuration.ReadAll(FileLocations.Devices).ToList();
+
+                devices = devices.OrderBy(x => x.Index).ToList();
+
+                for (var x = 0; x <= devices.Count - 1; x++)
+                {
+                    //if (x == 0) aboveIndex = 1000;
+                    //else aboveIndex = devices[x - 1].Index;
+
+                    //if (x < devices.Count - 1) belowIndex = devices[x + 1].Index;
+
+                    //if (belowIndex < aboveIndex) belowIndex = aboveIndex + 2000;
+
+
+                    //int index = devices[x].Index;
+
+                    //if (index < aboveIndex || index > belowIndex)
+                    //{
+                    //    index = aboveIndex + ((belowIndex - aboveIndex) / 2);
+                    //}
+
+                    devices[x].Index = 1000 + (1000 * x);
+                }
+
+                foreach (var device in devices)
+                {
+                    Console.WriteLine(device.UniqueId + " :: " + device.Index.ToString());
+
+                    Console.WriteLine(XML_Functions.SetInnerText(device.ConfigurationXML, "/Index", device.Index.ToString()));
+                    SaveFileConfiguration(device);
+                }
+
                 this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { devices });
             }
 
@@ -113,25 +144,25 @@ namespace TH_DeviceManager
             //}
         }
 
-        void LoadDevices_GUI(List<DataTable> devices)
-        {
-            Devices.Clear();
+        //void LoadDevices_GUI(List<DataTable> devices)
+        //{
+        //    Devices.Clear();
 
-            if (devices != null)
-            {
-                foreach (var device in devices)
-                {
-                    var deviceInfo = new DeviceInfo();
-                    deviceInfo.Description = DataTable_Functions.GetTableValue(device, "address", "/Description/Description", "value");
-                    deviceInfo.Manufacturer = DataTable_Functions.GetTableValue(device, "address", "/Description/Manufacturer", "value");
-                    deviceInfo.Model = DataTable_Functions.GetTableValue(device, "address", "/Description/Model", "value");
-                    deviceInfo.Serial = DataTable_Functions.GetTableValue(device, "address", "/Description/Serial", "value");
-                    deviceInfo.Id = DataTable_Functions.GetTableValue(device, "address", "/Description/Device_Id", "value");
+        //    if (devices != null)
+        //    {
+        //        foreach (var device in devices)
+        //        {
+        //            var deviceInfo = new DeviceInfo();
+        //            deviceInfo.Description = DataTable_Functions.GetTableValue(device, "address", "/Description/Description", "value");
+        //            deviceInfo.Manufacturer = DataTable_Functions.GetTableValue(device, "address", "/Description/Manufacturer", "value");
+        //            deviceInfo.Model = DataTable_Functions.GetTableValue(device, "address", "/Description/Model", "value");
+        //            deviceInfo.Serial = DataTable_Functions.GetTableValue(device, "address", "/Description/Serial", "value");
+        //            deviceInfo.Id = DataTable_Functions.GetTableValue(device, "address", "/Description/Device_Id", "value");
 
-                    Devices.Add(deviceInfo);
-                }
-            }
-        }
+        //            Devices.Add(deviceInfo);
+        //        }
+        //    }
+        //}
 
         void LoadDevices_GUI(List<Configuration> devices)
         {
@@ -141,20 +172,23 @@ namespace TH_DeviceManager
             {
                 foreach (var device in devices)
                 {
-                    var info = new DeviceInfo();
-                    info.Configuration = device;
-                    info.Description = device.Description.Description;
-                    info.Manufacturer = device.Description.Manufacturer;
-                    info.Model = device.Description.Model;
-                    info.Serial = device.Description.Serial;
-                    info.Id = device.Description.Device_ID;
-
-                    info.ClientEnabled = device.ClientEnabled;
-                    info.ServerEnabled = device.ServerEnabled;
-
-                    Devices.Add(info);
+                    AddDevice(device);
                 }
             }
+        }
+
+        public void AddDevice(Configuration config)
+        {
+            var info = new DeviceInfo(config);
+            Devices.Add(info);
+
+            Devices.Sort();
+        }
+
+        public void RemoveDevice(Configuration config)
+        {
+            int index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+            if (index >= 0) Devices.RemoveAt(index);
         }
 
         void LoadDevices_Finished()

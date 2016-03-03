@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Data;
 using System.Xml;
+using System.IO;
 
 using TH_Configuration;
 using TH_Global;
@@ -22,226 +26,102 @@ namespace TH_DeviceManager
 {
     public partial class DeviceManagerList
     {
+        
+        #region "Remove Devices"
 
-        //Configuration selecteddevice;
-        //public Configuration SelectedDevice
-        //{
-        //    get { return selecteddevice; }
-        //    set
-        //    {
-        //        selecteddevice = value;
-        //    }
-        //}
+        class RemoveDevices_Info
+        {
+            public List<DeviceInfo> DeviceInfos { get; set; }
+            public bool Success { get; set; }
+        }
 
-        //DeviceButton selecteddevicebutton;
-        //public DeviceButton SelectedDeviceButton
-        //{
-        //    get { return selecteddevicebutton; }
-        //    set
-        //    {
-        //        selecteddevicebutton = value;
-        //    }
-        //}
+        void RemoveDevices(List<DeviceInfo> infos)
+        {
+            string msg = null;
+            if (infos.Count == 1) msg = "Are you sure you want to permanently remove this device?";
+            else msg = "Are you sure you want to permanently remove these " + infos.Count.ToString() + " devices?";
 
-        //DataTable configurationtable;
-        //public DataTable ConfigurationTable
-        //{
-        //    get { return configurationtable; }
-        //    set
-        //    {
-        //        configurationtable = value;
-        //    }
-        //}
+            string title = null;
+            if (infos.Count == 1) msg = "Remove Device";
+            else msg = "Remove " + infos.Count.ToString() + " Devices";
 
-        //List<Configuration> _addedDevices;
-        //List<Configuration> AddedDevices
-        //{
-        //    get
-        //    {
-        //        if (_addedDevices == null) _addedDevices = new List<Configuration>();
-        //        return _addedDevices;
-        //    }
-        //    set
-        //    {
-        //        _addedDevices = value;
-        //    }
-        //}
+            bool? result = TH_WPF.MessageBox.Show(msg, title, TH_WPF.MessageBoxButtons.YesNo);
+            if (result == true)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevices_Worker), infos);
+            }
+        }
 
-        //List<Configuration> _sharedDevices;
-        //List<Configuration> SharedDevices
-        //{
-        //    get
-        //    {
-        //        if (_sharedDevices == null) _sharedDevices = new List<Configuration>();
-        //        return _sharedDevices;
-        //    }
-        //    set
-        //    {
-        //        _sharedDevices = value;
-        //    }
-        //}
+        void RemoveDevices_Worker(object o)
+        {
+            var removeInfo = new RemoveDevices_Info();
 
-        //#region "Remove Device"
+            if (o != null)
+            {
+                var infos = (List<DeviceInfo>)o;
 
-        //class RemoveDevice_Info
-        //{
-        //    public DeviceButton bt { get; set; }
-        //    public bool success { get; set; }
-        //}
+                removeInfo.DeviceInfos = infos;
 
-        //void RemoveDevice(DeviceButton bt)
-        //{
-        //    bool? result = TH_WPF.MessageBox.Show("Are you sure you want to permanently remove this device?", "Remove Device", TH_WPF.MessageBoxButtons.YesNo);
-        //    if (result == true)
-        //    {
-        //        ThreadPool.QueueUserWorkItem(new WaitCallback(RemoveDevice_Worker), bt);
-        //    }
-        //}
+                foreach (var info in infos)
+                {
+                    if (info.Configuration != null)
+                    {
+                        // If logged in then remove table
+                        if (currentuser != null) removeInfo.Success = Configurations.RemoveConfigurationTable(info.Configuration.TableName);
+                        // If not logged in then delete local configuration file
+                        else
+                        {
+                            string path = FileLocations.Devices + "\\" + info.Configuration.UniqueId + ".xml";
 
-        //void RemoveDevice_Worker(object o)
-        //{
-        //    RemoveDevice_Info info = new RemoveDevice_Info();
+                            if (File.Exists(path))
+                            {
+                                try
+                                {
+                                    File.Delete(path);
 
-        //    if (o != null)
-        //    {
-        //        DeviceButton bt = (DeviceButton)o;
+                                    removeInfo.Success = true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    Logger.Log("Remove Local Device :: Exception :: " + path + " :: " + ex.Message);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-        //        info.bt = bt;
+            this.Dispatcher.BeginInvoke(new Action<RemoveDevices_Info>(RemoveDevices_Finshed), PRIORITY_BACKGROUND, new object[] { removeInfo });
+        }
 
-        //        if (bt.Config != null)
-        //        {
-        //            if (bt.Config.TableName != null)
-        //            {
-        //                info.success = Configurations.RemoveConfigurationTable(bt.Config.TableName);
-        //            }
-        //        }
-        //    }
+        void RemoveDevices_Finshed(RemoveDevices_Info removeInfo)
+        {
+            if (removeInfo.Success)
+            {
+                foreach (var info in removeInfo.DeviceInfos)
+                {
+                    var config = info.Configuration;
 
-        //    this.Dispatcher.BeginInvoke(new Action<RemoveDevice_Info>(RemoveDevice_Finshed), PRIORITY_BACKGROUND, new object[] { info });
-        //}
+                    if (config != null)
+                    {
+                        // Raise DeviceUpdated Event
+                        var args = new DeviceUpdateArgs();
+                        args.Event = DeviceUpdateEvent.Removed;
+                        UpdateDevice(config, args);
+                    }
 
-        //void RemoveDevice_Finshed(RemoveDevice_Info info)
-        //{
-        //    if (info.success)
-        //    {
-        //        if (info.bt != null)
-        //        {
-        //            DeviceButton bt = info.bt;
+                    var index = Devices.ToList().FindIndex(x => x.UniqueId == info.UniqueId);
+                    if (index >= 0) Devices.RemoveAt(index);
+                }
+            }
+            else
+            {
+                TH_WPF.MessageBox.Show("An error occured while attempting to Remove Device. Please try again.", "Remove Device Error", MessageBoxButtons.Ok);
+                LoadDevices();
+            }
+        }
 
-        //            if (bt.Config != null)
-        //            {
-        //                if (SelectedDevice != null && SelectedDevice.UniqueId == bt.Config.UniqueId)
-        //                {
-        //                    SelectedDevice = null;
-        //                    CurrentPage = null;
-        //                    PageListShown = false;
-        //                }
-
-        //                // Raise DeviceUpdated Event
-        //                var args = new DeviceUpdateArgs();
-        //                args.Event = DeviceUpdateEvent.Removed;
-        //                UpdateDevice(bt.Config, args);
-        //            }
-
-        //            if (bt.Parent != null)
-        //            {
-        //                if (bt.Parent.GetType() == typeof(ListButton))
-        //                {
-        //                    ListButton lb = (ListButton)bt.Parent;
-
-        //                    if (DeviceList.Contains(lb)) DeviceList.Remove(lb);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        TH_WPF.MessageBox.Show("An error occured while attempting to Remove Device. Please try again.", "Remove Device Error", MessageBoxButtons.Ok);
-        //        LoadDevices();
-        //    }
-        //}
-
-        //#endregion
-
-        //#region "Add Device"
-
-        //private void AddDevice_GRID_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    foreach (TH_WPF.ListButton lb in DeviceList.OfType<TH_WPF.ListButton>()) lb.IsSelected = false;
-
-        //    SelectedDevice = null;
-        //    selectedPageIndex = 0;
-
-        //    AddDevice();
-        //}
-
-        //Pages.AddDevice.Page addPage;
-
-        //void AddDevice_Initialize()
-        //{
-        //    addPage = new Pages.AddDevice.Page();
-        //    addPage.deviceManager = this;
-        //    addPage.DeviceAdded += page_DeviceAdded;
-        //    addPage.currentuser = CurrentUser;
-        //    addPage.LoadCatalog();
-        //}
-
-        //public void AddDevice()
-        //{
-        //    PageListShown = false;
-        //    ToolbarShown = false;
-
-        //    if (CurrentPage != null)
-        //    {
-        //        if (CurrentPage.GetType() != typeof(Pages.AddDevice.Page))
-        //        {
-        //            CurrentPage = addPage;
-        //        }
-        //    }
-        //    else CurrentPage = addPage;
-        //}
-
-        //void page_DeviceAdded(Configuration config)
-        //{
-        //    AddDeviceButton(config);
-        //    ShowAddedDevices();
-
-        //    // Raise DeviceUpdated Event
-        //    var args = new DeviceUpdateArgs();
-        //    args.Event = DeviceUpdateEvent.Added;
-        //    UpdateDevice(config, args);
-        //}
-
-        //#endregion
-
-        //#region "Copy Device"
-
-        //Pages.CopyDevice.Page copyPage;
-
-        //void CopyDevice_Initialize()
-        //{
-        //    copyPage = new Pages.CopyDevice.Page();
-        //    copyPage.currentuser = CurrentUser;
-        //}
-
-        //public void CopyDevice(Configuration config)
-        //{
-        //    PageListShown = false;
-        //    ToolbarShown = false;
-
-        //    copyPage.LoadConfiguration(config);
-
-        //    if (CurrentPage != null)
-        //    {
-        //        if (CurrentPage.GetType() != typeof(Pages.CopyDevice.Page))
-        //        {
-        //            CurrentPage = copyPage;
-        //        }
-        //    }
-        //    else CurrentPage = copyPage;
-        //}
-
-        //#endregion
+        #endregion
 
         private bool ResetUpdateId(Configuration config, DeviceManagerType type)
         {
@@ -301,7 +181,6 @@ namespace TH_DeviceManager
             public bool Success { get; set; }
             public DeviceManagerType Type { get; set; }
             public object DataObject { get; set; }
-
         }
 
         void EnableDevice(DataGridCellCheckBox chk, DeviceManagerType type)
@@ -450,172 +329,154 @@ namespace TH_DeviceManager
 
         #endregion
 
-        //#region "Disable Device"
+        #region "Device Indexes"
 
-        //void DisableDevice(DeviceButton bt, DeviceManagerType type)
-        //{
-        //    bt.EnableLoading = true;
+        class DeviceIndex_Info
+        {
+            public bool Success { get; set; }
+            public Configuration Configuration { get; set; }
+            public int NewIndex { get; set; }
+        }
 
-        //    EnableDevice_Info info = new EnableDevice_Info();
-        //    info.bt = bt;
+        void ChangeDeviceIndex(int newIndex, Configuration config)
+        {
+            var info = new DeviceIndex_Info();
+            info.Configuration = config;
+            info.NewIndex = newIndex;
 
-        //    if (info.bt.Config != null)
-        //    {
-        //        ThreadPool.QueueUserWorkItem(new WaitCallback(DisableDevice_Worker), info);
-        //    }
-        //}
+            ThreadPool.QueueUserWorkItem(new WaitCallback(ChangeDeviceIndex_Worker), info);
+        }
 
-        //void DisableDevice_Worker(object o)
-        //{
-        //    if (o != null)
-        //    {
-        //        EnableDevice_Info info = (EnableDevice_Info)o;
+        void ChangeDeviceIndex_Worker(object o)
+        {
+            if (o != null)
+            {
+                var info = (DeviceIndex_Info)o;
 
-        //        // Save Changes
-        //        if (currentuser != null)
-        //        {
-        //            string tablename = info.bt.Config.TableName;
-        //            if (tablename != null)
-        //            {
-        //                if (ManagerType == DeviceManagerType.Client) info.success = Configurations.UpdateConfigurationTable("/ClientEnabled", "False", tablename);
-        //                else if (ManagerType == DeviceManagerType.Server) info.success = Configurations.UpdateConfigurationTable("/ServerEnabled", "False", tablename);
-        //            }
+                var config = info.Configuration;
 
-        //            if (info.success) info.success = UpdateEnabledXML(info.bt.Config.ConfigurationXML, false);
-        //            if (info.success) info.success = ResetUpdateId(info.bt.Config);
-        //        }
-        //        else
-        //        {
-        //            info.success = UpdateEnabledXML(info.bt.Config.ConfigurationXML, false);
-        //            if (info.success) info.success = ResetUpdateId(info.bt.Config);
-        //            if (info.success) info.success = SaveFileConfiguration(info.bt.Config);
-        //        }
+                // Save Changes
+                if (currentuser != null)
+                {
+                    string tablename = config.TableName;
+                    if (tablename != null) info.Success = Configurations.UpdateConfigurationTable("/Index", info.NewIndex.ToString(), tablename);
+                    if (info.Success) info.Success = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", info.NewIndex.ToString());
+                }
+                else
+                {
+                    info.Success = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", info.NewIndex.ToString());
+                    if (info.Success) info.Success = SaveFileConfiguration(config);
+                }
 
-        //        // If changes were successful, then update DeviceManager's Congifuration
-        //        if (info.success)
-        //        {
-        //            if (ManagerType == DeviceManagerType.Client) info.bt.Config.ClientEnabled = false;
-        //            else if (ManagerType == DeviceManagerType.Server) info.bt.Config.ServerEnabled = false;
-        //        }
+                // If changes were successful, then update DeviceManager's Congifuration
+                //*f (info.Success)config.Index = info.NewIndex;*/
 
-        //        this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), PRIORITY_BACKGROUND, new object[] { info });
-        //    }
-        //}
+                //this.Dispatcher.BeginInvoke(new Action<DeviceIndex_Info>(ChangeDeviceIndex_Finished), PRIORITY_BACKGROUND, new object[] { info });
+            }
+        }
 
-        //void DisableDevice_Finished(EnableDevice_Info info)
-        //{
-        //    if (info.bt != null)
-        //    {
-        //        if (info.success)
-        //        {
-        //            // Raise DeviceUpdated Event
-        //            var args = new DeviceUpdateArgs();
-        //            args.Event = DeviceUpdateEvent.Removed;
-        //            UpdateDevice(info.bt.Config, args);
+        void ChangeDeviceIndex_Finished(DeviceIndex_Info info)
+        {
+            if (info.Success)
+            {
+                //var config = info.Configuration;
 
-        //            info.bt.DeviceEnabled = false;
-        //        }
+                //int index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                //if (index >= 0) Devices[index].Index = info.NewIndex;
 
-        //        info.bt.EnableLoading = false;
-        //    }
-        //}
+               // Raise DeviceUpdated Event
+               //var args = new DeviceUpdateArgs();
+               // args.Event = DeviceUpdateEvent.Changed;
+               // UpdateDevice(config, args);
+            }
+        }
 
-        //#endregion
+        public static void SelectRowByIndexes(DataGrid dataGrid, params int[] rowIndexes)
+        {
+            if (!dataGrid.SelectionUnit.Equals(DataGridSelectionUnit.FullRow))
+                throw new ArgumentException("The SelectionUnit of the DataGrid must be set to FullRow.");
 
-        //#region "Select Device"
+            if (!dataGrid.SelectionMode.Equals(DataGridSelectionMode.Extended))
+                throw new ArgumentException("The SelectionMode of the DataGrid must be set to Extended.");
 
-        //public bool DeviceLoading
-        //{
-        //    get { return (bool)GetValue(DeviceLoadingProperty); }
-        //    set { SetValue(DeviceLoadingProperty, value); }
-        //}
+            if (rowIndexes.Length.Equals(0) || rowIndexes.Length > dataGrid.Items.Count)
+                throw new ArgumentException("Invalid number of indexes.");
 
-        //public static readonly DependencyProperty DeviceLoadingProperty =
-        //    DependencyProperty.Register("DeviceLoading", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+            dataGrid.SelectedItems.Clear();
+            foreach (int rowIndex in rowIndexes)
+            {
+                if (rowIndex < 0 || rowIndex > (dataGrid.Items.Count - 1))
+                    throw new ArgumentException(string.Format("{0} is an invalid row index.", rowIndex));
+
+                object item = dataGrid.Items[rowIndex]; //=Product X
+                dataGrid.SelectedItems.Add(item);
+
+                DataGridRow row = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex) as DataGridRow;
+                if (row == null)
+                {
+                    dataGrid.ScrollIntoView(item);
+                    row = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex) as DataGridRow;
+                }
+                if (row != null)
+                {
+                    DataGridCell cell = GetCell(dataGrid, row, 0);
+                    if (cell != null)
+                        cell.Focus();
+                }
+            }
+        }
 
 
-        //Thread selectDevice_THREAD;
+        public static DataGridCell GetCell(DataGrid dataGrid, DataGridRow rowContainer, int column)
+        {
+            if (rowContainer != null)
+            {
+                DataGridCellsPresenter presenter = FindVisualChild<DataGridCellsPresenter>(rowContainer);
+                if (presenter == null)
+                {
+                    /* if the row has been virtualized away, call its ApplyTemplate() method
+                     * to build its visual tree in order for the DataGridCellsPresenter
+                     * and the DataGridCells to be created */
+                    rowContainer.ApplyTemplate();
+                    presenter = FindVisualChild<DataGridCellsPresenter>(rowContainer);
+                }
+                if (presenter != null)
+                {
+                    DataGridCell cell = presenter.ItemContainerGenerator.ContainerFromIndex(column) as DataGridCell;
+                    if (cell == null)
+                    {
+                        /* bring the column into view
+                         * in case it has been virtualized away */
+                        dataGrid.ScrollIntoView(rowContainer, dataGrid.Columns[column]);
+                        cell = presenter.ItemContainerGenerator.ContainerFromIndex(column) as DataGridCell;
+                    }
+                    return cell;
+                }
+            }
+            return null;
+        }
 
-        //void lb_Device_Selected(TH_WPF.ListButton lb)
-        //{
-        //    Controls.DeviceButton db = (Controls.DeviceButton)lb.ButtonContent;
-        //    if (db != null)
-        //    {
-        //        if (db.Config != null)
-        //        {
-        //            if (SelectedDevice != db.Config)
-        //            {
-        //                SelectedDevice = db.Config;
 
-        //                SelectDevice(db.Config);
-        //            }
-        //        }
-        //    }
+        public static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            {
+                DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+                if (child != null && child is T)
+                    return (T)child;
+                else
+                {
+                    T childOfChild = FindVisualChild<T>(child);
+                    if (childOfChild != null)
+                        return childOfChild;
+                }
+            }
+            return null;
+        }
 
-        //    foreach (TH_WPF.ListButton olb in DeviceList.OfType<TH_WPF.ListButton>()) if (olb != lb) olb.IsSelected = false;
-        //    lb.IsSelected = true;
-        //}
 
-        //void SelectDevice(Configuration config)
-        //{
-        //    //if (SaveNeeded)
-        //    //{
-        //    //    bool? save = TH_WPF.MessageBox.Show("Do you want to Save changes?", "Save Changed", MessageBoxButtons.YesNo);
-        //    //    if (save == true)
-        //    //    {
 
-        //    //    }
-        //    //}
-
-        //    if (config != null)
-        //    {
-        //        DeviceLoading = true;
-
-        //        if (selectDevice_THREAD != null) selectDevice_THREAD.Abort();
-
-        //        selectDevice_THREAD = new Thread(new ParameterizedThreadStart(SelectDevice_Worker));
-        //        selectDevice_THREAD.Start(config);
-        //    }
-        //}
-
-        //void SelectDevice_Worker(object o)
-        //{
-        //    Configuration config = (Configuration)o;
-
-        //    DataTable dt = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
-        //    if (dt != null)
-        //    {
-        //        dt.TableName = config.TableName;
-
-        //        if (ConfigurationPages != null)
-        //        {
-        //            foreach (ConfigurationPage page in ConfigurationPages)
-        //            {
-        //                this.Dispatcher.BeginInvoke(new Action<DataTable>(page.LoadConfiguration), PRIORITY_BACKGROUND, new object[] { dt });
-        //            }
-        //        }
-        //    }
-
-        //    this.Dispatcher.BeginInvoke(new Action<DataTable>(SelectDevice_Finished), PRIORITY_BACKGROUND, new object[] { dt });
-        //}
-
-        //void SelectDevice_Finished(DataTable dt)
-        //{
-        //    ConfigurationTable = dt;
-
-        //    if (PageList.Count > 0)
-        //    {
-        //        if (PageList.Count > selectedPageIndex) Page_Selected((ListButton)PageList[selectedPageIndex]);
-        //        else Page_Selected((ListButton)PageList[0]);
-        //    }
-
-        //    DeviceLoading = false;
-        //    if (!PageListShown) PageListShown = true;
-        //    SaveNeeded = false;
-        //}
-
-        //#endregion
-
+        #endregion
 
     }
 }

@@ -13,6 +13,7 @@ using System.Data;
 using System.IO;
 
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TH_Configuration
 {
@@ -148,6 +149,8 @@ namespace TH_Configuration
                 // Set Unique Id to the filename
                 string filename = Path.GetFileNameWithoutExtension(path);
                 result.UniqueId = filename;
+                XML_Functions.SetInnerText(result.ConfigurationXML, "/UniqueId", result.UniqueId);
+
 
                 //Logger.Log("Configuration Successfully Read From : " + path);
             }
@@ -183,9 +186,7 @@ namespace TH_Configuration
 
         public static Configuration Read(XmlDocument xml)
         {
-            Configuration result = null;
-
-            result = new Configuration();
+            var result = new Configuration();
 
             result.ConfigurationXML = xml;
 

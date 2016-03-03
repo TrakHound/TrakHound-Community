@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              
              xmlns:controls="clr-namespace:TH_DeviceManager.Controls"
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
@@ -19,7 +19,6 @@
             </ResourceDictionary.MergedDictionaries>
 
             <SolidColorBrush x:Key="LightBorder" Color="#aaa"/>
-
 
             <Style TargetType="{x:Type DataGrid}">
                 <!--<Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />-->
@@ -75,39 +74,50 @@
                 </Setter>
             </Style>
 
+            <ContextMenu x:Key="DataGridRowContextMenu_None">
+                <controls:DataGridMenuItem Header="Add Device.." DataObject="{Binding}" Click="Add_DataGridRowContextMenu_Click"/>
+            </ContextMenu>
+            
+            <ContextMenu x:Key="DataGridRowContextMenu_Single">
+                <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
+                <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>
+                <Separator/>
+                <controls:DataGridMenuItem Header="Copy.." DataObject="{Binding}" Click="Copy_DataGridRowContextMenu_Click"/>
+                <Separator/>
+                <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
+                <Separator/>
+                <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
+                <controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Share_DataGridRowContextMenu_Click"/>
+            </ContextMenu>
+
+            <ContextMenu x:Key="DataGridRowContextMenu_Multiple">
+                <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
+                <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>
+                <Separator/>
+                <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
+                <Separator/>
+                <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
+            </ContextMenu>
+
             <Style TargetType="DataGridRow">
                 <Setter Property="Background" Value="#00000000" />
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
                 <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
                 <Setter Property="MinHeight" Value="35"/>
-                <Setter Property="ContextMenu">
-                    <Setter.Value>
-                        <ContextMenu>
-                            <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_Click"/>
-                            <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_Click"/>
-                            <Separator/>
-                            <controls:DataGridMenuItem Header="Copy.." DataObject="{Binding}" Click="Option2MenuItem_Click"/>
-                            <controls:DataGridMenuItem Header="Paste" DataObject="{Binding}" Click="Option2MenuItem_Click"/>
-                            <Separator/>
-                            <controls:DataGridMenuItem Header="Delete" DataObject="{Binding}" Click="Option2MenuItem_Click"/>
-                            <Separator/>
-                            <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Option2MenuItem_Click"/>
-                            <controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Option2MenuItem_Click"/>
-                        </ContextMenu>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <!--<Setter Property="BorderBrush" Value="{StaticResource LightBorder}"/>-->
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     </Trigger>
                     <Trigger Property="IsSelected" Value="true">
                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <!--<Setter Property="BorderBrush" Value="#00000000"/>-->
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     </Trigger>
+                    <DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
+                        <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
+                    </DataTrigger>
                 </Style.Triggers>
             </Style>
 
@@ -174,6 +184,7 @@
     <Grid Background="{StaticResource Window_Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -191,6 +202,9 @@
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#33ffffff"/>
                             </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                     <Style TargetType="Rectangle">
@@ -200,38 +214,66 @@
                     </Style>
                 </StackPanel.Resources>
 
+                <!--Add Device-->
+                <th_wpf:Button Image="Resources/Add_01.png" Text="Add Device" ToolTip="Add Device" Clicked="Add_Toolbar_Clicked"/>
+
+                <!--Separator-->
+                <Rectangle />
+
                 <!--Move Device(s) Up-->
-                <th_wpf:Button Image="Resources/Arrow_Up_01.png" ToolTip="Move Device(s) Up in List"/>
+                <th_wpf:Button Image="Resources/Arrow_Up_01.png" ToolTip="Move Device(s) Up in List" Clicked="MoveUp_Toolbar_Clicked"/>
 
                 <!--Move Device(s) Down-->
-                <th_wpf:Button Image="Resources/Arrow_Down_01.png" ToolTip="Move Device(s) Down in List"/>
+                <th_wpf:Button Image="Resources/Arrow_Down_01.png" ToolTip="Move Device(s) Down in List" Clicked="MoveDown_Toolbar_Clicked"/>
 
                 <!--Separator-->
                 <Rectangle />
 
                 <!--Copy Device(s)-->
-                <th_wpf:Button Image="Resources/Copy_01.png" ToolTip="Copy Device(s)"/>
+                <th_wpf:Button Image="Resources/Copy_01.png" ToolTip="Copy Device" Clicked="Copy_Toolbar_Clicked">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                            <Setter Property="IsEnabled" Value="false"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedItems.Count, ElementName=Device_DG}" Value="1">
+                                    <Setter Property="IsEnabled" Value="true"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
                 <!--Remove Device(s)-->
-                <th_wpf:Button Image="Resources/X_01.png" ToolTip="Remove Device(s)" Padding="8"/>
+                <th_wpf:Button Image="Resources/X_01.png" ToolTip="Remove Device(s)" Padding="8" Clicked="Remove_Toolbar_Clicked"/>
 
                 <!--Separator-->
                 <Rectangle />
 
                 <!--Refresh Device List-->
-                <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Clicked"/>
+                <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Toolbar_Clicked"/>
 
                 <!--Separator-->
                 <Rectangle />
 
                 <!--Edit Device(s)-->
-                <th_wpf:Button Image="Resources/Edit_02.png" Text="Edit" ToolTip="Edit Device(s)" Clicked="Edit_Mulitple_Clicked"/>
+                <th_wpf:Button Image="Resources/Edit_02.png" Text="Edit" ToolTip="Edit Device(s)" Clicked="Edit_Toolbar_Clicked"/>
 
                 <!--Separator-->
                 <Rectangle />
 
                 <!--Share Device(s)-->
-                <th_wpf:Button Image="Resources/Share_01.png" Text="Share" ToolTip="Share Device(s) by Adding to TrakHound's Device Catalog"/>
+                <th_wpf:Button Image="Resources/Share_01.png" Text="Share" ToolTip="Share Device by Adding to TrakHound's Device Catalog" Clicked="Share_Toolbar_Clicked">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                            <Setter Property="IsEnabled" Value="false"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SelectedItems.Count, ElementName=Device_DG}" Value="1">
+                                    <Setter Property="IsEnabled" Value="true"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
             </StackPanel>
 
@@ -277,11 +319,17 @@
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
                 <DataGridTextColumn Header="Serial" Binding="{Binding Serial}"/>
-                <DataGridTextColumn Header="Device ID" Binding="{Binding Device_Id}"/>
+                <DataGridTextColumn Header="Device ID" Binding="{Binding Id}"/>
+
+                <DataGridTextColumn Header="Index" Binding="{Binding Index}"/>
+                
+                <DataGridTextColumn Header="Unique ID" Binding="{Binding UniqueId}"/>
 
             </DataGrid.Columns>
 
         </DataGrid>
+
+        <Grid Grid.Row="2" PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent" ContextMenu="{StaticResource DataGridRowContextMenu_None}"/>
 
     </Grid>
 
