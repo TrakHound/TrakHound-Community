@@ -282,12 +282,14 @@ namespace TrakHound_Client
             devicemanager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
             devicemanager.DeviceUpdated += Devicemanager_DeviceUpdated;
             devicemanager.DeviceEditSelected += Devicemanager_DeviceEditSelected;
+            devicemanager.DeviceEditTableSelected += Devicemanager_DeviceEditTableSelected;
 
             //devicemanager = new DeviceManager(DeviceManagerType.Client);
             //devicemanager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
             //devicemanager.DeviceUpdated += Devicemanager_DeviceUpdated;
             //devicemanager.LoadingDevices += Devicemanager_LoadingDevices;
         }
+
 
         private void Devicemanager_DeviceEditSelected(TH_Configuration.Configuration config)
         {
@@ -302,6 +304,24 @@ namespace TrakHound_Client
             else
             {
                 var page = new DeviceManagerPage(config, DeviceManagerType.Client);
+
+                AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
+            }
+        }
+
+        private void Devicemanager_DeviceEditTableSelected(TH_Configuration.Configuration config)
+        {
+            string title = "Table - " + config.Description.Description;
+            if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
+
+            var index = PageTabHeaders.ToList().FindIndex(x => x.Text == title);
+            if (index >= 0)
+            {
+                AddPageAsTab(null, title, null);
+            }
+            else
+            {
+                var page = new DeviceManagerTable(config);
 
                 AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
             }

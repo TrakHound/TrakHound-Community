@@ -54,11 +54,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="DeviceManagerTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="DeviceManagerPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DeviceManager - Copy.xaml">
+    <Page Include="DeviceManagerList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -116,11 +120,17 @@
     <Compile Include="Device Manager Page\Plugins.cs" />
     <Compile Include="Device Manager Page\Save Configuration.cs" />
     <Compile Include="Device Manager Page\User.cs" />
+    <Compile Include="Device Manager Table\Load Configuration.cs" />
+    <Compile Include="Device Manager Table\Save Configuration.cs" />
+    <Compile Include="Device Manager Table\User.cs" />
+    <Compile Include="DeviceManagerTable.xaml.cs">
+      <DependentUpon>DeviceManagerTable.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DeviceManagerPage.xaml.cs">
       <DependentUpon>DeviceManagerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceManager - Copy.xaml.cs">
-      <DependentUpon>DeviceManager - Copy.xaml</DependentUpon>
+    <Compile Include="DeviceManagerList.xaml.cs">
+      <DependentUpon>DeviceManagerList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Device Manager\Device Buttons.cs" />
     <Compile Include="Device Manager\Manage Devices.cs" />
@@ -318,6 +328,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\MTConnect_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Edit_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Edit_02.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

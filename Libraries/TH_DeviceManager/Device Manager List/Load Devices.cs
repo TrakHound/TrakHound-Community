@@ -23,9 +23,6 @@ namespace TH_DeviceManager
         public delegate void DevicesLoaded_Handler(List<Configuration> configs);
         public event DevicesLoaded_Handler DeviceListUpdated;
 
-        public delegate void DeviceEditSelected_Handler(Configuration config);
-        public event DeviceEditSelected_Handler DeviceEditSelected;
-
         public enum DeviceUpdateEvent
         {
             Added,

@@ -4,37 +4,10 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Threading;
-
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-
-using System.IO;
-using System.Collections.ObjectModel;
-using System.Xml;
-using System.Data;
-
 using TH_Configuration;
-using TH_Database;
-using TH_Global;
-using TH_Global.Functions;
-using TH_Plugins_Server;
 using TH_UserManagement.Management;
-using TH_WPF;
 
 using TH_DeviceManager.Controls;
 
@@ -62,6 +35,10 @@ namespace TH_DeviceManager
             }
         }
 
+        public delegate void DeviceEditSelected_Handler(Configuration config);
+        public event DeviceEditSelected_Handler DeviceEditSelected;
+        public event DeviceEditSelected_Handler DeviceEditTableSelected;
+
 
         const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
 
@@ -70,15 +47,13 @@ namespace TH_DeviceManager
             TH_WPF.MessageBox.Show("Click");
         }
 
-        private void Edit_Clicked(TH_WPF.Button bt)
-        {
-            if (bt.DataObject != null)
-            {
-                var info = (DeviceInfo)bt.DataObject;
 
-                if (DeviceEditSelected != null) DeviceEditSelected(info.Configuration);
-            } 
-        }
+
+
+
+
+
+        #region "Datarow Buttons"
 
         private void ClientEnabled_Checked(object sender, RoutedEventArgs e)
         {
@@ -100,14 +75,60 @@ namespace TH_DeviceManager
             DisableDevice((DataGridCellCheckBox)sender, DeviceManagerType.Server);
         }
 
-        private void Option1MenuItem_Click(object sender, RoutedEventArgs e)
+        private void Edit_Clicked(TH_WPF.Button bt)
         {
-            var menuItem = (Controls.DataGridMenuItem)sender;
+            if (bt.DataObject != null)
+            {
+                var info = (DeviceInfo)bt.DataObject;
+
+                if (DeviceEditSelected != null) DeviceEditSelected(info.Configuration);
+            }
+        }
+
+        #endregion
+
+        #region "Toolbar Buttons"
+
+        private void Edit_Mulitple_Clicked(TH_WPF.Button bt)
+        {
+            foreach (var device in Device_DG.SelectedItems)
+            {
+                var info = (DeviceInfo)device;
+
+                if (DeviceEditSelected != null) DeviceEditSelected(info.Configuration);
+            }
+        }
+
+        private void Refresh_Clicked(TH_WPF.Button bt)
+        {
+            LoadDevices();
+        }
+
+        #endregion
+
+        #region "Context Menu Buttons"
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var device in Device_DG.SelectedItems)
+            {
+                var info = (DeviceInfo)device;
+
+                if (DeviceEditSelected != null) DeviceEditSelected(info.Configuration);
+            }
+        }
+
+        private void EditTable_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (DataGridMenuItem)sender;
             if (menuItem.DataObject != null)
             {
                 var deviceInfo = (DeviceInfo)menuItem.DataObject;
 
-                TH_WPF.MessageBox.Show("Option1 :: " + deviceInfo.Description);
+                if (deviceInfo.Configuration != null)
+                {
+                    if (DeviceEditTableSelected != null) DeviceEditTableSelected(deviceInfo.Configuration);
+                }
             }
         }
 
@@ -122,12 +143,14 @@ namespace TH_DeviceManager
             }
         }
 
-    }
+        #endregion
 
-    //public enum DeviceManagerType
-    //{
-    //    Client = 0,
-    //    Server = 1
-    //}
+        private void Button_Clicked(TH_WPF.Button bt)
+        {
+
+        }
+
+
+    }
 
 }
