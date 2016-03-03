@@ -10,7 +10,7 @@ Note: Versions of TrakHound previous to Beta v1.7.0 may have not followed this p
 ## v1.8.0
 - [ ] Redesign Device Manager to be easier to manage multiple machines (10+)
 
-## v1.7.0
+## [v1.7.0](../../../TrakHound/releases/tag/v1.7.0-beta)
 - [x] Add SQLite plugin to main project to enable use of SQLite databases
 
 ## [v1.6.2](../../../TrakHound/releases/tag/v1.6.2-beta)
