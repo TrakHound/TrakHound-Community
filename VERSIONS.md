@@ -7,8 +7,11 @@ TrakHound build version scheme is defined below:
 
 Note: Versions of TrakHound previous to Beta v1.7.0 may have not followed this pattern exactly.
 
+## v1.8.0
+- [ ] Redesign Device Manager to be easier to manage multiple machines (10+)
+
 ## v1.7.0
-- [ ] Add SQLite plugin to main project to enable use of SQLite databases
+- [x] Add SQLite plugin to main project to enable use of SQLite databases
 
 ## [v1.6.2](../../../TrakHound/releases/tag/v1.6.2-beta)
 - [x] Fixed [Issue #2](../../../TrakHound/issues/2)
