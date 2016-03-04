@@ -86,6 +86,23 @@ namespace TH_DeviceManager
             {
                 // Get Added Configurations
                 devices = Configurations.GetConfigurationsListForUser(currentuser);
+
+                devices = devices.OrderBy(x => x.Index).ToList();
+
+                // Reset order to be in intervals of 1000 in order to leave room in between for changes in index
+                // This index model allows for devices to change index without having to update every device each time.
+                for (var x = 0; x <= devices.Count - 1; x++)
+                {
+                    devices[x].Index = 1000 + (1000 * x);
+                }
+
+                var indexItems = new List<Tuple<string, int>>();
+
+                foreach (var device in devices) indexItems.Add(new Tuple<string, int>(device.TableName, device.Index));
+
+                Configurations.UpdateIndexes(indexItems);
+
+
                 this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { devices });
             }
             // If not logged in Read from File in 'C:\TrakHound\'
@@ -95,33 +112,14 @@ namespace TH_DeviceManager
 
                 devices = devices.OrderBy(x => x.Index).ToList();
 
+                // Reset order to be in intervals of 1000 in order to leave room in between for changes in index
+                // This index model allows for devices to change index without having to update every device each time.
                 for (var x = 0; x <= devices.Count - 1; x++)
                 {
-                    //if (x == 0) aboveIndex = 1000;
-                    //else aboveIndex = devices[x - 1].Index;
-
-                    //if (x < devices.Count - 1) belowIndex = devices[x + 1].Index;
-
-                    //if (belowIndex < aboveIndex) belowIndex = aboveIndex + 2000;
-
-
-                    //int index = devices[x].Index;
-
-                    //if (index < aboveIndex || index > belowIndex)
-                    //{
-                    //    index = aboveIndex + ((belowIndex - aboveIndex) / 2);
-                    //}
-
                     devices[x].Index = 1000 + (1000 * x);
                 }
 
-                foreach (var device in devices)
-                {
-                    Console.WriteLine(device.UniqueId + " :: " + device.Index.ToString());
-
-                    Console.WriteLine(XML_Functions.SetInnerText(device.ConfigurationXML, "/Index", device.Index.ToString()));
-                    SaveFileConfiguration(device);
-                }
+                foreach (var device in devices) SaveFileConfiguration(device);
 
                 this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { devices });
             }

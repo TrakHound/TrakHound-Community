@@ -249,6 +249,42 @@ namespace TH_UserManagement.Management.Remote
         //    return result;
         //}
 
+        public static bool UpdateIndexes(List<Tuple<string, int>> items)
+        {
+            bool result = false;
+
+            if (items != null)
+            {
+                string columns = " (address, value) ";
+                string query = "";
+
+                foreach (var item in items)
+                {
+                    string tablename = item.Item1;
+                    string index = item.Item2.ToString();
+
+                    string set = " VALUES ('/Index', '" + index + "')";
+
+                    string update = " ON DUPLICATE KEY UPDATE value='" + index + "'";
+
+                    query += "INSERT IGNORE INTO " + tablename + columns + set + update + "; ";
+                }
+
+                NameValueCollection values = new NameValueCollection();
+
+                values["query"] = query;
+
+                string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
+
+
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+            }
+
+            return result;
+        }
+
         public static bool Update(string tableName, DataTable dt)
         {
             bool result = false;

@@ -75,10 +75,9 @@ namespace TH_DeviceManager
             public int DeviceIndex { get; set; }
         }
 
-        private void MoveUpClicked()
-        {
-            Move(1);
-        }
+        private void MoveUpClicked() { Move(1); }
+
+        private void MoveDownClicked() { Move(-1); }
 
         /// <summary>
         /// Move Item Index in DeviceInfo list. 
@@ -123,24 +122,12 @@ namespace TH_DeviceManager
                     {
                         int adjChange = 0;
                         if (change > 0) adjChange = change + ((selectedItems.Count - 1) - x);
-                        //else if (change < 0) adjChange = change - ((selectedItems.Count - 1) - x);
                         else if (change < 0) adjChange = change - x;
 
                         var deviceInfo = (DeviceInfo)selectedItems[x];
 
                         int listIndex = items.IndexOf(selectedItems[x]);
 
-                        // Check if still valid (maybe not needed if checked above but just to be safe)
-                        //valid = false;
-                        //if (change > 0) valid = listIndex > 0;
-                        //else if (change < 0) valid = listIndex < items.Count - 1;
-
-                        //if (valid)
-                        //{
-
-
-                        // Set new index
-                        //int newIndex = refIndex - change;
                         int newIndex = refIndex - adjChange;
 
                         string a = deviceInfo.Index.ToString();
@@ -151,13 +138,12 @@ namespace TH_DeviceManager
                         string e = adjChange.ToString();
 
                         if (change > 0) Console.WriteLine("Move Up :: " + a + " to " + b + " above " + a1 + " :: " + c + " to " + d + " :: " + e);
-                            else if (change < 0) Console.WriteLine("Move Down :: " + a + " to " + b + " below " + a1 + " :: " + c + " to " + d + " :: " + e);
+                        else if (change < 0) Console.WriteLine("Move Down :: " + a + " to " + b + " below " + a1 + " :: " + c + " to " + d + " :: " + e);
 
                         ChangeDeviceIndex(newIndex, deviceInfo.Configuration);
 
-                            var info = new MoveInfo(listIndex, listIndex - change, newIndex);
-                            infos.Add(info);
-                        //}
+                        var info = new MoveInfo(listIndex, listIndex - change, newIndex);
+                        infos.Add(info);
                     }
 
                     // Create new array for selecting rows after sorting
@@ -182,120 +168,6 @@ namespace TH_DeviceManager
                     SelectRowByIndexes(Device_DG, selectedIndexes);
                 }
             }
-        }
-
-        private void MoveDownClicked()
-        {
-            Move(-1);
-
-            //var items = Device_DG.Items;
-            //var selectedItems = Device_DG.SelectedItems;
-
-            //int[,] newIndexes = new int[selectedItems.Count, 2];
-
-            //if (selectedItems.Count > 0)
-            //{
-            //    int lastIndex = items.IndexOf(selectedItems[selectedItems.Count - 1]);
-            //    if (lastIndex < items.Count - 1)
-            //    {
-            //        for (var x = 0; x <= selectedItems.Count - 1; x++)
-            //        {
-            //            var info = (DeviceInfo)selectedItems[x];
-
-            //            int index = info.Index;
-
-            //            int listIndex = items.IndexOf(selectedItems[x]);
-
-            //            if (listIndex < items.Count - 1)
-            //            {
-            //                var belowInfo = (DeviceInfo)items[listIndex + 1];
-            //                int belowIndex = belowInfo.Index;
-
-            //                //int newIndex = belowIndex + (Math.Abs(index - belowIndex) / 2);
-            //                int newIndex = belowIndex + 1;
-
-            //                Console.WriteLine("Move Down :: " + index.ToString() + " to " + newIndex.ToString());
-
-            //                ChangeDeviceIndex(newIndex, info.Configuration);
-
-            //                newIndexes[x, 0] = listIndex;
-            //                newIndexes[x, 1] = listIndex + 1;
-            //            }
-            //        }
-
-            //        int[] selectedIndexes = new int[newIndexes.GetLength(0)];
-
-            //        for (var i = 0; i <= newIndexes.GetLength(0) - 1; i++)
-            //        {
-            //            int oldIndex = newIndexes[i, 0];
-            //            int newIndex = newIndexes[i, 1];
-
-            //            var info = (DeviceInfo)items[oldIndex];
-
-            //            info.Configuration.Index = newIndex;
-            //            info.Index = newIndex;
-
-            //            selectedIndexes[i] = newIndex;
-            //        }
-
-            //        Devices.Sort();
-
-            //        SelectRowByIndexes(Device_DG, selectedIndexes);
-            //    }
-            //}
-
-            ////var items = Device_DG.Items;
-            ////var selectedItems = Device_DG.SelectedItems;
-
-            ////int[,] newIndexes = new int[selectedItems.Count, 2];
-
-            ////if (selectedItems.Count > 0)
-            ////{
-            ////    int lastIndex = items.IndexOf(selectedItems[selectedItems.Count - 1]);
-            ////    if (lastIndex < items.Count - 1)
-            ////    {
-            ////        for (var x = 0; x <= selectedItems.Count - 1; x++)
-            ////        {
-            ////            var info = (DeviceInfo)selectedItems[x];
-
-            ////            int index = info.Index;
-
-            ////            int listIndex = items.IndexOf(selectedItems[x]);
-
-            ////            if (listIndex < items.Count - 1)
-            ////            {
-            ////                var belowInfo = (DeviceInfo)items[listIndex + 1];
-            ////                int belowIndex = belowInfo.Index;
-
-            ////                //int newIndex = belowIndex + (Math.Abs(index - belowIndex) / 2);
-            ////                int newIndex = belowIndex + 1;
-
-            ////                Console.WriteLine("Move Down :: " + index.ToString() + " to " + newIndex.ToString());
-
-            ////                ChangeDeviceIndex(newIndex, info.Configuration);
-
-            ////                newIndexes[x, 0] = listIndex;
-            ////                newIndexes[x, 1] = listIndex + 1;
-            ////            }
-            ////        }
-
-            ////        int[] selectedIndexes = new int[newIndexes.GetLength(0)];
-
-            ////        for (var i = 0; i <= newIndexes.GetLength(0) - 1; i++)
-            ////        {
-            ////            var info = (DeviceInfo)items[newIndexes[i,0]];
-
-            ////            info.Configuration.Index = newIndexes[i,1];
-            ////            info.Index = newIndexes[i, 1];
-
-            ////            selectedIndexes[i] = newIndexes[i, 1];
-            ////        }
-
-            ////        Devices.Sort();
-
-            ////        SelectRowByIndexes(Device_DG, selectedIndexes);
-            ////    }
-            ////}
         }
 
         private void EditClicked()

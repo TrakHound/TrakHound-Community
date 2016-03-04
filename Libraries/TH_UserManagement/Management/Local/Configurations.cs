@@ -124,6 +124,33 @@ namespace TH_UserManagement.Management.Local
             return true;
         }
 
+        public static bool UpdateIndexes(List<Tuple<string, int>> items, Database_Settings db)
+        {
+            bool result = false;
+
+            if (items != null)
+            {
+                string columns = " (address, value) ";
+                string query = "";
+
+                foreach (var item in items)
+                {
+                    string tablename = item.Item1;
+                    string index = item.Item2.ToString();
+
+                    string set = " VALUES ('/Index', '" + index + "')";
+
+                    string update = " ON DUPLICATE KEY UPDATE value='" + index + "'";
+
+                    query += "INSERT IGNORE INTO " + tablename + columns + set + update + "; ";
+                }
+
+                Etc.CustomCommand(db, query);
+            }
+
+            return result;
+        }
+
         public static bool Update(string tableName, DataTable dt, Database_Settings db)
         {
             bool result = false;

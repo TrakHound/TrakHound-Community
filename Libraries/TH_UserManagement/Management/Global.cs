@@ -206,6 +206,22 @@ namespace TH_UserManagement.Management
             return result;
         }
 
+        public static bool UpdateIndexes(List<Tuple<string, int>> items)
+        {
+            bool result = false;
+
+            if (UserManagementSettings.Database == null)
+            {
+                result = Remote.Configurations.UpdateIndexes(items);
+            }
+            else
+            {
+                result = Local.Configurations.UpdateIndexes(items, UserManagementSettings.Database);
+            }
+
+            return result;
+        }
+
         public static bool UpdateConfigurationTable(string tableName, DataTable dt)
         {
             bool result = false;
