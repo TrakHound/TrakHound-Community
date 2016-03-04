@@ -367,27 +367,6 @@ namespace TH_DeviceManager
                     info.Success = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", info.NewIndex.ToString());
                     if (info.Success) info.Success = SaveFileConfiguration(config);
                 }
-
-                // If changes were successful, then update DeviceManager's Congifuration
-                //*f (info.Success)config.Index = info.NewIndex;*/
-
-                //this.Dispatcher.BeginInvoke(new Action<DeviceIndex_Info>(ChangeDeviceIndex_Finished), PRIORITY_BACKGROUND, new object[] { info });
-            }
-        }
-
-        void ChangeDeviceIndex_Finished(DeviceIndex_Info info)
-        {
-            if (info.Success)
-            {
-                //var config = info.Configuration;
-
-                //int index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                //if (index >= 0) Devices[index].Index = info.NewIndex;
-
-               // Raise DeviceUpdated Event
-               //var args = new DeviceUpdateArgs();
-               // args.Event = DeviceUpdateEvent.Changed;
-               // UpdateDevice(config, args);
             }
         }
 

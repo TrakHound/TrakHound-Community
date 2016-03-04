@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-17-1630047664
+19-1742067815
 
-412052391425
+431351916274
 22587088619
-DeviceManagerTable.xaml;DeviceManagerPage.xaml;DeviceManagerList.xaml;Pages\AddDevice\Controls\SharedItem.xaml;Pages\AddShare\Page.xaml;Pages\CopyDevice\Page.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\DeviceButton.xaml;Controls\PageItem.xaml;Pages\AddDevice\Page.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;DeviceManager.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;Pages\DeviceList\Page.xaml;Pages\General\Page.xaml;
+AddDevice\Controls\DeviceItem.xaml;AddDevice\Page.xaml;DeviceManagerTable.xaml;DeviceManagerPage.xaml;DeviceManagerList.xaml;Pages\AddDevice\Controls\SharedItem.xaml;Pages\AddShare\Page.xaml;Pages\CopyDevice\Page.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\DeviceButton.xaml;Controls\PageItem.xaml;Pages\AddDevice\Page.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;DeviceManager.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;Pages\DeviceList\Page.xaml;Pages\General\Page.xaml;
 
 False
 

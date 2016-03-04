@@ -19,13 +19,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource Window_Background}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="800"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid>
+        <Grid Margin="40,20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -51,8 +51,6 @@
                 <TextBlock Text="Add a New Device" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
             </StackPanel>
-
-            <!--<TextBlock Text="Add a New Device" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,10"/>-->
 
             <TextBlock Grid.Row="1" FontSize="10pt" TextWrapping="Wrap" Foreground="{StaticResource Foreground_Light}" Margin="10,10,10,30">
                 Add a new device using the catalog.

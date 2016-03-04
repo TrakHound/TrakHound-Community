@@ -54,6 +54,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
+    <Page Include="AddDevice\Controls\DeviceItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddDevice\Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DeviceManagerTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,6 +117,12 @@
     <None Include="Controls\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </None>
+    <Compile Include="AddDevice\Controls\DeviceItem.xaml.cs">
+      <DependentUpon>DeviceItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddDevice\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DataGrid Controls.cs" />
     <Compile Include="Device Manager List\DeviceInfo.cs" />
     <Compile Include="Device Manager List\Load Devices.cs" />

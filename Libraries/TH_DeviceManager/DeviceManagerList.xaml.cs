@@ -53,7 +53,6 @@ namespace TH_DeviceManager
         public event PageSelected_Handler AddDeviceSelected;
 
 
-
         const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
 
         private void AddClicked()

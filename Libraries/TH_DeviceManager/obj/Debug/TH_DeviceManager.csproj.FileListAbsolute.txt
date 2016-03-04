@@ -116,3 +116,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManager
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManagerList.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManagerTable.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\DeviceManagerTable.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Controls\DeviceItem.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Controls\DeviceItem.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Page.baml

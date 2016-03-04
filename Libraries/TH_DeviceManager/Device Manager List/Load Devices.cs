@@ -127,40 +127,7 @@ namespace TH_DeviceManager
             configurations = devices.ToList();
 
             this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), PRIORITY_BACKGROUND, new object[] { });
-
-            //if (currentuser != null)
-            //{
-            //    // Get Added Configurations
-            //    var devices = Configurations.GetDeviceInfoList(currentuser);
-            //    this.Dispatcher.BeginInvoke(new Action<List<DataTable>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { devices });
-            //}
-            //// If not logged in Read from File in 'C:\TrakHound\'
-            //else
-            //{
-            //    var devices = Configuration.ReadAll(FileLocations.Devices).ToList();
-            //    this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { devices });
-            //}
         }
-
-        //void LoadDevices_GUI(List<DataTable> devices)
-        //{
-        //    Devices.Clear();
-
-        //    if (devices != null)
-        //    {
-        //        foreach (var device in devices)
-        //        {
-        //            var deviceInfo = new DeviceInfo();
-        //            deviceInfo.Description = DataTable_Functions.GetTableValue(device, "address", "/Description/Description", "value");
-        //            deviceInfo.Manufacturer = DataTable_Functions.GetTableValue(device, "address", "/Description/Manufacturer", "value");
-        //            deviceInfo.Model = DataTable_Functions.GetTableValue(device, "address", "/Description/Model", "value");
-        //            deviceInfo.Serial = DataTable_Functions.GetTableValue(device, "address", "/Description/Serial", "value");
-        //            deviceInfo.Id = DataTable_Functions.GetTableValue(device, "address", "/Description/Device_Id", "value");
-
-        //            Devices.Add(deviceInfo);
-        //        }
-        //    }
-        //}
 
         void LoadDevices_GUI(List<Configuration> devices)
         {
@@ -193,76 +160,6 @@ namespace TH_DeviceManager
         {
             UpdateDeviceList();
         }
-
-        //void LoadDevices_Worker()
-        //{
-        //    var added = new List<Configuration>();
-        //    var shared = new List<Configuration>();
-
-        //    if (currentuser != null)
-        //    {
-        //        // Get Added Configurations
-        //        added = Configurations.GetConfigurationsListForUser(currentuser);
-
-        //        // Get shared configurations that are owned by the user
-        //        shared = Shared.GetOwnedSharedConfigurations(currentuser);
-        //    }
-        //    // If not logged in Read from File in 'C:\TrakHound\'
-        //    else
-        //    {
-        //        added = Configuration.ReadAll(FileLocations.Devices).ToList();
-        //    }
-
-        //    this.Dispatcher.BeginInvoke(new Action<List<Configuration>, List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { added, shared });
-        //}
-
-        //void LoadDevices_GUI(List<Configuration> added, List<Configuration> shared)
-        //{
-        //    configurations = added;
-
-        //    // Add the 'added' configurations to the list
-        //    if (added != null)
-        //    {
-        //        var orderedAddedConfigs = added.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
-
-        //        // Create DevicesList based on Configurations
-        //        foreach (Configuration config in orderedAddedConfigs)
-        //        {
-        //            AddedDevices.Add(config);
-        //            this.Dispatcher.BeginInvoke(new Action<Configuration>(AddDeviceButton), PRIORITY_BACKGROUND, new object[] { config });
-        //        }
-        //    }
-
-        //    // Add the owned configurations to the 'shared' list
-        //    if (shared != null)
-        //    {
-        //        var orderedSharedConfigs = shared.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
-
-        //        // Create DevicesList based on Configurations
-        //        foreach (Configuration config in orderedSharedConfigs)
-        //        {
-        //            SharedDevices.Add(config);
-        //            this.Dispatcher.BeginInvoke(new Action<Configuration>(AddSharedDeviceButton), PRIORITY_BACKGROUND, new object[] { config });
-        //        }
-        //    }
-
-        //    this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), PRIORITY_BACKGROUND, null);
-        //}
-
-        //void LoadDevices_Finished()
-        //{
-        //    ShowAdded_RADIO.IsChecked = true;
-        //    ShowAddedDevices();
-
-        //    // Show Shared device list option if SharedDeviceList is not empty
-        //    if (SharedDeviceList.Count > 0) DeviceListOptionsShown = true;
-        //    else DeviceListOptionsShown = false;
-
-        //    DeviceListShown = true;
-        //    DevicesLoading = false;
-
-        //    UpdateDeviceList();
-        //}
 
         void UpdateDeviceList()
         {
