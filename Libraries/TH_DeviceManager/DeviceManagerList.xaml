@@ -18,10 +18,10 @@
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="LightBorder" Color="#aaa"/>
+            <!--<SolidColorBrush x:Key="LightBorder" Color="#aaa"/>-->
 
-            <Style TargetType="{x:Type DataGrid}">
-                <!--<Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />-->
+            <!--<Style TargetType="{x:Type DataGrid}">
+                --><!--<Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />--><!--
                 <Setter Property="Background" Value="{StaticResource Window_Background}"/>
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}"/>
                 <Setter Property="BorderThickness" Value="1"/>
@@ -37,15 +37,15 @@
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="VerticalAlignment" Value="Top"/>
                 <Setter Property="IsReadOnly" Value="true"/>
-                <!--<Setter Property="VerticalAlignment" Value="Top"/>-->
+                --><!--<Setter Property="VerticalAlignment" Value="Top"/>--><!--
             </Style>
 
             <Style TargetType="DataGridColumnHeader">
                 <Setter Property="MinHeight" Value="30"/>
-                <!--<Setter Property="MinWidth" Value="150"/>-->
+                --><!--<Setter Property="MinWidth" Value="150"/>--><!--
                 <Setter Property="Background" Value="#eee"/>
-                <!--<Setter Property="BorderBrush" Value="Red" />
-                <Setter Property="BorderThickness" Value="1" />-->
+                --><!--<Setter Property="BorderBrush" Value="Red" />
+                <Setter Property="BorderThickness" Value="1" />--><!--
                 <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                 <Setter Property="FontSize" Value="12"/>
                 <Setter Property="Template">
@@ -58,7 +58,7 @@
                                 BorderThickness="0,0,1,0"    
                                 >
                                 <Grid>
-                                    <!--Content-->
+                                    --><!--Content--><!--
                                     <Border Padding="5,0">
                                         <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
                                     </Border>
@@ -72,7 +72,7 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style>
+            </Style>-->
 
             <ContextMenu x:Key="DataGridRowContextMenu_None">
                 <controls:DataGridMenuItem Header="Add Device.." DataObject="{Binding}" Click="Add_DataGridRowContextMenu_Click"/>
@@ -99,12 +99,12 @@
                 <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
             </ContextMenu>
 
-            <Style TargetType="DataGridRow">
-                <Setter Property="Background" Value="#00000000" />
+            <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                <!--<Setter Property="Background" Value="#00000000" />-->
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
-                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
-                <Setter Property="MinHeight" Value="35"/>
+                <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
+                <Setter Property="MinHeight" Value="35"/>-->
                 <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
@@ -121,8 +121,8 @@
                 </Style.Triggers>
             </Style>
 
-            <Style TargetType="DataGridCell">
-                <!--<Setter Property="BorderThickness" Value="0,0,0,0"/>-->
+            <!--<Style TargetType="DataGridCell">-->
+                <!--<Setter Property="BorderThickness" Value="0,0,0,0"/>--><!--
                 <Setter Property="MinHeight" Value="35"/>
                 <Setter Property="Template">
                     <Setter.Value>
@@ -145,7 +145,7 @@
                     <Trigger Property="IsSelected" Value="true">
                         <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Self}}"/>
                         <Setter Property="BorderBrush" Value="Transparent"/>
-                        <!--<Setter Property="BorderBrush" Value="#00000000"/>-->
+                        --><!--<Setter Property="BorderBrush" Value="#00000000"/>--><!--
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     </Trigger>
                 </Style.Triggers>
@@ -161,7 +161,7 @@
                 <Setter Property="VerticalContentAlignment" Value="Top"/>
                 <Setter Property="SeparatorBrush" Value="{StaticResource LightBorder}"/>
                 <Setter Property="SeparatorVisibility" Value="Visible"/>
-            </Style>
+            </Style>-->
 
             <Style TargetType="th_wpf:Button">
                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>

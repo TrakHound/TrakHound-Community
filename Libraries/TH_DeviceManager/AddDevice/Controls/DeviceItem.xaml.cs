@@ -25,6 +25,8 @@ namespace TH_DeviceManager.AddDevice.Controls
             DataContext = this;
         }
 
+        #region "Network Properties"
+
         public string IPAddress
         {
             get { return (string)GetValue(IPAddressProperty); }
@@ -34,6 +36,18 @@ namespace TH_DeviceManager.AddDevice.Controls
         public static readonly DependencyProperty IPAddressProperty =
             DependencyProperty.Register("IPAddress", typeof(string), typeof(DeviceItem), new PropertyMetadata(null));
 
+        public string Port
+        {
+            get { return (string)GetValue(PortProperty); }
+            set { SetValue(PortProperty, value); }
+        }
+
+        public static readonly DependencyProperty PortProperty =
+            DependencyProperty.Register("Port", typeof(string), typeof(DeviceItem), new PropertyMetadata(null));
+
+        #endregion
+
+        #region "Device Properties"
 
         public string DeviceName
         {
@@ -44,6 +58,42 @@ namespace TH_DeviceManager.AddDevice.Controls
         public static readonly DependencyProperty DeviceNameProperty =
             DependencyProperty.Register("DeviceName", typeof(string), typeof(DeviceItem), new PropertyMetadata(null));
 
+        public string DeviceManufacturer
+        {
+            get { return (string)GetValue(DeviceManufacturerProperty); }
+            set { SetValue(DeviceManufacturerProperty, value); }
+        }
 
+        public static readonly DependencyProperty DeviceManufacturerProperty =
+            DependencyProperty.Register("DeviceManufacturer", typeof(string), typeof(DeviceItem), new PropertyMetadata(null));
+
+
+        public string DeviceModel
+        {
+            get { return (string)GetValue(DeviceModelProperty); }
+            set { SetValue(DeviceModelProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceModelProperty =
+            DependencyProperty.Register("DeviceModel", typeof(string), typeof(DeviceItem), new PropertyMetadata(null));
+
+
+        public string DeviceSerial
+        {
+            get { return (string)GetValue(DeviceSerialProperty); }
+            set { SetValue(DeviceSerialProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeviceSerialProperty =
+            DependencyProperty.Register("DeviceSerial", typeof(string), typeof(DeviceItem), new PropertyMetadata(null));
+
+        #endregion
+
+
+        private void Add_Clicked(TH_WPF.Button bt)
+        {
+
+        }
     }
+
 }

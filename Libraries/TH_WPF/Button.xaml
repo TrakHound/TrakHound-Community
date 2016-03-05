@@ -109,7 +109,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Image-->
-                        <Grid>
+                        <Grid MaxHeight="{Binding MaxImageHeight}">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Visible"/>

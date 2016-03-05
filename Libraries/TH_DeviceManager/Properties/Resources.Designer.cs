@@ -243,6 +243,16 @@ namespace TH_DeviceManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap options_gear_30px {
+            get {
+                object obj = ResourceManager.GetObject("options_gear_30px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Plug_01 {
             get {
                 object obj = ResourceManager.GetObject("Plug_01", resourceCulture);

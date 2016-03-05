@@ -175,6 +175,7 @@
       <DependentUpon>Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TH_TabItem.cs" />
+    <None Include="TrakHound-Client.licenseheader" />
     <Page Include="Controls\PageManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

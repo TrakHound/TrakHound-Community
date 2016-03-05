@@ -2,21 +2,130 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             
              xmlns:local="clr-namespace:TH_DeviceManager.AddDevice.Controls"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="200">
-    
-    <Grid>
+             >
 
-        <StackPanel>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
-            <TextBlock Text="{Binding IPAddress}" />
+    <Border BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="5">
 
-            <TextBlock Text="{Binding DeviceName}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="75"/>
+            </Grid.ColumnDefinitions>
 
-        </StackPanel>
+            <Border CornerRadius="5,0,0,5" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,1,0">
 
-    </Grid>
+                <StackPanel Margin="10" VerticalAlignment="Center">
+
+                    <!--Device Logo-->
+                    <Image Source="C:\TrakHound\Configuration Files\Mazak1-1\Images\Mazak-Logo1.png" Opacity="0.8"/>
+
+                    <!--Device Image-->
+                    <!--<Image Source="C:\TrakHound\Configuration Files\Mazak1-1\Images\mazak1.png" Opacity="0.6" Margin="0,2,0,0"/>-->
+
+                </StackPanel>
+
+            </Border>
+
+            <Grid Grid.Column="1" Margin="0,0,20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!--Network Information-->
+                <StackPanel Grid.Column="0" Margin="10">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="0,2"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel>
+                        <TextBlock Text="IP Address"  FontSize="6pt" Foreground="{StaticResource Foreground_Light}"/>
+                        <TextBlock Text="{Binding IPAddress}"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Port"  FontSize="6pt" Foreground="{StaticResource Foreground_Light}"/>
+                        <TextBlock Text="{Binding Port}"  FontSize="10pt" Foreground="{StaticResource Foreground_Normal}"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Device Name"  FontSize="6pt" Foreground="{StaticResource Foreground_Light}"/>
+                        <TextBlock Text="{Binding DeviceName}"  FontSize="10pt" Foreground="{StaticResource Foreground_Normal}"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+                <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="5,10" />
+
+                <!--Device Information-->
+                <StackPanel Grid.Column="2" Margin="10">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="0,2"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel>
+                        <TextBlock Text="Manufacturer"  FontSize="6pt" Foreground="{StaticResource Foreground_Light}"/>
+                        <TextBlock Text="{Binding DeviceManufacturer}"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Model"  FontSize="6pt" Foreground="{StaticResource Foreground_Light}"/>
+                        <TextBlock Text="{Binding DeviceModel}"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <TextBlock Text="Serial"  FontSize="6pt" Foreground="{StaticResource Foreground_Light}"/>
+                        <TextBlock Text="{Binding DeviceSerial}"  FontSize="12pt" Foreground="{StaticResource Foreground_Normal}"/>
+                    </StackPanel>
+
+                </StackPanel>
+
+            </Grid>
+
+            <!--Add Button-->
+            <th_wpf:Button Grid.Column="2" Image="/TH_DeviceManager;component/Resources/Add_01.png" Clicked="Add_Clicked" ToolTip="Add Device">
+                <th_wpf:Button.Style>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="BorderThickness" Value="1,0,0,0"/>
+                        
+                        <Setter Property="MaxImageHeight" Value="30"/>
+                        <Setter Property="CornerRadius" Value="0,5,5,0"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </th_wpf:Button.Style>
+            </th_wpf:Button>
+
+        </Grid>
+
+    </Border>
     
 </UserControl>

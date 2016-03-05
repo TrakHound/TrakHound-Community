@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:controls="clr-namespace:TH_DeviceManager.Controls"
 
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
@@ -176,6 +177,10 @@
                                         <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
                                     </Trigger>
                                 </Style.Triggers>
+                            </Style>
+                            <Style TargetType="controls:PageItem">
+                                <Setter Property="Foreground" Value="#fff"/>
+                                <Setter Property="Background" Value="Transparent"/>
                             </Style>
                         </ItemsControl.Resources>
                     </ItemsControl>

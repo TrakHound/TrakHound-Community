@@ -118,6 +118,18 @@ namespace TH_WPF
             DependencyProperty.Register("Padding", typeof(Thickness), typeof(Button), new PropertyMetadata(new Thickness(5d)));
 
 
+
+
+        public double MaxImageHeight
+        {
+            get { return (double)GetValue(MaxImageHeightProperty); }
+            set { SetValue(MaxImageHeightProperty, value); }
+        }
+        public static readonly DependencyProperty MaxImageHeightProperty =
+            DependencyProperty.Register("MaxImageHeight", typeof(double), typeof(Button), new PropertyMetadata(double.NaN));
+
+
+
         public double ImageTextPadding
         {
             get { return (double)GetValue(ImageTextPaddingProperty); }

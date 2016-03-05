@@ -41,6 +41,7 @@ namespace TH_UserManagement.Management
             public string image_url { get; set; }
             public string tags { get; set; }
             public string dependencies { get; set; }
+            public string link_tag { get; set; }
 
             public string list_id { get; set; }
         }
@@ -117,6 +118,7 @@ namespace TH_UserManagement.Management
                                     item.image_url = GetRowValue("image_url", row);
                                     item.tags = GetRowValue("tags", row);
                                     item.dependencies = GetRowValue("dependencies", row);
+                                    item.link_tag = GetRowValue("link_tag", row);
 
                                     item.list_id = String_Functions.RandomString(20);
 

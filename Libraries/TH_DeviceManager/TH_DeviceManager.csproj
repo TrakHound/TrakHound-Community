@@ -120,6 +120,7 @@
     <Compile Include="AddDevice\Controls\DeviceItem.xaml.cs">
       <DependentUpon>DeviceItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AddDevice\DeviceInfo.cs" />
     <Compile Include="AddDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
@@ -348,6 +349,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Edit_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\options_gear_30px.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
