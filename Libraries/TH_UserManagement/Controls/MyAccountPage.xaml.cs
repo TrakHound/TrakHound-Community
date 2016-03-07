@@ -31,7 +31,7 @@ namespace TH_UserManagement
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class MyAccountPage : UserControl, TH_Global.Page
+    public partial class MyAccountPage : UserControl, TH_Global.IPage
     {
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
 

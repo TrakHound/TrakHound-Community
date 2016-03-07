@@ -46,17 +46,17 @@ namespace TrakHound_Client.Controls
             }
         }
 
-        public TH_Global.Page PageContent
+        public TH_Global.IPage PageContent
         {
-            get { return (TH_Global.Page)GetValue(PageContentProperty); }
+            get { return (TH_Global.IPage)GetValue(PageContentProperty); }
             set { SetValue(PageContentProperty, value); }
         }
 
         public static readonly DependencyProperty PageContentProperty =
-            DependencyProperty.Register("PageContent", typeof(TH_Global.Page), typeof(PageManager), new PropertyMetadata(null));
+            DependencyProperty.Register("PageContent", typeof(TH_Global.IPage), typeof(PageManager), new PropertyMetadata(null));
 
 
-        public void AddPage(TH_Global.Page page)
+        public void AddPage(TH_Global.IPage page)
         {
             ListButton lb = new ListButton();
 
@@ -78,7 +78,7 @@ namespace TrakHound_Client.Controls
             Pages.Add(lb);
         }
 
-        public void RemovePage(TH_Global.Page page)
+        public void RemovePage(TH_Global.IPage page)
         {
             foreach (ListButton lb in Pages)
             {
@@ -97,7 +97,7 @@ namespace TrakHound_Client.Controls
                 else oLB.IsSelected = false;
             }
 
-            var page = LB.DataObject as TH_Global.Page;
+            var page = LB.DataObject as TH_Global.IPage;
             PageContent = page;
         }
 
@@ -113,7 +113,7 @@ namespace TrakHound_Client.Controls
                     else oLB.IsSelected = false;
                 }
 
-                var page = lb.DataObject as TH_Global.Page;
+                var page = lb.DataObject as TH_Global.IPage;
                 PageContent = page;
             }
         }

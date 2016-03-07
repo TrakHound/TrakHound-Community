@@ -62,6 +62,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddDevice\Pages\AutoDetect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddDevice\Pages\Manual.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DeviceManagerTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -123,6 +131,12 @@
     <Compile Include="AddDevice\DeviceInfo.cs" />
     <Compile Include="AddDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddDevice\Pages\AutoDetect.xaml.cs">
+      <DependentUpon>AutoDetect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddDevice\Pages\Manual.xaml.cs">
+      <DependentUpon>Manual.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataGrid Controls.cs" />
     <Compile Include="Device Manager List\DeviceInfo.cs" />

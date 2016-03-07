@@ -70,7 +70,7 @@
     <Compile Include="Functions\Window_Functions.cs" />
     <Compile Include="Functions\XML_Functions.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Page.cs" />
+    <Compile Include="IPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="States.cs" />

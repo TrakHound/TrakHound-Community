@@ -158,7 +158,7 @@ namespace Template
         /// <summary>
         /// Page UserControl object for any options associated with this plugin
         /// </summary>
-        public TH_Global.Page Options { get; set; }
+        public TH_Global.IPage Options { get; set; }
 
         #endregion
 

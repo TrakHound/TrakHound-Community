@@ -28,7 +28,7 @@ namespace TrakHound_Client.Pages.About.Information
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.Page
+    public partial class Page : UserControl, TH_Global.IPage
     {
 
         public Page()

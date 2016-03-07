@@ -127,7 +127,7 @@ namespace TH_DeviceCompare
 
         #endregion
 
-        public TH_Global.Page Options { get; set; }
+        public TH_Global.IPage Options { get; set; }
 
     }
 }

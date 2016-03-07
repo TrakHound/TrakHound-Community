@@ -180,7 +180,7 @@ namespace TH_Plugins_Client
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page
         /// (use if Plugin has parameters or options for how it operates or looks)
         /// </summary>
-        Page Options { get; set; }
+        IPage Options { get; set; }
 
         #endregion
 

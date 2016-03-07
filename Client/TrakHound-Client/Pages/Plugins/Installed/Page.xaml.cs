@@ -30,7 +30,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
     /// <summary>
     /// Interaction logic for Plugins.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.Page
+    public partial class Page : UserControl, TH_Global.IPage
     {
         public Page()
         {

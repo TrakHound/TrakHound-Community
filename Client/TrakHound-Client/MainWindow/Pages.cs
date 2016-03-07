@@ -347,6 +347,7 @@ namespace TrakHound_Client
                 //page.currentuser = currentuser;
 
                 var page = new TH_DeviceManager.AddDevice.Page();
+                page.ParentManager = devicemanager;
 
                 AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Add_01.png")));
             }

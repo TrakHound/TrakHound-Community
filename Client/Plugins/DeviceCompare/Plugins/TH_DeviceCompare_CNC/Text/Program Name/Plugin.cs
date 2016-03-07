@@ -96,7 +96,7 @@ namespace TH_DeviceCompare_CNC.Text.Program_Name
 
         #region "Options"
 
-        public TH_Global.Page Options { get; set; }
+        public TH_Global.IPage Options { get; set; }
 
         #endregion
 

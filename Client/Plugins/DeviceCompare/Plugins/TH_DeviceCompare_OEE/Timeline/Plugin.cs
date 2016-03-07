@@ -97,7 +97,7 @@ namespace TH_DeviceCompare_OEE.Timeline
 
         #region "Options"
 
-        public TH_Global.Page Options { get; set; }
+        public TH_Global.IPage Options { get; set; }
 
         #endregion
 

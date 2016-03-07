@@ -20,6 +20,10 @@ namespace TH_Configuration
 
     public class Configuration
     {
+        /// <summary>
+        /// Each property must also change the ConfigurationXML to match the change.
+        /// This will keep the xml and object synced
+        /// </summary>
 
         public Agent_Settings Agent;
         public Database_Settings Databases_Client;
@@ -43,9 +47,24 @@ namespace TH_Configuration
             CustomClasses = new List<object>();
         }
 
-
+        public void UpdateConfigurationXML(string xpath, string value)
+        {
+            if (ConfigurationXML != null)
+            {
+                XML_Functions.SetInnerText(ConfigurationXML, xpath, value);
+            }
+        }
 
         #region "Properties"
+
+        //public bool ClientEnabled
+        //{
+        //    get { return ClientEnabled; }
+        //    set
+        //    {
+        //        ClientEnabled = value;
+        //    }
+        //}
 
         public bool ClientEnabled { get; set; }
 

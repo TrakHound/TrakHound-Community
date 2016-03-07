@@ -22,6 +22,10 @@ namespace TH_DeviceManager.AddDevice
             }
         }
 
+        public TH_UserManagement.Management.Shared.SharedListItem SharedListItem { get; set; }
+
         public ImageSource Image { get; set; }
+
+        public bool Loading { get; set; }
     }
 }

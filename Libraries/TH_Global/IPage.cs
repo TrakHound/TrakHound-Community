@@ -7,7 +7,7 @@ namespace TH_Global
     /// <summary>
     /// Interface used for any general page use that needs a name and image
     /// </summary>
-    public interface Page
+    public interface IPage
     {
 
         string PageName { get; }

@@ -127,7 +127,7 @@ namespace TH_StatusData
 
         #region "Options"
 
-        public Page Options { get; set; }
+        public IPage Options { get; set; }
 
         #endregion
 

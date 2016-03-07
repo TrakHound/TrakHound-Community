@@ -32,7 +32,7 @@ namespace TrakHound_Client.Pages.Options.Updates
     /// <summary>
     /// Interaction logic for General.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.Page
+    public partial class Page : UserControl, TH_Global.IPage
     {
         public Page()
         {
