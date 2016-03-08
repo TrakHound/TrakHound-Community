@@ -18,12 +18,9 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
-                <!--<Setter Property="Background" Value="#00000000" />-->
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
-                <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />-->
                 <Setter Property="MinHeight" Value="45"/>
-                <!--<Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>-->
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
@@ -33,9 +30,6 @@
                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     </Trigger>
-                    <!--<DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
-                        <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
-                    </DataTrigger>-->
                 </Style.Triggers>
             </Style>
 
@@ -207,6 +201,7 @@
 
                 </StackPanel>
 
+                <!--Add All Button-->
                 <th_wpf:Button Grid.Column="1" Text="Add All" Image="/TH_DeviceManager;component/Resources/Add_01.png" Clicked="AddAll_Clicked">
                     <th_wpf:Button.Style>
                         <Style TargetType="th_wpf:Button">
@@ -236,9 +231,6 @@
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
-                                <!--<DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="{x:Null}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>-->
                                 <DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
@@ -254,9 +246,6 @@
                             <Setter Property="Visibility" Value="Visible"/>
                             <Setter Property="Text" Value="Devices Already Added"/>
                             <Style.Triggers>
-                                <!--<DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
-                                    <Setter Property="Text" Value="No Devices Found on Network"/>
-                                </DataTrigger>-->
                                 <DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>

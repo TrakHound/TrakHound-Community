@@ -32,6 +32,9 @@ namespace TH_Global.Functions
 
             public void Start()
             {
+                returnedIndexes = 0;
+                expectedIndexes = 0;
+
                 var ip = GetHostIP();
                 if (ip != null)
                 {
@@ -134,7 +137,7 @@ namespace TH_Global.Functions
                 }
 
                 returnedIndexes += 1;
-                if (returnedIndexes == expectedIndexes) if (Finished != null) Finished();
+                if (returnedIndexes >= expectedIndexes) if (Finished != null) Finished();
             }
         }
 
