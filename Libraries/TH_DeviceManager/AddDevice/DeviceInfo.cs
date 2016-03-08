@@ -10,6 +10,9 @@ namespace TH_DeviceManager.AddDevice
 {
     public class DeviceInfo
     {
+        public string Id { get; set; }
+        public bool Loading { get; set; }
+
         public string IPAddress { get; set; }
         public int Port { get; set; }
         public Device Device { get; set; }
@@ -22,10 +25,29 @@ namespace TH_DeviceManager.AddDevice
             }
         }
 
+        public string DeviceType
+        {
+            get
+            {
+                if (SharedListItem != null) return SharedListItem.device_type;
+                return null;
+            }
+        }
+
+        public string Controller
+        {
+            get
+            {
+                if (SharedListItem != null) return SharedListItem.controller;
+                return null;
+            }
+        }
+
+
+
         public TH_UserManagement.Management.Shared.SharedListItem SharedListItem { get; set; }
 
         public ImageSource Image { get; set; }
 
-        public bool Loading { get; set; }
     }
 }

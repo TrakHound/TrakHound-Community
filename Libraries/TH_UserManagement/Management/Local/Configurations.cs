@@ -32,10 +32,10 @@ namespace TH_UserManagement.Management.Local
             XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 
             // Set Enabled to False
-            configuration.ClientEnabled = false;
-            configuration.ServerEnabled = false;
-            XML_Functions.SetInnerText(configuration.ConfigurationXML, "ClientEnabled", "false");
-            XML_Functions.SetInnerText(configuration.ConfigurationXML, "ServerEnabled", "false");
+            //configuration.ClientEnabled = false;
+            //configuration.ServerEnabled = false;
+            //XML_Functions.SetInnerText(configuration.ConfigurationXML, "ClientEnabled", "false");
+            //XML_Functions.SetInnerText(configuration.ConfigurationXML, "ServerEnabled", "false");
 
             DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
             if (dt != null)

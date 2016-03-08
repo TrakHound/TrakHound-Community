@@ -201,8 +201,9 @@
                             <TextBlock Grid.Column="1" Text="{Binding Text}"
                         Margin="10,0,10,0"
                         MinWidth="50"
+                        MaxWidth="250"
                         HorizontalAlignment="Left" VerticalAlignment="Center"
-                        FontSize="13"
+                        FontSize="13"              
                         >
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">

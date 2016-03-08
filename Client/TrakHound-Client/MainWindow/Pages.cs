@@ -325,7 +325,9 @@ namespace TrakHound_Client
             }
             else
             {
-                var page = new TH_DeviceManager.Pages.AddShare.Page();
+                var page = new TH_DeviceManager.ShareDevice.Page();
+                page.ParentManager = devicemanager;
+                page.LoadConfiguration(config);
 
                 AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Share_01.png")));
             }
@@ -374,6 +376,7 @@ namespace TrakHound_Client
             else
             {
                 var page = new DeviceManagerPage(config, DeviceManagerType.Client);
+                page.ParentManager = devicemanager;
 
                 AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
             }

@@ -23,6 +23,19 @@ namespace TH_Configuration
         /// <summary>
         /// Each property must also change the ConfigurationXML to match the change.
         /// This will keep the xml and object synced
+        /// 
+        /// Use the format below:
+        /// 
+        /// private string _propertyName;
+        /// public string PropertyName
+        /// {
+        ///     get { return _propertyName; }
+        ///     set
+        ///     {
+        ///         _propertyName = value;
+        ///         TH_Configuration.UpdateConfigurationXML("PropertyName", _propertyName);
+        ///     }
+        /// }
         /// </summary>
 
         public Agent_Settings Agent;
@@ -57,36 +70,128 @@ namespace TH_Configuration
 
         #region "Properties"
 
-        //public bool ClientEnabled
-        //{
-        //    get { return ClientEnabled; }
-        //    set
-        //    {
-        //        ClientEnabled = value;
-        //    }
-        //}
+        private bool _clientEnabled;
+        public bool ClientEnabled
+        {
+            get { return _clientEnabled; }
+            set
+            {
+                _clientEnabled = value;
+                UpdateConfigurationXML("ClientEnabled", _clientEnabled.ToString());
+            }
+        }
 
-        public bool ClientEnabled { get; set; }
-
-        public bool ServerEnabled { get; set; }
+        private bool _serverEnabled;
+        public bool ServerEnabled
+        {
+            get { return _serverEnabled; }
+            set
+            {
+                _serverEnabled = value;
+                UpdateConfigurationXML("ServerEnabled", _serverEnabled.ToString());
+            }
+        }
 
         #region "Remote Configurations"
 
-        public bool UseTrakHoundCloud { get; set; }
+        private bool _useTrakHoundCloud;
+        public bool UseTrakHoundCloud
+        {
+            get { return _useTrakHoundCloud; }
+            set
+            {
+                _useTrakHoundCloud = value;
+                UpdateConfigurationXML("UseTrakHoundCloud", _useTrakHoundCloud.ToString());
+            }
+        }
 
-        public bool Remote { get; set; }
+        private bool _remote;
+        public bool Remote
+        {
+            get { return _remote; }
+            set
+            {
+                _remote = value;
+                UpdateConfigurationXML("Remote", _remote.ToString());
+            }
+        }
 
-        public string ClientUpdateId { get; set; }
+        private string _clientUpdateId;
+        public string ClientUpdateId
+        {
+            get { return _clientUpdateId; }
+            set
+            {
+                _clientUpdateId = value;
+                UpdateConfigurationXML("ClientUpdateId", _clientUpdateId);
+            }
+        }
 
-        public string ServerUpdateId { get; set; }
+        private string _serverUpdateId;
+        public string ServerUpdateId
+        {
+            get { return _serverUpdateId; }
+            set
+            {
+                _serverUpdateId = value;
+                UpdateConfigurationXML("ServerUpdateId", _serverUpdateId);
+            }
+        }
 
-        public string TableName { get; set; }
+        private string _table;
+        public string TableName
+        {
+            get { return _table; }
+            set
+            {
+                _table = value;
+                UpdateConfigurationXML("TableName", _table);
+            }
+        }
 
-        public string Version { get; set; }
+        private string _version;
+        public string Version
+        {
+            get { return _version; }
+            set
+            {
+                _version = value;
+                UpdateConfigurationXML("Version", _version);
+            }
+        }
 
-        public string SharedId { get; set; }
+        private string _sharedId;
+        public string SharedId
+        {
+            get { return _sharedId; }
+            set
+            {
+                _sharedId = value;
+                UpdateConfigurationXML("SharedId", _sharedId);
+            }
+        }
 
-        public string SharedTableName { get; set; }
+        private string _sharedLinkTag;
+        public string SharedLinkTag
+        {
+            get { return _sharedLinkTag; }
+            set
+            {
+                _sharedLinkTag = value;
+                UpdateConfigurationXML("SharedLinkTag", _sharedLinkTag);
+            }
+        }
+
+        private string _sharedTableName;
+        public string SharedTableName
+        {
+            get { return _sharedTableName; }
+            set
+            {
+                _sharedTableName = value;
+                UpdateConfigurationXML("SharedTableName", _sharedTableName);
+            }
+        }
 
         #endregion
 
@@ -99,15 +204,33 @@ namespace TH_Configuration
         #endregion
 
         /// <summary>
-        /// Used as a UniqueId between any number of devices
-        /// Composed of Database name, IP address, and Port (so it should always be unique)
+        /// Used as a UniqueId between any number of devices.
+        /// Usually generated from random characters
         /// </summary>
-        public string UniqueId { get; set; }
+        private string _uniqueId;
+        public string UniqueId
+        {
+            get { return _uniqueId; }
+            set
+            {
+                _uniqueId = value;
+                UpdateConfigurationXML("UniqueId", _uniqueId);
+            }
+        }
 
         /// <summary>
         /// Used as a general index to make navigation between Configurations easier
         /// </summary>
-        public int Index { get; set; }
+        private int _index;
+        public int Index
+        {
+            get { return _index; }
+            set
+            {
+                _index = value;
+                UpdateConfigurationXML("Index", _index.ToString());
+            }
+        }
 
         /// <summary>
         /// Contains the original XML configuration file
@@ -403,6 +526,34 @@ namespace TH_Configuration
             return Result;
         }
 
+        public void Process_IConfiguration<T>(IConfiguration config, XmlNode Node)
+        {
+            config.ConfigurationPropertyChanged += Config_ConfigurationPropertyChanged;
+
+            foreach (XmlNode Child in Node.ChildNodes)
+            {
+                if (Child.NodeType == XmlNodeType.Element)
+                {
+                    if (Child.InnerText != "")
+                    {
+                        Type Setting = typeof(T);
+                        PropertyInfo info = Setting.GetProperty(Child.Name);
+
+                        if (info != null)
+                        {
+                            Type t = info.PropertyType;
+                            info.SetValue(config, Convert.ChangeType(Child.InnerText, t), null);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void Config_ConfigurationPropertyChanged(string xPath, string value)
+        {
+            //UpdateConfigurationXML(xPath, value);
+        }
 
         public static void Process_CustomClass<T>(object customClass, XmlNode Node)
         {
@@ -442,8 +593,6 @@ namespace TH_Configuration
 
             return result;
         }
-
-
 
         #endregion
 

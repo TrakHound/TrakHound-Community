@@ -37,7 +37,7 @@
                     <Border Name="bd"
                                 Background="{TemplateBinding Background}"
                                 Margin="0,0,0,0"
-                                BorderBrush="{StaticResource LightBorder}" 
+                                BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
                                 BorderThickness="0,0,1,0"    
                                 >
                         <Grid>
@@ -59,7 +59,7 @@
 
     <Style TargetType="{x:Type DataGridRow}">
         <Setter Property="Background" Value="{StaticResource Window_Background}" />
-        <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+        <Setter Property="BorderBrush" Value="{Binding HorizontalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" />
         <Setter Property="BorderThickness" Value="0,1,0,0" />
         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
         <Setter Property="MinHeight" Value="35"/>
@@ -110,13 +110,13 @@
 
     <Style TargetType="DataGridRowHeader">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{StaticResource LightBorder}"/>
+        <Setter Property="BorderBrush" Value="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
         <Setter Property="BorderThickness" Value="0,0,1,0"/>
         <Setter Property="Height" Value="30"/>
         <Setter Property="Width" Value="30"/>
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="VerticalContentAlignment" Value="Top"/>
-        <Setter Property="SeparatorBrush" Value="{StaticResource LightBorder}"/>
+        <Setter Property="SeparatorBrush" Value="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
         <Setter Property="SeparatorVisibility" Value="Visible"/>
     </Style>
 

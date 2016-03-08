@@ -41,6 +41,8 @@ namespace TH_DeviceManager
             else ShowServer_RADIO.IsChecked = true;
         }
 
+        public DeviceManagerList ParentManager { get; set; }
+
         public Configuration Configuration { get; set; }
         public DataTable ConfigurationTable { get; set; }
 

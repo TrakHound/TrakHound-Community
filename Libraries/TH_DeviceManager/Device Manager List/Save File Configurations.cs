@@ -14,7 +14,7 @@ namespace TH_DeviceManager
 {
     public partial class DeviceManagerList
     {
-        static bool SaveFileConfiguration(Configuration config)
+        public static bool SaveFileConfiguration(Configuration config)
         {
             bool result = false;
 
@@ -23,7 +23,7 @@ namespace TH_DeviceManager
             return result;
         }
 
-        static bool SaveFileConfiguration(DataTable dt)
+        public static bool SaveFileConfiguration(DataTable dt)
         {
             bool result = false;
 
@@ -34,7 +34,7 @@ namespace TH_DeviceManager
             return result;
         }
 
-        static bool SaveFileConfiguration(XmlDocument xml)
+        public static bool SaveFileConfiguration(XmlDocument xml)
         {
             bool result = false;
 

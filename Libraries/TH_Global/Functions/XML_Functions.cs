@@ -28,6 +28,28 @@ namespace TH_Global.Functions
             return result;
         }
 
+        public static bool SetAttribute(XmlDocument doc, string xPath, string attributeName, string attributeValue)
+        {
+            bool result = false;
+
+            if (doc != null)
+            {
+                XmlElement element = doc.DocumentElement;
+
+                var node = element.SelectSingleNode(xPath);
+                if (node == null) node = AddNode(doc, xPath);
+
+                var attr = doc.CreateAttribute(attributeName);
+                attr.Value = attributeValue;
+
+                node.Attributes.SetNamedItem(attr);
+                
+                result = true;
+            }
+
+            return result;
+        }
+
         public static string GetInnerText(XmlDocument doc, string xPath)
         {
             string result = null;

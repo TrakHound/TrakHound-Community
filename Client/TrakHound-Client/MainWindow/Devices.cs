@@ -44,24 +44,6 @@ namespace TrakHound_Client
             }
         }
 
-        //private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
-        //{
-        //    switch (args.Event)
-        //    {
-        //        case DeviceManager.DeviceUpdateEvent.Added:
-        //            AddDevice(config);
-        //            break;
-
-        //        case DeviceManager.DeviceUpdateEvent.Changed:
-        //            UpdateDevice(config);
-        //            break;
-
-        //        case DeviceManager.DeviceUpdateEvent.Removed:
-        //            RemoveDevice(config);
-        //            break;
-        //    }
-        //}
-
         private void Devicemanager_LoadingDevices()
         {
             // Send message to plugins that Devices are being loaded
@@ -79,27 +61,30 @@ namespace TrakHound_Client
         {
             var enabledConfigs = new List<Configuration>();
 
-            var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
-
-            foreach (Configuration config in orderedConfigs)
+            if (configs != null)
             {
-                if (config.ClientEnabled)
+                var orderedConfigs = configs.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
+
+                foreach (Configuration config in orderedConfigs)
                 {
-                    Global.Initialize(config.Databases_Client);
-                    enabledConfigs.Add(config);
+                    if (config.ClientEnabled)
+                    {
+                        Global.Initialize(config.Databases_Client);
+                        enabledConfigs.Add(config);
+                    }
                 }
-            }
 
-            Devices = orderedConfigs.ToList();
+                Devices = orderedConfigs.ToList();
 
-            if (!addDeviceOpened && enabledConfigs.Count == 0 && currentuser != null)
-            {
-                addDeviceOpened = true;
-                DeviceManager_Open();
-            }
-            else if (enabledConfigs.Count > 0)
-            {
-                addDeviceOpened = false;
+                if (!addDeviceOpened && enabledConfigs.Count == 0 && currentuser != null)
+                {
+                    addDeviceOpened = true;
+                    DeviceManager_Open();
+                }
+                else if (enabledConfigs.Count > 0)
+                {
+                    addDeviceOpened = false;
+                }
             }
 
             Plugins_UpdateDeviceList(enabledConfigs);

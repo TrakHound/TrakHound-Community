@@ -43,7 +43,7 @@ namespace TH_DeviceManager
         }
 
         public static readonly DependencyProperty DevicesLoadingProperty =
-            DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceManager), new PropertyMetadata(false));
+            DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceManagerList), new PropertyMetadata(false));
 
 
         ObservableCollection<DeviceInfo> _devices;
@@ -62,6 +62,22 @@ namespace TH_DeviceManager
             }
         }
 
+        ObservableCollection<DeviceInfo> _sharedDevices;
+        public ObservableCollection<DeviceInfo> SharedDevices
+        {
+            get
+            {
+                if (_sharedDevices == null)
+                    _sharedDevices = new ObservableCollection<DeviceInfo>();
+                return _sharedDevices;
+            }
+
+            set
+            {
+                _sharedDevices = value;
+            }
+        }
+
         public List<Configuration> configurations;
 
         Thread loaddevices_THREAD;
@@ -69,6 +85,17 @@ namespace TH_DeviceManager
         public void LoadDevices()
         {
             DevicesLoading = true;
+            Devices.Clear();
+            SharedDevices.Clear();
+
+            // Remove all devices
+            if (configurations != null)
+            {
+                foreach (var config in configurations)
+                {
+                    RemoveDevice(config);
+                }
+            }
 
             if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
 
@@ -80,64 +107,96 @@ namespace TH_DeviceManager
 
         void LoadDevices_Worker()
         {
-            List<Configuration> devices = null;
+            List<Configuration> added = null;
+            List<Configuration> shared = null;
 
             if (currentuser != null)
             {
                 // Get Added Configurations
-                devices = Configurations.GetConfigurationsListForUser(currentuser);
+                added = LoadDevices_Added();
 
-                devices = devices.OrderBy(x => x.Index).ToList();
+                shared = LoadDevices_Shared();
 
-                // Reset order to be in intervals of 1000 in order to leave room in between for changes in index
-                // This index model allows for devices to change index without having to update every device each time.
-                for (var x = 0; x <= devices.Count - 1; x++)
-                {
-                    devices[x].Index = 1000 + (1000 * x);
-                }
-
-                var indexItems = new List<Tuple<string, int>>();
-
-                foreach (var device in devices) indexItems.Add(new Tuple<string, int>(device.TableName, device.Index));
-
-                Configurations.UpdateIndexes(indexItems);
-
-
-                this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { devices });
+                this.Dispatcher.BeginInvoke(new Action<List<Configuration>, List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { added, shared });
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else
             {
-                devices = Configuration.ReadAll(FileLocations.Devices).ToList();
+                added = Configuration.ReadAll(FileLocations.Devices).ToList();
 
-                devices = devices.OrderBy(x => x.Index).ToList();
+                added = added.OrderBy(x => x.Index).ToList();
 
                 // Reset order to be in intervals of 1000 in order to leave room in between for changes in index
                 // This index model allows for devices to change index without having to update every device each time.
-                for (var x = 0; x <= devices.Count - 1; x++)
+                for (var x = 0; x <= added.Count - 1; x++)
                 {
-                    devices[x].Index = 1000 + (1000 * x);
+                    added[x].Index = 1000 + (1000 * x);
                 }
 
-                foreach (var device in devices) SaveFileConfiguration(device);
+                foreach (var device in added) SaveFileConfiguration(device);
 
-                this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { devices });
+                this.Dispatcher.BeginInvoke(new Action<List<Configuration>, List<Configuration>>(LoadDevices_GUI), PRIORITY_BACKGROUND, new object[] { added, shared });
             }
 
-            configurations = devices.ToList();
+            configurations = added.ToList();
 
             this.Dispatcher.BeginInvoke(new Action(LoadDevices_Finished), PRIORITY_BACKGROUND, new object[] { });
         }
 
-        void LoadDevices_GUI(List<Configuration> devices)
+        List<Configuration> LoadDevices_Added()
+        {
+            var result = Configurations.GetConfigurationsListForUser(currentuser);
+            if (result != null)
+            {
+                result = result.OrderBy(x => x.Index).ToList();
+
+                // Reset order to be in intervals of 1000 in order to leave room in between for changes in index
+                // This index model allows for devices to change index without having to update every device each time.
+                for (var x = 0; x <= result.Count - 1; x++)
+                {
+                    result[x].Index = 1000 + (1000 * x);
+                }
+
+                var indexItems = new List<Tuple<string, int>>();
+
+                foreach (var config in result) indexItems.Add(new Tuple<string, int>(config.TableName, config.Index));
+
+                Configurations.UpdateIndexes(indexItems);
+            }
+
+            return result;
+        }
+
+        List<Configuration> LoadDevices_Shared()
+        {
+            var result = Shared.GetOwnedSharedConfigurations(currentuser);
+            if (result != null)
+            {
+                result = result.OrderBy(x => x.Description.Manufacturer).
+                    ThenBy(x => x.Description.Controller).
+                    ThenBy(x => x.Description.Model).ToList();
+            }
+
+            return result;
+        }
+
+        void LoadDevices_GUI(List<Configuration> added, List<Configuration> shared)
         {
             Devices.Clear();
 
-            if (devices != null)
+            if (added != null)
             {
-                foreach (var device in devices)
+                foreach (var config in added)
                 {
-                    AddDevice(device);
+                    AddDevice(config);
+                }
+            }
+
+            if (shared != null)
+            {
+                foreach (var config in shared)
+                {
+                    AddSharedDevice(config);
                 }
             }
         }
@@ -148,17 +207,37 @@ namespace TH_DeviceManager
             Devices.Add(info);
 
             Devices.Sort();
+
+            // Raise DeviceUpdated Event
+            var args = new DeviceUpdateArgs();
+            args.Event = DeviceUpdateEvent.Added;
+            UpdateDevice(config, args);
+        }
+
+        public void AddSharedDevice(Configuration config)
+        {
+            var info = new DeviceInfo(config);
+            SharedDevices.Add(info);
+
+            SharedDevices.Sort();
         }
 
         public void RemoveDevice(Configuration config)
         {
             int index = Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
             if (index >= 0) Devices.RemoveAt(index);
+
+            // Raise DeviceUpdated Event
+            var args = new DeviceUpdateArgs();
+            args.Event = DeviceUpdateEvent.Removed;
+            UpdateDevice(config, args);
         }
 
         void LoadDevices_Finished()
         {
-            UpdateDeviceList();
+            DevicesLoading = false;
+
+            //UpdateDeviceList();
         }
 
         void UpdateDeviceList()

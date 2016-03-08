@@ -74,6 +74,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             if (ParentPage != null && ParentPage.ParentManager != null)
             {
                 info.Loading = true;
+                Devices_DG.Items.Refresh();
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(AddSharedItem_Worker), info);
             }
@@ -107,9 +108,13 @@ namespace TH_DeviceManager.AddDevice.Pages
                                 Configuration config = Configuration.Read(xml);
                                 if (config != null)
                                 {
+                                    UpdateEnabled(config);
+                                    UpdateAgentConfiguration(info, config);
+                                    UpdateDatabaseConfiguration(config);
+
                                     result.Configuration = config;
 
-                                    if (TH_UserManagement.Management.UserManagementSettings.Database != null)
+                                    if (UserManagementSettings.Database != null)
                                     {
                                         SaveLocalImage(config.FileLocations.Manufacturer_Logo_Path);
                                         SaveLocalImage(config.FileLocations.Image_Path);
@@ -149,9 +154,48 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
+        private void UpdateEnabled(Configuration config)
+        {
+            config.ClientEnabled = true;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/ClientEnabled", "True");
+
+            config.ServerEnabled = true;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/ServerEnabled", "True");
+        }
+
         private void UpdateAgentConfiguration(DeviceInfo info, Configuration config)
         {
-            config.Agent.IP_Address = info.IPAddress;
+            // Save IP Address
+            config.Agent.Address = info.IPAddress;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Address", info.IPAddress);
+
+            // Save Port
+            config.Agent.Port = info.Port;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Port", info.Port.ToString());
+
+            // Save DeviceName
+            config.Agent.DeviceName = info.Device.name;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/DeviceName", info.Device.name);
+        }
+
+        private void UpdateDatabaseConfiguration(Configuration config)
+        {
+            // If NO databases are configured then add a SQLite database for both client and server
+            if (config.Databases_Client.Databases.Count == 0 && config.Databases_Server.Databases.Count == 0)
+            {
+                AddDatabaseConfiguration("/Databases_Client", config);
+                AddDatabaseConfiguration("/Databases_Server", config);
+            }
+        }
+
+        private void AddDatabaseConfiguration(string prefix, Configuration config)
+        {
+            XML_Functions.AddNode(config.ConfigurationXML, prefix + "/SQLite");
+            XML_Functions.SetAttribute(config.ConfigurationXML, prefix + "/SQLite", "id", "00");
+
+            string path = FileLocations.Databases + "\\" + config.UniqueId + ".xml";
+
+            XML_Functions.SetInnerText(config.ConfigurationXML, prefix + "/SQLite/DatabasePath", path);
         }
 
         private bool SaveLocalConfigurationToUser(Configuration config)
@@ -164,10 +208,10 @@ namespace TH_DeviceManager.AddDevice.Pages
             XML_Functions.SetInnerText(config.ConfigurationXML, "UniqueId", uniqueId);
 
             // Set Enabled to False
-            config.ClientEnabled = false;
-            config.ServerEnabled = false;
-            XML_Functions.SetInnerText(config.ConfigurationXML, "ClientEnabled", "false");
-            XML_Functions.SetInnerText(config.ConfigurationXML, "ServerEnabled", "false");
+            //config.ClientEnabled = false;
+            //config.ServerEnabled = false;
+            //XML_Functions.SetInnerText(config.ConfigurationXML, "ClientEnabled", "false");
+            //XML_Functions.SetInnerText(config.ConfigurationXML, "ServerEnabled", "false");
 
             try
             {
@@ -187,15 +231,19 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         void AddSharedItem_GUI(AddShared_Return result)
         {
-            if (result.DeviceInfo != null) result.DeviceInfo.Loading = false;
-
             if (result.Success && result.Configuration != null)
             {
                 ParentPage.ParentManager.AddDevice(result.Configuration);
                 //if (ParentManager.DeviceAdded != null) ParentManager.DeviceAdded(result.Configuration);
+                int index = DeviceInfos.ToList().FindIndex(x => x.Id == result.DeviceInfo.Id);
+                if (index >= 0) DeviceInfos.RemoveAt(index);
+
+                DevicesNotAdded = DeviceInfos.Count;
+                DevicesAlreadyAdded += 1;
             }
             else
             {
+                if (result.DeviceInfo != null) result.DeviceInfo.Loading = false;
                 TH_WPF.MessageBox.Show("Add device failed. Try Again.", "Add device failed", TH_WPF.MessageBoxButtons.Ok);
             }
         }
@@ -244,7 +292,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
                 foreach (var device in probe.devices)
                 {
-                    this.Dispatcher.BeginInvoke(new Action<IPAddress, int, Device>(AddDevice), PRIORITY_BACKGROUND, new object[] { ip, port, device });
+                    this.Dispatcher.BeginInvoke(new Action<IPAddress, int, Device>(AddDeviceInfo), PRIORITY_BACKGROUND, new object[] { ip, port, device });
                 }
             }
 
@@ -272,24 +320,41 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
-        private void AddDevice(IPAddress address, int port, Device device)
+        private void AddDeviceInfo(IPAddress address, int port, Device device)
         {
-            var catalogInfo = catalogInfos.Find(x =>
-            GetMatchValue(x.Item.link_tag) == GetMatchValue(device.name) &&
-            GetMatchValue(x.Item.manufacturer) == GetMatchValue(device.description.manufacturer)
+            // Check if already in DeviceManagerList.Devices
+            bool alreadyAdded = ParentPage.ParentManager.Devices.ToList().Exists(x =>
+            x.Configuration.Agent.Address == address.ToString() &&
+            x.Configuration.Agent.Port == port &&
+            x.Configuration.Agent.DeviceName == device.name
             );
-            if (catalogInfo != null)
+            
+            if (!alreadyAdded)
             {
-                var info = new DeviceInfo();
-                info.IPAddress = address.ToString();
-                info.Port = port;
-                info.Device = device;
-                info.Image = GetSourceFromImage(catalogInfo.Image);
-                info.SharedListItem = catalogInfo.Item;
+                // Look for matching shared configuration
+                var catalogInfo = catalogInfos.Find(x => GetLinkTagMatchValue(device, x));
+                //var catalogInfo = catalogInfos.Find(x =>
+                //            GetMatchValue(x.Item.link_tag) == GetMatchValue(device.name) &&
+                //            GetMatchValue(x.Item.manufacturer) == GetMatchValue(device.description.manufacturer)
+                //            );
+                if (catalogInfo != null)
+                {
+                    var info = new DeviceInfo();
+                    info.Id = String_Functions.RandomString(80);
+                    info.IPAddress = address.ToString();
+                    info.Port = port;
+                    info.Device = device;
+                    info.Image = GetSourceFromImage(catalogInfo.Image);
+                    info.SharedListItem = catalogInfo.Item;
 
-                DeviceInfos.Add(info);
+                    DeviceInfos.Add(info);
 
-                NumberOfDevicesFound = DeviceInfos.Count.ToString();
+                    DevicesNotAdded = DeviceInfos.Count;
+                }
+            } 
+            else
+            {
+                DevicesAlreadyAdded += 1;
             }
         }
 
@@ -325,15 +390,46 @@ namespace TH_DeviceManager.AddDevice.Pages
             return s;
         }
 
-
-        public string NumberOfDevicesFound
+        private static bool GetLinkTagMatchValue(Device device, CatalogInfo info)
         {
-            get { return (string)GetValue(NumberOfDevicesFoundProperty); }
-            set { SetValue(NumberOfDevicesFoundProperty, value); }
+            if (info != null && info.Item != null && info.Item.link_tag != null && device != null)
+            {
+                string x = info.Item.link_tag.ToLower();
+
+                if (x == ToLower(device.description.manufacturer)) return true;
+                if (x == ToLower(device.description.manufacturer) + "." + ToLower(device.description.model)) return true;
+                if (x == ToLower(device.description.manufacturer) + "." + ToLower(device.description.model) + "." + ToLower(device.name)) return true;
+                if (x == ToLower(device.description.manufacturer) + "." + ToLower(device.name)) return true;
+                if (x == ToLower(device.name)) return true;              
+            }
+
+            return false;
         }
 
-        public static readonly DependencyProperty NumberOfDevicesFoundProperty =
-            DependencyProperty.Register("NumberOfDevicesFound", typeof(string), typeof(AutoDetect), new PropertyMetadata(null));
+        private static string ToLower(string s)
+        {
+            if (s != null) return s.ToLower();
+            return s;
+        }
+
+        public int DevicesNotAdded
+        {
+            get { return (int)GetValue(DevicesNotAddedProperty); }
+            set { SetValue(DevicesNotAddedProperty, value); }
+        }
+
+        public static readonly DependencyProperty DevicesNotAddedProperty =
+            DependencyProperty.Register("DevicesNotAdded", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
+
+
+        public int DevicesAlreadyAdded
+        {
+            get { return (int)GetValue(DevicesAlreadyAddedProperty); }
+            set { SetValue(DevicesAlreadyAddedProperty, value); }
+        }
+
+        public static readonly DependencyProperty DevicesAlreadyAddedProperty =
+            DependencyProperty.Register("DevicesAlreadyAdded", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
 
 
         #region "Catalog"
@@ -346,13 +442,17 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         List<CatalogInfo> catalogInfos = new List<CatalogInfo>();
 
-        //List<Shared.SharedListItem> sharedItems = new List<Shared.SharedListItem>();
-
         Thread LoadCatalog_THREAD;
 
         public void LoadCatalog()
         {
-            Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = true; }));
+            Dispatcher.BeginInvoke(new Action(() => {
+                DevicesLoading = true;
+                DeviceInfos.Clear();
+                catalogInfos.Clear();
+                DevicesAlreadyAdded = 0;
+                DevicesNotAdded = 0;
+            }));
 
             if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
 
@@ -405,6 +505,14 @@ namespace TH_DeviceManager.AddDevice.Pages
         private void Refresh_Clicked(TH_WPF.Button bt)
         {
             LoadCatalog();
+        }
+
+        private void AddAll_Clicked(TH_WPF.Button bt)
+        {
+            foreach (var info in DeviceInfos)
+            {
+                AddSharedItem(info);
+            }
         }
     }
 }

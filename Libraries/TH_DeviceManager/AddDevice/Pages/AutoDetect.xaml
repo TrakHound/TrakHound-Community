@@ -53,20 +53,193 @@
         <TextBlock Text="Available Devices" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="10,0,0,10"/>
 
         <!--Number of Devices Found-->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,0,20">
+        <StackPanel Grid.Row="1" Margin="10,0,0,20">
 
+            <Grid Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Number Of Devices Not Added-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Number Of Devices-->
+                        <TextBlock Text="{Binding DevicesNotAdded}" Foreground="{StaticResource Accent_Normal}" FontWeight="Bold" FontSize="20pt" VerticalAlignment="Center" Margin="0,0,10,0">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!--Text-->
+                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12pt" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="Devices Found on Network"/>
+                                    <Style.Triggers>
+
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
+                                            <Setter Property="Text" Value="All Devices Found Have Been Added"/>
+                                        </DataTrigger>
+
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding DevicesNotAdded}" Value="0"/>
+                                                <Condition Binding="{Binding DevicesAlreadyAdded}" Value="0"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Text" Value="No Devices Found on Network"/>
+                                        </MultiDataTrigger>
+
+                                        <DataTrigger Binding="{Binding DevicesNotAdded}" Value="1">
+                                            <Setter Property="Text" Value="Device Found on Network"/>
+                                        </DataTrigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </StackPanel>
+
+                    <!--Refresh / Loading-->
+                    <Grid Margin="20,0,0,0">
+
+                        <!--Refresh Button-->
+                        <th_wpf:Button Image="/TH_DeviceManager;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" ToolTip="Refresh Available Devcies List" VerticalAlignment="Center">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Opacity" Value="0.0"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Height" Value="35"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding DevicesLoading}" Value="false">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                        <Trigger Property="Opacity" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
+
+                        <!--Loading Animation-->
+                        <Grid>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Setter Property="Opacity" Value="0.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                            <DoubleAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseIn"/>
+                                                            </DoubleAnimation.EasingFunction>
+                                                        </DoubleAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                        <Trigger Property="Opacity" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Accent_Normal}" />
+
+                        </Grid>
+
+                    </Grid>
+
+                </StackPanel>
+
+                <th_wpf:Button Grid.Column="1" Text="Add All" Image="/TH_DeviceManager;component/Resources/Add_01.png" Clicked="AddAll_Clicked">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10,5"/>
+                            <Setter Property="MinHeight" Value="35"/>
+                            <Setter Property="ImageTextPadding" Value="10"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
+
+            </Grid>
+
+            <!--Number Of Devices Already Added-->
             <StackPanel Orientation="Horizontal">
 
                 <!--Number Of Devices-->
-                <TextBlock Text="{Binding NumberOfDevicesFound}" Foreground="{StaticResource Accent_Normal}" FontWeight="Bold" FontSize="20pt" VerticalAlignment="Center" Margin="0,0,10,0">
+                <TextBlock Text="{Binding DevicesAlreadyAdded}" Foreground="{StaticResource Foreground_Normal}" FontWeight="Bold" FontSize="12pt" VerticalAlignment="Center" Margin="0,0,10,0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding NumberOfDevicesFound}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding NumberOfDevicesFound}" Value="0">
+                                <!--<DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>-->
+                                <DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -75,19 +248,20 @@
                 </TextBlock>
 
                 <!--Text-->
-                <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12pt" VerticalAlignment="Center">
+                <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="8pt" VerticalAlignment="Center">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Text" Value="Devices Found on Network"/>
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Text" Value="Devices Already Added"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding NumberOfDevicesFound}" Value="{x:Null}">
+                                <!--<DataTrigger Binding="{Binding DevicesNotAdded}" Value="0">
                                     <Setter Property="Text" Value="No Devices Found on Network"/>
+                                </DataTrigger>-->
+                                <DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding NumberOfDevicesFound}" Value="0">
-                                    <Setter Property="Text" Value="No Devices Found on Network"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding NumberOfDevicesFound}" Value="1">
-                                    <Setter Property="Text" Value="Device Found on Network"/>
+                                <DataTrigger Binding="{Binding DevicesAlreadyAdded}" Value="1">
+                                    <Setter Property="Text" Value="Device Already Added"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -96,103 +270,13 @@
 
             </StackPanel>
 
-            <Grid Margin="20,0,0,0">
-
-                <!--Refresh Button-->
-                <th_wpf:Button Image="/TH_DeviceManager;component/Resources/Refresh_01.png" Clicked="Refresh_Clicked" ToolTip="Refresh Available Devcies List" VerticalAlignment="Center">
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Setter Property="Opacity" Value="0.0"/>
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Height" Value="35"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                                <DataTrigger Binding="{Binding DevicesLoading}" Value="false">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                    <DoubleAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseIn"/>
-                                                    </DoubleAnimation.EasingFunction>
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                    <DataTrigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                    <DoubleAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseIn"/>
-                                                    </DoubleAnimation.EasingFunction>
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
-                                </DataTrigger>
-                                <Trigger Property="Opacity" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>
-
-                <!--Loading Animation-->
-                <Grid>
-                    <Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Setter Property="Opacity" Value="0.0"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                    <DoubleAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseIn"/>
-                                                    </DoubleAnimation.EasingFunction>
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                    <DataTrigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                    <DoubleAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseIn"/>
-                                                    </DoubleAnimation.EasingFunction>
-                                                </DoubleAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
-                                </DataTrigger>
-                                <Trigger Property="Opacity" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>
-
-                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Accent_Normal}" />
-
-                </Grid>
-
-            </Grid>
-
         </StackPanel>
 
         <DataGrid x:Name="Devices_DG" Grid.Row="2" ItemsSource="{Binding DeviceInfos}"
                     AutoGenerateColumns="False"
                     VerticalScrollBarVisibility="Auto"  
                     HeadersVisibility="Column"
+                    SelectionMode="Single"
                     >
 
             <DataGrid.Columns>
@@ -212,15 +296,16 @@
                 <DataGridTextColumn Header="Device Name" Binding="{Binding Device.name}"/>
 
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding DeviceDescription.manufacturer}"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding DeviceType}"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding DeviceDescription.model}"/>
                 <DataGridTextColumn Header="Serial" Binding="{Binding DeviceDescription.serialNumber}"/>
+                <DataGridTextColumn Header="Controller" Binding="{Binding Controller}"/>
 
                 <!--Add Button-->
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0,0,0,0"/>
-                            <!--<Setter Property="MinHeight" Value="35"/>-->
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type DataGridCell}">
@@ -262,15 +347,16 @@
                                             <Setter Property="Padding" Value="10,5"/>
                                             <Setter Property="MinHeight" Value="35"/>
                                             <Setter Property="ImageTextPadding" Value="10"/>
+                                            <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
                                                     <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
                                                 </Trigger>
-                                                <DataTrigger Binding="{Binding Loading}" Value="false">
+                                                <DataTrigger Binding="{Binding Loading}" Value="true">
                                                     <DataTrigger.EnterActions>
                                                         <BeginStoryboard>
                                                             <Storyboard>
-                                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
                                                                     <DoubleAnimation.EasingFunction>
                                                                         <CubicEase EasingMode="EaseIn"/>
                                                                     </DoubleAnimation.EasingFunction>
@@ -281,7 +367,7 @@
                                                     <DataTrigger.ExitActions>
                                                         <BeginStoryboard>
                                                             <Storyboard>
-                                                                <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
                                                                     <DoubleAnimation.EasingFunction>
                                                                         <CubicEase EasingMode="EaseIn"/>
                                                                     </DoubleAnimation.EasingFunction>
@@ -302,7 +388,6 @@
                                 <Grid>
                                     <Grid.Style>
                                         <Style TargetType="Grid">
-                                            <Setter Property="Visibility" Value="Visible"/>
                                             <Setter Property="Opacity" Value="0.0"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Loading}" Value="true">
@@ -336,7 +421,7 @@
                                         </Style>
                                     </Grid.Style>
 
-                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource Accent_Normal}" />
+                                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="30" Height="30" Foreground="{StaticResource Accent_Normal}" />
 
                                 </Grid>
 

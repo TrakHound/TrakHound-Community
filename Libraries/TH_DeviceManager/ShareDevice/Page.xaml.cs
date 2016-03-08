@@ -1,13 +1,7 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
-
-// This file is subject to the terms and conditions defined in
-// file 'LICENSE.txt', which is part of this source code package.
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-//using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,13 +16,13 @@ using System.Data;
 using System.Threading;
 using System.IO;
 
+
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_UserManagement;
 using TH_UserManagement.Management;
 
-namespace TH_DeviceManager.Pages.AddShare
+namespace TH_DeviceManager.ShareDevice
 {
     /// <summary>
     /// Interaction logic for Page.xaml
@@ -41,38 +35,38 @@ namespace TH_DeviceManager.Pages.AddShare
             DataContext = this;
         }
 
-        Configuration configuration;
+        Configuration configuration { get; set; }
 
-        public DataTable configurationtable;
+        public DataTable configurationTable { get; set; }
 
-        public UserConfiguration currentuser;
-
-        public DeviceManager devicemanager;
+        public DeviceManagerList ParentManager { get; set; }
 
         public void LoadConfiguration(Configuration config)
         {
             configuration = config;
+
+            configurationTable = Converter.XMLToTable(config.ConfigurationXML);
 
             if (config != null)
             {
                 if (config.Description != null)
                 {
                     Description_Settings d = config.Description;
-
+                    Description = d.Description;
                     Manufacturer = d.Manufacturer;
                     Type = d.Device_Type;
                     Model = d.Model;
-                    Controller = d.Model;
+                    Controller = d.Controller;
                 }
             }
 
-            if (currentuser != null)
+            if (ParentManager.CurrentUser != null)
             {
-                Author = String_Functions.UppercaseFirst(currentuser.username);
+                Author = String_Functions.UppercaseFirst(ParentManager.CurrentUser.username);
 
-                imageFileName = currentuser.image_url;
+                imageFileName = ParentManager.CurrentUser.image_url;
 
-                LoadImage(currentuser.image_url);
+                LoadImage(ParentManager.CurrentUser.image_url);
             }
         }
 
@@ -97,6 +91,14 @@ namespace TH_DeviceManager.Pages.AddShare
         public static readonly DependencyProperty DescriptionProperty =
             DependencyProperty.Register("Description", typeof(string), typeof(Page), new PropertyMetadata(null));
 
+        public string LinkTag
+        {
+            get { return (string)GetValue(LinkTagProperty); }
+            set { SetValue(LinkTagProperty, value); }
+        }
+
+        public static readonly DependencyProperty LinkTagProperty =
+            DependencyProperty.Register("LinkTag", typeof(string), typeof(Page), new PropertyMetadata(null));
 
         public string Type
         {
@@ -127,7 +129,7 @@ namespace TH_DeviceManager.Pages.AddShare
         public static readonly DependencyProperty ModelProperty =
             DependencyProperty.Register("Model", typeof(string), typeof(Page), new PropertyMetadata(null));
 
-        
+
         public string Controller
         {
             get { return (string)GetValue(ControllerProperty); }
@@ -191,6 +193,8 @@ namespace TH_DeviceManager.Pages.AddShare
             Shared.SharedListItem item = new Shared.SharedListItem();
 
             item.description = Description;
+            item.link_tag = LinkTag;
+
             item.device_type = Type;
             item.manufacturer = Manufacturer;
             item.model = Model;
@@ -207,11 +211,11 @@ namespace TH_DeviceManager.Pages.AddShare
             item.tags = Tags;
             item.dependencies = Dependencies;
 
-            if (currentuser != null && configuration != null && configurationtable != null)
+            if (configuration != null && configurationTable != null)
             {
                 item.id = configuration.UniqueId;
 
-                Share(item);    
+                Share(item);
             }
         }
 
@@ -228,7 +232,7 @@ namespace TH_DeviceManager.Pages.AddShare
         {
             Loading = true;
 
-            DataTable dt = configurationtable.Copy();
+            DataTable dt = configurationTable.Copy();
 
             // Set Export Options
             if (export_agent_CHK.IsChecked != true)
@@ -266,6 +270,8 @@ namespace TH_DeviceManager.Pages.AddShare
                 }
             }
 
+            DataTable_Functions.UpdateTableValue(dt, "address", "/SharedLinkTag", "value", item.link_tag);
+
             Share_Info info = new Share_Info();
             info.item = item;
             info.dt = dt;
@@ -295,7 +301,7 @@ namespace TH_DeviceManager.Pages.AddShare
 
             this.Dispatcher.BeginInvoke(new Action<bool>(Share_Finished), priority, new object[] { success });
         }
-       
+
         void Share_Finished(bool success)
         {
             Loading = false;
@@ -455,6 +461,5 @@ namespace TH_DeviceManager.Pages.AddShare
 
             LoadImage(imageFileName);
         }
-        
     }
 }

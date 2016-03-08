@@ -27,6 +27,8 @@ namespace TH_DeviceManager
             Serial = config.Description.Serial;
             Id = config.Description.Device_ID;
 
+            DeviceLinkTag = config.SharedLinkTag;
+
             ClientEnabled = config.ClientEnabled;
             ServerEnabled = config.ServerEnabled;
         }
@@ -41,6 +43,9 @@ namespace TH_DeviceManager
         public string Model { get; set; }
         public string Serial { get; set; }
         public string Id { get; set; }
+
+        // SharedListItem link_tag
+        public string DeviceLinkTag { get; set; }
 
         public bool ClientEnabled { get; set; }
         public bool ServerEnabled { get; set; }

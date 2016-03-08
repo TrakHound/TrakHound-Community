@@ -39,6 +39,9 @@ namespace TH_DeviceManager
             set
             {
                 currentuser = value;
+
+                UpdateDeviceList();
+
                 LoadDevices();
             }
         }
@@ -84,8 +87,8 @@ namespace TH_DeviceManager
         /// <param name="change">Postive number moves items up. Negative number moves items down</param>
         private void Move(int change)
         {
-            var items = Device_DG.Items;
-            var selectedItems = Device_DG.SelectedItems;
+            var items = Devices_DG.Items;
+            var selectedItems = Devices_DG.SelectedItems;
 
             foreach (var selectedItem in selectedItems) Console.WriteLine(selectedItems.IndexOf(selectedItem));
 
@@ -164,14 +167,14 @@ namespace TH_DeviceManager
                     Devices.Sort();
 
                     // Select Rows using new List Indexes
-                    SelectRowByIndexes(Device_DG, selectedIndexes);
+                    SelectRowByIndexes(Devices_DG, selectedIndexes);
                 }
             }
         }
 
         private void EditClicked()
         {
-            foreach (var device in Device_DG.SelectedItems)
+            foreach (var device in Devices_DG.SelectedItems)
             {
                 var info = (DeviceInfo)device;
 
@@ -181,7 +184,7 @@ namespace TH_DeviceManager
 
         private void EditTableClicked()
         {
-            foreach (var device in Device_DG.SelectedItems)
+            foreach (var device in Devices_DG.SelectedItems)
             {
                 var info = (DeviceInfo)device;
 
@@ -196,9 +199,9 @@ namespace TH_DeviceManager
 
         private void CopyClicked()
         {
-            if (Device_DG.SelectedItem != null)
+            if (Devices_DG.SelectedItem != null)
             {
-                var info = (DeviceInfo)Device_DG.SelectedItem;
+                var info = (DeviceInfo)Devices_DG.SelectedItem;
 
                 if (info.Configuration != null)
                 {
@@ -209,11 +212,11 @@ namespace TH_DeviceManager
 
         private void RemoveClicked()
         {
-            if (Device_DG.SelectedItems != null && Device_DG.SelectedItems.Count > 0)
+            if (Devices_DG.SelectedItems != null && Devices_DG.SelectedItems.Count > 0)
             {
                 var infos = new List<DeviceInfo>();
 
-                foreach (var item in Device_DG.SelectedItems)
+                foreach (var item in Devices_DG.SelectedItems)
                 {
                     var info = item as DeviceInfo;
                     if (info != null) infos.Add(info);
@@ -225,9 +228,9 @@ namespace TH_DeviceManager
 
         private void ShareClicked()
         {
-            if (Device_DG.SelectedItem != null)
+            if (Devices_DG.SelectedItem != null)
             {
-                var info = (DeviceInfo)Device_DG.SelectedItem;
+                var info = (DeviceInfo)Devices_DG.SelectedItem;
 
                 if (info.Configuration != null)
                 {
@@ -318,7 +321,7 @@ namespace TH_DeviceManager
 
         private void Grid_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            Device_DG.SelectedItems.Clear();
+            Devices_DG.SelectedItems.Clear();
         }
     }
 

@@ -10,69 +10,13 @@
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="300" d:DesignWidth="800">
 
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            <!--<SolidColorBrush x:Key="LightBorder" Color="#aaa"/>-->
-
-            <!--<Style TargetType="{x:Type DataGrid}">
-                --><!--<Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected" />--><!--
-                <Setter Property="Background" Value="{StaticResource Window_Background}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource LightBorder}"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="GridLinesVisibility" Value="Vertical"/>
-                <Setter Property="VerticalGridLinesBrush" Value="{StaticResource LightBorder}"/>
-                <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource LightBorder}"/>
-                <Setter Property="CanUserAddRows" Value="False"/>
-                <Setter Property="CanUserDeleteRows" Value="False"/>
-                <Setter Property="CanUserReorderColumns" Value="False"/>
-                <Setter Property="CanUserResizeColumns" Value="False"/>
-                <Setter Property="CanUserResizeRows" Value="False"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="VerticalAlignment" Value="Top"/>
-                <Setter Property="IsReadOnly" Value="true"/>
-                --><!--<Setter Property="VerticalAlignment" Value="Top"/>--><!--
-            </Style>
-
-            <Style TargetType="DataGridColumnHeader">
-                <Setter Property="MinHeight" Value="30"/>
-                --><!--<Setter Property="MinWidth" Value="150"/>--><!--
-                <Setter Property="Background" Value="#eee"/>
-                --><!--<Setter Property="BorderBrush" Value="Red" />
-                <Setter Property="BorderThickness" Value="1" />--><!--
-                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-                            <Border Name="bd"
-                                Background="{TemplateBinding Background}"
-                                Margin="0,0,0,0"
-                                BorderBrush="{StaticResource LightBorder}" 
-                                BorderThickness="0,0,1,0"    
-                                >
-                                <Grid>
-                                    --><!--Content--><!--
-                                    <Border Padding="5,0">
-                                        <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                    </Border>
-                                </Grid>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>-->
 
             <ContextMenu x:Key="DataGridRowContextMenu_None">
                 <controls:DataGridMenuItem Header="Add Device.." DataObject="{Binding}" Click="Add_DataGridRowContextMenu_Click"/>
@@ -100,11 +44,8 @@
             </ContextMenu>
 
             <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
-                <!--<Setter Property="Background" Value="#00000000" />-->
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
-                <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
-                <Setter Property="MinHeight" Value="35"/>-->
                 <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="true">
@@ -120,48 +61,6 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-
-            <!--<Style TargetType="DataGridCell">-->
-                <!--<Setter Property="BorderThickness" Value="0,0,0,0"/>--><!--
-                <Setter Property="MinHeight" Value="35"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type DataGridCell}">
-                            <Border Background="{TemplateBinding Background}"
-                                Margin="0"
-                                Padding="10,0"
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="0"
-                                >
-                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsFocused" Value="false">
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    </Trigger>
-                    <Trigger Property="IsSelected" Value="true">
-                        <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Self}}"/>
-                        <Setter Property="BorderBrush" Value="Transparent"/>
-                        --><!--<Setter Property="BorderBrush" Value="#00000000"/>--><!--
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style TargetType="DataGridRowHeader">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="{StaticResource LightBorder}"/>
-                <Setter Property="BorderThickness" Value="0,0,1,0"/>
-                <Setter Property="Height" Value="30"/>
-                <Setter Property="Width" Value="30"/>
-                <Setter Property="VerticalAlignment" Value="Top"/>
-                <Setter Property="VerticalContentAlignment" Value="Top"/>
-                <Setter Property="SeparatorBrush" Value="{StaticResource LightBorder}"/>
-                <Setter Property="SeparatorVisibility" Value="Visible"/>
-            </Style>-->
 
             <Style TargetType="th_wpf:Button">
                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -183,7 +82,6 @@
 
     <Grid Background="{StaticResource Window_Background}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -279,57 +177,153 @@
 
         </Border>
 
-        <!--Devices Table-->
-        <DataGrid x:Name="Device_DG" Grid.Row="1" ItemsSource="{Binding Devices}"
+        <!--Device Tables-->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <!--Devices Table-->
+            <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding Devices}"
                   AutoGenerateColumns="False"
                   VerticalScrollBarVisibility="Auto"  
                   >
 
-            <DataGrid.Columns>
+                <DataGrid.Columns>
 
-                <!--Edit Button-->
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!--Edit Button-->
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Enable Client CheckBox-->
-                <DataGridTemplateColumn Header="Client Enabled">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!--Enable Client CheckBox-->
+                    <DataGridTemplateColumn Header="Client Enabled">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Enable Server CheckBox-->
-                <DataGridTemplateColumn Header="Server Enabled">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!--Enable Server CheckBox-->
+                    <DataGridTemplateColumn Header="Server Enabled">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Description Columns-->
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
-                <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
-                <DataGridTextColumn Header="Serial" Binding="{Binding Serial}"/>
-                <DataGridTextColumn Header="Device ID" Binding="{Binding Id}"/>
+                    <!--Description Columns-->
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                    <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
+                    <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
+                    <DataGridTextColumn Header="Serial" Binding="{Binding Serial}"/>
+                    <DataGridTextColumn Header="Device ID" Binding="{Binding Id}"/>
 
-                <DataGridTextColumn Header="Index" Binding="{Binding Index}"/>
-                
-                <DataGridTextColumn Header="Unique ID" Binding="{Binding UniqueId}"/>
+                </DataGrid.Columns>
 
-            </DataGrid.Columns>
+            </DataGrid>
 
-        </DataGrid>
+            <Grid Grid.Row="1" PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent" ContextMenu="{StaticResource DataGridRowContextMenu_None}"/>
 
-        <Grid Grid.Row="2" PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent" ContextMenu="{StaticResource DataGridRowContextMenu_None}"/>
+
+            <!--Shared Devices-->
+            <StackPanel Grid.Row="2">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SharedDevices.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <Rectangle Fill="{StaticResource Shade_Normal}" Height="1"/>
+
+                <!--Title-->
+                <TextBlock Text="Shared Devices" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="10,20,0,10"/>
+
+                <!--Shared Devices Table-->
+                <DataGrid x:Name="SharedDevices_DG" ItemsSource="{Binding SharedDevices}"
+                  AutoGenerateColumns="False"
+                  VerticalScrollBarVisibility="Auto"  
+                  >
+
+                    <DataGrid.Columns>
+
+                        <!--Edit Button-->
+                        <DataGridTemplateColumn>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!--Description Columns-->
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                        <DataGridTextColumn Header="Device Link" Binding="{Binding DeviceLink}"/>
+                        <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
+                        <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
+                        <DataGridTextColumn Header="Controller" Binding="{Binding Manufacturer}"/>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </StackPanel>
+
+        </Grid>
+
+        <!--Loading Animation-->
+        <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Opacity" Value="0.0"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="00:00:0.3" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                            <DoubleAnimation.EasingFunction>
+                                                <CubicEase EasingMode="EaseIn"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                        <Trigger Property="Opacity" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="{StaticResource Accent_Normal}" />
+
+        </Grid>
 
     </Grid>
 

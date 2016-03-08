@@ -155,7 +155,7 @@ namespace TH_WPF
             animation.From = (double)GetValue(dp);
             if (!double.IsNaN(to)) animation.To = Math.Max(0, to);
             else animation.To = 0;
-            animation.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(500));
             //animation.BeginTime = TimeSpan.FromMilliseconds(200);
             this.BeginAnimation(dp, animation);
         }

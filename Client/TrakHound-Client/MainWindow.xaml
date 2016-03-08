@@ -952,8 +952,9 @@
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*" MinHeight="200"/>
                                         <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
                                     </Grid.RowDefinitions>
 
                                     <!--Pages TabControl-->
@@ -964,9 +965,21 @@
                                             Background="{StaticResource Window_Background}"
                                             SelectionChanged="Pages_TABCONTROL_SelectionChanged"   
                                             />
-                                    
+
+                                    <GridSplitter Grid.Row="2" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
+                                        <GridSplitter.Style>
+                                            <Style TargetType="GridSplitter">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Shown, ElementName=developerConsole}" Value="false">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </GridSplitter.Style>
+                                    </GridSplitter>
+
                                     <!--Developer Console-->
-                                    <devconsole:PopUp x:Name="developerConsole" Grid.Row="2" ShownChanged="developerConsole_ShownChanged" Background="{StaticResource Accent_Normal}"/>
+                                    <devconsole:PopUp x:Name="developerConsole" Grid.Row="3" ShownChanged="developerConsole_ShownChanged"/>
 
                                     <!--Top Bar-->
                                     <Grid>
