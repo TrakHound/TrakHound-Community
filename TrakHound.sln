@@ -82,7 +82,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_DeviceManager", "Librari
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Plugins_Client", "Libraries\TH_PlugIns_Client\TH_Plugins_Client.csproj", "{4DA60983-505E-463C-AB96-0A80D0CD1330}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_MTConnect", "..\MTConnect\TH_MTConnect\TH_MTConnect\TH_MTConnect.csproj", "{318E6702-3C9E-4ACC-B326-E3EC903417A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_MTConnect", "Libraries\TH_MTConnect\TH_MTConnect.csproj", "{318E6702-3C9E-4ACC-B326-E3EC903417A8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DeviceCompare", "DeviceCompare", "{31BAC70A-7B1F-4CA5-95D5-E43380E49709}"
 EndProject
