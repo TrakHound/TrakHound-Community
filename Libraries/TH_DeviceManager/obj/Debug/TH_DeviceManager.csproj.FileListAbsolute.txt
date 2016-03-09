@@ -126,3 +126,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Pag
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Pages\Manual.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\ShareDevice\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\ShareDevice\Page.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Controls\SharedItem.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Controls\SharedItem.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Pages\LoadFromFile.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Pages\LoadFromFile.baml

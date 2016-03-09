@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Collections.ObjectModel;
 
+using TH_Global;
 using TH_UserManagement.Management;
 using TH_DeviceManager;
 
@@ -73,6 +74,11 @@ namespace TrakHound_Client
             {
                 Pages_TABCONTROL.SelectedItem = TI;
             }
+        }
+
+        public void AddPageAsTab(IPage page)
+        {
+            AddPageAsTab(page, page.PageName, page.Image);
         }
 
         void TI_Closed(TH_TabItem tab)
@@ -286,11 +292,12 @@ namespace TrakHound_Client
             devicemanager.CopyDeviceSelected += Devicemanager_CopyDeviceSelected;
             devicemanager.DeviceEditSelected += Devicemanager_DeviceEditSelected;
             devicemanager.DeviceEditTableSelected += Devicemanager_DeviceEditTableSelected;
+            devicemanager.DeviceManagerListSelected += Devicemanager_DeviceManagerListSelected;
+        }
 
-            //devicemanager = new DeviceManager(DeviceManagerType.Client);
-            //devicemanager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
-            //devicemanager.DeviceUpdated += Devicemanager_DeviceUpdated;
-            //devicemanager.LoadingDevices += Devicemanager_LoadingDevices;
+        private void Devicemanager_DeviceManagerListSelected()
+        {
+            DeviceManager_Open();
         }
 
         private void Devicemanager_CopyDeviceSelected(TH_Configuration.Configuration config)
@@ -344,12 +351,9 @@ namespace TrakHound_Client
             }
             else
             {
-                //var page = new TH_DeviceManager.Pages.AddDevice.Page();
-                //page.DeviceAdded += Page_DeviceAdded;
-                //page.currentuser = currentuser;
-
                 var page = new TH_DeviceManager.AddDevice.Page();
                 page.ParentManager = devicemanager;
+                page.ShowAutoDetect();
 
                 AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Add_01.png")));
             }

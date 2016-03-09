@@ -53,7 +53,13 @@ namespace TH_DeviceManager
         public event DeviceSelected_Handler CopyDeviceSelected;
 
         public delegate void PageSelected_Handler();
+        public event PageSelected_Handler DeviceManagerListSelected;
         public event PageSelected_Handler AddDeviceSelected;
+
+        public void Open()
+        {
+            if (DeviceManagerListSelected != null) DeviceManagerListSelected();
+        }
 
 
         const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
@@ -323,6 +329,7 @@ namespace TH_DeviceManager
         {
             Devices_DG.SelectedItems.Clear();
         }
+
     }
 
 }

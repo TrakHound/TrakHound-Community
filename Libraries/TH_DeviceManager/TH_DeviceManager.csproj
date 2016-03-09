@@ -50,6 +50,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddDevice\Controls\SharedItem.xaml.cs">
+      <DependentUpon>SharedItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddDevice\Pages\LoadFromFile.xaml.cs">
+      <DependentUpon>LoadFromFile.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShareDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
@@ -61,11 +67,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="AddDevice\Controls\SharedItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddDevice\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddDevice\Pages\AutoDetect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddDevice\Pages\LoadFromFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -132,7 +146,6 @@
       <DependentUpon>DeviceItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="AddDevice\DeviceInfo.cs" />
-    <Compile Include="AddDevice\Load Device From File.cs" />
     <Compile Include="AddDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
@@ -374,6 +387,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\options_gear_30px.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CheckMark_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Root.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

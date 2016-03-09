@@ -10,7 +10,7 @@
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="800">
+             d:DesignHeight="200" d:DesignWidth="800">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -118,17 +118,73 @@
                 <!--Separator-->
                 <Rectangle />
 
-                <!--Move Device(s) Up-->
-                <th_wpf:Button Image="Resources/Arrow_Up_01.png" ToolTip="Move Device(s) Up in List" Clicked="MoveUp_Toolbar_Clicked"/>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#33ffffff"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding SelectedItems, ElementName=Devices_DG}" Value="{x:Null}">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SelectedItems.Count, ElementName=Devices_DG}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Resources>
 
-                <!--Move Device(s) Down-->
-                <th_wpf:Button Image="Resources/Arrow_Down_01.png" ToolTip="Move Device(s) Down in List" Clicked="MoveDown_Toolbar_Clicked"/>
+                    <!--Move Device(s) Up-->
+                    <th_wpf:Button Image="Resources/Arrow_Up_01.png" ToolTip="Move Device(s) Up in List" Clicked="MoveUp_Toolbar_Clicked"/>
 
-                <!--Separator-->
-                <Rectangle />
+                    <!--Move Device(s) Down-->
+                    <th_wpf:Button Image="Resources/Arrow_Down_01.png" ToolTip="Move Device(s) Down in List" Clicked="MoveDown_Toolbar_Clicked"/>
 
-                <!--Copy Device(s)-->
-                <th_wpf:Button Image="Resources/Copy_01.png" ToolTip="Copy Device" Clicked="Copy_Toolbar_Clicked">
+                    <!--Separator-->
+                    <Rectangle />
+
+                    <!--Copy Device(s)-->
+                    <!--<th_wpf:Button Image="Resources/Copy_01.png" ToolTip="Copy Device" Clicked="Copy_Toolbar_Clicked">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                                <Setter Property="IsEnabled" Value="false"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedItems.Count, ElementName=Devices_DG}" Value="1">
+                                        <Setter Property="IsEnabled" Value="true"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>-->
+
+                    <!--Remove Device(s)-->
+                    <th_wpf:Button Image="Resources/X_01.png" ToolTip="Remove Device(s)" Padding="8" Clicked="Remove_Toolbar_Clicked"/>
+
+                    <!--Separator-->
+                    <Rectangle />
+
+                    <!--Refresh Device List-->
+                    <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Toolbar_Clicked"/>
+
+                    <!--Separator-->
+                    <Rectangle />
+
+                    <!--Edit Device(s)-->
+                    <th_wpf:Button Image="Resources/Edit_02.png" Text="Edit" ToolTip="Edit Device(s)" Clicked="Edit_Toolbar_Clicked"/>
+
+                    <!--Separator-->
+                    <Rectangle />
+
+                    <!--Share Device(s)-->
+                    <!--<th_wpf:Button Image="Resources/Share_01.png" Text="Share" ToolTip="Share Device by Adding to TrakHound's Device Catalog" Clicked="Share_Toolbar_Clicked">
                     <th_wpf:Button.Style>
                         <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
                             <Setter Property="IsEnabled" Value="false"/>
@@ -139,39 +195,9 @@
                             </Style.Triggers>
                         </Style>
                     </th_wpf:Button.Style>
-                </th_wpf:Button>
+                </th_wpf:Button>-->
 
-                <!--Remove Device(s)-->
-                <th_wpf:Button Image="Resources/X_01.png" ToolTip="Remove Device(s)" Padding="8" Clicked="Remove_Toolbar_Clicked"/>
-
-                <!--Separator-->
-                <Rectangle />
-
-                <!--Refresh Device List-->
-                <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Toolbar_Clicked"/>
-
-                <!--Separator-->
-                <Rectangle />
-
-                <!--Edit Device(s)-->
-                <th_wpf:Button Image="Resources/Edit_02.png" Text="Edit" ToolTip="Edit Device(s)" Clicked="Edit_Toolbar_Clicked"/>
-
-                <!--Separator-->
-                <Rectangle />
-
-                <!--Share Device(s)-->
-                <th_wpf:Button Image="Resources/Share_01.png" Text="Share" ToolTip="Share Device by Adding to TrakHound's Device Catalog" Clicked="Share_Toolbar_Clicked">
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
-                            <Setter Property="IsEnabled" Value="false"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SelectedItems.Count, ElementName=Device_DG}" Value="1">
-                                    <Setter Property="IsEnabled" Value="true"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>
+                </StackPanel>
 
             </StackPanel>
 
@@ -184,12 +210,44 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Devices}" Value="{x:Null}"/>
+                                <Condition Binding="{Binding SharedDevices}" Value="{x:Null}"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Devices.Count}" Value="0"/>
+                                <Condition Binding="{Binding SharedDevices.Count}" Value="0"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
             <!--Devices Table-->
             <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding Devices}"
                   AutoGenerateColumns="False"
                   VerticalScrollBarVisibility="Auto"  
                   >
+                <DataGrid.Style>
+                    <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Style>
 
                 <DataGrid.Columns>
 
@@ -233,13 +291,15 @@
 
             <Grid Grid.Row="1" PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent" ContextMenu="{StaticResource DataGridRowContextMenu_None}"/>
 
-
             <!--Shared Devices-->
             <StackPanel Grid.Row="2">
                 <StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
+                            <DataTrigger Binding="{Binding SharedDevices}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
                             <DataTrigger Binding="{Binding SharedDevices.Count}" Value="0">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                             </DataTrigger>
@@ -284,6 +344,34 @@
 
         </Grid>
 
+        <!--Add Device (no devices found)-->
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+
+            <!--No Devices Found-->
+            <TextBlock Text="No Devices Found" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,0" FontSize="14pt"/>
+
+            <!--Click Below-->
+            <TextBlock Text="Click below to Add a Device" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,20" FontSize="14pt"/>
+
+
+            <!--Add Device Button-->
+            <th_wpf:Button Text="Add Device" Clicked="Add_Toolbar_Clicked" ImageTextPadding="10" Padding="10,5" Height="35" Image="Resources/Add_01.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        </StackPanel>
+        
         <!--Loading Animation-->
         <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
             <Grid.Style>

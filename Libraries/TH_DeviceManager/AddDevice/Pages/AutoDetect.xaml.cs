@@ -35,8 +35,6 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             InitializeComponent();
             DataContext = this;
-
-            LoadCatalog();
         }
 
         #region "Properties"
@@ -95,18 +93,22 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         public void LoadCatalog()
         {
-            Dispatcher.BeginInvoke(new Action(() => {
-                DevicesLoading = true;
-                DeviceInfos.Clear();
-                catalogInfos.Clear();
-                DevicesAlreadyAdded = 0;
-                DevicesNotAdded = 0;
-            }));
+            if (ParentPage != null && ParentPage.ParentManager != null)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    DevicesLoading = true;
+                    DeviceInfos.Clear();
+                    catalogInfos.Clear();
+                    DevicesAlreadyAdded = 0;
+                    DevicesNotAdded = 0;
+                }));
 
-            if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
+                if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
 
-            LoadCatalog_THREAD = new Thread(new ThreadStart(LoadCatalog_Worker));
-            LoadCatalog_THREAD.Start();
+                LoadCatalog_THREAD = new Thread(new ThreadStart(LoadCatalog_Worker));
+                LoadCatalog_THREAD.Start();
+            }
         }
 
         void LoadCatalog_Worker()
@@ -165,7 +167,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
             foreach (var port in ports)
             {
-                if (RunProbe(ip, port)) break;
+                RunProbe(ip, port);
             }
         }
 
@@ -272,11 +274,20 @@ namespace TH_DeviceManager.AddDevice.Pages
             return bitmap;
         }
 
+        /// <summary>
+        /// Matching Syntax:
+        /// [MANUFACTURER].[MODEL].[DEVICENAME]
+        /// </summary>
+        /// <param name="device"></param>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private static bool GetLinkTagMatchValue(Device device, CatalogInfo info)
         {
             if (info != null && info.Item != null && info.Item.link_tag != null && device != null)
             {
                 string x = info.Item.link_tag.ToLower();
+
+                // Add ability to link to multiple values. Separate values with semi colons.
 
                 if (x == ToLower(device.description.manufacturer)) return true;
                 if (x == ToLower(device.description.manufacturer) + "." + ToLower(device.description.model)) return true;
@@ -285,6 +296,53 @@ namespace TH_DeviceManager.AddDevice.Pages
                 if (x == ToLower(device.name)) return true;
             }
 
+            return false;
+        }
+
+        private static bool MatchLike(string s1, string s2)
+        {
+            if (s1 != null && s2 != null)
+            {
+                if (s1.StartsWith("%") && s1.EndsWith("%")) return MatchContains(s1, s2);
+                if (s1.StartsWith("%")) return MatchStartsWith(s1, s2);
+                if (s1.EndsWith("%")) return MatchEndsWith(s1, s2);
+            }
+            return false;
+        }
+
+        private static bool MatchContains(string s1, string s2)
+        {
+            if (s1 != null && s2 != null)
+            {
+                var x = s1.ToLower();
+                var y = s2.ToLower();
+
+                return x.Contains(y);
+            }
+            return false;
+        }
+
+        private static bool MatchStartsWith(string s1, string s2)
+        {
+            if (s1 != null && s2 != null)
+            {
+                var x = s1.ToLower();
+                var y = s2.ToLower();
+
+                return x.StartsWith(y);
+            }
+            return false;
+        }
+
+        private static bool MatchEndsWith(string s1, string s2)
+        {
+            if (s1 != null && s2 != null)
+            {
+                var x = s1.ToLower();
+                var y = s2.ToLower();
+
+                return x.EndsWith(y);
+            }
             return false;
         }
 
@@ -516,6 +574,19 @@ namespace TH_DeviceManager.AddDevice.Pages
         }
 
         #endregion
+
+        private void DeviceManager_Clicked(TH_WPF.Button bt)
+        {
+            if (ParentPage != null && ParentPage.ParentManager != null)
+            {
+                ParentPage.ParentManager.Open();
+            }
+        }
+
+        private void AddDevicesManually_Clicked(TH_WPF.Button bt)
+        {
+            if (ParentPage != null) ParentPage.ShowManual();
+        }
 
     }
 }

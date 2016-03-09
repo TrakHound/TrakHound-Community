@@ -17,6 +17,20 @@
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <Style TargetType="th_wpf:Button">
+                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="MinHeight" Value="35"/>
+                <Setter Property="ImageTextPadding" Value="10"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
             <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
@@ -44,7 +58,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Available Devices" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="10,0,0,10"/>
+        <TextBlock Text="Find devices on the network and match them to a configuration in the TrakHound Device Catalog" TextWrapping="Wrap" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="10,0,10,20"/>
 
         <!--Number of Devices Found-->
         <StackPanel Grid.Row="1" Margin="10,0,0,20">
@@ -204,21 +218,47 @@
                 <!--Add All Button-->
                 <th_wpf:Button Grid.Column="1" Text="Add All" Image="/TH_DeviceManager;component/Resources/Add_01.png" Clicked="AddAll_Clicked">
                     <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Padding" Value="10,5"/>
-                            <Setter Property="MinHeight" Value="35"/>
-                            <Setter Property="ImageTextPadding" Value="10"/>
+                        <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
                             <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
+                                <DataTrigger Binding="{Binding DeviceInfos}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DeviceInfos.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
                     </th_wpf:Button.Style>
                 </th_wpf:Button>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DeviceInfos}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DeviceInfos.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <!--Device Manager-->
+                    <th_wpf:Button Text="Device Manager" Margin="40,0,20,0" Image="/TH_DeviceManager;component/Resources/Root.png" Clicked="DeviceManager_Clicked"/>
+
+                    <!--Add Devices Manually-->
+                    <th_wpf:Button Grid.Column="1" Text="Add Devices Manually" VerticalAlignment="Center" HorizontalAlignment="Center" Clicked="AddDevicesManually_Clicked"/>
+
+                </StackPanel>
 
             </Grid>
 
@@ -267,6 +307,18 @@
                     HeadersVisibility="Column"
                     SelectionMode="Single"
                     >
+            <DataGrid.Style>
+                <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DeviceInfos}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DeviceInfos.Count}" Value="0">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
 
             <DataGrid.Columns>
 
@@ -323,7 +375,7 @@
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            
+
                             <Grid>
 
                                 <!--Add Button-->
@@ -415,7 +467,7 @@
                                 </Grid>
 
                             </Grid>
-                           
+
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
