@@ -34,6 +34,21 @@
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                         <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#33ffffff"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+
+                    <!--<Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                        <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="FontSize" Value="14"/>
                         <Setter Property="Height" Value="35"/>
                         <Setter Property="Padding" Value="10,5"/>
@@ -42,42 +57,13 @@
                                 <Setter Property="Background" Value="#33ffffff"/>
                             </Trigger>
                         </Style.Triggers>
-                    </Style>
+                    </Style>-->
                     <Style TargetType="Rectangle">
                         <Setter Property="Fill" Value="{StaticResource Shade_Light}"/>
                         <Setter Property="Width" Value="1"/>
                         <Setter Property="Margin" Value="5,2"/>
                     </Style>
                 </StackPanel.Resources>
-
-                <!--Show Client or Server List Option-->
-                <StackPanel Orientation="Horizontal">
-                    <StackPanel.Resources>
-                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
-                            <Setter Property="Margin" Value="5"/>
-                        </Style>
-                    </StackPanel.Resources>
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding PageListOptionsShown}" Value="false">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </StackPanel.Style>
-
-                    <RadioButton x:Name="ShowClient_RADIO" Content="Client" Checked="ShowClient_Checked" GroupName="PageListType"/>
-
-                    <RadioButton x:Name="ShowServer_RADIO" Content="Server" Checked="ShowServer_Checked" GroupName="PageListType"/>
-
-                </StackPanel>
-
-                <Rectangle/>
-
-                <!--Restore-->
-                <th_wpf:Button Text="Restore" Clicked="Restore_Clicked" Padding="10,8" Image="/TH_DeviceManager;component/Resources/Refresh_01.png"/>
 
                 <!--Save-->
                 <Grid>
@@ -114,7 +100,7 @@
                             </Style>
                         </Grid.Style>
 
-                        <th_wpf:Button Text="Save" Clicked="Save_Clicked" Padding="10,8" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
+                        <th_wpf:Button Text="Save" Clicked="Save_Clicked" Padding="10,5" Image="/TH_DeviceManager;component/Resources/Disk_01.png"/>
 
                     </Grid>
 
@@ -131,13 +117,13 @@
                             </Style>
                         </Grid.Style>
 
-                        <StackPanel Orientation="Horizontal" Background="#33ffffff">
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
 
                             <!--Animation-->
                             <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="20" Height="20" Foreground="{StaticResource Foreground_Opposite_Normal}" Margin="5,0" />
 
                             <!--Text-->
-                            <TextBlock Text="Saving.." Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="14" VerticalAlignment="Center" Margin="5,0,10,0"/>
+                            <TextBlock Text="Saving.." Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="12" VerticalAlignment="Center" Margin="5,0,10,0"/>
 
                         </StackPanel>
 
@@ -145,13 +131,20 @@
 
                 </Grid>
 
+                <Rectangle />
+
+                <!--Reload Configuration-->
+                <th_wpf:Button Clicked="Restore_Clicked" Image="/TH_DeviceManager;component/Resources/Refresh_01.png" ToolTip="Reload Configuration"/>
+
+                <Rectangle />
+
             </StackPanel>
 
         </Border>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
@@ -163,9 +156,9 @@
                     <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0" HorizontalAlignment="Center">
                         <ItemsControl.Resources>
                             <Style TargetType="th_wpf:ListButton">
-                                <Setter Property="ShowImage" Value="False"/>
-                                <Setter Property="Height" Value="100"/>
-                                <Setter Property="Width" Value="100"/>
+                                <!--<Setter Property="ShowImage" Value="False"/>-->
+                                <Setter Property="Height" Value="40"/>
+                                <!--<Setter Property="MinWidth" Value="100"/>-->
                                 <Setter Property="MinWidth" Value="100"/>
                                 <Setter Property="Foreground" Value="#fff"/>
                                 <Setter Property="Background" Value="Transparent"/>

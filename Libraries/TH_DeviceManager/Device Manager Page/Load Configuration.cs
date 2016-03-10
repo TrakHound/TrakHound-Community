@@ -17,7 +17,7 @@ namespace TH_DeviceManager
                 {
                     foreach (ConfigurationPage page in ConfigurationPages)
                     {
-                        page.LoadConfiguration(ConfigurationTable);
+                        this.Dispatcher.BeginInvoke(new Action(() => { page.LoadConfiguration(ConfigurationTable); }));
                     }
                 }
             }

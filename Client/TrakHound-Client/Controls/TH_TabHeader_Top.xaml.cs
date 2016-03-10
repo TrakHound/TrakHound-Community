@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using System.Globalization;
 using System.Windows.Shapes;
 
 namespace TrakHound_Client.Controls
@@ -86,7 +87,7 @@ namespace TrakHound_Client.Controls
             {
                 if (Clicked != null) Clicked(this);
             }
-            
+
         }
 
         private void TabItemClose_MouseDown(object sender, MouseButtonEventArgs e)
@@ -129,5 +130,56 @@ namespace TrakHound_Client.Controls
 
         #endregion
 
+        const double MAX_TEXT_WIDTH = 200;
+
+        private void TextBlock_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+            {
+                if (e.NewSize.Width > MAX_TEXT_WIDTH)
+                {
+                    var txt = (TextBlock)sender;
+
+                    string t = txt.Text;
+
+                    if (t != null)
+                    {
+                        // Keep removing characters from the string until the max width is met
+                        while (GetFormattedText(t).Width > MAX_TEXT_WIDTH)
+                        {
+                            t = t.Substring(0, t.Length - 1);
+                        }
+
+                        // Make sure the last character is not a space
+                        if (t[t.Length - 1] == ' ' && txt.Text.Length > t.Length + 2) t = txt.Text.Substring(0, t.Length + 2);
+
+                        // Add the ...
+                        txt.Text = t + "...";
+                    }
+                }
+            }
+        }
+
+        private static FormattedText GetFormattedText(string s)
+        {
+            return new FormattedText(
+                        s,
+                        CultureInfo.GetCultureInfo("en-us"),
+                        FlowDirection.LeftToRight,
+                        new Typeface("Arial"),
+                        13,
+                        Brushes.Black);
+        }
+
+    }
+
+    public class DesignTime_TH_TabHeader_Top : TH_TabHeader_Top
+    {
+        public DesignTime_TH_TabHeader_Top()
+        {
+            Text = "This is From a Design Time Class";
+            MouseOver = true;
+            IsSelected = true;
+        }
     }
 }

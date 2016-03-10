@@ -146,6 +146,8 @@ namespace TH_GeneratedData
 
         }
 
+        public TH_Plugins_Server.ConfigurationPage ConfigurationPage { get { return new ConfigurationPage.Page(); } }
+
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
         public bool UseDatabases { get; set; }

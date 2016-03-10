@@ -254,7 +254,7 @@ namespace TrakHound_Client
         {
             About_Initialize();
             DeviceManager_Initialize();
-            AccountManager_Initialize();
+            //AccountManager_Initialize();
             Options_Initialize();
             Plugins_Initialize();
         }
@@ -369,7 +369,7 @@ namespace TrakHound_Client
 
         private void Devicemanager_DeviceEditSelected(TH_Configuration.Configuration config)
         {
-            string title = config.Description.Description;
+            string title = "Edit Device - " + config.Description.Description;
             if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
 
             var index = PageTabHeaders.ToList().FindIndex(x => x.Text == title);
@@ -382,7 +382,7 @@ namespace TrakHound_Client
                 var page = new DeviceManagerPage(config, DeviceManagerType.Client);
                 page.ParentManager = devicemanager;
 
-                AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
+                AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Edit_02.png")));
             }
         }
 
@@ -433,6 +433,8 @@ namespace TrakHound_Client
 
         public void AccountManager_Open()
         {
+            if (accountManager == null) AccountManager_Initialize();
+
             AddPageAsTab(accountManager, "Acount Manager", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png")));
         }
 

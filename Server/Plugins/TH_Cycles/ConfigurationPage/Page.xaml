@@ -403,7 +403,7 @@
                 <ItemsControl ItemsSource="{Binding OverrideLinks}"/>
 
                 <!--Add Value Button-->
-                <th_wpf:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TH_GeneratedData;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
+                <th_wpf:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TH_Cycles;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
                     <th_wpf:Button.Style>
                         <Style TargetType="th_wpf:Button">
                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>

@@ -340,6 +340,7 @@
     <Resource Include="Resources\TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Edit_02.png" />
     <Resource Include="Resources\Add_01.png" />
     <Resource Include="Resources\Share_01.png" />
     <Resource Include="Resources\Copy_01.png" />

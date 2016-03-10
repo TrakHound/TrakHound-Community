@@ -75,13 +75,17 @@ namespace TH_DeviceManager.Pages.Agent
 
 
             // Load IP Address
-            IpAddress = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+            IpAddress = Table_Functions.GetTableValue(prefix + "Address", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(IpAddress)) IpAddress = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
 
             // Load Port
             Port = Table_Functions.GetTableValue(prefix + "Port", dt);
 
             // Load Device Name
-            DeviceName = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+            DeviceName = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(DeviceName)) DeviceName = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
             // Load Heartbeat
             int heartbeat;
@@ -107,13 +111,13 @@ namespace TH_DeviceManager.Pages.Agent
         public void SaveConfiguration(DataTable dt)
         {
             // Save IP Address
-            Table_Functions.UpdateTableValue(IpAddress, prefix + "IP_Address", dt);
+            Table_Functions.UpdateTableValue(IpAddress, prefix + "Address", dt);
 
             // Save Port
             Table_Functions.UpdateTableValue(Port, prefix + "Port", dt);
 
             // Save Device Name
-            Table_Functions.UpdateTableValue(DeviceName, prefix + "Device_Name", dt);
+            Table_Functions.UpdateTableValue(DeviceName, prefix + "DeviceName", dt);
 
             // Save Heartbeat
             Table_Functions.UpdateTableValue(Heartbeat.ToString(), prefix + "Heartbeat", dt);

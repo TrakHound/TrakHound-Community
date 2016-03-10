@@ -8,9 +8,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
              
+             xmlns:local="clr-namespace:TrakHound_Client.Controls;assembly=TrakHound-Client"
+
              xmlns:controls="clr-namespace:TrakHound_Client.Controls"
+             
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=local:DesignTime_TH_TabHeader_Top, IsDesignTimeCreatable=True}"     
              >
 
     <UserControl.Style>
@@ -41,7 +45,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border Margin="0,0,0,-1" Height="32">
+    <Border Margin="0,0,0,-1" Height="32" ToolTip="{Binding Text}">
         <Border.RenderTransform>
             <TranslateTransform />
         </Border.RenderTransform>
@@ -199,12 +203,13 @@
 
                             <!--Text-->
                             <TextBlock Grid.Column="1" Text="{Binding Text}"
-                        Margin="10,0,10,0"
-                        MinWidth="50"
-                        MaxWidth="250"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"
-                        FontSize="13"              
-                        >
+                                    Margin="10,0,10,0"
+                                    MinWidth="50"
+                                    MaxWidth="250"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    FontSize="13"      
+                                    SizeChanged="TextBlock_SizeChanged"
+                                    >
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>

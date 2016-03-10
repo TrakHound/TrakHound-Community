@@ -17,123 +17,217 @@ namespace TH_DeviceManager
     public partial class DeviceManagerPage
     {
 
-        IEnumerable<Lazy<IServerPlugin>> plugins { get; set; }
+        //IEnumerable<Lazy<IServerPlugin>> plugins { get; set; }
 
-        public List<IServerPlugin> Plugins { get; set; }
+        //public List<IServerPlugin> Plugins { get; set; }
 
-        Plugs PLUGS;
+        //Plugs PLUGS;
 
-        class Plugs
+        static List<Type> pluginPageTypes;
+
+        static List<ConfigurationPage> PluginPages { get; set; }
+
+        class ServerPlugins
         {
             [ImportMany(typeof(IServerPlugin))]
             public IEnumerable<Lazy<IServerPlugin>> Plugins { get; set; }
         }
 
-        void LoadPlugins()
+        public List<Type> GetPluginPageTypes()
         {
-            string plugin_rootpath = FileLocations.Plugins + @"\Server";
+            var result = pluginPageTypes;
 
-            if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
+            if (result == null)
+            {
+                result = new List<Type>();
 
-            Plugins = new List<IServerPlugin>();
+                string plugin_rootpath = FileLocations.Plugins + @"\Server";
 
-            string pluginsPath;
+                if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
 
-            // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
-            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+                //Plugins = new List<IServerPlugin>();
 
-            // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-            pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
-            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+                string pluginsPath;
 
-            pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+                // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
+                pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
+                if (Directory.Exists(pluginsPath)) GetPluginPageTypes(pluginsPath, result);
+                //if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
+                // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+                pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
+                if (Directory.Exists(pluginsPath)) GetPluginPageTypes(pluginsPath, result);
+                //if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+
+                //pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
+                //if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+
+                pluginPageTypes = result;
+            }
+
+            return result;
         }
 
-        void LoadPlugins(string Path)
+        //void LoadPlugins()
+        //{
+        //    string plugin_rootpath = FileLocations.Plugins + @"\Server";
+
+        //    if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
+
+        //    //Plugins = new List<IServerPlugin>();
+        //    var pages = new List<ConfigurationPage>();
+
+        //    string pluginsPath;
+
+        //    // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
+        //    pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
+        //    if (Directory.Exists(pluginsPath)) GetConfigurationPages(pluginsPath, pages);
+        //    //if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+
+        //    // Load from App root Directory (doesn't overwrite plugins found in System Directory)
+        //    pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
+        //    if (Directory.Exists(pluginsPath)) GetConfigurationPages(pluginsPath, pages);
+        //    //if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+
+        //    //pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
+        //    //if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
+
+        //}
+
+        private void GetPluginPageTypes(string path, List<Type> types)
         {
-            Logger.Log("Searching for Server Plugins in '" + Path + "'");
-            if (Directory.Exists(Path))
+            if (Directory.Exists(path))
             {
                 try
                 {
-                    PLUGS = new Plugs();
+                    var plugs = new ServerPlugins();
 
-                    var PageCatalog = new DirectoryCatalog(Path);
-                    var PageContainer = new CompositionContainer(PageCatalog);
-                    PageContainer.SatisfyImportsOnce(PLUGS);
+                    var catalog = new DirectoryCatalog(path);
+                    var container = new CompositionContainer(catalog);
+                    container.SatisfyImportsOnce(plugs);
 
-                    plugins = PLUGS.Plugins;
+                    var plugins = plugs.Plugins;
 
-                    foreach (Lazy<IServerPlugin> lplugin in plugins)
+                    foreach (var lplugin in plugins)
                     {
                         IServerPlugin plugin = lplugin.Value;
 
-                        if (Plugins.ToList().Find(x => x.Name.ToLower() == plugin.Name.ToLower()) == null)
+                        Type type = plugin.Config_Page;
+
+                        if (type != null)
                         {
-                            Logger.Log(plugin.Name + " : Plugin Found");
-                            Plugins.Add(plugin);
+                            if (!types.Exists(x => x.GetType() == type))
+                            {
+                                types.Add(type);
+                            }
                         }
-                        else
-                        {
-                            Logger.Log(plugin.Name + " : Plugin Already Found");
-                        }
+
+                        //object o = Activator.CreateInstance(config_type);
+
+                        //ConfigurationPage page = (ConfigurationPage)o;
+
+                        ////ConfigurationPage page = plugin.ConfigurationPage;
+                        //if (page != null)
+                        //{
+                        //    if (!pages.ToList().Exists(x => x.PageName == page.PageName))
+                        //    {
+                        //        pages.Add(page);
+                        //    }
+                        //}
                     }
                 }
                 catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message); }
 
                 // Search Subdirectories
-                foreach (string directory in Directory.GetDirectories(Path))
+                foreach (string directory in Directory.GetDirectories(path))
                 {
-                    LoadPlugins(directory);
-                }
-            }
-            else Logger.Log("Plugins Directory Doesn't Exist (" + Path + ")");
-        }
-
-
-        List<ConfigurationPage> PluginConfigurationPages;
-
-        void ProcessTablePlugins(DataTable dt)
-        {
-            if (Plugins != null && dt != null)
-            {
-                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
-                {
-                    try
-                    {
-                        IServerPlugin plugin = lplugin.Value;
-
-                        Type config_type = plugin.Config_Page;
-
-                        object o = Activator.CreateInstance(config_type);
-
-                        ConfigurationPage page = (ConfigurationPage)o;
-                    }
-                    catch (Exception ex) { Logger.Log("Plugin Exception! : " + ex.Message); }
+                    GetPluginPageTypes(directory, types);
                 }
             }
         }
+
+        //void LoadPlugins(string Path)
+        //{
+        //    Logger.Log("Searching for Server Plugins in '" + Path + "'");
+        //    if (Directory.Exists(Path))
+        //    {
+        //        try
+        //        {
+        //            PLUGS = new Plugs();
+
+        //            var PageCatalog = new DirectoryCatalog(Path);
+        //            var PageContainer = new CompositionContainer(PageCatalog);
+        //            PageContainer.SatisfyImportsOnce(PLUGS);
+
+        //            plugins = PLUGS.Plugins;
+
+        //            foreach (Lazy<IServerPlugin> lplugin in plugins)
+        //            {
+        //                IServerPlugin plugin = lplugin.Value;
+
+        //                if (Plugins.ToList().Find(x => x.Name.ToLower() == plugin.Name.ToLower()) == null)
+        //                {
+        //                    Logger.Log(plugin.Name + " : Plugin Found");
+        //                    Plugins.Add(plugin);
+        //                }
+        //                else
+        //                {
+        //                    Logger.Log(plugin.Name + " : Plugin Already Found");
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message); }
+
+        //        // Search Subdirectories
+        //        foreach (string directory in Directory.GetDirectories(Path))
+        //        {
+        //            LoadPlugins(directory);
+        //        }
+        //    }
+        //    else Logger.Log("Plugins Directory Doesn't Exist (" + Path + ")");
+        //}
+
+
+        //List<ConfigurationPage> PluginConfigurationPages = new List<ConfigurationPage>();
+
+        //void ProcessTablePlugins(DataTable dt)
+        //{
+        //    if (Plugins != null && dt != null)
+        //    {
+        //        foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
+        //        {
+        //            try
+        //            {
+        //                IServerPlugin plugin = lplugin.Value;
+
+        //                Type config_type = plugin.Config_Page;
+
+        //                object o = Activator.CreateInstance(config_type);
+
+        //                ConfigurationPage page = (ConfigurationPage)o;
+        //            }
+        //            catch (Exception ex) { Logger.Log("Plugin Exception! : " + ex.Message); }
+        //        }
+        //    }
+        //}
 
         void PlugIns_Closing()
         {
-            if (Plugins != null)
-            {
-                foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
-                {
-                    try
-                    {
-                        IServerPlugin plugin = lplugin.Value;
-                        plugin.Closing();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log("Plugin Exception! : " + ex.Message);
-                    }
-                }
-            }
+            //if (Plugins != null)
+            //{
+            //    foreach (Lazy<IServerPlugin> lplugin in Plugins.ToList())
+            //    {
+            //        try
+            //        {
+            //            IServerPlugin plugin = lplugin.Value;
+            //            plugin.Closing();
+            //        }
+            //        catch (Exception ex)
+            //        {
+            //            Logger.Log("Plugin Exception! : " + ex.Message);
+            //        }
+            //    }
+            //}
         }
 
     }

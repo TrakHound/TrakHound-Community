@@ -118,6 +118,12 @@
                 <!--Separator-->
                 <Rectangle />
 
+                <!--Refresh Device List-->
+                <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Toolbar_Clicked"/>
+
+                <!--Separator-->
+                <Rectangle />
+
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
                         <Style TargetType="th_wpf:Button">
@@ -167,12 +173,6 @@
 
                     <!--Remove Device(s)-->
                     <th_wpf:Button Image="Resources/X_01.png" ToolTip="Remove Device(s)" Padding="8" Clicked="Remove_Toolbar_Clicked"/>
-
-                    <!--Separator-->
-                    <Rectangle />
-
-                    <!--Refresh Device List-->
-                    <th_wpf:Button Image="Resources/Refresh_01.png" ToolTip="Refresh Device List" Clicked="Refresh_Toolbar_Clicked"/>
 
                     <!--Separator-->
                     <Rectangle />
@@ -409,7 +409,13 @@
                 </Style>
             </Grid.Style>
 
-            <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="{StaticResource Accent_Normal}" />
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Height="75" Foreground="{StaticResource Accent_Normal}" />
+
+                <TextBlock Text="Loading Devices.." Foreground="{StaticResource Accent_Normal}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="14pt"/>
+
+            </StackPanel>
 
         </Grid>
 
