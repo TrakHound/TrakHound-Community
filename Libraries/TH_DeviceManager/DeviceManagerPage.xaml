@@ -36,6 +36,7 @@
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Height" Value="30"/>
+                        <Setter Property="Margin" Value="1,0"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#33ffffff"/>
@@ -138,18 +139,24 @@
 
                 <Rectangle />
 
+                <!--Device Manager-->
+                <th_wpf:Button Clicked="DeviceManager_Clicked" Image="/TH_DeviceManager;component/Resources/root.png" ToolTip="Open Device Manager"/>
+
+                <!--Open Table View-->
+                <th_wpf:Button Clicked="EditTable_Clicked"  ToolTip="Edit Device as Table" Image="Resources/Table_01.png"/>
+
             </StackPanel>
 
         </Border>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto" MinWidth="150"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <!--Page List-->
-            <Border Background="{StaticResource Accent_Normal}">
+            <Grid Background="{StaticResource Accent_Normal}">
 
                 <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
                     
@@ -180,12 +187,57 @@
 
                 </ScrollViewer>
 
-            </Border>
+                <!--Loading Animation-->
+                <Grid Background="{StaticResource Accent_Normal}">
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <!--<Setter Property="Opacity" Value="0.0"/>-->
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding PagesLoading}" Value="true">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                    <DoubleAnimation.EasingFunction>
+                                                        <CubicEase EasingMode="EaseIn"/>
+                                                    </DoubleAnimation.EasingFunction>
+                                                </DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                                <Trigger Property="Opacity" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                        <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Opposite_Normal}" />
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Grid>
 
             <!--Page Content-->
             <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1,1,0,1">
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" CanContentScroll="True" Background="{StaticResource Window_Background}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{StaticResource Window_Background}">
 
                     <ContentControl Margin="40,40,20,20" Content="{Binding CurrentPage}"/>
 

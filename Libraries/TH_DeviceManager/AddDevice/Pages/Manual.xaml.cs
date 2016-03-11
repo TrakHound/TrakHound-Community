@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -27,7 +28,7 @@ namespace TH_DeviceManager.AddDevice.Pages
     /// <summary>
     /// Interaction logic for Manual.xaml
     /// </summary>
-    public partial class Manual : UserControl
+    public partial class Manual : UserControl, IPage
     {
         public Manual()
         {
@@ -40,6 +41,13 @@ namespace TH_DeviceManager.AddDevice.Pages
         public string PageName { get { return "Manual"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Edit_02.png")); } }
+
+        public event EventHandler PageOpened;
+        public event CancelEventHandler PageOpening;
+
+        public event EventHandler PageClosed;
+        public event CancelEventHandler PageClosing;
+
 
         public Page ParentPage { get; set; }
 

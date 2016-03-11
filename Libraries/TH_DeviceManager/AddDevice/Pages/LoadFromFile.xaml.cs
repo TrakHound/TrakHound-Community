@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 using TH_Configuration;
 using TH_Global;
@@ -32,6 +33,13 @@ namespace TH_DeviceManager.AddDevice.Pages
         public string PageName { get { return "Load Device Configuration From File"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/List_01.png")); } }
+
+        public event EventHandler PageOpened;
+        public event CancelEventHandler PageOpening;
+
+        public event EventHandler PageClosed;
+        public event CancelEventHandler PageClosing;
+
 
         public Page ParentPage { get; set; }
 

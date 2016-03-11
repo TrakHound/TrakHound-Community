@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.ComponentModel;
 using System.Windows.Media;
 
 namespace TH_Global
@@ -14,5 +14,14 @@ namespace TH_Global
 
         ImageSource Image { get; }
 
+        event CancelEventHandler PageOpening;
+        event EventHandler PageOpened;
+        
+        event CancelEventHandler PageClosing;
+        event EventHandler PageClosed;
+
     }
+
+    //public delegate void EventHandler(IPage sender);
+    //public delegate void CancelEventHandler
 }

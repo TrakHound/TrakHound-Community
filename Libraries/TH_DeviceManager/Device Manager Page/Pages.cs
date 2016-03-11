@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Threading;
+
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
@@ -65,15 +67,57 @@ namespace TH_DeviceManager
 
         public void InitializePages()
         {
-            var pages = CreatePages();
+            
+
+            //var pages = CreatePages();
+
+            
+
+            
+
+            
+        }
+
+
+        Thread loadPages_Thread;
+
+        private void LoadPages()
+        {
+            PagesLoading = true;
+
+            if (loadPages_Thread != null) loadPages_Thread.Abort();
+
+            loadPages_Thread = new Thread(new ThreadStart(LoadPages_Worker));
+            loadPages_Thread.Start();
+        }
+
+        private void LoadPages_Worker()
+        {
+            var types = GetPluginPageTypes();
+
+            //var pages = CreatePages();
+
+            Dispatcher.BeginInvoke(new Action<List<Type>>(LoadPages_Finished), PRIORITY_BACKGROUND, new object[] { types });
+        }
+
+        private void LoadPages_Finished(List<Type> types)
+        {
+            var pages = CreatePages(types);
+
+            ConfigurationPages = pages;
 
             AddPages(pages);
 
-            ConfigurationPages = pages;
+            LoadConfiguration();
+
+            PagesLoading = false;
         }
 
-        private List<ConfigurationPage> CreatePages()
+        private List<ConfigurationPage> CreatePages(List<Type> pluginPageTypes)
         {
+            var stpw = new System.Diagnostics.Stopwatch();
+            stpw.Start();
+
             var result = new List<ConfigurationPage>();
 
             // Description
@@ -85,15 +129,18 @@ namespace TH_DeviceManager
             // Databases
             result.Add(new Pages.Databases.Page());
 
-            var types = GetPluginPageTypes();
+            //var types = GetPluginPageTypes();
 
-            var pluginPages = GetPluginPages(types);
+            var pluginPages = GetPluginPages(pluginPageTypes);
 
-            // Load configuration pages from plugins
+            //Load configuration pages from plugins
             if (pluginPages != null)
             {
                 result.AddRange(pluginPages);
             }
+
+            stpw.Stop();
+            Console.WriteLine("CreatePages() :: " + stpw.ElapsedMilliseconds.ToString() + "ms");
 
             return result;
         }

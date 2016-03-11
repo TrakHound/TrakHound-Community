@@ -20,6 +20,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.Reflection;
 
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 
@@ -53,6 +54,12 @@ namespace TrakHound_Client.Pages.Options.Updates
         public string PageName { get { return "Updates"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Up_01.png")); } }
+
+        public event EventHandler PageOpened;
+        public event CancelEventHandler PageOpening;
+
+        public event EventHandler PageClosed;
+        public event CancelEventHandler PageClosing;
 
 
         void LaunchUpdater()

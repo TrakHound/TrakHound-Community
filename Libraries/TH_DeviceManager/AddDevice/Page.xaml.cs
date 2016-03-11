@@ -12,10 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 using System.Threading;
 using System.Net;
-
+using TH_Global;
 using TH_Global.Functions;
 using TH_MTConnect.Components;
 using TH_UserManagement.Management;
@@ -25,13 +26,25 @@ namespace TH_DeviceManager.AddDevice
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl
+    public partial class Page : UserControl, IPage
     {
         public Page()
         {
             InitializeComponent();
             DataContext = this;
         }
+
+        public string PageName { get { return "Add Device"; } }
+
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Add_01.png")); } }
+
+        public event EventHandler PageOpened;
+        public event CancelEventHandler PageOpening;
+
+        public event EventHandler PageClosed;
+        public event CancelEventHandler PageClosing;
+
+
 
         public DeviceManagerList ParentManager { get; set; }
 

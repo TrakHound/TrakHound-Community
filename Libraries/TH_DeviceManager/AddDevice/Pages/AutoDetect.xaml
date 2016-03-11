@@ -92,7 +92,7 @@
                         </TextBlock>
 
                         <!--Text-->
-                        <TextBlock Foreground="{StaticResource Foreground_Normal}" FontSize="12pt" VerticalAlignment="Center">
+                        <TextBlock Foreground="{StaticResource Foreground_Normal}" MinWidth="200" FontSize="12pt" VerticalAlignment="Center">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Text" Value="Devices Found on Network"/>
@@ -112,6 +112,10 @@
 
                                         <DataTrigger Binding="{Binding DevicesNotAdded}" Value="1">
                                             <Setter Property="Text" Value="Device Found on Network"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding DevicesLoading}" Value="true">
+                                            <Setter Property="Text" Value="Searching for Devices.."/>
                                         </DataTrigger>
 
                                     </Style.Triggers>

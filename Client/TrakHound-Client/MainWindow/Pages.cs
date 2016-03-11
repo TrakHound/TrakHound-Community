@@ -109,6 +109,9 @@ namespace TrakHound_Client
             TH_TabItem ti = Pages_TABCONTROL.Items.Cast<TH_TabItem>().ToList().Find(x => x.Title.ToString().ToLower() == pageName.ToLower());
             if (ti != null)
             {
+
+
+
                 ti.Close();
 
                 int index = 0;
@@ -120,6 +123,11 @@ namespace TrakHound_Client
 
                 Pages_TABCONTROL.SelectedItem = Pages_TABCONTROL.Items[index];
             }
+        }
+
+        private void CloseEvent()
+        {
+
         }
 
         void header_Clicked(TH_TabHeader_Top header)

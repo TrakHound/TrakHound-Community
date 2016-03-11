@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 using System.Collections.ObjectModel;
 using System.Threading;
@@ -31,7 +32,7 @@ namespace TH_UserManagement
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class MyAccountPage : UserControl, TH_Global.IPage
+    public partial class MyAccountPage : UserControl, IPage
     {
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
@@ -48,6 +49,13 @@ namespace TH_UserManagement
 
             SetPageType(CurrentUser);
         }
+
+        public event EventHandler PageOpened;
+        public event CancelEventHandler PageOpening;
+
+        public event EventHandler PageClosed;
+        public event CancelEventHandler PageClosing;
+
 
 
         public UserConfiguration CurrentUser

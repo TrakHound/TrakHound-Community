@@ -3,14 +3,19 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Threading;
 using System.Data;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.ComponentModel;
 
 using TH_Configuration;
+using TH_Global;
 using TH_Global.Functions;
 using TH_UserManagement.Management;
 using TH_WPF;
@@ -22,7 +27,7 @@ namespace TH_DeviceManager
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class DeviceManagerTable : UserControl
+    public partial class DeviceManagerTable : UserControl, IPage
     {
         public DeviceManagerTable(Configuration config)
         {
@@ -32,6 +37,18 @@ namespace TH_DeviceManager
             Configuration = config;
             ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
         }
+
+        public string PageName { get { return "Edit Device Table"; } }
+
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Table_01.png")); } }
+
+        public event EventHandler PageOpened;
+        public event CancelEventHandler PageOpening;
+
+        public event EventHandler PageClosed;
+        public event CancelEventHandler PageClosing;
+
+
 
         public Configuration Configuration { get; set; }
         //public DataTable ConfigurationTable { get; set; }

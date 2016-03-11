@@ -8,6 +8,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.ComponentModel;
 
 using System.Windows.Markup;
 using System.Windows.Data;
@@ -24,13 +27,26 @@ namespace TH_DeviceManager
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class DeviceManagerList : UserControl
+    public partial class DeviceManagerList : UserControl, IPage
     {
         public DeviceManagerList()
         {
             InitializeComponent();
             DataContext = this;
         }
+
+        public string PageName { get { return "Device Manager"; } }
+
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Root.png")); } }
+
+        public event EventHandler PageOpened;
+        public event CancelEventHandler PageOpening;
+
+        public event EventHandler PageClosed;
+        public event CancelEventHandler PageClosing;
+
+
+
 
         UserConfiguration currentuser;
         public UserConfiguration CurrentUser
@@ -59,6 +75,11 @@ namespace TH_DeviceManager
         public void Open()
         {
             if (DeviceManagerListSelected != null) DeviceManagerListSelected();
+        }
+
+        public void OpenEditTable(Configuration config)
+        {
+            if (DeviceEditTableSelected != null) DeviceEditTableSelected(config);
         }
 
 

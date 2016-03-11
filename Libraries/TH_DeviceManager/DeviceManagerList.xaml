@@ -96,6 +96,7 @@
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Height" Value="30"/>
+                        <Setter Property="Margin" Value="1,0"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#33ffffff"/>
