@@ -14,11 +14,18 @@ namespace TH_Global
 
         ImageSource Image { get; }
 
-        event CancelEventHandler PageOpening;
-        event EventHandler PageOpened;
+        void Opened();
+        bool Opening();
+
+        void Closed();
+        bool Closing();
+
+
+        //event CancelEventHandler PageOpening;
+        //event EventHandler PageOpened;
         
-        event CancelEventHandler PageClosing;
-        event EventHandler PageClosed;
+        //event CancelEventHandler PageClosing;
+        //event EventHandler PageClosed;
 
     }
 

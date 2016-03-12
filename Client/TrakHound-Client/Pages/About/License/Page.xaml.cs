@@ -21,12 +21,14 @@ using System.Windows.Shapes;
 
 using System.IO;
 
+using TH_Global;
+
 namespace TrakHound_Client.Pages.About.License
 {
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.IPage
+    public partial class Page : UserControl, IPage
     {
         public Page()
         {
@@ -40,6 +42,18 @@ namespace TrakHound_Client.Pages.About.License
             PageContent = this;
         }
 
+        public string PageName { get { return "License"; } }
+
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Pages/About/License/Key_03.png")); } }
+
+
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
+
+
         public string LicenseText
         {
             get { return (string)GetValue(LicenseTextProperty); }
@@ -48,17 +62,6 @@ namespace TrakHound_Client.Pages.About.License
 
         public static readonly DependencyProperty LicenseTextProperty =
             DependencyProperty.Register("LicenseText", typeof(string), typeof(Page), new PropertyMetadata(null));
-
-        public string PageName { get { return "License"; } }
-
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Pages/About/License/Key_03.png")); } }
-
-        public event EventHandler PageOpened;
-        public event CancelEventHandler PageOpening;
-
-        public event EventHandler PageClosed;
-        public event CancelEventHandler PageClosing;
-
 
 
         public object PageContent { get; set; }

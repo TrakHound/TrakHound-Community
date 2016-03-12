@@ -46,11 +46,12 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/options_gear_30px.png")); } }
 
-        public event EventHandler PageOpened;
-        public event CancelEventHandler PageOpening;
 
-        public event EventHandler PageClosed;
-        public event CancelEventHandler PageClosing;
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
 
         public Page ParentPage { get; set; }

@@ -505,21 +505,21 @@ namespace TrakHound_Client
                 if (!config.Enabled)
                 {
                     // Remove TabItem
-                    foreach (TH_TabItem ti in Pages_TABCONTROL.Items.OfType<TH_TabItem>().ToList())
-                    {
-                        if (ti.Header != null)
-                        {
-                            if (ti.Header.ToString().ToUpper() == config.Name.ToUpper())
-                            {
-                                if (ti.Content.GetType() == typeof(Grid))
-                                {
-                                    Grid grid = ti.Content as Grid;
-                                    grid.Children.Clear();
-                                }
-                                Pages_TABCONTROL.Items.Remove(ti);
-                            }
-                        }
-                    }
+                    //foreach (TH_TabItem ti in Pages_TABCONTROL.Items.OfType<TH_TabItem>().ToList())
+                    //{
+                    //    if (ti.Header != null)
+                    //    {
+                    //        if (ti.Header.ToString().ToUpper() == config.Name.ToUpper())
+                    //        {
+                    //            if (ti.Content.GetType() == typeof(Grid))
+                    //            {
+                    //                Grid grid = ti.Content as Grid;
+                    //                grid.Children.Clear();
+                    //            }
+                    //            Pages_TABCONTROL.Items.Remove(ti);
+                    //        }
+                    //    }
+                    //}
 
                     if (optionsManager != null)
                     {

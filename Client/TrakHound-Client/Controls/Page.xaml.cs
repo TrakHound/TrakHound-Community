@@ -20,14 +20,28 @@ using System.Windows.Shapes;
 
 using System.Collections.ObjectModel;
 
+using TH_Global;
+
 namespace TrakHound_Client.Controls
 {
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl
+    public partial class TabPage : UserControl
     {
-        public Page()
+        public TabPage()
+        {
+            Init();
+        }
+
+        public TabPage(IPage content)
+        {
+            Init();
+
+            PageContent = content;
+        }
+
+        private void Init()
         {
             InitializeComponent();
             DataContext = this;
@@ -40,14 +54,27 @@ namespace TrakHound_Client.Controls
         }
 
 
-        public object PageContent
+
+        public IPage PageContent
         {
-            get { return (object)GetValue(PageContentProperty); }
+            get { return (IPage)GetValue(PageContentProperty); }
             set { SetValue(PageContentProperty, value); }
         }
 
+        // Using a DependencyProperty as the backing store for PageContent.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PageContentProperty =
-            DependencyProperty.Register("PageContent", typeof(object), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("PageContent", typeof(IPage), typeof(TabPage), new PropertyMetadata(null));
+
+
+
+        //public object PageContent
+        //{
+        //    get { return (object)GetValue(PageContentProperty); }
+        //    set { SetValue(PageContentProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty PageContentProperty =
+        //    DependencyProperty.Register("PageContent", typeof(object), typeof(Page), new PropertyMetadata(null));
 
         public bool Closing
         {
@@ -56,7 +83,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ClosingProperty =
-            DependencyProperty.Register("Closing", typeof(bool), typeof(Page), new PropertyMetadata(false));
+            DependencyProperty.Register("Closing", typeof(bool), typeof(TabPage), new PropertyMetadata(false));
 
 
 
@@ -69,7 +96,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ZoomLevelProperty =
-            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(Page), new PropertyMetadata(1D));
+            DependencyProperty.Register("ZoomLevel", typeof(double), typeof(TabPage), new PropertyMetadata(1D));
 
 
         public string ZoomLevelText
@@ -79,7 +106,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ZoomLevelTextProperty =
-            DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(Page), new PropertyMetadata(null));
+            DependencyProperty.Register("ZoomLevelText", typeof(string), typeof(TabPage), new PropertyMetadata(null));
 
         ObservableCollection<string> zoomlevels;
         public ObservableCollection<string> ZoomLevels
@@ -134,7 +161,7 @@ namespace TrakHound_Client.Controls
             {
                 object o = windowcontent;
 
-                PageContent = o;
+                PageContent = (IPage)o;
             }
         }
 

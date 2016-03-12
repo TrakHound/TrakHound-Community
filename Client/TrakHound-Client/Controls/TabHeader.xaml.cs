@@ -18,30 +18,26 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Globalization;
 using System.Windows.Shapes;
+using System.Windows.Media.Animation;
+
+using TH_Global;
 
 namespace TrakHound_Client.Controls
 {
     /// <summary>
     /// Interaction logic for TH_TabHeader.xaml
     /// </summary>
-    public partial class TH_TabHeader_Top : UserControl
+    public partial class TabHeader : UserControl
     {
-        public TH_TabHeader_Top()
+        public TabHeader()
         {
             InitializeComponent();
             DataContext = this;
+
+            root.Opacity = 0;
         }
 
-        // Parent TH_TabItem to use for getting TH_TabItem when TH_TabHeader is clicked/closed/etc.
-        public TH_TabItem TabParent
-        {
-            get { return (TH_TabItem)GetValue(TabParentProperty); }
-            set { SetValue(TabParentProperty, value); }
-        }
-
-        public static readonly DependencyProperty TabParentProperty =
-            DependencyProperty.Register("TabParent", typeof(TH_TabItem), typeof(TH_TabHeader_Top), new PropertyMetadata(null));
-
+        public TabPage Page { get; set; }
 
         // Text to be displayed on Tab
         public string Text
@@ -51,7 +47,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(TH_TabHeader_Top), new PropertyMetadata(null));
+            DependencyProperty.Register("Text", typeof(string), typeof(TabHeader), new PropertyMetadata(null));
 
 
         // Image to be displayed on Tab
@@ -62,7 +58,8 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ImageProperty =
-            DependencyProperty.Register("Image", typeof(ImageSource), typeof(TH_TabHeader_Top), new PropertyMetadata(null));
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(TabHeader), new PropertyMetadata(null));
+
 
         // Whether tab is selected or not
         public bool IsSelected
@@ -72,14 +69,15 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty IsSelectedProperty =
-            DependencyProperty.Register("IsSelected", typeof(bool), typeof(TH_TabHeader_Top), new PropertyMetadata(false));
+            DependencyProperty.Register("IsSelected", typeof(bool), typeof(TabHeader), new PropertyMetadata(false));
 
 
         #region "Events"
 
-        public delegate void Click_Handler(TH_TabHeader_Top header);
+        public delegate void Click_Handler(TabHeader header);
         public event Click_Handler Clicked;
         public event Click_Handler CloseClicked;
+        public event EventHandler Closed;
 
         private void Control_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -87,7 +85,6 @@ namespace TrakHound_Client.Controls
             {
                 if (Clicked != null) Clicked(this);
             }
-
         }
 
         private void TabItemClose_MouseDown(object sender, MouseButtonEventArgs e)
@@ -102,7 +99,92 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty ClosingProperty =
-            DependencyProperty.Register("Closing", typeof(bool), typeof(TH_TabHeader_Top), new PropertyMetadata(false));
+            DependencyProperty.Register("Closing", typeof(bool), typeof(TabHeader), new PropertyMetadata(false));
+
+        #endregion
+
+        #region "Opening"
+
+        const double MAX_WIDTH = 300;
+
+        const double TAB_OPENING_ANIMATION_TIME = 300;
+
+        public void Open()
+        {
+            AnimateTabOpening();
+        }
+
+        private void AnimateTabOpening()
+        {
+            var animation = new DoubleAnimation();
+            animation.From = 0;
+            animation.To = 1;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_OPENING_ANIMATION_TIME));
+
+            var ease = new CubicEase();
+            ease.EasingMode = EasingMode.EaseIn;
+
+            animation.EasingFunction = ease;
+            root.BeginAnimation(OpacityProperty, animation);
+        }
+
+        #endregion
+
+        #region "Closing"
+
+        const double TAB_CLOSING_ANIMATION_TIME = 300;
+        const double SPACE_CLOSING_ANIMATION_TIME = 200;
+
+        double spaceWidth = 0;
+
+        public void Close()
+        {
+            AnimateTabClosing();
+        }
+
+        private void AnimateTabClosing()
+        {
+            spaceWidth = root.ActualWidth;
+            Width = spaceWidth;
+
+            var animation = new DoubleAnimation();
+            animation.Completed += TabClosingAnimation_Completed;
+            animation.From = 1;
+            animation.To = 0;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_CLOSING_ANIMATION_TIME));
+
+            var ease = new CubicEase();
+            ease.EasingMode = EasingMode.EaseOut;
+
+            animation.EasingFunction = ease;
+            root.BeginAnimation(OpacityProperty, animation);
+        }
+
+        private void TabClosingAnimation_Completed(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(new Action(AnimateSpaceClosing));
+        }
+
+        private void AnimateSpaceClosing()
+        {
+            var animation = new DoubleAnimation();
+            animation.Completed += SpaceClosingAnimation_Completed;
+            animation.From = spaceWidth;
+            animation.To = 0;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(SPACE_CLOSING_ANIMATION_TIME));
+
+            var ease = new CubicEase(); 
+            ease.EasingMode = EasingMode.EaseOut;
+
+            animation.EasingFunction = ease;
+            BeginAnimation(WidthProperty, animation);
+        }
+
+        private void SpaceClosingAnimation_Completed(object sender, EventArgs e)
+        {
+            var args = new EventArgs();
+            if (Closed != null) Closed(this, args);
+        }
 
         #endregion
 
@@ -115,7 +197,7 @@ namespace TrakHound_Client.Controls
         }
 
         public static readonly DependencyProperty MouseOverProperty =
-            DependencyProperty.Register("MouseOver", typeof(bool), typeof(TH_TabHeader_Top), new PropertyMetadata(false));
+            DependencyProperty.Register("MouseOver", typeof(bool), typeof(TabHeader), new PropertyMetadata(false));
 
 
         private void Control_MouseEnter(object sender, MouseEventArgs e)
@@ -173,12 +255,12 @@ namespace TrakHound_Client.Controls
 
     }
 
-    public class DesignTime_TH_TabHeader_Top : TH_TabHeader_Top
+    public class DesignTime_TH_TabHeader_Top : TabHeader
     {
         public DesignTime_TH_TabHeader_Top()
         {
-            Text = "This is From a Design Time Class";
-            MouseOver = true;
+            //Text = "This is From a Design Time Class";
+            //MouseOver = true;
             IsSelected = true;
         }
     }

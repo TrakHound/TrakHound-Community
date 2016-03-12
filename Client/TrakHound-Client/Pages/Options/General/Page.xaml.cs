@@ -40,11 +40,11 @@ namespace TrakHound_Client.Pages.Options.General
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Options/Pages/General/Home_01.png")); } }
 
-        public event EventHandler PageOpened;
-        public event CancelEventHandler PageOpening;
+        public void Opened() { }
+        public bool Opening() { return true; }
 
-        public event EventHandler PageClosed;
-        public event CancelEventHandler PageClosing;
+        public void Closed() { }
+        public bool Closing() { return true; }
 
 
         #region "Properties"

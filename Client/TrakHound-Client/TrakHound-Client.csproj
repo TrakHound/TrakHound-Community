@@ -130,8 +130,8 @@
     <Compile Include="Controls\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TH_TabHeader_Top.xaml.cs">
-      <DependentUpon>TH_TabHeader_Top.xaml</DependentUpon>
+    <Compile Include="Controls\TabHeader.xaml.cs">
+      <DependentUpon>TabHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TH_ToolBarItem.xaml.cs">
       <DependentUpon>TH_ToolBarItem.xaml</DependentUpon>
@@ -174,7 +174,7 @@
     <Compile Include="Splash\Screen.xaml.cs">
       <DependentUpon>Screen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TH_TabItem.cs" />
+    <None Include="Controls\TH_TabItem.cs" />
     <None Include="TrakHound-Client.licenseheader" />
     <Page Include="Controls\PageManager.xaml">
       <SubType>Designer</SubType>
@@ -220,7 +220,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\TH_TabHeader_Top.xaml">
+    <Page Include="Controls\TabHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

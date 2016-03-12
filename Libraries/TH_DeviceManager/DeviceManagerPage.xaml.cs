@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.ComponentModel;
 
 using TH_Configuration;
+using TH_Global;
 using TH_Global.Functions;
 using TH_UserManagement.Management;
 using TH_WPF;
@@ -26,36 +27,29 @@ namespace TH_DeviceManager
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class DeviceManagerPage : UserControl
+    public partial class DeviceManagerPage : UserControl, IPage
     {
         public DeviceManagerPage(Configuration config, DeviceManagerType type)
         {
             InitializeComponent();
             DataContext = this;
 
-            LoadPages();
-
-            //var pages = CreatePages();
-
             Configuration = config;
             ConfigurationTable = Converter.XMLToTable(config.ConfigurationXML);
 
-            //AddPages(pages);
-
-            //ConfigurationPages = pages;
-
-            //LoadConfiguration();
+            LoadPages();
         }
 
         public string PageName { get { return "Edit Device"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Edit_02.png")); } }
 
-        public event EventHandler PageOpened;
-        public event CancelEventHandler PageOpening;
 
-        public event EventHandler PageClosed;
-        public event CancelEventHandler PageClosing;
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
 
 

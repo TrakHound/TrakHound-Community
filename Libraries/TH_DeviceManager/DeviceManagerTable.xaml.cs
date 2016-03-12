@@ -42,11 +42,12 @@ namespace TH_DeviceManager
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Table_01.png")); } }
 
-        public event EventHandler PageOpened;
-        public event CancelEventHandler PageOpening;
 
-        public event EventHandler PageClosed;
-        public event CancelEventHandler PageClosing;
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
 
 

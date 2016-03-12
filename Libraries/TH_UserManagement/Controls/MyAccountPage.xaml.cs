@@ -50,11 +50,16 @@ namespace TH_UserManagement
             SetPageType(CurrentUser);
         }
 
-        public event EventHandler PageOpened;
-        public event CancelEventHandler PageOpening;
+        public string PageName { get; set; }
 
-        public event EventHandler PageClosed;
-        public event CancelEventHandler PageClosing;
+        public ImageSource Image { get; set; }
+
+
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
 
 
@@ -74,24 +79,24 @@ namespace TH_UserManagement
         public delegate void UserChanged_Handler(UserConfiguration userConfig);
         public event UserChanged_Handler UserChanged;
 
-        public string PageName
-        {
-            get { return (string)GetValue(PageNameProperty); }
-            set { SetValue(PageNameProperty, value); }
-        }
+        //public string PageName
+        //{
+        //    get { return (string)GetValue(PageNameProperty); }
+        //    set { SetValue(PageNameProperty, value); }
+        //}
 
-        public static readonly DependencyProperty PageNameProperty =
-            DependencyProperty.Register("PageName", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
+        //public static readonly DependencyProperty PageNameProperty =
+        //    DependencyProperty.Register("PageName", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
-        public ImageSource Image
-        {
-            get { return (ImageSource)GetValue(ImageProperty); }
-            set { SetValue(ImageProperty, value); }
-        }
+        //public ImageSource Image
+        //{
+        //    get { return (ImageSource)GetValue(ImageProperty); }
+        //    set { SetValue(ImageProperty, value); }
+        //}
 
-        public static readonly DependencyProperty ImageProperty =
-            DependencyProperty.Register("Image", typeof(ImageSource), typeof(MyAccountPage), new PropertyMetadata(null));
+        //public static readonly DependencyProperty ImageProperty =
+        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(MyAccountPage), new PropertyMetadata(null));
 
         
         public void LoadUserConfiguration(UserConfiguration userConfig)

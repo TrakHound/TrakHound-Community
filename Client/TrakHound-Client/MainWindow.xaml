@@ -62,27 +62,6 @@
             <Color x:Key="WindowControl_Color">#FFCCCCCC</Color>
             <SolidColorBrush x:Key="WindowControl_Brush" Color="{StaticResource WindowControl_Color}"/>
             
-            
-
-            <Style x:Key="PageTabItem" TargetType="{x:Type controls:TH_TabItem}">
-
-                <Setter Property="FontSize" Value="0pt"/>
-
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type controls:TH_TabItem}">
-                            <ContentPresenter ContentSource="Header"/>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <ControlTemplate x:Key="TabItemControlTemplate" TargetType="{x:Type controls:TH_TabItem}">
-                <Grid >
-                    <!--Prevent Tabs from showing (now using TH_TabHeader_.. for tabs)-->
-                </Grid>
-            </ControlTemplate>
-
         </ResourceDictionary>
     </Window.Resources>
 
@@ -958,13 +937,15 @@
                                     </Grid.RowDefinitions>
 
                                     <!--Pages TabControl-->
-                                    <TabControl x:Name="Pages_TABCONTROL" Grid.Row="1"
+                                    <!--<TabControl x:Name="Pages_TABCONTROL" Grid.Row="1"
                                             VerticalContentAlignment="Center" TabStripPlacement="Top"
                                             BorderBrush="#00FFFFFF" BorderThickness="0"
                                             Padding="0,0,0,0" 
                                             Background="{StaticResource Window_Background}"
                                             SelectionChanged="Pages_TABCONTROL_SelectionChanged"   
-                                            />
+                                            />-->
+
+                                    <ContentPresenter x:Name="CurrentPage_CONTENT" Grid.Row="1" Content="{Binding CurrentPage}"/>
 
                                     <GridSplitter Grid.Row="2" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
                                         <GridSplitter.Style>
@@ -982,12 +963,12 @@
                                     <devconsole:PopUp x:Name="developerConsole" Grid.Row="3" ShownChanged="developerConsole_ShownChanged"/>
 
                                     <!--Top Bar-->
-                                    <Grid>
+                                    <Grid Height="35">
                                         <Grid.Resources>
                                             <Style TargetType="th_wpf:Button">
                                                 <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                                <Setter Property="Width" Value="35"/>
-                                                <Setter Property="Height" Value="35"/>
+                                                <Setter Property="Width" Value="30"/>
+                                                <Setter Property="Height" Value="30"/>
                                                 <Setter Property="Padding" Value="2"/>
                                                 <Style.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="true">
@@ -1006,7 +987,7 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <ItemsControl Grid.Column="1" ItemsSource="{Binding PageTabHeaders}" Background="{StaticResource Window_Background}" Margin="0,0,0,-2">
+                                        <ItemsControl Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Window_Background}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <StackPanel Orientation="Horizontal"/>
@@ -1015,22 +996,22 @@
                                         </ItemsControl>
 
                                         <!--Plugin Launcher Buttons-->
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,0,0">
+                                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,0">
 
                                             <!--Plugin Launcher Button-->
-                                            <th_wpf:Button x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
+                                            <th_wpf:Button x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked"/>
                                             
                                             <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
 
                                         </StackPanel>
 
                                         <!--Main Menu, etc. Buttons-->
-                                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,2,0">
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,0">
 
                                             <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
                                             
                                             <!--MainMenu Button-->
-                                            <th_wpf:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked" Margin="0,0,0,-2" Height="30"/>
+                                            <th_wpf:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked"/>
 
                                         </StackPanel>
 

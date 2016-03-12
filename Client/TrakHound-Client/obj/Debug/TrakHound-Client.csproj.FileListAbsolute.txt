@@ -65,7 +65,6 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Up
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\PluginItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\Menu.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_TabHeader_Top.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_ToolBarItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Menu.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Exit_BT.g.cs
@@ -87,7 +86,6 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Updates\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\Menu.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_TabHeader_Top.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Menu.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\MainWindow.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Page.baml
@@ -96,3 +94,5 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TabHeader.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TabHeader.baml
