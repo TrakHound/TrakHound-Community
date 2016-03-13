@@ -35,7 +35,7 @@ namespace TH_DeviceManager
             DataContext = this;
         }
 
-        public string PageName { get { return "Device Manager"; } }
+        public string Title { get { return "Device Manager"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Root.png")); } }
 

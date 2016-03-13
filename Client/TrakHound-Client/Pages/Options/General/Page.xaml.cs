@@ -36,7 +36,7 @@ namespace TrakHound_Client.Pages.Options.General
 
         MainWindow mw;
 
-        public string PageName { get { return "General"; } }
+        public string Title { get { return "General"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Options/Pages/General/Home_01.png")); } }
 

@@ -74,7 +74,7 @@ namespace TrakHound_Client.Pages.About.Information
 
         //}
 
-        public string PageName { get { return "Information"; } }
+        public string Title { get { return "Information"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Pages/About/Information/Information_01.png")); } }
 

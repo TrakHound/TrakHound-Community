@@ -43,7 +43,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
         MainWindow mw;
 
-        public string PageName { get { return "Installed"; } }
+        public string Title { get { return "Installed"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/CheckMark_01.png")); } }
 

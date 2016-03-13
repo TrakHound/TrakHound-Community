@@ -54,20 +54,6 @@
                             </Style.Triggers>
                         </Style>
                     </ItemsControl.Resources>
-                    <!--<ItemsControl.Resources>
-                        <Style TargetType="th_wpf:ListButton">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ItemsControl.Resources>-->
                 </ItemsControl>
 
             </Border>
@@ -109,8 +95,8 @@
                                     </Grid.Style>
                                 </Grid>
 
-                                <!--Page Name-->
-                                <TextBlock Text="{Binding PageContent.PageName}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
+                                <!--Title-->
+                                <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
 
                             </StackPanel>
 

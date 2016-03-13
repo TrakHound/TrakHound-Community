@@ -50,9 +50,9 @@ namespace TH_UserManagement
             SetPageType(CurrentUser);
         }
 
-        public string PageName { get; set; }
+        //public string PageName { get; set; }
 
-        public ImageSource Image { get; set; }
+        //public ImageSource Image { get; set; }
 
 
         public void Opened() { }
@@ -79,26 +79,28 @@ namespace TH_UserManagement
         public delegate void UserChanged_Handler(UserConfiguration userConfig);
         public event UserChanged_Handler UserChanged;
 
-        //public string PageName
-        //{
-        //    get { return (string)GetValue(PageNameProperty); }
-        //    set { SetValue(PageNameProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty PageNameProperty =
-        //    DependencyProperty.Register("PageName", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
 
-        //public ImageSource Image
-        //{
-        //    get { return (ImageSource)GetValue(ImageProperty); }
-        //    set { SetValue(ImageProperty, value); }
-        //}
+        public string Title
+        {
+            get { return (string)GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
 
-        //public static readonly DependencyProperty ImageProperty =
-        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(MyAccountPage), new PropertyMetadata(null));
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register("Title", typeof(string), typeof(MyAccountPage), new PropertyMetadata(null));
 
-        
+
+        public ImageSource Image
+        {
+            get { return (ImageSource)GetValue(ImageProperty); }
+            set { SetValue(ImageProperty, value); }
+        }
+
+        public static readonly DependencyProperty ImageProperty =
+            DependencyProperty.Register("Image", typeof(ImageSource), typeof(MyAccountPage), new PropertyMetadata(null));
+
+
         public void LoadUserConfiguration(UserConfiguration userConfig)
         {
             CurrentUser = userConfig;
@@ -109,17 +111,17 @@ namespace TH_UserManagement
 
             if (userConfig != null)
             {
-                SetDependencyProperty(MyAccountPage.FirstNameProperty, String_Functions.UppercaseFirst(userConfig.first_name));
-                SetDependencyProperty(MyAccountPage.LastNameProperty, String_Functions.UppercaseFirst(userConfig.last_name));
+                SetDependencyProperty(FirstNameProperty, String_Functions.UppercaseFirst(userConfig.first_name));
+                SetDependencyProperty(LastNameProperty, String_Functions.UppercaseFirst(userConfig.last_name));
 
-                SetDependencyProperty(MyAccountPage.UsernameProperty, String_Functions.UppercaseFirst(userConfig.username));
-                SetDependencyProperty(MyAccountPage.EmailProperty, userConfig.email);
+                SetDependencyProperty(UsernameProperty, String_Functions.UppercaseFirst(userConfig.username));
+                SetDependencyProperty(EmailProperty, userConfig.email);
 
-                SetDependencyProperty(MyAccountPage.CompanyProperty, String_Functions.UppercaseFirst(userConfig.company));
-                SetDependencyProperty(MyAccountPage.PhoneProperty, userConfig.phone);
-                SetDependencyProperty(MyAccountPage.Address1Property, userConfig.address1);
-                SetDependencyProperty(MyAccountPage.Address2Property, userConfig.address2);
-                SetDependencyProperty(MyAccountPage.CityProperty, userConfig.city);
+                SetDependencyProperty(CompanyProperty, String_Functions.UppercaseFirst(userConfig.company));
+                SetDependencyProperty(PhoneProperty, userConfig.phone);
+                SetDependencyProperty(Address1Property, userConfig.address1);
+                SetDependencyProperty(Address2Property, userConfig.address2);
+                SetDependencyProperty(CityProperty, userConfig.city);
 
                 int country = CountryList.ToList().FindIndex(x => x == String_Functions.UppercaseFirst(userConfig.country));
                 if (country >= 0) country_COMBO.SelectedIndex = country;
@@ -152,16 +154,16 @@ namespace TH_UserManagement
         {
             if (userConfig != null)
             {
-                PageName = "Edit Account";
+                Title = "Edit Account";
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/blank_profile_01_sm.png"));
             }
             else
             {
-                PageName = "Create Account";
+                Title = "Create Account";
                 Image = new BitmapImage(new Uri("pack://application:,,,/TH_UserManagement;component/Resources/AddUser_01.png"));
             }
 
-            if (UserManagementSettings.Database != null) PageName = PageName + " (Local)";
+            if (UserManagementSettings.Database != null) Title = Title + " (Local)";
         }
 
         public void CleanForm()

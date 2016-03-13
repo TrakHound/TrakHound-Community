@@ -21,8 +21,6 @@ namespace TH_TableManager
     public partial class Plugin : IClientPlugin
     {
 
-        #region "PlugIn"
-
         #region "Descriptive"
 
         public string Title { get { return "Table Manager"; } }
@@ -72,7 +70,11 @@ namespace TH_TableManager
 
         public void Initialize() { }
 
-        public void Closing() { }
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
         #endregion
 
@@ -192,8 +194,6 @@ namespace TH_TableManager
         #region "Options"
 
         public TH_Global.IPage Options { get; set; }
-
-        #endregion
 
         #endregion
 

@@ -51,7 +51,7 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         MainWindow mw;
 
-        public string PageName { get { return "Updates"; } }
+        public string Title { get { return "Updates"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Up_01.png")); } }
 

@@ -38,7 +38,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         #region "Properties"
 
-        public string PageName { get { return "Manual"; } }
+        public string Title { get { return "Manual"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Edit_02.png")); } }
 

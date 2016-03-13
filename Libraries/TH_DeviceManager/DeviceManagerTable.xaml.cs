@@ -38,7 +38,7 @@ namespace TH_DeviceManager
             ConfigurationTable = TH_Configuration.Converter.XMLToTable(config.ConfigurationXML);
         }
 
-        public string PageName { get { return "Edit Device Table"; } }
+        public string Title { get { return "Edit Device Table"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Table_01.png")); } }
 

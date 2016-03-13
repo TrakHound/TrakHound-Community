@@ -68,7 +68,11 @@ namespace TH_DeviceCompare_CNC.Text.Emergency_Stop
 
         public void Initialize() { }
 
-        public void Closing() { }
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
         public void Show() { }
 

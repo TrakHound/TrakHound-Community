@@ -47,6 +47,7 @@ namespace TrakHound_Client
             }
         }
 
+        TabHeader SelectedTab { get; set; }
 
         public TabPage CurrentPage
         {
@@ -104,7 +105,7 @@ namespace TrakHound_Client
 
         public void AddTab(IPage page, string name = null, ImageSource image = null)
         {
-            string txt = page.PageName;
+            string txt = page.Title;
             ImageSource img = page.Image;
 
             if (name != null) txt = name;
@@ -151,6 +152,7 @@ namespace TrakHound_Client
             if (CurrentPage == null) AnimateTabPageOpen();
 
             CurrentPage = header.Page;
+            SelectedTab = header;
         }
 
         public void SelectTab(int index)
@@ -288,38 +290,28 @@ namespace TrakHound_Client
 
         void ChangePage_Forward()
         {
-            //if (Pages_TABCONTROL.Items.Count > 0)
-            //{
-            //    int index = Pages_TABCONTROL.SelectedIndex;
-            //    int max = Pages_TABCONTROL.Items.Count - 1;
-
-            //    if (index < max)
-            //    {
-            //        Pages_TABCONTROL.SelectedItem = Pages_TABCONTROL.Items[index + 1];
-            //    }
-            //    else
-            //    {
-            //        Pages_TABCONTROL.SelectedItem = Pages_TABCONTROL.Items[0];
-            //    }
-            //}
+            if (TabHeaders.Count > 1)
+            {
+                if (SelectedTab != null)
+                {
+                    int index = FindTabIndex(SelectedTab);
+                    if (index < TabHeaders.Count - 1) SelectTab(index + 1);
+                    else SelectTab(0);
+                }
+            }
         }
 
         void ChangePage_Backward()
         {
-            //if (Pages_TABCONTROL.Items.Count > 0)
-            //{
-            //    int index = Pages_TABCONTROL.SelectedIndex;
-            //    int max = Pages_TABCONTROL.Items.Count - 1;
-
-            //    if (index > 0)
-            //    {
-            //        Pages_TABCONTROL.SelectedItem = Pages_TABCONTROL.Items[index - 1];
-            //    }
-            //    else
-            //    {
-            //        Pages_TABCONTROL.SelectedItem = Pages_TABCONTROL.Items[max];
-            //    }
-            //}
+            if (TabHeaders.Count > 1)
+            {
+                if (SelectedTab != null)
+                {
+                    int index = FindTabIndex(SelectedTab);
+                    if (index > 0) SelectTab(index - 1);
+                    else SelectTab(TabHeaders.Count - 1);
+                }
+            }
         }
 
         #region "Zoom"
@@ -385,7 +377,7 @@ namespace TrakHound_Client
             if (aboutManager == null)
             {
                 aboutManager = new PageManager();
-                aboutManager.Title = "About";
+                aboutManager.TabTitle = "About";
                 aboutManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/About_01.png"));
                 aboutManager.AddPage(new Pages.About.Information.Page());
                 aboutManager.AddPage(new Pages.About.License.Page());
@@ -543,10 +535,13 @@ namespace TrakHound_Client
         {
             if (accountManager == null)
             {
-                accountManager = new PageManager();
                 accountpage = new TH_UserManagement.MyAccountPage();
+                accountpage.LoadUserConfiguration(CurrentUser);
                 accountpage.UserChanged += accountpage_UserChanged;
-                accountpage.LoadUserConfiguration(null);
+
+                accountManager = new PageManager();
+                accountManager.TabTitle = "Account Management";
+                accountManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/blank_profile_01_sm.png"));
                 accountManager.AddPage(accountpage);
             }
         }
@@ -593,10 +588,24 @@ namespace TrakHound_Client
             if (pluginsManager == null)
             {
                 pluginsManager = new PageManager();
-                pluginsManager.Title = "Plugins";
+                pluginsManager.TabTitle = "Plugins";
                 pluginsManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Rocket_02.png"));
                 pluginsPage = new Pages.Plugins.Installed.Page();
                 pluginsManager.AddPage(pluginsPage);
+
+                if (PluginConfigurations != null) Plugins_AddItems(PluginConfigurations);
+            }
+        }
+
+        private void Plugins_AddItems(List<TH_Plugins_Client.PluginConfiguration> configs)
+        {
+            pluginsPage.ClearInstalledItems();
+
+            configs.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+            foreach (var config in configs)
+            {
+                pluginsPage.AddPlugin(config);
             }
         }
 

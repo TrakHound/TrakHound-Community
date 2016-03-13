@@ -42,7 +42,7 @@ namespace TrakHound_Client.Pages.About.License
             PageContent = this;
         }
 
-        public string PageName { get { return "License"; } }
+        public string Title { get { return "License"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Pages/About/License/Key_03.png")); } }
 

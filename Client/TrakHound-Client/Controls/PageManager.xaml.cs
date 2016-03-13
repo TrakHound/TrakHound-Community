@@ -31,7 +31,7 @@ namespace TrakHound_Client.Controls
             DataContext = this;
         }
 
-        public string PageName { get { return Title; } }
+        public string Title { get { return TabTitle; } }
 
         public ImageSource Image { get { return TabImage; } }
 
@@ -43,7 +43,7 @@ namespace TrakHound_Client.Controls
         public bool Closing() { return true; }
 
 
-        public string Title { get; set; }
+        public string TabTitle { get; set; }
 
         public ImageSource TabImage { get; set; }
 
@@ -85,10 +85,10 @@ namespace TrakHound_Client.Controls
             BindingOperations.SetBinding(lb, ListButton.ImageProperty, pageImageBinding);
 
             // Bind ListButton.Text to PageName property
-            var pageNameBinding = new Binding();
-            pageNameBinding.Source = page;
-            pageNameBinding.Path = new PropertyPath("PageName");
-            BindingOperations.SetBinding(lb, ListButton.TextProperty, pageNameBinding);
+            var pageTitleBinding = new Binding();
+            pageTitleBinding.Source = page;
+            pageTitleBinding.Path = new PropertyPath("Title");
+            BindingOperations.SetBinding(lb, ListButton.TextProperty, pageTitleBinding);
 
             lb.Selected += ListButton_Selected;
             lb.DataObject = page;
@@ -100,7 +100,7 @@ namespace TrakHound_Client.Controls
         {
             foreach (ListButton lb in Pages)
             {
-                if (lb.Text.ToUpper() == page.PageName.ToUpper())
+                if (lb.Text.ToUpper() == page.Title.ToUpper())
                 {
                     Pages.Remove(lb);
                 }

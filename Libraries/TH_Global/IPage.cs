@@ -9,8 +9,7 @@ namespace TH_Global
     /// </summary>
     public interface IPage
     {
-
-        string PageName { get; }
+        string Title { get; }
 
         ImageSource Image { get; }
 
@@ -19,16 +18,6 @@ namespace TH_Global
 
         void Closed();
         bool Closing();
-
-
-        //event CancelEventHandler PageOpening;
-        //event EventHandler PageOpened;
-        
-        //event CancelEventHandler PageClosing;
-        //event EventHandler PageClosed;
-
     }
 
-    //public delegate void EventHandler(IPage sender);
-    //public delegate void CancelEventHandler
 }

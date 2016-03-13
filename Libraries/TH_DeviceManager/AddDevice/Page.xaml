@@ -119,7 +119,7 @@
                             </Grid>
 
                             <!--Page Name-->
-                            <TextBlock Text="{Binding PageContent.PageName}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
 
                         </StackPanel>
 

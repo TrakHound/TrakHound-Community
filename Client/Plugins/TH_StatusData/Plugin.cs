@@ -67,7 +67,16 @@ namespace TH_StatusData
 
         public void Initialize() { }
 
-        public void Closing() { Update_Stop(); }
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing()
+        {
+            Update_Stop();
+
+            return true;
+        }
 
         bool closing = false;
 

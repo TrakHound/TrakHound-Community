@@ -42,7 +42,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         #region "Properties"
 
-        public string PageName { get { return "Auto Detect"; } }
+        public string Title { get { return "Auto Detect"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/options_gear_30px.png")); } }
 

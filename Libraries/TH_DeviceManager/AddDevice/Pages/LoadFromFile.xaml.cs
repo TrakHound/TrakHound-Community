@@ -30,7 +30,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             DataContext = this;
         }
 
-        public string PageName { get { return "Load Device Configuration From File"; } }
+        public string Title { get { return "Load Device Configuration From File"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/List_01.png")); } }
 

@@ -34,7 +34,7 @@ namespace TH_DeviceManager.AddDevice
             DataContext = this;
         }
 
-        public string PageName { get { return "Add Device"; } }
+        public string Title { get { return "Add Device"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Add_01.png")); } }
 

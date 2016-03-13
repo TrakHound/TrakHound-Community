@@ -40,7 +40,7 @@ namespace TH_DeviceManager
             LoadPages();
         }
 
-        public string PageName { get { return "Edit Device"; } }
+        public string Title { get { return "Edit Device"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Edit_02.png")); } }
 
@@ -49,7 +49,18 @@ namespace TH_DeviceManager
         public bool Opening() { return true; }
 
         public void Closed() { }
-        public bool Closing() { return true; }
+        public bool Closing()
+        {
+            if (SaveNeeded)
+            {
+                string text = "Save Changes to Device?";
+                string title = "Save Changes";
+
+                var result = TH_WPF.MessageBox.Show(text, title, MessageBoxButtons.YesNo);
+                if (result == true && ConfigurationTable != null) Save(ConfigurationTable);
+            }
+            return true;
+        }
 
 
 

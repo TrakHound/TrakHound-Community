@@ -228,14 +228,16 @@ namespace TrakHound_Client
             // Add Buttons for Plugins on Plugin Options page
             if (pluginsPage != null)
             {
-                pluginsPage.ClearInstalledItems();
+                Plugins_AddItems(result);
 
-                result.Sort((a, b) => a.Name.CompareTo(b.Name));
+                //pluginsPage.ClearInstalledItems();
 
-                foreach (var config in result)
-                {
-                    pluginsPage.AddPlugin(config);
-                }
+                //result.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+                //foreach (var config in result)
+                //{
+                //    pluginsPage.AddPlugin(config);
+                //}
             }
 
             return result;
@@ -358,7 +360,7 @@ namespace TrakHound_Client
                         AddAppToList(plugin);
 
                         // If set to OpenOnStartUp then Open new Tab
-                        if (plugin.OpenOnStartUp) AddPageAsTab(plugin, plugin.Title, plugin.Image);
+                        if (plugin.OpenOnStartUp) AddTab(plugin);
 
                         // Create an Options page (if exists)
                         Plugin_CreateOptionsPage(plugin);
@@ -453,22 +455,18 @@ namespace TrakHound_Client
         /// <param name="info"></param>
         private void Plugin_ShowRequested(PluginShowInfo info)
         {
-            IClientPlugin plugin = null;
-
             if (info.Page.GetType() == typeof(IClientPlugin))
             {
-                plugin = (IClientPlugin)info.Page;
+                var plugin = (IClientPlugin)info.Page;
+
+                string title = info.PageTitle;
+                if (info.PageTitle == null && plugin != null) title = plugin.Title;
+
+                ImageSource image = info.PageImage;
+                if (info.PageImage == null && plugin != null) image = plugin.Image;
+
+                AddTab(plugin, title, image);
             }
-
-            string title = info.PageTitle;
-            if (info.PageTitle == null && plugin != null) title = plugin.Title;
-
-            ImageSource image = info.PageImage;
-            if (info.PageImage == null && plugin != null) image = plugin.Image;
-
-            object page = info.Page;
-
-            AddPageAsTab(page, title, image);
         }
 
         /// <summary>
