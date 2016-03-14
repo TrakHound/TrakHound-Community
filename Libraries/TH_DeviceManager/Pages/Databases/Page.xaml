@@ -23,6 +23,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -49,15 +50,58 @@
         <!--Description-->
         <TextBlock Grid.Row="1" Text="Configure the Databases that this device writes data to and reads from" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20"/>
 
+        <!--Page Type Selection-->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10">
+            <StackPanel.Resources>
+                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Hover}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Dark}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                                <Condition Property="IsChecked" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Dark}"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+
+            <ToggleButton x:Name="Client_TOGGLE" Content="Client" Margin="0,0,10,0" Checked="Client_Checked"/>
+
+            <ToggleButton x:Name="Server_TOGGLE" Content="Server" Checked="Server_Checked"/>
+
+        </StackPanel>
+
         <!--Add Database Buttons-->
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="3">
 
             <TextBlock Text="Add" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center"/>
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,10">
+
+                
+
+                <!--<Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="10,5"/>-->
 
                 <!--Buttons-->
-                <ItemsControl ItemsSource="{Binding DatabaseTypeList}" Margin="0,10">
+                <ItemsControl ItemsSource="{Binding DatabaseTypeList}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
@@ -133,7 +177,7 @@
                                 <DataTrigger Binding="{Binding DatabaseTypeList.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
-                                
+
                             </Style.Triggers>
                         </Style>
                     </Rectangle.Style>
@@ -143,10 +187,10 @@
 
         </StackPanel>
 
-        <Rectangle Grid.Row="3" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,20"/>
+        <Rectangle Grid.Row="4" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,20"/>
 
         <!--List-->
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="5">
 
             <ItemsControl ItemsSource="{Binding DatabaseList}" Margin="0,10" HorizontalContentAlignment="Stretch">
                 <ItemsControl.Resources>

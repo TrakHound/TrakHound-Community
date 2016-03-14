@@ -180,6 +180,8 @@ namespace TH_Database
         event SettingChanged_Handler SettingChanged;
 
         string prefix { get; set; }
+        //string ClientPrefix { get; set; }
+        //string ServerPrefix { get; set; }
 
         void LoadConfiguration(DataTable dt);
 

@@ -114,7 +114,7 @@ namespace TrakHound_Client.Menus.Main
         void DeviceManager_Clicked()
         {
             Shown = false;
-            if (mw != null) mw.DeviceManager_Open();
+            if (mw != null) mw.DeviceManager_DeviceList_Open();
         }
 
         #endregion

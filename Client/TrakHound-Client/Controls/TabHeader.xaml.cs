@@ -35,9 +35,12 @@ namespace TrakHound_Client.Controls
             DataContext = this;
 
             root.Opacity = 0;
+            root.MaxWidth = START_WIDTH;
         }
 
         public TabPage Page { get; set; }
+
+        public string Tag { get; set; }
 
         // Text to be displayed on Tab
         public string Text
@@ -105,27 +108,53 @@ namespace TrakHound_Client.Controls
 
         #region "Opening"
 
+        const double START_WIDTH = 45;
         const double MAX_WIDTH = 300;
 
-        const double TAB_OPENING_ANIMATION_TIME = 300;
+        const double TAB_OPENING_OPACITY_ANIMATION_TIME = 300;
+        const double TAB_OPENING_WIDTH_ANIMATION_TIME = 500;
 
-        public void Open()
+        public void Open(bool fade = false)
         {
-            AnimateTabOpening();
+            if (fade) AnimateTabOpening_Opacity();
+            else AnimateTabOpening_Width();
         }
 
-        private void AnimateTabOpening()
+        private void AnimateTabOpening_Opacity()
         {
             var animation = new DoubleAnimation();
             animation.From = 0;
             animation.To = 1;
-            animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_OPENING_ANIMATION_TIME));
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_OPENING_OPACITY_ANIMATION_TIME));
+            animation.Completed += Animation_Completed;
 
             var ease = new CubicEase();
             ease.EasingMode = EasingMode.EaseIn;
 
             animation.EasingFunction = ease;
             root.BeginAnimation(OpacityProperty, animation);
+        }
+
+        private void Animation_Completed(object sender, EventArgs e)
+        {
+            AnimateTabOpening_Width();
+        }
+
+        private void AnimateTabOpening_Width()
+        {
+            root.Opacity = 1;
+
+            var animation = new DoubleAnimation();
+            animation.From = START_WIDTH;
+            animation.To = MAX_WIDTH;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_OPENING_WIDTH_ANIMATION_TIME));
+            //animation.BeginTime = new TimeSpan(0, 0, 0, 0, 100);
+
+            var ease = new CubicEase();
+            ease.EasingMode = EasingMode.EaseIn;
+
+            animation.EasingFunction = ease;
+            root.BeginAnimation(MaxWidthProperty, animation);
         }
 
         #endregion

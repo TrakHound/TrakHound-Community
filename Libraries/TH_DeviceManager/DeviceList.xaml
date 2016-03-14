@@ -22,7 +22,7 @@
                 <controls:DataGridMenuItem Header="Add Device.." DataObject="{Binding}" Click="Add_DataGridRowContextMenu_Click"/>
             </ContextMenu>
             
-            <ContextMenu x:Key="DataGridRowContextMenu_Single">
+            <!--<ContextMenu x:Key="DataGridRowContextMenu_Single">
                 <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
                 <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>
                 <Separator/>
@@ -31,8 +31,8 @@
                 <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
                 <Separator/>
                 <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
-                <controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Share_DataGridRowContextMenu_Click"/>
-            </ContextMenu>
+                --><!--<controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Share_DataGridRowContextMenu_Click"/>--><!--
+            </ContextMenu>-->
 
             <ContextMenu x:Key="DataGridRowContextMenu_Multiple">
                 <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
@@ -56,9 +56,9 @@
                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     </Trigger>
-                    <DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
+                    <!--<DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
                         <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
-                    </DataTrigger>
+                    </DataTrigger>-->
                 </Style.Triggers>
             </Style>
 

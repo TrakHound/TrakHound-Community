@@ -16,5 +16,5 @@ DEBUG;TRACE
 19-364608993
 Controls\DeviceDisplay\Cell.xaml;Controls\DeviceDisplay\Column.xaml;Controls\DeviceDisplay\Overlay.xaml;Controls\GlossOverlay.xaml;Controls\DeviceDisplay\Header.xaml;Controls\RowHeader.xaml;DeviceCompare.xaml;
 
-True
+False
 

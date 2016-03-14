@@ -110,7 +110,7 @@ namespace TrakHound_Client
                 if (!addDeviceOpened && enabledConfigs.Count == 0 && currentuser != null)
                 {
                     addDeviceOpened = true;
-                    DeviceManager_Open();
+                    DeviceManager_DeviceList_Open();
                 }
                 else if (enabledConfigs.Count > 0)
                 {
@@ -234,8 +234,6 @@ namespace TrakHound_Client
                         }
                     }
                 }
-
-
             }
             // If not logged in Read from File in 'C:\TrakHound\'
             else
@@ -256,7 +254,7 @@ namespace TrakHound_Client
             {
                 addDeviceOpened = true;
                 //if (devicemanager != null) devicemanager.AddDevice();
-                DeviceManager_Open();
+                DeviceManager_DeviceList_Open();
             }
             else if (configs.Count > 0)
             {

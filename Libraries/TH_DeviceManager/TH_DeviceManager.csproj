@@ -127,7 +127,7 @@
       <DependentUpon>Manual.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataGrid Controls.cs" />
-    <Compile Include="DeviceInfo.cs" />
+    <Compile Include="DeviceListInfo.cs" />
     <None Include="Device Manager List\Load Devices.cs" />
     <None Include="Device Manager List\Manage Devices.cs" />
     <None Include="Device Manager List\Save File Configurations.cs" />

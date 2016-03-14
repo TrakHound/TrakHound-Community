@@ -42,11 +42,12 @@ namespace TH_DeviceManager.AddDevice
         public void Opened() { }
         public bool Opening() { return true; }
 
-        public void Closed() { }
+        public void Closed() { if (PageClosed != null) PageClosed(); }
         public bool Closing() { return true; }
 
         public event PageSelected_Handler DeviceListSelected;
         public event DeviceSelected_Handler EditTableSelected;
+        public event PageSelected_Handler PageClosed;
 
         public DeviceManager DeviceManager { get; set; }
 

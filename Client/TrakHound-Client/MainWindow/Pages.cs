@@ -8,9 +8,10 @@ using System.Windows.Controls;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Animation;
 
+using TH_Configuration;
+using TH_DeviceManager;
 using TH_Global;
 using TH_UserManagement.Management;
-using TH_DeviceManager;
 
 using TrakHound_Client.Controls;
 
@@ -103,7 +104,7 @@ namespace TrakHound_Client
             //}
         }
 
-        public void AddTab(IPage page, string name = null, ImageSource image = null)
+        public void AddTab(IPage page, string name = null, ImageSource image = null, string tag = null)
         {
             string txt = page.Title;
             ImageSource img = page.Image;
@@ -114,6 +115,7 @@ namespace TrakHound_Client
             var header = new TabHeader();
             header.Text = txt;
             header.Image = img;
+            header.Tag = tag;
             header.Page = new TabPage(page);
 
             header.Clicked += TabHeader_Clicked;
@@ -122,7 +124,7 @@ namespace TrakHound_Client
 
             TabHeaders.Add(header);
 
-            header.Open();
+            header.Open(TabHeaders.Count == 1);
 
             SelectTab(header);
         }
@@ -135,10 +137,15 @@ namespace TrakHound_Client
 
         #region "Select"
 
-        public void SelectTab(string name)
+        public void SelectTab(string name, string tag = null)
         {
-            var tab = FindTab(name);
+            var tab = FindTab(name, tag);
             if (tab != null) SelectTab(tab);
+        }
+
+        public void SelectTab(IPage page, string tag = null)
+        {
+            SelectTab(page.Title, tag);
         }
 
         public void SelectTab(TabHeader header)
@@ -205,9 +212,19 @@ namespace TrakHound_Client
 
         #region "Find"
 
-        public TabHeader FindTab(string name)
+        public TabHeader FindTab(string name, string tag = null)
         {
-            int index = TabHeaders.ToList().FindIndex(x => x.Text == name);
+            int index = TabHeaders.ToList().FindIndex(x => x.Text == name && x.Tag == tag);
+            if (index >= 0)
+            {
+                return TabHeaders[index];
+            }
+            return null;
+        }
+
+        public TabHeader FindTab(IPage page, string tag = null)
+        {
+            int index = TabHeaders.ToList().FindIndex(x => x.Text == page.Title && x.Tag == tag);
             if (index >= 0)
             {
                 return TabHeaders[index];
@@ -225,9 +242,9 @@ namespace TrakHound_Client
         }
 
 
-        public int FindTabIndex(string name)
+        public int FindTabIndex(string name, string tag = null)
         {
-            int index = TabHeaders.ToList().FindIndex(x => x.Text == name);
+            int index = TabHeaders.ToList().FindIndex(x => x.Text == name && x.Tag == tag);
             return index;
         }
 
@@ -241,9 +258,9 @@ namespace TrakHound_Client
 
         #region "Close"
 
-        public void CloseTab(string name)
+        public void CloseTab(string name, string tag = null)
         {
-            var tab = FindTab(name);
+            var tab = FindTab(name, tag);
             if (tab != null)
             {
                 bool cancel = CheckCancel(tab);
@@ -254,13 +271,18 @@ namespace TrakHound_Client
                     // If current tab then switch to tab to the left
                     if (CurrentPage == tab.Page)
                     {
-                        int tabIndex = FindTabIndex(name);
+                        int tabIndex = FindTabIndex(name, tag);
                         if (tabIndex >= 0)
                         {
                             if (tabIndex > 0) SelectTab(tabIndex - 1);
                             else if (TabHeaders.Count > 1) SelectTab(tabIndex + 1);
                             else AnimateTabPageClose();
                         }
+                    }
+
+                    if (tab.Page != null && tab.Page.PageContent != null)
+                    {
+                        Dispatcher.BeginInvoke(new Action(() => { tab.Page.PageContent.Closed(); }));
                     }
                 }
             }
@@ -282,9 +304,9 @@ namespace TrakHound_Client
 
         #region "TabHeader Event Handlers"
 
-        void TabHeader_Clicked(TabHeader header) { SelectTab(header.Text); }
+        void TabHeader_Clicked(TabHeader header) { SelectTab(header.Text, header.Tag); }
 
-        void TabHeader_CloseClicked(TabHeader header) { CloseTab(header.Text); }
+        void TabHeader_CloseClicked(TabHeader header) { CloseTab(header.Text, header.Tag); }
 
         #endregion
 
@@ -395,108 +417,95 @@ namespace TrakHound_Client
 
         #region "Device Manager"
 
-        //public DeviceManager devicemanager;
+        #region "Device List"
+
         public DeviceList deviceListPage;
 
-        void DeviceManagerList_Initialize()
+        void DeviceManager_DeviceList_Initialize()
         {
             if (deviceListPage == null)
             {
                 deviceListPage = new DeviceList();
                 deviceListPage.DeviceManager = DeviceManager;
-                ////devicemanager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
-                ////devicemanager.DeviceUpdated += Devicemanager_DeviceUpdated;
-                deviceListPage.AddDeviceSelected += Devicemanager_AddDeviceSelected;
-                deviceListPage.ShareDeviceSelected += Devicemanager_ShareDeviceSelected;
-                deviceListPage.CopyDeviceSelected += Devicemanager_CopyDeviceSelected;
-                deviceListPage.EditSelected += Devicemanager_DeviceEditSelected;
-                deviceListPage.EditTableSelected += Devicemanager_DeviceEditTableSelected;
-                deviceListPage.DeviceListSelected += Devicemanager_DeviceManagerListSelected;
+
+                deviceListPage.PageClosed += DeviceListPage_PageClosed;
+                deviceListPage.AddDeviceSelected += DeviceManager_DeviceList_AddDeviceSelected;
+                deviceListPage.EditSelected += DeviceManager_DeviceList_DeviceEditSelected;
+                deviceListPage.EditTableSelected += DeviceManager_DeviceList_DeviceEditTableSelected;
+                deviceListPage.DeviceListSelected += DeviceManager_DeviceList_DeviceManagerListSelected;
             }
         }
 
-        private void Devicemanager_DeviceManagerListSelected()
+        private void DeviceListPage_PageClosed() { deviceListPage = null; }
+
+        public void DeviceManager_DeviceList_Open()
         {
-            DeviceManager_Open();
+            DeviceManager_DeviceList_Initialize();
+
+            if (FindTab(deviceListPage) == null) AddTab(deviceListPage);
+            else SelectTab(deviceListPage);
         }
 
-        private void Devicemanager_CopyDeviceSelected(TH_Configuration.Configuration config)
+        private void DeviceManager_DeviceList_DeviceManagerListSelected() { DeviceManager_DeviceList_Open(); }
+
+        private void DeviceManager_DeviceList_AddDeviceSelected() { DeviceManager_AddDevice_Open(); }
+
+        private void DeviceManager_DeviceList_DeviceEditSelected(TH_Configuration.Configuration config) { DeviceManager_EditDevice_Open(config); }
+
+        private void DeviceManager_DeviceList_DeviceEditTableSelected(TH_Configuration.Configuration config) { }
+
+        #endregion
+
+        #region "Add Device"
+
+        public TH_DeviceManager.AddDevice.Page addDevicePage;
+
+        public void DeviceManager_AddDevice_Initialize()
         {
-            //string title = "Copy Device - ";
-            //title += config.Description.Description;
-            //if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
-
-            //var index = PageTabHeaders.ToList().FindIndex(x => x.Text == title);
-            //if (index >= 0)
-            //{
-            //    AddPageAsTab(null, title, null);
-            //}
-            //else
-            //{
-            //    var page = new TH_DeviceManager.Pages.CopyDevice.Page();
-
-            //    AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Copy_01.png")));
-            //}
-        }
-
-        private void Devicemanager_ShareDeviceSelected(TH_Configuration.Configuration config)
-        {
-            //string title = "Share Device - ";
-            //title += config.Description.Description;
-            //if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
-
-            //var index = PageTabHeaders.ToList().FindIndex(x => x.Text == title);
-            //if (index >= 0)
-            //{
-            //    AddPageAsTab(null, title, null);
-            //}
-            //else
-            //{
-            //    var page = new TH_DeviceManager.ShareDevice.Page();
-            //    page.ParentManager = devicemanager;
-            //    page.LoadConfiguration(config);
-
-            //    AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Share_01.png")));
-            //}
-        }
-
-        private void Devicemanager_AddDeviceSelected()
-        {
-            var tab = FindTab("Add Device");
-            if (tab == null)
+            if (addDevicePage == null)
             {
-                var page = new TH_DeviceManager.AddDevice.Page();
-                page.DeviceManager = DeviceManager;
-                page.ShowAutoDetect();
+                addDevicePage = new TH_DeviceManager.AddDevice.Page();
+                addDevicePage.DeviceManager = DeviceManager;
+                addDevicePage.ShowAutoDetect();
 
-                AddTab(page, "Add Device");
-            }
-            else
-            {
-                SelectTab(tab);
+                addDevicePage.DeviceListSelected += DeviceManager_AddDevice_DeviceListSelected;
+                addDevicePage.EditTableSelected += DeviceManager_AddDevice_EditTableSelected;
+                addDevicePage.PageClosed += AddDevicePage_PageClosed;
             }
         }
 
-        private void Page_DeviceAdded(TH_Configuration.Configuration config)
+        private void AddDevicePage_PageClosed() { addDevicePage = null; }
+
+        public void DeviceManager_AddDevice_Open()
         {
-            if (DeviceManager != null)
-            {
-                DeviceManager.AddDevice(config);
-            }
+            DeviceManager_AddDevice_Initialize();
+
+            if (FindTab(addDevicePage) == null) AddTab(addDevicePage);
+            else SelectTab(addDevicePage);
         }
 
-        private void Devicemanager_DeviceEditSelected(TH_Configuration.Configuration config)
+        private void DeviceManager_AddDevice_DeviceListSelected() { DeviceManager_DeviceList_Open(); }
+
+        private void DeviceManager_AddDevice_EditTableSelected(TH_Configuration.Configuration config) { }
+
+        #endregion
+
+        public void DeviceManager_EditDevice_Open(Configuration config)
         {
             string title = "Edit Device - " + config.Description.Description;
             if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
 
-            var tab = FindTab(title);
+            string tag = config.UniqueId;
+
+            var tab = FindTab(title, tag);
             if (tab == null)
             {
-                var page = new EditPage(config, ManagementType.Client);
+                var page = new EditPage(config);
                 page.DeviceManager = DeviceManager;
 
-                AddTab(page, title);
+                page.DeviceListSelected += DeviceManager_EditDevice_DeviceListSelected;
+
+                AddTab(page, title, page.Image, tag);
             }
             else
             {
@@ -504,29 +513,25 @@ namespace TrakHound_Client
             }
         }
 
-        private void Devicemanager_DeviceEditTableSelected(TH_Configuration.Configuration config)
+        private void DeviceManager_EditDevice_DeviceListSelected() { DeviceManager_DeviceList_Open(); }
+
+        public void DeviceManager_EditDeviceTable_Open(Configuration config)
         {
-            //string title = "Table - " + config.Description.Description;
+            //string title = "Edit Device Table - " + config.Description.Description;
             //if (config.Description.Device_ID != null) title += " (" + config.Description.Device_ID + ")";
 
-            //var index = PageTabHeaders.ToList().FindIndex(x => x.Text == title);
-            //if (index >= 0)
+            //var tab = FindTab(title);
+            //if (tab == null)
             //{
-            //    AddPageAsTab(null, title, null);
+            //    var page = new EditTablePage(config, ManagementType.Client);
+            //    page.DeviceManager = DeviceManager;
+
+            //    AddTab(page, title);
             //}
             //else
             //{
-            //    var page = new DeviceManagerTable(config);
-
-            //    AddPageAsTab(page, title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Root.png")));
+            //    SelectTab(tab);
             //}
-        }
-
-        public void DeviceManager_Open()
-        {
-            DeviceManagerList_Initialize();
-
-            AddTab(deviceListPage);
         }
 
         #endregion
