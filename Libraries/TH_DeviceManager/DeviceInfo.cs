@@ -10,9 +10,9 @@ namespace TH_DeviceManager
     /// <summary>
     /// Basic Device Information used to display in Device Manager Device Table
     /// </summary>
-    public class DeviceInfo : IComparable
+    public class DeviceListInfo : IComparable
     {
-        public DeviceInfo(Configuration config)
+        public DeviceListInfo(Configuration config)
         {
             Configuration = config;
 
@@ -56,7 +56,7 @@ namespace TH_DeviceManager
         {
             if (obj == null) return 1;
 
-            var i = obj as DeviceInfo;
+            var i = obj as DeviceListInfo;
             if (i != null)
             {
                 if (i > this) return -1;
@@ -71,7 +71,7 @@ namespace TH_DeviceManager
         public override bool Equals(object obj)
         {
 
-            var other = obj as DeviceInfo;
+            var other = obj as DeviceListInfo;
             if (object.ReferenceEquals(other, null)) return false;
 
             return (this == other);
@@ -85,7 +85,7 @@ namespace TH_DeviceManager
 
         #region "Private"
 
-        static bool EqualTo(DeviceInfo i1, DeviceInfo i2)
+        static bool EqualTo(DeviceListInfo i1, DeviceListInfo i2)
         {
             if (!object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return false;
             if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return false;
@@ -94,7 +94,7 @@ namespace TH_DeviceManager
             return i1.UniqueId == i2.UniqueId && i1.Index == i2.Index;
         }
 
-        static bool NotEqualTo(DeviceInfo i1, DeviceInfo i2)
+        static bool NotEqualTo(DeviceListInfo i1, DeviceListInfo i2)
         {
             if (!object.ReferenceEquals(i1, null) && object.ReferenceEquals(i2, null)) return true;
             if (object.ReferenceEquals(i1, null) && !object.ReferenceEquals(i2, null)) return true;
@@ -103,13 +103,13 @@ namespace TH_DeviceManager
             return i1.UniqueId != i2.UniqueId || i1.Index != i2.Index;
         }
 
-        static bool LessThan(DeviceInfo i1, DeviceInfo i2)
+        static bool LessThan(DeviceListInfo i1, DeviceListInfo i2)
         {
             if (i1.Index > i2.Index) return false;
             else return true;
         }
 
-        static bool GreaterThan(DeviceInfo i1, DeviceInfo i2)
+        static bool GreaterThan(DeviceListInfo i1, DeviceListInfo i2)
         {
             if (i1.Index < i2.Index) return false;
             else return true;
@@ -117,34 +117,34 @@ namespace TH_DeviceManager
 
         #endregion
 
-        public static bool operator ==(DeviceInfo i1, DeviceInfo i2)
+        public static bool operator ==(DeviceListInfo i1, DeviceListInfo i2)
         {
             return EqualTo(i1, i2);
         }
 
-        public static bool operator !=(DeviceInfo i1, DeviceInfo i2)
+        public static bool operator !=(DeviceListInfo i1, DeviceListInfo i2)
         {
             return NotEqualTo(i1, i2);
         }
 
 
-        public static bool operator <(DeviceInfo i1, DeviceInfo i2)
+        public static bool operator <(DeviceListInfo i1, DeviceListInfo i2)
         {
             return LessThan(i1, i2);
         }
 
-        public static bool operator >(DeviceInfo i1, DeviceInfo i2)
+        public static bool operator >(DeviceListInfo i1, DeviceListInfo i2)
         {
             return GreaterThan(i1, i2);
         }
 
 
-        public static bool operator <=(DeviceInfo i1, DeviceInfo i2)
+        public static bool operator <=(DeviceListInfo i1, DeviceListInfo i2)
         {
             return LessThan(i1, i2) || EqualTo(i1, i2);
         }
 
-        public static bool operator >=(DeviceInfo i1, DeviceInfo i2)
+        public static bool operator >=(DeviceListInfo i1, DeviceListInfo i2)
         {
             return GreaterThan(i1, i2) || EqualTo(i1, i2);
         }

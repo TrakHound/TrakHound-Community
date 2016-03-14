@@ -18,6 +18,19 @@ namespace TrakHound_Client
 {
     public partial class MainWindow
     {
+        public DeviceManager DeviceManager { get; set; }
+
+        private void DeviceManager_Initialize()
+        {
+            if (DeviceManager == null)
+            {
+                DeviceManager = new DeviceManager();
+                DeviceManager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
+                DeviceManager.DeviceUpdated += Devicemanager_DeviceUpdated;
+                DeviceManager.LoadingDevices += DeviceManager_LoadingDevices;
+                DeviceManager.DevicesLoaded += DeviceManager_DevicesLoaded;
+            }
+        }
 
         public List<Configuration> Devices { get; set; }
 
@@ -26,25 +39,43 @@ namespace TrakHound_Client
             this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), priority, new object[] { configs });
         }
 
-        private void Devicemanager_DeviceUpdated(Configuration config, DeviceManagerList.DeviceUpdateArgs args)
+        private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
         {
             switch (args.Event)
             {
-                case DeviceManagerList.DeviceUpdateEvent.Added:
+                case DeviceManager.DeviceUpdateEvent.Added:
                     AddDevice(config);
                     break;
 
-                case DeviceManagerList.DeviceUpdateEvent.Changed:
+                case DeviceManager.DeviceUpdateEvent.Changed:
                     UpdateDevice(config);
                     break;
 
-                case DeviceManagerList.DeviceUpdateEvent.Removed:
+                case DeviceManager.DeviceUpdateEvent.Removed:
                     RemoveDevice(config);
                     break;
             }
         }
 
-        private void Devicemanager_LoadingDevices()
+        private void DeviceManager_DevicesLoaded()
+        {
+            this.Dispatcher.BeginInvoke(new Action(DeviceManager_DevicesLoaded_GUI), priority, new object[] { });
+        }
+
+        private void DeviceManager_DevicesLoaded_GUI()
+        {
+            // Send message to plugins that Devices have been loaded
+            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
+            de_d.id = "DevicesLoaded";
+            Plugin_DataEvent(de_d);
+        }
+
+        private void DeviceManager_LoadingDevices()
+        {
+            this.Dispatcher.BeginInvoke(new Action(DeviceManager_LoadingDevices_GUI), priority, new object[] { });
+        }
+
+        private void DeviceManager_LoadingDevices_GUI()
         {
             // Send message to plugins that Devices are being loaded
             TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
@@ -154,19 +185,11 @@ namespace TrakHound_Client
         }
 
 
-
         #region "Load Devices"
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
         Thread loaddevices_THREAD;
-
-        void LoadDevices_Initialize()
-        {
-            Devices = new List<Configuration>();
-        }
-
-        
 
         void LoadDevices()
         {
@@ -249,126 +272,7 @@ namespace TrakHound_Client
             de_d.id = "devicesloaded";
             Plugin_DataEvent(de_d);
         }
-
-        //#region "Offline Configurations"
-
-        //List<Configuration> ReadConfigurationFile()
-        //{
-        //    List<Configuration> result = new List<Configuration>();
-
-        //    //UpdateExceptionsThrown = new List<string>();
-
-        //    string configPath;
-
-        //    string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
-        //    string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
-
-        //    // systemPath takes priority (easier for user to navigate to)
-        //    if (File.Exists(systemPath)) configPath = systemPath;
-        //    else configPath = localPath;
-
-        //    if (System.IO.File.Exists(configPath))
-        //    {
-        //        XmlDocument doc = new XmlDocument();
-        //        doc.Load(configPath);
-
-        //        foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-        //        {
-        //            if (Node.NodeType == XmlNodeType.Element)
-        //            {
-        //                switch (Node.Name.ToLower())
-        //                {
-        //                    case "devices":
-        //                        foreach (XmlNode ChildNode in Node.ChildNodes)
-        //                        {
-        //                            if (ChildNode.NodeType == XmlNodeType.Element)
-        //                            {
-        //                                switch (ChildNode.Name.ToLower())
-        //                                {
-        //                                    case "device":
-
-        //                                        Configuration config = GetSettingsFromNode(ChildNode);
-        //                                        if (config != null) result.Add(config);
-
-        //                                        break;
-        //                                }
-        //                            }
-        //                        }
-        //                        break;
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
-        //private Configuration GetSettingsFromNode(XmlNode Node)
-        //{
-
-        //    Configuration Result = null;
-
-        //    string configPath = null;
-
-        //    foreach (XmlNode ChildNode in Node.ChildNodes)
-        //    {
-        //        switch (ChildNode.Name.ToLower())
-        //        {
-        //            case "configuration_path": configPath = ChildNode.InnerText; break;
-        //        }
-        //    }
-
-        //    if (configPath != null)
-        //    {
-        //        configPath = GetConfigurationPath(configPath);
-
-        //        Result = Configuration.Read(configPath);
-
-        //        if (Result == null)
-        //        {
-        //            Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-        //            mData.Title = "Device Configuration Error";
-        //            mData.Text = "Could not load device configuration from " + configPath;
-        //            mData.AdditionalInfo = "Check to make sure the file exists at "
-        //                + configPath
-        //                + " and that the format is correct and restart TrakHound Client."
-        //                + Environment.NewLine
-        //                + Environment.NewLine
-        //                + "For more information please contact us at info@TrakHound.org";
-        //            if (messageCenter != null) messageCenter.AddMessage(mData);
-        //        }
-        //    }
-
-        //    return Result;
-
-        //}
-
-        //static string GetConfigurationPath(string path)
-        //{
-        //    // If not full path, try System Dir ('C:\TrakHound\') and then local App Dir
-        //    if (!System.IO.Path.IsPathRooted(path))
-        //    {
-        //        // Remove initial Backslash if contained in "configuration_path"
-        //        if (path[0] == '\\' && path.Length > 1) path.Substring(1);
-
-        //        string original = path;
-
-        //        // Check System Path
-        //        path = TH_Global.FileLocations.TrakHound + "\\Configuration Files\\" + original;
-        //        if (File.Exists(path)) return path;
-
-        //        // Check local app Path
-        //        path = AppDomain.CurrentDomain.BaseDirectory + "Configuration Files\\" + original;
-        //        if (File.Exists(path)) return path;
-
-        //        // if no files exist return null
-        //        return null;
-        //    }
-        //    else return path;
-        //}
-
-        //#endregion
-
+        
         #endregion
 
         #region "Devices Monitor"

@@ -57,8 +57,8 @@ namespace TH_DeviceManager
                     tablename = dt.TableName;
 
                     // Reset Update ID
-                    if (SelectedManagerType == DeviceManagerType.Client) Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/ClientUpdateId", dt);
-                    else if (SelectedManagerType == DeviceManagerType.Server) Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/ServerUpdateId", dt);
+                    if (SelectedManagerType == ManagementType.Client) Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/ClientUpdateId", dt);
+                    else if (SelectedManagerType == ManagementType.Server) Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/ServerUpdateId", dt);
 
                     // Add Unique Id (ONLY if one not already set)
                     //if (Table_Functions.GetTableValue("/UniqueId", dt) == null) Table_Functions.UpdateTableValue(String_Functions.RandomString(20), "/UniqueId", dt);

@@ -84,7 +84,7 @@ namespace TrakHound_Client
             {
                 currentuser = value;
 
-                if (devicemanager != null) devicemanager.CurrentUser = currentuser;
+                if (DeviceManager != null) DeviceManager.CurrentUser = currentuser;
 
                 if (currentuser != null)
                 {
@@ -96,8 +96,6 @@ namespace TrakHound_Client
                     LoggedIn = false;
                     CurrentUsername = null;
                 }
-
-                //LoadDevices();
 
                 if (accountpage != null) accountpage.LoadUserConfiguration(currentuser);
 

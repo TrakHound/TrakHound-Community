@@ -73,7 +73,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         public void LoadCatalog()
         {
-            if (ParentPage != null && ParentPage.ParentManager != null)
+            if (ParentPage != null && ParentPage.DeviceManager != null)
             {
                 CatalogLoading = true;
                 SharedList.Clear();
@@ -229,9 +229,9 @@ namespace TH_DeviceManager.AddDevice.Pages
 
             item.Image = bitmap;
 
-            if (ParentPage.ParentManager.CurrentUser != null)
+            if (ParentPage.DeviceManager.CurrentUser != null)
             {
-                if (ParentPage.ParentManager.CurrentUser.username.ToLower() == listitem.author.ToLower()) item.Owner = true;
+                if (ParentPage.DeviceManager.CurrentUser.username.ToLower() == listitem.author.ToLower()) item.Owner = true;
             }
 
             item.Description = listitem.description;
@@ -606,9 +606,9 @@ namespace TH_DeviceManager.AddDevice.Pages
                                         SaveLocalImage(config.FileLocations.Image_Path);
                                     }
 
-                                    if (ParentPage.ParentManager.CurrentUser != null)
+                                    if (ParentPage.DeviceManager.CurrentUser != null)
                                     {
-                                        result.success = Configurations.AddConfigurationToUser(ParentPage.ParentManager.CurrentUser, config);
+                                        result.success = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
 
                                         result.config.TableName = config.TableName;
                                     }
@@ -678,7 +678,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
             if (result.success && result.config != null)
             {
-                ParentPage.ParentManager.AddDevice(result.config);
+                ParentPage.DeviceManager.AddDevice(result.config);
                 //if (DeviceAdded != null) DeviceAdded(result.config);
             }
             else

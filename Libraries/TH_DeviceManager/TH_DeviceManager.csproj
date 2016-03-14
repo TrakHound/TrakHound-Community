@@ -56,12 +56,10 @@
     <Compile Include="AddDevice\Pages\LoadFromFile.xaml.cs">
       <DependentUpon>LoadFromFile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShareDevice\Page.xaml.cs">
+    <Compile Include="DeviceManager.cs" />
+    <Compile Include="Global.cs" />
+    <None Include="ShareDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <None Include="Controls\Button.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </None>
     <Page Include="AddDevice\Controls\DeviceItem.xaml">
       <SubType>Designer</SubType>
@@ -87,45 +85,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DeviceManagerTable.xaml">
+    <Page Include="EditTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DeviceManagerPage.xaml">
+    <Page Include="EditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DeviceManagerList.xaml">
+    <Page Include="DeviceList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\AddDevice\Controls\SharedItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\AddShare\Page.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\CopyDevice\Page.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Databases\Controls\DatabaseItemContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DeviceButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\PageItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\AddDevice\Page.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Agent\Controls\MessageItem.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -135,13 +113,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DeviceManager.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <None Include="Controls\Button.xaml.cs">
-      <DependentUpon>Button.xaml</DependentUpon>
-    </None>
     <Compile Include="AddDevice\Controls\DeviceItem.xaml.cs">
       <DependentUpon>DeviceItem.xaml</DependentUpon>
     </Compile>
@@ -156,66 +127,39 @@
       <DependentUpon>Manual.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataGrid Controls.cs" />
-    <Compile Include="Device Manager List\DeviceInfo.cs" />
-    <Compile Include="Device Manager List\Load Devices.cs" />
-    <Compile Include="Device Manager List\Manage Devices.cs" />
-    <Compile Include="Device Manager List\Save File Configurations.cs" />
-    <Compile Include="Device Manager Page\Load Configuration.cs" />
+    <Compile Include="DeviceInfo.cs" />
+    <None Include="Device Manager List\Load Devices.cs" />
+    <None Include="Device Manager List\Manage Devices.cs" />
+    <None Include="Device Manager List\Save File Configurations.cs" />
+    <None Include="Device Manager Page\Load Configuration.cs" />
     <None Include="Device Manager Page\Manage Devices.cs" />
-    <Compile Include="Device Manager Page\Pages.cs" />
-    <Compile Include="Device Manager Page\Plugins.cs" />
-    <Compile Include="Device Manager Page\Save Configuration.cs" />
-    <Compile Include="Device Manager Page\User.cs" />
+    <None Include="Device Manager Page\Pages.cs" />
+    <None Include="Device Manager Page\Plugins.cs" />
+    <None Include="Device Manager Page\Save Configuration.cs" />
+    <None Include="Device Manager Page\User.cs" />
     <Compile Include="Device Manager Table\Load Configuration.cs" />
     <Compile Include="Device Manager Table\Save Configuration.cs" />
     <Compile Include="Device Manager Table\User.cs" />
-    <Compile Include="DeviceManagerTable.xaml.cs">
-      <DependentUpon>DeviceManagerTable.xaml</DependentUpon>
+    <Compile Include="EditTable.xaml.cs">
+      <DependentUpon>EditTable.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceManagerPage.xaml.cs">
-      <DependentUpon>DeviceManagerPage.xaml</DependentUpon>
+    <Compile Include="EditPage.xaml.cs">
+      <DependentUpon>EditPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceManagerList.xaml.cs">
-      <DependentUpon>DeviceManagerList.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Device Manager\Device Buttons.cs" />
-    <Compile Include="Device Manager\Manage Devices.cs" />
-    <Compile Include="Device Manager\Load Configuration.cs" />
-    <Compile Include="Device Manager\Load Devices.cs" />
-    <Compile Include="Device Manager\Pages.cs" />
-    <Compile Include="Device Manager\Plugins.cs" />
-    <Compile Include="Device Manager\Save Configuration.cs" />
-    <Compile Include="Device Manager\User.cs" />
-    <Compile Include="Pages\AddDevice\Controls\SharedItem.xaml.cs">
-      <DependentUpon>SharedItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\AddShare\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\CopyDevice\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
+    <Compile Include="DeviceList.xaml.cs">
+      <DependentUpon>DeviceList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Databases\Controls\DatabaseItemContainer.xaml.cs">
       <DependentUpon>DatabaseItemContainer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DeviceButton.xaml.cs">
-      <DependentUpon>DeviceButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\PageItem.xaml.cs">
       <DependentUpon>PageItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\AddDevice\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Agent\Controls\MessageItem.xaml.cs">
       <DependentUpon>MessageItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Agent\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DeviceManager.xaml.cs">
-      <DependentUpon>DeviceManager.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\Databases\Page.xaml">
       <SubType>Designer</SubType>
@@ -233,10 +177,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ShareDevice\Page.xaml">
+    <None Include="ShareDevice\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pages\Databases\Page.xaml.cs">

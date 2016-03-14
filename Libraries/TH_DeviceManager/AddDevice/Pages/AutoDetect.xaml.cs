@@ -104,7 +104,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         public void LoadCatalog()
         {
-            if (ParentPage != null && ParentPage.ParentManager != null)
+            if (ParentPage != null && ParentPage.DeviceManager != null)
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -228,10 +228,10 @@ namespace TH_DeviceManager.AddDevice.Pages
         private void AddDeviceInfo(IPAddress address, int port, Device device)
         {
             // Check if already in DeviceManagerList.Devices
-            bool alreadyAdded = ParentPage.ParentManager.Devices.ToList().Exists(x =>
-            x.Configuration.Agent.Address == address.ToString() &&
-            x.Configuration.Agent.Port == port &&
-            x.Configuration.Agent.DeviceName == device.name
+            bool alreadyAdded = ParentPage.DeviceManager.Devices.ToList().Exists(x =>
+            x.Agent.Address == address.ToString() &&
+            x.Agent.Port == port &&
+            x.Agent.DeviceName == device.name
             );
 
             if (!alreadyAdded)
@@ -376,7 +376,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         void AddDevice(DeviceInfo info)
         {
-            if (ParentPage != null && ParentPage.ParentManager != null)
+            if (ParentPage != null && ParentPage.DeviceManager != null)
             {
                 info.Loading = true;
                 Devices_DG.Items.Refresh();
@@ -430,9 +430,9 @@ namespace TH_DeviceManager.AddDevice.Pages
                                     }
 
                                     // Add page to user (or save to disk if local)
-                                    if (ParentPage.ParentManager.CurrentUser != null)
+                                    if (ParentPage.DeviceManager.CurrentUser != null)
                                     {
-                                        result.Success = Configurations.AddConfigurationToUser(ParentPage.ParentManager.CurrentUser, config);
+                                        result.Success = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
 
                                         result.Configuration.TableName = config.TableName;
                                     }
@@ -539,8 +539,8 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             if (result.Success && result.Configuration != null)
             {
-                // Add to DeviceManagerList
-                ParentPage.ParentManager.AddDevice(result.Configuration);
+                // Add to DeviceManager
+                ParentPage.DeviceManager.AddDevice(result.Configuration);
 
                 // Remove from AutoDetect list
                 int index = DeviceInfos.ToList().FindIndex(x => x.Id == result.DeviceInfo.Id);
@@ -588,9 +588,9 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void DeviceManager_Clicked(TH_WPF.Button bt)
         {
-            if (ParentPage != null && ParentPage.ParentManager != null)
+            if (ParentPage != null)
             {
-                ParentPage.ParentManager.Open();
+                ParentPage.OpenDeviceList();
             }
         }
 

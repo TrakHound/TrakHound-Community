@@ -93,7 +93,7 @@ namespace TrakHound_Client
             // Set border thickness (maybe make this a static resource in XAML?)
             ResizeBorderThickness = 1;
 
-            LoadDevices_Initialize();
+            //LoadDevices_Initialize();
 
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User", 60);

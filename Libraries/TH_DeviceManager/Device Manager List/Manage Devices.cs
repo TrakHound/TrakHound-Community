@@ -64,29 +64,9 @@ namespace TH_DeviceManager
 
                 foreach (var info in infos)
                 {
-                    if (info.Configuration != null)
+                    if (info.Configuration != null && DeviceManager != null)
                     {
-                        // If logged in then remove table
-                        if (currentuser != null) removeInfo.Success = Configurations.RemoveConfigurationTable(info.Configuration.TableName);
-                        // If not logged in then delete local configuration file
-                        else
-                        {
-                            string path = FileLocations.Devices + "\\" + info.Configuration.UniqueId + ".xml";
-
-                            if (File.Exists(path))
-                            {
-                                try
-                                {
-                                    File.Delete(path);
-
-                                    removeInfo.Success = true;
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logger.Log("Remove Local Device :: Exception :: " + path + " :: " + ex.Message);
-                                }
-                            }
-                        }
+                        DeviceManager.RemoveDevice(info.Configuration);
                     }
                 }
             }
@@ -123,67 +103,17 @@ namespace TH_DeviceManager
 
         #endregion
 
-        private bool ResetUpdateId(Configuration config, DeviceManagerType type)
-        {
-            bool result = false;
-
-            if (type == DeviceManagerType.Client)
-            {
-                var updateId = String_Functions.RandomString(20);
-
-                if (currentuser != null) result = Configurations.UpdateConfigurationTable("/ClientUpdateId", updateId, config.TableName);
-                else result = true;
-
-                if (result)
-                {
-                    config.ClientUpdateId = updateId;
-                    XML_Functions.SetInnerText(config.ConfigurationXML, "ClientUpdateId", updateId);
-                }
-            }
-            else if (type == DeviceManagerType.Server)
-            {
-                var updateId = String_Functions.RandomString(20);
-
-                if (currentuser != null) result = Configurations.UpdateConfigurationTable("/ServerUpdateId", updateId, config.TableName);
-                else result = true;
-
-                if (result)
-                {
-                    config.ClientUpdateId = updateId;
-                    XML_Functions.SetInnerText(config.ConfigurationXML, "ServerUpdateId", updateId);
-                }
-            }
-
-            return result;
-        }
-
-        private static bool UpdateEnabledXML(XmlDocument xml, bool enabled, DeviceManagerType type)
-        {
-            bool result = false;
-
-            if (type == DeviceManagerType.Client)
-            {
-                result = XML_Functions.SetInnerText(xml, "ClientEnabled", enabled.ToString());
-            }
-            else if (type == DeviceManagerType.Server)
-            {
-                result = XML_Functions.SetInnerText(xml, "ServerEnabled", enabled.ToString());
-            }
-
-            return result;
-        }
-
         #region "Enable Device"
 
         class EnableDevice_Info
         {
             public DataGridCellCheckBox Sender { get; set; }
             public bool Success { get; set; }
-            public DeviceManagerType Type { get; set; }
+            public ManagementType Type { get; set; }
             public object DataObject { get; set; }
         }
 
-        void EnableDevice(DataGridCellCheckBox chk, DeviceManagerType type)
+        void EnableDevice(DataGridCellCheckBox chk, ManagementType type)
         {
             EnableDevice_Info info = new EnableDevice_Info();
             info.Sender = chk;
@@ -204,31 +134,13 @@ namespace TH_DeviceManager
 
                 var config = ((DeviceInfo)info.DataObject).Configuration;
 
-                // Save Changes
-                if (currentuser != null)
-                {
-                    string tablename = config.TableName;
-                    if (tablename != null)
-                    {
-                        if (info.Type == DeviceManagerType.Client) info.Success = Configurations.UpdateConfigurationTable("/ClientEnabled", "True", tablename);
-                        else if (info.Type == DeviceManagerType.Server) info.Success = Configurations.UpdateConfigurationTable("/ServerEnabled", "True", tablename);
-                    }
-
-                    if (info.Success) info.Success = UpdateEnabledXML(config.ConfigurationXML, true, info.Type);
-                    if (info.Success) info.Success = ResetUpdateId(config, info.Type);
-                }
-                else
-                {
-                    info.Success = UpdateEnabledXML(config.ConfigurationXML, true, info.Type);
-                    if (info.Success) info.Success = ResetUpdateId(config, info.Type);
-                    if (info.Success) info.Success = SaveFileConfiguration(config);
-                }
+                if (DeviceManager != null) DeviceManager.EnableDevice(config, info.Type);
 
                 // If changes were successful, then update DeviceManager's Congifuration
                 if (info.Success)
                 {
-                    if (info.Type == DeviceManagerType.Client) config.ClientEnabled = true;
-                    else if (info.Type == DeviceManagerType.Server) config.ServerEnabled = true;
+                    if (info.Type == ManagementType.Client) config.ClientEnabled = true;
+                    else if (info.Type == ManagementType.Server) config.ServerEnabled = true;
                 }
 
                 this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(EnableDevice_Finished), PRIORITY_BACKGROUND, new object[] { info });
@@ -257,7 +169,7 @@ namespace TH_DeviceManager
 
         #region "Disable Device"
 
-        void DisableDevice(DataGridCellCheckBox chk, DeviceManagerType type)
+        void DisableDevice(DataGridCellCheckBox chk, ManagementType type)
         {
             EnableDevice_Info info = new EnableDevice_Info();
             info.Sender = chk;
@@ -278,31 +190,13 @@ namespace TH_DeviceManager
 
                 var config = ((DeviceInfo)info.DataObject).Configuration;
 
-                // Save Changes
-                if (currentuser != null)
-                {
-                    string tablename = config.TableName;
-                    if (tablename != null)
-                    {
-                        if (info.Type == DeviceManagerType.Client) info.Success = Configurations.UpdateConfigurationTable("/ClientEnabled", "False", tablename);
-                        else if (info.Type == DeviceManagerType.Server) info.Success = Configurations.UpdateConfigurationTable("/ServerEnabled", "False", tablename);
-                    }
-
-                    if (info.Success) info.Success = UpdateEnabledXML(config.ConfigurationXML, false, info.Type);
-                    if (info.Success) info.Success = ResetUpdateId(config, info.Type);
-                }
-                else
-                {
-                    info.Success = UpdateEnabledXML(config.ConfigurationXML, false, info.Type);
-                    if (info.Success) info.Success = ResetUpdateId(config, info.Type);
-                    if (info.Success) info.Success = SaveFileConfiguration(config);
-                }
+                if (DeviceManager != null) DeviceManager.DisableDevice(config, info.Type);
 
                 // If changes were successful, then update DeviceManager's Congifuration
                 if (info.Success)
                 {
-                    if (info.Type == DeviceManagerType.Client) config.ClientEnabled = false;
-                    else if (info.Type == DeviceManagerType.Server) config.ServerEnabled = false;
+                    if (info.Type == ManagementType.Client) config.ClientEnabled = false;
+                    else if (info.Type == ManagementType.Server) config.ServerEnabled = false;
                 }
 
                 this.Dispatcher.BeginInvoke(new Action<EnableDevice_Info>(DisableDevice_Finished), PRIORITY_BACKGROUND, new object[] { info });
@@ -355,18 +249,7 @@ namespace TH_DeviceManager
 
                 var config = info.Configuration;
 
-                // Save Changes
-                if (currentuser != null)
-                {
-                    string tablename = config.TableName;
-                    if (tablename != null) info.Success = Configurations.UpdateConfigurationTable("/Index", info.NewIndex.ToString(), tablename);
-                    if (info.Success) info.Success = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", info.NewIndex.ToString());
-                }
-                else
-                {
-                    info.Success = XML_Functions.SetInnerText(config.ConfigurationXML, "Index", info.NewIndex.ToString());
-                    if (info.Success) info.Success = SaveFileConfiguration(config);
-                }
+                if (DeviceManager != null) DeviceManager.ChangeDeviceIndex(config, info.NewIndex);
             }
         }
 
@@ -405,7 +288,6 @@ namespace TH_DeviceManager
             }
         }
 
-
         public static DataGridCell GetCell(DataGrid dataGrid, DataGridRow rowContainer, int column)
         {
             if (rowContainer != null)
@@ -435,7 +317,6 @@ namespace TH_DeviceManager
             return null;
         }
 
-
         public static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
@@ -453,9 +334,8 @@ namespace TH_DeviceManager
             return null;
         }
 
-
-
         #endregion
 
     }
+
 }

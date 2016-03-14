@@ -15,7 +15,7 @@ using TH_UserManagement.Management;
 
 namespace TH_DeviceManager
 {
-    public partial class DeviceManagerList
+    public partial class DeviceList
     {
         public delegate void DevicesStatus_Handler();
         public event DevicesStatus_Handler LoadingDevices;
@@ -36,47 +36,40 @@ namespace TH_DeviceManager
         public delegate void DeviceUpdated_Handler(Configuration config, DeviceUpdateArgs args);
         public event DeviceUpdated_Handler DeviceUpdated;
 
-        public bool DevicesLoading
-        {
-            get { return (bool)GetValue(DevicesLoadingProperty); }
-            set { SetValue(DevicesLoadingProperty, value); }
-        }
-
-        public static readonly DependencyProperty DevicesLoadingProperty =
-            DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(DeviceManagerList), new PropertyMetadata(false));
+       
 
 
-        ObservableCollection<DeviceInfo> _devices;
-        public ObservableCollection<DeviceInfo> Devices
-        {
-            get
-            {
-                if (_devices == null)
-                    _devices = new ObservableCollection<DeviceInfo>();
-                return _devices;
-            }
+        //ObservableCollection<DeviceInfo> _devices;
+        //public ObservableCollection<DeviceInfo> Devices
+        //{
+        //    get
+        //    {
+        //        if (_devices == null)
+        //            _devices = new ObservableCollection<DeviceInfo>();
+        //        return _devices;
+        //    }
 
-            set
-            {
-                _devices = value;
-            }
-        }
+        //    set
+        //    {
+        //        _devices = value;
+        //    }
+        //}
 
-        ObservableCollection<DeviceInfo> _sharedDevices;
-        public ObservableCollection<DeviceInfo> SharedDevices
-        {
-            get
-            {
-                if (_sharedDevices == null)
-                    _sharedDevices = new ObservableCollection<DeviceInfo>();
-                return _sharedDevices;
-            }
+        //ObservableCollection<DeviceInfo> _sharedDevices;
+        //public ObservableCollection<DeviceInfo> SharedDevices
+        //{
+        //    get
+        //    {
+        //        if (_sharedDevices == null)
+        //            _sharedDevices = new ObservableCollection<DeviceInfo>();
+        //        return _sharedDevices;
+        //    }
 
-            set
-            {
-                _sharedDevices = value;
-            }
-        }
+        //    set
+        //    {
+        //        _sharedDevices = value;
+        //    }
+        //}
 
         public List<Configuration> configurations;
 

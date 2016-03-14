@@ -45,9 +45,12 @@ namespace TH_DeviceManager.AddDevice
         public void Closed() { }
         public bool Closing() { return true; }
 
+        public event PageSelected_Handler DeviceListSelected;
+        public event DeviceSelected_Handler EditTableSelected;
 
+        public DeviceManager DeviceManager { get; set; }
 
-        public DeviceManagerList ParentManager { get; set; }
+        //public DeviceManagerList ParentPage { get; set; }
 
         Pages.AutoDetect autoDetectPage;
         Pages.Manual manualPage;
@@ -62,6 +65,12 @@ namespace TH_DeviceManager.AddDevice
 
         public static readonly DependencyProperty PageContentProperty =
             DependencyProperty.Register("PageContent", typeof(object), typeof(Page), new PropertyMetadata(null));
+
+        public void OpenDeviceList()
+        {
+            if (DeviceListSelected != null) DeviceListSelected();
+        }
+
 
         public void ShowAutoDetect()
         {

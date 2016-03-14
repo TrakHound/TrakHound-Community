@@ -396,19 +396,23 @@ namespace TrakHound_Client
         #region "Device Manager"
 
         //public DeviceManager devicemanager;
-        public DeviceManagerList devicemanager;
+        public DeviceList deviceListPage;
 
-        void DeviceManager_Initialize()
+        void DeviceManagerList_Initialize()
         {
-            devicemanager = new DeviceManagerList();
-            devicemanager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
-            devicemanager.DeviceUpdated += Devicemanager_DeviceUpdated;
-            devicemanager.AddDeviceSelected += Devicemanager_AddDeviceSelected;
-            devicemanager.ShareDeviceSelected += Devicemanager_ShareDeviceSelected;
-            devicemanager.CopyDeviceSelected += Devicemanager_CopyDeviceSelected;
-            devicemanager.DeviceEditSelected += Devicemanager_DeviceEditSelected;
-            devicemanager.DeviceEditTableSelected += Devicemanager_DeviceEditTableSelected;
-            devicemanager.DeviceManagerListSelected += Devicemanager_DeviceManagerListSelected;
+            if (deviceListPage == null)
+            {
+                deviceListPage = new DeviceList();
+                deviceListPage.DeviceManager = DeviceManager;
+                ////devicemanager.DeviceListUpdated += Devicemanager_DeviceListUpdated;
+                ////devicemanager.DeviceUpdated += Devicemanager_DeviceUpdated;
+                deviceListPage.AddDeviceSelected += Devicemanager_AddDeviceSelected;
+                deviceListPage.ShareDeviceSelected += Devicemanager_ShareDeviceSelected;
+                deviceListPage.CopyDeviceSelected += Devicemanager_CopyDeviceSelected;
+                deviceListPage.EditSelected += Devicemanager_DeviceEditSelected;
+                deviceListPage.EditTableSelected += Devicemanager_DeviceEditTableSelected;
+                deviceListPage.DeviceListSelected += Devicemanager_DeviceManagerListSelected;
+            }
         }
 
         private void Devicemanager_DeviceManagerListSelected()
@@ -462,7 +466,7 @@ namespace TrakHound_Client
             if (tab == null)
             {
                 var page = new TH_DeviceManager.AddDevice.Page();
-                page.ParentManager = devicemanager;
+                page.DeviceManager = DeviceManager;
                 page.ShowAutoDetect();
 
                 AddTab(page, "Add Device");
@@ -475,9 +479,9 @@ namespace TrakHound_Client
 
         private void Page_DeviceAdded(TH_Configuration.Configuration config)
         {
-            if (devicemanager != null)
+            if (DeviceManager != null)
             {
-                devicemanager.AddDevice(config);
+                DeviceManager.AddDevice(config);
             }
         }
 
@@ -489,8 +493,8 @@ namespace TrakHound_Client
             var tab = FindTab(title);
             if (tab == null)
             {
-                var page = new DeviceManagerPage(config, DeviceManagerType.Client);
-                page.ParentManager = devicemanager;
+                var page = new EditPage(config, ManagementType.Client);
+                page.DeviceManager = DeviceManager;
 
                 AddTab(page, title);
             }
@@ -519,8 +523,10 @@ namespace TrakHound_Client
         }
 
         public void DeviceManager_Open()
-        { 
-            AddTab(devicemanager);
+        {
+            DeviceManagerList_Initialize();
+
+            AddTab(deviceListPage);
         }
 
         #endregion

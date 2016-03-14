@@ -103,17 +103,17 @@ namespace TH_DeviceManager.AddDevice.Pages
             Configuration config = Configuration.Read(path);
             if (config != null)
             {
-                if (ParentPage.ParentManager.CurrentUser != null)
+                if (ParentPage.DeviceManager.CurrentUser != null)
                 {
-                    Configurations.AddConfigurationToUser(ParentPage.ParentManager.CurrentUser, config);
+                    Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
                 }
                 // If not logged in Read from File in 'C:\TrakHound\'
                 else
                 {
-                    DeviceManagerList.SaveFileConfiguration(config);
+                    DeviceManager.SaveFileConfiguration(config);
                 }
 
-                ParentPage.ParentManager.AddDevice(config);
+                ParentPage.DeviceManager.AddDevice(config);
 
                 return true;
             }
@@ -149,9 +149,9 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void DeviceManager_Clicked(TH_WPF.Button bt)
         {
-            if (ParentPage != null && ParentPage.ParentManager != null)
+            if (ParentPage != null)
             {
-                ParentPage.ParentManager.Open();
+                ParentPage.OpenDeviceList();
             }
         }
     }
