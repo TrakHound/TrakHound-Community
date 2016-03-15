@@ -56,6 +56,14 @@ namespace TH_Database
 
         DataTable Table_Get(object settings, string tablename, string filterExpression, string columns);
 
+        DataTable[] Table_Get(object settings, string[] tablenames);
+
+        DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions);
+
+        //DataTable[] Table_Get(object settings, string[] tablenames, string filterExpression);
+
+        //DataTable[] Table_Get(object settings, string[] tablenames, string filterExpression, string columns);
+
         string[] Table_List(object settings);
 
         string[] Table_List(object settings, string filterExpression);

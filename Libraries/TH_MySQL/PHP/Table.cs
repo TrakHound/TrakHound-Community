@@ -12,6 +12,8 @@ namespace TH_MySQL.PHP
 {
     public static class Table
     {
+        const string TABLE_DELIMITER_START = "^^^";
+        const string TABLE_DELIMITER_END = "~~~";
 
         public static bool Create(MySQL_Configuration config, string tablename, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
@@ -519,6 +521,138 @@ namespace TH_MySQL.PHP
 
             return Result;
 
+        }
+
+        public static DataTable[] Get(MySQL_Configuration config, string[] tablenames)
+        {
+            DataTable[] result = null;
+
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
+
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
+
+            string tableNames = "";
+
+            foreach (string tablename in tablenames)
+            {
+                tableNames += tablename + ";";
+            }
+
+            values["tablenames"] = tableNames;
+
+
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/get_tables.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null)
+            {
+                var tables = new List<DataTable>();
+
+                string[] tableDatas = responseString.Split(TABLE_DELIMITER_START.ToCharArray());
+
+                foreach (string tableData in tableDatas)
+                {
+                    if (!String.IsNullOrEmpty(tableData))
+                    {
+                        var delimiter = tableData.IndexOf(TABLE_DELIMITER_END);
+                        if (delimiter > 0)
+                        {
+                            string tablename = tableData.Substring(0, delimiter);
+                            string tabledata = tableData.Substring(delimiter + TABLE_DELIMITER_END.Length);
+
+                            DataTable dt = JSON.ToTable(tabledata);
+                            if (dt != null)
+                            {
+                                dt.TableName = tablename;
+                                tables.Add(dt);
+                            }
+                        }
+                    }
+                }
+
+                result = tables.ToArray();
+            }
+
+            return result;
+        }
+
+        public static DataTable[] Get(MySQL_Configuration config, string[] tablenames, string[] filterExpressions)
+        {
+            DataTable[] result = null;
+
+            NameValueCollection values = new NameValueCollection();
+            if (config.Port > 0) values["server"] = config.Server + ":" + config.Port;
+            else values["server"] = config.Server;
+
+            values["user"] = config.Username;
+            values["password"] = config.Password;
+            values["db"] = config.Database;
+
+            // Table Names
+            string tableNames = "";
+            foreach (string tablename in tablenames)
+            {
+                tableNames += tablename + ";";
+            }
+
+            // Filter Expressions
+            string filters = "";
+            foreach (string filterExpression in filterExpressions)
+            {
+                filters += filterExpression + ";";
+            }
+
+            values["tablenames"] = tableNames;
+            values["filterexpressions"] = filters;
+
+
+            string PHP_Directory = "";
+            if (config.PHP_Directory != "") PHP_Directory = "/" + config.PHP_Directory;
+
+            string url = "http://" + config.PHP_Server + PHP_Directory + "/get_tables.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            if (responseString != null)
+            {
+                var tables = new List<DataTable>();
+
+                string[] tableDatas = responseString.Split(TABLE_DELIMITER_START.ToCharArray());
+
+                foreach (string tableData in tableDatas)
+                {
+                    if (!String.IsNullOrEmpty(tableData))
+                    {
+                        var delimiter = tableData.IndexOf(TABLE_DELIMITER_END);
+                        if (delimiter > 0)
+                        {
+                            string tablename = tableData.Substring(0, delimiter);
+                            string tabledata = tableData.Substring(delimiter + TABLE_DELIMITER_END.Length);
+
+                            DataTable dt = JSON.ToTable(tabledata);
+                            if (dt != null)
+                            {
+                                dt.TableName = tablename;
+                                tables.Add(dt);
+                            }
+                        }
+                    }
+                }
+
+                result = tables.ToArray();
+            }
+
+            return result;
         }
 
     }

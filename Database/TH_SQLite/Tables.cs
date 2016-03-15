@@ -266,6 +266,71 @@ namespace TH_SQLite
             return result;
         }
 
+        public DataTable[] Table_Get(object settings, string[] tablenames)
+        {
+            DataTable[] result = null;
+
+            if (settings != null)
+            {
+                var config = SQLite_Configuration.Get(settings);
+                if (config != null)
+                {
+                    var tables = new List<DataTable>();
+
+                    foreach (string tablename in tablenames)
+                    {
+                        var query = "SELECT * FROM " + tablename;
+
+                        var table = (DataTable)ExecuteQuery<DataTable>(config, query);
+
+                        if (table != null)
+                        {
+                            table.TableName = tablename;
+                            tables.Add(table);
+                        }
+                    }
+
+                    result = tables.ToArray();
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions)
+        {
+            DataTable[] result = null;
+
+            if (settings != null)
+            {
+                var config = SQLite_Configuration.Get(settings);
+                if (config != null)
+                {
+                    var tables = new List<DataTable>();
+
+                    if (tablenames.Length == filterExpressions.Length)
+                    {
+                        for (var x = 0; x <= tablenames.Length - 1; x++)
+                        {
+                            var query = "SELECT * FROM " + tablenames[x] + " " + filterExpressions[x];
+
+                            var table = (DataTable)ExecuteQuery<DataTable>(config, query);
+
+                            if (table != null)
+                            {
+                                table.TableName = tablenames[x];
+                                tables.Add(table);
+                            }
+                        }
+                    }
+
+                    result = tables.ToArray();
+                }
+            }
+
+            return result;
+        }
+
         public string[] Table_List(object settings)
         {
             string[] result = null;

@@ -423,6 +423,46 @@ namespace TH_MySQL
             return result;
         }
 
+        public DataTable[] Table_Get(object settings, string[] tablenames)
+        {
+            DataTable[] result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.UsePHP)
+                {
+                    result = PHP.Table.Get(config, tablenames);
+                }
+                else
+                {
+                    result = Connector.Table.Get(config, tablenames);
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions)
+        {
+            DataTable[] result = null;
+
+            MySQL_Configuration config = MySQL_Configuration.Get(settings);
+            if (config != null)
+            {
+                if (config.UsePHP)
+                {
+                    result = PHP.Table.Get(config, tablenames, filterExpressions);
+                }
+                else
+                {
+                    result = Connector.Table.Get(config, tablenames, filterExpressions);
+                }
+            }
+
+            return result;
+        }
+
         public string[] Table_List(object settings)
         {
             string[] result = null;
