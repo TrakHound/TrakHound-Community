@@ -942,7 +942,7 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            Table.Replace(config.Databases_Server, TableNames.GenEventValues, columns.ToArray(), null);
+            Table.Replace(config.Databases_Server, TablePrefix + TableNames.GenEventValues, columns.ToArray(), null);
 
             if (events != null)
             {
@@ -972,7 +972,7 @@ namespace TH_GeneratedData
                     rowValues.Add(defaultValues);
                 }
 
-                Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, null, true);
+                Row.Insert(config.Databases_Server, TablePrefix + TableNames.GenEventValues, insertColumns.ToArray(), rowValues, null, true);
             }
         }
 
@@ -1194,7 +1194,7 @@ namespace TH_GeneratedData
                     // Get Variables Table from MySQL (if any snapshots are set to "Variable")
                     if (gdc.snapshots.Items.FindAll(x => x.type.ToLower() == "variable").Count > 0)
                     {
-                        variables_DT = Table.Get(config.Databases_Server, TableNames.Variables);
+                        variables_DT = Table.Get(config.Databases_Server, TablePrefix + TableNames.Variables);
                     }
 
                    foreach (Snapshots.Item item in gdc.snapshots.Items)

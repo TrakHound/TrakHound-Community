@@ -27,7 +27,7 @@ namespace TH_UserManagement.Management.Local
             XML_Functions.SetInnerText(configuration.ConfigurationXML, "TableName", tableName);
 
             // Set new Unique Id
-            string uniqueId = String_Functions.RandomString(20);
+            string uniqueId = Configuration.GenerateUniqueID();
             configuration.UniqueId = uniqueId;
             XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 

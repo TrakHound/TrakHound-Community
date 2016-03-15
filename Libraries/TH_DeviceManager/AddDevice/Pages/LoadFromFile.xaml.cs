@@ -110,7 +110,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                 // If not logged in Read from File in 'C:\TrakHound\'
                 else
                 {
-                    DeviceManager.SaveFileConfiguration(config);
+                    Configuration.Save(config);
                 }
 
                 ParentPage.DeviceManager.AddDevice(config);

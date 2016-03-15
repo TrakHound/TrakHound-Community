@@ -238,6 +238,8 @@ namespace TH_Configuration
         /// </summary>
         public XmlDocument ConfigurationXML { get; set; }
 
+        public string FilePath { get; set; }
+
         /// <summary>
         /// The full path of the configuration file
         /// </summary>
@@ -261,9 +263,9 @@ namespace TH_Configuration
             return builder.ToString();
         }
 
-        static string GetUniqueID()
+        public static string GenerateUniqueID()
         {
-            return RandomString(80);
+            return RandomString(10);
         }
 
 
@@ -276,11 +278,6 @@ namespace TH_Configuration
         {
             Configuration result = null;
 
-            //string RootPath;
-            //RootPath = Path.GetDirectoryName(path);
-            //RootPath += @"\";
-            //Logger.Log("Configuration File Root Path = " + RootPath);
-
             if (File.Exists(path))
             {
                 XmlDocument doc = new XmlDocument();
@@ -288,13 +285,15 @@ namespace TH_Configuration
 
                 result = Read(doc);
 
-                // Set Unique Id to the filename
                 string filename = Path.GetFileNameWithoutExtension(path);
-                result.UniqueId = filename;
-                XML_Functions.SetInnerText(result.ConfigurationXML, "/UniqueId", result.UniqueId);
+                result.FilePath = filename;
+                XML_Functions.SetInnerText(result.ConfigurationXML, "/FilePath", result.FilePath);
 
-
-                //Logger.Log("Configuration Successfully Read From : " + path);
+                if (result.UniqueId == null)
+                {
+                    result.UniqueId = GenerateUniqueID();
+                    XML_Functions.SetInnerText(result.ConfigurationXML, "/UniqueId", result.UniqueId);
+                }
             }
             else
             {
@@ -307,8 +306,6 @@ namespace TH_Configuration
         public static Configuration[] ReadAll(string path)
         {
             var result = new List<Configuration>();
-
-            //Logger.Log("Reading Configuration Files from : " + path);
 
             if (Directory.Exists(path))
             {
@@ -510,13 +507,13 @@ namespace TH_Configuration
                         Type Settings = typeof(FileLocation_Settings);
                         PropertyInfo info = Settings.GetProperty(Child.Name);
 
-                        string FilePath = Child.InnerText;
-                        if (!System.IO.Path.IsPathRooted(FilePath)) FilePath = rootPath + FilePath;
+                        string filepath = Child.InnerText;
+                        if (!System.IO.Path.IsPathRooted(filepath)) filepath = rootPath + filepath;
 
                         if (info != null)
                         {
                             Type t = info.PropertyType;
-                            info.SetValue(Result, Convert.ChangeType(FilePath, t), null);
+                            info.SetValue(Result, Convert.ChangeType(filepath, t), null);
                         }
 
                     }
@@ -590,6 +587,51 @@ namespace TH_Configuration
             xml.LoadXml(Properties.Resources.BlankConfiguration);
 
             Configuration result = Read(xml);
+
+            return result;
+        }
+
+
+        public static bool Save(Configuration config)
+        {
+            bool result = false;
+
+            result = Save(config.ConfigurationXML);
+
+            return result;
+        }
+
+        public static bool Save(DataTable dt)
+        {
+            bool result = false;
+
+            XmlDocument xml = Converter.TableToXML(dt);
+
+            result = Save(xml);
+
+            return result;
+        }
+
+        public static bool Save(XmlDocument xml)
+        {
+            bool result = false;
+
+            if (xml != null)
+            {
+                try
+                {
+                    string filePath = XML_Functions.GetInnerText(xml, "FilePath");
+
+                    if (filePath == null) filePath = XML_Functions.GetInnerText(xml, "UniqueId");
+
+                    if (!Directory.Exists(TH_Global.FileLocations.Devices)) Directory.CreateDirectory(TH_Global.FileLocations.Devices);
+
+                    xml.Save(TH_Global.FileLocations.Devices + "\\" + filePath + ".xml");
+
+                    result = true;
+                }
+                catch (Exception ex) { Logger.Log("Error during Configuration Xml Save : " + ex.Message); }
+            }
 
             return result;
         }

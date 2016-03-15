@@ -487,6 +487,10 @@ namespace TH_DeviceManager.AddDevice.Pages
             // Save DeviceName
             config.Agent.DeviceName = info.Device.name;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/DeviceName", info.Device.name);
+
+            // Save Heartbeat
+            config.Agent.DeviceName = info.Device.name;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Heartbeat", "5000");
         }
 
         private void UpdateDatabaseConfiguration(Configuration config)
@@ -514,15 +518,17 @@ namespace TH_DeviceManager.AddDevice.Pages
             bool result = false;
 
             // Set new Unique Id
-            string uniqueId = String_Functions.RandomString(20);
+            string uniqueId = Configuration.GenerateUniqueID();
             config.UniqueId = uniqueId;
             XML_Functions.SetInnerText(config.ConfigurationXML, "UniqueId", uniqueId);
 
             try
             {
-                string localPath = FileLocations.Devices + "\\" + uniqueId + ".xml";
+                //string localPath = FileLocations.Devices + "\\" + uniqueId + ".xml";
 
-                config.ConfigurationXML.Save(localPath);
+                //config.ConfigurationXML.Save(localPath);
+
+                Configuration.Save(config);
 
                 result = true;
             }

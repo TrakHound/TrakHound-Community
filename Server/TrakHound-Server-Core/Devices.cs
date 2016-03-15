@@ -99,7 +99,11 @@ namespace TrakHound_Server_Core
                     {
                         if (config != null)
                         {
-                            int index = Devices.FindIndex(x => x.configuration.UniqueId == config.UniqueId);
+                            int index = -1;
+
+                            if (CurrentUser != null) index = Devices.FindIndex(x => x.configuration.UniqueId == config.UniqueId);
+                            else index = Devices.FindIndex(x => x.configuration.FilePath == config.FilePath);
+
                             if (index >= 0) // Server is already part of list
                             {
                                 Device_Server server = Devices[index];

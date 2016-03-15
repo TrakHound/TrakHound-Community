@@ -26,6 +26,31 @@ namespace TH_StatusData
 
         List<ManualResetEvent> stops = new List<ManualResetEvent>();
 
+        //void Update_Start()
+        //{
+        //    Update_Stop();
+
+        //    Console.WriteLine("StatusData :: All Previous Threads Stopped");
+
+        //    if (Devices != null)
+        //    {
+        //        foreach (Configuration device in Devices.ToList())
+        //        {
+        //            Thread thread = new Thread(new ParameterizedThreadStart(Update_Worker));
+        //            var stop = new ManualResetEvent(false);
+        //            stops.Add(stop);
+
+        //            var info = new UpdateInfo();
+        //            info.Config = device;
+        //            info.Stop = stop;
+
+        //            thread.Start(info);
+        //        }
+        //    }
+        //}
+
+        ManualResetEvent stop;
+
         void Update_Start()
         {
             Update_Stop();
@@ -34,29 +59,36 @@ namespace TH_StatusData
 
             if (Devices != null)
             {
-                foreach (Configuration device in Devices.ToList())
-                {
-                    Thread thread = new Thread(new ParameterizedThreadStart(Update_Worker));
-                    var stop = new ManualResetEvent(false);
-                    stops.Add(stop);
+                Thread thread = new Thread(new ParameterizedThreadStart(Update_Worker));
+                stop = new ManualResetEvent(false);
+                thread.Start();
 
-                    var info = new UpdateInfo();
-                    info.Config = device;
-                    info.Stop = stop;
 
-                    thread.Start(info);
-                }
+                //foreach (Configuration device in Devices.ToList())
+                //{
+                //    Thread thread = new Thread(new ParameterizedThreadStart(Update_Worker));
+                //    var stop = new ManualResetEvent(false);
+                //    stops.Add(stop);
+
+                //    var info = new UpdateInfo();
+                //    info.Config = device;
+                //    info.Stop = stop;
+
+                //    thread.Start(info);
+                //}
             }
         }
 
         void Update_Stop()
         {
-            foreach (var stop in stops)
-            {
-                if (stop != null) stop.Set();
-            }
+            if (stop != null) stop.Set();
 
-            stops.Clear();
+            //foreach (var stop in stops)
+            //{
+            //    if (stop != null) stop.Set();
+            //}
+
+            //stops.Clear();
         }
 
         class UpdateInfo
@@ -107,6 +139,45 @@ namespace TH_StatusData
                     Thread.Sleep(interval);
                 }
             }
+
+
+            //if (o != null)
+            //{
+            //    var info = (UpdateInfo)o;
+
+            //    Configuration config = info.Config;
+
+            //    int interval = INTERVAL_MIN;
+            //    bool first = true;
+
+            //    while (!info.Stop.WaitOne(0, true))
+            //    {
+            //        // Get Connection Status
+            //        DataEvent_Data connected = GetConnectionData(config);
+
+            //        // Send Connection Status
+            //        SendDataEvent(connected);
+
+            //        if (connected != null && connected.data02 != null && connected.data02.GetType() == typeof(bool))
+            //        {
+            //            if ((bool)connected.data02 == true)
+            //            {
+            //                // Reset the interval back to the Minimum
+            //                interval = INTERVAL_MIN;
+
+            //                UpdateData(config);
+            //            }
+            //            else
+            //            {
+            //                // Increase the interval by 50% until interval == interval_max
+            //                if (!first) interval = Math.Min(Convert.ToInt32(interval + (interval * 0.5)), INTERVAL_MAX);
+            //                first = false;
+            //            }
+            //        }
+
+            //        Thread.Sleep(interval);
+            //    }
+            //}
         }
 
         private void UpdateData(Configuration config)

@@ -30,6 +30,8 @@ namespace TH_Device_Server
 
             configuration = config;
 
+            TablePrefix = config.UniqueId + "_";
+
             RunningTime_Initialize();
         }
 
@@ -122,8 +124,6 @@ namespace TH_Device_Server
         void start()
         {
             PrintDeviceHeader(configuration);
-
-            //if (UseDatabases) Database.Create(configuration.Databases_Server);
 
             worker = new Thread(new ThreadStart(Worker_Start));
             worker.Start();
