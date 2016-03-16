@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
 
 using TH_Configuration;
 using TH_Global;
@@ -20,7 +16,7 @@ using TH_UserManagement.Management;
 namespace TH_DeviceManager.AddDevice.Pages
 {
     /// <summary>
-    /// Interaction logic for LoadFromFile.xaml
+    /// Page containing options for loading a Device from a local file
     /// </summary>
     public partial class LoadFromFile : UserControl, IPage
     {
@@ -29,6 +25,8 @@ namespace TH_DeviceManager.AddDevice.Pages
             InitializeComponent();
             DataContext = this;
         }
+
+        #region "IPage"
 
         public string Title { get { return "Load Device Configuration From File"; } }
 
@@ -41,10 +39,18 @@ namespace TH_DeviceManager.AddDevice.Pages
         public void Closed() { }
         public bool Closing() { return true; }
 
+        #endregion
 
+        /// <summary>
+        /// Parent AddDevice.Page object
+        /// </summary>
         public Page ParentPage { get; set; }
 
+        #region "Dependency Properties"
 
+        /// <summary>
+        /// Number of Devices that were successfully added
+        /// </summary>
         public int AddedSuccessfully
         {
             get { return (int)GetValue(AddedSuccessfullyProperty); }
@@ -54,32 +60,22 @@ namespace TH_DeviceManager.AddDevice.Pages
         public static readonly DependencyProperty AddedSuccessfullyProperty =
             DependencyProperty.Register("AddedSuccessfully", typeof(int), typeof(LoadFromFile), new PropertyMetadata(0));
 
-        private void Browse_Clicked(TH_WPF.Button bt)
+        #endregion
+
+
+        private void Browse_Clicked(TH_WPF.Button bt) { LoadDeviceFromFile(); }
+
+        private void DeviceManager_Clicked(TH_WPF.Button bt)
         {
-            LoadDeviceFromFile();
-        }
-
-        public static string[] OpenConfigurationBrowse()
-        {
-            string[] result = null;
-
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            dlg.InitialDirectory = FileLocations.TrakHound;
-            dlg.Multiselect = true;
-            dlg.Title = "Browse for Device Configuration File(s)";
-            dlg.Filter = "Device Configuration files (*.xml) | *.xml";
-
-            Nullable<bool> dialogResult = dlg.ShowDialog();
-
-            if (dialogResult == true)
+            if (ParentPage != null)
             {
-                if (dlg.FileName != null) result = dlg.FileNames;
+                ParentPage.OpenDeviceList();
             }
-
-            return result;
         }
 
+        /// <summary>
+        /// Open a Windows Dialog to select files and then load each file as a Device
+        /// </summary>
         private void LoadDeviceFromFile()
         {
             // Browse for Device Configuration path
@@ -97,29 +93,61 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
+        /// <summary>
+        /// Open a Windows Dialog to select files to load as Devices
+        /// </summary>
+        /// <returns></returns>
+        private static string[] OpenConfigurationBrowse()
+        {
+            string[] result = null;
+
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            dlg.InitialDirectory = FileLocations.TrakHound;
+            dlg.Multiselect = true;
+            dlg.Title = "Browse for Device Configuration File(s)";
+            dlg.Filter = "Device Configuration files (*.xml) | *.xml";
+
+            Nullable<bool> dialogResult = dlg.ShowDialog();
+            if (dialogResult == true)
+            {
+                if (dlg.FileNames != null) result = dlg.FileNames;
+            }
+
+            return result;
+        }
+      
+        /// <summary>
+        /// Load a Device from a local path
+        /// </summary>
+        /// <param name="path">Path to the file to load</param>
+        /// <returns>Boolean whether load was successful</returns>
         private bool LoadDevice(string path)
         {
+            bool result = false;
+
             // Get Configuration from path
             Configuration config = Configuration.Read(path);
             if (config != null)
             {
                 if (ParentPage.DeviceManager.CurrentUser != null)
                 {
-                    Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
+                    result = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
                 }
                 // If not logged in Read from File in 'C:\TrakHound\'
                 else
                 {
-                    Configuration.Save(config);
+                    result = Configuration.Save(config);
                 }
 
-                ParentPage.DeviceManager.AddDevice(config);
-
-                return true;
+                if (result) ParentPage.DeviceManager.AddDevice(config);
             }
 
-            return false;
+            return result;
         }
+
+
+        #region "Drag and Drop"
 
         private void Rectangle_DragEnter(object sender, DragEventArgs e)
         {
@@ -147,12 +175,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
-        private void DeviceManager_Clicked(TH_WPF.Button bt)
-        {
-            if (ParentPage != null)
-            {
-                ParentPage.OpenDeviceList();
-            }
-        }
+        #endregion
+
     }
 }

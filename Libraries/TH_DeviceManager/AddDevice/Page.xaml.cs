@@ -93,7 +93,7 @@ namespace TH_DeviceManager.AddDevice
             {
                 autoDetectPage = new Pages.AutoDetect();
                 autoDetectPage.ParentPage = this;
-                autoDetectPage.LoadCatalog();
+                autoDetectPage.FindDevices();
             }
 
             CurrentPage = autoDetectPage;
