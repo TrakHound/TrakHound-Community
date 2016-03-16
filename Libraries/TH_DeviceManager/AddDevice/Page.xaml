@@ -79,11 +79,11 @@
             </th_wpf:ListButton>
 
             <!--Create New Device-->
-            <th_wpf:ListButton>
+            <!--<th_wpf:ListButton>
                 <th_wpf:ListButton.ButtonContent>
                     <controls:PageItem Text="Create New Device" Image="/TH_DeviceManager;component/Resources/Information_01.png" Clicked="CreateNew_Clicked"/>
                 </th_wpf:ListButton.ButtonContent>
-            </th_wpf:ListButton>
+            </th_wpf:ListButton>-->
 
         </StackPanel>
 
@@ -108,14 +108,14 @@
                             <!--Image-->
                             <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Height="30" VerticalAlignment="Center" Margin="0,0,20,0">
                                 <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding PageContent.Image}" />
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding CurrentPage.Image}" />
                                 </Grid.Resources>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
                                         <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
                                         <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding PageContent.Image}" Value="{x:Null}">
+                                            <DataTrigger Binding="{Binding CurrentPage.Image}" Value="{x:Null}">
                                                 <Setter Property="Visibility" Value="Collapsed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -124,7 +124,7 @@
                             </Grid>
 
                             <!--Page Name-->
-                            <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding CurrentPage.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
 
                         </StackPanel>
 

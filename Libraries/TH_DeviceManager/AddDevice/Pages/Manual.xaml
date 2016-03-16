@@ -1,4 +1,9 @@
-﻿<UserControl x:Class="TH_DeviceManager.AddDevice.Pages.Manual"
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TH_DeviceManager.AddDevice.Pages.Manual"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -144,7 +149,7 @@
 
                         <Grid>
 
-                            <ItemsControl ItemsSource="{Binding SharedList}"/>
+                            <ItemsControl ItemsSource="{Binding CatalogItems}"/>
 
                             <!--Loading Animation-->
                             <Grid>
@@ -217,10 +222,10 @@
                         <Grid>
                             <Grid.Style>
                                 <Style TargetType="Grid">
-                                    <Setter Property="Visibility" Value="Hidden"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DetailsShown}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                        <DataTrigger Binding="{Binding SelectedCatalogItem}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Hidden"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -240,14 +245,14 @@
                                             <Style TargetType="Grid">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Details_Image}" Value="{x:Null}">
+                                                    <DataTrigger Binding="{Binding SelectedCatalogItem.FullSizeImage}" Value="{x:Null}">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Grid.Style>
 
-                                        <Image Source="{Binding Details_Image}" HorizontalAlignment="Left" VerticalAlignment="Center" MaxHeight="75" MaxWidth="200" Margin="0,0,40,0"/>
+                                        <Image Source="{Binding SelectedCatalogItem.FullSizeImage}" HorizontalAlignment="Left" VerticalAlignment="Center" MaxHeight="75" MaxWidth="200" Margin="0,0,40,0"/>
 
                                     </Grid>
 
@@ -256,11 +261,11 @@
 
                                         <TextBlock Text="Author" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
-                                        <TextBlock Text="{Binding Details_Author}" FontSize="10pt" FontWeight="Bold" Foreground="{StaticResource Accent_Normal}" Margin="0,2"/>
+                                        <TextBlock Text="{Binding SelectedCatalogItem.Author}" FontSize="10pt" FontWeight="Bold" Foreground="{StaticResource Accent_Normal}" Margin="0,2"/>
 
                                         <TextBlock Text="Upload Date" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" Margin="0,2"/>
 
-                                        <TextBlock Text="{Binding Details_LastUpdated}" FontSize="8pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,2"/>
+                                        <TextBlock Text="{Binding SelectedCatalogItem.LastUpdated}" FontSize="8pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,2"/>
 
                                     </StackPanel>
 
@@ -272,7 +277,7 @@
                                         <Style TargetType="StackPanel">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Details_Description}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedCatalogItem.Description}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -281,7 +286,7 @@
 
                                     <TextBlock Text="Description" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                    <TextBlock Text="{Binding Details_Description}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCatalogItem.Description}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                 </StackPanel>
 
@@ -291,7 +296,7 @@
                                         <Style TargetType="StackPanel">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Details_Manufacturer}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedCatalogItem.Manufacturer}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -300,7 +305,7 @@
 
                                     <TextBlock Text="Manufacturer" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                    <TextBlock Text="{Binding Details_Manufacturer}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCatalogItem.Manufacturer}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                 </StackPanel>
 
@@ -310,7 +315,7 @@
                                         <Style TargetType="StackPanel">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Details_DeviceType}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedCatalogItem.DeviceType}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -319,7 +324,7 @@
 
                                     <TextBlock Text="Device Type" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                    <TextBlock Text="{Binding Details_DeviceType}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCatalogItem.DeviceType}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                 </StackPanel>
 
@@ -329,7 +334,7 @@
                                         <Style TargetType="StackPanel">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Details_Model}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedCatalogItem.Model}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -338,7 +343,7 @@
 
                                     <TextBlock Text="Model" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                    <TextBlock Text="{Binding Details_Model}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCatalogItem.Model}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                 </StackPanel>
 
@@ -348,7 +353,7 @@
                                         <Style TargetType="StackPanel">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Details_Controller}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedCatalogItem.Controller}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -357,7 +362,7 @@
 
                                     <TextBlock Text="Controller" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                    <TextBlock Text="{Binding Details_Controller}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCatalogItem.Controller}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                 </StackPanel>
 
@@ -367,7 +372,7 @@
                                         <Style TargetType="StackPanel">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Details_Dependencies}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedCatalogItem.Dependencies}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -376,7 +381,7 @@
 
                                     <TextBlock Text="Dependencies" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                    <TextBlock Text="{Binding Details_Dependencies}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCatalogItem.Dependencies}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                 </StackPanel>
 
@@ -386,7 +391,7 @@
                                         <Style TargetType="StackPanel">
                                             <Setter Property="Visibility" Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Details_Tags}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding SelectedCatalogItem.Tags}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -395,28 +400,11 @@
 
                                     <TextBlock Text="Search Tags" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,5"/>
 
-                                    <TextBlock Text="{Binding Details_Tags}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding SelectedCatalogItem.Tags}" FontSize="10pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,5" TextWrapping="Wrap"/>
 
                                 </StackPanel>
 
                             </StackPanel>
-
-                            <!--Owner (if the current user is the owner)-->
-                            <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right">
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Setter Property="Visibility" Value="Hidden"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Details_Owner}" Value="true">
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-
-                                <th_wpf:Button Foreground="{StaticResource Accent_Normal}" Image="/TH_DeviceManager;component/Resources/X_01.png" ToolTip="Remove from the Shared Catalog" Clicked="Remove_Clicked"/>
-
-                            </Grid>
 
                         </Grid>
 

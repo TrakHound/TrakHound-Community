@@ -50,8 +50,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddDevice\Controls\SharedItem.xaml.cs">
-      <DependentUpon>SharedItem.xaml</DependentUpon>
+    <Compile Include="AddDevice\Controls\CatalogItem.xaml.cs">
+      <DependentUpon>CatalogItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="AddDevice\Pages\LoadFromFile.xaml.cs">
       <DependentUpon>LoadFromFile.xaml</DependentUpon>
@@ -65,7 +65,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddDevice\Controls\SharedItem.xaml">
+    <Page Include="AddDevice\Controls\CatalogItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,21 +1,18 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
-
-using System.Collections.ObjectModel;
-using System.Threading;
-using System.Data;
 using System.Xml;
 
 using TH_Configuration;
@@ -26,7 +23,7 @@ using TH_UserManagement.Management;
 namespace TH_DeviceManager.AddDevice.Pages
 {
     /// <summary>
-    /// Interaction logic for Manual.xaml
+    /// Page containing options for manually adding Devices from the Online TrakHound Device Catalog
     /// </summary>
     public partial class Manual : UserControl, IPage
     {
@@ -36,7 +33,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             DataContext = this;
         }
 
-        #region "Properties"
+        #region "IPage"
 
         public string Title { get { return "Manual"; } }
 
@@ -49,17 +46,18 @@ namespace TH_DeviceManager.AddDevice.Pages
         public void Closed() { }
         public bool Closing() { return true; }
 
-
-        public Page ParentPage { get; set; }
-
         #endregion
 
+        /// <summary>
+        /// Parent AddDevice.Page object
+        /// </summary>
+        public Page ParentPage { get; set; }
 
-        const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
+        #region "Dependency Properties"
 
-
-        #region "Catalog"
-
+        /// <summary>
+        /// Used to tell whether the Device Catalog is currently being loaded
+        /// </summary>
         public bool CatalogLoading
         {
             get { return (bool)GetValue(CatalogLoadingProperty); }
@@ -69,141 +67,178 @@ namespace TH_DeviceManager.AddDevice.Pages
         public static readonly DependencyProperty CatalogLoadingProperty =
             DependencyProperty.Register("CatalogLoading", typeof(bool), typeof(Manual), new PropertyMetadata(false));
 
-        Thread LoadCatalog_THREAD;
+        /// <summary>
+        /// Contains the selected CatalogItem to display in the Details panel
+        /// </summary>
+        public Controls.CatalogItem SelectedCatalogItem
+        {
+            get { return (Controls.CatalogItem)GetValue(SelectedCatalogItemProperty); }
+            set { SetValue(SelectedCatalogItemProperty, value); }
+        }
 
+        public static readonly DependencyProperty SelectedCatalogItemProperty =
+            DependencyProperty.Register("SelectedCatalogItem", typeof(Controls.CatalogItem), typeof(Manual), new PropertyMetadata(null));
+
+        #endregion
+
+        const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
+
+        #region "Device Catalog"
+
+        private class CatalogInfo
+        {
+            public Shared.SharedListItem Item { get; set; }
+            public System.Drawing.Image Image { get; set; }
+        }
+
+        Thread catalog_THREAD;
+
+        /// <summary>
+        /// Load the items found in the Online TrakHound Device Catalog
+        /// </summary>
         public void LoadCatalog()
         {
             if (ParentPage != null && ParentPage.DeviceManager != null)
             {
-                CatalogLoading = true;
-                SharedList.Clear();
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    CatalogLoading = true;
+                }
+                ), PRIORITY_BACKGROUND, new object[] { });
 
-                if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
+                if (catalog_THREAD != null) catalog_THREAD.Abort();
 
-                LoadCatalog_THREAD = new Thread(new ThreadStart(LoadCatalog_Worker));
-                LoadCatalog_THREAD.Start();
+                catalog_THREAD = new Thread(new ThreadStart(LoadCatalog_Worker));
+                catalog_THREAD.Start();
             }
         }
 
-        void LoadCatalog_Worker()
+        private void LoadCatalog_Worker()
         {
             List<Shared.SharedListItem> items = Shared.GetSharedList();
 
-            this.Dispatcher.BeginInvoke(new Action<List<Shared.SharedListItem>>(LoadCatalog_GUI), PRIORITY_BACKGROUND, new object[] { items });
+            var infos = new List<CatalogInfo>();
+
+            // Create CatalogInfo objects for each SharedListItem and get the corresponding image
+            foreach (var item in items)
+            {
+                var info = new CatalogInfo();
+                info.Item = item;
+                info.Image = GetCatalogImage(item);
+
+                infos.Add(info);
+            }
+
+            this.Dispatcher.BeginInvoke(new Action<List<CatalogInfo>>(LoadCatalog_GUI), PRIORITY_BACKGROUND, new object[] { infos });
         }
 
-        void LoadCatalog_GUI(List<Shared.SharedListItem> items)
+        private static System.Drawing.Image GetCatalogImage(Shared.SharedListItem item)
+        {
+            System.Drawing.Image img = null;
+
+            if (item.image_url != null)
+            {
+                // Just use Remote.Images (don't look for local)
+                img = TH_UserManagement.Management.Remote.Images.GetImage(item.image_url);
+            }
+
+            return img;
+        }
+
+        private void LoadCatalog_GUI(List<CatalogInfo> infos)
         {
             CatalogLoading = false;
 
-            shareditems = items;
+            catalogInfos = infos.ToList();
 
-            LoadSharedItems(items);
+            AddCatalogItems(infos);
         }
-
 
         #endregion
 
-        List<Shared.SharedListItem> shareditems;
-        List<Shared.SharedListItem> shareditems_search;
+        #region "Catalog Items"
 
-        #region "Shared Items"
+        /// <summary>
+        /// List of All of the Catalog Infos
+        /// </summary>
+        List<CatalogInfo> catalogInfos;
 
-        ObservableCollection<Controls.SharedItem> sharedlist;
-        public ObservableCollection<Controls.SharedItem> SharedList
+        /// <summary>
+        /// List of filtered (by search bar) Catalog Items
+        /// </summary>
+        //List<CatalogInfo> filteredCatalogInfos;
+
+        private ObservableCollection<Controls.CatalogItem> _catalogItems;
+        /// <summary>
+        /// List of Controls representing the Catalog Device Configurations
+        /// </summary>
+        public ObservableCollection<Controls.CatalogItem> CatalogItems
         {
             get
             {
-                if (sharedlist == null)
-                    sharedlist = new ObservableCollection<Controls.SharedItem>();
-                return sharedlist;
+                if (_catalogItems == null)
+                    _catalogItems = new ObservableCollection<Controls.CatalogItem>();
+                return _catalogItems;
             }
 
             set
             {
-                sharedlist = value;
+                _catalogItems = value;
             }
         }
 
-        Thread LoadShared_THREAD;
-
-        void LoadSharedItems(List<Shared.SharedListItem> items)
+        private void AddCatalogItems(List<CatalogInfo> infos)
         {
-            CatalogLoading = true;
+            CatalogItems.Clear();
 
-            shareditems_search = new List<Shared.SharedListItem>();
-            SharedList.Clear();
-
-            //items = items.OrderByDescending(x => x.downloads).ToList();
-
-            //foreach (Shared.SharedListItem item in items)
-            //{
-            //    LoadSharedItems_GUI(item, null);
-
-            //    //ThreadPool.QueueUserWorkItem(new WaitCallback(LoadSharedItems_Worker2), item);
-            //}
-
-            //LoadSharedItems_Finish();
-
-            if (LoadShared_THREAD != null) LoadShared_THREAD.Abort();
-
-            LoadShared_THREAD = new Thread(new ParameterizedThreadStart(LoadSharedItems_Worker));
-            LoadShared_THREAD.Start(items);
-        }
-
-        void LoadSharedItems_Worker2(object o)
-        {
-            if (o != null)
+            if (infos != null)
             {
-                Shared.SharedListItem item = (Shared.SharedListItem)o;
+                infos = infos.OrderByDescending(x => x.Item.downloads).ToList();
 
-                System.Drawing.Image img = null;
-
-                // Set Image --------------------------------------------
-                if (item.image_url != null)
+                foreach (var info in infos)
                 {
-                    // Just use Remote.Images (don't look for local)
-                    img = TH_UserManagement.Management.Remote.Images.GetImage(item.image_url);
-                }
-                // ------------------------------------------------------
-
-                this.Dispatcher.BeginInvoke(new Action<Shared.SharedListItem, System.Drawing.Image>(LoadSharedItems_GUI), PRIORITY_BACKGROUND, new object[] { item, img });
-            }
-        }
-
-        void LoadSharedItems_Worker(object o)
-        {
-            if (o != null)
-            {
-                List<Shared.SharedListItem> items = (List<Shared.SharedListItem>)o;
-
-                items = items.OrderByDescending(x => x.downloads).ToList();
-
-                foreach (Shared.SharedListItem item in items)
-                {
-                    System.Drawing.Image img = null;
-
-                    // Set Image --------------------------------------------
-                    if (item.image_url != null)
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        // Just use Remote.Images (don't look for local)
-                        img = TH_UserManagement.Management.Remote.Images.GetImage(item.image_url);
+                        AddCatalogItem(info);
                     }
-                    // ------------------------------------------------------
-
-                    this.Dispatcher.BeginInvoke(new Action<Shared.SharedListItem, System.Drawing.Image>(LoadSharedItems_GUI), PRIORITY_BACKGROUND, new object[] { item, img });
+                    ), PRIORITY_BACKGROUND, new object[] { });
                 }
             }
-
-            this.Dispatcher.BeginInvoke(new Action(LoadSharedItems_Finish), PRIORITY_BACKGROUND, new object[] { });
         }
 
-        void LoadSharedItems_GUI(Shared.SharedListItem listitem, System.Drawing.Image img)
+        private void AddCatalogItem(CatalogInfo info)
         {
-            shareditems_search.Add(listitem);
+            var item = new Controls.CatalogItem();
 
-            Controls.SharedItem item = new Controls.SharedItem();
+            // Set Images
+            item.Image = GetSourceFromImage(info.Image, 100, 40);
+            item.FullSizeImage = GetSourceFromImage(info.Image, 200, 75);
 
+            // Set Owner
+            item.IsOwner = IsOwner(info);
+            item.Author = info.Item.author;
+
+            // Set Description properties
+            item.Description = info.Item.description;
+            item.Manufacturer = info.Item.manufacturer;
+            item.DeviceType = info.Item.device_type;
+            item.Model = info.Item.model;
+            item.Controller = info.Item.controller;
+            item.LastUpdated = info.Item.upload_date.ToString();
+
+            // Set parent ListItem
+            item.SharedListItem = info.Item;
+
+            // Assign event handlers
+            item.Clicked += CatalogItem_Clicked;
+            item.AddClicked += CatalogItem_AddClicked;
+
+            // Add item to list
+            CatalogItems.Add(item);
+        }
+
+        private static ImageSource GetSourceFromImage(System.Drawing.Image img, int width, int height)
+        {
             BitmapImage bitmap = null;
 
             if (img != null)
@@ -215,66 +250,44 @@ namespace TH_DeviceManager.AddDevice.Pages
 
                 bmpSource.Freeze();
 
-                item.FullSizeImage = bmpSource;
-
                 if (bmpSource.PixelWidth > bmpSource.PixelHeight)
                 {
-                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, 60);
+                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, width);
                 }
                 else
                 {
-                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 30);
+                    bitmap = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, height);
                 }
             }
 
-            item.Image = bitmap;
+            return bitmap;
+        }
 
+        private bool IsOwner(CatalogInfo info)
+        {
             if (ParentPage.DeviceManager.CurrentUser != null)
             {
-                if (ParentPage.DeviceManager.CurrentUser.username.ToLower() == listitem.author.ToLower()) item.Owner = true;
+                if (ParentPage.DeviceManager.CurrentUser.username.ToLower() == info.Item.author.ToLower()) return true;
             }
-
-            item.Description = listitem.description;
-            item.Manufacturer = listitem.manufacturer;
-            item.DeviceType = listitem.device_type;
-            item.Model = listitem.model;
-            item.Controller = listitem.controller;
-
-            item.listitem = listitem;
-
-            item.AddClicked += item_AddClicked;
-            item.Clicked += item_Clicked;
-
-            SharedList.Add(item);
+            return false;
         }
 
-        void item_Clicked(Controls.SharedItem item)
-        {
-            LoadDetails(item);
-        }
 
-        void item_AddClicked(Controls.SharedItem item)
+        private void CatalogItem_Clicked(Controls.CatalogItem item) { SelectedCatalogItem = item; }
+
+        private void CatalogItem_AddClicked(Controls.CatalogItem item)
         {
-            if (item.listitem != null)
+            if (item.SharedListItem != null)
             {
-                AddSharedItem(item);
+                AddDevice(item);
             }
-        }
-
-        void LoadSharedItems_Finish()
-        {
-            CatalogLoading = false;
         }
 
         #endregion
 
         #region "Catalog Search"
 
-        private void Refresh_Clicked(TH_WPF.Button bt)
-        {
-            LoadCatalog();
-        }
-
+        private void Refresh_Clicked(TH_WPF.Button bt) { LoadCatalog(); }
 
         System.Timers.Timer search_TIMER;
 
@@ -288,14 +301,14 @@ namespace TH_DeviceManager.AddDevice.Pages
             search_TIMER.Enabled = true;
         }
 
-        void search_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private void search_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             search_TIMER.Enabled = false;
 
             this.Dispatcher.BeginInvoke(new Action(FilterCatalog));
         }
 
-        void FilterCatalog()
+        private void FilterCatalog()
         {
             string search = search_TXT.Text.ToLower();
 
@@ -303,32 +316,32 @@ namespace TH_DeviceManager.AddDevice.Pages
             {
                 string[] searchList = search.Split(' ');
 
-                List<Shared.SharedListItem> results = new List<Shared.SharedListItem>();
+                var filterList = new List<CatalogInfo>();
 
                 foreach (string s in searchList)
                 {
-                    List<Shared.SharedListItem> list = shareditems_search.FindAll(
+                    List<CatalogInfo> items = catalogInfos.FindAll(
                     x =>
-                    (TestFilter(x.manufacturer, s) ||
-                    TestFilter(x.model, s) ||
-                    TestFilter(x.author, s) ||
-                    TestFilter(x.description, s) ||
-                    TestFilter(x.controller, s) ||
-                    TestFilter(x.device_type, s))
+                    (TestFilter(x.Item.manufacturer, s) ||
+                    TestFilter(x.Item.model, s) ||
+                    TestFilter(x.Item.author, s) ||
+                    TestFilter(x.Item.description, s) ||
+                    TestFilter(x.Item.controller, s) ||
+                    TestFilter(x.Item.device_type, s))
                     );
 
-                    foreach (Shared.SharedListItem item in list)
+                    foreach (var item in items)
                     {
-                        if (results.Find(x => x.list_id == item.list_id) == null) results.Add(item);
+                        if (filterList.Find(x => x.Item.list_id == item.Item.list_id) == null) filterList.Add(item);
                     }
                 }
 
-                LoadSharedItems(results);
+                AddCatalogItems(filterList);
 
             }
             else
             {
-                LoadSharedItems(shareditems);
+                AddCatalogItems(catalogInfos);
             }
 
         }
@@ -345,286 +358,84 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         #endregion
 
-        #region "Details"
+        #region "Add Device"
 
-        Shared.SharedListItem selectedItem = null;
-
-        #region "Properties"
-
-        public bool DetailsShown
+        private class AddDeviceInfo
         {
-            get { return (bool)GetValue(DetailsShownProperty); }
-            set { SetValue(DetailsShownProperty, value); }
+            public Controls.CatalogItem CatalogItem { get; set; }
+            public Configuration Configuration { get; set; }
+            public Shared.SharedListItem SharedListItem { get; set; }
+            public bool Success { get; set; }
         }
 
-        public static readonly DependencyProperty DetailsShownProperty =
-            DependencyProperty.Register("DetailsShown", typeof(bool), typeof(Manual), new PropertyMetadata(false));
-
-
-
-        public ImageSource Details_Image
-        {
-            get { return (ImageSource)GetValue(Details_ImageProperty); }
-            set { SetValue(Details_ImageProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_ImageProperty =
-            DependencyProperty.Register("Details_Image", typeof(ImageSource), typeof(Manual), new PropertyMetadata(null));
-
-
-        public bool Details_Owner
-        {
-            get { return (bool)GetValue(Details_OwnerProperty); }
-            set { SetValue(Details_OwnerProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_OwnerProperty =
-            DependencyProperty.Register("Details_Owner", typeof(bool), typeof(Manual), new PropertyMetadata(false));
-
-
-        public string Details_Author
-        {
-            get { return (string)GetValue(Details_AuthorProperty); }
-            set { SetValue(Details_AuthorProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_AuthorProperty =
-            DependencyProperty.Register("Details_Author", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-        public string Details_LastUpdated
-        {
-            get { return (string)GetValue(Details_LastUpdatedProperty); }
-            set { SetValue(Details_LastUpdatedProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_LastUpdatedProperty =
-            DependencyProperty.Register("Details_LastUpdated", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-
-
-        public string Details_Description
-        {
-            get { return (string)GetValue(Details_DescriptionProperty); }
-            set { SetValue(Details_DescriptionProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_DescriptionProperty =
-            DependencyProperty.Register("Details_Description", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-
-        public string Details_Manufacturer
-        {
-            get { return (string)GetValue(Details_ManufacturerProperty); }
-            set { SetValue(Details_ManufacturerProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_ManufacturerProperty =
-            DependencyProperty.Register("Details_Manufacturer", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-        public string Details_DeviceType
-        {
-            get { return (string)GetValue(Details_DeviceTypeProperty); }
-            set { SetValue(Details_DeviceTypeProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_DeviceTypeProperty =
-            DependencyProperty.Register("Details_DeviceType", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-        public string Details_Model
-        {
-            get { return (string)GetValue(Details_ModelProperty); }
-            set { SetValue(Details_ModelProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_ModelProperty =
-            DependencyProperty.Register("Details_Model", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-        public string Details_Controller
-        {
-            get { return (string)GetValue(Details_ControllerProperty); }
-            set { SetValue(Details_ControllerProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_ControllerProperty =
-            DependencyProperty.Register("Details_Controller", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-
-        public string Details_Dependencies
-        {
-            get { return (string)GetValue(Details_DependenciesProperty); }
-            set { SetValue(Details_DependenciesProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_DependenciesProperty =
-            DependencyProperty.Register("Details_Dependencies", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-
-        public string Details_Tags
-        {
-            get { return (string)GetValue(Details_TagsProperty); }
-            set { SetValue(Details_TagsProperty, value); }
-        }
-
-        public static readonly DependencyProperty Details_TagsProperty =
-            DependencyProperty.Register("Details_Tags", typeof(string), typeof(Manual), new PropertyMetadata(null));
-
-
-        #endregion
-
-
-        void LoadDetails(Controls.SharedItem item)
-        {
-            if (item.listitem != null)
-            {
-                Shared.SharedListItem i = item.listitem;
-
-                selectedItem = i;
-
-                // Image
-                ImageSource img = item.FullSizeImage;
-
-                if (img != null)
-                {
-                    if (img.Width > img.Height)
-                    {
-                        int width = Convert.ToInt32(img.Width);
-                        Details_Image = TH_WPF.Image_Functions.SetImageSize(img, Math.Min(width, 200));
-                    }
-                    else
-                    {
-                        int height = Convert.ToInt32(img.Height);
-                        Details_Image = TH_WPF.Image_Functions.SetImageSize(img, 0, Math.Min(height, 75));
-                    }
-                }
-                else Details_Image = null;
-
-
-                Details_Owner = item.Owner;
-
-                // Author
-                Details_Author = i.author;
-                Details_LastUpdated = i.upload_date.ToString();
-
-                Details_Description = i.description;
-
-                Details_Manufacturer = i.manufacturer;
-                Details_DeviceType = i.device_type;
-                Details_Model = i.model;
-                Details_Controller = i.controller;
-
-                Details_Dependencies = i.dependencies;
-                Details_Tags = i.tags;
-
-                DetailsShown = true;
-            }
-        }
-
-
-        private void Remove_Clicked(TH_WPF.Button bt)
-        {
-            if (selectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Remove this Configuration from the Shared Catalog?", "Remove Configuration", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
-                if (result == MessageBoxResult.Yes)
-                {
-                    this.Cursor = Cursors.Wait;
-
-                    if (Shared.RemoveSharedConfiguration_FromList(selectedItem))
-                    {
-                        Configurations.RemoveConfigurationTable(selectedItem.tablename);
-                    }
-
-                    DetailsShown = false;
-
-                    LoadCatalog();
-
-                    this.Cursor = Cursors.Arrow;
-                }
-            }
-        }
-
-
-        #endregion
-
-        #region "Add Shared Configuration to User"
-
-        class AddShared_Return
-        {
-            public Controls.SharedItem item { get; set; }
-            public Configuration config { get; set; }
-            public bool success { get; set; }
-        }
-
-        void AddSharedItem(Controls.SharedItem item)
+        private void AddDevice(Controls.CatalogItem item)
         {
             item.Loading = true;
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(AddSharedItem_Worker), item);
+            var info = new AddDeviceInfo();
+            info.CatalogItem = item;
+            info.SharedListItem = item.SharedListItem;
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback(AddDevice_Worker), info);
         }
 
-        void AddSharedItem_Worker(object o)
+        private void AddDevice_Worker(object o)
         {
-            AddShared_Return result = new AddShared_Return();
-            result.success = false;
-
             if (o != null)
             {
-                Controls.SharedItem item = (Controls.SharedItem)o;
+                var item = (AddDeviceInfo)o;
 
-                result.item = item;
-
-                if (item.listitem != null)
+                if (item.SharedListItem != null)
                 {
-                    string tablename = item.listitem.tablename;
+                    string tablename = item.SharedListItem.tablename;
 
                     if (tablename != null)
                     {
-                        Shared.UpdateDownloads(item.listitem);
+                        // Update (increment up) the number of times the selected Catalog Item has been downloaded
+                        Shared.UpdateDownloads(item.SharedListItem);
 
+                        // Retrieve the Configuration Table for the selected Catalog Item
                         DataTable dt = TH_UserManagement.Management.Remote.Configurations.GetTable(tablename);
                         if (dt != null)
                         {
+                            // Convert Table an XML file
                             XmlDocument xml = Converter.TableToXML(dt);
                             if (xml != null)
                             {
+                                // Process the XML file and get a TH_Configuration.Configuration object
                                 Configuration config = Configuration.Read(xml);
                                 if (config != null)
                                 {
-                                    result.config = config;
+                                    item.Configuration = config;
 
-                                    if (TH_UserManagement.Management.UserManagementSettings.Database != null)
+                                    // If using a Local account (User or 'non user') save the images to PC
+                                    if (UserManagementSettings.Database != null)
                                     {
                                         SaveLocalImage(config.FileLocations.Manufacturer_Logo_Path);
                                         SaveLocalImage(config.FileLocations.Image_Path);
                                     }
 
+                                    // Add the configuration to either the DeviceManager's current user or (if not logged in)
+                                    // Save to the Devices directory (ex. C:\TrakHound\Devices\)
                                     if (ParentPage.DeviceManager.CurrentUser != null)
                                     {
-                                        result.success = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
-
-                                        result.config.TableName = config.TableName;
+                                        item.Success = Configurations.AddConfigurationToUser(ParentPage.DeviceManager.CurrentUser, config);
+                                        item.Configuration.TableName = config.TableName;
                                     }
                                     else
                                     {
-                                        result.success = SaveLocalConfigurationToUser(config);
+                                        item.Success = SaveLocalConfigurationToUser(config);
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            this.Dispatcher.BeginInvoke(new Action<AddShared_Return>(AddSharedItem_GUI), PRIORITY_BACKGROUND, new object[] { result });
+                Dispatcher.BeginInvoke(new Action<AddDeviceInfo>(AddDevice_GUI), PRIORITY_BACKGROUND, new object[] { item });
+            }
         }
+
 
         private bool SaveLocalConfigurationToUser(Configuration config)
         {
@@ -657,8 +468,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             return result;
         }
 
-
-        void SaveLocalImage(string filename)
+        private void SaveLocalImage(string filename)
         {
             if (filename != null)
             {
@@ -672,14 +482,15 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
-        void AddSharedItem_GUI(AddShared_Return result)
-        {
-            if (result.item != null) result.item.Loading = false;
 
-            if (result.success && result.config != null)
+        private void AddDevice_GUI(AddDeviceInfo info)
+        {
+            if (info.CatalogItem != null) info.CatalogItem.Loading = false;
+
+            if (info.Success && info.Configuration != null)
             {
-                ParentPage.DeviceManager.AddDevice(result.config);
-                //if (DeviceAdded != null) DeviceAdded(result.config);
+                // Update DeviceManager list with new Device
+                ParentPage.DeviceManager.AddDevice(info.Configuration);
             }
             else
             {
