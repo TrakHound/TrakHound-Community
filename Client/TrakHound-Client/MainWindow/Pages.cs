@@ -60,49 +60,49 @@ namespace TrakHound_Client
             DependencyProperty.Register("CurrentPage", typeof(TabPage), typeof(MainWindow), new PropertyMetadata(null));
 
 
-        public void AddPageAsTab(object page, string title, ImageSource image)
-        {
-            //// Check to see if Page already exists
-            //TH_TabItem TI = Pages_TABCONTROL.Items.Cast<TH_TabItem>().ToList().Find(x => x.Title.ToString().ToLower() == title.ToLower());
+        //public void AddPageAsTab(object page, string title, ImageSource image)
+        //{
+        //    //// Check to see if Page already exists
+        //    //TH_TabItem TI = Pages_TABCONTROL.Items.Cast<TH_TabItem>().ToList().Find(x => x.Title.ToString().ToLower() == title.ToLower());
 
-            //if (TI == null)
-            //{
-            //    TI = new TH_TabItem();
-            //    TI.Content = CreatePage(page); ;
-            //    TI.Title = title;
-            //    TI.Closed += TI_Closed;
+        //    //if (TI == null)
+        //    //{
+        //    //    TI = new TH_TabItem();
+        //    //    TI.Content = CreatePage(page); ;
+        //    //    TI.Title = title;
+        //    //    TI.Closed += TI_Closed;
 
-            //    TH_TabHeader_Top header = new TH_TabHeader_Top();
-            //    header.Text = title;
-            //    header.Image = image;
-            //    header.TabParent = TI;
-            //    header.Clicked += header_Clicked;
-            //    header.CloseClicked += header_CloseClicked;
-            //    TI.TH_Header = header;
+        //    //    TH_TabHeader_Top header = new TH_TabHeader_Top();
+        //    //    header.Text = title;
+        //    //    header.Image = image;
+        //    //    header.TabParent = TI;
+        //    //    header.Clicked += header_Clicked;
+        //    //    header.CloseClicked += header_CloseClicked;
+        //    //    TI.TH_Header = header;
 
-            //    int zlevel = int.MaxValue;
+        //    //    int zlevel = int.MaxValue;
 
-            //    // Move all of the existing tabs to the front so that the new tab is behind it (so it can "slide" in behind it)
-            //    for (int x = 0; x <= PageTabHeaders.Count - 1; x++)
-            //    {
-            //        TH_TabHeader_Top tabHeader = (TH_TabHeader_Top)PageTabHeaders[x];
-            //        Panel.SetZIndex(tabHeader, zlevel - x);
-            //    }
+        //    //    // Move all of the existing tabs to the front so that the new tab is behind it (so it can "slide" in behind it)
+        //    //    for (int x = 0; x <= PageTabHeaders.Count - 1; x++)
+        //    //    {
+        //    //        TH_TabHeader_Top tabHeader = (TH_TabHeader_Top)PageTabHeaders[x];
+        //    //        Panel.SetZIndex(tabHeader, zlevel - x);
+        //    //    }
 
-            //    PageTabHeaders.Add(header);
+        //    //    PageTabHeaders.Add(header);
 
-            //    Panel.SetZIndex(header, -1);
+        //    //    Panel.SetZIndex(header, -1);
 
-            //    TI.Template = (ControlTemplate)TryFindResource("TabItemControlTemplate");
+        //    //    TI.Template = (ControlTemplate)TryFindResource("TabItemControlTemplate");
 
-            //    Pages_TABCONTROL.Items.Add(TI);
-            //    Pages_TABCONTROL.SelectedItem = TI;
-            //}
-            //else
-            //{
-            //    Pages_TABCONTROL.SelectedItem = TI;
-            //}
-        }
+        //    //    Pages_TABCONTROL.Items.Add(TI);
+        //    //    Pages_TABCONTROL.SelectedItem = TI;
+        //    //}
+        //    //else
+        //    //{
+        //    //    Pages_TABCONTROL.SelectedItem = TI;
+        //    //}
+        //}
 
         public void AddTab(IPage page, string name = null, ImageSource image = null, string tag = null)
         {

@@ -205,14 +205,9 @@
         </Border>
 
         <!--Device Tables-->
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid.Style>
-                <Style TargetType="Grid">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+            <ScrollViewer.Style>
+                <Style TargetType="ScrollViewer">
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -230,94 +225,33 @@
                         </MultiDataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Grid.Style>
+            </ScrollViewer.Style>
 
-            <!--Devices Table-->
-            <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding Devices}"
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <!--Devices Table-->
+                <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding Devices}"
                   AutoGenerateColumns="False"
-                  VerticalScrollBarVisibility="Auto"  
+                  VerticalScrollBarVisibility="Disabled"
+                  SelectionChanged="Devices_DG_SelectionChanged"
                   >
-                <DataGrid.Style>
-                    <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Devices.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.Style>
-
-                <DataGrid.Columns>
-
-                    <!--Edit Button-->
-                    <DataGridTemplateColumn>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <!--Enable Client CheckBox-->
-                    <DataGridTemplateColumn Header="Client Enabled">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <!--Enable Server CheckBox-->
-                    <DataGridTemplateColumn Header="Server Enabled">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <!--Description Columns-->
-                    <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                    <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
-                    <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
-                    <DataGridTextColumn Header="Serial" Binding="{Binding Serial}"/>
-                    <DataGridTextColumn Header="Device ID" Binding="{Binding Id}"/>
-
-                </DataGrid.Columns>
-
-            </DataGrid>
-
-            <Grid Grid.Row="1" PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent" ContextMenu="{StaticResource DataGridRowContextMenu_None}"/>
-
-            <!--Shared Devices-->
-            <StackPanel Grid.Row="2">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding SharedDevices}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding SharedDevices.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-
-                <Rectangle Fill="{StaticResource Shade_Normal}" Height="1"/>
-
-                <!--Title-->
-                <TextBlock Text="Shared Devices" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="10,20,0,10"/>
-
-                <!--Shared Devices Table-->
-                <DataGrid x:Name="SharedDevices_DG" ItemsSource="{Binding SharedDevices}"
-                  AutoGenerateColumns="False"
-                  VerticalScrollBarVisibility="Auto"  
-                  >
+                    <DataGrid.Style>
+                        <Style TargetType="DataGrid" BasedOn="{StaticResource {x:Type DataGrid}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Devices}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Devices.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Style>
 
                     <DataGrid.Columns>
 
@@ -330,21 +264,93 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
 
+                        <!--Enable Client CheckBox-->
+                        <DataGridTemplateColumn Header="Client Enabled">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!--Enable Server CheckBox-->
+                        <DataGridTemplateColumn Header="Server Enabled">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
                         <!--Description Columns-->
                         <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                        <DataGridTextColumn Header="Device Link" Binding="{Binding DeviceLink}"/>
                         <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
                         <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
-                        <DataGridTextColumn Header="Controller" Binding="{Binding Manufacturer}"/>
+                        <DataGridTextColumn Header="Serial" Binding="{Binding Serial}"/>
+                        <DataGridTextColumn Header="Device ID" Binding="{Binding Id}"/>
 
                     </DataGrid.Columns>
 
                 </DataGrid>
 
-            </StackPanel>
+                <Grid Grid.Row="1" PreviewMouseDown="Grid_PreviewMouseDown" Background="Transparent" ContextMenu="{StaticResource DataGridRowContextMenu_None}"/>
 
-        </Grid>
+                <!--Shared Devices-->
+                <StackPanel Grid.Row="2">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SharedDevices}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SharedDevices.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
 
+                    <Rectangle Fill="{StaticResource Shade_Normal}" Height="1"/>
+
+                    <!--Title-->
+                    <TextBlock Text="Shared Devices" Foreground="{StaticResource Foreground_Light}" FontSize="10pt" Margin="10,20,0,10"/>
+
+                    <!--Shared Devices Table-->
+                    <DataGrid x:Name="SharedDevices_DG" ItemsSource="{Binding SharedDevices}"
+                  AutoGenerateColumns="False"
+                  VerticalScrollBarVisibility="Disabled"  
+                 SelectionChanged="SharedDevices_DG_SelectionChanged"
+                  >
+
+                        <DataGrid.Columns>
+
+                            <!--Edit Button-->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!--Description Columns-->
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
+                            <DataGridTextColumn Header="Device Link" Binding="{Binding DeviceLink}"/>
+                            <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
+                            <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
+                            <DataGridTextColumn Header="Controller" Binding="{Binding Manufacturer}"/>
+
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </StackPanel>
+
+            </Grid>
+
+        </ScrollViewer>
+        
         <!--Add Device (no devices found)-->
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel.Style>

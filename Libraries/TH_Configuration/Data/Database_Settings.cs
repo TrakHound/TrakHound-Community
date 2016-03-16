@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Xml;
 
+using TH_Global.Functions;
+
 namespace TH_Configuration
 {
     public class Database_Settings

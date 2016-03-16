@@ -214,9 +214,32 @@ namespace TH_Configuration
             set
             {
                 _uniqueId = value;
+
+                //if (_uniqueId != null)
+                //{
+                //    // If using the old format of 80 chars, then resize
+                //    if (_uniqueId.Length > 20) _uniqueId = GenerateUniqueID();
+                //}
+
                 UpdateConfigurationXML("UniqueId", _uniqueId);
             }
         }
+
+        /// <summary>
+        /// Used to link this device to tables in a database. This is typically used as the prefix for a table name.
+        /// </summary>
+        private string _databaseId;
+        public string DatabaseId
+        {
+            get { return _databaseId; }
+            set
+            {
+                _databaseId = value;
+
+                UpdateConfigurationXML("DatabaseId", _databaseId);
+            }
+        }
+
 
         /// <summary>
         /// Used as a general index to make navigation between Configurations easier
@@ -249,25 +272,15 @@ namespace TH_Configuration
 
         #region "Methods"
 
-        static Random random = new Random();
-        public static string RandomString(int size)
-        {
-            StringBuilder builder = new StringBuilder();
-            char ch;
-            for (int i = 0; i < size; i++)
-            {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
-            }
-
-            return builder.ToString();
-        }
-
         public static string GenerateUniqueID()
         {
-            return RandomString(10);
+            return String_Functions.RandomString(20);
         }
 
+        public static string GenerateDatabaseId()
+        {
+            return String_Functions.RandomString(10);
+        }
 
         /// <summary>
         /// Reads an XML file to parse configuration information.
@@ -312,7 +325,14 @@ namespace TH_Configuration
                 foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
                 {
                     var config = Read(file);
-                    if (config != null) result.Add(config);
+                    if (config != null)
+                    {
+                        // Check to make sure Unique Id is not already used by another file.
+                        // If so, generate a new one. This can happen if the file was manually copied
+                        if (result.Exists(x => x.UniqueId == config.UniqueId)) config.UniqueId = GenerateUniqueID();
+
+                        result.Add(config);
+                    }
                 }
             }
             else
@@ -409,7 +429,6 @@ namespace TH_Configuration
 
         private static Database_Settings Process_Databases(XmlNode node)
         {
-
             Database_Settings result = new Database_Settings();
 
             foreach (XmlNode child in node.ChildNodes)
@@ -424,7 +443,6 @@ namespace TH_Configuration
             }
 
             return result;
-
         }
 
         private static Description_Settings Process_Description(XmlNode Node)
@@ -622,7 +640,11 @@ namespace TH_Configuration
                 {
                     string filePath = XML_Functions.GetInnerText(xml, "FilePath");
 
-                    if (filePath == null) filePath = XML_Functions.GetInnerText(xml, "UniqueId");
+                    if (filePath == null)
+                    {
+                        filePath = XML_Functions.GetInnerText(xml, "UniqueId");
+                        XML_Functions.SetInnerText(xml, "FilePath", filePath);
+                    }
 
                     if (!Directory.Exists(TH_Global.FileLocations.Devices)) Directory.CreateDirectory(TH_Global.FileLocations.Devices);
 

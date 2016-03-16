@@ -39,7 +39,6 @@ namespace TH_DeviceManager.AddDevice.Pages
         }
 
 
-
         #region "Properties"
 
         public string Title { get { return "Auto Detect"; } }
@@ -498,6 +497,8 @@ namespace TH_DeviceManager.AddDevice.Pages
             // If NO databases are configured then add a SQLite database for both client and server
             if (config.Databases_Client.Databases.Count == 0 && config.Databases_Server.Databases.Count == 0)
             {
+                config.DatabaseId = Configuration.GenerateDatabaseId();
+
                 AddDatabaseConfiguration("/Databases_Client", config);
                 AddDatabaseConfiguration("/Databases_Server", config);
             }
@@ -522,20 +523,11 @@ namespace TH_DeviceManager.AddDevice.Pages
             config.UniqueId = uniqueId;
             XML_Functions.SetInnerText(config.ConfigurationXML, "UniqueId", uniqueId);
 
-            try
-            {
-                //string localPath = FileLocations.Devices + "\\" + uniqueId + ".xml";
+            // Set new FilePath
+            config.FilePath = uniqueId;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "FilePath", config.FilePath);
 
-                //config.ConfigurationXML.Save(localPath);
-
-                Configuration.Save(config);
-
-                result = true;
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("SaveLocalConfiguartionToUser() :: Exception :: " + ex.Message);
-            }
+            result = Configuration.Save(config);
 
             return result;
         }

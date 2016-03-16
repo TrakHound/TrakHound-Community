@@ -46,19 +46,6 @@
                             </Trigger>
                         </Style.Triggers>
                     </Style>
-
-                    <!--<Style TargetType="th_wpf:Button">
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Height" Value="35"/>
-                        <Setter Property="Padding" Value="10,5"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="#33ffffff"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>-->
                     <Style TargetType="Rectangle">
                         <Setter Property="Fill" Value="{StaticResource Shade_Light}"/>
                         <Setter Property="Width" Value="1"/>
@@ -163,9 +150,7 @@
                     <ItemsControl ItemsSource="{Binding PageList}" Margin="5,0" HorizontalAlignment="Center">
                         <ItemsControl.Resources>
                             <Style TargetType="th_wpf:ListButton">
-                                <!--<Setter Property="ShowImage" Value="False"/>-->
                                 <Setter Property="Height" Value="40"/>
-                                <!--<Setter Property="MinWidth" Value="100"/>-->
                                 <Setter Property="MinWidth" Value="100"/>
                                 <Setter Property="Foreground" Value="#fff"/>
                                 <Setter Property="Background" Value="Transparent"/>
@@ -191,7 +176,7 @@
                 <Grid Background="{StaticResource Accent_Normal}">
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <!--<Setter Property="Opacity" Value="0.0"/>-->
+                            <Setter Property="Opacity" Value="0.0"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding PagesLoading}" Value="true">
                                     <DataTrigger.EnterActions>

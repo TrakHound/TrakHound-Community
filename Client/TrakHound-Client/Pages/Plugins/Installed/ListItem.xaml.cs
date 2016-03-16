@@ -174,16 +174,16 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
         private void MenuItem_About_Click(object sender, RoutedEventArgs e)
         {
-            if (mw != null)
-            {
+            //if (mw != null)
+            //{
 
-                Grid dummy = new Grid();
-                dummy.Height = 300;
-                dummy.Width = 300;
-                dummy.Background = new SolidColorBrush(Colors.Red);
+            //    Grid dummy = new Grid();
+            //    dummy.Height = 300;
+            //    dummy.Width = 300;
+            //    dummy.Background = new SolidColorBrush(Colors.Red);
 
-                mw.AddPageAsTab(dummy, "About | " + Plugin_Title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/About_01.png")));
-            }
+            //    mw.AddPageAsTab(dummy, "About | " + Plugin_Title, new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/About_01.png")));
+            //}
         }
 
         ObservableCollection<Subcategory> _subcategories;

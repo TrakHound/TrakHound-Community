@@ -100,12 +100,19 @@ namespace TH_WPF
             this.Close();
         }
 
+        private void Cancel_Clicked(TH_WPF.Button bt)
+        {
+            this.DialogResult = null;
+            this.Close();
+        }
+
     }
 
     public enum MessageBoxButtons
     {
         Ok,
         YesNo,
+        YesNoCancel,
         OkCancel
     }
 
