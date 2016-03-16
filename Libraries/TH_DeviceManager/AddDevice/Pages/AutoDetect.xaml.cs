@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
-using System.Text;
+using System.Net;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
-
-using System.Threading;
-using System.Net;
-using System.Data;
 using System.Xml;
 
 using TH_Configuration;
@@ -28,18 +25,23 @@ using TH_UserManagement.Management;
 namespace TH_DeviceManager.AddDevice.Pages
 {
     /// <summary>
-    /// Interaction logic for AutoDetect.xaml
+    /// Page containing options for adding Devices that were automatically found on the network
     /// </summary>
     public partial class AutoDetect : UserControl, IPage
     {
+        /// <summary>
+        /// Sequence of Events:
+        /// - Load the TrakHound Device Catalog items (remote)
+        /// - 
+        /// </summary>
+
         public AutoDetect()
         {
             InitializeComponent();
             DataContext = this;
         }
 
-
-        #region "Properties"
+        #region "IPage"
 
         public string Title { get { return "Auto Detect"; } }
 
@@ -52,9 +54,18 @@ namespace TH_DeviceManager.AddDevice.Pages
         public void Closed() { }
         public bool Closing() { return true; }
 
+        #endregion
 
+        /// <summary>
+        /// Parent AddDevice.Page object
+        /// </summary>
         public Page ParentPage { get; set; }
 
+        #region "Dependency Properties"
+
+        /// <summary>
+        /// Used to tell if the Devices are currently being loaded
+        /// </summary>
         public bool DevicesLoading
         {
             get { return (bool)GetValue(DevicesLoadingProperty); }
@@ -64,16 +75,9 @@ namespace TH_DeviceManager.AddDevice.Pages
         public static readonly DependencyProperty DevicesLoadingProperty =
             DependencyProperty.Register("DevicesLoading", typeof(bool), typeof(AutoDetect), new PropertyMetadata(true));
 
-        public int DevicesNotAdded
-        {
-            get { return (int)GetValue(DevicesNotAddedProperty); }
-            set { SetValue(DevicesNotAddedProperty, value); }
-        }
-
-        public static readonly DependencyProperty DevicesNotAddedProperty =
-            DependencyProperty.Register("DevicesNotAdded", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
-
-
+        /// <summary>
+        /// Number of Devices that were found that have already been added
+        /// </summary>
         public int DevicesAlreadyAdded
         {
             get { return (int)GetValue(DevicesAlreadyAddedProperty); }
@@ -83,15 +87,33 @@ namespace TH_DeviceManager.AddDevice.Pages
         public static readonly DependencyProperty DevicesAlreadyAddedProperty =
             DependencyProperty.Register("DevicesAlreadyAdded", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
 
+        /// <summary>
+        /// Number of Devices that were found but haven't been added yet
+        /// </summary>
+        public int DevicesNotAdded
+        {
+            get { return (int)GetValue(DevicesNotAddedProperty); }
+            set { SetValue(DevicesNotAddedProperty, value); }
+        }
+
+        public static readonly DependencyProperty DevicesNotAddedProperty =
+            DependencyProperty.Register("DevicesNotAdded", typeof(int), typeof(AutoDetect), new PropertyMetadata(0));
 
         #endregion
 
         const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
       
+        /// <summary>
+        /// Search the Network for Devices
+        /// </summary>
+        public void FindDevices()
+        {
+            LoadCatalog();
+        }
 
         #region "Device Catalog"
 
-        class CatalogInfo
+        private class CatalogInfo
         {
             public Shared.SharedListItem Item { get; set; }
             public System.Drawing.Image Image { get; set; }
@@ -101,7 +123,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         Thread LoadCatalog_THREAD;
 
-        public void LoadCatalog()
+        private void LoadCatalog()
         {
             if (ParentPage != null && ParentPage.DeviceManager != null)
             {
@@ -121,7 +143,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
         }
 
-        void LoadCatalog_Worker()
+        private void LoadCatalog_Worker()
         {
             var sharedItems = Shared.GetSharedList();
 
@@ -134,7 +156,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                 catalogInfos.Add(info);
             }
 
-            FindDevices();
+            FindNodes();
         }
 
         private System.Drawing.Image GetCatalogImage(Shared.SharedListItem item)
@@ -154,7 +176,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         #region "Network Nodes"
 
-        private void FindDevices()
+        private void FindNodes()
         {
             this.Dispatcher.BeginInvoke(new Action(DeviceInfos.Clear));
 
@@ -169,11 +191,20 @@ namespace TH_DeviceManager.AddDevice.Pages
             ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe), reply.Address);
         }
 
+        private void PingNodes_Finished()
+        {
+            Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }));
+        }
+
+        #endregion
+
+        #region "MTConnect Probe"
+
         private void RunProbe(object o)
         {
             var ip = (IPAddress)o;
 
-            var ports = new int[5] { 5000, 5001, 5002, 5003, 5004 };
+            var ports = new int[] { 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010 };
 
             foreach (var port in ports)
             {
@@ -199,11 +230,6 @@ namespace TH_DeviceManager.AddDevice.Pages
             }
 
             return result;
-        }
-
-        private void PingNodes_Finished()
-        {
-            Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }));
         }
 
         #endregion
@@ -584,18 +610,9 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         #endregion
 
-        private void DeviceManager_Clicked(TH_WPF.Button bt)
-        {
-            if (ParentPage != null)
-            {
-                ParentPage.OpenDeviceList();
-            }
-        }
+        private void DeviceManager_Clicked(TH_WPF.Button bt) { if (ParentPage != null) ParentPage.OpenDeviceList(); }
 
-        private void AddDevicesManually_Clicked(TH_WPF.Button bt)
-        {
-            if (ParentPage != null) ParentPage.ShowManual();
-        }
+        private void AddDevicesManually_Clicked(TH_WPF.Button bt) { if (ParentPage != null) ParentPage.ShowManual(); }
 
     }
 }
