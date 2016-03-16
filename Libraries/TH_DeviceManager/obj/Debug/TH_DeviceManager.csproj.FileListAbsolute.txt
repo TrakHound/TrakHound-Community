@@ -78,8 +78,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Controls\Page
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Agent\Controls\MessageItem.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Databases\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Description\Page.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.baml
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\General\Page.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Controls\DeviceItem.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Controls\SharedItem.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\AddDevice\Page.g.cs
@@ -92,8 +90,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Agent\C
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Agent\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Databases\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\Description\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\DeviceList\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\Pages\General\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Debug\TH_DeviceManager_MarkupCompile.lref

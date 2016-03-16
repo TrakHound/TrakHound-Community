@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Reflection;
 using System.Drawing;
 using System.Data;
 using System.IO;
+using System.Linq.Expressions;
 
 using TH_Global;
 using TH_Global.Functions;
@@ -18,7 +20,7 @@ using TH_Global.Functions;
 namespace TH_Configuration
 {
 
-    public class Configuration
+    public class Configuration : IComparable, INotifyPropertyChanged
     {
         /// <summary>
         /// Each property must also change the ConfigurationXML to match the change.
@@ -42,8 +44,17 @@ namespace TH_Configuration
         public Database_Settings Databases_Client;
         public Database_Settings Databases_Server;
         public FileLocation_Settings FileLocations;
-        public Description_Settings Description;
+
+        // Implemented INotifyPropertyChanged to Bind in WPF
+        private Description_Settings _description;
+        public Description_Settings Description
+        {
+            get { return _description; }
+            set { PropertyChanged.ChangeAndNotify<Description_Settings>(ref _description, value, () => Description); }
+        }
         public List<object> CustomClasses;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Configuration()
         {
@@ -355,24 +366,26 @@ namespace TH_Configuration
                 {
                     if (node.InnerText != "")
                     {
-                        Type Settings = typeof(Configuration);
-                        PropertyInfo info = Settings.GetProperty(node.Name);
+                        switch (node.Name.ToLower())
+                        {
+                            case "agent": result.Agent = Process_Agent(node); break;
+                            case "databases_client": result.Databases_Client = Process_Databases(node); break;
+                            case "databases_server": result.Databases_Server = Process_Databases(node); break;
+                            case "description": result.Description = Process_Description(node); break;
+                            case "file_locations": result.FileLocations = Process_File_Locations(node, result.SettingsRootPath); break;
 
-                        if (info != null)
-                        {
-                            Type t = info.PropertyType;
-                            info.SetValue(result, Convert.ChangeType(node.InnerText, t), null);
-                        }
-                        else
-                        {
-                            switch (node.Name.ToLower())
-                            {
-                                case "agent": result.Agent = Process_Agent(node); break;
-                                case "databases_client": result.Databases_Client = Process_Databases(node); break;
-                                case "databases_server": result.Databases_Server = Process_Databases(node); break;
-                                case "description": result.Description = Process_Description(node); break;
-                                case "file_locations": result.FileLocations = Process_File_Locations(node, result.SettingsRootPath); break;
-                            }
+                            default:
+
+                                Type Settings = typeof(Configuration);
+                                PropertyInfo info = Settings.GetProperty(node.Name);
+
+                                if (info != null)
+                                {
+                                    Type t = info.PropertyType;
+                                    info.SetValue(result, Convert.ChangeType(node.InnerText, t), null);
+                                }
+
+                                break;
                         }
                     }
                 } 
@@ -662,6 +675,142 @@ namespace TH_Configuration
 
         #endregion
 
+        #region "IComparable"
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            var i = obj as Configuration;
+            if (i != null)
+            {
+                if (i > this) return -1;
+                else if (i < this) return 1;
+                else return 0;
+            }
+            else return 1;
+        }
+
+        public override bool Equals(object obj)
+        {
+
+            var other = obj as Configuration;
+            if (object.ReferenceEquals(other, null)) return false;
+
+            return (this == other);
+        }
+
+        public override int GetHashCode()
+        {
+            char[] c = this.ToString().ToCharArray();
+            return base.GetHashCode();
+        }
+
+        #region "Private"
+
+        static bool EqualTo(Configuration c1, Configuration c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
+            return c1.UniqueId == c2.UniqueId && c1.Index == c2.Index;
+        }
+
+        static bool NotEqualTo(Configuration c1, Configuration c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
+            return c1.UniqueId != c2.UniqueId || c1.Index != c2.Index;
+        }
+
+        static bool LessThan(Configuration c1, Configuration c2)
+        {
+            if (c1.Index > c2.Index) return false;
+            else return true;
+        }
+
+        static bool GreaterThan(Configuration c1, Configuration c2)
+        {
+            if (c1.Index < c2.Index) return false;
+            else return true;
+        }
+
+        #endregion
+
+        public static bool operator ==(Configuration c1, Configuration c2)
+        {
+            return EqualTo(c1, c2);
+        }
+
+        public static bool operator !=(Configuration c1, Configuration c2)
+        {
+            return NotEqualTo(c1, c2);
+        }
+
+
+        public static bool operator <(Configuration c1, Configuration c2)
+        {
+            return LessThan(c1, c2);
+        }
+
+        public static bool operator >(Configuration c1, Configuration c2)
+        {
+            return GreaterThan(c1, c2);
+        }
+
+
+        public static bool operator <=(Configuration c1, Configuration c2)
+        {
+            return LessThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        public static bool operator >=(Configuration c1, Configuration c2)
+        {
+            return GreaterThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        #endregion
+
+    }
+
+    public static class Extensions
+    {
+        public static bool ChangeAndNotify<T>(this PropertyChangedEventHandler handler,
+             ref T field, T value, Expression<Func<T>> memberExpression)
+        {
+            if (memberExpression == null)
+            {
+                throw new ArgumentNullException("memberExpression");
+            }
+            var body = memberExpression.Body as MemberExpression;
+            if (body == null)
+            {
+                throw new ArgumentException("Lambda must return a property.");
+            }
+            if (EqualityComparer<T>.Default.Equals(field, value))
+            {
+                return false;
+            }
+
+            var vmExpression = body.Expression as ConstantExpression;
+            if (vmExpression != null)
+            {
+                LambdaExpression lambda = Expression.Lambda(vmExpression);
+                Delegate vmFunc = lambda.Compile();
+                object sender = vmFunc.DynamicInvoke();
+
+                if (handler != null)
+                {
+                    handler(sender, new PropertyChangedEventArgs(body.Member.Name));
+                }
+            }
+
+            field = value;
+            return true;
+        }
     }
 
 }

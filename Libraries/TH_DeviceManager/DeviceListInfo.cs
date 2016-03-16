@@ -1,7 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 
 using TH_Configuration;
 
@@ -16,41 +18,43 @@ namespace TH_DeviceManager
         {
             Configuration = config;
 
-            Index = config.Index;
+            //Index = config.Index;
 
-            UniqueId = config.UniqueId;
-            TableName = config.TableName;
+            //UniqueId = config.UniqueId;
+            //TableName = config.TableName;
 
-            Description = config.Description.Description;
-            Manufacturer = config.Description.Manufacturer;
-            Model = config.Description.Model;
-            Serial = config.Description.Serial;
-            Id = config.Description.Device_ID;
+            //Description = config.Description.Description;
+            //Manufacturer = config.Description.Manufacturer;
+            //Model = config.Description.Model;
+            //Serial = config.Description.Serial;
+            //Id = config.Description.Device_ID;
 
-            DeviceLinkTag = config.SharedLinkTag;
+            //DeviceLinkTag = config.SharedLinkTag;
 
-            ClientEnabled = config.ClientEnabled;
-            ServerEnabled = config.ServerEnabled;
+            //ClientEnabled = config.ClientEnabled;
+            //ServerEnabled = config.ServerEnabled;
         }
 
         public string UniqueId { get; set; }
-        public string TableName { get; set; }
+        //public string TableName { get; set; }
 
         public int Index { get; set; }
 
-        public string Description { get; set; }
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
-        public string Serial { get; set; }
-        public string Id { get; set; }
+        //public string Description { get; set; }
+        //public string Manufacturer { get; set; }
+        //public string Model { get; set; }
+        //public string Serial { get; set; }
+        //public string Id { get; set; }
 
-        // SharedListItem link_tag
-        public string DeviceLinkTag { get; set; }
+        //// SharedListItem link_tag
+        //public string DeviceLinkTag { get; set; }
 
-        public bool ClientEnabled { get; set; }
-        public bool ServerEnabled { get; set; }
+        //public bool ClientEnabled { get; set; }
+        //public bool ServerEnabled { get; set; }
 
         public Configuration Configuration { get; set; }
+
+        #region "IComparable"
 
         public int CompareTo(object obj)
         {
@@ -65,8 +69,6 @@ namespace TH_DeviceManager
             }
             else return 1;
         }
-
-        #region "Operator Overrides"
 
         public override bool Equals(object obj)
         {

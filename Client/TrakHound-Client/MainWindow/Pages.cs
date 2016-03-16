@@ -432,7 +432,7 @@ namespace TrakHound_Client
                 deviceListPage.AddDeviceSelected += DeviceManager_DeviceList_AddDeviceSelected;
                 deviceListPage.EditSelected += DeviceManager_DeviceList_DeviceEditSelected;
                 deviceListPage.EditTableSelected += DeviceManager_DeviceList_DeviceEditTableSelected;
-                deviceListPage.DeviceListSelected += DeviceManager_DeviceList_DeviceManagerListSelected;
+                //deviceListPage.DeviceListSelected += DeviceManager_DeviceList_DeviceManagerListSelected;
             }
         }
 

@@ -1,4 +1,9 @@
-﻿<UserControl x:Class="TH_DeviceManager.DeviceList"
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
+
+<!--This file is subject to the terms and conditions defined in-->
+<!--file 'LICENSE.txt', which is part of this source code package.-->
+
+<UserControl x:Class="TH_DeviceManager.DeviceList"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -21,7 +26,7 @@
             <ContextMenu x:Key="DataGridRowContextMenu_None">
                 <controls:DataGridMenuItem Header="Add Device.." DataObject="{Binding}" Click="Add_DataGridRowContextMenu_Click"/>
             </ContextMenu>
-            
+
             <!--<ContextMenu x:Key="DataGridRowContextMenu_Single">
                 <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
                 <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>
@@ -31,7 +36,9 @@
                 <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
                 <Separator/>
                 <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
-                --><!--<controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Share_DataGridRowContextMenu_Click"/>--><!--
+                -->
+            <!--<controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Share_DataGridRowContextMenu_Click"/>-->
+            <!--
             </ContextMenu>-->
 
             <ContextMenu x:Key="DataGridRowContextMenu_Multiple">
@@ -74,9 +81,9 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            
+
             <Style TargetType="controls:DataGridCellCheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"/>
-            
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -283,11 +290,11 @@
                         </DataGridTemplateColumn>
 
                         <!--Description Columns-->
-                        <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                        <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
-                        <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
-                        <DataGridTextColumn Header="Serial" Binding="{Binding Serial}"/>
-                        <DataGridTextColumn Header="Device ID" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
+                        <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
+                        <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
+                        <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
+                        <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_Id}"/>
 
                     </DataGrid.Columns>
 
@@ -318,10 +325,10 @@
 
                     <!--Shared Devices Table-->
                     <DataGrid x:Name="SharedDevices_DG" ItemsSource="{Binding SharedDevices}"
-                  AutoGenerateColumns="False"
-                  VerticalScrollBarVisibility="Disabled"  
-                 SelectionChanged="SharedDevices_DG_SelectionChanged"
-                  >
+                    AutoGenerateColumns="False"
+                    VerticalScrollBarVisibility="Disabled"  
+                    SelectionChanged="SharedDevices_DG_SelectionChanged"
+                    >
 
                         <DataGrid.Columns>
 
@@ -350,7 +357,7 @@
             </Grid>
 
         </ScrollViewer>
-        
+
         <!--Add Device (no devices found)-->
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel.Style>
@@ -378,7 +385,7 @@
             <th_wpf:Button Text="Add Device" Clicked="Add_Toolbar_Clicked" ImageTextPadding="10" Padding="10,5" Height="35" Image="Resources/Add_01.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
         </StackPanel>
-        
+
         <!--Loading Animation-->
         <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
             <Grid.Style>

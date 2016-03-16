@@ -1,30 +1,21 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
 
-using System.Threading;
-using System.Net;
 using TH_Global;
-using TH_Global.Functions;
-using TH_MTConnect.Components;
-using TH_UserManagement.Management;
 
 namespace TH_DeviceManager.AddDevice
 {
     /// <summary>
-    /// Interaction logic for Page.xaml
+    /// Page that contains the GUI for adding a new device. 
+    /// Acts as host to IPage classes in the TH_DeviceManager.AddDevice.Pages namespace
     /// </summary>
     public partial class Page : UserControl, IPage
     {
@@ -33,6 +24,8 @@ namespace TH_DeviceManager.AddDevice
             InitializeComponent();
             DataContext = this;
         }
+
+        #region "IPage"
 
         public string Title { get { return "Add Device"; } }
 
@@ -45,33 +38,54 @@ namespace TH_DeviceManager.AddDevice
         public void Closed() { if (PageClosed != null) PageClosed(); }
         public bool Closing() { return true; }
 
+        #endregion
+
+        /// <summary>
+        /// Event to request to open the Device List Page
+        /// </summary>
         public event PageSelected_Handler DeviceListSelected;
+
+        /// <summary>
+        /// Event to request to open the Edit Table Page
+        /// </summary>
         public event DeviceSelected_Handler EditTableSelected;
+
+        /// <summary>
+        /// Event to notify that this page has closed
+        /// </summary>
         public event PageSelected_Handler PageClosed;
 
+        /// <summary>
+        /// Parent DeviceManager object
+        /// </summary>
         public DeviceManager DeviceManager { get; set; }
 
-        //public DeviceManagerList ParentPage { get; set; }
 
-        Pages.AutoDetect autoDetectPage;
-        Pages.Manual manualPage;
-        Pages.LoadFromFile loadFromFilePage;
-
-
-        public object PageContent
+        /// <summary>
+        /// Object for containing the currently displayed IPage object
+        /// </summary>
+        public IPage CurrentPage
         {
-            get { return (object)GetValue(PageContentProperty); }
-            set { SetValue(PageContentProperty, value); }
+            get { return (IPage)GetValue(CurrentPageProperty); }
+            set { SetValue(CurrentPageProperty, value); }
         }
 
-        public static readonly DependencyProperty PageContentProperty =
-            DependencyProperty.Register("PageContent", typeof(object), typeof(Page), new PropertyMetadata(null));
+        public static readonly DependencyProperty CurrentPageProperty =
+            DependencyProperty.Register("CurrentPage", typeof(IPage), typeof(Page), new PropertyMetadata(null));
 
+
+        /// <summary>
+        /// Raised the DeviceListSelected event to request to open the Device List Page
+        /// </summary>
         public void OpenDeviceList()
         {
             if (DeviceListSelected != null) DeviceListSelected();
         }
 
+
+        Pages.AutoDetect autoDetectPage;
+        Pages.Manual manualPage;
+        Pages.LoadFromFile loadFromFilePage;
 
         public void ShowAutoDetect()
         {
@@ -82,7 +96,7 @@ namespace TH_DeviceManager.AddDevice
                 autoDetectPage.LoadCatalog();
             }
 
-            PageContent = autoDetectPage;
+            CurrentPage = autoDetectPage;
         }
 
         public void ShowManual()
@@ -94,7 +108,7 @@ namespace TH_DeviceManager.AddDevice
                 manualPage.LoadCatalog();
             }
 
-            PageContent = manualPage;
+            CurrentPage = manualPage;
         }
 
         public void ShowLoadFromFile()
@@ -105,9 +119,7 @@ namespace TH_DeviceManager.AddDevice
                 loadFromFilePage.ParentPage = this;
             }
 
-            PageContent = loadFromFilePage;
-
-            //LoadDeviceFromFile();
+            CurrentPage = loadFromFilePage;
         }
 
         public void ShowCreateNew()
@@ -116,13 +128,18 @@ namespace TH_DeviceManager.AddDevice
 
         }
 
-        private void AutoDetect_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowAutoDetect(); }
 
+        #region "Navigation (Side Panel) Buttons"
+
+        private void AutoDetect_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowAutoDetect(); }
 
         private void Manual_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowManual(); }
 
         private void LoadFromFile_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowLoadFromFile(); }
 
         private void CreateNew_Clicked(TH_DeviceManager.Controls.PageItem item) { ShowCreateNew(); }
+
+        #endregion
+
     }
 }
