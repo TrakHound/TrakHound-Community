@@ -89,7 +89,7 @@ namespace TH_SQLite
                 var config = SQLite_Configuration.Get(settings);
                 if (config != null)
                 {
-                    var query = "SELECT * FROM " + tablename + " WHERE " + tableKey + " = '" + rowKey + "'";
+                    var query = "SELECT * FROM " + tablename + " WHERE `" + tableKey + "` = '" + rowKey + "'";
 
                     result = (DataRow)ExecuteQuery<DataRow>(config, query);
                 }

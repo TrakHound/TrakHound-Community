@@ -14,7 +14,7 @@ namespace TH_Database
 
         public static List<IDatabasePlugin> Plugins;
 
-        public static bool UseMultithreading = true;
+        public static bool UseMultithreading = false;
 
         public static void Initialize(Database_Settings settings)
         {

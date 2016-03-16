@@ -550,11 +550,15 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    plugin.Devices.Clear();
-                    foreach (var config in configs) plugin.Devices.Add(config);
+                    if (plugin.Devices != null)
+                    {
+                        plugin.Devices.Clear();
+                        foreach (var config in configs) plugin.Devices.Add(config);
+                    }
                 }
+                ), priority, new object[] { });      
             }
         }
 
@@ -566,16 +570,20 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                    if (index >= 0)
+                    if (plugin.Devices != null)
                     {
-                        plugin.Devices.RemoveAt(index);
+                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                        if (index >= 0)
+                        {
+                            plugin.Devices.RemoveAt(index);
 
-                        if (config.ClientEnabled) plugin.Devices.Insert(index, config);
+                            if (config.ClientEnabled) plugin.Devices.Insert(index, config);
+                        }
                     }
                 }
+                ), priority, new object[] { });
             }
         }
 
@@ -587,11 +595,15 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                    if (index < 0) plugin.Devices.Add(config);
+                    if (plugin.Devices != null)
+                    {
+                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                        if (index < 0) plugin.Devices.Add(config);
+                    }
                 }
+                ), priority, new object[] { });
             }
         }
 
@@ -603,11 +615,15 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                    if (index >= 0) plugin.Devices.RemoveAt(index);
+                    if (plugin.Devices != null)
+                    {
+                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                        if (index >= 0) plugin.Devices.RemoveAt(index);
+                    }
                 }
+                ), priority, new object[] { });
             }
         }
 

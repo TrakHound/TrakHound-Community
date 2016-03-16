@@ -29,24 +29,18 @@ namespace TH_ShiftTable
 
         public string Name { get { return "TH_ShiftTable"; } }
 
-        public void Initialize(Configuration configuration)
+        public void Initialize(Configuration config)
         {
-            ShiftConfiguration sc = ShiftConfiguration.ReadXML(configuration.ConfigurationXML);
+            ShiftConfiguration sc = ShiftConfiguration.ReadXML(config.ConfigurationXML);
 
             if (sc != null)
             {
-                configuration.CustomClasses.Add(sc);
+                config.CustomClasses.Add(sc);
 
-                config = configuration;
+                configuration = config;
 
-                //if (UseDatabases)
-                //{
-                    CreateShiftSegmentsTable(sc.shifts);
-                    CreateTable();
-                    GetTableColumns();
-                //}
-
-                AddGeneratedEventColumns();
+                CreateShiftSegmentsTable(sc.shifts);
+                CreateTable();
 
                 rowInfos = GetExistingValues();
             }
@@ -60,48 +54,48 @@ namespace TH_ShiftTable
             currentData = returnData;
 
             // Update shift_current in "Variables" table
-            CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(config, returnData.header.creationTime);
+            CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(configuration, returnData.header.creationTime);
             if (UseDatabases)
             {
                 if (shiftInfo != null)
                 {
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_name", shiftInfo.name, returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_id", shiftInfo.id, returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_type", shiftInfo.type, returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_date", shiftInfo.date, returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_name", shiftInfo.name, returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_id", shiftInfo.id, returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_type", shiftInfo.type, returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_date", shiftInfo.date, returnData.header.creationTime, TablePrefix);
 
                     // Local
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime, TablePrefix);
 
                     // UTC
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime_utc", shiftInfo.shiftStartUTC.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime_utc", shiftInfo.shiftEndUTC.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime_utc", shiftInfo.currentTimeUTC.ToString(), returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime_utc", shiftInfo.shiftStartUTC.ToString(), returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime_utc", shiftInfo.shiftEndUTC.ToString(), returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime_utc", shiftInfo.currentTimeUTC.ToString(), returnData.header.creationTime, TablePrefix);
                 }
                 else
                 {
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_name", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_id", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_type", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_date", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_name", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_id", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_type", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_date", "", returnData.header.creationTime, TablePrefix);
 
                     // Local
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime", "", returnData.header.creationTime, TablePrefix);
 
                     // UTC
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_begintime_utc", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_endtime_utc", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(config.Databases_Server, "shift_currenttime_utc", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime_utc", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime_utc", "", returnData.header.creationTime, TablePrefix);
+                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime_utc", "", returnData.header.creationTime, TablePrefix);
                 }
             }         
 
             DataEvent_Data de_dge = new DataEvent_Data();
             de_dge.id = "ShiftTable_CurrentShiftInfo";
-            de_dge.data01 = config;
+            de_dge.data01 = configuration;
             de_dge.data02 = shiftInfo;
             if (DataEvent != null) DataEvent(de_dge);
         }
@@ -148,7 +142,7 @@ namespace TH_ShiftTable
 
         #region "Properties"
 
-        Configuration config { get; set; }
+        Configuration configuration { get; set; }
 
         #endregion
 
@@ -172,7 +166,9 @@ namespace TH_ShiftTable
                 new ColumnDefinition("TYPE", DataType.LargeText)
             };
 
-            Table.Replace(config.Databases_Server, TableNames.ShiftSegments, columns.ToArray(), null);
+            var primaryKey = new string[] { "SHIFT_ID", "SEGMENT_ID" };
+
+            Table.Replace(configuration.Databases_Server, TablePrefix + TableNames.ShiftSegments, columns.ToArray(), primaryKey);
 
             if (shifts != null)
             {
@@ -205,7 +201,7 @@ namespace TH_ShiftTable
                     }
                 }
 
-                Row.Insert(config.Databases_Server, TableNames.ShiftSegments, insertColumns.ToArray(), rowValues, null, true);
+                Row.Insert(configuration.Databases_Server, TablePrefix + TableNames.ShiftSegments, insertColumns.ToArray(), rowValues, primaryKey, true);
             }
         }
 
@@ -234,26 +230,37 @@ namespace TH_ShiftTable
             columns.Add(new ColumnDefinition("TYPE", DataType.LargeText));
             columns.Add(new ColumnDefinition("TOTALTIME", DataType.Long));
 
+            GenEventColumns = new List<string>();
+
+            // Get ColumnDefinitions for each Generated Event
+            var genEventColumnNames = GetGeneratedEventColumnNames(configuration);
+            foreach (var columnName in genEventColumnNames)
+            {
+                GenEventColumns.Add(columnName);
+
+                columns.Add(new ColumnDefinition(columnName, DataType.Long));
+            }
+
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableName, ColArray, primaryKey);  
+            Table.Create(configuration.Databases_Server, TableName, ColArray, primaryKey);  
         }
 
         void GetTableColumns()
         {
-            ShiftTableColumns = Column.Get(config.Databases_Server, TableName);
+            ShiftTableColumns = Column.Get(configuration.Databases_Server, TableName);
         }
 
-        void AddGeneratedEventColumns()
+        static List<string> GetGeneratedEventColumnNames(Configuration config)
         {
+            var result = new List<string>();
+
             ShiftConfiguration sc = ShiftConfiguration.Get(config);
             if (sc != null)
             {
                 GeneratedData.GenDataConfiguration gdc = GeneratedData.GetConfiguration(config);
                 if (gdc != null)
                 {
-                    GenEventColumns = new List<string>();
-
                     foreach (GeneratedData.GeneratedEvents.Event genEvent in gdc.generatedEvents.events)
                     {
                         string columnName;
@@ -262,27 +269,59 @@ namespace TH_ShiftTable
                         {
                             columnName = Tools.FormatColumnName(genEvent, value);
 
-                            if (!ShiftTableColumns.Contains(columnName))
-                            {
-                                Column.Add(config.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
-                            }
-
-                            GenEventColumns.Add(columnName);
+                            result.Add(columnName);
                         }
 
                         // Add GenEvent.Default column
                         columnName = Tools.FormatColumnName(genEvent.Name, genEvent.Default.NumVal, genEvent.Default.Value);
 
-                        if (!ShiftTableColumns.Contains(columnName))
-                        {
-                            Column.Add(config.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
-                        }
-
-                        GenEventColumns.Add(columnName);
+                        result.Add(columnName);
                     }
                 }
             }
+
+            return result;
         }
+
+        //void AddGeneratedEventColumns()
+        //{
+        //    ShiftConfiguration sc = ShiftConfiguration.Get(configuration);
+        //    if (sc != null)
+        //    {
+        //        GeneratedData.GenDataConfiguration gdc = GeneratedData.GetConfiguration(configuration);
+        //        if (gdc != null)
+        //        {
+        //            GenEventColumns = new List<string>();
+
+        //            foreach (GeneratedData.GeneratedEvents.Event genEvent in gdc.generatedEvents.events)
+        //            {
+        //                string columnName;
+
+        //                foreach (GeneratedData.GeneratedEvents.Value value in genEvent.Values)
+        //                {
+        //                    columnName = Tools.FormatColumnName(genEvent, value);
+
+        //                    if (!ShiftTableColumns.Contains(columnName))
+        //                    {
+        //                        Column.Add(configuration.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
+        //                    }
+
+        //                    GenEventColumns.Add(columnName);
+        //                }
+
+        //                // Add GenEvent.Default column
+        //                columnName = Tools.FormatColumnName(genEvent.Name, genEvent.Default.NumVal, genEvent.Default.Value);
+
+        //                if (!ShiftTableColumns.Contains(columnName))
+        //                {
+        //                    Column.Add(configuration.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
+        //                }
+
+        //                GenEventColumns.Add(columnName);
+        //            }
+        //        }
+        //    }
+        //}
 
         List<ShiftRowInfo> GetExistingValues()
         {
@@ -290,7 +329,7 @@ namespace TH_ShiftTable
 
             if (UseDatabases)
             {
-                DataTable dt = Table.Get(config.Databases_Server, TableName);
+                DataTable dt = Table.Get(configuration.Databases_Server, TableName);
                 if (dt != null)
                 {
                     foreach (DataRow row in dt.Rows)
@@ -411,7 +450,7 @@ namespace TH_ShiftTable
                 rowValues.Add(values);
             }
 
-            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, primaryKey, true);
+            Row.Insert(configuration.Databases_Server, TableName, columns.ToArray(), rowValues, primaryKey, true);
         }
 
         #endregion
@@ -420,12 +459,12 @@ namespace TH_ShiftTable
 
         void ProcessShifts(List<GeneratedData.GeneratedEventItem> genEventItems)
         {
-            List<GenEventShiftItem> genEventShiftItems = GenEventShiftItem.Get(config, genEventItems);
+            List<GenEventShiftItem> genEventShiftItems = GenEventShiftItem.Get(configuration, genEventItems);
 
             // Send List of GenEventShiftItems to other Plugins
             SendGenEventShiftItems(genEventShiftItems);
 
-            List<ShiftRowInfo> shiftRowInfos = ShiftRowInfo.Get(config, genEventShiftItems, currentData);
+            List<ShiftRowInfo> shiftRowInfos = ShiftRowInfo.Get(configuration, genEventShiftItems, currentData);
 
             List<ShiftRowInfo> changedInfos = UpdateRowInfos(shiftRowInfos);
 
@@ -501,7 +540,7 @@ namespace TH_ShiftTable
         {
             DataEvent_Data de_dge = new DataEvent_Data();
             de_dge.id = "ShiftTable_ShiftRowInfos";
-            de_dge.data01 = config;
+            de_dge.data01 = configuration;
             de_dge.data02 = infos;
             if (DataEvent != null) DataEvent(de_dge);
         }
@@ -510,7 +549,7 @@ namespace TH_ShiftTable
         {
             DataEvent_Data de_dge = new DataEvent_Data();
             de_dge.id = "ShiftTable_GenEventShiftItems";
-            de_dge.data01 = config;
+            de_dge.data01 = configuration;
             de_dge.data02 = items;
             if (DataEvent != null) DataEvent(de_dge);
         }

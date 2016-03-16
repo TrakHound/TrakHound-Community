@@ -529,7 +529,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             XML_Functions.AddNode(config.ConfigurationXML, prefix + "/SQLite");
             XML_Functions.SetAttribute(config.ConfigurationXML, prefix + "/SQLite", "id", "00");
 
-            string path = FileLocations.Databases + "\\" + config.UniqueId + ".xml";
+            string path = FileLocations.Databases + "\\TrakHound.db";
 
             XML_Functions.SetInnerText(config.ConfigurationXML, prefix + "/SQLite/DatabasePath", path);
         }

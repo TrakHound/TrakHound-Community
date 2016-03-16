@@ -30,7 +30,7 @@ namespace TH_Device_Server
 
             configuration = config;
 
-            TablePrefix = config.UniqueId + "_";
+            TablePrefix = config.DatabaseId + "_";
 
             RunningTime_Initialize();
         }
@@ -172,6 +172,8 @@ namespace TH_Device_Server
 
         void Worker_Start() 
         {
+            Thread.Sleep(2000);
+
             Initialize();
 
             Requests_Start();

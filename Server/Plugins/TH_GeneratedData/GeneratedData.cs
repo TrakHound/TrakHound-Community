@@ -836,8 +836,6 @@ namespace TH_GeneratedData
 
         #region "Database"
 
-        //Queue SQL_Queue;
-
         #region "Snapshot"
 
         public string SnapshotsTableName = TableNames.SnapShots;
@@ -933,7 +931,7 @@ namespace TH_GeneratedData
 
         void CreateValueTable(List<GeneratedEvents.Event> events)
         {
-            //Table.Truncate(config.Databases_Server, TableNames.GenEventValues);
+            var primaryKey = new string[] { "EVENT" , "VALUE" };
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
@@ -942,7 +940,7 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            Table.Replace(config.Databases_Server, TablePrefix + TableNames.GenEventValues, columns.ToArray(), null);
+            Table.Replace(config.Databases_Server, TablePrefix + TableNames.GenEventValues, columns.ToArray(), primaryKey);
 
             if (events != null)
             {
@@ -972,7 +970,7 @@ namespace TH_GeneratedData
                     rowValues.Add(defaultValues);
                 }
 
-                Row.Insert(config.Databases_Server, TablePrefix + TableNames.GenEventValues, insertColumns.ToArray(), rowValues, null, true);
+                Row.Insert(config.Databases_Server, TablePrefix + TableNames.GenEventValues, insertColumns.ToArray(), rowValues, primaryKey, true);
             }
         }
 
@@ -1013,7 +1011,6 @@ namespace TH_GeneratedData
 
             foreach (string eventName in distinctEventNames)
             {
-
                 // Set Columns to Update (include Name so that it can Update the row instead of creating a new one)
                 List<string> columns = new List<string>();
                 columns.Add("Timestamp");
@@ -1050,15 +1047,11 @@ namespace TH_GeneratedData
 
                             rowValues.Add(values);
                         }
-
                     }
 
                     Row.Insert(config.Databases_Server, TablePrefix + GenTablePrefix + eventName, columns.ToArray(), rowValues, genEventsPrimaryKey, true);
-
                 }
-
             }
-
         }
 
         string FormatCaptureItemColumn(string val)

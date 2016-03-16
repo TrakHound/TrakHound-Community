@@ -52,6 +52,13 @@ namespace TH_DeviceCompare
                         Overlays.Remove(dd.Group.Overlay);
                         DeviceDisplays.Remove(dd);
                     }
+
+                    
+
+                    //Dispatcher.BeginInvoke(new Action(() =>
+                    //{
+                    //    
+                    //}), Priority_Background, new object[] { });
                 }
             }
         }
