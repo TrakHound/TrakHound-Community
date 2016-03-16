@@ -43,7 +43,7 @@
 
             <ContextMenu x:Key="DataGridRowContextMenu_Multiple">
                 <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
-                <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>
+                <!--<controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>-->
                 <Separator/>
                 <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
                 <Separator/>

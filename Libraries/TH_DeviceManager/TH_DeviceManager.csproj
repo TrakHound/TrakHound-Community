@@ -61,10 +61,6 @@
     <None Include="ShareDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </None>
-    <Page Include="AddDevice\Controls\DeviceItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="AddDevice\Controls\CatalogItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -85,10 +81,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EditTable.xaml">
+    <None Include="EditTable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </None>
     <Page Include="EditPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,9 +109,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="AddDevice\Controls\DeviceItem.xaml.cs">
-      <DependentUpon>DeviceItem.xaml</DependentUpon>
-    </Compile>
     <Compile Include="AddDevice\DeviceInfo.cs" />
     <Compile Include="AddDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
@@ -128,12 +121,12 @@
     </Compile>
     <Compile Include="Controls\DataGrid Controls.cs" />
     <None Include="DeviceListInfo.cs" />
-    <Compile Include="Device Manager Table\Load Configuration.cs" />
-    <Compile Include="Device Manager Table\Save Configuration.cs" />
-    <Compile Include="Device Manager Table\User.cs" />
-    <Compile Include="EditTable.xaml.cs">
+    <None Include="Device Manager Table\Load Configuration.cs" />
+    <None Include="Device Manager Table\Save Configuration.cs" />
+    <None Include="Device Manager Table\User.cs" />
+    <None Include="EditTable.xaml.cs">
       <DependentUpon>EditTable.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="EditPage.xaml.cs">
       <DependentUpon>EditPage.xaml</DependentUpon>
     </Compile>

@@ -446,6 +446,10 @@ namespace TH_DeviceManager.AddDevice.Pages
             config.UniqueId = uniqueId;
             XML_Functions.SetInnerText(config.ConfigurationXML, "UniqueId", uniqueId);
 
+            // Set new FilePath
+            config.FilePath = uniqueId;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "FilePath", config.FilePath);
+
             config.ClientEnabled = false;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/ClientEnabled", "False");
 

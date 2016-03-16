@@ -29,12 +29,6 @@ namespace TH_DeviceManager.AddDevice.Pages
     /// </summary>
     public partial class AutoDetect : UserControl, IPage
     {
-        /// <summary>
-        /// Sequence of Events:
-        /// - Load the TrakHound Device Catalog items (remote)
-        /// - 
-        /// </summary>
-
         public AutoDetect()
         {
             InitializeComponent();

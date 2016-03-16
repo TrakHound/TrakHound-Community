@@ -158,13 +158,28 @@ namespace TrakHound_Client
             if (index >= 0)
             {
                 Devices.RemoveAt(index);
-                if (config.ClientEnabled)
-                {
-                    Devices.Insert(index, config);  
-                }
+                if (config.ClientEnabled) Devices.Insert(index, config);
 
                 Plugins_UpdateDevice(config);
             }
+            else
+            {
+                AddDevice(config);
+            }
+
+            
+
+            //int index = Devices.FindIndex(x => x.UniqueId == config.UniqueId);
+            //if (index >= 0)
+            //{
+            //    Devices.RemoveAt(index);
+            //    if (config.ClientEnabled)
+            //    {
+            //        Devices.Insert(index, config);  
+            //    }
+
+            //    Plugins_UpdateDevice(config);
+            //}
         }
 
         /// <summary>

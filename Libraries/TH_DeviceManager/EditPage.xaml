@@ -135,7 +135,7 @@
                 <th_wpf:Button Clicked="DeviceManager_Clicked" Image="/TH_DeviceManager;component/Resources/root.png" ToolTip="Open Device Manager"/>
 
                 <!--Open Table View-->
-                <th_wpf:Button Clicked="EditTable_Clicked"  ToolTip="Edit Device as Table" Image="Resources/Table_01.png"/>
+                <!--<th_wpf:Button Clicked="EditTable_Clicked"  ToolTip="Edit Device as Table" Image="Resources/Table_01.png"/>-->
 
             </StackPanel>
 

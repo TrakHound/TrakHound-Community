@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-15-544798147
+131804220526
 
-251102861214
+201501480295
 22587088619
-AddDevice\Controls\DeviceItem.xaml;AddDevice\Controls\CatalogItem.xaml;AddDevice\Page.xaml;AddDevice\Pages\AutoDetect.xaml;AddDevice\Pages\LoadFromFile.xaml;AddDevice\Pages\Manual.xaml;EditTable.xaml;EditPage.xaml;DeviceList.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\PageItem.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;
+AddDevice\Controls\CatalogItem.xaml;AddDevice\Page.xaml;AddDevice\Pages\AutoDetect.xaml;AddDevice\Pages\LoadFromFile.xaml;AddDevice\Pages\Manual.xaml;EditPage.xaml;DeviceList.xaml;Pages\Databases\Controls\DatabaseItemContainer.xaml;Controls\PageItem.xaml;Pages\Agent\Controls\MessageItem.xaml;Pages\Agent\Page.xaml;Pages\Databases\Page.xaml;Pages\Description\Page.xaml;
 
 False
 
