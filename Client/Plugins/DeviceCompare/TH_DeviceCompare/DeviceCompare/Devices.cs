@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 
 using TH_Configuration;
+using TH_Global.Functions;
 
 namespace TH_DeviceCompare
 {
@@ -35,6 +36,7 @@ namespace TH_DeviceCompare
 
                 SortDataItems();
                 LoadHeaderView();
+                SortDeviceDisplays();
             }
 
             if (e.OldItems != null)
@@ -52,13 +54,6 @@ namespace TH_DeviceCompare
                         Overlays.Remove(dd.Group.Overlay);
                         DeviceDisplays.Remove(dd);
                     }
-
-                    
-
-                    //Dispatcher.BeginInvoke(new Action(() =>
-                    //{
-                    //    
-                    //}), Priority_Background, new object[] { });
                 }
             }
         }
@@ -89,6 +84,7 @@ namespace TH_DeviceCompare
 
                     SortDataItems();
                     LoadHeaderView();
+                    SortDeviceDisplays();
                 }
             }
         }
@@ -124,6 +120,13 @@ namespace TH_DeviceCompare
                 if (display.Group.Column != null) Columns.Add(display.Group.Column);
                 if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
             }
+        }
+
+        private void SortDeviceDisplays()
+        {
+            Headers.Sort();
+            Columns.Sort();
+            Overlays.Sort();
         }
 
     }

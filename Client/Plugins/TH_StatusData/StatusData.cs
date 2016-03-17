@@ -21,36 +21,7 @@ namespace TH_StatusData
 {
     public partial class StatusData
     {
-
-        //int interval = 5000;
-
-        //List<ManualResetEvent> stops = new List<ManualResetEvent>();
-
-        //void Update_Start()
-        //{
-        //    Update_Stop();
-
-        //    Console.WriteLine("StatusData :: All Previous Threads Stopped");
-
-        //    if (Devices != null)
-        //    {
-        //        foreach (Configuration device in Devices.ToList())
-        //        {
-        //            Thread thread = new Thread(new ParameterizedThreadStart(Update_Worker));
-        //            var stop = new ManualResetEvent(false);
-        //            stops.Add(stop);
-
-        //            var info = new UpdateInfo();
-        //            info.Config = device;
-        //            info.Stop = stop;
-
-        //            thread.Start(info);
-        //        }
-        //    }
-        //}
-
-        //ManualResetEvent stop;
-
+        
         private class DatabaseGroup
         {
             public DatabaseGroup()
@@ -92,8 +63,6 @@ namespace TH_StatusData
             public ManualResetEvent Stop { get; set; }
         }
 
-        
-
         private const int INTERVAL_MIN = 5000;
         private const int INTERVAL_MAX = 60000;
 
@@ -103,19 +72,8 @@ namespace TH_StatusData
         {
             Stop();
 
-            //Console.WriteLine("StatusData :: All Previous Threads Stopped");
-
             // Get Unique Database Connection Groups
             var groups = GetUniqueDatabaseGroups(Devices.ToList());
-            //foreach (var group in groups)
-            //{
-            //    Console.WriteLine(group.Database.UniqueId);
-            //    Console.WriteLine("----------------");
-            //    foreach (var config in group.Configurations)
-            //    {
-            //        Console.WriteLine(config.Description.Description);
-            //    }
-            //}
 
             // Create an UpdateInfo object for each DatabaseGroup and start it's update thread
             foreach (var group in groups)
@@ -150,9 +108,6 @@ namespace TH_StatusData
         }
 
 
-        
-
-
         void Update(object o)
         {
             if (o != null)
@@ -174,9 +129,6 @@ namespace TH_StatusData
                         {
                             SendConnectionData(config, connected);
                         }
-
-                        // $$ DEBUG $$
-                        connected = true;
 
                         if (connected)
                         {
@@ -274,6 +226,12 @@ namespace TH_StatusData
             null,
         };
 
+        private static string GetTableName(string tablename, string id)
+        {
+            if (!String.IsNullOrEmpty(id)) return id + "_" + tablename;
+            return tablename;
+        }
+
         private static List<DataTable> GetTables(DatabaseGroup group)
         {
             var result = new List<DataTable>();
@@ -288,7 +246,7 @@ namespace TH_StatusData
             {
                 foreach (var tableName in dataTableNames)
                 {
-                    tableNames.Add(config.DatabaseId + "_" + tableName);
+                    tableNames.Add(GetTableName(tableName, config.DatabaseId));
                 }  
             }
 
@@ -364,15 +322,15 @@ namespace TH_StatusData
                 // Send Gen Event Values
                 SendDataEvent(genEventData);
 
-                ////Get Shift Data
-                //DataEvent_Data shiftTableData = GetShifts(shiftData, config);
-                //// Send Shift Data
-                //SendDataEvent(shiftTableData);
+                //Get Shift Data
+                DataEvent_Data shiftTableData = GetShifts(shiftData, config);
+                // Send Shift Data
+                SendDataEvent(shiftTableData);
 
-                //// Get OEE Data
-                //DataEvent_Data oeeData = GetOEE(oee, shiftData);
-                //// Send OEE Data
-                //SendDataEvent(oeeData);
+                // Get OEE Data
+                DataEvent_Data oeeData = GetOEE(config, shiftData);
+                // Send OEE Data
+                SendDataEvent(oeeData);
             }
         }
 
@@ -483,7 +441,7 @@ namespace TH_StatusData
 
             if (shiftData.shiftDate != null && shiftData.shiftName != null)
             {
-                DataTable shifts_DT = Table.Get(config.Databases_Client, TableNames.Shifts, "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
+                DataTable shifts_DT = Table.Get(config.Databases_Client, config.DatabaseId + "_" + TableNames.Shifts, "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
                 if (shifts_DT != null)
                 {
                     DataEvent_Data de_d = new DataEvent_Data();
@@ -500,272 +458,7 @@ namespace TH_StatusData
 
 
         #endregion
-
-
-
-
-
-
-        //private void UpdateData(Configuration config)
-        //{
-        //    var tableNames = new string[]
-        //        {
-        //        TableNames.SnapShots,
-        //        TableNames.Variables,
-        //        TableNames.GenEventValues,
-        //        };
-
-        //    var tables = Table.Get(config.Databases_Client, tableNames);
-        //    if (tables != null)
-        //    {
-        //        var list = tables.ToList();
-
-        //        // Get Variable Data
-        //        //DataEvent_Data variableData = GetVariables(list, config);
-        //        // Send Variable Data
-        //        //SendDataEvent(variableData);
-
-        //        //DataEvent_Data availablityData = GetAvailability(config, (DataTable)variableData.data02);
-        //        SendDataEvent(availablityData);
-        //        if ((bool)availablityData.data02)
-        //        {
-        //            // Get Snapshot Data
-        //            DataEvent_Data snapshotData = GetSnapShots(list, config);
-        //            // Send Snapshot Data
-        //            SendDataEvent(snapshotData);
-
-
-        //            // Get ShiftData from Variable Data
-        //            ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
-
-
-        //            // Get Gen Event Values
-        //            DataEvent_Data genEventData = GetGenEventValues(list, config);
-        //            // Send Gen Event Values
-        //            SendDataEvent(genEventData);
-
-        //            //Get Shift Data
-        //            DataEvent_Data shiftTableData = GetShifts(config, shiftData);
-        //            // Send Shift Data
-        //            SendDataEvent(shiftTableData);
-
-        //            // Get OEE Data
-        //            DataEvent_Data oeeData = GetOEE(config, shiftData);
-        //            // Send OEE Data
-        //            SendDataEvent(oeeData);
-        //        }
-        //    }
-        //}
-
-
-
-
-
-        //private void UpdateData(Configuration config)
-        //{
-        //    // Get Variable Data
-        //    DataEvent_Data variableData = GetVariables(config);
-        //    // Send Variable Data
-        //    SendDataEvent(variableData);
-
-        //    DataEvent_Data availablityData = GetAvailability(config, (DataTable)variableData.data02);
-        //    SendDataEvent(availablityData);
-        //    if ((bool)availablityData.data02)
-        //    {
-        //        //GetAllTables(config);
-
-        //        var tableNames = new string[]
-        //        {
-        //        TableNames.SnapShots,
-        //        TableNames.Variables,
-        //        TableNames.GenEventValues,
-        //        };
-
-        //        var tables = Table.Get(config.Databases_Client, tableNames);
-        //        if (tables != null)
-        //        {
-        //            var list = tables.ToList();
-
-        //            // Get Snapshot Data
-        //            DataEvent_Data snapshotData = GetSnapShots(list, config);
-        //            // Send Snapshot Data
-        //            SendDataEvent(snapshotData);
-
-
-        //            ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
-
-
-        //            GetVariables(list, config);
-        //            GetGenEventValues(list, config);
-
-        //        }
-
-
-        //        //// Get Snapshot Data
-        //        //DataEvent_Data snapshotData = GetSnapShots(config);
-        //        //// Send Snapshot Data
-        //        //SendDataEvent(snapshotData);
-
-
-        //        //// Get ShiftData from Variable Data
-        //        //ShiftData shiftData = GetShiftData((DataTable)variableData.data02);
-
-
-        //        //// Get Gen Event Values
-        //        //DataEvent_Data genEventData = GetGenEventValues(config);
-        //        //// Send Gen Event Values
-        //        //SendDataEvent(genEventData);
-
-        //        //// Get Shift Data
-        //        //DataEvent_Data shiftTableData = GetShifts(config, shiftData);
-        //        //// Send Shift Data
-        //        //SendDataEvent(shiftTableData);
-
-        //        //// Get OEE Data
-        //        //DataEvent_Data oeeData = GetOEE(config, shiftData);
-        //        //// Send OEE Data
-        //        //SendDataEvent(oeeData);
-
-        //        // Get Production Status Data
-        //        //DataEvent_Data productionStatusData = GetProductionStatusList(config, shiftData);
-        //        // Send Production Status Data
-        //        //SendDataEvent(productionStatusData);
-        //    }
-        //}
-
-
-
-        //private static DataEvent_Data GetVariables(List<DataTable> tables, Configuration config)
-        //{
-        //    var result = new DataEvent_Data();
-
-        //    DataTable dt = GetTableFromList(config.DatabaseId + "_" + TableNames.Variables, tables);
-        //    if (dt != null)
-        //    {
-        //        DataEvent_Data de_d = new DataEvent_Data();
-        //        de_d.id = "StatusData_Variables";
-        //        de_d.data01 = config;
-        //        de_d.data02 = dt;
-
-        //        result = de_d;
-        //    }
-
-        //    return result;
-        //}
-
-
-
-
-
-
-
-
-
-        //static void GetAllTables(Configuration config)
-        //{
-        //    var tableNames = new string[]
-        //    {
-        //        TableNames.SnapShots,
-        //        TableNames.Variables,
-        //        TableNames.GenEventValues,
-        //    };
-
-        //    var tables = Table.Get(config.Databases_Client, tableNames);
-        //    if (tables != null)
-        //    {
-        //        var list = tables.ToList();
-
-        //        GetSnapShots(list, config);
-        //        GetVariables(list, config);
-        //        GetGenEventValues(list, config);
-
-        //    }
-        //}
-
-
-
-
-        //private static DataEvent_Data GetSnapShots(Configuration config)
-        //{
-        //    var result = new DataEvent_Data();
-
-        //    DataTable dt = Table.Get(config.Databases_Client, TableNames.SnapShots);
-        //    if (dt != null)
-        //    {
-        //        DataEvent_Data de_d = new DataEvent_Data();
-        //        de_d.id = "StatusData_Snapshots";
-        //        de_d.data01 = config;
-        //        de_d.data02 = dt;
-
-        //        result = de_d;
-        //    }
-
-        //    return result;
-        //}
-
-        //private static DataEvent_Data GetSnapShots(List<DataTable> tables, Configuration config)
-        //{
-        //    var result = new DataEvent_Data();
-
-        //    DataTable dt = GetTableFromList(TableNames.SnapShots, tables);
-        //    if (dt != null)
-        //    {
-        //        DataEvent_Data de_d = new DataEvent_Data();
-        //        de_d.id = "StatusData_Snapshots";
-        //        de_d.data01 = config;
-        //        de_d.data02 = dt;
-
-        //        result = de_d;
-        //    }
-
-        //    return result;
-        //}
-
-        //private static DataEvent_Data GetVariables(Configuration config)
-        //{
-        //    var result = new DataEvent_Data();
-
-        //    DataTable dt = Table.Get(config.Databases_Client, TableNames.Variables);
-        //    if (dt != null)
-        //    {
-        //        DataEvent_Data de_d = new DataEvent_Data();
-        //        de_d.id = "StatusData_Variables";
-        //        de_d.data01 = config;
-        //        de_d.data02 = dt;
-
-        //        result = de_d;
-        //    }
-
-        //    return result;
-        //}
-
-
-
-
-
-
-
-        //private static DataEvent_Data GetShifts(List<DataTable> tables, Configuration config, ShiftData shiftData)
-        //{
-        //    DataEvent_Data result = new DataEvent_Data();
-
-        //    if (shiftData.shiftDate != null && shiftData.shiftName != null)
-        //    {
-        //        DataTable shifts_DT = Table.Get(config.Databases_Client, TableNames.Shifts, "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
-        //        if (shifts_DT != null)
-        //        {
-        //            DataEvent_Data de_d = new DataEvent_Data();
-        //            de_d.id = "StatusData_ShiftData";
-        //            de_d.data01 = config;
-        //            de_d.data02 = shifts_DT;
-
-        //            result = de_d;
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
+        
         static DataEvent_Data GetProductionStatusList(Configuration config, ShiftData shiftData)
         {
             DataEvent_Data result = new DataEvent_Data();
@@ -810,7 +503,7 @@ namespace TH_StatusData
                 {
                     string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_'));
 
-                    DataTable dt = Table.Get(config.Databases_Client, TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+                    DataTable dt = Table.Get(config.Databases_Client, config.DatabaseId + "_" + TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
                         DataEvent_Data de_d = new DataEvent_Data();
@@ -825,8 +518,6 @@ namespace TH_StatusData
 
             return result;
         }
-
-        
 
     }
 

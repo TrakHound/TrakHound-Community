@@ -163,6 +163,12 @@ namespace TH_TableManager
             {
                 var list = tableNames.ToList();
                 list.Sort();
+
+                if (!String.IsNullOrEmpty(config.DatabaseId))
+                {
+                    list = list.FindAll(x => x.StartsWith(config.DatabaseId));
+                }
+
                 tableNames = list.ToArray();
             }
 

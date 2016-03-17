@@ -49,3 +49,7 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceComp
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.baml
 C:\TrakHound\Plugins\Pages\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Alarm\View.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Alarm\View.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Part Count\View.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Part Count\View.baml

@@ -226,5 +226,10 @@ namespace TrakHound_Client.Controls.Developer_Console
             dg.UnselectAllCells();
 
         }
+
+        private void Clear_Clicked(TH_WPF.Button bt)
+        {
+            ConsoleOutput.Clear();
+        }
     }
 }

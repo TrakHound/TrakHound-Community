@@ -91,7 +91,10 @@
                 <TextBlock Text="Developer Console" Foreground="{StaticResource Foreground_Opposite_Normal}" VerticalAlignment="Center" FontSize="12pt" Margin="10,0,40,0"/>
 
                 <!--Copy Text-->
-                <th_wpf:Button ToolTip="Copy Log Text to Clipboard" Image="/;component/Resources/Copy_01.png" Clicked="Copy_Clicked"/>
+                <th_wpf:Button ToolTip="Copy Log Text to Clipboard"  Clicked="Copy_Clicked" Image="/TrakHound-Client;component/Resources/Copy_01.png"/>
+
+                <!--Clear Text-->
+                <th_wpf:Button ToolTip="Clear Log Text"  Clicked="Clear_Clicked" Image="/TrakHound-Client;component/Resources/X_01.png"/>
 
             </StackPanel>
 

@@ -24,15 +24,19 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
     /// <summary>
     /// Interaction logic for Column_Overlay.xaml
     /// </summary>
-    public partial class Overlay : UserControl
+    public partial class Overlay : UserControl, IComparable
     {
         public Overlay(Configuration config)
         {
             InitializeComponent();
             DataContext = this;
 
+            if (config != null) Index = config.Index;
+
             configuration = config;
         }
+
+        public int Index { get; set; }
 
         Configuration configuration;
 
@@ -77,17 +81,94 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
         public static readonly DependencyProperty ConnectionImageProperty =
             DependencyProperty.Register("ConnectionImage", typeof(ImageSource), typeof(Overlay), new PropertyMetadata(null));
 
-        
 
-        //public bool ConnectionError
-        //{
-        //    get { return (bool)GetValue(ConnectionErrorProperty); }
-        //    set { SetValue(ConnectionErrorProperty, value); }
-        //}
+        #region "IComparable"
 
-        //public static readonly DependencyProperty ConnectionErrorProperty =
-        //    DependencyProperty.Register("ConnectionError", typeof(bool), typeof(Overlay), new PropertyMetadata(false));
- 
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            if (obj.GetType() == typeof(Overlay))
+            {
+                var i = obj as Overlay;
+                if (i != null)
+                {
+                    if (i > this) return -1;
+                    else if (i < this) return 1;
+                    else return 0;
+                }
+                else return 1;
+            }
+            else return 1;
+        }
+
+        #region "Private"
+
+        static bool EqualTo(Overlay c1, Overlay c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
+            return c1.Index == c2.Index;
+        }
+
+        static bool NotEqualTo(Overlay c1, Overlay c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
+            return c1.Index != c2.Index;
+        }
+
+        static bool LessThan(Overlay c1, Overlay c2)
+        {
+            if (c1.Index > c2.Index) return false;
+            else return true;
+        }
+
+        static bool GreaterThan(Overlay c1, Overlay c2)
+        {
+            if (c1.Index < c2.Index) return false;
+            else return true;
+        }
+
+        #endregion
+
+        public static bool operator ==(Overlay c1, Overlay c2)
+        {
+            return EqualTo(c1, c2);
+        }
+
+        public static bool operator !=(Overlay c1, Overlay c2)
+        {
+            return NotEqualTo(c1, c2);
+        }
+
+
+        public static bool operator <(Overlay c1, Overlay c2)
+        {
+            return LessThan(c1, c2);
+        }
+
+        public static bool operator >(Overlay c1, Overlay c2)
+        {
+            return GreaterThan(c1, c2);
+        }
+
+
+        public static bool operator <=(Overlay c1, Overlay c2)
+        {
+            return LessThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        public static bool operator >=(Overlay c1, Overlay c2)
+        {
+            return GreaterThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        #endregion
 
     }
 }

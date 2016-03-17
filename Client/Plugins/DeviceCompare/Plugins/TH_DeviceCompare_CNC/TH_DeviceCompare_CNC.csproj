@@ -47,6 +47,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Text\Alarm\Plugin.cs" />
+    <Compile Include="Text\Alarm\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Text\Controller Mode\Plugin.cs" />
     <Compile Include="Text\Controller Mode\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
@@ -57,6 +61,10 @@
     </Compile>
     <Compile Include="Text\Emergency Stop\Plugin.cs" />
     <Compile Include="Text\Emergency Stop\View.xaml.cs">
+      <DependentUpon>View.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Text\Part Count\Plugin.cs" />
+    <Compile Include="Text\Part Count\View.xaml.cs">
       <DependentUpon>View.xaml</DependentUpon>
     </Compile>
     <Compile Include="Text\Program Name\Plugin.cs" />
@@ -82,6 +90,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Text\Alarm\View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Text\Controller Mode\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -91,6 +103,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Text\Emergency Stop\View.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Text\Part Count\View.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

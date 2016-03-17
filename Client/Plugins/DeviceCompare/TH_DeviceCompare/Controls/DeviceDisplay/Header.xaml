@@ -449,7 +449,26 @@
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
-                  
+
+                    <!--Device ID-->
+                    <Viewbox MaxWidth="100" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <Viewbox.Style>
+                            <Style TargetType="Viewbox">
+                                <Setter Property="MaxHeight" Value="75"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Small}">
+                                        <Setter Property="MaxHeight" Value="40"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Viewbox.Style>
+
+                        <TextBlock Text="{Binding DeviceDescription.Device_ID}" 
+                                   TextAlignment="Right" Foreground="#88ffffff"
+                                   />
+
+                    </Viewbox>
+
                     <!--Device Info-->
                     <StackPanel Margin="10" VerticalAlignment="Top">
                         <StackPanel.Style>
@@ -479,22 +498,6 @@
                         <TextBlock Text="{Binding DeviceDescription.Serial}" FontSize="8pt" Foreground="#aaffffff"/>
 
                     </StackPanel>
-
-                    <!--Device ID-->
-                    <TextBlock Text="{Binding DeviceDescription.Device_ID}" 
-                                   TextAlignment="Right" VerticalAlignment="Center" Foreground="#88ffffff"
-                                   Margin="5,0,5,10">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="FontSize" Value="45pt"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Small}">
-                                        <Setter Property="FontSize" Value="30pt"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
 
                 </Grid>
 
