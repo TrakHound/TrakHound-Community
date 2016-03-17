@@ -127,7 +127,7 @@
 
                 <th_wpf:Button Text="Yes" Margin="0,0,20,0" HorizontalAlignment="Center" Clicked="Yes_Clicked"/>
 
-                <th_wpf:Button Text="No" HorizontalAlignment="Center" Clicked="No_Clicked"/>
+                <th_wpf:Button Text="No" Margin="0,0,20,0" HorizontalAlignment="Center" Clicked="No_Clicked"/>
 
                 <th_wpf:Button Text="Cancel" HorizontalAlignment="Center" Clicked="Cancel_Clicked"/>
 

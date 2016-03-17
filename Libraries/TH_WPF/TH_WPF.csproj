@@ -55,6 +55,9 @@
     <Compile Include="Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LoadingAnimation\Wheel.xaml.cs">
+      <DependentUpon>Wheel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MeterDisplay.xaml.cs">
       <DependentUpon>MeterDisplay.xaml</DependentUpon>
     </Compile>
@@ -109,8 +112,8 @@
     <Compile Include="LoadingAnimation\Block.xaml.cs">
       <DependentUpon>Block.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoadingAnimation\Wheel.xaml.cs">
-      <DependentUpon>Wheel.xaml</DependentUpon>
+    <Compile Include="LoadingAnimation\Wheel2.xaml.cs">
+      <DependentUpon>Wheel2.xaml</DependentUpon>
     </Compile>
     <Compile Include="MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
@@ -220,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LoadingAnimation\Wheel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoadingAnimation\Wheel2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

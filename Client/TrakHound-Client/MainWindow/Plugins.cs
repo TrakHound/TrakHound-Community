@@ -558,7 +558,7 @@ namespace TrakHound_Client
                         foreach (var config in configs) plugin.Devices.Add(config);
                     }
                 }
-                ), priority, new object[] { });      
+                ), Priority, new object[] { });      
             }
         }
 
@@ -583,7 +583,7 @@ namespace TrakHound_Client
                         }
                     }
                 }
-                ), priority, new object[] { });
+                ), Priority, new object[] { });
             }
         }
 
@@ -603,7 +603,7 @@ namespace TrakHound_Client
                         if (index < 0) plugin.Devices.Add(config);
                     }
                 }
-                ), priority, new object[] { });
+                ), Priority, new object[] { });
             }
         }
 
@@ -623,7 +623,7 @@ namespace TrakHound_Client
                         if (index >= 0) plugin.Devices.RemoveAt(index);
                     }
                 }
-                ), priority, new object[] { });
+                ), Priority, new object[] { });
             }
         }
 
@@ -650,13 +650,13 @@ namespace TrakHound_Client
         /// <summary>
         /// Signal plugins to close
         /// </summary>
-        private void Plugins_Closing()
+        private void Plugins_Closed()
         {
             foreach (var plugin in Plugins)
             {
                 try
                 {
-                    plugin.Closing();
+                    plugin.Closed();
                 }
                 catch (Exception ex) { }
             }

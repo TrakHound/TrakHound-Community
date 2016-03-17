@@ -630,6 +630,31 @@ namespace TH_Database
             return result;
         }
 
+        public static DataTable[] Get(Database_Settings settings, string[] tablenames, string[] filterExpressions, string[] columns)
+        {
+            DataTable[] result = null;
+            bool found = false;
+
+            foreach (var database in settings.Databases)
+            {
+                if (Global.Plugins != null)
+                {
+                    foreach (var plugin in Global.Plugins)
+                    {
+                        if (Global.CheckType(plugin, database))
+                        {
+                            result = plugin.Table_Get(database.Configuration, tablenames, filterExpressions, columns);
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if (found) break;
+            }
+
+            return result;
+        }
+
         //public static DataTable[] Get(Database_Settings settings, string[] tablenames, string filterExpression)
         //{
         //    DataTable[] result = null;

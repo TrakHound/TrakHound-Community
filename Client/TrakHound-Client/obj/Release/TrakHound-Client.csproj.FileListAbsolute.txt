@@ -223,3 +223,30 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\TrakHound_Clie
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\TrakHound-Client.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Controls\TabManager.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\About\Information\Page.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\About\License\Page.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Options\Updates\UpdateItem.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Menus\Plugins\PluginItem.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Controls\TH_ToolBarItem.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Menus\Main\Exit_BT.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Menus\Main\MenuItem.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Controls\Message Center\Notifications\Notification_Item.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Options\General\Page.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Plugins\Installed\ListItem.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Plugins\Installed\Subcategory.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Controls\TabManager.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\About\Information\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\About\License\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Options\Updates\UpdateItem.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Menus\Plugins\PluginItem.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Menus\Plugins\Menu.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Controls\TabHeader.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Controls\TH_ToolBarItem.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Menus\Main\Exit_BT.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Menus\Main\MenuItem.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Controls\Message Center\Notifications\Notification_Item.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Options\General\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Plugins\Installed\ListItem.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Plugins\Installed\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Release\Pages\Plugins\Installed\Subcategory.g.cs

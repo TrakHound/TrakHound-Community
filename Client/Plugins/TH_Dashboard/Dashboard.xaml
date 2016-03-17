@@ -111,16 +111,13 @@
                         <DataTrigger Binding="{Binding LoadingDevices}" Value="true">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
-                        <!--<DataTrigger Binding="{Binding LoggedIn}" Value="false">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>-->
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="100" Foreground="{StaticResource Foreground_Opposite_Normal}" />
+                <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Opposite_Normal}" />
 
                 <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" Margin="0,20,0,0">     
                 Loading Devices...
@@ -129,26 +126,6 @@
             </StackPanel>
 
         </Grid>
-
-        <!--Not Logged in Panel-->
-        <!--<Grid Grid.Column="1">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-
-            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
-                Not Logged In <LineBreak/>
-                Click the 'Login' button above to login
-            </TextBlock>
-
-        </Grid>-->
 
     </Grid>
     

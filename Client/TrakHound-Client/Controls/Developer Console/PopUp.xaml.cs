@@ -83,7 +83,7 @@ namespace TrakHound_Client.Controls.Developer_Console
 
         public void AddLine(string line)
         {
-            this.Dispatcher.BeginInvoke(new Action<string>(AddLine_GUI), new object[] { line });
+            if (line != null) Dispatcher.BeginInvoke(new Action<string>(AddLine_GUI), new object[] { line });
         }
 
         void AddLine_GUI(string line)

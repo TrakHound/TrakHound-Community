@@ -157,7 +157,7 @@ namespace TH_WPF
             else animation.To = 0;
             animation.Duration = new Duration(TimeSpan.FromMilliseconds(500));
             //animation.BeginTime = TimeSpan.FromMilliseconds(200);
-            this.BeginAnimation(dp, animation);
+            BeginAnimation(dp, animation);
         }
     }
 

@@ -19,7 +19,7 @@ namespace TH_Database
         {
             var plugins = GetPlugins();
 
-            TH_Database.Global.Plugins = plugins;
+            Global.Plugins = plugins;
 
             Console.WriteLine("Database Plugins --------------------------");
             Console.WriteLine(plugins.Count.ToString() + " Plugins Found");

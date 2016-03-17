@@ -20,6 +20,8 @@ namespace TrakHound_Client
     {
         public DeviceManager DeviceManager { get; set; }
 
+        bool addDeviceOpened = false;
+
         private void DeviceManager_Initialize()
         {
             if (DeviceManager == null)
@@ -36,7 +38,7 @@ namespace TrakHound_Client
 
         private void Devicemanager_DeviceListUpdated(List<Configuration> configs)
         {
-            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), priority, new object[] { configs });
+            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), Priority, new object[] { configs });
         }
 
         private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
@@ -59,7 +61,7 @@ namespace TrakHound_Client
 
         private void DeviceManager_DevicesLoaded()
         {
-            this.Dispatcher.BeginInvoke(new Action(DeviceManager_DevicesLoaded_GUI), priority, new object[] { });
+            this.Dispatcher.BeginInvoke(new Action(DeviceManager_DevicesLoaded_GUI), Priority, new object[] { });
         }
 
         private void DeviceManager_DevicesLoaded_GUI()
@@ -72,7 +74,7 @@ namespace TrakHound_Client
 
         private void DeviceManager_LoadingDevices()
         {
-            this.Dispatcher.BeginInvoke(new Action(DeviceManager_LoadingDevices_GUI), priority, new object[] { });
+            this.Dispatcher.BeginInvoke(new Action(DeviceManager_LoadingDevices_GUI), Priority, new object[] { });
         }
 
         private void DeviceManager_LoadingDevices_GUI()
@@ -166,20 +168,6 @@ namespace TrakHound_Client
             {
                 AddDevice(config);
             }
-
-            
-
-            //int index = Devices.FindIndex(x => x.UniqueId == config.UniqueId);
-            //if (index >= 0)
-            //{
-            //    Devices.RemoveAt(index);
-            //    if (config.ClientEnabled)
-            //    {
-            //        Devices.Insert(index, config);  
-            //    }
-
-            //    Plugins_UpdateDevice(config);
-            //}
         }
 
         /// <summary>
@@ -198,196 +186,6 @@ namespace TrakHound_Client
                 Plugins_RemoveDevice(config);
             }
         }
-
-
-        #region "Load Devices"
-
-        const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
-
-        Thread loaddevices_THREAD;
-
-        void LoadDevices()
-        {
-            DevicesMonitor_Close(true);
-            Devices.Clear();
-
-            // Send message to plugins that Devices are being loaded
-            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
-            de_d.id = "LoadingDevices";
-            Plugin_DataEvent(de_d);
-
-            if (loaddevices_THREAD != null) loaddevices_THREAD.Abort();
-
-            loaddevices_THREAD = new Thread(new ThreadStart(LoadDevices_Worker));
-            loaddevices_THREAD.Start();
-        }
-
-        void LoadDevices_Worker()
-        {
-            List<Configuration> configs = new List<Configuration>();
-
-            if (currentuser != null)
-            {
-                var stpw = new System.Diagnostics.Stopwatch();
-                stpw.Start();
-
-                List<Configuration> configurations = Configurations.GetConfigurationsListForUser(currentuser);
-
-                stpw.Stop();
-                Console.WriteLine("LoadDevices_Worker() :: " + stpw.ElapsedMilliseconds + "ms");
-
-                if (configurations != null)
-                {
-                    var orderedConfigs = configurations.OrderBy(x => x.Description.Manufacturer).ThenBy(x => x.Description.Description).ThenBy(x => x.Description.Device_ID);
-
-                    foreach (Configuration config in orderedConfigs)
-                    {
-                        if (config.ClientEnabled)
-                        {
-                            Global.Initialize(config.Databases_Client);
-                            configs.Add(config);
-                        }
-                    }
-                }
-            }
-            // If not logged in Read from File in 'C:\TrakHound\'
-            else
-            {
-                //configs = ReadConfigurationFile();
-            }
-
-            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(LoadDevices_Finished), priority, new object[] { configs });
-        }
-
-        bool addDeviceOpened = false;
-
-        void LoadDevices_Finished(List<Configuration> configs)
-        {
-            Devices = configs;
-
-            if (!addDeviceOpened && configs.Count == 0 && currentuser != null)
-            {
-                addDeviceOpened = true;
-                //if (devicemanager != null) devicemanager.AddDevice();
-                DeviceManager_DeviceList_Open();
-            }
-            else if (configs.Count > 0)
-            {
-                addDeviceOpened = false;
-            }
-
-            Plugins_UpdateDeviceList(configs);
-
-            //DevicesMonitor_Initialize();
-
-            // Send message to plugins that Devices have been loaded
-            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
-            de_d.id = "devicesloaded";
-            Plugin_DataEvent(de_d);
-        }
-        
-        #endregion
-
-        #region "Devices Monitor"
-
-        Thread devicesmonitor_THREAD;
-        ManualResetEvent stop = null;
-
-        void DevicesMonitor_Initialize()
-        {
-            stop = new ManualResetEvent(false);
-
-            if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
-
-            devicesmonitor_THREAD = new Thread(new ThreadStart(DevicesMonitor_Start));
-            devicesmonitor_THREAD.Start();
-        }
-
-        void DevicesMonitor_Start()
-        {
-            while (!stop.WaitOne(0, true))
-
-            {
-                bool changed = DevicesMonitor_Worker(Devices.ToList());
-
-                if (changed)
-                {
-                    this.Dispatcher.BeginInvoke(new Action<bool>(DevicesMonitor_Finished), priority, new object[] { changed });
-                    break;
-                }
-                else
-                {
-                    if (!stop.WaitOne(0, true)) Thread.Sleep(5000);
-                }
-            }
-            devicesmonitor_THREAD = null;
-        }
-
-        void DevicesMonitor_Stop()
-        {
-            if (stop != null) stop.Set();
-        }
-
-        void DevicesMonitor_Close()
-        {
-            DevicesMonitor_Stop();
-            //if (devicesmonitor_THREAD != null) devicesmonitor_THREAD.Abort();
-        }
-
-        void DevicesMonitor_Close(bool wait)
-        {
-            DevicesMonitor_Stop();
-            //if (devicesmonitor_THREAD != null)
-            //{
-            //    if (wait) devicesmonitor_THREAD.Join(5000);
-            //    devicesmonitor_THREAD.Abort();
-            //}
-        }
-
-        bool DevicesMonitor_Worker(List<Configuration> devices)
-        {
-            bool changed = false;
-
-            if (currentuser != null)
-            {
-                var configs = Configurations.GetConfigurationsListForUser(currentuser);
-                if (configs != null)
-                {
-                    foreach (var config in configs)
-                    {
-                        int index = devices.FindIndex(x => x.UniqueId == config.UniqueId);
-                        if (index >= 0 && index <= Devices.Count - 1) // Device is already part of list
-                        {
-                            Configuration device = Devices[index];
-
-                            // Check if Device has changed
-                            if (device.ClientUpdateId != config.ClientUpdateId)
-                            {
-                                changed = true;
-                                break;
-                            }
-                        }
-                        else // Device Added
-                        {
-                            if (config.ClientEnabled)
-                            {
-                                changed = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return changed;
-        }
-
-        void DevicesMonitor_Finished(bool changed)
-        {
-            if (changed) LoadDevices();
-        }
-
-        #endregion
 
     }
 }

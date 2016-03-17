@@ -148,15 +148,6 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        //public List<Configuration> Devices
-        //{
-        //    get { return (List<Configuration>)GetValue(DevicesProperty); }
-        //    set { SetValue(DevicesProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty DevicesProperty =
-        //    DependencyProperty.Register("Devices", typeof(List<Configuration>), typeof(Dashboard), new PropertyMetadata(null));
-
         private ObservableCollection<Configuration> _devices;
         public ObservableCollection<Configuration> Devices
         {
@@ -165,7 +156,6 @@ namespace TH_Dashboard
                 if (_devices == null)
                 {
                     _devices = new ObservableCollection<Configuration>();
-                    //_devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;
             }
@@ -174,46 +164,6 @@ namespace TH_Dashboard
                 _devices = value;
             }
         }
-
-        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-        //    {
-        //        DeviceList.Clear();
-        //    }
-
-        //    if (e.NewItems != null)
-        //    {
-        //        foreach (Configuration newConfig in e.NewItems)
-        //        {
-        //            if (newConfig != null) AddDeviceButton(newConfig);
-        //        }
-        //    }
-
-        //    if (e.OldItems != null)
-        //    {
-        //        foreach (Configuration oldConfig in e.OldItems)
-        //        {
-        //            Devices.Remove(oldConfig);
-
-        //            int index = DeviceList.ToList().FindIndex(x => GetUniqueIdFromListButton(x) == oldConfig.UniqueId);
-        //            if (index >= 0) DeviceList.RemoveAt(index);
-        //        }
-        //    }
-        //}
-
-        //private static string GetUniqueIdFromListButton(ListButton bt)
-        //{
-        //    if (bt != null && bt.DataObject != null)
-        //    {
-        //        if (bt.DataObject.GetType() == typeof(Configuration))
-        //        {
-        //            return ((Configuration)bt.DataObject).UniqueId;
-        //        }
-        //    }
-        //    return null;
-        //}
-
 
         #endregion
 
@@ -336,25 +286,6 @@ namespace TH_Dashboard
                         {
                             plugin.SubCategories = config.SubCategories;
                             plugin.DataEvent += Plugin_DataEvent;
-
-                            //AddSubPlugins(plugin);
-
-                            //plugin.Plugins = new List<IClientPlugin>();
-
-                            //if (plugin.SubCategories != null)
-                            //{
-                            //    foreach (PluginConfigurationCategory subcategory in plugin.SubCategories)
-                            //    {
-                            //        foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
-                            //        {
-                            //            IClientPlugin cplugin = Plugins.Find(x => x.Title.ToUpper() == subConfig.Name.ToUpper());
-                            //            if (cplugin != null)
-                            //            {
-                            //                plugin.Plugins.Add(cplugin);
-                            //            }
-                            //        }
-                            //    }
-                            //}
 
                             plugin.Initialize();
                         }

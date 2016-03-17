@@ -60,50 +60,6 @@ namespace TrakHound_Client
             DependencyProperty.Register("CurrentPage", typeof(TabPage), typeof(MainWindow), new PropertyMetadata(null));
 
 
-        //public void AddPageAsTab(object page, string title, ImageSource image)
-        //{
-        //    //// Check to see if Page already exists
-        //    //TH_TabItem TI = Pages_TABCONTROL.Items.Cast<TH_TabItem>().ToList().Find(x => x.Title.ToString().ToLower() == title.ToLower());
-
-        //    //if (TI == null)
-        //    //{
-        //    //    TI = new TH_TabItem();
-        //    //    TI.Content = CreatePage(page); ;
-        //    //    TI.Title = title;
-        //    //    TI.Closed += TI_Closed;
-
-        //    //    TH_TabHeader_Top header = new TH_TabHeader_Top();
-        //    //    header.Text = title;
-        //    //    header.Image = image;
-        //    //    header.TabParent = TI;
-        //    //    header.Clicked += header_Clicked;
-        //    //    header.CloseClicked += header_CloseClicked;
-        //    //    TI.TH_Header = header;
-
-        //    //    int zlevel = int.MaxValue;
-
-        //    //    // Move all of the existing tabs to the front so that the new tab is behind it (so it can "slide" in behind it)
-        //    //    for (int x = 0; x <= PageTabHeaders.Count - 1; x++)
-        //    //    {
-        //    //        TH_TabHeader_Top tabHeader = (TH_TabHeader_Top)PageTabHeaders[x];
-        //    //        Panel.SetZIndex(tabHeader, zlevel - x);
-        //    //    }
-
-        //    //    PageTabHeaders.Add(header);
-
-        //    //    Panel.SetZIndex(header, -1);
-
-        //    //    TI.Template = (ControlTemplate)TryFindResource("TabItemControlTemplate");
-
-        //    //    Pages_TABCONTROL.Items.Add(TI);
-        //    //    Pages_TABCONTROL.SelectedItem = TI;
-        //    //}
-        //    //else
-        //    //{
-        //    //    Pages_TABCONTROL.SelectedItem = TI;
-        //    //}
-        //}
-
         public void AddTab(IPage page, string name = null, ImageSource image = null, string tag = null)
         {
             string txt = page.Title;
@@ -381,15 +337,6 @@ namespace TrakHound_Client
 
         #endregion
 
-        void Pages_Initialize()
-        {
-            //About_Initialize();
-            DeviceManager_Initialize();
-            //AccountManager_Initialize();
-            //Options_Initialize();
-            //Plugins_Initialize();
-        }
-
         #region "About"
 
         public PageManager aboutManager;
@@ -432,11 +379,13 @@ namespace TrakHound_Client
                 deviceListPage.AddDeviceSelected += DeviceManager_DeviceList_AddDeviceSelected;
                 deviceListPage.EditSelected += DeviceManager_DeviceList_DeviceEditSelected;
                 deviceListPage.EditTableSelected += DeviceManager_DeviceList_DeviceEditTableSelected;
-                //deviceListPage.DeviceListSelected += DeviceManager_DeviceList_DeviceManagerListSelected;
             }
         }
 
-        private void DeviceListPage_PageClosed() { deviceListPage = null; }
+        private void DeviceListPage_PageClosed()
+        {
+            deviceListPage = null;
+        }
 
         public void DeviceManager_DeviceList_Open()
         {

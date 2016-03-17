@@ -554,22 +554,6 @@ namespace TH_UserManagement
 
         void LoadRememberMe_Finished(UserConfiguration userConfig)
         {
-            //// If login was successful
-            //if (userConfig != null)
-            //{
-            //    LoadUserConfiguration(userConfig);
-            //}
-            //else
-            //{
-            //    LoggedIn = false;
-
-            //    Fullname = null;
-            //    Firstname = null;
-            //    Lastname = null;
-
-            //    Username = null;
-            //}
-
             LoadUserConfiguration(userConfig);
 
             Loading = false;

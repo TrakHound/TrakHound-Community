@@ -1,0 +1,616 @@
+﻿<UserControl x:Class="TH_WPF.LoadingAnimation.Wheel2"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                         
+             xmlns:local="clr-namespace:TH_WPF.LoadingAnimation"
+             
+             mc:Ignorable="d"          
+             >
+
+    <UserControl.Resources>
+
+        <!--Fast-->
+        <KeyTime x:Key="d01">00:00:00.00</KeyTime>
+        <KeyTime x:Key="d02">00:00:00.05</KeyTime>
+        <KeyTime x:Key="d03">00:00:00.10</KeyTime>
+        <KeyTime x:Key="d04">00:00:00.15</KeyTime>
+        <KeyTime x:Key="d05">00:00:00.20</KeyTime>
+        <KeyTime x:Key="d06">00:00:00.25</KeyTime>
+        <KeyTime x:Key="d07">00:00:00.30</KeyTime>
+        <KeyTime x:Key="d08">00:00:00.35</KeyTime>
+        <KeyTime x:Key="d09">00:00:00.40</KeyTime>
+        <KeyTime x:Key="d10">00:00:00.45</KeyTime>
+        <KeyTime x:Key="d11">00:00:00.50</KeyTime>
+        <KeyTime x:Key="d12">00:00:00.55</KeyTime>
+        <KeyTime x:Key="d13">00:00:00.60</KeyTime>
+        <KeyTime x:Key="d14">00:00:00.65</KeyTime>
+        <KeyTime x:Key="d15">00:00:00.70</KeyTime>
+        <KeyTime x:Key="d16">00:00:00.75</KeyTime>
+        <KeyTime x:Key="d17">00:00:00.80</KeyTime>
+        <KeyTime x:Key="d18">00:00:00.85</KeyTime>
+
+        <!--Slow-->
+        <!--<KeyTime x:Key="d01">00:00:00.00</KeyTime>
+        <KeyTime x:Key="d02">00:00:00.10</KeyTime>
+        <KeyTime x:Key="d03">00:00:00.20</KeyTime>
+        <KeyTime x:Key="d04">00:00:00.30</KeyTime>
+        <KeyTime x:Key="d05">00:00:00.40</KeyTime>
+        <KeyTime x:Key="d06">00:00:00.50</KeyTime>
+        <KeyTime x:Key="d07">00:00:00.60</KeyTime>
+        <KeyTime x:Key="d08">00:00:00.70</KeyTime>
+        <KeyTime x:Key="d09">00:00:00.80</KeyTime>
+        <KeyTime x:Key="d10">00:00:00.90</KeyTime>
+        <KeyTime x:Key="d11">00:00:01.00</KeyTime>
+        <KeyTime x:Key="d12">00:00:01.10</KeyTime>
+        <KeyTime x:Key="d13">00:00:01.20</KeyTime>
+        <KeyTime x:Key="d14">00:00:01.30</KeyTime>
+        <KeyTime x:Key="d15">00:00:01.40</KeyTime>
+        <KeyTime x:Key="d16">00:00:01.50</KeyTime>
+        <KeyTime x:Key="d17">00:00:01.60</KeyTime>
+        <KeyTime x:Key="d18">00:00:01.70</KeyTime>-->
+
+        <Storyboard x:Key="ProgressAnimation" RepeatBehavior="Forever">
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#00000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block17" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="Black"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block16" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#EF000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block15" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#E2000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block14" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#D3000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block13" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#C6000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block12" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#B7000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block11" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#AA000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block10" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#23000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#9B000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block9" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#91000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block8" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#91000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#7F000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block7" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#91000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#72000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block6" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#91000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#63000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block5" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#91000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#56000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block4" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#91000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#3D000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block3" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#91000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#26000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block2" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#0C000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#91000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#19000000"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="block1" Storyboard.TargetProperty="(UIElement.OpacityMask).(SolidColorBrush.Color)">
+                <SplineColorKeyFrame KeyTime="{StaticResource d01}" Value="#00000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d02}" Value="Black"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d03}" Value="#EF000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d04}" Value="#E2000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d05}" Value="#D3000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#C6000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d06}" Value="#B7000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d07}" Value="#AA000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d08}" Value="#9B000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d09}" Value="#8E000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d10}" Value="#7F000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d11}" Value="#72000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d12}" Value="#63000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d13}" Value="#56000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d14}" Value="#3D000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d15}" Value="#26000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d16}" Value="#19000000"/>
+                <SplineColorKeyFrame KeyTime="{StaticResource d17}" Value="#0C000000"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <local:BlockCenterConverter x:Key="CenterConverter"/>
+
+        <local:BlockSizeConverter x:Key="SizeConverter"/>
+
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard x:Name="ProgressAnimation_BeginStoryboard" Storyboard="{StaticResource ProgressAnimation}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+    
+
+    <Grid x:Name="LayoutRoot">
+        <Grid x:Name="Parent_GRID">
+            <Grid.Resources>
+                <Style TargetType="local:Block">
+                    <Setter Property="RenderTransformOrigin" Value="0.5,5.0"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="Height" Value="{Binding Path=ActualHeight, ElementName=Parent_GRID, Converter={StaticResource SizeConverter}}"/>
+                    <Setter Property="Width" Value="{Binding Path=ActualHeight, ElementName=Parent_GRID, Converter={StaticResource SizeConverter}}"/>
+                    <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"/>
+                </Style>
+            </Grid.Resources>
+
+            <local:Block x:Name="block" OpacityMask="#00000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block1" OpacityMask="#0C000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-160"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block2" OpacityMask="#19000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-140"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block3" OpacityMask="#26000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-120"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block4" OpacityMask="#3D000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-100"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block5" OpacityMask="#56000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-80"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block6" OpacityMask="#64000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-60"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block7" OpacityMask="#72000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-40"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block8" OpacityMask="#80000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-20"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block9" OpacityMask="#8E000000" />
+            <local:Block x:Name="block10" OpacityMask="#9C000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="20"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block11" OpacityMask="#AA000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="40"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block12" OpacityMask="#B8000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="60"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block13" OpacityMask="#C6000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="80"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block14" OpacityMask="#D4000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="100"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block15" OpacityMask="#E2000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="119.99999999999999"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block16" OpacityMask="#F0000000">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="140"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+            <local:Block x:Name="block17" OpacityMask="Black">
+                <local:Block.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="160"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </local:Block.RenderTransform>
+            </local:Block>
+        </Grid>
+    </Grid>
+
+</UserControl>

@@ -340,7 +340,12 @@ namespace TH_Configuration
                     {
                         // Check to make sure Unique Id is not already used by another file.
                         // If so, generate a new one. This can happen if the file was manually copied
-                        if (result.Exists(x => x.UniqueId == config.UniqueId)) config.UniqueId = GenerateUniqueID();
+                        if (result.Exists(x => x.UniqueId == config.UniqueId))
+                        {
+                            config.UniqueId = GenerateUniqueID();
+
+                            Save(config);
+                        }
 
                         result.Add(config);
                     }
