@@ -27,6 +27,8 @@ namespace TrakHound_Server_Console
         {
             TH_Database.DatabasePluginReader.ReadPlugins();
 
+            TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
+
             server = new Server();
             server.Login();
 

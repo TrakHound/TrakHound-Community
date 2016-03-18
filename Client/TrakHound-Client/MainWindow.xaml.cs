@@ -37,8 +37,9 @@ namespace TrakHound_Client
             Log_Initialize();
             Splash_Initialize();
 
-
             Splash_UpdateStatus("...Initializing", 10);
+
+            TH_Global.FileLocations.CreateAllDirectories();
 
             InitializeComponent();
             DataContext = this;
@@ -52,21 +53,12 @@ namespace TrakHound_Client
 
             DeviceManager_Initialize();
 
-            // Initialize Pages
-            //Splash_UpdateStatus("...Creating Pages", 40);
-            //Pages_Initialize();
-
             // Set border thickness (maybe make this a static resource in XAML?)
             ResizeBorderThickness = 1;
 
-            //LoadDevices_Initialize();
-
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User", 60);
-            UserManagementSettings.ReadConfiguration();
-
-            LoginMenu.rememberMeType = RememberMeType.Client;
-            LoginMenu.LoadRememberMe();
+            Users_Initialize();
 
             Splash_UpdateStatus("...Loading Plugins", 70);
             LoadPlugins();

@@ -59,11 +59,6 @@ namespace TH_UserManagement.Management
 
     public class UserManagementSettings
     {
-        public UserManagementSettings()
-        {
-            //Users = new List<User_Settings>();
-            Database = null;
-        }
 
         public static Database_Settings Database { get; set; }
 
@@ -119,12 +114,14 @@ namespace TH_UserManagement.Management
             {
                 if (child.NodeType == XmlNodeType.Element)
                 {
-                    Database_Configuration db = new Database_Configuration();
+                    var db = new Database_Configuration();
                     db.Type = child.Name;
                     db.Node = child;
                     result.Databases.Add(db);
                 }
             }
+
+            TH_Database.Global.Initialize(result);
 
             return result;
         }

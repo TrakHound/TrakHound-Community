@@ -27,10 +27,34 @@ namespace TrakHound_Server_Service
         {
             InitializeComponent();
 
+            TH_Global.FileLocations.CreateAllDirectories();
+
+            TH_Database.DatabasePluginReader.ReadPlugins();
+
+            TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
+
             server = new Server();
+            server.Login();
+
+            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+            if (File.Exists(path))
+            {
+                string dir = Path.GetDirectoryName(path);
+
+                var watcher = new FileSystemWatcher(dir);
+                watcher.Changed += FileSystemWatcher_UserLogin_Changed;
+                watcher.Created += FileSystemWatcher_UserLogin_Changed;
+                watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
+                watcher.EnableRaisingEvents = true;
+            }
         }
 
-        
+        private void FileSystemWatcher_UserLogin_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (server != null) server.Login();
+        }
+
+
         #region "Service"
 
         protected override void OnStart(string[] args)

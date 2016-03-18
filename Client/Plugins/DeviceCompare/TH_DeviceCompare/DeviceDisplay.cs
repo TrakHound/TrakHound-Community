@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -49,10 +50,13 @@ namespace TH_DeviceCompare
                 Group.Overlay = overlay;
 
                 // Load Plugins
-                //Plugins = plugins;
                 ProcessPlugins(plugins, configs);
             } 
         }
+
+        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
+
+        const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
         public Configuration Configuration { get; set; }
 
@@ -258,6 +262,8 @@ namespace TH_DeviceCompare
 
         #region "Plugins"
 
+        public event RoutedEventHandler CellAdded;
+
         /// <summary>
         /// Initial load of all of the IClientPlugin objects
         /// </summary>
@@ -271,9 +277,48 @@ namespace TH_DeviceCompare
             {
                 foreach (var plugin in plugins)
                 {
-                    AddPlugin(plugin, configs);
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var p = CreatePluginInstance(plugin, configs);
+                        Console.WriteLine(p.Title);
+
+                        var cell = CreateCell(p);
+                        if (cell != null) Cells.Add(cell);
+
+                        if (CellAdded != null) CellAdded(this, new RoutedEventArgs());
+                    }), Priority_Context, new object[] { });
                 }
             }
+        }
+
+        private IClientPlugin CreatePluginInstance(IClientPlugin plugin, List<PluginConfiguration> configs)
+        {
+            IClientPlugin result = null;
+
+            var config = configs.Find(x => x.Name == plugin.Title);
+            if (config != null)
+            {
+                if (config.Enabled)
+                {
+                    ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
+
+                    ObjectActivator<IClientPlugin> createdActivator = GetActivator<IClientPlugin>(ctor);
+
+                    result = createdActivator();
+                }
+            }
+
+            return result;
+        }
+
+        private Cell CreateCell(IClientPlugin plugin)
+        {
+            var cell = new Cell();
+            cell.Link = plugin.Title;
+            cell.Index = Cells.Count;
+            cell.Data = plugin;
+            cell.SizeChanged += Cell_SizeChanged;
+            return cell;
         }
 
         /// <summary>
@@ -288,7 +333,6 @@ namespace TH_DeviceCompare
             {
                 if (config.Enabled)
                 {
-
                     ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
 
                     ObjectActivator<IClientPlugin> createdActivator = GetActivator<IClientPlugin>(ctor);
@@ -301,27 +345,6 @@ namespace TH_DeviceCompare
                     cell.Data = instance;
                     cell.SizeChanged += Cell_SizeChanged;
                     Cells.Add(cell);
-
-                    // Make a NewExpression that calls the ctor with the args we just created
-                    //NewExpression newExp = System.Linq.Expressions.Expression.New(ctor);
-
-                    //Create a lambda with the New expression as body and our param object[] as arg
-                    //LambdaExpression lambda = System.Linq.Expressions.Expression.Lambda(typeof(IClientPlugin), newExp);
-
-                    //Compile it
-                    //IClientPlugin compiled = (IClientPlugin)lambda.Compile();
-
-
-
-                    //Type type = plugin.GetType();
-                    //IClientPlugin p = (IClientPlugin)Activator.CreateInstance(type);
-
-                    //var cell = new Cell();
-                    //cell.Link = plugin.Title;
-                    //cell.Index = Cells.Count;
-                    //cell.Data = p;
-                    //cell.SizeChanged += Cell_SizeChanged;
-                    //Cells.Add(cell);
                 }
             } 
         }
@@ -365,59 +388,6 @@ namespace TH_DeviceCompare
             ObjectActivator<T> compiled = (ObjectActivator<T>)lambda.Compile();
             return compiled;
         }
-
-
-        //private readonly Dictionary<string, Func<string, IClientPlugin>> _cellPlugins =
-        //                new Dictionary<string, Func<string, IClientPlugin>>();
-
-        //public void RegisterCalculation<T>(string method)
-        //    where T : IClientPlugin, new()
-        //{
-        //    _cellPlugins.Add(method, originalData =>
-        //    {
-        //        var calculation = new T();
-        //        calculation.Initialize();
-        //        return calculation;
-        //    });
-        //}
-
-        //public IClientPlugin CreateInstance(string method, string originalData)
-        //{
-        //    return _cellPlugins[method](originalData);
-        //}
-
-
-
-
-        //private static Dictionary<string, Func<IClientPlugin>> InstanceCreateCache = new Dictionary<string, Func<IClientPlugin>>();
-
-
-
-
-        //IClientPlugin CreateCachableICalculate(string className)
-        //{
-        //    if (!InstanceCreateCache.ContainsKey(className))
-        //    {
-        //        // get the type (several ways exist, this is an eays one)
-        //        Type type = TypeDelegator.GetType("TestDynamicFactory." + className);
-
-        //        // NOTE: this can be tempting, but do NOT use the following, because you cannot 
-        //        // create a delegate from a ctor and will loose many performance benefits
-        //        //ConstructorInfo constructorInfo = type.GetConstructor(Type.EmptyTypes);
-
-        //        // works with public instance/static methods
-        //        MethodInfo mi = type.GetMethod("Create");
-
-        //        // the "magic", turn it into a delegate
-        //        var createInstanceDelegate = (Func<ICalculate>)Delegate.CreateDelegate(typeof(Func<ICalculate>), mi);
-
-        //        // store for future reference
-        //        InstanceCreateCache.Add(className, createInstanceDelegate);
-        //    }
-
-        //    return InstanceCreateCache[className].Invoke();
-
-        //}
 
         #endregion
 

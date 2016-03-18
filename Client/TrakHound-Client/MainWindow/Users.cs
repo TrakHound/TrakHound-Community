@@ -106,6 +106,20 @@ namespace TrakHound_Client
 
         private UserLoginFile.LoginData serverLoginData;
 
+        private void Users_Initialize()
+        {
+            UserManagementSettings.ReadConfiguration();
+
+            LoginMenu.rememberMeType = RememberMeType.Client;
+            LoginMenu.LoadRememberMe();
+        }
+
+        private void Users_ClientClosing()
+        {
+            if (serverLoginData != null && CurrentUser != null) ServerUser_Logout();
+        }
+
+
         private void Login(UserConfiguration userConfig)
         {
             serverLoginData = UserLoginFile.Read();
@@ -120,11 +134,6 @@ namespace TrakHound_Client
             else if (userConfig != null) ServerUser_Login(userConfig);
 
             CurrentUser = userConfig;
-        }
-
-        private void Users_ClientClosing()
-        {
-            if (serverLoginData != null && CurrentUser != null) ServerUser_Logout();
         }
 
         private void ServerUser_Login(UserConfiguration userConfig)

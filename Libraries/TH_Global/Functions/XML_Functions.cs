@@ -131,8 +131,5 @@ namespace TH_Global.Functions
             }
         }
 
-        
-
-
     }
 }

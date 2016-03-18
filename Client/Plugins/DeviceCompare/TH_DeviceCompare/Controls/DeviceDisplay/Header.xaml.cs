@@ -352,41 +352,43 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         void LoadManufacturerLogo_Worker(object o)
         {
+            BitmapSource result = null;
+
             if (o != null)
             {
                 string filename = o.ToString();
 
                 System.Drawing.Image img = Images.GetImage(filename);
+                if (img != null)
+                {
+                    var bmp = new System.Drawing.Bitmap(img);
+                    if (bmp != null)
+                    {
+                        IntPtr bmpPt = bmp.GetHbitmap();
+                        result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        if (result != null)
+                        {
+                            if (result.PixelWidth > result.PixelHeight)
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 180);
+                            }
+                            else
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 80);
+                            }
 
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
-
-                IntPtr bmpPt = bmp.GetHbitmap();
-                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                bmpSource.Freeze();
-
-                this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadManufacturerLogo_GUI), priority, new object[] { bmpSource });
+                            result.Freeze();
+                        }
+                    }
+                }
             }
-            else this.Dispatcher.BeginInvoke(new Action<BitmapSource> (LoadManufacturerLogo_GUI), priority, new object[] { null });
+
+            this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadManufacturerLogo_GUI), priority, new object[] { result });
         }
 
         void LoadManufacturerLogo_GUI(BitmapSource img)
         {
-            if (img != null)
-            {
-                if (img.PixelWidth > img.PixelHeight)
-                {
-                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(img, 180);
-                }
-                else
-                {
-                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(img, 0, 80);
-                }
-            }
-            else
-            {
-                Manufacturer_Logo = null;
-            }
+            Manufacturer_Logo = img;
 
             ManufacturerLogoLoading = false;
         }
@@ -409,7 +411,7 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         public void LoadDeviceImage(string filename)
         {
-            ManufacturerLogoLoading = true;
+            DeviceImageLoading = true;
 
             if (LoadDeviceImage_THREAD != null) LoadDeviceImage_THREAD.Abort();
 
@@ -419,43 +421,45 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         void LoadDeviceImage_Worker(object o)
         {
+            BitmapSource result = null;
+
             if (o != null)
             {
                 string filename = o.ToString();
 
                 System.Drawing.Image img = Images.GetImage(filename);
+                if (img != null)
+                {
+                    var bmp = new System.Drawing.Bitmap(img);
+                    if (bmp != null)
+                    {
+                        IntPtr bmpPt = bmp.GetHbitmap();
+                        result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        if (result != null)
+                        {
+                            if (result.PixelWidth > result.PixelHeight)
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 250);
+                            }
+                            else
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 250);
+                            }
 
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
-
-                IntPtr bmpPt = bmp.GetHbitmap();
-                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                bmpSource.Freeze();
-
-                this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), priority, new object[] { bmpSource });
+                            result.Freeze();
+                        }
+                    }
+                }
             }
-            else this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), priority, new object[] { null });
-        }
 
+            this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), priority, new object[] { result });
+        }
+        
         void LoadDeviceImage_GUI(BitmapSource img)
         {
-            if (img != null)
-            {
-                if (img.PixelWidth > img.PixelHeight)
-                {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(img, 250);
-                }
-                else
-                {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(img, 0, 250);
-                }
-            }
-            else
-            {
-                Device_Image = null;
-            }
+            Device_Image = img;
 
-            ManufacturerLogoLoading = false;
+            DeviceImageLoading = false;
         }
 
         #endregion
