@@ -218,6 +218,8 @@
 
                         <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Foreground_Opposite_Normal}" />
 
+                        <TextBlock Text="Loading.." Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" TextWrapping="Wrap" Margin="0,20,0,0" FontSize="10pt"/>
+                        
                     </StackPanel>
 
                 </Grid>

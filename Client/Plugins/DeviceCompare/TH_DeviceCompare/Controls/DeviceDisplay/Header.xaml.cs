@@ -1,26 +1,17 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Threading;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 using TH_Configuration;
 using TH_Global.Functions;
@@ -72,10 +63,7 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         public int Index { get; set; }
 
-        //private Configuration configuration;
-
         public TH_DeviceCompare.DeviceDisplay ParentDisplay { get; set; }
-
 
         public Description_Settings DeviceDescription
         {
@@ -85,7 +73,6 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         public static readonly DependencyProperty DeviceDescriptionProperty =
             DependencyProperty.Register("DeviceDescription", typeof(Description_Settings), typeof(Header), new PropertyMetadata(null));
-
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
@@ -371,15 +358,6 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
                 System.Drawing.Image img = Images.GetImage(filename);
 
-                this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadManufacturerLogo_GUI), priority, new object[] { img });
-            }
-            else this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadManufacturerLogo_GUI), priority, new object[] { null });
-        }
-
-        void LoadManufacturerLogo_GUI(System.Drawing.Image img)
-        {
-            if (img != null)
-            {
                 System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 
                 IntPtr bmpPt = bmp.GetHbitmap();
@@ -387,13 +365,22 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
                 bmpSource.Freeze();
 
-                if (bmpSource.PixelWidth > bmpSource.PixelHeight)
+                this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadManufacturerLogo_GUI), priority, new object[] { bmpSource });
+            }
+            else this.Dispatcher.BeginInvoke(new Action<BitmapSource> (LoadManufacturerLogo_GUI), priority, new object[] { null });
+        }
+
+        void LoadManufacturerLogo_GUI(BitmapSource img)
+        {
+            if (img != null)
+            {
+                if (img.PixelWidth > img.PixelHeight)
                 {
-                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(bmpSource, 180);
+                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(img, 180);
                 }
                 else
                 {
-                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 80);
+                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(img, 0, 80);
                 }
             }
             else
@@ -438,15 +425,6 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
                 System.Drawing.Image img = Images.GetImage(filename);
 
-                this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadDeviceImage_GUI), priority, new object[] { img });
-            }
-            else this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadDeviceImage_GUI), priority, new object[] { null });
-        }
-
-        void LoadDeviceImage_GUI(System.Drawing.Image img)
-        {
-            if (img != null)
-            {
                 System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
 
                 IntPtr bmpPt = bmp.GetHbitmap();
@@ -454,13 +432,22 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
                 bmpSource.Freeze();
 
-                if (bmpSource.PixelWidth > bmpSource.PixelHeight)
+                this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), priority, new object[] { bmpSource });
+            }
+            else this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), priority, new object[] { null });
+        }
+
+        void LoadDeviceImage_GUI(BitmapSource img)
+        {
+            if (img != null)
+            {
+                if (img.PixelWidth > img.PixelHeight)
                 {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 250);
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(img, 250);
                 }
                 else
                 {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 250);
+                    Device_Image = TH_WPF.Image_Functions.SetImageSize(img, 0, 250);
                 }
             }
             else

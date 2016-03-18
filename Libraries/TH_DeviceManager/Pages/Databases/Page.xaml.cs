@@ -60,39 +60,41 @@ namespace TH_DeviceManager.Pages.Databases
 
             configurationTable = dt;
 
-            CreateDatabaseButtons(dt);
+            GetPageGroups(dt);
 
             UpdatePageType(PageType);
 
             configurationTable = dt;
 
             DatabaseId = DataTable_Functions.GetTableValue(dt, "address", "/DatabaseId", "value");
-
-            if (DatabaseList.Count > 0) DisplayDatabases = true;
-            else DisplayDatabases = false;
         }
 
         public void SaveConfiguration(DataTable dt)
         {
             // Clear all old database rows first
             ClearAddresses("/Databases/", dt); // OBSOLETE SO Make sure it clears it (2-11-16)
+            ClearAddresses("/Databases_Client/", dt);
+            ClearAddresses("/Databases_Server/", dt);
 
-            if (PageType == Page_Type.Client) ClearAddresses("/Databases_Client/", dt);
-            else if (PageType == Page_Type.Server) ClearAddresses("/Databases_Server/", dt);
-
-            if (databaseConfigurationPages != null)
-            {
-                // Loop through each page and save to the DataTable
-                foreach (TH_Database.DatabaseConfigurationPage page in databaseConfigurationPages)
-                {
-                    string address = SaveDatabaseRoot(page, dt);
-                    page.SaveConfiguration(dt);
-                }
-            }
+            SaveConfigurationPages(clientPageGroups, dt, Page_Type.Client);
+            SaveConfigurationPages(serverPageGroups, dt, Page_Type.Server);
 
             DataTable_Functions.UpdateTableValue(dt, "address", "/DatabaseId", "value", DatabaseId);
 
             LoadConfiguration(dt);
+        }
+
+        private void SaveConfigurationPages(List<PageGroup> groups, DataTable dt, Page_Type pageType)
+        {
+            if (groups != null)
+            {
+                foreach (var group in groups)
+                {
+                    string address = SaveDatabaseRoot(group.Page, dt, pageType);
+
+                    group.Page.SaveConfiguration(dt);
+                }
+            }
         }
 
         static void ClearAddresses(string prefix, DataTable dt)
@@ -108,13 +110,13 @@ namespace TH_DeviceManager.Pages.Databases
             }
         }
 
-        string SaveDatabaseRoot(TH_Database.DatabaseConfigurationPage page, DataTable dt)
+        string SaveDatabaseRoot(TH_Database.DatabaseConfigurationPage page, DataTable dt, Page_Type pageType)
         {
             string type = page.Plugin.Type.Replace(' ', '_');
 
             string test = null;
-            if (PageType == Page_Type.Client) test = "/Databases_Client/" + type + "||";
-            else if (PageType == Page_Type.Server) test = "/Databases_Server/" + type + "||";
+            if (pageType == Page_Type.Client) test = "/Databases_Client/" + type + "||";
+            else if (pageType == Page_Type.Server) test = "/Databases_Server/" + type + "||";
 
             int i = 0;
             string address = test + i.ToString("00");
@@ -146,7 +148,6 @@ namespace TH_DeviceManager.Pages.Databases
         }
 
         #endregion
-
 
         DataTable configurationTable;
 
@@ -198,17 +199,6 @@ namespace TH_DeviceManager.Pages.Databases
             }
         }
 
-
-        public bool DisplayDatabases
-        {
-            get { return (bool)GetValue(DisplayDatabasesProperty); }
-            set { SetValue(DisplayDatabasesProperty, value); }
-        }
-
-        public static readonly DependencyProperty DisplayDatabasesProperty =
-            DependencyProperty.Register("DisplayDatabases", typeof(bool), typeof(Page), new PropertyMetadata(false));
-
-
         #region "Add Database"
 
         void CreateAddDatabaseButtons()
@@ -241,112 +231,140 @@ namespace TH_DeviceManager.Pages.Databases
             {
                 TH_Database.IDatabasePlugin plugin = (TH_Database.IDatabasePlugin)bt.DataObject;
 
-                object configButton = plugin.CreateConfigurationButton(null);
-                if (configButton != null)
-                {
-                    Type config_type = plugin.Config_Page;
+                var group = GetPageGroup(plugin, PageType);
 
-                    object o = Activator.CreateInstance(config_type);
+                if (PageType == Page_Type.Client) clientPageGroups.Add(group);
+                else if (PageType == Page_Type.Server) serverPageGroups.Add(group);
 
-                    TH_Database.DatabaseConfigurationPage page = o as TH_Database.DatabaseConfigurationPage;
-                    if (page != null)
-                    {
-                        if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
-                        else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
+                var pageBt = CreatePageButton(group);
 
-                        page.SettingChanged += Configuration_Page_SettingChanged;
-                        databaseConfigurationPages.Add(page);
+                foreach (CollapseButton ocbt in DatabaseList.OfType<CollapseButton>().ToList()) ocbt.IsExpanded = false;
+                pageBt.IsExpanded = true;
 
-                        Controls.DatabaseItemContainer item = new Controls.DatabaseItemContainer();
-                        item.ItemContent = configButton;
-                        item.Clicked += item_Clicked;
-                        item.RemoveClicked += item_RemoveClicked;
-
-                        CollapseButton cbt = new CollapseButton();
-                        item.collapseButton = cbt;
-                        cbt.ButtonContent = item;
-                        cbt.PageContent = page;
-
-                        foreach (CollapseButton ocbt in DatabaseList.OfType<CollapseButton>().ToList()) ocbt.IsExpanded = false;
-                        cbt.IsExpanded = true;
-
-                        DatabaseList.Add(cbt);
-                    }
-                }
+                DatabaseList.Add(pageBt);
             }
-
-            DisplayDatabases = true;
         }
 
         #endregion
 
         #region "Database Configuration"
 
-        List<TH_Database.DatabaseConfigurationPage> databaseConfigurationPages;
-
-        void CreateDatabaseButtons(DataTable dt)
+        class PageGroup
         {
-            databaseConfigurationPages = new List<TH_Database.DatabaseConfigurationPage>();
+            public DatabaseConfigurationPage Page { get; set; }
+            public object ButtonContent { get; set; }
+        }
 
-            bool openfirst = true;
+        List<PageGroup> clientPageGroups;
+        List<PageGroup> serverPageGroups;
 
-            if (Global.Plugins != null)
+        
+        private void GetPageGroups(DataTable dt)
+        {
+            clientPageGroups = GetPageGroups(dt, Page_Type.Client);
+            serverPageGroups = GetPageGroups(dt, Page_Type.Server);
+        }
+
+        private List<PageGroup> GetPageGroups(DataTable dt, Page_Type pageType)
+        {
+            var result = new List<PageGroup>();
+
+            if (dt != null)
             {
-                foreach (var plugin in Global.Plugins)
+                if (Global.Plugins != null)
                 {
-                    string type = plugin.Type.Replace(' ', '_');
-
-                    string prefix = null;
-                    if (PageType == Page_Type.Client) prefix = "/Databases_Client/" + type + "||";
-                    else if (PageType == Page_Type.Server) prefix = "/Databases_Server/" + type + "||";
-
-                    List<string> addresses = GetAddressesForDatabase(prefix, dt);
-
-                    foreach (string address in addresses)
+                    foreach (var plugin in Global.Plugins)
                     {
-                        string filter = "address LIKE '" + address + "*'";
-                        DataView dv = dt.AsDataView();
-                        dv.RowFilter = filter;
-                        DataTable temp_dt = dv.ToTable();
-                        temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+                        string type = plugin.Type.Replace(' ', '_');
 
-                        object configButton = plugin.CreateConfigurationButton(temp_dt);
-                        if (configButton != null)
+                        string prefix = null;
+                        if (pageType == Page_Type.Client) prefix = "/Databases_Client/" + type + "||";
+                        else if (pageType == Page_Type.Server) prefix = "/Databases_Server/" + type + "||";
+
+                        List<string> addresses = GetAddressesForDatabase(prefix, dt);
+
+                        foreach (string address in addresses)
                         {
-                            Type config_type = plugin.Config_Page;
+                            string filter = "address LIKE '" + address + "*'";
+                            DataView dv = dt.AsDataView();
+                            dv.RowFilter = filter;
+                            DataTable temp_dt = dv.ToTable();
+                            temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
 
-                            object o = Activator.CreateInstance(config_type);
-
-                            TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)o;
-
-                            //if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
-                            //else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
-
-                            page.prefix = address;
-                            page.LoadConfiguration(temp_dt);
-                            page.SettingChanged += Configuration_Page_SettingChanged;
-                            databaseConfigurationPages.Add(page);
-
-                            Controls.DatabaseItemContainer item = new Controls.DatabaseItemContainer();
-                            item.prefix = address;
-                            item.ItemContent = configButton;
-                            item.Clicked += item_Clicked;
-                            item.RemoveClicked += item_RemoveClicked;
-
-                            CollapseButton bt = new CollapseButton();
-                            item.collapseButton = bt;
-                            bt.ButtonContent = item;
-                            bt.PageContent = page;
-
-                            if (openfirst) bt.IsExpanded = true;
-                            openfirst = false;
-
-                            DatabaseList.Add(bt);
+                            var group = GetPageGroup(plugin, pageType, temp_dt, address);
+                            result.Add(group);
                         }
                     }
                 }
             }
+
+            return result;
         }
+
+        private PageGroup GetPageGroup(IDatabasePlugin plugin, Page_Type pageType, DataTable dt = null, string prefix = null)
+        {
+            Type config_type = plugin.Config_Page;
+            if (config_type != null)
+            {
+                object configButton = plugin.CreateConfigurationButton(dt);
+                if (configButton != null)
+                {
+                    object o = Activator.CreateInstance(config_type);
+                    var page = (DatabaseConfigurationPage)o;
+
+                    if (pageType == Page_Type.Client) page.ApplicationType = Application_Type.Client;
+                    else page.ApplicationType = Application_Type.Server;
+
+                    page.prefix = prefix;
+                    if (dt != null) page.LoadConfiguration(dt);
+                    page.SettingChanged += Configuration_Page_SettingChanged;
+
+                    var group = new PageGroup();
+                    group.Page = page;
+                    group.ButtonContent = configButton;
+
+                    return group;
+                }
+            }
+            return null;
+        }
+
+        private void CreatePageButtons(DataTable dt, Page_Type type)
+        {
+            DatabaseList.Clear();
+
+            List<PageGroup> groups;
+
+            if (type == Page_Type.Client) groups = clientPageGroups;
+            else groups = serverPageGroups;
+
+            bool first = true;
+
+            foreach (var group in groups)
+            {
+                var bt = CreatePageButton(group);
+                DatabaseList.Add(bt);
+
+                if (first) bt.IsExpanded = true;
+                first = false;
+            }
+        }
+
+        private CollapseButton CreatePageButton(PageGroup group)
+        {
+            var item = new Controls.DatabaseItemContainer();
+            item.prefix = group.Page.prefix;
+            item.ItemContent = group.ButtonContent;
+            item.Clicked += item_Clicked;
+            item.RemoveClicked += item_RemoveClicked;
+
+            var bt = new CollapseButton();
+            item.collapseButton = bt;
+            bt.ButtonContent = item;
+            bt.PageContent = group.Page;
+            return bt;
+        }
+
 
         void item_Clicked(Controls.DatabaseItemContainer item)
         {
@@ -383,16 +401,10 @@ namespace TH_DeviceManager.Pages.Databases
             return result;
         }
 
+
         void UpdatePageType(Page_Type pageType)
         {
-            if (databaseConfigurationPages != null)
-            {
-                foreach (var page in databaseConfigurationPages)
-                {
-                    if (PageType == Page_Type.Client) page.ApplicationType = TH_Database.Application_Type.Client;
-                    else if (PageType == Page_Type.Server) page.ApplicationType = TH_Database.Application_Type.Server;
-                }
-            }
+            CreatePageButtons(configurationTable, pageType);
 
             if (pageType == Page_Type.Client)
             {
@@ -420,15 +432,18 @@ namespace TH_DeviceManager.Pages.Databases
                 TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)item.collapseButton.PageContent;
                 if (page != null)
                 {
-                    databaseConfigurationPages.Remove(page);
+                    List<PageGroup> groups;
+
+                    if (PageType == Page_Type.Client) groups = clientPageGroups;
+                    else groups = serverPageGroups;
+
+                    var group = groups.Find(x => x.Page == page);
+                    if (group != null) groups.Remove(group);
                 }
 
                 // Remove Collapse Button From List
                 DatabaseList.Remove(item.collapseButton);
             }
-
-            if (DatabaseList.Count > 0) DisplayDatabases = true;
-            else DisplayDatabases = false;
         }
 
         #endregion
@@ -436,15 +451,11 @@ namespace TH_DeviceManager.Pages.Databases
         private void Client_Checked(object sender, RoutedEventArgs e)
         {
             PageType = Page_Type.Client;
-
-            LoadConfiguration(configurationTable);
         }
 
         private void Server_Checked(object sender, RoutedEventArgs e)
         {
             PageType = Page_Type.Server;
-
-            LoadConfiguration(configurationTable);
         }
 
 

@@ -63,7 +63,7 @@ namespace TrakHound_Client
 
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User", 60);
-            ReadUserManagementSettings();
+            UserManagementSettings.ReadConfiguration();
 
             LoginMenu.rememberMeType = RememberMeType.Client;
             LoginMenu.LoadRememberMe();
@@ -87,6 +87,8 @@ namespace TrakHound_Client
 
         private void Main_Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            Users_ClientClosing();
+
             Plugins_Closed();
 
             Properties.Settings.Default.Save();

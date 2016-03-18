@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Collections.ObjectModel;
 
 namespace TH_WPF.Histogram
 {
@@ -91,17 +79,6 @@ namespace TH_WPF.Histogram
             DependencyProperty.Register("Id", typeof(string), typeof(Histogram), new PropertyMetadata(null));
 
 
-
-        //public string shiftName
-        //{
-        //    get { return (string)GetValue(shiftNameProperty); }
-        //    set { SetValue(shiftNameProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty shiftNameProperty =
-        //    DependencyProperty.Register("shiftName", typeof(string), typeof(Histogram), new PropertyMetadata(null));
-
-
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SetDataBarWidths();
@@ -118,7 +95,6 @@ namespace TH_WPF.Histogram
             this.DataContext = this;
         }
 
-
         public string Id
         {
             get { return (string)GetValue(IdProperty); }
@@ -127,26 +103,6 @@ namespace TH_WPF.Histogram
 
         public static readonly DependencyProperty IdProperty =
             DependencyProperty.Register("Id", typeof(string), typeof(DataBar), new PropertyMetadata(null));
-
-
-        //public bool CurrentSegment
-        //{
-        //    get { return (bool)GetValue(CurrentSegmentProperty); }
-        //    set { SetValue(CurrentSegmentProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty CurrentSegmentProperty =
-        //    DependencyProperty.Register("CurrentSegment", typeof(bool), typeof(DataBar), new PropertyMetadata(false));
-
-
-        //public string SegmentTimes
-        //{
-        //    get { return (string)GetValue(SegmentTimesProperty); }
-        //    set { SetValue(SegmentTimesProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty SegmentTimesProperty =
-        //    DependencyProperty.Register("SegmentTimes", typeof(string), typeof(DataBar), new PropertyMetadata(null));
 
 
         public object ToolTipData
@@ -177,8 +133,6 @@ namespace TH_WPF.Histogram
 
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DataBar), new PropertyMetadata(false));
-
-
 
     }
 }

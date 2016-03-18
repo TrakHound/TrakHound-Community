@@ -583,7 +583,8 @@ namespace TH_TableManager
 
         private void DropTables_Button_Clicked(TH_WPF.Button bt)
         {
-            if (TH_WPF.MessageBox.Show("Delete Selected Tables?", "Drop Tables", MessageBoxButtons.YesNo) == true)
+            var result = TH_WPF.MessageBox.Show("Delete Selected Tables?", "Drop Tables", MessageBoxButtons.YesNo);
+            if (result == MessageBoxDialogResult.Yes)
             {
                 string[] tablenames = SelectedTables.Select(x => x.Text).Distinct().ToArray();
 

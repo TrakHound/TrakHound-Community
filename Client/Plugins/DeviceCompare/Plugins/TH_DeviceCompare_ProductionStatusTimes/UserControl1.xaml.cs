@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.IO;
-using System.Data;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Linq;
+using System.Windows;
 
 using TH_Configuration;
 using TH_Global.Functions;
@@ -132,6 +124,8 @@ namespace TH_DeviceCompare_ProductionStatusTimes
                             Times.SortReverse();
                         } 
                     }
+
+                    temp_dt.Dispose();
                 }
             }
         }

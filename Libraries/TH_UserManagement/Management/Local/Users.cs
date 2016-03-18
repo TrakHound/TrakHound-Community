@@ -80,6 +80,41 @@ namespace TH_UserManagement.Management.Local
             return result;
         }
 
+        public static UserConfiguration LoginWithHash(string username, string hash, Database_Settings db)
+        {
+            UserConfiguration result = null;
+
+            DataRow dbrow = Row.Get(db, tablename, "WHERE username='" + username.ToLower() + "' OR email='" + username + "'");
+            if (dbrow != null)
+            {
+                if (dbrow.Table.Columns.Contains("salt"))
+                {
+                    string strSalt = dbrow["salt"].ToString();
+                    int salt = -1;
+                    if (int.TryParse(strSalt, out salt))
+                    {
+                        if (dbrow.Table.Columns.Contains("hash"))
+                        {
+                            string dbhash = dbrow["hash"].ToString();
+
+                            if (hash == dbhash)
+                            {
+                                Logger.Log(username + " Logged in Successfully!");
+
+                                result = UserConfiguration.GetFromDataRow(dbrow);
+
+                                UpdateLoginTime(result, db);
+                            }
+                            else Logger.Log("Incorrect Password!");
+                        }
+                    }
+                }
+            }
+            else Logger.Log("Username '" + username + "' Not Found in Database!");
+
+            return result;
+        }
+
         public static bool CreateUser(UserConfiguration userConfig, string password, Database_Settings db)
         {
 

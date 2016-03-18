@@ -345,7 +345,7 @@ namespace TH_SQLite
                 {
                     var tables = new List<DataTable>();
 
-                    if (tablenames.Length == filterExpressions.Length && tablenames.Length == columns.Length)
+                     if (tablenames.Length == filterExpressions.Length && tablenames.Length == columns.Length)
                     {
                         for (var x = 0; x <= tablenames.Length - 1; x++)
                         {

@@ -39,6 +39,22 @@ namespace TH_UserManagement.Management
             return result;
         }
 
+        public static UserConfiguration LoginWithHash(string username, string hash)
+        {
+            UserConfiguration result = null;
+
+            if (UserManagementSettings.Database == null)
+            {
+                result = Remote.Users.LoginWithHash(username, hash);
+            }
+            else
+            {
+                result = Local.Users.LoginWithHash(username, hash, UserManagementSettings.Database);
+            }
+
+            return result;
+        }
+
         public static bool CreateUser(UserConfiguration userConfig, string password)
         {
             bool result = false;
@@ -108,6 +124,7 @@ namespace TH_UserManagement.Management
             return result;
 
         }
+
     }
 
     public static class Configurations

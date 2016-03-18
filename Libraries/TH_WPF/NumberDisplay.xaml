@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
 
              mc:Ignorable="d" 
              >
@@ -56,8 +57,8 @@
             <!--Trend Arrow-->
             <Rectangle Grid.Column="2" Width="30" Height="30" Margin="5,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Rectangle.Resources>
-                    <ImageBrush x:Key="UP_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Carrot_Arrow_Up_02.png" />
-                    <ImageBrush x:Key="DOWN_Arrow_IMG"  Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Carrot_Arrow_Down_02.png" />
+                    <ImageBrush x:Key="UP_Arrow_IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Carrot_Arrow_Up_02.png" />
+                    <ImageBrush x:Key="DOWN_Arrow_IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Carrot_Arrow_Down_02.png" />
                 </Rectangle.Resources>
 
                 <Rectangle.Style>

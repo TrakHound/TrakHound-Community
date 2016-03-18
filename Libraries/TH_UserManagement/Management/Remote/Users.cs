@@ -34,6 +34,22 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
+        public static UserConfiguration LoginWithHash(string username, string hash)
+        {
+            UserConfiguration result = null;
+
+            DataRow dbrow = GetLoginDataWithHash(username, hash);
+            if (dbrow != null)
+            {
+                Logger.Log(username + " Logged in Successfully!");
+
+                result = LoginSuccess(dbrow);
+            }
+            else Logger.Log("Username '" + username + "' Not Found in Database!");
+
+            return result;
+        }
+
         static DataRow GetLoginData(string id, string password)
         {
             DataRow Result = null;
@@ -41,6 +57,25 @@ namespace TH_UserManagement.Management.Remote
             NameValueCollection values = new NameValueCollection();
             values["id"] = id;
             values["password"] = password;
+
+            string url = "https://www.feenux.com/php/users/login.php";
+
+
+            string responseString = HTTP.SendData(url, values);
+
+            DataTable dt = JSON.ToTable(responseString);
+            if (dt != null) if (dt.Rows.Count > 0) Result = dt.Rows[0];
+
+            return Result;
+        }
+
+        static DataRow GetLoginDataWithHash(string id, string hash)
+        {
+            DataRow Result = null;
+
+            NameValueCollection values = new NameValueCollection();
+            values["id"] = id;
+            values["hash"] = hash;
 
             string url = "https://www.feenux.com/php/users/login.php";
 

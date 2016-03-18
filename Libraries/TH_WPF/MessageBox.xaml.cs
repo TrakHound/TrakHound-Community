@@ -24,15 +24,15 @@ namespace TH_WPF
             DataContext = this;
         }
 
-        public static bool? Show(string text) { return CreateWindow(text); }
+        public static MessageBoxDialogResult Show(string text) { return CreateWindow(text); }
 
-        public static bool? Show(string text, string windowTitle) { return CreateWindow(text, windowTitle); }
+        public static MessageBoxDialogResult Show(string text, string windowTitle) { return CreateWindow(text, windowTitle); }
 
-        public static bool? Show(string text, string windowTitle, MessageBoxButtons buttons) { return CreateWindow(text, windowTitle, buttons); }
+        public static MessageBoxDialogResult Show(string text, string windowTitle, MessageBoxButtons buttons) { return CreateWindow(text, windowTitle, buttons); }
 
-        public static bool? Show(string text, string windowTitle, MessageBoxButtons buttons, ImageSource image) { return CreateWindow(text, windowTitle, buttons, image); }
+        public static MessageBoxDialogResult Show(string text, string windowTitle, MessageBoxButtons buttons, ImageSource image) { return CreateWindow(text, windowTitle, buttons, image); }
 
-        static bool? CreateWindow(string text, string windowTitle = null, MessageBoxButtons buttons = MessageBoxButtons.Ok, ImageSource image = null)
+        static MessageBoxDialogResult CreateWindow(string text, string windowTitle = null, MessageBoxButtons buttons = MessageBoxButtons.Ok, ImageSource image = null)
         {
             var msg = new MessageBox();
             msg.Text = text;
@@ -40,8 +40,20 @@ namespace TH_WPF
             msg.Buttons = buttons;
             msg.Image = image;
 
-            return msg.ShowDialog();
+            msg.ShowDialog();
+
+            return msg.DialogResult;
         }
+
+
+        public MessageBoxDialogResult DialogResult
+        {
+            get { return (MessageBoxDialogResult)GetValue(DialogResultProperty); }
+            set { SetValue(DialogResultProperty, value); }
+        }
+
+        public static readonly DependencyProperty DialogResultProperty =
+            DependencyProperty.Register("DialogResult", typeof(MessageBoxDialogResult), typeof(MessageBox), new PropertyMetadata(MessageBoxDialogResult.Cancel));
 
 
         public string WindowTitle
@@ -84,28 +96,36 @@ namespace TH_WPF
 
         private void Ok_Clicked(TH_WPF.Button bt)
         {
-            this.DialogResult = true;
+            this.DialogResult = MessageBoxDialogResult.Ok;
             this.Close();
         }
 
         private void Yes_Clicked(TH_WPF.Button bt)
         {
-            this.DialogResult = true;
+            this.DialogResult = MessageBoxDialogResult.Yes;
             this.Close();
         }
 
         private void No_Clicked(TH_WPF.Button bt)
         {
-            this.DialogResult = false;
+            this.DialogResult = MessageBoxDialogResult.No;
             this.Close();
         }
 
         private void Cancel_Clicked(TH_WPF.Button bt)
         {
-            this.DialogResult = null;
+            this.DialogResult = MessageBoxDialogResult.Cancel;
             this.Close();
         }
 
+    }
+
+    public enum MessageBoxDialogResult
+    {
+        Ok,
+        Yes,
+        No,
+        Cancel
     }
 
     public enum MessageBoxButtons

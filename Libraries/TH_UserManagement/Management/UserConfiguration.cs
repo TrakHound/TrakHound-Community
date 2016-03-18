@@ -67,6 +67,12 @@ namespace TH_UserManagement.Management
 
         public static Database_Settings Database { get; set; }
 
+        public static UserManagementSettings ReadConfiguration()
+        {
+            string path = FileLocations.TrakHound + @"\UserConfiguration.xml";
+            return ReadConfiguration(path);
+        }
+
         public static UserManagementSettings ReadConfiguration(string filepath)
         {
             UserManagementSettings result = null;

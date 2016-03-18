@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.IO;
-
-using TH_Configuration;
-using TH_Database;
-using TH_Global;
 using TH_UserManagement.Management;
 
 using TrakHound_Server_Core;
@@ -26,23 +21,38 @@ namespace TrakHound_Server_Console
 
     class Worker
     {
+        Server server;
+
         public Worker()
         {
             TH_Database.DatabasePluginReader.ReadPlugins();
 
-            var server = new Server();
+            server = new Server();
+            server.Login();
 
-            UserConfiguration rememberUser = RememberMe.Get(RememberMeType.Server);
-            if (rememberUser != null)
+            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+            if (File.Exists(path))
             {
-                RememberMe.Set(rememberUser, RememberMeType.Server);
+                string dir = Path.GetDirectoryName(path);
 
-                if (server != null) server.Login(rememberUser);
+                var watcher = new FileSystemWatcher(dir);
+                watcher.Changed += FileSystemWatcher_UserLogin_Changed;
+                watcher.Created += FileSystemWatcher_UserLogin_Changed;
+                watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
+                watcher.EnableRaisingEvents = true;
             }
 
             server.Start();
 
             Console.ReadLine();
         }
+
+        private void FileSystemWatcher_UserLogin_Changed(object sender, FileSystemEventArgs e)
+        {
+            Console.WriteLine("UserLogin File Changed!");
+
+            if (server != null) server.Login();
+        }
+
     }
 }

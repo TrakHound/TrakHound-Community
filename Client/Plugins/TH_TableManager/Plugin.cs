@@ -27,14 +27,40 @@ namespace TH_TableManager
 
         public string Description { get { return "Display and Manage Database Tables associated with Device"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_TableManager;component/Resources/Table_01.png")); ; } }
+        private BitmapImage _image;
+        public ImageSource Image
+        {
+            get
+            {
+                if (_image == null)
+                {
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_TableManager;component/Resources/Table_01.png"));
+                    _image.Freeze();
+                }
+
+                return _image;
+            }
+        }
 
 
         public string Author { get { return "TrakHound"; } }
 
         public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
 
-        public ImageSource AuthorImage { get { return new BitmapImage(new Uri("pack://application:,,,/TH_TableManager;component/Resources/TrakHound_Logo_10_200px.png")); } }
+        private BitmapImage _authorImage;
+        public ImageSource AuthorImage
+        {
+            get
+            {
+                if (_authorImage == null)
+                {
+                    _authorImage = new BitmapImage(new Uri("pack://application:,,,/TH_TableManager;component/Resources/TrakHound_Logo_10_200px.png"));
+                    _authorImage.Freeze();
+                }
+
+                return _authorImage;
+            }
+        }
 
 
         public string LicenseName { get { return "GPLv3"; } }

@@ -140,8 +140,15 @@ namespace TH_StatusData
                             // Update each device using the retrieved tables
                             foreach (var config in info.Group.Configurations)
                             {
+                                List<DataTable> deviceTables = null;
+
                                 // Get the tables that match the Configuration.DatabaseId
-                                var deviceTables = tables.FindAll(x => x.TableName.StartsWith(config.DatabaseId));
+                                if (!String.IsNullOrEmpty(config.DatabaseId))
+                                {
+                                    deviceTables = tables.FindAll(x => x.TableName.StartsWith(config.DatabaseId));
+                                }
+                                else deviceTables = tables;
+
                                 if (deviceTables != null)
                                 {
                                     UpdateDeviceData(config, deviceTables);
@@ -236,10 +243,10 @@ namespace TH_StatusData
         {
             var result = new List<DataTable>();
 
-            var stpw = new System.Diagnostics.Stopwatch();
-            stpw.Start();
-
             var tableNames = new List<string>();
+
+            var columns = new List<string>();
+            var filters = new List<string>();
 
             //Get list of tablenames for all of the Configurations
             foreach (var config in group.Configurations)
@@ -247,7 +254,10 @@ namespace TH_StatusData
                 foreach (var tableName in dataTableNames)
                 {
                     tableNames.Add(GetTableName(tableName, config.DatabaseId));
-                }  
+                }
+
+                columns.AddRange(dataTableColumns);
+                filters.AddRange(dataTableFilters);
             }
 
             // Create a Database_Settings object using the DatabaseGroup.Database
@@ -255,11 +265,8 @@ namespace TH_StatusData
             db.Databases.Add(group.Database);
 
             // Get Tables
-            var tables = Table.Get(db, tableNames.ToArray(), dataTableFilters, dataTableColumns);
+            var tables = Table.Get(db, tableNames.ToArray(), filters.ToArray(), columns.ToArray());
             if (tables != null) result = tables.ToList();
-
-            stpw.Stop();
-            Console.WriteLine("GetTables() :: " + group.Database.UniqueId + " :: " + stpw.ElapsedMilliseconds.ToString() + "ms");
 
             return result;
         }

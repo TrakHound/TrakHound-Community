@@ -24,7 +24,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border x:Name="root" Height="32" ToolTip="{Binding Text}" HorizontalAlignment="Left">
+    <Border x:Name="root" Height="32" ToolTip="{Binding Text}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
 
         <Grid>
 

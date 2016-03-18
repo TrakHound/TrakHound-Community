@@ -109,15 +109,16 @@ namespace TrakHound_Client.Controls
         #region "Opening"
 
         const double START_WIDTH = 45;
-        const double MAX_WIDTH = 300;
+        const double MAX_WIDTH = 320;
 
         const double TAB_OPENING_OPACITY_ANIMATION_TIME = 300;
-        const double TAB_OPENING_WIDTH_ANIMATION_TIME = 500;
+        const double TAB_OPENING_HEIGHT_ANIMATION_TIME = 300;
+        const double TAB_OPENING_WIDTH_ANIMATION_TIME = 400;
 
         public void Open(bool fade = false)
         {
             if (fade) AnimateTabOpening_Opacity();
-            else AnimateTabOpening_Width();
+            AnimateTabOpening_Height();
         }
 
         private void AnimateTabOpening_Opacity()
@@ -138,6 +139,24 @@ namespace TrakHound_Client.Controls
         private void Animation_Completed(object sender, EventArgs e)
         {
             AnimateTabOpening_Width();
+        }
+
+        private void AnimateTabOpening_Height()
+        {
+            root.Opacity = 1;
+
+            var animation = new DoubleAnimation();
+            animation.From = 0;
+            animation.To = 32;
+            animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_OPENING_HEIGHT_ANIMATION_TIME));
+            animation.Completed += Animation_Completed;
+            //animation.BeginTime = new TimeSpan(0, 0, 0, 0, 100);
+
+            var ease = new CubicEase();
+            ease.EasingMode = EasingMode.EaseIn;
+
+            animation.EasingFunction = ease;
+            root.BeginAnimation(MaxHeightProperty, animation);
         }
 
         private void AnimateTabOpening_Width()

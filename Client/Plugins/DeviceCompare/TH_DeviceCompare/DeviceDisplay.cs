@@ -1,19 +1,18 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 using TH_Configuration;
-using TH_Global.Functions;
 using TH_Plugins_Client;
 
 using TH_DeviceCompare.Controls.DeviceDisplay;
@@ -102,6 +101,9 @@ namespace TH_DeviceCompare
         public int connectionAttempts { get; set; }
         public const int maxConnectionAttempts = 5;
 
+        private BitmapImage warningImage;
+        private BitmapImage connectionImage;
+
         public void UpdateData(DataEvent_Data de_d)
         {
             // Update Last Updated Timestamp
@@ -133,7 +135,14 @@ namespace TH_DeviceCompare
                         else
                         {
                             overlay.Loading = false;
-                            overlay.ConnectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Warning_01_40px.png"));
+
+                            if (warningImage == null)
+                            {
+                                warningImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Warning_01_40px.png"));
+                                warningImage.Freeze();
+                            }
+
+                            overlay.ConnectionImage = warningImage;
                             overlay.ConnectionStatus = "Could Not Connect To Database";
                         }
                     }
@@ -194,7 +203,13 @@ namespace TH_DeviceCompare
                             }
                             else
                             {
-                                overlay.ConnectionImage = overlay.ConnectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Power_01.png"));
+                                if (connectionImage == null)
+                                {
+                                    connectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Power_01.png"));
+                                    connectionImage.Freeze();
+                                }
+
+                                overlay.ConnectionImage = connectionImage;
                                 overlay.Loading = true;
                                 overlay.ConnectionStatus = "Device Not Connected";
                             }
@@ -273,18 +288,136 @@ namespace TH_DeviceCompare
             {
                 if (config.Enabled)
                 {
-                    Type type = plugin.GetType();
-                    IClientPlugin p = (IClientPlugin)Activator.CreateInstance(type);
+
+                    ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
+
+                    ObjectActivator<IClientPlugin> createdActivator = GetActivator<IClientPlugin>(ctor);
+
+                    IClientPlugin instance = createdActivator();
 
                     var cell = new Cell();
                     cell.Link = plugin.Title;
                     cell.Index = Cells.Count;
-                    cell.Data = p;
+                    cell.Data = instance;
                     cell.SizeChanged += Cell_SizeChanged;
                     Cells.Add(cell);
+
+                    // Make a NewExpression that calls the ctor with the args we just created
+                    //NewExpression newExp = System.Linq.Expressions.Expression.New(ctor);
+
+                    //Create a lambda with the New expression as body and our param object[] as arg
+                    //LambdaExpression lambda = System.Linq.Expressions.Expression.Lambda(typeof(IClientPlugin), newExp);
+
+                    //Compile it
+                    //IClientPlugin compiled = (IClientPlugin)lambda.Compile();
+
+
+
+                    //Type type = plugin.GetType();
+                    //IClientPlugin p = (IClientPlugin)Activator.CreateInstance(type);
+
+                    //var cell = new Cell();
+                    //cell.Link = plugin.Title;
+                    //cell.Index = Cells.Count;
+                    //cell.Data = p;
+                    //cell.SizeChanged += Cell_SizeChanged;
+                    //Cells.Add(cell);
                 }
             } 
         }
+
+        private delegate T ObjectActivator<T>(params object[] args);
+
+        private static ObjectActivator<T> GetActivator<T>
+    (ConstructorInfo ctor)
+        {
+            Type type = ctor.DeclaringType;
+            ParameterInfo[] paramsInfo = ctor.GetParameters();
+
+            //create a single param of type object[]
+            var param = System.Linq.Expressions.Expression.Parameter(typeof(object[]), "args");
+
+            var argsExp = new System.Linq.Expressions.Expression[paramsInfo.Length];
+
+            //pick each arg from the params array 
+            //and create a typed expression of them
+            for (int i = 0; i < paramsInfo.Length; i++)
+            {
+                var index = System.Linq.Expressions.Expression.Constant(i);
+                Type paramType = paramsInfo[i].ParameterType;
+
+                var paramAccessorExp = System.Linq.Expressions.Expression.ArrayIndex(param, index);
+
+                var paramCastExp = System.Linq.Expressions.Expression.Convert(paramAccessorExp, paramType);
+
+                argsExp[i] = paramCastExp;
+            }
+
+            //make a NewExpression that calls the
+            //ctor with the args we just created
+            var newExp = System.Linq.Expressions.Expression.New(ctor, argsExp);
+
+            //create a lambda with the New
+            //Expression as body and our param object[] as arg
+            var lambda = System.Linq.Expressions.Expression.Lambda(typeof(ObjectActivator<T>), newExp, param);
+
+            //compile it
+            ObjectActivator<T> compiled = (ObjectActivator<T>)lambda.Compile();
+            return compiled;
+        }
+
+
+        //private readonly Dictionary<string, Func<string, IClientPlugin>> _cellPlugins =
+        //                new Dictionary<string, Func<string, IClientPlugin>>();
+
+        //public void RegisterCalculation<T>(string method)
+        //    where T : IClientPlugin, new()
+        //{
+        //    _cellPlugins.Add(method, originalData =>
+        //    {
+        //        var calculation = new T();
+        //        calculation.Initialize();
+        //        return calculation;
+        //    });
+        //}
+
+        //public IClientPlugin CreateInstance(string method, string originalData)
+        //{
+        //    return _cellPlugins[method](originalData);
+        //}
+
+
+
+
+        //private static Dictionary<string, Func<IClientPlugin>> InstanceCreateCache = new Dictionary<string, Func<IClientPlugin>>();
+
+
+
+
+        //IClientPlugin CreateCachableICalculate(string className)
+        //{
+        //    if (!InstanceCreateCache.ContainsKey(className))
+        //    {
+        //        // get the type (several ways exist, this is an eays one)
+        //        Type type = TypeDelegator.GetType("TestDynamicFactory." + className);
+
+        //        // NOTE: this can be tempting, but do NOT use the following, because you cannot 
+        //        // create a delegate from a ctor and will loose many performance benefits
+        //        //ConstructorInfo constructorInfo = type.GetConstructor(Type.EmptyTypes);
+
+        //        // works with public instance/static methods
+        //        MethodInfo mi = type.GetMethod("Create");
+
+        //        // the "magic", turn it into a delegate
+        //        var createInstanceDelegate = (Func<ICalculate>)Delegate.CreateDelegate(typeof(Func<ICalculate>), mi);
+
+        //        // store for future reference
+        //        InstanceCreateCache.Add(className, createInstanceDelegate);
+        //    }
+
+        //    return InstanceCreateCache[className].Invoke();
+
+        //}
 
         #endregion
 

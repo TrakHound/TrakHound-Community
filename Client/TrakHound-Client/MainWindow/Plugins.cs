@@ -76,6 +76,8 @@ namespace TrakHound_Client
             "Emergency Stop",
             "Controller Mode",
             "Execution Mode",
+            "Alarm",
+            "Part Count",
 
             "Table Manager",
             "Status Data" 

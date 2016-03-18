@@ -109,7 +109,7 @@ namespace TrakHound_Client
 
                 Devices = orderedConfigs.ToList();
 
-                if (!addDeviceOpened && enabledConfigs.Count == 0 && currentuser != null)
+                if (!addDeviceOpened && enabledConfigs.Count == 0 && _currentuser != null)
                 {
                     addDeviceOpened = true;
                     DeviceManager_DeviceList_Open();

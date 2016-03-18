@@ -22,6 +22,23 @@ namespace TH_Global
         public static string Databases = TrakHound + @"\Databases";
         public static string Plugins = TrakHound + @"\Plugins";
 
+        public static string AppData = TrakHound + @"\appdata";
+
+        public static void CreateAppDataDirectory()
+        {
+            try
+            {
+                if (!Directory.Exists(AppData))
+                {
+                    DirectoryInfo info = Directory.CreateDirectory(AppData);
+                    info.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("TH_Global.FileLocations.CreateAppDataDirectory() :: Exception :: " + ex.Message);
+            }
+        }
 
         #region "TempDirectory"
 

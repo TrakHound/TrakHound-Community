@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.IO;
 
 using TH_Configuration;
 using TH_Plugins_Client;
@@ -23,15 +25,40 @@ namespace TH_DeviceCompare
 
         public string Description { get { return "Compare Device Status and Data in a 'side-by-side' view"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Compare_01.png")); } }
+        private BitmapImage _image;
+        public ImageSource Image
+        {
+            get
+            {
+                if (_image == null)
+                {
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Compare_01.png"));
+                    _image.Freeze();
+                }
+
+                return _image;
+            }
+        }
 
 
         public string Author { get { return "TrakHound"; } }
 
         public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
 
-        public ImageSource AuthorImage { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/TrakHound_Logo_10_200px.png")); } }
+        private BitmapImage _authorImage;
+        public ImageSource AuthorImage
+        {
+            get
+            {
+                if (_authorImage == null)
+                {
+                    _authorImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/TrakHound_Logo_10_200px.png"));
+                    _authorImage.Freeze();
+                }
 
+                return _authorImage;
+            }
+        }
 
         public string LicenseName { get { return "GPLv3"; } }
 
@@ -98,18 +125,6 @@ namespace TH_DeviceCompare
         #endregion
 
         #region "Device Properties"
-
-        //List<Configuration> devices;
-        //public List<Configuration> Devices
-        //{
-        //    get { return devices; }
-        //    set
-        //    {
-        //        devices = value;
-
-        //        UpdateDevices(devices);
-        //    }
-        //}
 
         private ObservableCollection<Configuration> _devices;
         public ObservableCollection<Configuration> Devices

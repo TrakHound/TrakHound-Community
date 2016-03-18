@@ -11,7 +11,7 @@
 
     <Grid x:Name="root">
 
-        <local:TextDisplay Text="{Binding Value}"/>
+        <local:TextDisplay Text="{Binding Value, Mode=OneWay}"/>
 
     </Grid>
     

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation"
              xmlns:th_wpf="clr-namespace:TH_WPF"
@@ -59,7 +60,7 @@
                 </Rectangle.ToolTip>
 
                 <Rectangle.Resources>
-                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Help_01.png" />
+                    <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Help_01.png" />
                 </Rectangle.Resources>
 
                 <Rectangle.Style>
@@ -166,7 +167,7 @@
                                 </Style>
                             </Border.Style>
 
-                            <Image Source="{Binding Image, Mode=TwoWay}" Margin="2"/>
+                            <Image Source="{Binding Image, Mode=OneWay}" Margin="2"/>
 
                         </Border>
 
