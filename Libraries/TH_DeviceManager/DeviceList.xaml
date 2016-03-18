@@ -294,7 +294,7 @@
                         <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
                         <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
                         <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
-                        <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_Id}"/>
+                        <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
 
                     </DataGrid.Columns>
 
