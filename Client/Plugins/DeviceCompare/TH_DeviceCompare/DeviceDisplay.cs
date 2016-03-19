@@ -280,7 +280,6 @@ namespace TH_DeviceCompare
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
                         var p = CreatePluginInstance(plugin, configs);
-                        Console.WriteLine(p.Title);
 
                         var cell = CreateCell(p);
                         if (cell != null) Cells.Add(cell);
@@ -351,8 +350,7 @@ namespace TH_DeviceCompare
 
         private delegate T ObjectActivator<T>(params object[] args);
 
-        private static ObjectActivator<T> GetActivator<T>
-    (ConstructorInfo ctor)
+        private static ObjectActivator<T> GetActivator<T>(ConstructorInfo ctor)
         {
             Type type = ctor.DeclaringType;
             ParameterInfo[] paramsInfo = ctor.GetParameters();

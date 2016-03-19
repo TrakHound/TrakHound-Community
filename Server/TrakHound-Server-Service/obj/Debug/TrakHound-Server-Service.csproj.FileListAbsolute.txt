@@ -1,8 +1,12 @@
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound_Server_Service.ProjectInstaller.resources
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\Header.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TrakHound-Server-Service.exe.config
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TrakHound-Server-Service.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TrakHound-Server-Service.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\System.Net.Http.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_Device_Server.dll
@@ -21,12 +25,8 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_MTCon
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_Plugins_Server.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TrakHound-Server-Core.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\System.Net.Http.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_WPF.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound_Server_Service.ProjectInstaller.resources
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\System.Net.Http.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\System.Net.Http.xml

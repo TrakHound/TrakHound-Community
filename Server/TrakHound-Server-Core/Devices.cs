@@ -6,6 +6,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.IO;
+using System.Xml;
+using System;
 
 using TH_Configuration;
 using TH_Database;
@@ -137,9 +140,6 @@ namespace TrakHound_Server_Core
                     }
                 }
             }
-<<<<<<< HEAD
-
-            return result;
         }
 
         private Configuration GetSettingsFromNode(XmlNode Node)
@@ -244,8 +244,6 @@ namespace TrakHound_Server_Core
                 return null;
             }
             else return path;
-=======
->>>>>>> v1.8.0
         }
 
         #endregion

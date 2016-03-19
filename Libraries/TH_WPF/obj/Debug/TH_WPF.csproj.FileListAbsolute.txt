@@ -42,6 +42,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Segment.
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ListButton.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Block.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel2.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MessageBox.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MeterDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\NumberDisplay.g.cs
@@ -61,6 +62,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Histogram\Histogram.bam
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ImageBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LevelIndicator\Indicator.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel2.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MessageBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MeterDisplay.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ProgressBar.baml
@@ -74,5 +76,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.Properties.Resou
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel2.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\LoadingAnimation\Wheel2.baml
