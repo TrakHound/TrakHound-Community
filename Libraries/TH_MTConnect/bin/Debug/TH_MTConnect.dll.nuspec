@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>TH_MTConnect</id>
+    <version>1.0.0</version>
+    <authors>Patrick R.</authors>
+    <owners>Feenux LLC</owners>
+    <projectUrl>http://github.com/TrakHound/TH_MTConnect</projectUrl>
+    <iconUrl>http://feenux.com/misc/trakhound/TrakHound_Logo_10_64px.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This .NET library contains tools for retrieving and processing data using the MTConnect® communication protocol for CNC and PLC industrial equipment.</description>
+    <releaseNotes>Initial Release</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>mtconnect trakhound</tags>
+  </metadata>
+</package>

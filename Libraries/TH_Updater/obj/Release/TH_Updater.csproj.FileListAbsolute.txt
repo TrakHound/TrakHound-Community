@@ -1,0 +1,7 @@
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\obj\Release\TH_Updater.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\obj\Release\UpdateDialog.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\obj\Release\UpdateDialog.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\obj\Release\TH_Updater_MarkupCompile.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\obj\Release\TH_Updater.g.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\obj\Release\TH_Updater.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\obj\Release\TH_Updater.csproj.GenerateResource.Cache

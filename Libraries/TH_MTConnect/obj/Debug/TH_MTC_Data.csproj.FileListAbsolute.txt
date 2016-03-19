@@ -1,0 +1,8 @@
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\bin\Debug\TH_MTC_Data.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\bin\Debug\TH_MTC_Data.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.g.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.csproj.GenerateResource.Cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTC_Data\obj\Debug\TH_MTC_Data.pdb

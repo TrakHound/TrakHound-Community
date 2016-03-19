@@ -1,0 +1,7 @@
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\Controls\PageItem.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Agent\Controls\MessageItem.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\Controls\PageItem.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\Pages\Agent\Controls\MessageItem.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\GeneratedInternalTypeHelper.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_DeviceManager\obj\Release\TH_DeviceManager_MarkupCompile.cache
