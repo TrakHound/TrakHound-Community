@@ -68,7 +68,7 @@
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID">
         <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">0</GridLength>
+            <GridLength x:Key="ShadowWidth">10</GridLength>
 
             <Color x:Key="inside">#22000000</Color>
             <GradientStopCollection x:Key="gradient">

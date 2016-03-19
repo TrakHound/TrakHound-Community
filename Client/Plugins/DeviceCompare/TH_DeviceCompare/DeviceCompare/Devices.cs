@@ -131,6 +131,7 @@ namespace TH_DeviceCompare
             if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
 
             SortDataItems();
+            LoadHeaderView();
         }
 
         private void SortDeviceDisplays()
