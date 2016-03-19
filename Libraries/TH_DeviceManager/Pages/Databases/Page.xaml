@@ -23,6 +23,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -46,19 +47,101 @@
 
         </StackPanel>
 
-        <!--<TextBlock Text="Databases" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,10"/>-->
-
+        <!--Description-->
         <TextBlock Grid.Row="1" Text="Configure the Databases that this device writes data to and reads from" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20"/>
 
-        <!--Add Database-->
-        <StackPanel Grid.Row="2">
+        
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10">
+            <StackPanel.Resources>
+                <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Hover}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="true">
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Dark}"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsMouseOver" Value="true"/>
+                                <Condition Property="IsChecked" Value="true"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource Accent_Dark}"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
 
-            <TextBlock Text="Add" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center"/>
+            <!--Page Type Selection-->
+            <StackPanel>
 
-            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Type" FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" Margin="0,0,0,5"/>
 
-                <!--Add Database Buttons-->
-                <ItemsControl ItemsSource="{Binding DatabaseTypeList}" Margin="0,10">
+                <StackPanel Orientation="Horizontal">
+
+                    <ToggleButton x:Name="Client_TOGGLE" Content="Client" Margin="0,0,10,0" Checked="Client_Checked"/>
+
+                    <ToggleButton x:Name="Server_TOGGLE" Content="Server" Checked="Server_Checked"/>
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <!--Separator-->
+            <Rectangle Width="1" Margin="20,5" Fill="{StaticResource Shade_Normal}"/>
+
+            <!--ID-->
+            <th_wpf:TextBox Text="{Binding DatabaseId, Mode=TwoWay}" MinWidth="200" Title="Database ID" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox.HelpText>
+                    Identification tag used to link database tables to this device. This allows multiple devices to use the same database.
+                </th_wpf:TextBox.HelpText>
+            </th_wpf:TextBox>
+
+            <th_wpf:Button ToolTip="Generate new ID" Clicked="GenerateId_Clicked">
+                <th_wpf:Button.Style>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Height" Value="35"/>
+                        <Setter Property="Padding" Value="10,5"/>
+                        <Setter Property="Margin" Value="-10,0,0,1"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Image" Value="/TH_DeviceManager;component/Resources/Generate_01.png"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Bottom"/>
+                        <Setter Property="CornerRadius" Value="2"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </th_wpf:Button.Style>
+            </th_wpf:Button>
+
+
+        </StackPanel>
+
+        <!--Add Database Buttons-->
+        <StackPanel Grid.Row="3">
+
+            <TextBlock Text="Add" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" Margin="0,0,0,5" VerticalAlignment="Center"/>
+
+            <!--<StackPanel Orientation="Horizontal" Margin="0,10">-->
+          
+                <!--Buttons-->
+                <ItemsControl ItemsSource="{Binding DatabaseTypeList}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
@@ -89,8 +172,8 @@
                     </ItemsControl.Resources>
                 </ItemsControl>
 
-                <!--Add Arrow-->
-                <Rectangle Fill="{StaticResource Accent_Normal}" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <!--Arrow-->
+                <!--<Rectangle Fill="{StaticResource Accent_Normal}" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Rectangle.RenderTransform>
                         <TranslateTransform X="0"/>
                     </Rectangle.RenderTransform>
@@ -134,19 +217,20 @@
                                 <DataTrigger Binding="{Binding DatabaseTypeList.Count}" Value="0">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                 </DataTrigger>
-                                
+
                             </Style.Triggers>
                         </Style>
                     </Rectangle.Style>
-                </Rectangle>
+                </Rectangle>-->
 
-            </StackPanel>
+            <!--</StackPanel>-->
 
         </StackPanel>
 
-        <Rectangle Grid.Row="3" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,20"/>
+        <Rectangle Grid.Row="4" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,20"/>
 
-        <Grid Grid.Row="4">
+        <!--List-->
+        <Grid Grid.Row="5">
 
             <ItemsControl ItemsSource="{Binding DatabaseList}" Margin="0,10" HorizontalContentAlignment="Stretch">
                 <ItemsControl.Resources>
@@ -157,13 +241,13 @@
             </ItemsControl>
 
             <!--No Items Text-->
-            <TextBlock FontSize="18pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Visibility" Value="Collapsed"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding DisplayDatabases}" Value="true">
-                                <Setter Property="Visibility" Value="Collapsed"/>
+                            <DataTrigger Binding="{Binding DatabaseList.Count}" Value="0">
+                                <Setter Property="Visibility" Value="Visible"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

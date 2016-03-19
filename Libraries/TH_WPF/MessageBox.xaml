@@ -112,6 +112,27 @@
 
             </StackPanel>
 
+            <!--YesNoCancel-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Buttons}" Value="{x:Static th_wpf:MessageBoxButtons.YesNoCancel}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+
+                <th_wpf:Button Text="Yes" Margin="0,0,20,0" HorizontalAlignment="Center" Clicked="Yes_Clicked"/>
+
+                <th_wpf:Button Text="No" Margin="0,0,20,0" HorizontalAlignment="Center" Clicked="No_Clicked"/>
+
+                <th_wpf:Button Text="Cancel" HorizontalAlignment="Center" Clicked="Cancel_Clicked"/>
+
+            </StackPanel>
+
 
         </Grid>
         

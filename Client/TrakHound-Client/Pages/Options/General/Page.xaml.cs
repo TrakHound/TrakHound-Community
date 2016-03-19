@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,7 +24,7 @@ namespace TrakHound_Client.Pages.Options.General
     /// <summary>
     /// Interaction logic for General.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.Page
+    public partial class Page : UserControl, TH_Global.IPage
     {
         public Page()
         {
@@ -35,9 +36,16 @@ namespace TrakHound_Client.Pages.Options.General
 
         MainWindow mw;
 
-        public string PageName { get { return "General"; } }
+        public string Title { get { return "General"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Options/Pages/General/Home_01.png")); } }
+
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
+
 
         #region "Properties"
 

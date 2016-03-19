@@ -41,6 +41,7 @@ namespace TH_UserManagement.Management
             public string image_url { get; set; }
             public string tags { get; set; }
             public string dependencies { get; set; }
+            public string link_tag { get; set; }
 
             public string list_id { get; set; }
         }
@@ -117,6 +118,7 @@ namespace TH_UserManagement.Management
                                     item.image_url = GetRowValue("image_url", row);
                                     item.tags = GetRowValue("tags", row);
                                     item.dependencies = GetRowValue("dependencies", row);
+                                    item.link_tag = GetRowValue("link_tag", row);
 
                                     item.list_id = String_Functions.RandomString(20);
 
@@ -183,13 +185,13 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static bool CreateSharedConfiguration(UserConfiguration userConfig, string tablename, DataTable dt, SharedListItem item)
+        public static bool CreateSharedConfiguration(string tablename, DataTable dt, SharedListItem item)
         {
             bool result = false;
 
             item.tablename = tablename;
 
-            if (UpdateSharedConfiguration_ToList(userConfig, item))
+            if (UpdateSharedConfiguration_ToList(item))
             {
                 if (Remote.Configurations.Create(tablename))
                 {
@@ -224,7 +226,7 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static bool UpdateSharedConfiguration_ToList(UserConfiguration userConfig, SharedListItem item)
+        public static bool UpdateSharedConfiguration_ToList(SharedListItem item)
         {
             bool result = false;
 
@@ -251,6 +253,7 @@ namespace TH_UserManagement.Management
                     columnsList.Add("version");
                     columnsList.Add("image_url");
                     columnsList.Add("tags");
+                    columnsList.Add("link_tag");
                     columnsList.Add("dependencies");
 
                     object[] columns = columnsList.ToArray();
@@ -271,6 +274,7 @@ namespace TH_UserManagement.Management
                     rowValues.Add(item.version);
                     rowValues.Add(item.image_url);
                     rowValues.Add(item.tags);
+                    rowValues.Add(item.link_tag);
                     rowValues.Add(item.dependencies);
 
 
@@ -333,7 +337,7 @@ namespace TH_UserManagement.Management
             return result;
         }
 
-        public static bool UpdateSharedConfiguration_ToList(SharedListItem item)
+        public static bool UpdateSharedConfigurationDate(SharedListItem item)
         {
             bool result = false;
 

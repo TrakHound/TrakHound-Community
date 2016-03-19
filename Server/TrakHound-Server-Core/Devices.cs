@@ -1,21 +1,16 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.IO;
-using System.Xml;
-using System.Data;
 
 using TH_Configuration;
 using TH_Database;
 using TH_Device_Server;
 using TH_Global;
-using TH_UserManagement;
 using TH_UserManagement.Management;
 
 namespace TrakHound_Server_Core
@@ -80,108 +75,69 @@ namespace TrakHound_Server_Core
 
         void DevicesMonitor_Worker(List<Device_Server> devs)
         {
+            List<Configuration> configs = null;
+
             if (CurrentUser != null)
             {
-                List<Configuration> configs = Configurations.GetConfigurationsListForUser(CurrentUser);
-                if (configs != null)
+                configs = Configurations.GetConfigurationsListForUser(CurrentUser);
+            }
+            else
+            {
+                configs = Configuration.ReadAll(FileLocations.Devices).ToList();
+            }
+
+            if (configs != null)
+            {
+                if (configs.Count > 0)
                 {
-                    if (configs.Count > 0)
+                    foreach (Configuration config in configs)
                     {
-                        foreach (Configuration config in configs)
+                        if (config != null)
                         {
-                            if (config != null)
+                            int index = -1;
+
+                            if (CurrentUser != null) index = Devices.FindIndex(x => x.configuration.UniqueId == config.UniqueId);
+                            else index = Devices.FindIndex(x => x.configuration.FilePath == config.FilePath);
+
+                            if (index >= 0) // Server is already part of list
                             {
-                                int index = Devices.FindIndex(x => x.configuration.UniqueId == config.UniqueId);
-                                if (index >= 0) // Server is already part of list
+                                Device_Server server = Devices[index];
+
+                                // Check if Configuration has changed
+                                if (server.configuration.ServerUpdateId != config.ServerUpdateId)
                                 {
-                                    Device_Server server = Devices[index];
+                                    // If changed at all then stop the current server
+                                    server.Stop();
 
-                                    // Check if Configuration has changed
-                                    if (server.configuration.ServerUpdateId != config.ServerUpdateId)
+                                    // If changed and still enabled then restart server
+                                    if (config.ServerEnabled)
                                     {
-                                        // If changed at all then stop the current server
-                                        server.Stop();
+                                        server.configuration = config;
 
-                                        // If changed and still enabled then restart server
-                                        if (config.ServerEnabled)
-                                        {
-                                            server.configuration = config;
+                                        // Load/Reload Plugins
+                                        server.LoadPlugins();
 
-                                            // Load/Reload Plugins
-                                            server.LoadPlugins();
+                                        // Initialize Database Configurations
+                                        Global.Initialize(server.configuration.Databases_Server);
 
-                                            // Initialize Database Configurations
-                                            Global.Initialize(server.configuration.Databases_Server);
-
-                                            server.Start(false);
-                                        }
-                                        else // Remove from List
-                                        {
-                                            Devices.RemoveAt(index);
-                                            Logger.Log("Device[" + index.ToString() + "] Removed");
-                                        }
+                                        server.Start(false);
+                                    }
+                                    else // Remove from List
+                                    {
+                                        Devices.RemoveAt(index);
+                                        Logger.Log("Device[" + index.ToString() + "] Removed");
                                     }
                                 }
-                                else // Create & Add Device Server
-                                {
-                                    if (config.ServerEnabled) AddDevice(config);
-                                }
+                            }
+                            else // Create & Add Device Server
+                            {
+                                if (config.ServerEnabled) AddDevice(config);
                             }
                         }
                     }
                 }
             }
-        }
-
-        #endregion
-
-        #region "Xml File"
-
-        List<Configuration> ReadConfigurationFile()
-        {
-            List<Configuration> result = new List<Configuration>();
-
-            string configPath;
-
-            string localPath = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Configuration.Xml";
-            string systemPath = TH_Global.FileLocations.TrakHound + @"\" + "Configuration.Xml";
-
-            // systemPath takes priority (easier for user to navigate to)
-            if (File.Exists(systemPath)) configPath = systemPath;
-            else configPath = localPath;
-
-            if (System.IO.File.Exists(configPath))
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(configPath);
-
-                foreach (XmlNode Node in doc.DocumentElement.ChildNodes)
-                {
-                    if (Node.NodeType == XmlNodeType.Element)
-                    {
-                        switch (Node.Name.ToLower())
-                        {
-                            case "devices":
-                                foreach (XmlNode ChildNode in Node.ChildNodes)
-                                {
-                                    if (ChildNode.NodeType == XmlNodeType.Element)
-                                    {
-                                        switch (ChildNode.Name.ToLower())
-                                        {
-                                            case "device":
-
-                                                Configuration config = GetSettingsFromNode(ChildNode);
-                                                if (config != null) result.Add(config);
-
-                                                break;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
+<<<<<<< HEAD
 
             return result;
         }
@@ -288,6 +244,8 @@ namespace TrakHound_Server_Core
                 return null;
             }
             else return path;
+=======
+>>>>>>> v1.8.0
         }
 
         #endregion

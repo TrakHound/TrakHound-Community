@@ -82,6 +82,8 @@ namespace TH_OEE
 
         }
 
+        public TH_Plugins_Server.ConfigurationPage ConfigurationPage { get { return null; } }
+
         //public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
         public Type Config_Page { get { return null; } }
 

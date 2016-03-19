@@ -57,6 +57,7 @@ namespace TH_SQLite
         {
             var c = SQLite_Configuration.ReadXML(config.Node);
 
+            config.UniqueId = GetUniqueId(c);
             config.Configuration = c;
 
             Console.WriteLine(Type + " Successfully Initialized : " + GetDatabasePath(c));
@@ -83,6 +84,19 @@ namespace TH_SQLite
         public bool CheckPermissions(object settings, Application_Type type)
         {
             return true;
+        }
+
+        private static string GetUniqueId(object settings)
+        {
+            if (settings != null)
+            {
+                var config = SQLite_Configuration.Get(settings);
+                if (config != null)
+                {
+                    return config.DatabasePath;
+                }
+            }
+            return null;
         }
 
 

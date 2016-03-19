@@ -23,17 +23,27 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" MinWidth="150"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Pages.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
                 <ItemsControl ItemsSource="{Binding Pages}" Margin="0,40">
                     <ItemsControl.Resources>
                         <Style TargetType="th_wpf:ListButton">
                             <Setter Property="Foreground" Value="#fff"/>
                             <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="MinWidth" Value="150"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
                                     <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
@@ -44,20 +54,6 @@
                             </Style.Triggers>
                         </Style>
                     </ItemsControl.Resources>
-                    <!--<ItemsControl.Resources>
-                        <Style TargetType="th_wpf:ListButton">
-                            <Setter Property="Foreground" Value="#fff"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                                <Trigger Property="IsSelected" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ItemsControl.Resources>-->
                 </ItemsControl>
 
             </Border>
@@ -78,7 +74,31 @@
                                 <RowDefinition Height="auto"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="{Binding PageContent.PageName}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" Margin="0,10"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,10">
+
+                                <!--Image-->
+                                <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Height="30" VerticalAlignment="Center" Margin="0,0,20,0">
+                                    <Grid.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding PageContent.Image}" />
+                                    </Grid.Resources>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PageContent.Image}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
+                                <!--Title-->
+                                <TextBlock Text="{Binding PageContent.Title}" Foreground="{StaticResource Foreground_Normal}" FontSize="30" VerticalAlignment="Center"/>
+
+                            </StackPanel>
 
                             <Rectangle Grid.Row="1" Fill="{StaticResource Shade_Normal}" Height="0.5" Margin="0,5"/>
 

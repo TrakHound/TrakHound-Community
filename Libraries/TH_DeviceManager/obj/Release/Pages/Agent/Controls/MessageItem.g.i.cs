@@ -29,9 +29,6 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-using TH_DeviceManager.Controls;
-using TH_WPF;
-using TH_WPF.LoadingAnimation;
 
 
 namespace TH_DeviceManager.Pages.Agent.Controls {

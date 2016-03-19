@@ -32,3 +32,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\Output\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\bin\Release\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\bin\Release\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Release\TH_Configuration.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Release\TH_Configuration.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Release\TH_Configuration.g.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Release\TH_Configuration.Properties.Resources.resources
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Configuration\obj\Release\TH_Configuration.csproj.GenerateResource.Cache

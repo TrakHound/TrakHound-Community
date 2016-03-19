@@ -13,15 +13,42 @@ namespace TH_Global
 
         public static string TrakHound = Environment.GetEnvironmentVariable("SystemDrive") + @"\TrakHound";
 
-        //public static string TrakHoundImages = Environment.GetEnvironmentVariable("SystemDrive") + @"\TrakHound\Images";
-        //public static string TrakHoundImages = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TrakHound\images";
-
         public static string TrakHoundTemp = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TrakHound\temp";
 
-        public static string Devices = TrakHound + @"\Devices";
+        public static string AppData = TrakHound + @"\appdata";
         public static string Databases = TrakHound + @"\Databases";
+        public static string Devices = TrakHound + @"\Devices";
         public static string Plugins = TrakHound + @"\Plugins";
 
+        public static void CreateAllDirectories()
+        {
+            CreateAppDataDirectory();
+            CreateDatabasesDirectory();
+            CreateDevicesDirectory();
+            CreatePluginsDirectory();
+        }
+
+        public static void CreateAppDataDirectory() { CreateDirectory(AppData); }
+        public static void CreateDatabasesDirectory() { CreateDirectory(Databases); }
+        public static void CreateDevicesDirectory() { CreateDirectory(Devices); }
+        public static void CreatePluginsDirectory() { CreateDirectory(Plugins); }
+
+
+        private static void CreateDirectory(string path)
+        {
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    DirectoryInfo info = Directory.CreateDirectory(path);
+                    info.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("TH_Global.FileLocations.CreateDirectory() :: Exception :: " + ex.Message);
+            }
+        }
 
         #region "TempDirectory"
 

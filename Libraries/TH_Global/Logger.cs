@@ -99,38 +99,41 @@ namespace TH_Global
             LineQueue = new List<Line>();
 
             queue_TIMER = new System.Timers.Timer();
-            queue_TIMER.Interval = 5000;
+            queue_TIMER.Interval = 10000;
             queue_TIMER.Elapsed += queue_TIMER_Elapsed;
             queue_TIMER.Enabled = true;
         }
 
         void queue_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            try
+            if (LineQueue != null && LineQueue.Count > 0)
             {
-                if (!Directory.Exists(FileLocations.TrakHound)) Directory.CreateDirectory(FileLocations.TrakHound);
-
-                string LogDirectory = FileLocations.TrakHound + @"\Logs";
-
-                if (!Directory.Exists(LogDirectory)) Directory.CreateDirectory(LogDirectory);
-
-                string LogFile = LogDirectory + @"\Log-" + FormatDate(DateTime.Now) + ".xml";
-
-                // Create Log (XmlDocument)
-                XmlDocument doc = CreateDocument(LogFile);
-
-                Line[] lines = LineQueue.ToArray();
-
-                foreach (Line line in lines)
+                try
                 {
-                    AddToLog(doc, line);
+                    if (!Directory.Exists(FileLocations.TrakHound)) Directory.CreateDirectory(FileLocations.TrakHound);
+
+                    string LogDirectory = FileLocations.TrakHound + @"\Logs";
+
+                    if (!Directory.Exists(LogDirectory)) Directory.CreateDirectory(LogDirectory);
+
+                    string LogFile = LogDirectory + @"\Log-" + FormatDate(DateTime.Now) + ".xml";
+
+                    // Create Log (XmlDocument)
+                    XmlDocument doc = CreateDocument(LogFile);
+
+                    Line[] lines = LineQueue.ToArray();
+
+                    foreach (Line line in lines)
+                    {
+                        AddToLog(doc, line);
+                    }
+
+                    WriteDocument(doc, LogFile);
+
+                    LineQueue.Clear();
                 }
-
-                WriteDocument(doc, LogFile);
-
-                LineQueue.Clear();
+                catch (Exception ex) { Console.WriteLine("Logger.queue_TIMER_Elapsed() :: Exception :: " + ex.Message); }
             }
-            catch (Exception ex) { Console.WriteLine("Logger.queue_TIMER_Elapsed() :: Exception :: " + ex.Message); }
         }
 
         void AddToLog(XmlDocument doc, Line line)
@@ -141,7 +144,7 @@ namespace TH_Global
             int lineNumber = line.lineNumber;
 
             string assembly = "";
-            if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file));
+            if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file)).Replace(' ', '_');
             file = Path.GetFileName(file);
             member = member.Replace('.', '_');
 

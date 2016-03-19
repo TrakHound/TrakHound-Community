@@ -1,26 +1,17 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Threading;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 using TH_Configuration;
 using TH_Global.Functions;
@@ -38,7 +29,7 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
     /// <summary>
     /// Interaction logic for Header.xaml
     /// </summary>
-    public partial class Header : UserControl
+    public partial class Header : UserControl, IComparable
     {
         public Header()
         {
@@ -51,7 +42,11 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
             InitializeComponent();
             root.DataContext = this;
 
-            if (config != null) DeviceDescription = config.Description;
+            if (config != null)
+            {
+                DeviceDescription = config.Description;
+                Index = config.Index;
+            }
 
             // Load Device Logo
             if (config.FileLocations.Manufacturer_Logo_Path != null)
@@ -70,7 +65,6 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         public TH_DeviceCompare.DeviceDisplay ParentDisplay { get; set; }
 
-
         public Description_Settings DeviceDescription
         {
             get { return (Description_Settings)GetValue(DeviceDescriptionProperty); }
@@ -79,7 +73,6 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         public static readonly DependencyProperty DeviceDescriptionProperty =
             DependencyProperty.Register("DeviceDescription", typeof(Description_Settings), typeof(Header), new PropertyMetadata(null));
-
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
@@ -359,41 +352,43 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         void LoadManufacturerLogo_Worker(object o)
         {
+            BitmapSource result = null;
+
             if (o != null)
             {
                 string filename = o.ToString();
 
                 System.Drawing.Image img = Images.GetImage(filename);
+                if (img != null)
+                {
+                    var bmp = new System.Drawing.Bitmap(img);
+                    if (bmp != null)
+                    {
+                        IntPtr bmpPt = bmp.GetHbitmap();
+                        result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        if (result != null)
+                        {
+                            if (result.PixelWidth > result.PixelHeight)
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 180);
+                            }
+                            else
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 80);
+                            }
 
-                this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadManufacturerLogo_GUI), priority, new object[] { img });
+                            result.Freeze();
+                        }
+                    }
+                }
             }
-            else this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadManufacturerLogo_GUI), priority, new object[] { null });
+
+            this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadManufacturerLogo_GUI), priority, new object[] { result });
         }
 
-        void LoadManufacturerLogo_GUI(System.Drawing.Image img)
+        void LoadManufacturerLogo_GUI(BitmapSource img)
         {
-            if (img != null)
-            {
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
-
-                IntPtr bmpPt = bmp.GetHbitmap();
-                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                bmpSource.Freeze();
-
-                if (bmpSource.PixelWidth > bmpSource.PixelHeight)
-                {
-                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(bmpSource, 180);
-                }
-                else
-                {
-                    Manufacturer_Logo = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 80);
-                }
-            }
-            else
-            {
-                Manufacturer_Logo = null;
-            }
+            Manufacturer_Logo = img;
 
             ManufacturerLogoLoading = false;
         }
@@ -416,7 +411,7 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         public void LoadDeviceImage(string filename)
         {
-            ManufacturerLogoLoading = true;
+            DeviceImageLoading = true;
 
             if (LoadDeviceImage_THREAD != null) LoadDeviceImage_THREAD.Abort();
 
@@ -426,43 +421,45 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
 
         void LoadDeviceImage_Worker(object o)
         {
+            BitmapSource result = null;
+
             if (o != null)
             {
                 string filename = o.ToString();
 
                 System.Drawing.Image img = Images.GetImage(filename);
+                if (img != null)
+                {
+                    var bmp = new System.Drawing.Bitmap(img);
+                    if (bmp != null)
+                    {
+                        IntPtr bmpPt = bmp.GetHbitmap();
+                        result = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        if (result != null)
+                        {
+                            if (result.PixelWidth > result.PixelHeight)
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 250);
+                            }
+                            else
+                            {
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 250);
+                            }
 
-                this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadDeviceImage_GUI), priority, new object[] { img });
+                            result.Freeze();
+                        }
+                    }
+                }
             }
-            else this.Dispatcher.BeginInvoke(new Action<System.Drawing.Image>(LoadDeviceImage_GUI), priority, new object[] { null });
+
+            this.Dispatcher.BeginInvoke(new Action<BitmapSource>(LoadDeviceImage_GUI), priority, new object[] { result });
         }
-
-        void LoadDeviceImage_GUI(System.Drawing.Image img)
+        
+        void LoadDeviceImage_GUI(BitmapSource img)
         {
-            if (img != null)
-            {
-                System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(img);
+            Device_Image = img;
 
-                IntPtr bmpPt = bmp.GetHbitmap();
-                BitmapSource bmpSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(bmpPt, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-
-                bmpSource.Freeze();
-
-                if (bmpSource.PixelWidth > bmpSource.PixelHeight)
-                {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 250);
-                }
-                else
-                {
-                    Device_Image = TH_WPF.Image_Functions.SetImageSize(bmpSource, 0, 250);
-                }
-            }
-            else
-            {
-                Device_Image = null;
-            }
-
-            ManufacturerLogoLoading = false;
+            DeviceImageLoading = false;
         }
 
         #endregion
@@ -486,6 +483,94 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
         private void Control_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Clicked != null) Clicked(Index);
+        }
+
+        #endregion
+
+        #region "IComparable"
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            if (obj.GetType() == typeof(Header))
+            {
+                var i = obj as Header;
+                if (i != null)
+                {
+                    if (i > this) return -1;
+                    else if (i < this) return 1;
+                    else return 0;
+                }
+                else return 1;
+            }
+            else return 1;
+        }
+
+        #region "Private"
+
+        static bool EqualTo(Header c1, Header c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
+            return c1.Index == c2.Index;
+        }
+
+        static bool NotEqualTo(Header c1, Header c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
+            return c1.Index != c2.Index;
+        }
+
+        static bool LessThan(Header c1, Header c2)
+        {
+            if (c1.Index > c2.Index) return false;
+            else return true;
+        }
+
+        static bool GreaterThan(Header c1, Header c2)
+        {
+            if (c1.Index < c2.Index) return false;
+            else return true;
+        }
+
+        #endregion
+
+        public static bool operator ==(Header c1, Header c2)
+        {
+            return EqualTo(c1, c2);
+        }
+
+        public static bool operator !=(Header c1, Header c2)
+        {
+            return NotEqualTo(c1, c2);
+        }
+
+
+        public static bool operator <(Header c1, Header c2)
+        {
+            return LessThan(c1, c2);
+        }
+
+        public static bool operator >(Header c1, Header c2)
+        {
+            return GreaterThan(c1, c2);
+        }
+
+
+        public static bool operator <=(Header c1, Header c2)
+        {
+            return LessThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        public static bool operator >=(Header c1, Header c2)
+        {
+            return GreaterThan(c1, c2) || EqualTo(c1, c2);
         }
 
         #endregion

@@ -267,6 +267,114 @@ namespace TH_SQLite
             return result;
         }
 
+        public DataTable[] Table_Get(object settings, string[] tablenames)
+        {
+            DataTable[] result = null;
+
+            if (settings != null)
+            {
+                var config = SQLite_Configuration.Get(settings);
+                if (config != null)
+                {
+                    var tables = new List<DataTable>();
+
+                    foreach (string tablename in tablenames)
+                    {
+                        var query = "SELECT * FROM " + tablename;
+
+                        var table = (DataTable)ExecuteQuery<DataTable>(config, query);
+
+                        if (table != null)
+                        {
+                            table.TableName = tablename;
+                            tables.Add(table);
+                        }
+                    }
+
+                    result = tables.ToArray();
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions)
+        {
+            DataTable[] result = null;
+
+            if (settings != null)
+            {
+                var config = SQLite_Configuration.Get(settings);
+                if (config != null)
+                {
+                    var tables = new List<DataTable>();
+
+                    if (tablenames.Length == filterExpressions.Length)
+                    {
+                        for (var x = 0; x <= tablenames.Length - 1; x++)
+                        {
+                            string filterExpression = "";
+                            if (filterExpressions[x] != null) filterExpression = " " + filterExpressions[x];
+
+                            var query = "SELECT * FROM " + tablenames[x] + filterExpression;
+
+                            var table = (DataTable)ExecuteQuery<DataTable>(config, query);
+
+                            if (table != null)
+                            {
+                                table.TableName = tablenames[x];
+                                tables.Add(table);
+                            }
+                        }
+                    }
+
+                    result = tables.ToArray();
+                }
+            }
+
+            return result;
+        }
+
+        public DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions, string[] columns)
+        {
+            DataTable[] result = null;
+
+            if (settings != null)
+            {
+                var config = SQLite_Configuration.Get(settings);
+                if (config != null)
+                {
+                    var tables = new List<DataTable>();
+
+                     if (tablenames.Length == filterExpressions.Length && tablenames.Length == columns.Length)
+                    {
+                        for (var x = 0; x <= tablenames.Length - 1; x++)
+                        {
+                            string column = "*";
+                            if (columns[x] != null) column = columns[x];
+
+                            string filterExpression = "";
+                            if (filterExpressions[x] != null) filterExpression = " " + filterExpressions[x];
+
+                            var query = "SELECT " + column + " FROM " + tablenames[x] + filterExpression;
+
+                            var table = (DataTable)ExecuteQuery<DataTable>(config, query);
+
+                            if (table != null)
+                            {
+                                table.TableName = tablenames[x];
+                                tables.Add(table);
+                            }
+                        }
+                    }
+
+                    result = tables.ToArray();
+                }
+            }
+
+            return result;
+        }
+
         public string[] Table_List(object settings)
         {
             string[] result = null;

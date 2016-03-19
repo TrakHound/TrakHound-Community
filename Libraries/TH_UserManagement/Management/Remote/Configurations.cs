@@ -56,15 +56,15 @@ namespace TH_UserManagement.Management.Remote
                 XML_Functions.SetInnerText(configuration.ConfigurationXML, "TableName", tableName);
 
                 // Set new Unique Id
-                string uniqueId = String_Functions.RandomString(20);
+                string uniqueId = Configuration.GenerateUniqueID();
                 configuration.UniqueId = uniqueId;
                 XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
 
                 // Set Enabled to False
-                configuration.ClientEnabled = false;
-                configuration.ServerEnabled = false;
-                XML_Functions.SetInnerText(configuration.ConfigurationXML, "ClientEnabled", "false");
-                XML_Functions.SetInnerText(configuration.ConfigurationXML, "ServerEnabled", "false");
+                //configuration.ClientEnabled = false;
+                //configuration.ServerEnabled = false;
+                //XML_Functions.SetInnerText(configuration.ConfigurationXML, "ClientEnabled", "false");
+                //XML_Functions.SetInnerText(configuration.ConfigurationXML, "ServerEnabled", "false");
 
                 DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
 
@@ -248,6 +248,42 @@ namespace TH_UserManagement.Management.Remote
 
         //    return result;
         //}
+
+        public static bool UpdateIndexes(List<Tuple<string, int>> items)
+        {
+            bool result = false;
+
+            if (items != null)
+            {
+                string columns = " (address, value) ";
+                string query = "";
+
+                foreach (var item in items)
+                {
+                    string tablename = item.Item1;
+                    string index = item.Item2.ToString();
+
+                    string set = " VALUES ('/Index', '" + index + "')";
+
+                    string update = " ON DUPLICATE KEY UPDATE value='" + index + "'";
+
+                    query += "INSERT IGNORE INTO " + tablename + columns + set + update + "; ";
+                }
+
+                NameValueCollection values = new NameValueCollection();
+
+                values["query"] = query;
+
+                string url = "https://www.feenux.com/php/configurations/updateconfigurationtable.php";
+
+
+                string responseString = HTTP.SendData(url, values);
+
+                if (responseString != null) if (responseString.ToLower().Trim() == "true") result = true;
+            }
+
+            return result;
+        }
 
         public static bool Update(string tableName, DataTable dt)
         {

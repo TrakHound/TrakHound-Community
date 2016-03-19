@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -30,7 +31,7 @@ namespace TrakHound_Client.Pages.Plugins.Installed
     /// <summary>
     /// Interaction logic for Plugins.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.Page
+    public partial class Page : UserControl, TH_Global.IPage
     {
         public Page()
         {
@@ -42,9 +43,17 @@ namespace TrakHound_Client.Pages.Plugins.Installed
 
         MainWindow mw;
 
-        public string PageName { get { return "Installed"; } }
+        public string Title { get { return "Installed"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/CheckMark_01.png")); } }
+
+
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
+
 
         ObservableCollection<ListItem> _listItems;
         public ObservableCollection<ListItem> ListItems

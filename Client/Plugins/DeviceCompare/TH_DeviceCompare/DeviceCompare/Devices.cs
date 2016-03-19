@@ -1,14 +1,13 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using TH_Configuration;
+using TH_Global.Functions;
 
 namespace TH_DeviceCompare
 {
@@ -35,6 +34,7 @@ namespace TH_DeviceCompare
 
                 SortDataItems();
                 LoadHeaderView();
+                SortDeviceDisplays();
             }
 
             if (e.OldItems != null)
@@ -82,6 +82,7 @@ namespace TH_DeviceCompare
 
                     SortDataItems();
                     LoadHeaderView();
+                    SortDeviceDisplays();
                 }
             }
         }
@@ -110,13 +111,34 @@ namespace TH_DeviceCompare
             if (category != null)
             {
                 var display = new DeviceDisplay(config, Plugins, category.PluginConfigurations);
+                display.CellAdded += Display_CellAdded;
                 display.CellSizeChanged += display_CellSizeChanged;
 
-                DeviceDisplays.Add(display);
-                if (display.Group.Header != null) Headers.Add(display.Group.Header);
-                if (display.Group.Column != null) Columns.Add(display.Group.Column);
-                if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
+                Dispatcher.BeginInvoke(new Action<DeviceDisplay>(AddDeviceDisplay_GUI), Priority_Background, new object[] { display });
             }
+        }
+
+        private void Display_CellAdded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            SortDataItems();
+        }
+
+        private void AddDeviceDisplay_GUI(DeviceDisplay display)
+        {
+            DeviceDisplays.Add(display);
+            if (display.Group.Header != null) Headers.Add(display.Group.Header);
+            if (display.Group.Column != null) Columns.Add(display.Group.Column);
+            if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
+
+            SortDataItems();
+            LoadHeaderView();
+        }
+
+        private void SortDeviceDisplays()
+        {
+            Headers.Sort();
+            Columns.Sort();
+            Overlays.Sort();
         }
 
     }

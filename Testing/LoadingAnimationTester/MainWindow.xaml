@@ -5,16 +5,23 @@
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
         
         Title="MainWindow" Height="350" Width="525">
-    <WrapPanel>
 
-        <loadinganimation:Wheel Width="200" Height="200" Margin="20"/>
+    <StackPanel>
 
-        <loadinganimation:Wheel Width="100" Height="100" Margin="20"/>
+        <Button Click="Button_Click" Content="Click" />
 
-        <loadinganimation:Wheel Width="50" Height="50" Margin="20"/>
+        <WrapPanel x:Name="test">
 
-        <loadinganimation:Wheel Width="25" Height="25" Margin="20"/>
+            <loadinganimation:Wheel Width="200" Height="200" Margin="20" Foreground="Red"/>
 
-    </WrapPanel>
-    
+            <loadinganimation:Wheel Width="100" Height="100" Margin="20" Foreground="Purple"/>
+
+            <loadinganimation:Wheel Width="50" Height="50" Margin="20" Color="Green"/>
+
+            <loadinganimation:Wheel Width="25" Height="25" Margin="20"/>
+
+        </WrapPanel>
+
+    </StackPanel>
+
 </Window>

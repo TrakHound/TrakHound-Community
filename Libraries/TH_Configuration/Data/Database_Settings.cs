@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Xml;
 
+using TH_Global.Functions;
+
 namespace TH_Configuration
 {
     public class Database_Settings
@@ -18,12 +20,14 @@ namespace TH_Configuration
     {
         public string Type { get; set; }
 
-        public bool Primary { get; set; }
+        public string UniqueId { get; set; }
+
+        //public bool Primary { get; set; }
 
         public object Configuration { get; set; }
 
         public XmlNode Node { get; set; }
 
-        public string DatabaseName { get; set; }
+        //public string DatabaseName { get; set; }
     }
 }

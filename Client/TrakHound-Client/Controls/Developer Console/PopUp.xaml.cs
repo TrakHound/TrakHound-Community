@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using System.Windows.Media.Animation;
 using System.Collections.ObjectModel;
 
 namespace TrakHound_Client.Controls.Developer_Console
@@ -35,6 +36,8 @@ namespace TrakHound_Client.Controls.Developer_Console
 
         const int MaxLines = 500;
 
+        //double defaultHeight = 400;
+
         public delegate void ShownChanged_Handler(bool shown);
         public event ShownChanged_Handler ShownChanged;
 
@@ -46,13 +49,14 @@ namespace TrakHound_Client.Controls.Developer_Console
                 SetValue(ShownProperty, value);
 
                 if (ShownChanged != null) ShownChanged(value);
+
+                //if (value) { Animate(defaultHeight, HeightProperty); }
+                //else { Animate(0, HeightProperty); }
             }
         }
 
         public static readonly DependencyProperty ShownProperty =
             DependencyProperty.Register("Shown", typeof(bool), typeof(PopUp), new PropertyMetadata(false));
-
-
 
 
         public class ConsoleItem
@@ -79,7 +83,7 @@ namespace TrakHound_Client.Controls.Developer_Console
 
         public void AddLine(string line)
         {
-            this.Dispatcher.BeginInvoke(new Action<string>(AddLine_GUI), new object[] { line });
+            if (line != null) Dispatcher.BeginInvoke(new Action<string>(AddLine_GUI), new object[] { line });
         }
 
         void AddLine_GUI(string line)
@@ -212,6 +216,20 @@ namespace TrakHound_Client.Controls.Developer_Console
             //    dg.SelectedItem = dg.Items[dg.Items.Count - 1];
             //    dg.ScrollIntoView(dg.SelectedItem);
             //}
+        }
+
+        private void Copy_Clicked(TH_WPF.Button bt)
+        {
+            dg.SelectAllCells();
+            dg.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+            ApplicationCommands.Copy.Execute(null, dg);
+            dg.UnselectAllCells();
+
+        }
+
+        private void Clear_Clicked(TH_WPF.Button bt)
+        {
+            ConsoleOutput.Clear();
         }
     }
 }

@@ -67,9 +67,15 @@ namespace TH_StatusData
 
         public void Initialize() { }
 
-        public void Closing() { Update_Stop(); }
+        public void Opened() { }
+        public bool Opening() { return true; }
 
-        bool closing = false;
+        public void Closed()
+        {
+            Abort();
+        }
+
+        public bool Closing() { return true; }
 
         #endregion
 
@@ -87,18 +93,6 @@ namespace TH_StatusData
         #endregion
 
         #region "Devices"
-
-        //List<Configuration> devices;
-        //public List<Configuration> Devices
-        //{
-        //    get { return devices; }
-        //    set
-        //    {
-        //        devices = value;
-
-        //        Update_Start();
-        //    }
-        //}
 
         private ObservableCollection<Configuration> _devices;
         public ObservableCollection<Configuration> Devices
@@ -120,14 +114,14 @@ namespace TH_StatusData
 
         public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Update_Start();
+            Start();
         }
 
         #endregion
 
         #region "Options"
 
-        public Page Options { get; set; }
+        public IPage Options { get; set; }
 
         #endregion
 

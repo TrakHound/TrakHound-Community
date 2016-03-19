@@ -1,9 +1,10 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml;
 using System.Text;
@@ -11,21 +12,49 @@ using System.Reflection;
 using System.Drawing;
 using System.Data;
 using System.IO;
+using System.Linq.Expressions;
 
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TH_Configuration
 {
 
-    public class Configuration
+    public class Configuration : IComparable, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Each property must also change the ConfigurationXML to match the change.
+        /// This will keep the xml and object synced
+        /// 
+        /// Use the format below:
+        /// 
+        /// private string _propertyName;
+        /// public string PropertyName
+        /// {
+        ///     get { return _propertyName; }
+        ///     set
+        ///     {
+        ///         _propertyName = value;
+        ///         TH_Configuration.UpdateConfigurationXML("PropertyName", _propertyName);
+        ///     }
+        /// }
+        /// </summary>
 
         public Agent_Settings Agent;
         public Database_Settings Databases_Client;
         public Database_Settings Databases_Server;
         public FileLocation_Settings FileLocations;
-        public Description_Settings Description;
+
+        // Implemented INotifyPropertyChanged to Bind in WPF
+        private Description_Settings _description;
+        public Description_Settings Description
+        {
+            get { return _description; }
+            set { PropertyChanged.ChangeAndNotify<Description_Settings>(ref _description, value, () => Description); }
+        }
         public List<object> CustomClasses;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public Configuration()
         {
@@ -42,31 +71,138 @@ namespace TH_Configuration
             CustomClasses = new List<object>();
         }
 
-
+        public void UpdateConfigurationXML(string xpath, string value)
+        {
+            if (ConfigurationXML != null)
+            {
+                XML_Functions.SetInnerText(ConfigurationXML, xpath, value);
+            }
+        }
 
         #region "Properties"
 
-        public bool ClientEnabled { get; set; }
+        private bool _clientEnabled;
+        public bool ClientEnabled
+        {
+            get { return _clientEnabled; }
+            set
+            {
+                _clientEnabled = value;
+                UpdateConfigurationXML("ClientEnabled", _clientEnabled.ToString());
+            }
+        }
 
-        public bool ServerEnabled { get; set; }
+        private bool _serverEnabled;
+        public bool ServerEnabled
+        {
+            get { return _serverEnabled; }
+            set
+            {
+                _serverEnabled = value;
+                UpdateConfigurationXML("ServerEnabled", _serverEnabled.ToString());
+            }
+        }
 
         #region "Remote Configurations"
 
-        public bool UseTrakHoundCloud { get; set; }
+        private bool _useTrakHoundCloud;
+        public bool UseTrakHoundCloud
+        {
+            get { return _useTrakHoundCloud; }
+            set
+            {
+                _useTrakHoundCloud = value;
+                UpdateConfigurationXML("UseTrakHoundCloud", _useTrakHoundCloud.ToString());
+            }
+        }
 
-        public bool Remote { get; set; }
+        private bool _remote;
+        public bool Remote
+        {
+            get { return _remote; }
+            set
+            {
+                _remote = value;
+                UpdateConfigurationXML("Remote", _remote.ToString());
+            }
+        }
 
-        public string ClientUpdateId { get; set; }
+        private string _clientUpdateId;
+        public string ClientUpdateId
+        {
+            get { return _clientUpdateId; }
+            set
+            {
+                _clientUpdateId = value;
+                UpdateConfigurationXML("ClientUpdateId", _clientUpdateId);
+            }
+        }
 
-        public string ServerUpdateId { get; set; }
+        private string _serverUpdateId;
+        public string ServerUpdateId
+        {
+            get { return _serverUpdateId; }
+            set
+            {
+                _serverUpdateId = value;
+                UpdateConfigurationXML("ServerUpdateId", _serverUpdateId);
+            }
+        }
 
-        public string TableName { get; set; }
+        private string _table;
+        public string TableName
+        {
+            get { return _table; }
+            set
+            {
+                _table = value;
+                UpdateConfigurationXML("TableName", _table);
+            }
+        }
 
-        public string Version { get; set; }
+        private string _version;
+        public string Version
+        {
+            get { return _version; }
+            set
+            {
+                _version = value;
+                UpdateConfigurationXML("Version", _version);
+            }
+        }
 
-        public string SharedId { get; set; }
+        private string _sharedId;
+        public string SharedId
+        {
+            get { return _sharedId; }
+            set
+            {
+                _sharedId = value;
+                UpdateConfigurationXML("SharedId", _sharedId);
+            }
+        }
 
-        public string SharedTableName { get; set; }
+        private string _sharedLinkTag;
+        public string SharedLinkTag
+        {
+            get { return _sharedLinkTag; }
+            set
+            {
+                _sharedLinkTag = value;
+                UpdateConfigurationXML("SharedLinkTag", _sharedLinkTag);
+            }
+        }
+
+        private string _sharedTableName;
+        public string SharedTableName
+        {
+            get { return _sharedTableName; }
+            set
+            {
+                _sharedTableName = value;
+                UpdateConfigurationXML("SharedTableName", _sharedTableName);
+            }
+        }
 
         #endregion
 
@@ -79,21 +215,64 @@ namespace TH_Configuration
         #endregion
 
         /// <summary>
-        /// Used as a UniqueId between any number of devices
-        /// Composed of Database name, IP address, and Port (so it should always be unique)
+        /// Used as a UniqueId between any number of devices.
+        /// Usually generated from random characters
         /// </summary>
-        public string UniqueId { get; set; }
+        private string _uniqueId;
+        public string UniqueId
+        {
+            get { return _uniqueId; }
+            set
+            {
+                _uniqueId = value;
+
+                //if (_uniqueId != null)
+                //{
+                //    // If using the old format of 80 chars, then resize
+                //    if (_uniqueId.Length > 20) _uniqueId = GenerateUniqueID();
+                //}
+
+                UpdateConfigurationXML("UniqueId", _uniqueId);
+            }
+        }
+
+        /// <summary>
+        /// Used to link this device to tables in a database. This is typically used as the prefix for a table name.
+        /// </summary>
+        private string _databaseId;
+        public string DatabaseId
+        {
+            get { return _databaseId; }
+            set
+            {
+                _databaseId = value;
+
+                UpdateConfigurationXML("DatabaseId", _databaseId);
+            }
+        }
+
 
         /// <summary>
         /// Used as a general index to make navigation between Configurations easier
         /// </summary>
-        public int Index { get; set; }
+        private int _index;
+        public int Index
+        {
+            get { return _index; }
+            set
+            {
+                _index = value;
+                UpdateConfigurationXML("Index", _index.ToString());
+            }
+        }
 
         /// <summary>
         /// Contains the original XML configuration file
         /// (ex. Plugins use this to read their custom configuration classes)
         /// </summary>
         public XmlDocument ConfigurationXML { get; set; }
+
+        public string FilePath { get; set; }
 
         /// <summary>
         /// The full path of the configuration file
@@ -104,25 +283,15 @@ namespace TH_Configuration
 
         #region "Methods"
 
-        static Random random = new Random();
-        public static string RandomString(int size)
+        public static string GenerateUniqueID()
         {
-            StringBuilder builder = new StringBuilder();
-            char ch;
-            for (int i = 0; i < size; i++)
-            {
-                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
-                builder.Append(ch);
-            }
-
-            return builder.ToString();
+            return String_Functions.RandomString(20);
         }
 
-        static string GetUniqueID()
+        public static string GenerateDatabaseId()
         {
-            return RandomString(80);
+            return String_Functions.RandomString(10);
         }
-
 
         /// <summary>
         /// Reads an XML file to parse configuration information.
@@ -133,11 +302,6 @@ namespace TH_Configuration
         {
             Configuration result = null;
 
-            //string RootPath;
-            //RootPath = Path.GetDirectoryName(path);
-            //RootPath += @"\";
-            //Logger.Log("Configuration File Root Path = " + RootPath);
-
             if (File.Exists(path))
             {
                 XmlDocument doc = new XmlDocument();
@@ -145,7 +309,15 @@ namespace TH_Configuration
 
                 result = Read(doc);
 
-                Logger.Log("Configuration Successfully Read From : " + path);
+                string filename = Path.GetFileNameWithoutExtension(path);
+                result.FilePath = filename;
+                XML_Functions.SetInnerText(result.ConfigurationXML, "/FilePath", result.FilePath);
+
+                if (result.UniqueId == null)
+                {
+                    result.UniqueId = GenerateUniqueID();
+                    XML_Functions.SetInnerText(result.ConfigurationXML, "/UniqueId", result.UniqueId);
+                }
             }
             else
             {
@@ -159,14 +331,24 @@ namespace TH_Configuration
         {
             var result = new List<Configuration>();
 
-            Logger.Log("Reading Configuration Files from : " + path);
-
             if (Directory.Exists(path))
             {
                 foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
                 {
                     var config = Read(file);
-                    if (config != null) result.Add(config);
+                    if (config != null)
+                    {
+                        // Check to make sure Unique Id is not already used by another file.
+                        // If so, generate a new one. This can happen if the file was manually copied
+                        if (result.Exists(x => x.UniqueId == config.UniqueId))
+                        {
+                            config.UniqueId = GenerateUniqueID();
+
+                            Save(config);
+                        }
+
+                        result.Add(config);
+                    }
                 }
             }
             else
@@ -179,9 +361,7 @@ namespace TH_Configuration
 
         public static Configuration Read(XmlDocument xml)
         {
-            Configuration result = null;
-
-            result = new Configuration();
+            var result = new Configuration();
 
             result.ConfigurationXML = xml;
 
@@ -191,24 +371,26 @@ namespace TH_Configuration
                 {
                     if (node.InnerText != "")
                     {
-                        Type Settings = typeof(Configuration);
-                        PropertyInfo info = Settings.GetProperty(node.Name);
+                        switch (node.Name.ToLower())
+                        {
+                            case "agent": result.Agent = Process_Agent(node); break;
+                            case "databases_client": result.Databases_Client = Process_Databases(node); break;
+                            case "databases_server": result.Databases_Server = Process_Databases(node); break;
+                            case "description": result.Description = Process_Description(node); break;
+                            case "file_locations": result.FileLocations = Process_File_Locations(node, result.SettingsRootPath); break;
 
-                        if (info != null)
-                        {
-                            Type t = info.PropertyType;
-                            info.SetValue(result, Convert.ChangeType(node.InnerText, t), null);
-                        }
-                        else
-                        {
-                            switch (node.Name.ToLower())
-                            {
-                                case "agent": result.Agent = Process_Agent(node); break;
-                                case "databases_client": result.Databases_Client = Process_Databases(node); break;
-                                case "databases_server": result.Databases_Server = Process_Databases(node); break;
-                                case "description": result.Description = Process_Description(node); break;
-                                case "file_locations": result.FileLocations = Process_File_Locations(node, result.SettingsRootPath); break;
-                            }
+                            default:
+
+                                Type Settings = typeof(Configuration);
+                                PropertyInfo info = Settings.GetProperty(node.Name);
+
+                                if (info != null)
+                                {
+                                    Type t = info.PropertyType;
+                                    info.SetValue(result, Convert.ChangeType(node.InnerText, t), null);
+                                }
+
+                                break;
                         }
                     }
                 } 
@@ -265,7 +447,6 @@ namespace TH_Configuration
 
         private static Database_Settings Process_Databases(XmlNode node)
         {
-
             Database_Settings result = new Database_Settings();
 
             foreach (XmlNode child in node.ChildNodes)
@@ -280,7 +461,6 @@ namespace TH_Configuration
             }
 
             return result;
-
         }
 
         private static Description_Settings Process_Description(XmlNode Node)
@@ -363,13 +543,13 @@ namespace TH_Configuration
                         Type Settings = typeof(FileLocation_Settings);
                         PropertyInfo info = Settings.GetProperty(Child.Name);
 
-                        string FilePath = Child.InnerText;
-                        if (!System.IO.Path.IsPathRooted(FilePath)) FilePath = rootPath + FilePath;
+                        string filepath = Child.InnerText;
+                        if (!System.IO.Path.IsPathRooted(filepath)) filepath = rootPath + filepath;
 
                         if (info != null)
                         {
                             Type t = info.PropertyType;
-                            info.SetValue(Result, Convert.ChangeType(FilePath, t), null);
+                            info.SetValue(Result, Convert.ChangeType(filepath, t), null);
                         }
 
                     }
@@ -379,6 +559,34 @@ namespace TH_Configuration
             return Result;
         }
 
+        public void Process_IConfiguration<T>(IConfiguration config, XmlNode Node)
+        {
+            config.ConfigurationPropertyChanged += Config_ConfigurationPropertyChanged;
+
+            foreach (XmlNode Child in Node.ChildNodes)
+            {
+                if (Child.NodeType == XmlNodeType.Element)
+                {
+                    if (Child.InnerText != "")
+                    {
+                        Type Setting = typeof(T);
+                        PropertyInfo info = Setting.GetProperty(Child.Name);
+
+                        if (info != null)
+                        {
+                            Type t = info.PropertyType;
+                            info.SetValue(config, Convert.ChangeType(Child.InnerText, t), null);
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void Config_ConfigurationPropertyChanged(string xPath, string value)
+        {
+            //UpdateConfigurationXML(xPath, value);
+        }
 
         public static void Process_CustomClass<T>(object customClass, XmlNode Node)
         {
@@ -420,11 +628,194 @@ namespace TH_Configuration
         }
 
 
+        public static bool Save(Configuration config)
+        {
+            bool result = false;
+
+            result = Save(config.ConfigurationXML);
+
+            return result;
+        }
+
+        public static bool Save(DataTable dt)
+        {
+            bool result = false;
+
+            XmlDocument xml = Converter.TableToXML(dt);
+
+            result = Save(xml);
+
+            return result;
+        }
+
+        public static bool Save(XmlDocument xml)
+        {
+            bool result = false;
+
+            if (xml != null)
+            {
+                try
+                {
+                    string filePath = XML_Functions.GetInnerText(xml, "FilePath");
+
+                    if (filePath == null)
+                    {
+                        filePath = XML_Functions.GetInnerText(xml, "UniqueId");
+                        XML_Functions.SetInnerText(xml, "FilePath", filePath);
+                    }
+
+                    if (!Directory.Exists(TH_Global.FileLocations.Devices)) Directory.CreateDirectory(TH_Global.FileLocations.Devices);
+
+                    xml.Save(TH_Global.FileLocations.Devices + "\\" + filePath + ".xml");
+
+                    result = true;
+                }
+                catch (Exception ex) { Logger.Log("Error during Configuration Xml Save : " + ex.Message); }
+            }
+
+            return result;
+        }
 
         #endregion
 
         #endregion
 
+        #region "IComparable"
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            var i = obj as Configuration;
+            if (i != null)
+            {
+                if (i > this) return -1;
+                else if (i < this) return 1;
+                else return 0;
+            }
+            else return 1;
+        }
+
+        public override bool Equals(object obj)
+        {
+
+            var other = obj as Configuration;
+            if (object.ReferenceEquals(other, null)) return false;
+
+            return (this == other);
+        }
+
+        public override int GetHashCode()
+        {
+            char[] c = this.ToString().ToCharArray();
+            return base.GetHashCode();
+        }
+
+        #region "Private"
+
+        static bool EqualTo(Configuration c1, Configuration c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return false;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+
+            return c1.UniqueId == c2.UniqueId && c1.Index == c2.Index;
+        }
+
+        static bool NotEqualTo(Configuration c1, Configuration c2)
+        {
+            if (!object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && !object.ReferenceEquals(c2, null)) return true;
+            if (object.ReferenceEquals(c1, null) && object.ReferenceEquals(c2, null)) return false;
+
+            return c1.UniqueId != c2.UniqueId || c1.Index != c2.Index;
+        }
+
+        static bool LessThan(Configuration c1, Configuration c2)
+        {
+            if (c1.Index > c2.Index) return false;
+            else return true;
+        }
+
+        static bool GreaterThan(Configuration c1, Configuration c2)
+        {
+            if (c1.Index < c2.Index) return false;
+            else return true;
+        }
+
+        #endregion
+
+        public static bool operator ==(Configuration c1, Configuration c2)
+        {
+            return EqualTo(c1, c2);
+        }
+
+        public static bool operator !=(Configuration c1, Configuration c2)
+        {
+            return NotEqualTo(c1, c2);
+        }
+
+
+        public static bool operator <(Configuration c1, Configuration c2)
+        {
+            return LessThan(c1, c2);
+        }
+
+        public static bool operator >(Configuration c1, Configuration c2)
+        {
+            return GreaterThan(c1, c2);
+        }
+
+
+        public static bool operator <=(Configuration c1, Configuration c2)
+        {
+            return LessThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        public static bool operator >=(Configuration c1, Configuration c2)
+        {
+            return GreaterThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        #endregion
+
+    }
+
+    public static class Extensions
+    {
+        public static bool ChangeAndNotify<T>(this PropertyChangedEventHandler handler,
+             ref T field, T value, Expression<Func<T>> memberExpression)
+        {
+            if (memberExpression == null)
+            {
+                throw new ArgumentNullException("memberExpression");
+            }
+            var body = memberExpression.Body as MemberExpression;
+            if (body == null)
+            {
+                throw new ArgumentException("Lambda must return a property.");
+            }
+            if (EqualityComparer<T>.Default.Equals(field, value))
+            {
+                return false;
+            }
+
+            var vmExpression = body.Expression as ConstantExpression;
+            if (vmExpression != null)
+            {
+                LambdaExpression lambda = Expression.Lambda(vmExpression);
+                Delegate vmFunc = lambda.Compile();
+                object sender = vmFunc.DynamicInvoke();
+
+                if (handler != null)
+                {
+                    handler(sender, new PropertyChangedEventArgs(body.Member.Name));
+                }
+            }
+
+            field = value;
+            return true;
+        }
     }
 
 }

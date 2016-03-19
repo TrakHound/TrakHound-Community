@@ -75,13 +75,17 @@ namespace TH_DeviceManager.Pages.Agent
 
 
             // Load IP Address
-            IpAddress = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+            Address = Table_Functions.GetTableValue(prefix + "Address", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(Address)) Address = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
 
             // Load Port
             Port = Table_Functions.GetTableValue(prefix + "Port", dt);
 
             // Load Device Name
-            DeviceName = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+            DeviceName = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(DeviceName)) DeviceName = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
             // Load Heartbeat
             int heartbeat;
@@ -107,13 +111,13 @@ namespace TH_DeviceManager.Pages.Agent
         public void SaveConfiguration(DataTable dt)
         {
             // Save IP Address
-            Table_Functions.UpdateTableValue(IpAddress, prefix + "IP_Address", dt);
+            Table_Functions.UpdateTableValue(Address, prefix + "Address", dt);
 
             // Save Port
             Table_Functions.UpdateTableValue(Port, prefix + "Port", dt);
 
             // Save Device Name
-            Table_Functions.UpdateTableValue(DeviceName, prefix + "Device_Name", dt);
+            Table_Functions.UpdateTableValue(DeviceName, prefix + "DeviceName", dt);
 
             // Save Heartbeat
             Table_Functions.UpdateTableValue(Heartbeat.ToString(), prefix + "Heartbeat", dt);
@@ -160,14 +164,14 @@ namespace TH_DeviceManager.Pages.Agent
 
         #region "Properties"
 
-        public string IpAddress
+        public string Address
         {
-            get { return (string)GetValue(IpAddressProperty); }
-            set { SetValue(IpAddressProperty, value); }
+            get { return (string)GetValue(AddressProperty); }
+            set { SetValue(AddressProperty, value); }
         }
 
-        public static readonly DependencyProperty IpAddressProperty =
-            DependencyProperty.Register("IpAddress", typeof(string), typeof(Page), new PropertyMetadata(null));
+        public static readonly DependencyProperty AddressProperty =
+            DependencyProperty.Register("Address", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
         public string Port
@@ -237,10 +241,10 @@ namespace TH_DeviceManager.Pages.Agent
             string ip = null;
             int port = -1;
 
-            if (IpAddress != null)
+            if (Address != null)
             {
                 // Get IP Address or URL
-                ip = IpAddress;
+                ip = Address;
                 if (ip.Length > 7)
                 {
                     if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
@@ -563,7 +567,7 @@ namespace TH_DeviceManager.Pages.Agent
             int port = -1;
 
             // Get IP Address or URL
-            ip = IpAddress;
+            ip = Address;
             if (ip != null)
             {
                 if (ip.Length > 7)
@@ -686,20 +690,20 @@ namespace TH_DeviceManager.Pages.Agent
             }
         }
 
-        private void ipaddress_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ChangeSetting("IP_Address", ((TextBox)sender).Text);
-        }
+        //private void ipaddress_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    ChangeSetting("IP_Address", ((TextBox)sender).Text);
+        //}
 
-        private void port_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ChangeSetting("Port", ((TextBox)sender).Text);
-        }
+        //private void port_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    ChangeSetting("Port", ((TextBox)sender).Text);
+        //}
 
-        private void devicename_TXT_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ChangeSetting("Device_Name", ((TextBox)sender).Text);
-        }
+        //private void devicename_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    ChangeSetting("Device_Name", ((TextBox)sender).Text);
+        //}
 
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -754,8 +758,8 @@ namespace TH_DeviceManager.Pages.Agent
 
         void ChangeSetting(string name, string val)
         {
-            if (!Loading)
-            {
+            //if (!Loading)
+            //{
                 string newVal = val;
                 string oldVal = null;
 
@@ -765,7 +769,7 @@ namespace TH_DeviceManager.Pages.Agent
                 }
 
                 if (SettingChanged != null) SettingChanged(name, oldVal, newVal);
-            }
+            //}
         }
 
         #region "Heartbeat"
@@ -807,7 +811,13 @@ namespace TH_DeviceManager.Pages.Agent
         private void CurrentSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Heartbeat_TimeSpan = TimeSpan.FromMilliseconds(Heartbeat);
-            ChangeSetting("Heartbeat", Heartbeat.ToString());
+
+            var o = (Slider)sender;
+
+            if (o.IsMouseCaptured || o.IsKeyboardFocused)
+            {
+                ChangeSetting("Heartbeat", Heartbeat.ToString());
+            }
         }
 
         private void heartbeat_TXT_LostFocus(object sender, RoutedEventArgs e)

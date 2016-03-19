@@ -151,6 +151,12 @@
   <data name="Disk_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Disk_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Edit_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edit_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Edit_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edit_02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Expand_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Expand_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -165,6 +171,9 @@
   </data>
   <data name="MTConnect_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MTConnect_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="options_gear_30px" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\options_gear_30px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Plug_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Plug_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -183,5 +192,17 @@
   </data>
   <data name="X_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\X_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CheckMark_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CheckMark_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Root" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Root.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Table_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Table_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Generate_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

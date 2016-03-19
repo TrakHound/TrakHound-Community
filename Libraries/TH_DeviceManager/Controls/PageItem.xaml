@@ -19,7 +19,7 @@
 
         <!--Normal Style-->
         <Grid>
-            <Grid.Style>
+            <!--<Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility" Value="Visible"/>
                     <Style.Triggers>
@@ -28,7 +28,7 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Grid.Style>
+            </Grid.Style>-->
 
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
@@ -45,7 +45,7 @@
                     <Rectangle.Style>
                         <Style TargetType="Rectangle">
                             <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Fill" Value="{Binding Foreground}"/>
                         </Style>
                     </Rectangle.Style>
                 </Rectangle>
@@ -54,7 +54,7 @@
                 <TextBlock Grid.Row="1" Text="{Binding Text}" FontSize="10pt" TextAlignment="Center" TextWrapping="Wrap" Margin="10,0">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Foreground" Value="{Binding Foreground}"/>
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
@@ -63,7 +63,7 @@
 
         </Grid>
 
-        <!--Alternate Style-->
+        <!--Alternate Style--><!--
         <Grid>
             <Grid.Style>
                 <Style TargetType="Grid">
@@ -89,7 +89,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <!--Image-->
+                    --><!--Image--><!--
                     <Rectangle Width="30" Height="30" Margin="0,0,0,10">
                         <Rectangle.Resources>
                             <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
@@ -108,7 +108,7 @@
                         </Rectangle.Style>
                     </Rectangle>
 
-                    <!--Text-->
+                    --><!--Text--><!--
                     <TextBlock Grid.Row="1" Text="{Binding Text}" FontSize="10pt" TextAlignment="Center" TextWrapping="Wrap">
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
@@ -126,7 +126,7 @@
 
             </Grid>
 
-        </Grid>
+        </Grid>-->
 
     </Grid>
 

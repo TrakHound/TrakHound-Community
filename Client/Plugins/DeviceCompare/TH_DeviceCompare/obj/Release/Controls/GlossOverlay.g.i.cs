@@ -29,7 +29,6 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-using TH_WPF.LoadingAnimation;
 
 
 namespace TH_DeviceCompare.Controls {

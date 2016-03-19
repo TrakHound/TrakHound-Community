@@ -1,0 +1,158 @@
+﻿<UserControl x:Class="TH_DeviceManager.AddDevice.Controls.CatalogItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TH_DeviceManager.AddDevice.Controls"
+            
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="300">
+
+    <UserControl.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="Visibility" Value="Visible"/>
+
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </DataTrigger>
+                </Style.Triggers>
+
+            </Style>
+
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <Border BorderBrush="#10000000" BorderThickness="0,0,0,1">
+
+        <Grid x:Name="root" Cursor="Hand">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Image-->
+                    <Image Source="{Binding Image}" Margin="10,2" Height="30" MaxWidth="60" />
+
+                    <!--Manufacturer-->
+                    <TextBlock Text="{Binding Manufacturer}" FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center"/>
+
+                </StackPanel>
+
+                <!--Description-->
+                <TextBlock Grid.Row="1" Text="{Binding Description}" Margin="10" FontSize="8pt" Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap">
+                    <TextBlock.ToolTip>
+                        <StackPanel Width="400">
+                            <TextBlock Text="Description" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Description}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </TextBlock.ToolTip>
+            </TextBlock>
+
+            </Grid>
+
+            <!--Owner (if the current user is the owner)-->
+            <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsOwner}" Value="true">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                <TextBlock Text="Owner" Foreground="{StaticResource Foreground_Light}" FontSize="8pt" Margin="5" ToolTip="You are the owner of this shared configuration"/>
+
+            </Grid>
+
+
+            <!--Select Grid (mask to capture mouse over without capturing mouse over for Add Button)-->
+            <Grid Background="#00000000" Grid.ColumnSpan="2" MouseDown="Grid_MouseDown"/>
+
+
+            <!--Add Device-->
+            <Grid Grid.Column="1">
+
+                <!--Add Button-->
+                <th_wpf:Button Text="Add" Margin="10" Height="30" Clicked="Add_Clicked">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Height" Value="35"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="8,0"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Loading}" Value="true">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
+
+                <!--Loading Animation-->
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Loading}" Value="true">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <loadinganimation:Wheel Height="30" Width="30" Foreground="{StaticResource Accent_Normal}"/>
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+
+    </Border>
+
+</UserControl>

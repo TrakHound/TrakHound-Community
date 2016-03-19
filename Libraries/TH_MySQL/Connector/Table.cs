@@ -812,5 +812,198 @@ namespace TH_MySQL.Connector
 
         }
 
+        public static DataTable[] Get(MySQL_Configuration config, string[] tableNames)
+        {
+
+            DataTable[] Result = null;
+
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    var tables = new List<DataTable>();
+
+                    MySql.Data.MySqlClient.MySqlCommand cmd = null;
+
+                    foreach (string tableName in tableNames)
+                    {
+                        string query = "SELECT * FROM " + tableName;
+                        cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
+
+                        DataTable t1 = new DataTable();
+                        using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                        {
+                            if (a != null) a.Fill(t1);
+                        }
+
+                        t1.TableName = tableName;
+
+                        tables.Add(t1.Copy());
+                    }
+
+                    conn.Close();
+
+                    if (cmd != null) cmd.Dispose();
+                    conn.Dispose();
+
+                    Result = tables.ToArray();
+
+                    success = true;
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
+            }
+
+            return Result;
+
+        }
+
+        public static DataTable[] Get(MySQL_Configuration config, string[] tableNames, string[] filterExpressions)
+        {
+            DataTable[] Result = null;
+
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    var tables = new List<DataTable>();
+
+                    MySql.Data.MySqlClient.MySqlCommand cmd = null;
+
+                    if (tableNames.Length == filterExpressions.Length)
+                    {
+                        for (var x = 0; x <= tableNames.Length - 1; x++)
+                        {
+                            string filterExpression = "";
+                            if (filterExpressions[x] != null) filterExpression = " " + filterExpressions[x];
+
+                            var query = "SELECT * FROM " + tableNames[x] + filterExpression;
+
+                            //string query = "SELECT * FROM " + tableNames[x] + " " + filterExpressions[x];
+                            cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
+
+                            DataTable t1 = new DataTable();
+                            using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                            {
+                                if (a != null) a.Fill(t1);
+                            }
+
+                            t1.TableName = tableNames[x];
+
+                            tables.Add(t1.Copy());
+                        }
+                    }
+
+                    conn.Close();
+
+                    if (cmd != null) cmd.Dispose();
+                    conn.Dispose();
+
+                    Result = tables.ToArray();
+
+                    success = true;
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
+            }
+
+            return Result;
+        }
+
+        public static DataTable[] Get(MySQL_Configuration config, string[] tableNames, string[] filterExpressions, string[] columns)
+        {
+            DataTable[] Result = null;
+
+            int attempts = 0;
+            bool success = false;
+
+            while (attempts < Database.connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    MySql.Data.MySqlClient.MySqlConnection conn = new MySql.Data.MySqlClient.MySqlConnection();
+
+                    conn.ConnectionString = "server=" + config.Server + ";user=" + config.Username + ";port=" + config.Port + ";password=" + config.Password + ";database=" + config.Database + ";";
+                    conn.Open();
+
+                    var tables = new List<DataTable>();
+
+                    MySql.Data.MySqlClient.MySqlCommand cmd = null;
+
+                    if (tableNames.Length == filterExpressions.Length)
+                    {
+                        for (var x = 0; x <= tableNames.Length - 1; x++)
+                        {
+                            string column = "*";
+                            if (columns[x] != null) column = columns[x];
+
+                            string filterExpression = "";
+                            if (filterExpressions[x] != null) filterExpression = " " + filterExpressions[x];
+
+                            var query = "SELECT " + column + " FROM " + tableNames[x] + filterExpression;
+
+
+                            //string query = "SELECT " + columns[x] + " FROM " + tableNames[x] + " " + filterExpressions[x];
+                            cmd = new MySql.Data.MySqlClient.MySqlCommand(query, conn);
+
+                            DataTable t1 = new DataTable();
+                            using (MySql.Data.MySqlClient.MySqlDataAdapter a = new MySql.Data.MySqlClient.MySqlDataAdapter(cmd))
+                            {
+                                if (a != null) a.Fill(t1);
+                            }
+
+                            t1.TableName = tableNames[x];
+
+                            tables.Add(t1.Copy());
+                        }
+                    }
+
+                    conn.Close();
+
+                    if (cmd != null) cmd.Dispose();
+                    conn.Dispose();
+
+                    Result = tables.ToArray();
+
+                    success = true;
+                }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log(ex.Message);
+                }
+                catch (Exception ex) { }
+            }
+
+            return Result;
+        }
+
     }
 }

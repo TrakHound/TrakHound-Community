@@ -8,11 +8,11 @@
 
     <Grid>
 
-        <!--<Ellipse Fill="Blue" />-->
+        <Ellipse Fill="Blue" />
         
         <!--<Rectangle Fill="Blue"/>-->
 
-        <Path Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Stretch="Fill" RenderTransformOrigin="0.5,4.3689" 
+        <!--<Path Fill="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" Stretch="Fill" RenderTransformOrigin="0.5,4.3689" 
               Data="M291.15499,
               85.897525 C291.15499,
               85.897525 301.88917,
@@ -26,7 +26,7 @@
               94.355042 292.85366,
               94.355042 291.15499,
               85.897525 291.15499,
-              85.897525 z"/>
+              85.897525 z"/>-->
 
     </Grid>
 

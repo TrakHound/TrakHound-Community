@@ -21,10 +21,14 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="ConsoleHeader" Color="#00274d"/>
+            <SolidColorBrush x:Key="ConsoleBackground" Color="#1a2f44"/>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="#66000000">
+    <Grid Background="{StaticResource ConsoleBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -33,13 +37,13 @@
         </Grid.RowDefinitions>
         <Grid.Style>
             <Style TargetType="Grid">
-                <Setter Property="Height" Value="0"/>
+                <!--<Setter Property="MaxHeight" Value="0"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Shown}" Value="true">
                         <DataTrigger.EnterActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Height" From="0" To="300" By="50" >
+                                    <DoubleAnimation Duration="00:00:0.2" Storyboard.TargetProperty="MaxHeight" From="0" To="300" By="50" >
                                         <DoubleAnimation.EasingFunction>
                                             <CubicEase EasingMode="EaseOut"/>
                                         </DoubleAnimation.EasingFunction>
@@ -50,7 +54,7 @@
                         <DataTrigger.ExitActions>
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Height" From="300" To="0" By="50" >
+                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="MaxHeight" From="300" To="0" By="50" >
                                         <DoubleAnimation.EasingFunction>
                                             <CubicEase EasingMode="EaseOut"/>
                                         </DoubleAnimation.EasingFunction>
@@ -59,7 +63,7 @@
                             </BeginStoryboard>
                         </DataTrigger.ExitActions>
                     </DataTrigger>
-                </Style.Triggers>
+                </Style.Triggers>-->
             </Style>
         </Grid.Style>
 
@@ -67,23 +71,30 @@
         <Grid Grid.Row="0" MinHeight="30">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <StackPanel.Resources>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Padding" Value="6"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#33ffffff"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
 
-                <th_wpf:Button Clicked="Minimize_ToolBarItem_Clicked" Image="/TrakHound-Client;component/Resources/Carrot_Arrow_Down_01.png" ToolTip="Hide Developer Console">
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Height" Value="30"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>
+                <!--Collapse Button-->
+                <th_wpf:Button Clicked="Minimize_ToolBarItem_Clicked" Image="/TrakHound-Client;component/Resources/Carrot_Arrow_Down_01.png" ToolTip="Hide Developer Console"/>
 
-                <TextBlock Text="Developer Console" Foreground="{StaticResource Foreground_Opposite_Normal}" VerticalAlignment="Center" FontSize="12pt" Margin="10,0"/>
+                <TextBlock Text="Developer Console" Foreground="{StaticResource Foreground_Opposite_Normal}" VerticalAlignment="Center" FontSize="12pt" Margin="10,0,40,0"/>
+
+                <!--Copy Text-->
+                <th_wpf:Button ToolTip="Copy Log Text to Clipboard"  Clicked="Copy_Clicked" Image="/TrakHound-Client;component/Resources/Copy_01.png"/>
+
+                <!--Clear Text-->
+                <th_wpf:Button ToolTip="Clear Log Text"  Clicked="Clear_Clicked" Image="/TrakHound-Client;component/Resources/X_01.png"/>
 
             </StackPanel>
 
@@ -101,7 +112,7 @@
                 </LinearGradientBrush>
             </Grid.Background>-->
 
-            <DataGrid x:Name="dg"
+            <!--<DataGrid x:Name="dg"
                     ItemsSource="{Binding ConsoleOutput}" 
                     Loaded="DataGrid_Loaded"
                     LoadingRow="DataGrid_LoadingRow" 
@@ -113,13 +124,27 @@
                     VerticalScrollBarVisibility="Auto"  
                     HeadersVisibility="None"
                     IsReadOnly="True" 
+                    >-->
+            <DataGrid x:Name="dg"
+                    ItemsSource="{Binding ConsoleOutput}" 
+                    Loaded="DataGrid_Loaded"
+                    LoadingRow="DataGrid_LoadingRow" 
+                    AutoGenerateColumns="False"
+                    HeadersVisibility="None"
+                    Background="{StaticResource ConsoleBackground}"
+                    VerticalGridLinesBrush="#33ffffff"
+                    HorizontalGridLinesBrush="#33ffffff"
+                    BorderBrush="#33ffffff"
+                    FontSize="10pt"
                     >
                 <DataGrid.Resources>
 
                     <!--Standard CellStyle (Centered Text)-->
-                    <Style x:Key="DGC_Centered" TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0,0,0,0"/>
-                        <Setter Property="Template">
+                    <Style x:Key="DGC_Centered" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                        <Setter Property="MinHeight" Value="25"/>
+                        <Setter Property="Height" Value="25"/>
+                        <!--<Setter Property="BorderThickness" Value="0,0,0,0"/>-->
+                        <!--<Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type DataGridCell}">
                                     <Border Background="{TemplateBinding Background}"
@@ -132,7 +157,7 @@
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
-                        </Setter>
+                        </Setter>-->
                         <Style.Triggers>
                             <Trigger Property="IsFocused" Value="false">
                                 <Setter Property="Foreground" Value="#fff"/>
@@ -145,8 +170,10 @@
                     </Style>
 
                     <!--ConsoleText CellStyle (Left Align Text)-->
-                    <Style x:Key="DGC_Left" TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0,0,0,0"/>
+                    <Style x:Key="DGC_Left" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                        <!--<Setter Property="BorderThickness" Value="0,0,0,0"/>-->
+                        <Setter Property="MinHeight" Value="25"/>
+                        <Setter Property="Height" Value="25"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type DataGridCell}">
@@ -166,6 +193,7 @@
                                 <Setter Property="Foreground" Value="#fff"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Foreground" Value="#fff"/>
                                 <Setter Property="Background" Value="#00000000"/>
                                 <Setter Property="BorderBrush" Value="#00000000"/>
                             </Trigger>
@@ -179,13 +207,19 @@
                     <DataGridTextColumn Header="Text" Binding="{Binding Text}" Width="*" CellStyle="{StaticResource DGC_Left}"/>
                 </DataGrid.Columns>
 
+                <!--<DataGrid.Columns>
+                    <DataGridTextColumn Header="#" Binding="{Binding Row}" />
+                    <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" />
+                    <DataGridTextColumn Header="Text" Binding="{Binding Text}" Width="*" />
+                </DataGrid.Columns>-->
+
                 <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#33000000"/>
-                        <Setter Property="MinHeight" Value="30"/>
-                        <Setter Property="Foreground" Value="#fff"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Template">
+                    <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                        <!--<Setter Property="Background" Value="{StaticResource ConsoleHeader}"/>-->
+                        <!--<Setter Property="MinHeight" Value="30"/>-->
+                        <!--<Setter Property="Foreground" Value="#fff"/>-->
+                        <!--<Setter Property="FontSize" Value="12"/>-->
+                        <!--<Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
                                     <Border Background="{TemplateBinding Background}"
@@ -198,18 +232,20 @@
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
-                        </Setter>
+                        </Setter>-->
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
 
                 <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Background" Value="#00000000" />
+                    <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                        <Setter Property="Background" Value="{StaticResource ConsoleBackground}"/>
+                        <!--<Setter Property="Background" Value="#00000000" />
                         <Setter Property="BorderBrush" Value="#33000000" />
                         <Setter Property="BorderThickness" Value="0,0,0,0" />
-                        <Setter Property="Foreground" Value="#fff" />
-                        <Setter Property="Height" Value="20"/>
-                        <Style.Triggers>
+                        <Setter Property="Foreground" Value="#fff" />-->
+                        <Setter Property="MinHeight" Value="25"/>
+                        <Setter Property="Height" Value="25"/>
+                        <!--<Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
                                 <Setter Property="Background" Value="#11ffffff"/>
                                 <Setter Property="BorderBrush" Value="#00000000"/>
@@ -220,7 +256,7 @@
                                 <Setter Property="BorderBrush" Value="#00000000"/>
                                 <Setter Property="Foreground" Value="#fff"/>
                             </Trigger>
-                        </Style.Triggers>
+                        </Style.Triggers>-->
                     </Style>
                 </DataGrid.RowStyle>
             </DataGrid>

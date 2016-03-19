@@ -73,6 +73,16 @@ namespace TrakHound_Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Add_01 {
+            get {
+                object obj = ResourceManager.GetObject("Add_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap AddUser_01 {
             get {
                 object obj = ResourceManager.GetObject("AddUser_01", resourceCulture);
@@ -143,9 +153,29 @@ namespace TrakHound_Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Copy_01 {
+            get {
+                object obj = ResourceManager.GetObject("Copy_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Developer_01 {
             get {
                 object obj = ResourceManager.GetObject("Developer_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Edit_02 {
+            get {
+                object obj = ResourceManager.GetObject("Edit_02", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -266,6 +296,16 @@ namespace TrakHound_Client.Properties {
         internal static System.Drawing.Bitmap Root {
             get {
                 object obj = ResourceManager.GetObject("Root", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Share_01 {
+            get {
+                object obj = ResourceManager.GetObject("Share_01", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

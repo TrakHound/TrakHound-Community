@@ -1,19 +1,19 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Reflection;
+using System.Threading;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 using TH_Configuration;
-using TH_Global.Functions;
 using TH_Plugins_Client;
 
 using TH_DeviceCompare.Controls.DeviceDisplay;
@@ -31,6 +31,8 @@ namespace TH_DeviceCompare
         /// <param name="configs">List of PluginConfiguration objects to determine 'Enabled' state for each IClientPlugin</param>
         public DeviceDisplay(Configuration config, List<IClientPlugin> plugins, List<PluginConfiguration> configs)
         {
+            Configuration = config;
+
             if (config != null)
             {
                 // Set Unique ID
@@ -48,10 +50,15 @@ namespace TH_DeviceCompare
                 Group.Overlay = overlay;
 
                 // Load Plugins
-                //Plugins = plugins;
                 ProcessPlugins(plugins, configs);
             } 
         }
+
+        const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
+
+        const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
+
+        public Configuration Configuration { get; set; }
 
         /// <summary>
         /// Unique Id for identifying which Device this DeviceDisplay related to
@@ -98,6 +105,9 @@ namespace TH_DeviceCompare
         public int connectionAttempts { get; set; }
         public const int maxConnectionAttempts = 5;
 
+        private BitmapImage warningImage;
+        private BitmapImage connectionImage;
+
         public void UpdateData(DataEvent_Data de_d)
         {
             // Update Last Updated Timestamp
@@ -129,7 +139,14 @@ namespace TH_DeviceCompare
                         else
                         {
                             overlay.Loading = false;
-                            overlay.ConnectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Warning_01_40px.png"));
+
+                            if (warningImage == null)
+                            {
+                                warningImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Warning_01_40px.png"));
+                                warningImage.Freeze();
+                            }
+
+                            overlay.ConnectionImage = warningImage;
                             overlay.ConnectionStatus = "Could Not Connect To Database";
                         }
                     }
@@ -190,7 +207,13 @@ namespace TH_DeviceCompare
                             }
                             else
                             {
-                                overlay.ConnectionImage = overlay.ConnectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Power_01.png"));
+                                if (connectionImage == null)
+                                {
+                                    connectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Power_01.png"));
+                                    connectionImage.Freeze();
+                                }
+
+                                overlay.ConnectionImage = connectionImage;
                                 overlay.Loading = true;
                                 overlay.ConnectionStatus = "Device Not Connected";
                             }
@@ -239,6 +262,8 @@ namespace TH_DeviceCompare
 
         #region "Plugins"
 
+        public event RoutedEventHandler CellAdded;
+
         /// <summary>
         /// Initial load of all of the IClientPlugin objects
         /// </summary>
@@ -252,9 +277,48 @@ namespace TH_DeviceCompare
             {
                 foreach (var plugin in plugins)
                 {
-                    AddPlugin(plugin, configs);
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var p = CreatePluginInstance(plugin, configs);
+                        Console.WriteLine(p.Title);
+
+                        var cell = CreateCell(p);
+                        if (cell != null) Cells.Add(cell);
+
+                        if (CellAdded != null) CellAdded(this, new RoutedEventArgs());
+                    }), Priority_Context, new object[] { });
                 }
             }
+        }
+
+        private IClientPlugin CreatePluginInstance(IClientPlugin plugin, List<PluginConfiguration> configs)
+        {
+            IClientPlugin result = null;
+
+            var config = configs.Find(x => x.Name == plugin.Title);
+            if (config != null)
+            {
+                if (config.Enabled)
+                {
+                    ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
+
+                    ObjectActivator<IClientPlugin> createdActivator = GetActivator<IClientPlugin>(ctor);
+
+                    result = createdActivator();
+                }
+            }
+
+            return result;
+        }
+
+        private Cell CreateCell(IClientPlugin plugin)
+        {
+            var cell = new Cell();
+            cell.Link = plugin.Title;
+            cell.Index = Cells.Count;
+            cell.Data = plugin;
+            cell.SizeChanged += Cell_SizeChanged;
+            return cell;
         }
 
         /// <summary>
@@ -269,17 +333,60 @@ namespace TH_DeviceCompare
             {
                 if (config.Enabled)
                 {
-                    Type type = plugin.GetType();
-                    IClientPlugin p = (IClientPlugin)Activator.CreateInstance(type);
+                    ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
+
+                    ObjectActivator<IClientPlugin> createdActivator = GetActivator<IClientPlugin>(ctor);
+
+                    IClientPlugin instance = createdActivator();
 
                     var cell = new Cell();
                     cell.Link = plugin.Title;
                     cell.Index = Cells.Count;
-                    cell.Data = p;
+                    cell.Data = instance;
                     cell.SizeChanged += Cell_SizeChanged;
                     Cells.Add(cell);
                 }
             } 
+        }
+
+        private delegate T ObjectActivator<T>(params object[] args);
+
+        private static ObjectActivator<T> GetActivator<T>
+    (ConstructorInfo ctor)
+        {
+            Type type = ctor.DeclaringType;
+            ParameterInfo[] paramsInfo = ctor.GetParameters();
+
+            //create a single param of type object[]
+            var param = System.Linq.Expressions.Expression.Parameter(typeof(object[]), "args");
+
+            var argsExp = new System.Linq.Expressions.Expression[paramsInfo.Length];
+
+            //pick each arg from the params array 
+            //and create a typed expression of them
+            for (int i = 0; i < paramsInfo.Length; i++)
+            {
+                var index = System.Linq.Expressions.Expression.Constant(i);
+                Type paramType = paramsInfo[i].ParameterType;
+
+                var paramAccessorExp = System.Linq.Expressions.Expression.ArrayIndex(param, index);
+
+                var paramCastExp = System.Linq.Expressions.Expression.Convert(paramAccessorExp, paramType);
+
+                argsExp[i] = paramCastExp;
+            }
+
+            //make a NewExpression that calls the
+            //ctor with the args we just created
+            var newExp = System.Linq.Expressions.Expression.New(ctor, argsExp);
+
+            //create a lambda with the New
+            //Expression as body and our param object[] as arg
+            var lambda = System.Linq.Expressions.Expression.Lambda(typeof(ObjectActivator<T>), newExp, param);
+
+            //compile it
+            ObjectActivator<T> compiled = (ObjectActivator<T>)lambda.Compile();
+            return compiled;
         }
 
         #endregion

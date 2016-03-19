@@ -146,6 +146,8 @@ namespace TH_GeneratedData
 
         }
 
+        public TH_Plugins_Server.ConfigurationPage ConfigurationPage { get { return new ConfigurationPage.Page(); } }
+
         public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
         public bool UseDatabases { get; set; }
@@ -834,8 +836,6 @@ namespace TH_GeneratedData
 
         #region "Database"
 
-        //Queue SQL_Queue;
-
         #region "Snapshot"
 
         public string SnapshotsTableName = TableNames.SnapShots;
@@ -933,6 +933,11 @@ namespace TH_GeneratedData
 
         void CreateValueTable(List<GeneratedEvents.Event> events)
         {
+<<<<<<< HEAD
+=======
+            var primaryKey = new string[] { "EVENT" , "VALUE" };
+
+>>>>>>> v1.8.0
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("EVENT", DataType.LargeText),
@@ -940,7 +945,7 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            Table.Replace(config.Databases_Server, TableNames.GenEventValues, columns.ToArray(), null);
+            Table.Replace(config.Databases_Server, TablePrefix + TableNames.GenEventValues, columns.ToArray(), primaryKey);
 
             if (events != null)
             {
@@ -970,7 +975,11 @@ namespace TH_GeneratedData
                     rowValues.Add(defaultValues);
                 }
 
+<<<<<<< HEAD
                 Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, genEventValuesPrimaryKey, true);
+=======
+                Row.Insert(config.Databases_Server, TablePrefix + TableNames.GenEventValues, insertColumns.ToArray(), rowValues, primaryKey, true);
+>>>>>>> v1.8.0
             }
         }
 
@@ -1011,7 +1020,6 @@ namespace TH_GeneratedData
 
             foreach (string eventName in distinctEventNames)
             {
-
                 // Set Columns to Update (include Name so that it can Update the row instead of creating a new one)
                 List<string> columns = new List<string>();
                 columns.Add("Timestamp");
@@ -1048,15 +1056,11 @@ namespace TH_GeneratedData
 
                             rowValues.Add(values);
                         }
-
                     }
 
                     Row.Insert(config.Databases_Server, TablePrefix + GenTablePrefix + eventName, columns.ToArray(), rowValues, genEventsPrimaryKey, true);
-
                 }
-
             }
-
         }
 
         string FormatCaptureItemColumn(string val)
@@ -1192,7 +1196,7 @@ namespace TH_GeneratedData
                     // Get Variables Table from MySQL (if any snapshots are set to "Variable")
                     if (gdc.snapshots.Items.FindAll(x => x.type.ToLower() == "variable").Count > 0)
                     {
-                        variables_DT = Table.Get(config.Databases_Server, TableNames.Variables);
+                        variables_DT = Table.Get(config.Databases_Server, TablePrefix + TableNames.Variables);
                     }
 
                    foreach (Snapshots.Item item in gdc.snapshots.Items)

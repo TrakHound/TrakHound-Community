@@ -6,11 +6,17 @@ using System.Threading.Tasks;
 
 using System.IO;
 
+<<<<<<< HEAD
 //using TH_MicrosoftSQL;
 using TH_MTConnect.Components;
 
 using System.Data.SQLite;
 //using TH_SQLite;
+=======
+using TH_Configuration;
+using TH_DeviceManager;
+using TH_Global.Functions;
+>>>>>>> v1.8.0
 
 namespace TestConsole
 {
@@ -18,7 +24,9 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
+            //string path = @"C:\TrakHound\Devices\APMZSRSQDJHVHTNTILHQ.xml";
 
+<<<<<<< HEAD
             string dbPath = @"C:\TrakHound\Databases\Test1\Test2\test.db";
 
             //var config = new SQLite_Configuration();
@@ -184,8 +192,15 @@ namespace TestConsole
             sql += "INSERT OR REPLACE INTO test_table (name, value) VALUES ('john', 4); ";
             command = new SQLiteCommand(sql, conn);
             command.ExecuteNonQuery();
+=======
+            //var config = Configuration.Read(path);
 
+            //config.ClientEnabled = false;
+>>>>>>> v1.8.0
 
+            ////var nodes = new Network_Functions.PingNodes();
+
+<<<<<<< HEAD
             //sql = "SELECT * FROM snapshots";
             //command = new SQLiteCommand(sql, conn);
             //reader = command.ExecuteReader();
@@ -244,11 +259,16 @@ namespace TestConsole
 
             conn.Close();
 
+=======
+            var dm = new DeviceManager();
+            dm.LoadDevices();
+>>>>>>> v1.8.0
 
 
             Console.ReadLine();
         }
 
+<<<<<<< HEAD
         static void PrintReaderRow(SQLiteDataReader reader)
         {
             string print = "";
@@ -262,5 +282,7 @@ namespace TestConsole
         }
 
        
+=======
+>>>>>>> v1.8.0
     }
 }

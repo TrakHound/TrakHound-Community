@@ -153,9 +153,15 @@ namespace TH_GeneratedData.ConfigurationPage
         {
             string prefix = "/Agent/";
 
-            string ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+            string ip = Table_Functions.GetTableValue(prefix + "Address", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(ip)) ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+
             string p = Table_Functions.GetTableValue(prefix + "Port", dt);
-            string devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+
+            string devicename = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(devicename)) devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
             string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
             string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);

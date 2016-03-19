@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.IO;
-using System.Windows;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TH_Configuration;
 using TH_Plugins_Client;
@@ -30,7 +27,7 @@ namespace TH_DeviceCompare_OEE.Timeline
 
         public string Author { get { return "TrakHound"; } }
 
-        public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
+        public string AuthorText { get { return "©2016 Feenux LLC. All Rights Reserved"; } }
 
         public ImageSource AuthorImage { get { return null; } }
 
@@ -68,7 +65,11 @@ namespace TH_DeviceCompare_OEE.Timeline
 
         public void Initialize() { }
 
-        public void Closing() { }
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
         public void Show() { }
 
@@ -89,15 +90,13 @@ namespace TH_DeviceCompare_OEE.Timeline
 
         #region "Device Properties"
 
-        //public List<Configuration> Devices { get; set; }
-
         public ObservableCollection<Configuration> Devices { get; set; }
 
         #endregion
 
         #region "Options"
 
-        public TH_Global.Page Options { get; set; }
+        public TH_Global.IPage Options { get; set; }
 
         #endregion
 

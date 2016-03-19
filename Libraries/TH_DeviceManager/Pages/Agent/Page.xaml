@@ -47,8 +47,6 @@
 
         </StackPanel>
 
-        <!--<TextBlock Text="Agent Configuration" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,10"/>-->
-
         <TextBlock Grid.Row="1" Text="Configure the MTConnect® Agent Communication." FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20"/>
 
         <Grid Grid.Row="2">
@@ -66,7 +64,7 @@
                 </StackPanel.Resources>
 
                 <!--IP Address-->
-                <th_wpf:TextBox Text="{Binding IpAddress, Mode=TwoWay}" Title="IP Address" Example="127.0.0.1 or 'agent.mtconnect.org'" TextChanged="TXT_TextChanged">
+                <th_wpf:TextBox Text="{Binding Address, Mode=TwoWay}" Title="IP Address" Example="127.0.0.1 or 'agent.mtconnect.org'" TextChanged="TXT_TextChanged">
                     <th_wpf:TextBox.HelpText>
                         Enter the IP address or URL of the MTConnect Agent.
                     </th_wpf:TextBox.HelpText>
@@ -292,13 +290,6 @@
                                 <Run Text="{Binding DeviceCount}"/>
                             </TextBlock>
 
-                            <!--Total DataItems--><!--
-                            <TextBlock>
-                                <Run Text="Total DataItems"/>
-                                <Run Text=":"/>
-                                <Run Text="54"/>
-                            </TextBlock>-->
-
                         </StackPanel>
 
                     </th_wpf:CollapseButton.PageContent>
@@ -322,6 +313,7 @@
                             <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                             <Setter Property="Height" Value="35"/>
                             <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10,5"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="true">
                                     <Setter Property="Background" Value="{StaticResource Accent_Light}"/>

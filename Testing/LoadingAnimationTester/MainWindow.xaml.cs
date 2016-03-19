@@ -26,6 +26,12 @@ namespace LoadingAnimationTester
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (test.Visibility == Visibility.Visible) test.Visibility = Visibility.Collapsed;
+            else test.Visibility = Visibility.Visible;
+        }
     }
 
     

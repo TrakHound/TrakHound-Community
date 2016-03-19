@@ -68,6 +68,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Management\UserLoginFile.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

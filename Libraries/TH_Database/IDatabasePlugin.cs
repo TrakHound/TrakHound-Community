@@ -27,6 +27,7 @@ namespace TH_Database
 
         bool CheckPermissions(object settings, Application_Type type);
 
+
         // Database Functions -----------------------------------------------------------
 
         bool Database_Create(object settings);
@@ -48,6 +49,7 @@ namespace TH_Database
 
         bool Table_Truncate(object settings, string tablename);
 
+
         DataTable Table_Get(object settings, string tablename);
 
         DataTable Table_Get(object settings, string tablename, Int64 limit, Int64 offset);
@@ -56,9 +58,17 @@ namespace TH_Database
 
         DataTable Table_Get(object settings, string tablename, string filterExpression, string columns);
 
+        DataTable[] Table_Get(object settings, string[] tablenames);
+
+        DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions);
+
+        DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions, string[] columns);
+
+
         string[] Table_List(object settings);
 
         string[] Table_List(object settings, string filterExpression);
+
 
         Int64 Table_GetRowCount(object settings, string tablename);
 
@@ -106,97 +116,6 @@ namespace TH_Database
         DataTable GetGrants(object settings);
 
         // ------------------------------------------------------------------------------
-
     }
-
-
-    public enum DataType
-    {
-        // Boolean 0 - 10
-        Boolean = 0,
-
-        // Numeric 10 - 100
-        Short = 10,
-        Long = 20,
-        Double = 30,
-
-        // Text 100 - 200
-        SmallText = 100,
-        MediumText = 110,
-        LargeText = 120,
-
-        // Date 200 - 300
-        DateTime = 200
-    }
-
-    public class ColumnDefinition
-    {
-        public ColumnDefinition() { }
-
-        public ColumnDefinition(string columnName, DataType dataType)
-        {
-            ColumnName = columnName;
-            DataType = dataType;
-        }
-
-        public ColumnDefinition(string columnName, DataType dataType, bool primaryKey)
-        {
-            ColumnName = columnName;
-            DataType = dataType;
-            PrimaryKey = primaryKey;
-        }
-
-        public ColumnDefinition(string columnName, DataType dataType, bool primaryKey, bool notNull)
-        {
-            ColumnName = columnName;
-            DataType = dataType;
-            PrimaryKey = primaryKey;
-            NotNull = notNull;
-        }
-
-
-        public string ColumnName { get; set; }
-
-        public DataType DataType { get; set; }
-
-        public bool NotNull { get; set; }
-        public string Default { get; set; }
-
-        public bool RowId { get; set; }
-
-        public bool PrimaryKey { get; set; }
-        public bool Unique { get; set; }
-
-    }
-
-    [InheritedExport(typeof(DatabaseConfigurationPage))]
-    public interface DatabaseConfigurationPage
-    {
-
-        string PageName { get; }
-
-        ImageSource Image { get; }
-
-        event SettingChanged_Handler SettingChanged;
-
-        string prefix { get; set; }
-
-        void LoadConfiguration(DataTable dt);
-
-        void SaveConfiguration(DataTable dt);
-
-        Application_Type ApplicationType { get; set; }
-
-        IDatabasePlugin Plugin { get; }
-
-    }
-
-    public enum Application_Type
-    {
-        Client = 0,
-        Server = 1
-    }
-
-    public delegate void SettingChanged_Handler(string name, string oldVal, string newVal);
 
 }

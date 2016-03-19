@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.Data;
 
 namespace TH_Global.Functions
 {
     public static class DataTable_Functions
     {
-
 
         public static string GetRowValue(string column, DataRow row)
         {
@@ -57,8 +52,10 @@ namespace TH_Global.Functions
                         {
                             result = temp_dt.Rows[0][0].ToString();
                         }
+
+                        temp_dt.Dispose();
                     }
-                }   
+                }
             }
 
             return result;
@@ -75,6 +72,7 @@ namespace TH_Global.Functions
                 dv.RowFilter = keyColumn + "='" + key + "'";
                 DataTable temp_dt = dv.ToTable();
                 foreach (DataRow row in temp_dt.Rows) result.Add(row);
+                temp_dt.Dispose();
             }
 
             return result;

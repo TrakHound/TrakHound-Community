@@ -19,45 +19,89 @@ namespace TH_Global.Functions
                 XmlElement element = doc.DocumentElement;
 
                 var node = element.SelectSingleNode(xPath);
-                if (node != null)
-                {
-                    node.InnerText = text;
-                    result = true;
-                }
+                if (node == null) node = AddNode(doc, xPath);
 
-
-
-                //string[] names = address.Split('/');
-                ////foreach (string name in names)
-                //for (var x = 0; x <= names.Length - 1; x++)
-                //{
-                //    node = element.SelectSingleNode(names[x]);
-                //    if (node != null)
-                //    {
-                //        if (x == names.Length - 1)
-                //        {
-                //            node.InnerText = text;
-                //            result = true;
-                //            break;
-                //        }
-                //    }
-                //    else break;
-
-                //    //node = element.SelectSingleNode(names[x]);
-                //    //if (node != null)
-                //    //{
-                //    //    if (x == names.Length - 1)
-                //    //    {
-                //    //        node.InnerText = text;
-                //    //        result = true;
-                //    //        break;
-                //    //    }
-                //    //}
-                //    //else break;
-                //}
+                node.InnerText = text;
+                result = true;
             }
 
             return result;
+        }
+
+        public static bool SetAttribute(XmlDocument doc, string xPath, string attributeName, string attributeValue)
+        {
+            bool result = false;
+
+            if (doc != null)
+            {
+                XmlElement element = doc.DocumentElement;
+
+                var node = element.SelectSingleNode(xPath);
+                if (node == null) node = AddNode(doc, xPath);
+
+                var attr = doc.CreateAttribute(attributeName);
+                attr.Value = attributeValue;
+
+                node.Attributes.SetNamedItem(attr);
+                
+                result = true;
+            }
+
+            return result;
+        }
+
+        public static string GetInnerText(XmlDocument doc, string xPath)
+        {
+            string result = null;
+
+            if (doc != null)
+            {
+                XmlElement element = doc.DocumentElement;
+
+                var node = element.SelectSingleNode(xPath);
+                if (node != null)
+                {
+                    result = node.InnerText;
+                }
+            }
+
+            return result;
+        }
+
+        public static XmlNode AddNode(XmlDocument doc, string xPath)
+        {
+            XmlNode result = null;
+
+            if (doc != null)
+            {
+                XmlElement element = doc.DocumentElement;
+
+                if (doc.DocumentElement != null)
+                {
+                    var node = makeXPath(doc, doc.DocumentElement as XmlNode, xPath);
+                    if (node != null) result = node;
+                }
+            }
+
+            return result;
+        }
+
+        static private XmlNode makeXPath(XmlDocument doc, XmlNode parent, string xPath)
+        {
+            // grab the next node name in the xpath; or return parent if empty
+            string[] partsOfXPath = xPath.Trim('/').Split('/');
+            string nextNodeInXPath = partsOfXPath.First();
+            if (string.IsNullOrEmpty(nextNodeInXPath))
+                return parent;
+
+            // get or create the node from the name
+            XmlNode node = parent.SelectSingleNode(nextNodeInXPath);
+            if (node == null)
+                node = parent.AppendChild(doc.CreateElement(nextNodeInXPath));
+
+            // rejoin the remainder of the array as an xpath expression and recurse
+            string rest = String.Join("/", partsOfXPath.Skip(1).ToArray());
+            return makeXPath(doc, node, rest);
         }
 
         public static XmlDocument StringToXmlDocument(string str)
@@ -86,7 +130,6 @@ namespace TH_Global.Functions
                 return stringWriter.GetStringBuilder().ToString();
             }
         }
-
 
     }
 }

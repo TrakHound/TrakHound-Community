@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -28,7 +29,7 @@ namespace TrakHound_Client.Pages.About.Information
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.Page
+    public partial class Page : UserControl, TH_Global.IPage
     {
 
         public Page()
@@ -73,21 +74,16 @@ namespace TrakHound_Client.Pages.About.Information
 
         //}
 
-        public string PageName { get { return "Information"; } }
-
-
-        //public string PageName
-        //{
-        //    get { return (string)GetValue(PageNameProperty); }
-        //    //set { SetValue(PageNameProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty PageNameProperty =
-        //    DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Information"));
-
-        
+        public string Title { get { return "Information"; } }
 
         public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Pages/About/Information/Information_01.png")); } }
+
+
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
         public object PageContent { get; set; }
 

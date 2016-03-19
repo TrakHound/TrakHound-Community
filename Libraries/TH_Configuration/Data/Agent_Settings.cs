@@ -9,23 +9,116 @@ using System.Collections.Generic;
 namespace TH_Configuration
 {
 
-    public class Agent_Settings
+    public class Agent_Settings : IConfiguration
     {
+        public event ConfigurationPropertyChanged_Handler ConfigurationPropertyChanged;
 
-        public string ServiceName { get; set; }
-        public string IP_Address { get; set; }
-        public int Port { get; set; }
+        private string _serviceName;
+        public string ServiceName
+        {
+            get { return _serviceName; }
+            set
+            {
+                _serviceName = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("ServiceName", _serviceName);
+            }
+        }
 
-        public string Device_Name { get; set; }
+        private string _address;
+        public string Address
+        {
+            get { return _address; }
+            set
+            {
+                _address = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("Address", _address);
+            }
+        }
 
-        public int Heartbeat { get; set; }
+        /// <summary>
+        /// Deprecated Property (Use 'Address')
+        /// </summary>
+        public string IP_Address
+        {
+            get { return _address; }
+            set
+            {
+                _address = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("Address", _address);
+            }
+        }
 
-        public string ProxyAddress { get; set; }
-        public int ProxyPort { get; set; }
+        private int _port;
+        public int Port
+        {
+            get { return _port; }
+            set
+            {
+                _port = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("Port", _port.ToString());
+            }
+        }
+
+        private string _deviceName;
+        public string DeviceName
+        {
+            get { return _deviceName; }
+            set
+            {
+                _deviceName = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("DeviceName", _deviceName);
+            }
+        }
+
+        /// <summary>
+        /// Deprecated Property (Use 'DeviceName')
+        /// </summary>
+        public string Device_Name
+        {
+            get { return _deviceName; }
+            set
+            {
+                _deviceName = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("DeviceName", _deviceName);
+            }
+        }
+
+        private int _heartbeat;
+        public int Heartbeat
+        {
+            get { return _heartbeat; }
+            set
+            {
+                _heartbeat = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("Heartbeat", _heartbeat.ToString());
+            }
+        }
+
+        private string _proxyAddress;
+        public string ProxyAddress
+        {
+            get { return _proxyAddress; }
+            set
+            {
+                _proxyAddress = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("ProxyAddress", _proxyAddress);
+            }
+        }
+
+        private int _proxyPort;
+        public int ProxyPort
+        {
+            get { return _proxyPort; }
+            set
+            {
+                _proxyPort = value;
+                if (ConfigurationPropertyChanged != null) ConfigurationPropertyChanged("ProxyPort", _proxyPort.ToString());
+            }
+        }
 
 
+        #region "OBSOLETE 1-23-16"
 
-        // OBSOLETE 1-23-16
         public int Current_Heartbeat { get; set; }
         public int Sample_Heartbeat { get; set; }
 
@@ -40,6 +133,8 @@ namespace TH_Configuration
         // List of values that are to be Ommitted from the Instance table 
         // (to prevent some values that change often from creating a ton of instance rows)
         public List<string> OmitInstance = new List<string>();
+
+        #endregion
 
     }
 

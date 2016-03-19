@@ -37,7 +37,8 @@ namespace TrakHound_Client
 
         void item_Clicked(Menus.Plugins.PluginItem item)
         {
-            if (item.plugin != null) AddPageAsTab(item.plugin, item.plugin.Title, item.plugin.Image);
+            //if (item.plugin != null) AddPageAsTab(item.plugin, item.plugin.Title, item.plugin.Image);
+            if (item.plugin != null) AddTab(item.plugin);
             PluginLauncher.Shown = false;
         }
 

@@ -133,7 +133,7 @@ namespace TH_Device_Server
 
         void UpdateAvailability(bool available)
         {
-            Variables.Update(configuration.Databases_Server, "device_available", available.ToString(), DateTime.Now);
+            Variables.Update(configuration.Databases_Server, "device_available", available.ToString(), DateTime.Now, TablePrefix);
         }
 
         bool GetAvailability(TH_MTConnect.Streams.ReturnData data)

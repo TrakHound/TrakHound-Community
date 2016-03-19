@@ -1,32 +1,19 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.IO;
-using System.Collections.ObjectModel;
-
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 
 using TH_Configuration;
-using TH_Global;
 using TH_Plugins_Client;
 using TH_WPF;
 
@@ -46,15 +33,40 @@ namespace TH_Dashboard
 
         public string Description { get { return "Contains and organizes pages for displaying Device data in various ways. Acts as the Home page for other Device Monitoring Plugins."; } }
 
-        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Images/Dashboard.png")); } }
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/Dashboard_01.png")); } }
+        private BitmapImage _image;
+        public ImageSource Image
+        {
+            get
+            {
+                if (_image == null)
+                {
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/Dashboard_01.png"));
+                    _image.Freeze();
+                }
+
+                return _image;
+            }
+        }
 
 
         public string Author { get { return "TrakHound"; } }
 
-        public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
+        public string AuthorText { get { return "©2016 Feenux LLC. All Rights Reserved"; } }
 
-        public ImageSource AuthorImage { get { return new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/TrakHound_Logo_10_200px.png")); } }
+        private BitmapImage _authorImage;
+        public ImageSource AuthorImage
+        {
+            get
+            {
+                if (_authorImage == null)
+                {
+                    _authorImage = new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/TrakHound_Logo_10_200px.png"));
+                    _authorImage.Freeze();
+                }
+
+                return _authorImage;
+            }
+        }
 
 
         public string LicenseName { get { return "GPLv3"; } }
@@ -105,7 +117,11 @@ namespace TH_Dashboard
             }
         }
 
-        public void Closing() { }
+        public void Opened() { }
+        public bool Opening() { return true; }
+
+        public void Closed() { }
+        public bool Closing() { return true; }
 
         public void Show() 
         {
@@ -144,15 +160,6 @@ namespace TH_Dashboard
 
         #region "Device Properties"
 
-        //public List<Configuration> Devices
-        //{
-        //    get { return (List<Configuration>)GetValue(DevicesProperty); }
-        //    set { SetValue(DevicesProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty DevicesProperty =
-        //    DependencyProperty.Register("Devices", typeof(List<Configuration>), typeof(Dashboard), new PropertyMetadata(null));
-
         private ObservableCollection<Configuration> _devices;
         public ObservableCollection<Configuration> Devices
         {
@@ -161,7 +168,6 @@ namespace TH_Dashboard
                 if (_devices == null)
                 {
                     _devices = new ObservableCollection<Configuration>();
-                    //_devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;
             }
@@ -171,51 +177,11 @@ namespace TH_Dashboard
             }
         }
 
-        //public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-        //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
-        //    {
-        //        DeviceList.Clear();
-        //    }
-
-        //    if (e.NewItems != null)
-        //    {
-        //        foreach (Configuration newConfig in e.NewItems)
-        //        {
-        //            if (newConfig != null) AddDeviceButton(newConfig);
-        //        }
-        //    }
-
-        //    if (e.OldItems != null)
-        //    {
-        //        foreach (Configuration oldConfig in e.OldItems)
-        //        {
-        //            Devices.Remove(oldConfig);
-
-        //            int index = DeviceList.ToList().FindIndex(x => GetUniqueIdFromListButton(x) == oldConfig.UniqueId);
-        //            if (index >= 0) DeviceList.RemoveAt(index);
-        //        }
-        //    }
-        //}
-
-        //private static string GetUniqueIdFromListButton(ListButton bt)
-        //{
-        //    if (bt != null && bt.DataObject != null)
-        //    {
-        //        if (bt.DataObject.GetType() == typeof(Configuration))
-        //        {
-        //            return ((Configuration)bt.DataObject).UniqueId;
-        //        }
-        //    }
-        //    return null;
-        //}
-
-
         #endregion
 
         #region "Options"
 
-        public TH_Global.Page Options { get; set; }
+        public TH_Global.IPage Options { get; set; }
 
         #endregion
 
@@ -332,25 +298,6 @@ namespace TH_Dashboard
                         {
                             plugin.SubCategories = config.SubCategories;
                             plugin.DataEvent += Plugin_DataEvent;
-
-                            //AddSubPlugins(plugin);
-
-                            //plugin.Plugins = new List<IClientPlugin>();
-
-                            //if (plugin.SubCategories != null)
-                            //{
-                            //    foreach (PluginConfigurationCategory subcategory in plugin.SubCategories)
-                            //    {
-                            //        foreach (PluginConfiguration subConfig in subcategory.PluginConfigurations)
-                            //        {
-                            //            IClientPlugin cplugin = Plugins.Find(x => x.Title.ToUpper() == subConfig.Name.ToUpper());
-                            //            if (cplugin != null)
-                            //            {
-                            //                plugin.Plugins.Add(cplugin);
-                            //            }
-                            //        }
-                            //    }
-                            //}
 
                             plugin.Initialize();
                         }

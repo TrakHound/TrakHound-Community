@@ -76,6 +76,8 @@ namespace TrakHound_Client
             "Emergency Stop",
             "Controller Mode",
             "Execution Mode",
+            "Alarm",
+            "Part Count",
 
             "Table Manager",
             "Status Data" 
@@ -228,14 +230,16 @@ namespace TrakHound_Client
             // Add Buttons for Plugins on Plugin Options page
             if (pluginsPage != null)
             {
-                pluginsPage.ClearInstalledItems();
+                Plugins_AddItems(result);
 
-                result.Sort((a, b) => a.Name.CompareTo(b.Name));
+                //pluginsPage.ClearInstalledItems();
 
-                foreach (var config in result)
-                {
-                    pluginsPage.AddPlugin(config);
-                }
+                //result.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+                //foreach (var config in result)
+                //{
+                //    pluginsPage.AddPlugin(config);
+                //}
             }
 
             return result;
@@ -358,7 +362,7 @@ namespace TrakHound_Client
                         AddAppToList(plugin);
 
                         // If set to OpenOnStartUp then Open new Tab
-                        if (plugin.OpenOnStartUp) AddPageAsTab(plugin, plugin.Title, plugin.Image);
+                        if (plugin.OpenOnStartUp) AddTab(plugin);
 
                         // Create an Options page (if exists)
                         Plugin_CreateOptionsPage(plugin);
@@ -453,22 +457,18 @@ namespace TrakHound_Client
         /// <param name="info"></param>
         private void Plugin_ShowRequested(PluginShowInfo info)
         {
-            IClientPlugin plugin = null;
-
             if (info.Page.GetType() == typeof(IClientPlugin))
             {
-                plugin = (IClientPlugin)info.Page;
+                var plugin = (IClientPlugin)info.Page;
+
+                string title = info.PageTitle;
+                if (info.PageTitle == null && plugin != null) title = plugin.Title;
+
+                ImageSource image = info.PageImage;
+                if (info.PageImage == null && plugin != null) image = plugin.Image;
+
+                AddTab(plugin, title, image);
             }
-
-            string title = info.PageTitle;
-            if (info.PageTitle == null && plugin != null) title = plugin.Title;
-
-            ImageSource image = info.PageImage;
-            if (info.PageImage == null && plugin != null) image = plugin.Image;
-
-            object page = info.Page;
-
-            AddPageAsTab(page, title, image);
         }
 
         /// <summary>
@@ -505,21 +505,21 @@ namespace TrakHound_Client
                 if (!config.Enabled)
                 {
                     // Remove TabItem
-                    foreach (TH_TabItem ti in Pages_TABCONTROL.Items.OfType<TH_TabItem>().ToList())
-                    {
-                        if (ti.Header != null)
-                        {
-                            if (ti.Header.ToString().ToUpper() == config.Name.ToUpper())
-                            {
-                                if (ti.Content.GetType() == typeof(Grid))
-                                {
-                                    Grid grid = ti.Content as Grid;
-                                    grid.Children.Clear();
-                                }
-                                Pages_TABCONTROL.Items.Remove(ti);
-                            }
-                        }
-                    }
+                    //foreach (TH_TabItem ti in Pages_TABCONTROL.Items.OfType<TH_TabItem>().ToList())
+                    //{
+                    //    if (ti.Header != null)
+                    //    {
+                    //        if (ti.Header.ToString().ToUpper() == config.Name.ToUpper())
+                    //        {
+                    //            if (ti.Content.GetType() == typeof(Grid))
+                    //            {
+                    //                Grid grid = ti.Content as Grid;
+                    //                grid.Children.Clear();
+                    //            }
+                    //            Pages_TABCONTROL.Items.Remove(ti);
+                    //        }
+                    //    }
+                    //}
 
                     if (optionsManager != null)
                     {
@@ -552,11 +552,15 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    plugin.Devices.Clear();
-                    foreach (var config in configs) plugin.Devices.Add(config);
+                    if (plugin.Devices != null)
+                    {
+                        plugin.Devices.Clear();
+                        foreach (var config in configs) plugin.Devices.Add(config);
+                    }
                 }
+                ), Priority, new object[] { });      
             }
         }
 
@@ -568,16 +572,20 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                    if (index >= 0)
+                    if (plugin.Devices != null)
                     {
-                        plugin.Devices.RemoveAt(index);
+                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                        if (index >= 0)
+                        {
+                            plugin.Devices.RemoveAt(index);
 
-                        if (config.ClientEnabled) plugin.Devices.Insert(index, config);
+                            if (config.ClientEnabled) plugin.Devices.Insert(index, config);
+                        }
                     }
                 }
+                ), Priority, new object[] { });
             }
         }
 
@@ -589,11 +597,15 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                    if (index < 0) plugin.Devices.Add(config);
+                    if (plugin.Devices != null)
+                    {
+                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                        if (index < 0) plugin.Devices.Add(config);
+                    }
                 }
+                ), Priority, new object[] { });
             }
         }
 
@@ -605,11 +617,15 @@ namespace TrakHound_Client
         {
             foreach (var plugin in Plugins)
             {
-                if (plugin.Devices != null)
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
-                    if (index >= 0) plugin.Devices.RemoveAt(index);
+                    if (plugin.Devices != null)
+                    {
+                        int index = plugin.Devices.ToList().FindIndex(x => x.UniqueId == config.UniqueId);
+                        if (index >= 0) plugin.Devices.RemoveAt(index);
+                    }
                 }
+                ), Priority, new object[] { });
             }
         }
 
@@ -636,13 +652,13 @@ namespace TrakHound_Client
         /// <summary>
         /// Signal plugins to close
         /// </summary>
-        private void Plugins_Closing()
+        private void Plugins_Closed()
         {
             foreach (var plugin in Plugins)
             {
                 try
                 {
-                    plugin.Closing();
+                    plugin.Closed();
                 }
                 catch (Exception ex) { }
             }

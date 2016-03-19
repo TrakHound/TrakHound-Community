@@ -26,7 +26,7 @@ namespace TH_Plugins_Client
     /// All PlugIns MUST contain the following properties and methods.
     /// </summary>
     [InheritedExport(typeof(IClientPlugin))]
-    public interface IClientPlugin
+    public interface IClientPlugin : IPage
     {
 
         #region "Description"
@@ -135,11 +135,11 @@ namespace TH_Plugins_Client
         /// </summary>
         void Initialize();
 
-        /// <summary>
-        /// Called when parent Window or plugin is closing so that the plugin can 
-        /// close any connections or dispose of anything it needs to
-        /// </summary>
-        void Closing();
+        void Opened();
+        bool Opening();
+
+        void Closed();
+        bool Closing();
 
         #endregion
 
@@ -180,7 +180,7 @@ namespace TH_Plugins_Client
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page
         /// (use if Plugin has parameters or options for how it operates or looks)
         /// </summary>
-        Page Options { get; set; }
+        IPage Options { get; set; }
 
         #endregion
 

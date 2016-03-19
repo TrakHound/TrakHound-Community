@@ -1,4 +1,4 @@
-﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
 
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
@@ -8,6 +8,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              
              xmlns:local="clr-namespace:TH_DeviceCompare.Controls.DeviceDisplay"       
              xmlns:TH_WPF="clr-namespace:TH_WPF;assembly=TH_WPF"
@@ -56,7 +57,7 @@
             </Grid.RenderTransform>
 
             <!--Device Image-->
-            <Image Grid.Row="2" Source="{Binding Device_Image}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="None" >
+            <Image Grid.Row="2" Source="{Binding Device_Image, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Center" Stretch="None" >
                 <Image.Effect>
                     <DropShadowEffect Direction="225" Color="#66000000" ShadowDepth="2" BlurRadius="5" Opacity="0.3"/>
                 </Image.Effect>
@@ -223,7 +224,7 @@
                 </TextBlock>
 
                 <!--Device Logo-->
-                <Image Grid.Row="1" Source="{Binding Manufacturer_Logo}" Margin="10,5" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="160">
+                <Image Grid.Row="1" Source="{Binding Manufacturer_Logo, Mode=OneWay}" Margin="10,5" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="160">
                     <Image.Style>
                         <Style TargetType="Image">
                             <Setter Property="Visibility" Value="Visible"/>
@@ -350,7 +351,7 @@
                     <!--Alert Indicator-->
                     <Rectangle  HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White" Opacity="0.8">
                         <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG"  Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Warning_01_200px.png"  />
+                            <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Warning_01_200px.png"  />
                         </Rectangle.Resources>
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
@@ -358,13 +359,6 @@
                                 <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
                                 <Setter Property="Margin" Value="10,0"/>
                                 <Setter Property="OpacityMask" Value="{StaticResource IMG}"/>
-                                <!--<Style.Triggers>
-                                    <DataTrigger Binding="{Binding Collapsed}" Value="true">
-                                        <Setter Property="Height" Value="25"/>
-                                        <Setter Property="Width" Value="25"/>
-                                        <Setter Property="Margin" Value="10,0,5,0"/>
-                                    </DataTrigger>
-                                </Style.Triggers>-->
                             </Style>
                         </Rectangle.Style>
                     </Rectangle>
@@ -449,7 +443,26 @@
                             </Style.Triggers>
                         </Style>
                     </Grid.Style>
-                  
+
+                    <!--Device ID-->
+                    <Viewbox MaxWidth="100" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <Viewbox.Style>
+                            <Style TargetType="Viewbox">
+                                <Setter Property="MaxHeight" Value="75"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Small}">
+                                        <Setter Property="MaxHeight" Value="40"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Viewbox.Style>
+
+                        <TextBlock Text="{Binding DeviceDescription.Device_ID}" 
+                                   TextAlignment="Right" Foreground="#88ffffff"
+                                   />
+
+                    </Viewbox>
+
                     <!--Device Info-->
                     <StackPanel Margin="10" VerticalAlignment="Top">
                         <StackPanel.Style>
@@ -479,22 +492,6 @@
                         <TextBlock Text="{Binding DeviceDescription.Serial}" FontSize="8pt" Foreground="#aaffffff"/>
 
                     </StackPanel>
-
-                    <!--Device ID-->
-                    <TextBlock Text="{Binding DeviceDescription.Device_ID}" 
-                                   TextAlignment="Right" VerticalAlignment="Center" Foreground="#88ffffff"
-                                   Margin="5,0,5,10">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="FontSize" Value="45pt"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Small}">
-                                        <Setter Property="FontSize" Value="30pt"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
 
                 </Grid>
 
@@ -582,7 +579,7 @@
                                 <!--Scheduled DownTime Icon-->
                                 <Grid Margin="5" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
                                     <Grid.Resources>
-                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/ScheduledDownTime_01.png"  />
+                                        <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/ScheduledDownTime_01.png"  />
                                     </Grid.Resources>
                                     <Grid.Style>
                                         <Style TargetType="Grid">

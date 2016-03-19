@@ -22,10 +22,10 @@ namespace TrakHound_Client
 
             splsh.Version = version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
 
-            splash_TIMER = new System.Timers.Timer();
-            splash_TIMER.Interval = 4000;
-            splash_TIMER.Elapsed += splash_TIMER_Elapsed;
-            splash_TIMER.Enabled = true;
+            //splash_TIMER = new System.Timers.Timer();
+            //splash_TIMER.Interval = 4000;
+            //splash_TIMER.Elapsed += splash_TIMER_Elapsed;
+            //splash_TIMER.Enabled = true;
 
         }
 

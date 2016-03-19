@@ -110,11 +110,7 @@ namespace TH_WPF
                 PreviousValue = _value;
             }
 
-            //_value = d;
-
             ValueTimer_Start();
-
-            //ValueText = Value.ToString(Value_Format);
         }
 
         System.Timers.Timer value_TIMER;

@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-using System.Threading;
-
-using TH_Global.Functions;
 
 namespace TH_WPF
 {
@@ -141,28 +131,6 @@ namespace TH_WPF
         
         Thread backgroundcolor_THREAD;
 
-        //public void SetBackgroundColor(ImageSource img)
-        //{
-        //    double brightness = 0;
-
-        //    if (img != null)
-        //    {
-        //        BitmapImage bmpImg = img as BitmapImage;
-        //        if (bmpImg != null)
-        //        {
-        //            System.Drawing.Bitmap bmp = TH_Global.Functions.Image_Functions.BitmapImage2Bitmap(bmpImg);
-        //            if (bmp != null)
-        //            {
-        //                System.Drawing.Color color = TH_Global.Functions.Image_Functions.CalculateAverageColor(bmp);
-        //                brightness = color.GetBrightness();
-        //            }
-        //        }
-        //    }
-
-        //    if (brightness > 0.8) bd.Background = new SolidColorBrush(Color_Functions.GetColorFromString("#ddd"));
-        //    else bd.Background = null;
-        //}
-
         void SetBackgroundColor(ImageSource img)
         {
             if (img != null)
@@ -204,9 +172,6 @@ namespace TH_WPF
 
         void LoadProfileImage_GUI(double brightness)
         {
-            //if (brightness > 0.8) bd.Background = new SolidColorBrush(Color_Functions.GetColorFromString("#ddd"));
-            //else bd.Background = null;
-
             if (brightness > 0.8) DarkBackground = true;
             else DarkBackground = false;
         }

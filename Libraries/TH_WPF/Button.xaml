@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              
              xmlns:local="clr-namespace:TH_WPF"
              
@@ -13,16 +14,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" 
              d:DesignWidth="30"
-
              >
-
-    <!--<UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>-->
 
     <Border x:Name="bd">
 
@@ -109,7 +101,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Image-->
-                        <Grid>
+                        <Grid MaxHeight="{Binding MaxImageHeight}">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Visible"/>
@@ -126,7 +118,7 @@
 
                             <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
                                 <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                                    <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="{Binding Image, Mode=OneWay}" />
                                 </Grid.Resources>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
