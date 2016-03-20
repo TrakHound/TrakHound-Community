@@ -76,6 +76,7 @@ namespace TrakHound_Client
 
             header.Clicked += TabHeader_Clicked;
             header.CloseClicked += TabHeader_CloseClicked;
+            header.Opened += TabHeader_Opened;
             header.Closed += TabHeader_Closed;
 
             TabHeaders.Add(header);
@@ -85,10 +86,96 @@ namespace TrakHound_Client
             SelectTab(header);
         }
 
+        private void TabHeader_Opened(object sender, EventArgs e)
+        {
+            SetTabWidths();
+        }
+
         private void TabHeader_Closed(object sender, EventArgs e)
         {
             var tab = (TabHeader)sender;
             if (TabHeaders.Contains(tab)) TabHeaders.Remove(tab);
+
+            SetTabWidths();
+        }
+
+        private void SetTabWidths()
+        {
+            if (TabHeaders.Count > 0)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    double windowWidth = TabPanel.ActualWidth;
+                    double tabsWidth = GetTabPanelWidth();
+
+                    if (tabsWidth > windowWidth)
+                    {
+                        var tabs = TabHeaders.ToList().OrderByDescending(x => x.ActualWidth).ToList();
+                        double widestTab = tabs[0].ActualWidth;
+
+                        tabs = tabs.FindAll(x => x.ActualWidth >= widestTab);
+
+                        foreach (var tab in tabs)
+                        {
+                            double increment = (tabsWidth - windowWidth) / tabs.Count;
+
+                            int index = TabHeaders.ToList().FindIndex(x => x.Id == tab.Id);
+                            if (index >= 0)
+                            {
+                                var t = TabHeaders[index];
+                                t.MaxWidth = Math.Max(TabHeader.MIN_WIDTH, t.ActualWidth - increment);
+                            }
+
+                            tabsWidth = GetTabPanelWidth();
+                        }
+                    }
+                    else if (tabsWidth < windowWidth)
+                    {
+                        var tabs = TabHeaders.ToList().OrderByDescending(x => x.ActualWidth).ToList();
+                        double widestTab = tabs[0].ActualWidth;
+
+                        tabs = tabs.FindAll(x => x.ActualWidth >= widestTab);
+
+                        foreach (var tab in tabs)
+                        {
+                            double increment = (windowWidth - tabsWidth) / tabs.Count;
+
+                            int index = TabHeaders.ToList().FindIndex(x => x.Id == tab.Id);
+                            if (index >= 0)
+                            {
+                                var t = TabHeaders[index];
+
+                                double width = t.MaxWidth + increment;
+                                width = Math.Max(width, TabHeader.MIN_WIDTH);
+                                width = Math.Min(width, TabHeader.MAX_WIDTH);
+
+                                t.MaxWidth = width;
+                            }
+
+                            tabsWidth = GetTabPanelWidth();
+                        }
+
+                        //double increment = (windowWidth - tabsWidth) / TabHeaders.Count;
+
+                        //foreach (var tab in TabHeaders)
+                        //{
+                        //    double width = tab.MaxWidth + increment;
+                        //    width = Math.Max(width, TabHeader.MIN_WIDTH);
+                        //    width = Math.Min(width, TabHeader.MAX_WIDTH);
+
+                        //    tab.MaxWidth = width;
+                        //    //tab.root.MaxWidth = width;
+                        //}
+                    }
+                }), MainWindow.PRIORITY_CONTEXT_IDLE, new object[] { });
+            }
+        }
+
+        private double GetTabPanelWidth()
+        {
+            double tabsWidth = 0;
+            foreach (var tab in TabHeaders) tabsWidth += tab.ActualWidth;
+            return tabsWidth;
         }
 
         #region "Select"

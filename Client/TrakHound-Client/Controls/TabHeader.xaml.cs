@@ -21,6 +21,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TrakHound_Client.Controls
 {
@@ -31,22 +32,30 @@ namespace TrakHound_Client.Controls
     {
         public TabHeader()
         {
+            Id = String_Functions.RandomString(20);
+
             InitializeComponent();
             DataContext = this;
 
             root.Opacity = 0;
             root.MaxWidth = START_WIDTH;
+            MinWidth = START_WIDTH;
+            MaxWidth = MAX_WIDTH;
         }
 
         public TabPage Page { get; set; }
 
         public string Tag { get; set; }
+        public string Id { get; set; }
 
         // Text to be displayed on Tab
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
+            set
+            {
+                SetValue(TextProperty, value);
+            }
         }
 
         public static readonly DependencyProperty TextProperty =
@@ -75,11 +84,14 @@ namespace TrakHound_Client.Controls
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(TabHeader), new PropertyMetadata(false));
 
 
+
+
         #region "Events"
 
         public delegate void Click_Handler(TabHeader header);
         public event Click_Handler Clicked;
         public event Click_Handler CloseClicked;
+        public event EventHandler Opened;
         public event EventHandler Closed;
 
         private void Control_MouseDown(object sender, MouseButtonEventArgs e)
@@ -108,8 +120,9 @@ namespace TrakHound_Client.Controls
 
         #region "Opening"
 
-        const double START_WIDTH = 45;
-        const double MAX_WIDTH = 320;
+        public const double START_WIDTH = 45; // Just the Icon
+        public const double MIN_WIDTH = 70; // Icon + Close Button
+        public const double MAX_WIDTH = 320;
 
         const double TAB_OPENING_OPACITY_ANIMATION_TIME = 300;
         const double TAB_OPENING_HEIGHT_ANIMATION_TIME = 300;
@@ -118,6 +131,8 @@ namespace TrakHound_Client.Controls
         public void Open(bool fade = false)
         {
             if (fade) AnimateTabOpening_Opacity();
+            else root.Opacity = 1;
+
             AnimateTabOpening_Height();
         }
 
@@ -143,14 +158,11 @@ namespace TrakHound_Client.Controls
 
         private void AnimateTabOpening_Height()
         {
-            root.Opacity = 1;
-
             var animation = new DoubleAnimation();
             animation.From = 0;
             animation.To = 32;
             animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_OPENING_HEIGHT_ANIMATION_TIME));
             animation.Completed += Animation_Completed;
-            //animation.BeginTime = new TimeSpan(0, 0, 0, 0, 100);
 
             var ease = new CubicEase();
             ease.EasingMode = EasingMode.EaseIn;
@@ -165,9 +177,9 @@ namespace TrakHound_Client.Controls
 
             var animation = new DoubleAnimation();
             animation.From = START_WIDTH;
-            animation.To = MAX_WIDTH;
+            animation.To = MaxWidth;
             animation.Duration = new Duration(TimeSpan.FromMilliseconds(TAB_OPENING_WIDTH_ANIMATION_TIME));
-            //animation.BeginTime = new TimeSpan(0, 0, 0, 0, 100);
+            animation.Completed += Opening_WIDTH_Completed;
 
             var ease = new CubicEase();
             ease.EasingMode = EasingMode.EaseIn;
@@ -176,12 +188,18 @@ namespace TrakHound_Client.Controls
             root.BeginAnimation(MaxWidthProperty, animation);
         }
 
+        private void Opening_WIDTH_Completed(object sender, EventArgs e)
+        {
+            MinWidth = MIN_WIDTH;
+            if (Opened != null) Opened(this, new EventArgs());
+        }
+
         #endregion
 
         #region "Closing"
 
         const double TAB_CLOSING_ANIMATION_TIME = 300;
-        const double SPACE_CLOSING_ANIMATION_TIME = 200;
+        const double SPACE_CLOSING_ANIMATION_TIME = 500;
 
         double spaceWidth = 0;
 
@@ -194,6 +212,8 @@ namespace TrakHound_Client.Controls
         {
             spaceWidth = root.ActualWidth;
             Width = spaceWidth;
+
+            Console.WriteLine("spaceWidth = " + spaceWidth);
 
             var animation = new DoubleAnimation();
             animation.Completed += TabClosingAnimation_Completed;
@@ -215,6 +235,8 @@ namespace TrakHound_Client.Controls
 
         private void AnimateSpaceClosing()
         {
+            MinWidth = 0;
+
             var animation = new DoubleAnimation();
             animation.Completed += SpaceClosingAnimation_Completed;
             animation.From = spaceWidth;
@@ -260,34 +282,69 @@ namespace TrakHound_Client.Controls
 
         #endregion
 
-        const double MAX_TEXT_WIDTH = 200;
+        //private double _maxWidth;
+        //public double MaxWidth
+        //{
+        //    get { return _maxWidth; }
+        //    set
+        //    {
+        //        _maxWidth = value;
+        //        _maxWidth = Math.Min(value, MAX_TEXT_WIDTH);
+        //        ChangeWidth(_maxWidth, txt);
+        //    }
+        //}
+
+        private const double MAX_TEXT_WIDTH = 200;
 
         private void TextBlock_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (e.WidthChanged)
             {
-                if (e.NewSize.Width > MAX_TEXT_WIDTH)
-                {
-                    var txt = (TextBlock)sender;
+                ChangeWidth(e.NewSize.Width, txt);
+            }
+        }
 
-                    string t = txt.Text;
+        private void ChangeWidth(double width, TextBlock txt)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                double maxWidth = MAX_TEXT_WIDTH;
+                if (MaxWidth < MAX_WIDTH)
+                {
+                    maxWidth = MaxWidth - 120;
+                    maxWidth = Math.Min(MAX_TEXT_WIDTH, maxWidth);
+                    maxWidth = Math.Max(10, maxWidth);
+                }
+
+                if (width > maxWidth)
+                {
+                    string t = Text;
 
                     if (t != null)
                     {
-                        // Keep removing characters from the string until the max width is met
-                        while (GetFormattedText(t).Width > MAX_TEXT_WIDTH)
+                        double textWidth = GetFormattedText(t).Width;
+
+                        if (textWidth > maxWidth)
                         {
-                            t = t.Substring(0, t.Length - 1);
+                            // Keep removing characters from the string until the max width is met
+                            while (textWidth > maxWidth)
+                            {
+                                t = t.Substring(0, t.Length - 1);
+                                textWidth = GetFormattedText(t).Width;
+                            }
+
+                            // Make sure the last character is not a space
+                            if (t[t.Length - 1] == ' ' && txt.Text.Length > t.Length + 2) t = txt.Text.Substring(0, t.Length + 2);
+
+                            // Add the ...
+                            txt.Text = t + "...";
                         }
-
-                        // Make sure the last character is not a space
-                        if (t[t.Length - 1] == ' ' && txt.Text.Length > t.Length + 2) t = txt.Text.Substring(0, t.Length + 2);
-
-                        // Add the ...
-                        txt.Text = t + "...";
+                        else txt.Text = Text;
                     }
                 }
-            }
+                else txt.Text = Text;
+
+            }), MainWindow.PRIORITY_CONTEXT_IDLE, new object[] { });
         }
 
         private static FormattedText GetFormattedText(string s)
@@ -301,6 +358,13 @@ namespace TrakHound_Client.Controls
                         Brushes.Black);
         }
 
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+            {
+                ChangeWidth(e.NewSize.Width, txt);
+            }
+        }
     }
 
     public class DesignTime_TH_TabHeader_Top : TabHeader

@@ -27,6 +27,10 @@ namespace TrakHound_Client
 
         private const int DEFAULT_ANIMATION_FRAMERATE = 60;
 
+        public const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
+        public const System.Windows.Threading.DispatcherPriority PRIORITY_CONTEXT_IDLE = System.Windows.Threading.DispatcherPriority.ContextIdle;
+        public const System.Windows.Threading.DispatcherPriority PRIORITY_APPLICATION_IDLE = System.Windows.Threading.DispatcherPriority.ApplicationIdle;
+
         public void init()
         {
             AppDomain currentDomain = AppDomain.CurrentDomain;
@@ -95,7 +99,6 @@ namespace TrakHound_Client
         {
             System.Windows.MessageBox.Show(e.ExceptionObject.ToString());
         }
-      
 
     }
 

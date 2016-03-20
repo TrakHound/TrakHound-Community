@@ -38,7 +38,7 @@ namespace TrakHound_Client
 
         private void Devicemanager_DeviceListUpdated(List<Configuration> configs)
         {
-            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), Priority, new object[] { configs });
+            this.Dispatcher.BeginInvoke(new Action<List<Configuration>>(UpdateDeviceList), MainWindow.PRIORITY_BACKGROUND, new object[] { configs });
         }
 
         private void Devicemanager_DeviceUpdated(Configuration config, DeviceManager.DeviceUpdateArgs args)
@@ -61,7 +61,7 @@ namespace TrakHound_Client
 
         private void DeviceManager_DevicesLoaded()
         {
-            this.Dispatcher.BeginInvoke(new Action(DeviceManager_DevicesLoaded_GUI), Priority, new object[] { });
+            this.Dispatcher.BeginInvoke(new Action(DeviceManager_DevicesLoaded_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { });
         }
 
         private void DeviceManager_DevicesLoaded_GUI()
@@ -74,7 +74,7 @@ namespace TrakHound_Client
 
         private void DeviceManager_LoadingDevices()
         {
-            this.Dispatcher.BeginInvoke(new Action(DeviceManager_LoadingDevices_GUI), Priority, new object[] { });
+            this.Dispatcher.BeginInvoke(new Action(DeviceManager_LoadingDevices_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { });
         }
 
         private void DeviceManager_LoadingDevices_GUI()

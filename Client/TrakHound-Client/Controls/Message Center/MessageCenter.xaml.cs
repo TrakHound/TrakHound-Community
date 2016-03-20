@@ -105,11 +105,9 @@ namespace TrakHound_Client.Controls.Message_Center
             }
         }
 
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
-
         public void AddMessage(Message_Data data)
         {
-            this.Dispatcher.BeginInvoke(new Action<Message_Data>(AddMessage_GUI), Priority, new object[] { data });
+            this.Dispatcher.BeginInvoke(new Action<Message_Data>(AddMessage_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { data });
         }
 
         void AddMessage_GUI(Message_Data data)

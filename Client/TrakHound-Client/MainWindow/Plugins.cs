@@ -560,7 +560,7 @@ namespace TrakHound_Client
                         foreach (var config in configs) plugin.Devices.Add(config);
                     }
                 }
-                ), Priority, new object[] { });      
+                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });      
             }
         }
 
@@ -585,7 +585,7 @@ namespace TrakHound_Client
                         }
                     }
                 }
-                ), Priority, new object[] { });
+                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });
             }
         }
 
@@ -605,7 +605,7 @@ namespace TrakHound_Client
                         if (index < 0) plugin.Devices.Add(config);
                     }
                 }
-                ), Priority, new object[] { });
+                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });
             }
         }
 
@@ -625,7 +625,7 @@ namespace TrakHound_Client
                         if (index >= 0) plugin.Devices.RemoveAt(index);
                     }
                 }
-                ), Priority, new object[] { });
+                ), MainWindow.PRIORITY_BACKGROUND, new object[] { });
             }
         }
 

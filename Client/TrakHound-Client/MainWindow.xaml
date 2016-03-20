@@ -40,6 +40,7 @@
         AllowsTransparency="True"
         
         ResizeMode="NoResize"
+        SizeChanged="Main_Window_SizeChanged"
         Background="#00000000"
         
         FontFamily="arial"
@@ -987,7 +988,7 @@
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
 
-                                        <ItemsControl Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Window_Background}">
+                                        <ItemsControl x:Name="TabPanel" Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Window_Background}">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
                                                     <StackPanel Orientation="Horizontal"/>

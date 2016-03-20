@@ -83,7 +83,7 @@ namespace TrakHound_Client
 
         void Log_Updated(string newline)
         {
-            this.Dispatcher.BeginInvoke(new Action<string>(Log_Updated_GUI), Priority, new object[] { newline });
+            this.Dispatcher.BeginInvoke(new Action<string>(Log_Updated_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { newline });
         }
 
         void Log_Updated_GUI(string newline)

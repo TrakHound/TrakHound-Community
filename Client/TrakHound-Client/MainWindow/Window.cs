@@ -204,6 +204,11 @@ namespace TrakHound_Client
             //this.Cursor = Cursors.SizeWE;
         }
 
+        private void Main_Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SetTabWidths();
+        }
+
         #endregion
 
         #region "Maximize and Taskbar Fix"

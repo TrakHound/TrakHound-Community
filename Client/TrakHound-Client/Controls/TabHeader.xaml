@@ -12,8 +12,9 @@
              xmlns:local="clr-namespace:TrakHound_Client.Controls;assembly=TrakHound-Client"
              xmlns:controls="clr-namespace:TrakHound_Client.Controls"
              
+             SizeChanged="UserControl_SizeChanged"
+             
              mc:Ignorable="d"
-
              >
 
     <UserControl.Resources>
@@ -102,13 +103,17 @@
                         </Style>
                     </Border.Style>
 
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel.Background>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" MinWidth="30"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Background>
                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                 <GradientStop Color="#40ffffff" Offset="0"/>
                                 <GradientStop Color="Transparent" Offset="1"/>
                             </LinearGradientBrush>
-                        </StackPanel.Background>
+                        </Grid.Background>
 
                         <!--Icon and Text-->
                         <Grid Grid.Column="0" Background="Transparent" PreviewMouseDown="Control_MouseDown">
@@ -144,7 +149,7 @@
                             </Rectangle>
 
                             <!--Text-->
-                            <TextBlock Grid.Column="1" Text="{Binding Text}"
+                            <TextBlock x:Name="txt" Grid.Column="1" Text="{Binding Text}"
                                     Margin="10,0,10,0"
                                     MinWidth="50"
                                     MaxWidth="250"
@@ -237,7 +242,8 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="Transparent"/>
+                                            <!--<Setter Property="Fill" Value="Transparent"/>-->
+                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
@@ -264,7 +270,8 @@
                                     </Rectangle.RenderTransform>
                                     <Rectangle.Style>
                                         <Style TargetType="Rectangle">
-                                            <Setter Property="Fill" Value="Transparent"/>
+                                            <!--<Setter Property="Fill" Value="Transparent"/>-->
+                                            <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding MouseOver}" Value="true">
                                                     <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
@@ -284,7 +291,7 @@
 
                         </Border>
 
-                    </StackPanel>
+                    </Grid>
 
                 </Border>
 

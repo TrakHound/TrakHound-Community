@@ -29,16 +29,14 @@ namespace TrakHound_Client
 
         }
 
-        void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), Priority, new object[] { }); }
+        void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { }); }
 
         void Splash_Show_GUI() { if (splsh != null) splsh.Show(); }
 
         void Splash_Close() { if (splsh != null) splsh.Close(); }
 
-        //const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Render;
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
 
-        void Splash_UpdateStatus(string status, double loadingProgress) { this.Dispatcher.Invoke(new Action<string, double>(Splash_UpdateStatus_GUI), Priority, new object[] { status, loadingProgress }); }
+        void Splash_UpdateStatus(string status, double loadingProgress) { this.Dispatcher.Invoke(new Action<string, double>(Splash_UpdateStatus_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { status, loadingProgress }); }
 
         void Splash_UpdateStatus_GUI(string status, double loadingProgress) 
         {
