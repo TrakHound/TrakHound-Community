@@ -299,11 +299,11 @@ namespace TH_StatusData
             var list = tables.ToList();
 
             // Assign tables
-            DataTable variables = GetTableFromList(config.DatabaseId + "_" + TableNames.Variables, list);
-            DataTable snapshots = GetTableFromList(config.DatabaseId + "_" + TableNames.SnapShots, list);
-            DataTable geneventvalues = GetTableFromList(config.DatabaseId + "_" + TableNames.GenEventValues, list);
-            DataTable shifts = GetTableFromList(config.DatabaseId + "_" + TableNames.Shifts, list);
-            DataTable oee = GetTableFromList(config.DatabaseId + "_" + TableNames.OEE, list);
+            DataTable variables = GetTableFromList(GetTableName(TableNames.Variables, config.DatabaseId), list);
+            DataTable snapshots = GetTableFromList(GetTableName(TableNames.SnapShots, config.DatabaseId), list);
+            DataTable geneventvalues = GetTableFromList(GetTableName(TableNames.GenEventValues, config.DatabaseId), list);
+            DataTable shifts = GetTableFromList(GetTableName(TableNames.Shifts, config.DatabaseId), list);
+            DataTable oee = GetTableFromList(GetTableName(TableNames.OEE, config.DatabaseId), list);
 
             // Get Variable Data
             DataEvent_Data variableData = GetVariables(variables, config);

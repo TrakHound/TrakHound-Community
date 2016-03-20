@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 
 using TH_Configuration;
+using TH_Global.Functions;
 using TH_Plugins_Client;
 
 using TH_DeviceCompare.Controls.DeviceDisplay;
@@ -277,15 +278,16 @@ namespace TH_DeviceCompare
             {
                 foreach (var plugin in plugins)
                 {
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        var p = CreatePluginInstance(plugin, configs);
+                    AddPlugin(plugin, configs);
+                    //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //{
+                    //    var p = CreatePluginInstance(plugin, configs);
 
-                        var cell = CreateCell(p);
-                        if (cell != null) Cells.Add(cell);
+                    //    var cell = CreateCell(p);
+                    //    if (cell != null) Cells.Add(cell);
 
-                        if (CellAdded != null) CellAdded(this, new RoutedEventArgs());
-                    }), Priority_Context, new object[] { });
+                    //    if (CellAdded != null) CellAdded(this, new RoutedEventArgs());
+                    //}), Priority_Context, new object[] { });
                 }
             }
         }
@@ -301,7 +303,7 @@ namespace TH_DeviceCompare
                 {
                     ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
 
-                    ObjectActivator<IClientPlugin> createdActivator = GetActivator<IClientPlugin>(ctor);
+                    Object_Functions.ObjectActivator<IClientPlugin> createdActivator = Object_Functions.GetActivator<IClientPlugin>(ctor);
 
                     result = createdActivator();
                 }
@@ -332,59 +334,17 @@ namespace TH_DeviceCompare
             {
                 if (config.Enabled)
                 {
-                    ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        var p = CreatePluginInstance(plugin, configs);
 
-                    ObjectActivator<IClientPlugin> createdActivator = GetActivator<IClientPlugin>(ctor);
+                        var cell = CreateCell(p);
+                        if (cell != null) Cells.Add(cell);
 
-                    IClientPlugin instance = createdActivator();
-
-                    var cell = new Cell();
-                    cell.Link = plugin.Title;
-                    cell.Index = Cells.Count;
-                    cell.Data = instance;
-                    cell.SizeChanged += Cell_SizeChanged;
-                    Cells.Add(cell);
+                        if (CellAdded != null) CellAdded(this, new RoutedEventArgs());
+                    }), Priority_Context, new object[] { });
                 }
-            } 
-        }
-
-        private delegate T ObjectActivator<T>(params object[] args);
-
-        private static ObjectActivator<T> GetActivator<T>(ConstructorInfo ctor)
-        {
-            Type type = ctor.DeclaringType;
-            ParameterInfo[] paramsInfo = ctor.GetParameters();
-
-            //create a single param of type object[]
-            var param = System.Linq.Expressions.Expression.Parameter(typeof(object[]), "args");
-
-            var argsExp = new System.Linq.Expressions.Expression[paramsInfo.Length];
-
-            //pick each arg from the params array 
-            //and create a typed expression of them
-            for (int i = 0; i < paramsInfo.Length; i++)
-            {
-                var index = System.Linq.Expressions.Expression.Constant(i);
-                Type paramType = paramsInfo[i].ParameterType;
-
-                var paramAccessorExp = System.Linq.Expressions.Expression.ArrayIndex(param, index);
-
-                var paramCastExp = System.Linq.Expressions.Expression.Convert(paramAccessorExp, paramType);
-
-                argsExp[i] = paramCastExp;
             }
-
-            //make a NewExpression that calls the
-            //ctor with the args we just created
-            var newExp = System.Linq.Expressions.Expression.New(ctor, argsExp);
-
-            //create a lambda with the New
-            //Expression as body and our param object[] as arg
-            var lambda = System.Linq.Expressions.Expression.Lambda(typeof(ObjectActivator<T>), newExp, param);
-
-            //compile it
-            ObjectActivator<T> compiled = (ObjectActivator<T>)lambda.Compile();
-            return compiled;
         }
 
         #endregion

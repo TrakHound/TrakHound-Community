@@ -53,7 +53,7 @@
                 This simplifies the process of interpreting the status of the device at any captured Timestamp.
             </TextBlock>
 
-            <TextBlock FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" Text="Example of Table Data :"/>
+            <!--<TextBlock FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0" Text="Example of Table Data :"/>
 
             <DataGrid ItemsSource="{Binding ExampleTableItems}"
                 Background="{x:Null}"
@@ -120,7 +120,7 @@
                     </Style>
                 </DataGrid.CellStyle>
 
-            </DataGrid>
+            </DataGrid>-->
 
         </StackPanel>
 

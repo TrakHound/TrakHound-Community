@@ -345,16 +345,16 @@ namespace TH_DeviceManager
         {
             var result = new List<ConfigurationPage>();
 
-            // Description
-            result.Add(new Pages.Description.Page());
+            //Description
+            //result.Add(new Pages.Description.Page());
 
-            // Agent
-            result.Add(new Pages.Agent.Page());
+            //Agent
+            //result.Add(new Pages.Agent.Page());
 
-            // Databases
-            result.Add(new Pages.Databases.Page());
+            //Databases
+            //result.Add(new Pages.Databases.Page());
 
-            //var types = GetPluginPageTypes();
+            var types = GetPluginPageTypes();
 
             var pluginPages = GetPluginPages(pluginPageTypes);
 
@@ -374,7 +374,6 @@ namespace TH_DeviceManager
             foreach (var type in pageTypes)
             {
                 object o = Activator.CreateInstance(type);
-
                 var page = (ConfigurationPage)o;
                 result.Add(page);
             }
@@ -382,12 +381,27 @@ namespace TH_DeviceManager
             return result;
         }
 
+        class DEBUG : TH_Plugins_Server.ConfigurationPage
+        {
+            public string PageName { get { return null; } }
+            public string Description { get { return null; } }
+            public ImageSource Image { get { return null; } }
+
+            public event TH_Plugins_Server.SettingChanged_Handler SettingChanged;
+
+            public void LoadConfiguration(DataTable dt) { }
+
+            public void SaveConfiguration(DataTable dt) { }
+
+            public TH_Plugins_Server.Page_Type PageType { get; set; }
+        }
+
         private void AddPages(List<ConfigurationPage> pages)
         {
             //Create PageItem and add to PageList
             foreach (ConfigurationPage page in pages)
             {
-                this.Dispatcher.BeginInvoke(new Action(() => {
+                Dispatcher.BeginInvoke(new Action(() => {
 
                     AddPageButton(page);
 
@@ -490,15 +504,21 @@ namespace TH_DeviceManager
                     {
                         IServerPlugin plugin = lplugin.Value;
 
-                        Type type = plugin.Config_Page;
-
-                        if (type != null)
+                        if (plugin.ConfigurationPageTypes != null)
                         {
-                            if (!types.Exists(x => x.GetType() == type))
+                            foreach (var type in plugin.ConfigurationPageTypes)
                             {
-                                types.Add(type);
+                                if (type != null)
+                                {
+                                    if (!types.Exists(x => x.GetType() == type))
+                                    {
+                                        types.Add(type);
+                                    }
+                                }
                             }
                         }
+
+                        
                     }
                 }
                 catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message); }

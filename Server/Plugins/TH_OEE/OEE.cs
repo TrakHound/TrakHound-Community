@@ -82,10 +82,11 @@ namespace TH_OEE
 
         }
 
-        public TH_Plugins_Server.ConfigurationPage ConfigurationPage { get { return null; } }
+        //public TH_Plugins_Server.ConfigurationPage ConfigurationPage { get { return null; } }
 
-        //public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
-        public Type Config_Page { get { return null; } }
+        ////public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
+        //public Type Config_Page { get { return null; } }
+        public Type[] ConfigurationPageTypes { get { return null; } }
 
         public bool UseDatabases { get; set; }
 

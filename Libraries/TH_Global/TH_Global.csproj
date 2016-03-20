@@ -60,10 +60,12 @@
     <Compile Include="Formatting.cs" />
     <Compile Include="Functions\DataTable_Functions.cs" />
     <Compile Include="Functions\DateTime_Functions.cs" />
+    <Compile Include="Functions\Diagnostic_Functions.cs" />
     <Compile Include="Functions\Image_Functions.cs" />
     <Compile Include="Functions\List_Functions.cs" />
     <Compile Include="Functions\Math_Functions.cs" />
     <Compile Include="Functions\Network_Functions.cs" />
+    <Compile Include="Functions\Object_Functions.cs" />
     <Compile Include="Functions\Plugin_Functions.cs" />
     <Compile Include="Functions\String_Functions.cs" />
     <Compile Include="Functions\TimeSpan_Functions.cs" />

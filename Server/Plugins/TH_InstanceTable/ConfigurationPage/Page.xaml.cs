@@ -47,13 +47,28 @@ namespace TH_InstanceTable.ConfigurationPage
         public static readonly DependencyProperty PageNameProperty =
             DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Instance Table"));
 
+        private BitmapImage _image;
         public ImageSource Image
         {
-            get { return (ImageSource)GetValue(ImageProperty); }
+            get
+            {
+                if (_image == null)
+                {
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_InstanceTable;component/Resources/Hourglass_01.png"));
+                    _image.Freeze();
+                }
+
+                return _image;
+            }
         }
 
-        public static readonly DependencyProperty ImageProperty =
-            DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_InstanceTable;component/Resources/Hourglass_01.png"))));
+        //public ImageSource Image
+        //{
+        //    get { return (ImageSource)GetValue(ImageProperty); }
+        //}
+
+        //public static readonly DependencyProperty ImageProperty =
+        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_InstanceTable;component/Resources/Hourglass_01.png"))));
 
 
         public event SettingChanged_Handler SettingChanged;

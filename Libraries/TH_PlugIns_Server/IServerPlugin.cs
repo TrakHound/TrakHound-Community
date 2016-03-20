@@ -73,9 +73,9 @@ namespace TH_Plugins_Server
         /// </summary>
         event Status_Handler ErrorOccurred;
 
-        ConfigurationPage ConfigurationPage { get; }
+        //ConfigurationPage[] ConfigurationPage { get; }
 
-        Type Config_Page { get; }
+        Type[] ConfigurationPageTypes { get; }
 
         bool UseDatabases { get; set; }
 
