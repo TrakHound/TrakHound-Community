@@ -31,7 +31,7 @@ namespace TH_Cycles.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.IConfigurationPage
     {
         public Page()
         {
@@ -113,8 +113,6 @@ namespace TH_Cycles.ConfigurationPage
             SaveProductionTypes(dt);
             SaveOverrideLinks(dt);
         }
-
-        public Page_Type PageType { get; set; }
 
         DataTable configurationTable;
 

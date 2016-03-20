@@ -32,6 +32,7 @@ namespace TH_WPF
             bImg.BeginInit();
             bImg.DecodePixelWidth = Width;
             bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
+            bImg.CacheOption = BitmapCacheOption.OnLoad;
             bImg.EndInit();
 
             memoryStream.Close();
@@ -59,6 +60,7 @@ namespace TH_WPF
                 if (Width > 0) bImg.DecodePixelWidth = Width;
                 if (Height > 0) bImg.DecodePixelHeight = Height;
                 bImg.StreamSource = new MemoryStream(memoryStream.ToArray());
+                bImg.CacheOption = BitmapCacheOption.OnLoad;
                 bImg.EndInit();
 
                 memoryStream.Close();
@@ -81,6 +83,7 @@ namespace TH_WPF
                     BitmapImage BIMG = new BitmapImage();
                     BIMG.BeginInit();
                     BIMG.UriSource = new Uri(Filepath);
+                    BIMG.CacheOption = BitmapCacheOption.OnLoad;
                     BIMG.EndInit();
 
                     Result = BIMG;

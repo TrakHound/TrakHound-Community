@@ -35,7 +35,7 @@ namespace TH_DeviceManager.Pages.Agent
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, ConfigurationPage
+    public partial class Page : UserControl, IConfigurationPage
     {
         public Page()
         {
@@ -49,7 +49,22 @@ namespace TH_DeviceManager.Pages.Agent
 
         public string PageName { get { return "Agent"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/MTConnect_01.png")); } }
+        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/MTConnect_01.png")); } }
+
+        private BitmapImage _image;
+        public ImageSource Image
+        {
+            get
+            {
+                if (_image == null)
+                {
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/MTConnect_01.png"));
+                    _image.Freeze();
+                }
+
+                return _image;
+            }
+        }
 
         public UserConfiguration currentUser { get; set; }
 
@@ -130,8 +145,6 @@ namespace TH_DeviceManager.Pages.Agent
             Table_Functions.UpdateTableValue(ProxyPort, prefix + "ProxyPort", dt);
             
         }
-
-        public Page_Type PageType { get; set; }
 
         #endregion
 

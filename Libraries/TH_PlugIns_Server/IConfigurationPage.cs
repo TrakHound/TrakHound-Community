@@ -9,10 +9,9 @@ using TH_Configuration;
 
 namespace TH_Plugins_Server
 {
-    [InheritedExport(typeof(ConfigurationPage))]
-    public interface ConfigurationPage
+    [InheritedExport(typeof(IConfigurationPage))]
+    public interface IConfigurationPage
     {
-
         string PageName { get; }
 
         ImageSource Image { get; }
@@ -20,19 +19,9 @@ namespace TH_Plugins_Server
         event SettingChanged_Handler SettingChanged;
 
 
-
         void LoadConfiguration(DataTable dt);
 
         void SaveConfiguration(DataTable dt);
-
-        Page_Type PageType { get; set; }
-
-    }
-
-    public enum Page_Type
-    {
-        Client = 0,
-        Server = 1
     }
 
     public delegate void SaveRequest_Handler();

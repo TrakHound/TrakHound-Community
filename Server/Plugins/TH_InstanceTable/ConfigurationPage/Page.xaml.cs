@@ -29,7 +29,7 @@ namespace TH_InstanceTable.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.IConfigurationPage
     {
         public Page()
         {
@@ -145,9 +145,6 @@ namespace TH_InstanceTable.ConfigurationPage
             }
 
         }
-
-        public Page_Type PageType { get; set; }
-
 
         ObservableCollection<object> exampletableitems;
         public ObservableCollection<object> ExampleTableItems

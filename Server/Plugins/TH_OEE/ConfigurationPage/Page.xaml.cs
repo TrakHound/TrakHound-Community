@@ -26,7 +26,7 @@ namespace TH_OEE.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.IConfigurationPage
     {
         public Page()
         {
@@ -99,8 +99,6 @@ namespace TH_OEE.ConfigurationPage
 
             configurationTable = dt;
         }
-
-        public Page_Type PageType { get; set; }
 
         DataTable configurationTable;
 

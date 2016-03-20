@@ -126,6 +126,7 @@ namespace TH_Global.Functions
             BitmapImage image = new BitmapImage();
             image.BeginInit();
             image.StreamSource = stream;
+            image.CacheOption = BitmapCacheOption.OnLoad;
             image.EndInit();
             return image;
         }

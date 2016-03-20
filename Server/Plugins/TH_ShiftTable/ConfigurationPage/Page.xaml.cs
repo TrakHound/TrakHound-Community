@@ -25,7 +25,7 @@ namespace TH_ShiftTable.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.IConfigurationPage
     {
         public Page()
         {
@@ -70,8 +70,6 @@ namespace TH_ShiftTable.ConfigurationPage
         //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_ShiftTable;component/Resources/Timer_01.png")); } }
 
         public event SettingChanged_Handler SettingChanged;
-
-        public Page_Type PageType { get; set; }
 
         #region "Load Configuration"
 

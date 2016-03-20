@@ -17,16 +17,19 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <ImageBrush x:Key="Help_IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Help_01.png" />
+
         </ResourceDictionary>
     </UserControl.Resources>
 
     <StackPanel x:Name="root_STACK">
 
         <!--Title and Help-->
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,5" FontSize="12pt" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -40,7 +43,7 @@
             </TextBlock>
 
             <!--Help-->
-            <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+            <Rectangle Width="15" Height="15" VerticalAlignment="Center" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
                 <Rectangle.ToolTip>
                     <ToolTip MaxWidth="400">
                         <StackPanel>
@@ -50,13 +53,13 @@
                     </ToolTip>
                 </Rectangle.ToolTip>
 
-                <Rectangle.Resources>
+                <!--<Rectangle.Resources>
                     <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Help_01.png" />
-                </Rectangle.Resources>
+                </Rectangle.Resources>-->
 
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
-                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                        <Setter Property="OpacityMask" Value="{StaticResource Help_IMG}" />
                         <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>

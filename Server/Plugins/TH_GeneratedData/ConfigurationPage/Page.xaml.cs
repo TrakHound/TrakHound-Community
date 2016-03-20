@@ -29,7 +29,7 @@ namespace TH_GeneratedData.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins_Server.ConfigurationPage
+    public partial class Page : UserControl, TH_Plugins_Server.IConfigurationPage
     {
         public Page()
         {
@@ -106,8 +106,6 @@ namespace TH_GeneratedData.ConfigurationPage
             SaveGeneratedEvents(dt);
 
         }
-
-        public Page_Type PageType { get; set; }
 
         bool loading = false;
 

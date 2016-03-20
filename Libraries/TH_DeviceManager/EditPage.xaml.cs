@@ -182,7 +182,7 @@ namespace TH_DeviceManager
             {
                 if (ConfigurationPages != null)
                 {
-                    foreach (ConfigurationPage page in ConfigurationPages)
+                    foreach (IConfigurationPage page in ConfigurationPages)
                     {
                         this.Dispatcher.BeginInvoke(new Action(() => { page.LoadConfiguration(ConfigurationTable); }));
                     }
@@ -201,7 +201,7 @@ namespace TH_DeviceManager
             {
                 if (ConfigurationPages != null)
                 {
-                    foreach (ConfigurationPage page in ConfigurationPages)
+                    foreach (IConfigurationPage page in ConfigurationPages)
                     {
                         page.SaveConfiguration(dt);
                     }
@@ -306,7 +306,7 @@ namespace TH_DeviceManager
             }
         }
 
-        List<ConfigurationPage> ConfigurationPages = new List<ConfigurationPage>();
+        List<IConfigurationPage> ConfigurationPages = new List<IConfigurationPage>();
 
 
         Thread loadPages_Thread;
@@ -341,18 +341,18 @@ namespace TH_DeviceManager
             PagesLoading = false;
         }
 
-        private List<ConfigurationPage> CreatePages(List<Type> pluginPageTypes)
+        private List<IConfigurationPage> CreatePages(List<Type> pluginPageTypes)
         {
-            var result = new List<ConfigurationPage>();
+            var result = new List<IConfigurationPage>();
 
             //Description
-            //result.Add(new Pages.Description.Page());
+            result.Add(new Pages.Description.Page());
 
             //Agent
-            //result.Add(new Pages.Agent.Page());
+            result.Add(new Pages.Agent.Page());
 
             //Databases
-            //result.Add(new Pages.Databases.Page());
+            result.Add(new Pages.Databases.Page());
 
             var types = GetPluginPageTypes();
 
@@ -367,21 +367,21 @@ namespace TH_DeviceManager
             return result;
         }
 
-        private List<ConfigurationPage> GetPluginPages(List<Type> pageTypes)
+        private List<IConfigurationPage> GetPluginPages(List<Type> pageTypes)
         {
-            var result = new List<ConfigurationPage>();
+            var result = new List<IConfigurationPage>();
 
             foreach (var type in pageTypes)
             {
                 object o = Activator.CreateInstance(type);
-                var page = (ConfigurationPage)o;
+                var page = (IConfigurationPage)o;
                 result.Add(page);
             }
 
             return result;
         }
 
-        class DEBUG : TH_Plugins_Server.ConfigurationPage
+        class DEBUG : TH_Plugins_Server.IConfigurationPage
         {
             public string PageName { get { return null; } }
             public string Description { get { return null; } }
@@ -393,13 +393,13 @@ namespace TH_DeviceManager
 
             public void SaveConfiguration(DataTable dt) { }
 
-            public TH_Plugins_Server.Page_Type PageType { get; set; }
+            //public TH_Plugins_Server.Page_Type PageType { get; set; }
         }
 
-        private void AddPages(List<ConfigurationPage> pages)
+        private void AddPages(List<IConfigurationPage> pages)
         {
             //Create PageItem and add to PageList
-            foreach (ConfigurationPage page in pages)
+            foreach (IConfigurationPage page in pages)
             {
                 Dispatcher.BeginInvoke(new Action(() => {
 
@@ -417,7 +417,7 @@ namespace TH_DeviceManager
             }), PRIORITY_BACKGROUND, new object[] { });
         }
 
-        void AddPageButton(ConfigurationPage page)
+        void AddPageButton(IConfigurationPage page)
         {
             var bt = new ListButton();
             bt.Text = page.PageName;
@@ -450,7 +450,7 @@ namespace TH_DeviceManager
 
         static List<Type> pluginPageTypes;
 
-        static List<ConfigurationPage> PluginPages { get; set; }
+        static List<IConfigurationPage> PluginPages { get; set; }
 
         class ServerPlugins
         {
