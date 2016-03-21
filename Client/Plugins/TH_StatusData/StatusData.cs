@@ -227,8 +227,8 @@ namespace TH_StatusData
 
         private static string[] dataTableColumns = new string[]
         {
-            "`NAME`, `VALUE`",
-            "`VARIABLE`, `VALUE`",
+            "NAME, VALUE",
+            "VARIABLE, VALUE",
             null,
             null,
         };

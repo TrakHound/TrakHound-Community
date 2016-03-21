@@ -277,6 +277,9 @@ namespace TH_SQLite
             return result;
         }
 
+        public static string COLUMN_NAME_START = "`";
+        public static string COLUMN_NAME_END = "`";
+
         public static object[] ConvertColumnDefinitions(ColumnDefinition[] columns)
         {
             List<object> result = new List<object>();
@@ -294,7 +297,7 @@ namespace TH_SQLite
 
         public static string ConvertColumnDefinition(ColumnDefinition column)
         {
-            return "`" + column.ColumnName + "` " + ConvertColumnDataType(column.DataType);
+            return COLUMN_NAME_START + column.ColumnName + COLUMN_NAME_END + " " + ConvertColumnDataType(column.DataType);
         }
 
         public const string VarChar = "varchar(1000)";

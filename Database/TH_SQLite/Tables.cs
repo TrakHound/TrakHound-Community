@@ -335,6 +335,26 @@ namespace TH_SQLite
             return result;
         }
 
+        private static string GetColumnValues(string columns)
+        {
+            string result = "*";
+
+            string[] columnValues = columns.Split(',');
+            if (columnValues != null)
+            {
+                result = "";
+
+                for (var i = 0; i <= columnValues.Length - 1; i++)
+                {
+                    string columnName = columnValues[i].Trim();
+                    result += COLUMN_NAME_START + columnName + COLUMN_NAME_END;
+                    if (i < columnValues.Length - 1) result += ", ";
+                }
+            }
+
+            return result;
+        }
+
         public DataTable[] Table_Get(object settings, string[] tablenames, string[] filterExpressions, string[] columns)
         {
             DataTable[] result = null;
@@ -351,7 +371,7 @@ namespace TH_SQLite
                         for (var x = 0; x <= tablenames.Length - 1; x++)
                         {
                             string column = "*";
-                            if (columns[x] != null) column = columns[x];
+                            if (columns[x] != null) column = GetColumnValues(columns[x]);
 
                             string filterExpression = "";
                             if (filterExpressions[x] != null) filterExpression = " " + filterExpressions[x];

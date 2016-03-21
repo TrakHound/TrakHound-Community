@@ -936,6 +936,26 @@ namespace TH_MySQL.Connector
             return Result;
         }
 
+        private static string GetColumnValues(string columns)
+        {
+            string result = "*";
+
+            string[] columnValues = columns.Split(',');
+            if (columnValues != null)
+            {
+                result = "";
+
+                for (var i = 0; i <= columnValues.Length - 1; i++)
+                {
+                    string columnName = columnValues[i].Trim();
+                    result += MySQL_Tools.COLUMN_NAME_START + columnName + MySQL_Tools.COLUMN_NAME_END;
+                    if (i < columnValues.Length - 1) result += ", ";
+                }
+            }
+
+            return result;
+        }
+
         public static DataTable[] Get(MySQL_Configuration config, string[] tableNames, string[] filterExpressions, string[] columns)
         {
             DataTable[] Result = null;
@@ -963,7 +983,7 @@ namespace TH_MySQL.Connector
                         for (var x = 0; x <= tableNames.Length - 1; x++)
                         {
                             string column = "*";
-                            if (columns[x] != null) column = columns[x];
+                            if (columns[x] != null) column = GetColumnValues(columns[x]);
 
                             string filterExpression = "";
                             if (filterExpressions[x] != null) filterExpression = " " + filterExpressions[x];

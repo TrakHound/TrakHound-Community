@@ -315,63 +315,96 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             if (info != null && info.Item != null && info.Item.link_tag != null && device != null)
             {
-                string x = info.Item.link_tag.ToLower();
-
-                // Add ability to link to multiple values. Separate values with semi colons.
-
-                if (x == ToLower(device.description.manufacturer)) return true;
-                if (x == ToLower(device.description.manufacturer) + "." + ToLower(device.description.model)) return true;
-                if (x == ToLower(device.description.manufacturer) + "." + ToLower(device.description.model) + "." + ToLower(device.name)) return true;
-                if (x == ToLower(device.description.manufacturer) + "." + ToLower(device.name)) return true;
-                if (x == ToLower(device.name)) return true;
+                string[] tags = info.Item.link_tag.Split(';');
+                if (tags != null)
+                {
+                    foreach (var tag in tags)
+                    {
+                        if (!String.IsNullOrEmpty(tag))
+                        {
+                            bool match = GetLinkTagMatchValue(device, tag);
+                            if (match) return true;
+                        }
+                    }
+                }
             }
 
             return false;
         }
 
-        private static bool MatchLike(string s1, string s2)
+        private static bool GetLinkTagMatchValue(Device device, string tag)
         {
-            if (s1 != null && s2 != null)
+            string x = tag.ToLower();
+
+            string manufacturer = ToLower(device.description.manufacturer);
+            string model = ToLower(device.description.model);
+            string deviceName = ToLower(device.name);
+
+            if (GetLinkTagMatchValue(deviceName, x)) return true;
+            if (GetLinkTagMatchValue(model, x)) return true;
+            if (GetLinkTagMatchValue(manufacturer, x)) return true;
+            
+            return false;
+        }
+
+        private static bool GetLinkTagMatchValue(string test, string tag)
+        {
+            bool match = false;
+
+            match = MatchLike(tag, test);
+
+            if (!match) match = test == tag;
+
+            return match;
+        }
+
+        private static bool MatchLike(string str, string test)
+        {
+            if (str != null && test != null)
             {
-                if (s1.StartsWith("%") && s1.EndsWith("%")) return MatchContains(s1, s2);
-                if (s1.StartsWith("%")) return MatchStartsWith(s1, s2);
-                if (s1.EndsWith("%")) return MatchEndsWith(s1, s2);
+                if (str.StartsWith("%") && str.EndsWith("%") & str.Length > 2)
+                {
+                    string x = str.Remove(0, 1);
+                    x = x.Remove(x.Length - 1, 1);
+                    return MatchContains(x, test);
+                }
+                else if (str.StartsWith("%"))
+                {
+                    string x = str.Remove(0, 1);
+                    return MatchEndsWith(x, test);
+                }
+                else if (str.EndsWith("%"))
+                {
+                    string x = str.Remove(str.Length - 1, 1);
+                    return MatchStartsWith(x, test);
+                }
             }
             return false;
         }
 
-        private static bool MatchContains(string s1, string s2)
+        private static bool MatchContains(string str, string test)
         {
-            if (s1 != null && s2 != null)
+            if (str != null && test != null)
             {
-                var x = s1.ToLower();
-                var y = s2.ToLower();
-
-                return x.Contains(y);
+                return test.Contains(str);
             }
             return false;
         }
 
-        private static bool MatchStartsWith(string s1, string s2)
+        private static bool MatchStartsWith(string str, string test)
         {
-            if (s1 != null && s2 != null)
+            if (str != null && test != null)
             {
-                var x = s1.ToLower();
-                var y = s2.ToLower();
-
-                return x.StartsWith(y);
+                return test.StartsWith(str);
             }
             return false;
         }
 
-        private static bool MatchEndsWith(string s1, string s2)
+        private static bool MatchEndsWith(string str, string test)
         {
-            if (s1 != null && s2 != null)
+            if (str != null && test != null)
             {
-                var x = s1.ToLower();
-                var y = s2.ToLower();
-
-                return x.EndsWith(y);
+                return test.EndsWith(str);
             }
             return false;
         }

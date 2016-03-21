@@ -79,6 +79,8 @@ namespace TrakHound_Client
             "Alarm",
             "Part Count",
 
+            "Device Table",
+
             "Table Manager",
             "Status Data" 
         };

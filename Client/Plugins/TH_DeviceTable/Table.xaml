@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="TH_DeviceTable.DeviceTable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TH_DeviceTable"
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <Grid>
+
+        <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding DeviceInfos}"
+                  AutoGenerateColumns="False"
+                  >
+
+            <DataGrid.Columns>
+
+                <!--Edit Button-->
+                <!--<DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                --><!--Enable Client CheckBox--><!--
+                <DataGridTemplateColumn Header="Client Enabled">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                --><!--Enable Server CheckBox--><!--
+                <DataGridTemplateColumn Header="Server Enabled">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+
+                <!--Description Columns-->
+                <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
+                <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
+                <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
+                <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
+                <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
+
+                <!--<DataGridTextColumn Header="OEE" Binding="{Binding OEE, StringFormat=P2}"/>
+                <DataGridTextColumn Header="Availability" Binding="{Binding Availability, StringFormat=P2}"/>
+                <DataGridTextColumn Header="Performance" Binding="{Binding Performance, StringFormat=P2}"/>-->
+
+                <!--OEE-->
+                <DataGridTemplateColumn Header="OEE">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Height="30" Width="150" Margin="5">
+                                
+                                <th_wpf:ProgressBar Value="{Binding OEE}" Maximum="1" Foreground="#00ff00"/>
+
+                                <TextBlock Text="{Binding OEE, StringFormat=P2}" Foreground="White" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!--Availability-->
+                <DataGridTemplateColumn Header="Availability">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Height="30" Width="150" Margin="5">
+
+                                <th_wpf:ProgressBar Value="{Binding Availability}" Maximum="1" Foreground="#00ff00"/>
+
+                                <TextBlock Text="{Binding Availability, StringFormat=P2}" Foreground="White" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!--Performance-->
+                <DataGridTemplateColumn Header="Performance">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Height="30" Width="150" Margin="5">
+
+                                <th_wpf:ProgressBar Value="{Binding Performance}" Maximum="1" Foreground="#00ff00"/>
+
+                                <TextBlock Text="{Binding Performance, StringFormat=P2}" Foreground="White" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+    </Grid>
+    
+</UserControl>
