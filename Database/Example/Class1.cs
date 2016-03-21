@@ -14,14 +14,15 @@ namespace TH_Example
 
         public string Type { get { return "Example"; } }
 
-        //public object Configuration { get; set; }
+        public Type Config_Page { get; }
 
-        public object Initialize(Database_Configuration config)
-        {
-            object result = null;
+        public object CreateConfigurationButton(DataTable dt) { return null; }
 
-            return result;
-        }
+        public void Initialize(Database_Configuration config) { }
+
+        public bool Ping(object settings, out string msg) { msg = null;  return true; }
+
+        public bool CheckPermissions(object settings, Application_Type type) { return true; }
 
 
         // Database Functions -----------------------------------------------------------
@@ -29,10 +30,6 @@ namespace TH_Example
         public bool Database_Create(object settings)
         {
             return true;
-
-
-
-
         }
 
         public bool Database_Drop(object settings) { return true; }
@@ -42,7 +39,9 @@ namespace TH_Example
 
         // Table ------------------------------------------------------------------------
 
-        public bool Table_Create(object settings, string tablename, object[] columnDefinitions, string primaryKey) { return true; }
+        public bool Table_Create(object settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey) { return true; }
+
+        public bool Table_Replace(object settings, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey) { return true; }
 
         public bool Table_Drop(object settings, string tablename) { return true; }
 
@@ -52,9 +51,27 @@ namespace TH_Example
 
         public DataTable Table_Get(object settings, string tablename) { return null; }
 
+        public DataTable Table_Get(object settings, string tablename, Int64 limit, Int64 offset) { return null; }
+
         public DataTable Table_Get(object settings, string tablename, string filterExpression) { return null; }
 
         public DataTable Table_Get(object settings, string tablename, string filterExpression, string columns) { return null; }
+
+        public DataTable[] Table_Get(object settings, string[] tablename) { return null; }
+
+        public DataTable[] Table_Get(object settings, string[] tablename, string[] filterExpression) { return null; }
+
+        public DataTable[] Table_Get(object settings, string[] tablename, string[] filterExpression, string[] columns) { return null; }
+
+
+        public string[] Table_List(object settings) { return null; }
+
+        public string[] Table_List(object settings, string filterExpression) { return null; }
+
+
+        public Int64 Table_GetRowCount(object settings, string tablename) { return 0; }
+
+        public Int64 Table_GetSize(object settings, string tablename) { return 0; }
 
         // ------------------------------------------------------------------------------
 
@@ -63,18 +80,18 @@ namespace TH_Example
 
         public List<string> Column_Get(object settings, string tablename) { return null; }
 
-        public bool Column_Add(object settings, string tablename, string columnDefinition) { return true; }
+        public bool Column_Add(object settings, string tablename, ColumnDefinition columnDefinition) { return true; }
 
         // ------------------------------------------------------------------------------
 
 
         // Row --------------------------------------------------------------------------
 
-        public bool Row_Insert(object settings, string tablename, object[] columns, object[] values, bool update) { return true; }
+        public bool Row_Insert(object settings, string tablename, object[] columns, object[] values, string[] primaryKey, bool update) { return true; }
 
-        public bool Row_Insert(object settings, string tablename, object[] columns, List<List<object>> values, bool update) { return true; }
+        public bool Row_Insert(object settings, string tablename, object[] columns, List<List<object>> values, string[] primaryKey, bool update) { return true; }
 
-        public bool Row_Insert(object settings, string tablename, List<object[]> columnsList, List<object[]> valuesList, bool update) { return true; }
+        public bool Row_Insert(object settings, string tablename, List<object[]> columnsList, List<object[]> valuesList, string[] primaryKey, bool update) { return true; }
 
         public bool Row_Insert(object settings, string query) { return true; }
 
@@ -95,7 +112,7 @@ namespace TH_Example
 
         public object GetValue(object settings, string tablename, string column, string filterExpression) { return null; }
 
-        public DataTable GetGrants(object settings, string username) { return null; }
+        public DataTable GetGrants(object settings) { return null; }
 
         // ------------------------------------------------------------------------------
 

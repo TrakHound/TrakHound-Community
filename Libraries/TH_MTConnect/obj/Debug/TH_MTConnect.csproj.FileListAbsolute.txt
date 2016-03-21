@@ -23,4 +23,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.Prop
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.csprojResolveAssemblyReference.cache

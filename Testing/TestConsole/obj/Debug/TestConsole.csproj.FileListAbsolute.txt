@@ -10,10 +10,7 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\System.Data.SQLite.L
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Database.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Global.dll
-<<<<<<< HEAD
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.dll
-=======
->>>>>>> v1.8.0
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\EntityFramework.xml
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\EntityFramework.SqlServer.xml
