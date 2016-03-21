@@ -7,8 +7,10 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\T
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.pdb
+C:\TrakHound\Plugins\Pages\LICENSE.txt
 C:\TrakHound\Plugins\Pages\TH_DeviceCompare_ProductionStatusTimes.dll
 C:\TrakHound\Plugins\Pages\TH_DeviceCompare_ProductionStatusTimes.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\UserControl1.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\UserControl1.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes_MarkupCompile.cache
@@ -17,5 +19,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceComp
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.pdb
-C:\TrakHound\Plugins\Pages\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_ProductionStatusTimes\obj\Debug\TH_DeviceCompare_ProductionStatusTimes.csprojResolveAssemblyReference.cache

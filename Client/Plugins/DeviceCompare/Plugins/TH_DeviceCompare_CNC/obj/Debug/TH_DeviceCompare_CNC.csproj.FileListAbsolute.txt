@@ -1,5 +1,3 @@
-C:\TrakHound\Plugins\Pages\TH_DeviceCompare_CNC.dll
-C:\TrakHound\Plugins\Pages\TH_DeviceCompare_CNC.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Overrides\Feedrate\View.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Overrides\Rapidrate\View.baml
@@ -23,6 +21,9 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\T
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.pdb
+C:\TrakHound\Plugins\Pages\LICENSE.txt
+C:\TrakHound\Plugins\Pages\TH_DeviceCompare_CNC.dll
+C:\TrakHound\Plugins\Pages\TH_DeviceCompare_CNC.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Overrides\Feedrate\View.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Overrides\Rapidrate\View.baml
@@ -31,25 +32,24 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceComp
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Overrides\Feedrate\View.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Overrides\Rapidrate\View.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Overrides\SpindleSpeed\View.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Alarm\View.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Controller Mode\View.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Execution Mode\View.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Emergency Stop\View.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Part Count\View.g.cs
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\TextDisplay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC_MarkupCompile.lref
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Alarm\View.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Controller Mode\View.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Execution Mode\View.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Emergency Stop\View.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Part Count\View.baml
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.g.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\TH_DeviceCompare_CNC.pdb
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.g.cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Program Name\View.baml
-C:\TrakHound\Plugins\Pages\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Alarm\View.g.cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Alarm\View.baml
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Part Count\View.g.cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_CNC\obj\Debug\Text\Part Count\View.baml

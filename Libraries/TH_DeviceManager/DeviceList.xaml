@@ -342,11 +342,11 @@
                             </DataGridTemplateColumn>
 
                             <!--Description Columns-->
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description}"/>
-                            <DataGridTextColumn Header="Device Link" Binding="{Binding DeviceLink}"/>
-                            <DataGridTextColumn Header="Manufacturer" Binding="{Binding Manufacturer}"/>
-                            <DataGridTextColumn Header="Model" Binding="{Binding Model}"/>
-                            <DataGridTextColumn Header="Controller" Binding="{Binding Manufacturer}"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
+                            <DataGridTextColumn Header="Device Link" Binding="{Binding Description.DeviceLink}"/>
+                            <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
+                            <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
+                            <DataGridTextColumn Header="Controller" Binding="{Binding Description.Manufacturer}"/>
 
                         </DataGrid.Columns>
 

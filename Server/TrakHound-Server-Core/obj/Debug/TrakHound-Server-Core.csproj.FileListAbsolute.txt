@@ -1,4 +1,3 @@
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Header.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TrakHound-Server-Core.dll
@@ -21,5 +20,6 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_UserMana
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_MTConnect.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\bin\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Core\obj\Debug\TrakHound-Server-Core.pdb

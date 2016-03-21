@@ -21,12 +21,7 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\System.Data.SQLite.x
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Global.pdb
-<<<<<<< HEAD
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.pdb
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\Newtonsoft.Json.xml
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.exe
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.pdb
-=======
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.exe
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.pdb
@@ -35,10 +30,7 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_DeviceManager.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Plugins_Server.dll
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_DeviceManager.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_UserManagement.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Plugins_Server.pdb
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.pdb
->>>>>>> v1.8.0

@@ -1,6 +1,3 @@
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound_Server_Service.ProjectInstaller.resources
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\Header.txt
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TrakHound-Server-Service.exe.config
@@ -28,5 +25,8 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TrakHoun
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\System.Net.Http.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\bin\Debug\TH_WPF.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csprojResolveAssemblyReference.cache
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound_Server_Service.ProjectInstaller.resources
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Service\obj\Debug\TrakHound-Server-Service.pdb

@@ -6,15 +6,16 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\Controls\Button.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager_MarkupCompile.lref
-C:\TrakHound\Plugins\Pages\TH_TableManager.dll.config
-C:\TrakHound\Plugins\Pages\TH_TableManager.dll
-C:\TrakHound\Plugins\Pages\TH_TableManager.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TableManager.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.g.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\Controls\TH_TableManager\obj\Debug\TH_TableManager.pdb
+C:\TrakHound\Plugins\Pages\LICENSE.txt
+C:\TrakHound\Plugins\Pages\TH_TableManager.dll.config
+C:\TrakHound\Plugins\Pages\TH_TableManager.dll
+C:\TrakHound\Plugins\Pages\TH_TableManager.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableManager.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\Controls\DeviceButton.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\Controls\Button.baml
@@ -29,4 +30,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableM
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableManager.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableManager.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_TableManager\obj\Debug\TH_TableManager.pdb
-C:\TrakHound\Plugins\Pages\LICENSE.txt
