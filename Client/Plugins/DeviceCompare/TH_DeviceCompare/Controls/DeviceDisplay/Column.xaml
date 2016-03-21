@@ -12,14 +12,6 @@
              Width="200"
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border PreviewMouseDown="Control_MouseDown" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,1,0">
         <Border.Style>
             <Style TargetType="Border">

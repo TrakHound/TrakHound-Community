@@ -8,15 +8,7 @@
              
              x:Name="PI"
              >
-    
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-    
+        
     <Grid>
 
         <StackPanel x:Name="Main_STACK" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0" Orientation="Horizontal" />

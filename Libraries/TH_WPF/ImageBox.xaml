@@ -14,14 +14,6 @@
              d:DesignHeight="150"
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid x:Name="root_GRID">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

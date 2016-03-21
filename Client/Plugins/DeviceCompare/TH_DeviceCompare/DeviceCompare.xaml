@@ -17,14 +17,6 @@
              d:DesignHeight="200" d:DesignWidth="800"
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <!--Disable the Vertical ScrollBar and use the one for the Columns and RowHeaders (only applies if Page is zoomed)-->
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
 

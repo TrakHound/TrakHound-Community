@@ -11,14 +11,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid FocusManager.IsFocusScope="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

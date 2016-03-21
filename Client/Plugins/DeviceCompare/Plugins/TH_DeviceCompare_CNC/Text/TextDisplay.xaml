@@ -6,14 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="200">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid x:Name="root">
 
         <TextBlock Text="N/A" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0" FontSize="10pt">

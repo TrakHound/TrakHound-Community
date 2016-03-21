@@ -14,23 +14,16 @@
 
     <UserControl.Resources>
 
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+        <Style TargetType="TextBlock">
+            <Setter Property="Visibility" Value="Visible"/>
 
-            <Style TargetType="TextBlock">
-                <Setter Property="Visibility" Value="Visible"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
+            </Style.Triggers>
 
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}" Value="">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                    </DataTrigger>
-                </Style.Triggers>
-
-            </Style>
-
-        </ResourceDictionary>
+        </Style>
 
     </UserControl.Resources>
 

@@ -13,14 +13,9 @@
              >
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+        
+        <ImageBrush x:Key="Help_IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Help_01.png" />
 
-            <ImageBrush x:Key="Help_IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Help_01.png" />
-
-        </ResourceDictionary>
     </UserControl.Resources>
 
     <StackPanel x:Name="root_STACK">
@@ -128,7 +123,7 @@
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Visibility" Value="Visible"/>
                                         </MultiDataTrigger>
-                                        
+
                                         <DataTrigger Binding="{Binding Example}" Value="{x:Null}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>

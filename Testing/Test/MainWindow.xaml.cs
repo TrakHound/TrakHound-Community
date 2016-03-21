@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Reflection;
 
+using TH_Global;
 using TH_Global.Functions;
+
+using TH_Plugins_Client;
 
 namespace Test
 {
@@ -25,7 +30,7 @@ namespace Test
         public MainWindow()
         {
             InitializeComponent();
-            dummy.DataContext = this;
+            DataContext = this;
 
 
             //TH_Global.Functions.Plugin_Functions.FindPlugins(@"C:\TrakHound\Plugins\Pages");
@@ -44,8 +49,58 @@ namespace Test
             //    }
             //}
 
-            pswd.PasswordText = "%PASSWORD$";
+            //pswd.PasswordText = "%PASSWORD$";
 
+            //ReadPlugins();
+
+            CreateControls(5000);
+
+        }
+
+        void CreateControls(int instances)
+        {
+            object obj = new UC();
+
+            for (var x = 0; x < instances; x++) Cells.Add(CreateInstance<UC>(obj));
+        }
+
+        void ReadPlugins()
+        {
+            var plugins = PluginTools.FindPlugins(FileLocations.Plugins + "\\Pages");
+            Console.WriteLine(plugins.Count);
+
+            foreach (var plugin in plugins)
+            {
+                for (var x = 0; x < 40; x++) Cells.Add(CreateInstance<IClientPlugin>(plugin));
+            }
+        }
+
+        private ObservableCollection<object> _cells;
+        /// <summary>
+        /// Collection of Cell controls that represent each IClientPlugin
+        /// </summary>
+        public ObservableCollection<object> Cells
+        {
+            get
+            {
+                if (_cells == null) _cells = new ObservableCollection<object>();
+                return _cells;
+            }
+            set
+            {
+                _cells = value;
+            }
+        }
+
+        private T CreateInstance<T>(object plugin)
+        {
+            ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
+
+            Object_Functions.ObjectActivator<T> createdActivator = Object_Functions.GetActivator<T>(ctor);
+
+            T result = createdActivator();
+
+            return result;
         }
 
 

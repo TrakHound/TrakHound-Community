@@ -7,14 +7,6 @@
                 
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid x:Name="root" PreviewMouseDown="root_PreviewMouseDown" Background="Transparent">
 
         <!--Normal Style-->

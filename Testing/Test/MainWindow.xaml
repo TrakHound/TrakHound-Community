@@ -20,13 +20,15 @@
 
     <Grid x:Name="dummy">
 
-        <StackPanel>
+        <ItemsControl ItemsSource="{Binding Cells}"/>
 
-            <th_wpf:PasswordBox x:Name="pswd" Title="Test Password" Required="True" Margin="20" PasswordChanged="pswd_PasswordChanged"/>
+        <!--<StackPanel>
 
-            <TextBlock Text="{Binding PasswordText}" FontSize="14pt" TextAlignment="Center"/>
+            --><!--<th_wpf:PasswordBox x:Name="pswd" Title="Test Password" Required="True" Margin="20" PasswordChanged="pswd_PasswordChanged"/>
 
-        </StackPanel>
+            <TextBlock Text="{Binding PasswordText}" FontSize="14pt" TextAlignment="Center"/>--><!--
+
+        </StackPanel>-->
 
 
 

@@ -9,64 +9,111 @@
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    
+             d:DesignHeight="100" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="MinHeight" Value="30"/>
+                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                            <Border Name="bd"
+                                Background="{TemplateBinding Background}"
+                                Margin="0,0,0,0"
+                                BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
+                                BorderThickness="0,0,1,0"    
+                                >
+                                <Grid>
+                                    <!--Content-->
+                                    <Border Padding="5,0">
+                                        <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+                <Setter Property="BorderThickness" Value="0,1,0,0" />
+                <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Connected}" Value="false">
+                        <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
+                    </DataTrigger>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="true">
+                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    </Trigger>
+                    <!--<DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
+                        <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
+                    </DataTrigger>-->
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid>
 
-        <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding DeviceInfos}"
+        <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding DeviceInfos, IsAsync=True}" EnableColumnVirtualization="True" EnableRowVirtualization="True"
                   AutoGenerateColumns="False"
+                  BorderBrush="Transparent"
                   >
 
             <DataGrid.Columns>
 
-                <!--Edit Button-->
-                <!--<DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <th_wpf:Button Text="Edit" DataObject="{Binding}" Clicked="Edit_Clicked"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                --><!--Enable Client CheckBox--><!--
-                <DataGridTemplateColumn Header="Client Enabled">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ClientEnabled}" Checked="ClientEnabled_Checked" Unchecked="ClientEnabled_Unchecked"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                --><!--Enable Server CheckBox--><!--
-                <DataGridTemplateColumn Header="Server Enabled">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <controls:DataGridCellCheckBox DataObject="{Binding}" IsChecked="{Binding ServerEnabled}" Checked="ServerEnabled_Checked" Unchecked="ServerEnabled_Unchecked"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
-
                 <!--Description Columns-->
+                <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
                 <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
-                <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
-
-                <!--<DataGridTextColumn Header="OEE" Binding="{Binding OEE, StringFormat=P2}"/>
-                <DataGridTextColumn Header="Availability" Binding="{Binding Availability, StringFormat=P2}"/>
-                <DataGridTextColumn Header="Performance" Binding="{Binding Performance, StringFormat=P2}"/>-->
-
+                
                 <!--OEE-->
                 <DataGridTemplateColumn Header="OEE">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Height="30" Width="150" Margin="5">
-                                
-                                <th_wpf:ProgressBar Value="{Binding OEE}" Maximum="1" Foreground="#00ff00"/>
-
-                                <TextBlock Text="{Binding OEE, StringFormat=P2}" Foreground="White" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
+                            <Grid Height="30" Width="200" Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<th_wpf:ProgressBar Grid.Column="1" Value="{Binding Oee}" Maximum="1" AnimateValueChange="False">
+                                    <th_wpf:ProgressBar.Style>
+                                        <Style TargetType="th_wpf:ProgressBar">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding OeeStatus}" Value="1">
+                                                    <Setter Property="Foreground" Value="Yellow"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding OeeStatus}" Value="2">
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </th_wpf:ProgressBar.Style>
+                                </th_wpf:ProgressBar>-->
+                                <TextBlock Grid.Column="0" Text="{Binding Oee, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -76,12 +123,27 @@
                 <DataGridTemplateColumn Header="Availability">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Height="30" Width="150" Margin="5">
-
-                                <th_wpf:ProgressBar Value="{Binding Availability}" Maximum="1" Foreground="#00ff00"/>
-
-                                <TextBlock Text="{Binding Availability, StringFormat=P2}" Foreground="White" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
+                            <Grid Height="30" Width="200" Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<th_wpf:ProgressBar Grid.Column="1" Value="{Binding Availability}" Maximum="1" AnimateValueChange="False">
+                                    <th_wpf:ProgressBar.Style>
+                                        <Style TargetType="th_wpf:ProgressBar">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
+                                                    <Setter Property="Foreground" Value="Yellow"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </th_wpf:ProgressBar.Style>
+                                </th_wpf:ProgressBar>-->
+                                <TextBlock Grid.Column="0" Text="{Binding Availability, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -91,12 +153,27 @@
                 <DataGridTemplateColumn Header="Performance">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Height="30" Width="150" Margin="5">
-
-                                <th_wpf:ProgressBar Value="{Binding Performance}" Maximum="1" Foreground="#00ff00"/>
-
-                                <TextBlock Text="{Binding Performance, StringFormat=P2}" Foreground="White" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
+                            <Grid Height="30" Width="200" Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<th_wpf:ProgressBar Grid.Column="1" Value="{Binding Performance}" Maximum="1" AnimateValueChange="False">
+                                    <th_wpf:ProgressBar.Style>
+                                        <Style TargetType="th_wpf:ProgressBar">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
+                                                    <Setter Property="Foreground" Value="Yellow"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </th_wpf:ProgressBar.Style>
+                                </th_wpf:ProgressBar>-->
+                                <TextBlock Grid.Column="0" Text="{Binding Performance, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

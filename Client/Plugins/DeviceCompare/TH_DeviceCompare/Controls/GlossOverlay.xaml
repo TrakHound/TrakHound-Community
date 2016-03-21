@@ -16,14 +16,6 @@
              d:DesignWidth="300"
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <!--Gloss Effect-->
     <Border IsHitTestVisible="False">
 

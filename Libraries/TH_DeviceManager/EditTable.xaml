@@ -12,12 +12,8 @@
              d:DesignHeight="600" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="LightBorder" Color="#aaa"/>
+        <SolidColorBrush x:Key="LightBorder" Color="#aaa"/>
 
 
             <Style TargetType="{x:Type DataGrid}">
@@ -151,7 +147,6 @@
                 <Setter Property="SeparatorVisibility" Value="Visible"/>
             </Style>
 
-        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>

@@ -12,14 +12,6 @@
              mc:Ignorable="d" 
              d:DesignWidth="600">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="0,0,0,1" FocusManager.IsFocusScope="False">
 
         <Grid Margin="0,10" FocusManager.IsFocusScope="False">

@@ -17,10 +17,6 @@
              >
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="th_wpf:Button">
                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -52,7 +48,6 @@
                 </Style.Triggers>
             </Style>
 
-        </ResourceDictionary>
     </UserControl.Resources>
 
     <!--Available Devices-->

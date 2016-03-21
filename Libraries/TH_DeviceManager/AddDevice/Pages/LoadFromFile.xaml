@@ -17,28 +17,23 @@
              >
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
-            <Style TargetType="th_wpf:Button">
-                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="20,5"/>
-                <Setter Property="MinHeight" Value="35"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="ImageTextPadding" Value="10"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+        <Style TargetType="th_wpf:Button">
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="20,5"/>
+            <Setter Property="MinHeight" Value="35"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="ImageTextPadding" Value="10"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>

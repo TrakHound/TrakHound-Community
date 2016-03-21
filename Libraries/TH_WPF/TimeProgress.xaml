@@ -6,16 +6,7 @@
              
              xmlns:th_wpf="clr-namespace:TH_WPF"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             
              >
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.Style>

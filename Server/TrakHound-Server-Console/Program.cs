@@ -23,8 +23,36 @@ namespace TrakHound_Server_Console
     {
         Server server;
 
+        //public Worker()
+        //{
+        //    TH_Database.DatabasePluginReader.ReadPlugins();
+
+        //    TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
+
+        //    server = new Server();
+        //    server.Login();
+
+        //    string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+        //    if (File.Exists(path))
+        //    {
+        //        string dir = Path.GetDirectoryName(path);
+
+        //        var watcher = new FileSystemWatcher(dir);
+        //        watcher.Changed += FileSystemWatcher_UserLogin_Changed;
+        //        watcher.Created += FileSystemWatcher_UserLogin_Changed;
+        //        watcher.Deleted += FileSystemWatcher_UserLogin_Changed;
+        //        watcher.EnableRaisingEvents = true;
+        //    }
+
+        //    server.Start();
+
+        //    Console.ReadLine();
+        //}
+
         public Worker()
         {
+            TH_Global.FileLocations.CreateAllDirectories();
+
             TH_Database.DatabasePluginReader.ReadPlugins();
 
             TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();

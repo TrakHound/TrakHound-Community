@@ -16,14 +16,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="700">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid x:Name="root_GRID" Background="{StaticResource Window_Background_Accent_Gradient}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

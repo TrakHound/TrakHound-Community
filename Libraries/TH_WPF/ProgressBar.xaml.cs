@@ -106,8 +106,11 @@ namespace TH_WPF
             // Get ProgressWidth by calculating proportion of Value and Maximum
             val = (val * controlWidth) / Maximum;
 
-            if (AnimateValueChange) Animate(val, ProgressWidthProperty);
-            else ProgressWidth = val;
+            if (ProgressWidth != val)
+            {
+                if (AnimateValueChange) Animate(val, ProgressWidthProperty);
+                else ProgressWidth = val;
+            }
         }
 
         void SetProgressHeight(double value)
@@ -119,8 +122,11 @@ namespace TH_WPF
             // Get ProgressWidth by calculating proportion of Value and Maximum
             val = (val * controlHeight) / Maximum;
 
-            if (AnimateValueChange) Animate(val, ProgressHeightProperty);
-            else ProgressHeight = val;           
+            if (ProgressHeight != val)
+            {
+                if (AnimateValueChange) Animate(val, ProgressHeightProperty);
+                else ProgressHeight = val;
+            }
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)

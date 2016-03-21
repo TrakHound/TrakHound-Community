@@ -14,14 +14,6 @@
              MinHeight="50"
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid PreviewMouseDown="Control_MouseDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

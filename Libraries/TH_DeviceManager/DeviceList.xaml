@@ -18,73 +18,68 @@
              d:DesignHeight="200" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
-            <ContextMenu x:Key="DataGridRowContextMenu_None">
-                <controls:DataGridMenuItem Header="Add Device.." DataObject="{Binding}" Click="Add_DataGridRowContextMenu_Click"/>
-            </ContextMenu>
+        <ContextMenu x:Key="DataGridRowContextMenu_None">
+            <controls:DataGridMenuItem Header="Add Device.." DataObject="{Binding}" Click="Add_DataGridRowContextMenu_Click"/>
+        </ContextMenu>
 
-            <!--<ContextMenu x:Key="DataGridRowContextMenu_Single">
-                <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
-                <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>
-                <Separator/>
-                <controls:DataGridMenuItem Header="Copy.." DataObject="{Binding}" Click="Copy_DataGridRowContextMenu_Click"/>
-                <Separator/>
-                <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
-                <Separator/>
-                <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
-                -->
-            <!--<controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Share_DataGridRowContextMenu_Click"/>-->
-            <!--
-            </ContextMenu>-->
+        <!--<ContextMenu x:Key="DataGridRowContextMenu_Single">
+            <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
+            <controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>
+            <Separator/>
+            <controls:DataGridMenuItem Header="Copy.." DataObject="{Binding}" Click="Copy_DataGridRowContextMenu_Click"/>
+            <Separator/>
+            <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
+            <Separator/>
+            <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
+            -->
+        <!--<controls:DataGridMenuItem Header="Share.." DataObject="{Binding}" Click="Share_DataGridRowContextMenu_Click"/>-->
+        <!--
+        </ContextMenu>-->
 
-            <ContextMenu x:Key="DataGridRowContextMenu_Multiple">
-                <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
-                <!--<controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>-->
-                <Separator/>
-                <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
-                <Separator/>
-                <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
-            </ContextMenu>
+        <ContextMenu x:Key="DataGridRowContextMenu_Multiple">
+            <controls:DataGridMenuItem Header="Edit.." DataObject="{Binding}" Click="Edit_DataGridRowContextMenu_Click"/>
+            <!--<controls:DataGridMenuItem Header="Edit Table.." DataObject="{Binding}" Click="EditTable_DataGridRowContextMenu_Click"/>-->
+            <Separator/>
+            <controls:DataGridMenuItem Header="Remove" DataObject="{Binding}" Click="Remove_DataGridRowContextMenu_Click"/>
+            <Separator/>
+            <controls:DataGridMenuItem Header="Save to File.." DataObject="{Binding}" Click="Save_DataGridRowContextMenu_Click"/>
+        </ContextMenu>
 
-            <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
-                <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-                <Setter Property="BorderThickness" Value="0,1,0,0" />
-                <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    </Trigger>
-                    <Trigger Property="IsSelected" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    </Trigger>
-                    <!--<DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
-                        <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
-                    </DataTrigger>-->
-                </Style.Triggers>
-            </Style>
+        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+            <Setter Property="BorderThickness" Value="0,1,0,0" />
+            <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+                <!--<DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
+                    <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
+                </DataTrigger>-->
+            </Style.Triggers>
+        </Style>
 
-            <Style TargetType="th_wpf:Button">
-                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="Padding" Value="10,0"/>
-                <Setter Property="MinHeight" Value="25"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
+        <Style TargetType="th_wpf:Button">
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="MinHeight" Value="25"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-            <Style TargetType="controls:DataGridCellCheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"/>
-
-        </ResourceDictionary>
+        <Style TargetType="controls:DataGridCellCheckBox" BasedOn="{StaticResource {x:Type CheckBox}}"/>
+        
     </UserControl.Resources>
 
     <Grid Background="{StaticResource Window_Background}">

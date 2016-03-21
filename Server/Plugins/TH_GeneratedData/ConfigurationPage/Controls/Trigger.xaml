@@ -9,14 +9,6 @@
              mc:Ignorable="d" 
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border CornerRadius="2" BorderBrush="#ccc" BorderThickness="1" MinWidth="150">
         
         <StackPanel Margin="5">

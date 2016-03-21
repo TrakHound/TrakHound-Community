@@ -11,6 +11,7 @@ namespace TH_DeviceTable
 {
     public partial class DeviceTable
     {
+
         ObservableCollection<DeviceInfo> _deviceInfos;
         /// <summary>
         /// Collection of TH_Configuration.Configuration objects that represent the devices
@@ -36,9 +37,6 @@ namespace TH_DeviceTable
             info.Configuration = config;
             DeviceInfos.Add(info);
         }
-
-
-
 
     }
 }

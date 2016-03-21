@@ -20,7 +20,7 @@ namespace TH_DeviceTable
         public DeviceTable()
         {
             InitializeComponent();
-            DataContext = this;
+            Devices_DG.DataContext = this;
         }
     }
 }

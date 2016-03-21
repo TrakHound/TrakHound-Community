@@ -8,14 +8,6 @@
              
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="600">
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
     
     <Border x:Name="bd">
 

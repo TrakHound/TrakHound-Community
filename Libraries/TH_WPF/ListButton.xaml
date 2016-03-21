@@ -9,14 +9,6 @@
              
              >
 
-    <!--<UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>              
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>-->
-
     <Grid MouseEnter="Main_GRID_MouseEnter" MouseLeave="Main_GRID_MouseLeave" Margin="1,0,0,0" Cursor="Hand">
 
         <Grid.ColumnDefinitions>

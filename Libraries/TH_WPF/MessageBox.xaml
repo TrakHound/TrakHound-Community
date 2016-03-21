@@ -10,14 +10,6 @@
         Height="200" Width="400" Icon="Resources/TrakHound_Logo_Initials_10_30px.png"
         >
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-
     <Grid Background="{StaticResource Window_Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

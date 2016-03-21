@@ -14,14 +14,6 @@
              Width="150"
              Height="50"             
              >
-
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
     
     <!--Right Click Menu-->
     <UserControl.ContextMenu>
