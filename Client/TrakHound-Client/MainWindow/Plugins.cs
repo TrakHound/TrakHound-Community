@@ -351,7 +351,6 @@ namespace TrakHound_Client
                     {
                         // Assign event handlers
                         plugin.DataEvent += Plugin_DataEvent;
-                        plugin.ShowRequested += Plugin_ShowRequested;
 
                         // Process SubPlugins
                         plugin.SubCategories = config.SubCategories;
@@ -453,25 +452,25 @@ namespace TrakHound_Client
             
         }
 
-        /// <summary>
-        /// Plugin has requested to be shown
-        /// </summary>
-        /// <param name="info"></param>
-        private void Plugin_ShowRequested(PluginShowInfo info)
-        {
-            if (info.Page.GetType() == typeof(IClientPlugin))
-            {
-                var plugin = (IClientPlugin)info.Page;
+        ///// <summary>
+        ///// Plugin has requested to be shown
+        ///// </summary>
+        ///// <param name="info"></param>
+        ////private void Plugin_ShowRequested(PluginShowInfo info)
+        ////{
+        ////    if (info.Page.GetType() == typeof(IClientPlugin))
+        ////    {
+        ////        var plugin = (IClientPlugin)info.Page;
 
-                string title = info.PageTitle;
-                if (info.PageTitle == null && plugin != null) title = plugin.Title;
+        ////        string title = info.PageTitle;
+        ////        if (info.PageTitle == null && plugin != null) title = plugin.Title;
 
-                ImageSource image = info.PageImage;
-                if (info.PageImage == null && plugin != null) image = plugin.Image;
+        ////        ImageSource image = info.PageImage;
+        ////        if (info.PageImage == null && plugin != null) image = plugin.Image;
 
-                AddTab(plugin, title, image);
-            }
-        }
+        ////        AddTab(plugin, title, image);
+        ////    }
+        ////}
 
         /// <summary>
         /// Plugin has sent a DataEvent_Data object to other plugins
@@ -479,6 +478,8 @@ namespace TrakHound_Client
         /// <param name="de_d"></param>
         private void Plugin_DataEvent(DataEvent_Data de_d)
         {
+            Plugin_ShowRequested(de_d);
+
             foreach (var config in PluginConfigurations)
             {
                 if (config.Enabled)
@@ -491,6 +492,38 @@ namespace TrakHound_Client
                     if (plugin != null)
                     {
                         plugin.Update_DataEvent(de_d);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Plugin has sent a message requesting to be shown as a tab
+        /// de_d.id = 'show'
+        /// de_d.data01 = Configuration
+        /// de_d.data02 = Plugin (IClientPlugin)
+        /// de_d.data03 = [Optional] Alternate Title
+        /// de_d.data04 = [Optional] Tag
+        /// </summary>
+        /// <param name="de_d"></param>
+        private void Plugin_ShowRequested(DataEvent_Data de_d)
+        {
+            if (de_d != null && de_d.id != null && de_d.data02 != null)
+            {
+                if (de_d.id.ToLower() == "show")
+                {
+                    if (typeof(IClientPlugin).IsAssignableFrom(de_d.data02.GetType()))
+                    {
+                        var plugin = (IClientPlugin)de_d.data02;
+
+                        string title = plugin.Title;
+                        ImageSource img = plugin.Image;
+                        string tag = null;
+
+                        if (de_d.data03 != null) title = de_d.data03.ToString();
+                        if (de_d.data04 != null) tag = de_d.data04.ToString();
+
+                        AddTab(plugin, title, img, tag);
                     }
                 }
             }

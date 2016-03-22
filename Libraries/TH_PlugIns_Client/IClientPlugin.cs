@@ -127,7 +127,6 @@ namespace TH_Plugins_Client
 
         #endregion
 
-        #region "Methods"
 
         /// <summary>
         /// Used to initialize the Plugin after the other properties have been set
@@ -141,9 +140,6 @@ namespace TH_Plugins_Client
         void Closed();
         bool Closing();
 
-        #endregion
-
-        #region "Data Events"
 
         /// <summary>
         /// Get Data from another plugin
@@ -156,14 +152,11 @@ namespace TH_Plugins_Client
         /// </summary>
         event DataEvent_Handler DataEvent;
 
-        /// <summary>
-        /// Send Request to Add/Show this Page in the Client
-        /// </summary>
-        event PluginTools.ShowRequested_Handler ShowRequested;
+        ///// <summary>
+        ///// Send Request to Add/Show this Page in the Client
+        ///// </summary>
+        //event PluginTools.ShowRequested_Handler ShowRequested;
 
-        #endregion
-
-        #region "Device Properties"
 
         /// <summary>
         /// List of Device_Client objects
@@ -172,17 +165,11 @@ namespace TH_Plugins_Client
         //List<Configuration> Devices { get; set; }
         ObservableCollection<Configuration> Devices { get; set; }
 
-        #endregion
-
-        #region "Options"
-
         /// <summary>
         /// Sets the OptionsPage object to be displayed in the Clients Options menu as a seperate page
         /// (use if Plugin has parameters or options for how it operates or looks)
         /// </summary>
         IPage Options { get; set; }
-
-        #endregion
 
     }
 

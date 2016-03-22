@@ -448,7 +448,7 @@ namespace TH_StatusData
 
             if (shiftData.shiftDate != null && shiftData.shiftName != null)
             {
-                DataTable shifts_DT = Table.Get(config.Databases_Client, config.DatabaseId + "_" + TableNames.Shifts, "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
+                DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
                 if (shifts_DT != null)
                 {
                     DataEvent_Data de_d = new DataEvent_Data();
@@ -510,7 +510,7 @@ namespace TH_StatusData
                 {
                     string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_'));
 
-                    DataTable dt = Table.Get(config.Databases_Client, config.DatabaseId + "_" + TableNames.OEE, "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+                    DataTable dt = Table.Get(config.Databases_Client, GetTableName(TableNames.OEE, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
                         DataEvent_Data de_d = new DataEvent_Data();

@@ -13,55 +13,60 @@
 
     <UserControl.Resources>
 
-            <Style TargetType="DataGridColumnHeader">
-                <Setter Property="MinHeight" Value="30"/>
-                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                <Setter Property="FontSize" Value="12"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
-                            <Border Name="bd"
-                                Background="{TemplateBinding Background}"
-                                Margin="0,0,0,0"
-                                BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
-                                BorderThickness="0,0,1,0"    
-                                >
-                                <Grid>
-                                    <!--Content-->
-                                    <Border Padding="10,0">
-                                        <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                    </Border>
-                                </Grid>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                        <Border Name="bd"
+                            Background="{TemplateBinding Background}"
+                            Margin="0,0,0,0"
+                            BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
+                            BorderThickness="0,0,1,0"    
+                            >
+                            <Grid>
+                                <!--Content-->
+                                <Border Padding="10,0">
+                                    <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
-                <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+        <ContextMenu x:Key="DataGridRowContextMenu">
+            <local:DataGridMenuItem Header="Open Device Page" DataObject="{Binding}" Click="DataGridMenuItem_Click"/>
+        </ContextMenu>
+        
+        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
             <Setter Property="BorderThickness" Value="0,1,0,0" />
+            <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
             <Style.Triggers>
-                    <DataTrigger Binding="{Binding Connected}" Value="false">
-                        <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
-                    </DataTrigger>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    </Trigger>
+                <DataTrigger Binding="{Binding Connected}" Value="false">
+                    <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
+                </DataTrigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                 </Trigger>
             </Style.Triggers>
-            </Style>
-
+        </Style>
+        
     </UserControl.Resources>
 
     <Grid>
@@ -384,6 +389,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
+                
                 <DataGridTextColumn Header="Controller Mode" Binding="{Binding ControllerMode}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
@@ -472,6 +478,7 @@
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
+                
                 <DataGridTextColumn Header="Execution Mode" Binding="{Binding ExecutionMode}">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">

@@ -68,7 +68,7 @@ namespace TrakHound_Client
             if (name != null) txt = name;
             if (image != null) img = image;
 
-            TabHeader header = FindTab(page, tag);
+            TabHeader header = FindTab(page, txt, tag);
             if (header == null)
             {
                 header = new TabHeader();
@@ -257,9 +257,13 @@ namespace TrakHound_Client
             return null;
         }
 
-        public TabHeader FindTab(IPage page, string tag = null)
+        public TabHeader FindTab(IPage page, string name = null, string tag = null)
         {
-            int index = TabHeaders.ToList().FindIndex(x => x.Text == page.Title && x.Tag == tag);
+            string title = page.Title;
+
+            if (name != null) title = name;
+
+            int index = TabHeaders.ToList().FindIndex(x => x.Text == title && x.Tag == tag);
             if (index >= 0)
             {
                 return TabHeaders[index];

@@ -279,15 +279,6 @@ namespace TH_DeviceCompare
                 foreach (var plugin in plugins)
                 {
                     AddPlugin(plugin, configs);
-                    //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    //{
-                    //    var p = CreatePluginInstance(plugin, configs);
-
-                    //    var cell = CreateCell(p);
-                    //    if (cell != null) Cells.Add(cell);
-
-                    //    if (CellAdded != null) CellAdded(this, new RoutedEventArgs());
-                    //}), Priority_Context, new object[] { });
                 }
             }
         }
