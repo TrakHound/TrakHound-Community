@@ -68,20 +68,24 @@ namespace TrakHound_Client
             if (name != null) txt = name;
             if (image != null) img = image;
 
-            var header = new TabHeader();
-            header.Text = txt;
-            header.Image = img;
-            header.Tag = tag;
-            header.Page = new TabPage(page);
+            TabHeader header = FindTab(page, tag);
+            if (header == null)
+            {
+                header = new TabHeader();
+                header.Text = txt;
+                header.Image = img;
+                header.Tag = tag;
+                header.Page = new TabPage(page);
 
-            header.Clicked += TabHeader_Clicked;
-            header.CloseClicked += TabHeader_CloseClicked;
-            header.Opened += TabHeader_Opened;
-            header.Closed += TabHeader_Closed;
+                header.Clicked += TabHeader_Clicked;
+                header.CloseClicked += TabHeader_CloseClicked;
+                header.Opened += TabHeader_Opened;
+                header.Closed += TabHeader_Closed;
 
-            TabHeaders.Add(header);
+                TabHeaders.Add(header);
 
-            header.Open(TabHeaders.Count == 1);
+                header.Open(TabHeaders.Count == 1);
+            }
 
             SelectTab(header);
         }

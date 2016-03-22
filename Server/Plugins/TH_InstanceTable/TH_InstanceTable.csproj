@@ -51,11 +51,15 @@
     <None Include="ConfigurationPage.xaml.cs">
       <DependentUpon>ConfigurationPage.xaml</DependentUpon>
     </None>
+    <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationPage\Controls\CheckBox.cs" />
     <Compile Include="ConfigurationPage\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="InstanceTable.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="Instance Data.cs" />
+    <Compile Include="Processing.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

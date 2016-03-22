@@ -1,0 +1,53 @@
+﻿<Window x:Class="TreeViewTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TreeViewTest"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+
+    <Grid Margin="10">
+        <TreeView Name="trvFamilies">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:Event}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" />
+                        <TextBlock Text=" [" Foreground="Blue" />
+                        <TextBlock Text="{Binding Id}" Foreground="Blue" />
+                        <TextBlock Text="]" Foreground="Blue" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type local:Value}" ItemsSource="{Binding Triggers}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Result.Value}" />
+                        <TextBlock Text=" [" Foreground="Green" />
+                        <TextBlock Text="{Binding Result.Numval}" Foreground="Green" />
+                        <TextBlock Text=" ]" Foreground="Green" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <DataTemplate DataType="{x:Type local:Trigger}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Link}" />
+                        <TextBlock Text=" [" Foreground="Green" />
+                        <TextBlock Text="{Binding Modifier}" Foreground="Green" />
+                        <TextBlock Text=" ]" Foreground="Green" />
+                        <TextBlock Text=" [" Foreground="Blue" />
+                        <TextBlock Text="{Binding Value}" Foreground="Blue" />
+                        <TextBlock Text=" ]" Foreground="Blue" />
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type local:Result}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Value}" />
+                        <TextBlock Text=" [" Foreground="Green" />
+                        <TextBlock Text="{Binding Numval}" Foreground="Green" />
+                        <TextBlock Text=" ]" Foreground="Green" />
+                    </StackPanel>
+                </DataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+    </Grid>
+
+
+</Window>
