@@ -16,13 +16,6 @@
              x:Name="msg"
              >
     
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
     <UserControl.RenderTransform>
         <TranslateTransform X="310"/>
     </UserControl.RenderTransform>

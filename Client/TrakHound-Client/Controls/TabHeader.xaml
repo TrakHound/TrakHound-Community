@@ -17,14 +17,6 @@
              mc:Ignorable="d"
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border x:Name="root" Height="32" ToolTip="{Binding Text}" HorizontalAlignment="Left" VerticalAlignment="Bottom">
 
         <Grid>

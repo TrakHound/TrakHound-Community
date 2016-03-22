@@ -21,14 +21,6 @@
              
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID" >
         <Grid.Style>

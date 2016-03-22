@@ -27,26 +27,19 @@
 
     <Window.Resources>
 
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+        <Style x:Key="TrakHoundFontBold">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
+            <Setter Property="TextElement.FontWeight" Value="Bold" />
+        </Style>
 
-            <Style x:Key="TrakHoundFontBold">
-                <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
-                <Setter Property="TextElement.FontWeight" Value="Bold" />
-            </Style>
+        <Style x:Key="TrakHoundFont">
+            <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
+        </Style>
 
-            <Style x:Key="TrakHoundFont">
-                <Setter Property="TextElement.FontFamily" Value="Fonts/#Alte Haas Grotesk"/>
-            </Style>
+        <Color x:Key="LightBlue_Color">#FFFFFFFF</Color>
+        <Color x:Key="DarkBlue_Color">#FF65b3ff</Color>
 
-            <Color x:Key="LightBlue_Color">#FFFFFFFF</Color>
-            <Color x:Key="DarkBlue_Color">#FF65b3ff</Color>
-
-            <SolidColorBrush x:Key="DarkBlue_Text" Color="#FF0070ff" />
-
-        </ResourceDictionary>
+        <SolidColorBrush x:Key="DarkBlue_Text" Color="#FF0070ff" />
 
     </Window.Resources>
 

@@ -213,8 +213,6 @@ namespace TrakHound_Client.Controls
             spaceWidth = root.ActualWidth;
             Width = spaceWidth;
 
-            Console.WriteLine("spaceWidth = " + spaceWidth);
-
             var animation = new DoubleAnimation();
             animation.Completed += TabClosingAnimation_Completed;
             animation.From = 1;
@@ -281,18 +279,6 @@ namespace TrakHound_Client.Controls
         }
 
         #endregion
-
-        //private double _maxWidth;
-        //public double MaxWidth
-        //{
-        //    get { return _maxWidth; }
-        //    set
-        //    {
-        //        _maxWidth = value;
-        //        _maxWidth = Math.Min(value, MAX_TEXT_WIDTH);
-        //        ChangeWidth(_maxWidth, txt);
-        //    }
-        //}
 
         private const double MAX_TEXT_WIDTH = 200;
 

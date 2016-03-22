@@ -60,10 +60,7 @@ namespace TH_DeviceTable
 
         #region "Methods"
 
-        public void Initialize()
-        {
-            //RefreshTimer_Initialize();
-        }
+        public void Initialize() { }
 
         public bool Opening() { return true; }
 

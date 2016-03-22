@@ -11,14 +11,6 @@
              mc:Ignorable="d"                         
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid Margin="50,0,0,0" x:Name="root_GRID">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>

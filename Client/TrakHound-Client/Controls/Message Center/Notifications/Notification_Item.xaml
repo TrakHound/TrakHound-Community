@@ -11,14 +11,6 @@
              mc:Ignorable="d" 
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid MinWidth="100" MinHeight="45" PreviewMouseDown="Grid_PreviewMouseDown">
         
         <Border>

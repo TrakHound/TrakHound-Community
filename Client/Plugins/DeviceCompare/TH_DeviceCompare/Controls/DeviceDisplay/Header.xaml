@@ -19,14 +19,6 @@
              d:DataContext="{d:DesignInstance Type=local:DesignTime_Header, IsDesignTimeCreatable=True}"            
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border x:Name="root" CornerRadius="3" Margin="2" Height="300">
         <Border.Style>
             <Style TargetType="Border">

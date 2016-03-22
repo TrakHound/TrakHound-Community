@@ -12,14 +12,6 @@
                           
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <StackPanel x:Name="root">
 
         <Border BorderThickness="0.5" ToolTipService.ShowDuration="10000" ToolTipService.BetweenShowDelay="500" ToolTipService.InitialShowDelay="500">

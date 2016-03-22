@@ -18,14 +18,6 @@
         
         >
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-
     <Grid Background="{StaticResource Accent_Normal}">
 
         <ContentControl Content="{Binding WindowContent}">

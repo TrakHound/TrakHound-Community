@@ -25,7 +25,7 @@ namespace TH_DeviceTable
             }
         }
 
-
+        #region "OEE"
 
         private double _oee;
         public double Oee
@@ -87,11 +87,57 @@ namespace TH_DeviceTable
             set { PropertyChanged.ChangeAndNotify<int>(ref _performanceStatus, value, () => PerformanceStatus); }
         }
 
-        //public double Performance_Status { get; set; }
+        #endregion
 
-        //public double Oee { get; set; }
-        //public double Availability { get; set; }
-        //public double Performance { get; set; }
+        private string _productionStatus;
+        public string ProductionStatus
+        {
+            get { return _productionStatus; }
+            set { PropertyChanged.ChangeAndNotify<string>(ref _productionStatus, value, () => ProductionStatus); }
+        }
+
+        #region "CNC Controller Status Variables"
+
+        private string _emergencyStop;
+        public string EmergencyStop
+        {
+            get { return _emergencyStop; }
+            set { PropertyChanged.ChangeAndNotify<string>(ref _emergencyStop, value, () => EmergencyStop); }
+        }
+
+        private string _controllerMode;
+        public string ControllerMode
+        {
+            get { return _controllerMode; }
+            set { PropertyChanged.ChangeAndNotify<string>(ref _controllerMode, value, () => ControllerMode); }
+        }
+
+        private string _executionMode;
+        public string ExecutionMode
+        {
+            get { return _executionMode; }
+            set { PropertyChanged.ChangeAndNotify<string>(ref _executionMode, value, () => ExecutionMode); }
+        }
+
+        private string _alarm;
+        public string Alarm
+        {
+            get { return _alarm; }
+            set { PropertyChanged.ChangeAndNotify<string>(ref _alarm, value, () => Alarm); }
+        }
+
+        private string _partCount;
+        public string PartCount
+        {
+            get { return _partCount; }
+            set { PropertyChanged.ChangeAndNotify<string>(ref _partCount, value, () => PartCount); }
+        }
+
+        #endregion
+
+
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

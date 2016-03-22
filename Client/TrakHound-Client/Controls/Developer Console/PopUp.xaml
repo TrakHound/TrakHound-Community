@@ -17,15 +17,10 @@
              >
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="ConsoleHeader" Color="#00274d"/>
-            <SolidColorBrush x:Key="ConsoleBackground" Color="#1a2f44"/>
+        <SolidColorBrush x:Key="ConsoleHeader" Color="#00274d"/>
+        <SolidColorBrush x:Key="ConsoleBackground" Color="#1a2f44"/>
 
-        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid Background="{StaticResource ConsoleBackground}">

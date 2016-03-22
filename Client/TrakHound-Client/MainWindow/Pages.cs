@@ -154,18 +154,6 @@ namespace TrakHound_Client
 
                             tabsWidth = GetTabPanelWidth();
                         }
-
-                        //double increment = (windowWidth - tabsWidth) / TabHeaders.Count;
-
-                        //foreach (var tab in TabHeaders)
-                        //{
-                        //    double width = tab.MaxWidth + increment;
-                        //    width = Math.Max(width, TabHeader.MIN_WIDTH);
-                        //    width = Math.Min(width, TabHeader.MAX_WIDTH);
-
-                        //    tab.MaxWidth = width;
-                        //    //tab.root.MaxWidth = width;
-                        //}
                     }
                 }), MainWindow.PRIORITY_CONTEXT_IDLE, new object[] { });
             }

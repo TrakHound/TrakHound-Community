@@ -12,10 +12,6 @@
              d:DesignHeight="100" d:DesignWidth="600">
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="DataGridColumnHeader">
                 <Setter Property="MinHeight" Value="30"/>
@@ -33,7 +29,7 @@
                                 >
                                 <Grid>
                                     <!--Content-->
-                                    <Border Padding="5,0">
+                                    <Border Padding="10,0">
                                         <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
                                     </Border>
                                 </Grid>
@@ -50,9 +46,8 @@
 
             <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                 <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-                <Setter Property="BorderThickness" Value="0,1,0,0" />
-                <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Multiple}"/>
-                <Style.Triggers>
+            <Setter Property="BorderThickness" Value="0,1,0,0" />
+            <Style.Triggers>
                     <DataTrigger Binding="{Binding Connected}" Value="false">
                         <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
                     </DataTrigger>
@@ -60,24 +55,21 @@
                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     </Trigger>
-                    <Trigger Property="IsSelected" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    </Trigger>
-                    <!--<DataTrigger Binding="{Binding SelectedItems.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" Value="1">
-                        <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu_Single}"/>
-                    </DataTrigger>-->
-                </Style.Triggers>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+            </Style.Triggers>
             </Style>
 
-        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
 
-        <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding DeviceInfos, IsAsync=True}" EnableColumnVirtualization="True" EnableRowVirtualization="True"
+        <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding DeviceInfos}"
                   AutoGenerateColumns="False"
                   BorderBrush="Transparent"
+                  HeadersVisibility="Column"
                   >
 
             <DataGrid.Columns>
@@ -85,20 +77,17 @@
                 <!--Description Columns-->
                 <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
                 <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
-                <DataGridTextColumn Header="Manufacturer" Binding="{Binding Description.Manufacturer}"/>
-                <DataGridTextColumn Header="Model" Binding="{Binding Description.Model}"/>
-                <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
-                
+
                 <!--OEE-->
                 <DataGridTemplateColumn Header="OEE">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid Height="30" Width="200" Margin="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="90"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <!--<th_wpf:ProgressBar Grid.Column="1" Value="{Binding Oee}" Maximum="1" AnimateValueChange="False">
+                                <th_wpf:ProgressBar Grid.Column="1" Value="{Binding Oee}" Maximum="1" AnimateValueChange="False">
                                     <th_wpf:ProgressBar.Style>
                                         <Style TargetType="th_wpf:ProgressBar">
                                             <Setter Property="Foreground" Value="Red"/>
@@ -107,13 +96,56 @@
                                                     <Setter Property="Foreground" Value="Yellow"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding OeeStatus}" Value="2">
-                                                    <Setter Property="Foreground" Value="Green"/>
+                                                    <Setter Property="Foreground" Value="#FF19B419"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </th_wpf:ProgressBar.Style>
-                                </th_wpf:ProgressBar>-->
-                                <TextBlock Grid.Column="0" Text="{Binding Oee, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+                                </th_wpf:ProgressBar>
+                                
+                                <TextBlock Grid.Column="0" Text="{Binding Oee, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+
+                                <!--Gloss Effect-->
+                                <Border IsHitTestVisible="False" Grid.Column="1">
+
+                                    <Grid IsHitTestVisible="False">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="4.5*"/>
+                                            <RowDefinition Height="5.5*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Border IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                    <GradientStop Color="#30ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#00ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                                    <GradientStop Color="#10000000" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                    </Grid>
+
+                                </Border>
+
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -125,10 +157,10 @@
                         <DataTemplate>
                             <Grid Height="30" Width="200" Margin="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="90"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <!--<th_wpf:ProgressBar Grid.Column="1" Value="{Binding Availability}" Maximum="1" AnimateValueChange="False">
+                                <th_wpf:ProgressBar Grid.Column="1" Value="{Binding Availability}" Maximum="1" AnimateValueChange="False">
                                     <th_wpf:ProgressBar.Style>
                                         <Style TargetType="th_wpf:ProgressBar">
                                             <Setter Property="Foreground" Value="Red"/>
@@ -137,13 +169,56 @@
                                                     <Setter Property="Foreground" Value="Yellow"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
-                                                    <Setter Property="Foreground" Value="Green"/>
+                                                    <Setter Property="Foreground" Value="#FF19B419"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </th_wpf:ProgressBar.Style>
-                                </th_wpf:ProgressBar>-->
-                                <TextBlock Grid.Column="0" Text="{Binding Availability, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+                                </th_wpf:ProgressBar>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Availability, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+
+                                <!--Gloss Effect-->
+                                <Border IsHitTestVisible="False" Grid.Column="1">
+
+                                    <Grid IsHitTestVisible="False">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="4.5*"/>
+                                            <RowDefinition Height="5.5*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Border IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                    <GradientStop Color="#30ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#00ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                                    <GradientStop Color="#10000000" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                    </Grid>
+
+                                </Border>
+                                
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -155,10 +230,10 @@
                         <DataTemplate>
                             <Grid Height="30" Width="200" Margin="5">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="90"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <!--<th_wpf:ProgressBar Grid.Column="1" Value="{Binding Performance}" Maximum="1" AnimateValueChange="False">
+                                <th_wpf:ProgressBar Grid.Column="1" Value="{Binding Performance}" Maximum="1" AnimateValueChange="False">
                                     <th_wpf:ProgressBar.Style>
                                         <Style TargetType="th_wpf:ProgressBar">
                                             <Setter Property="Foreground" Value="Red"/>
@@ -167,17 +242,331 @@
                                                     <Setter Property="Foreground" Value="Yellow"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
-                                                    <Setter Property="Foreground" Value="Green"/>
+                                                    <Setter Property="Foreground" Value="#FF19B419"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </th_wpf:ProgressBar.Style>
-                                </th_wpf:ProgressBar>-->
-                                <TextBlock Grid.Column="0" Text="{Binding Performance, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,10,0"/>
+                                </th_wpf:ProgressBar>
+                                
+                                <TextBlock Grid.Column="0" Text="{Binding Performance, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+
+                                <!--Gloss Effect-->
+                                <Border IsHitTestVisible="False" Grid.Column="1">
+
+                                    <Grid IsHitTestVisible="False">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="4.5*"/>
+                                            <RowDefinition Height="5.5*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Border IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                    <GradientStop Color="#30ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#00ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                            <Border.Background>
+                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                                    <GradientStop Color="#10000000" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                        </Border>
+
+                                    </Grid>
+
+                                </Border>
+                                
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
+                <!--Production Status-->
+                <DataGridTextColumn Header="Production Status" Binding="{Binding ProductionStatus}"/>
+
+                <!--CNC Controller Status Variables-->
+                <DataGridTextColumn Header="Emergency Stop" Binding="{Binding EmergencyStop}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Border
+                                            Margin="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="0"
+                                            >
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="Red"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="ARMED">
+                                                            <Setter Property="Background" Value="#FF19B419"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Grid>
+
+                                                <TextBlock x:Name="txt" Margin="10,0" Text="{Binding EmergencyStop}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                            <Setter Property="FontSize" Value="12pt"/>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+
+                                                <!--Gloss Overlay-->
+                                                <Border IsHitTestVisible="False">
+
+                                                    <Grid IsHitTestVisible="False">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="4.5*"/>
+                                                            <RowDefinition Height="5.5*"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <Border IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                                    <GradientStop Color="#30ffffff" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                                    <GradientStop Color="#00ffffff" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                                                    <GradientStop Color="#10000000" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </Grid>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Controller Mode" Binding="{Binding ControllerMode}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Border
+                                            Margin="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="0"
+                                            >
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="AUTOMATIC">
+                                                            <Setter Property="Background" Value="#FF19B419"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Grid>
+
+                                                <TextBlock x:Name="txt" Margin="10,0" Text="{Binding ControllerMode}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                            <Setter Property="FontSize" Value="12pt"/>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="Text" Value="AUTOMATIC">
+                                                                    <Setter Property="Foreground" Value="White"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+
+                                                <!--Gloss Overlay-->
+                                                <Border IsHitTestVisible="False">
+
+                                                    <Grid IsHitTestVisible="False">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="4.5*"/>
+                                                            <RowDefinition Height="5.5*"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <Border IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                                    <GradientStop Color="#30ffffff" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                                    <GradientStop Color="#00ffffff" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                                                    <GradientStop Color="#10000000" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </Grid>
+                                           
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Execution Mode" Binding="{Binding ExecutionMode}">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                                        <Border
+                                            Margin="0"
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="0"
+                                            >
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="ACTIVE">
+                                                            <Setter Property="Background" Value="#FF19B419"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="STOPPED">
+                                                            <Setter Property="Background" Value="Red"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <Grid>
+
+                                                <TextBlock x:Name="txt" Margin="10,0" Text="{Binding ExecutionMode}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                            <Setter Property="FontSize" Value="12pt"/>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="Text" Value="ACTIVE">
+                                                                    <Setter Property="Foreground" Value="White"/>
+                                                                </Trigger>
+                                                                <Trigger Property="Text" Value="STOPPED">
+                                                                    <Setter Property="Foreground" Value="White"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+
+                                                <!--Gloss Overlay-->
+                                                <Border IsHitTestVisible="False">
+
+                                                    <Grid IsHitTestVisible="False">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="4.5*"/>
+                                                            <RowDefinition Height="5.5*"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <Border IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                                    <GradientStop Color="#30ffffff" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <Border Grid.Row="1" IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                                    <GradientStop Color="#00ffffff" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                                                            <Border.Background>
+                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                                                    <GradientStop Color="#10000000" Offset="1"/>
+                                                                </LinearGradientBrush>
+                                                            </Border.Background>
+                                                        </Border>
+
+                                                    </Grid>
+
+                                                </Border>
+
+                                            </Grid>
+                                            
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
 
             </DataGrid.Columns>
 

@@ -44,7 +44,13 @@ namespace TH_DeviceTable
                         UpdateConnected(de_d, info);
 
                         UpdateOEE(de_d, info);
+
+                        UpdateProductionStatus(de_d, info);
+
+                        UpdateCNCControllerStatus(de_d, info);
                     }
+
+                    Devices_DG.UpdateLayout();
                 }
             }
         }
@@ -62,46 +68,59 @@ namespace TH_DeviceTable
 
         private void UpdateOEE(DataEvent_Data de_d, DeviceInfo info)
         {
-            // OEE Table Data
             if (de_d.id.ToLower() == "statusdata_oee")
             {
-                // OEE Average
-                Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(OEEValues_Update), Priority_Background, new object[] { de_d.data02, info });
-                //OEEValues_Update(de_d.data02, info);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var dt = de_d.data02 as DataTable;
+                    if (dt != null)
+                    {
+                        var oeeData = OEEData.FromDataTable(dt);
+
+                        info.Oee = oeeData.Oee;
+                        info.Availability = oeeData.Availability;
+                        info.Performance = oeeData.Performance;
+                    }
+                }), Priority_Background, new object[] { });
             }
 
         }
 
-        void OEEValues_Update(object oeedata, DeviceInfo info)
+        private void UpdateProductionStatus(DataEvent_Data de_d, DeviceInfo info)
         {
-            var dt = oeedata as DataTable;
+            if (de_d.id.ToLower() == "statusdata_snapshots")
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    info.ProductionStatus = GetTableValue(de_d.data02, "Production Status");
+                }), Priority_Background, new object[] { });
+            }
+        }
+
+        private void UpdateCNCControllerStatus(DataEvent_Data de_d, DeviceInfo info)
+        {
+            if (de_d.id.ToLower() == "statusdata_snapshots")
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    info.EmergencyStop = GetTableValue(de_d.data02, "Emergency Stop");
+                    info.ControllerMode = GetTableValue(de_d.data02, "Controller Mode");
+                    info.ExecutionMode = GetTableValue(de_d.data02, "Execution Mode");
+                    info.Alarm = GetTableValue(de_d.data02, "Alarm");
+                    info.PartCount = GetTableValue(de_d.data02, "PartCount");
+                }), Priority_Background, new object[] { });
+            }
+        }
+
+        private string GetTableValue(object obj, string key)
+        {
+            var dt = obj as DataTable;
             if (dt != null)
             {
-                var oeeData = OEEData.FromDataTable(dt);
-
-                info.Oee = oeeData.Oee;
-                info.Availability = oeeData.Availability;
-                info.Performance = oeeData.Performance;
+                return DataTable_Functions.GetTableValue(dt, "name", key, "value");
             }
+            return null;
         }
 
-
-        private void RefreshTimer_Initialize()
-        {
-            var timer = new System.Timers.Timer();
-            timer.Interval = 5000;
-            timer.Elapsed += RefreshTimer_Elapsed;
-            timer.Enabled = true;
-        }
-
-        private void RefreshTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            Dispatcher.BeginInvoke(new Action(Refresh_Timer_GUI), Priority_Background, new object[] { });
-        }
-
-        private void Refresh_Timer_GUI()
-        {
-            Devices_DG.Items.Refresh();
-        }
     }
 }

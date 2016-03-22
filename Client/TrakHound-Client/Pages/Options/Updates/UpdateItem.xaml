@@ -6,14 +6,6 @@
              mc:Ignorable="d" 
              >
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Border BorderThickness="1" Margin="0, 0, 0, 20">
         <Border.Style>
             <Style TargetType="Border">

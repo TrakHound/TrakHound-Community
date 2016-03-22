@@ -55,65 +55,7 @@
       <DependentUpon>Table.xaml</DependentUpon>
     </Compile>
     <Compile Include="Update Data.cs" />
-    <Page Include="Components\Cell.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Components\GlossOverlay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Components\Header.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Components\Row.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Components\Column_Header.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\NumberDisplay.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\TextDisplay.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <None Include="DeviceTable.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
-    <Compile Include="Components\Cell.xaml.cs">
-      <DependentUpon>Cell.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\GlossOverlay.xaml.cs">
-      <DependentUpon>GlossOverlay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\Header.xaml.cs">
-      <DependentUpon>Header.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\Row.xaml.cs">
-      <DependentUpon>Row.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Components\Column_Header.xaml.cs">
-      <DependentUpon>Column_Header.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\NumberDisplay.xaml.cs">
-      <DependentUpon>NumberDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\TextDisplay.xaml.cs">
-      <DependentUpon>TextDisplay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="DeviceDisplay.cs" />
     <Compile Include="Devices.cs" />
-    <None Include="DeviceTable.xaml.cs">
-      <DependentUpon>DeviceTable.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </None>
     <Page Include="Table.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
