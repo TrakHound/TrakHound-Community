@@ -21,6 +21,8 @@
         xmlns:user="clr-namespace:TH_UserManagement;assembly=TH_UserManagement"
         xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
         
+        xmlns:services="clr-namespace:TH_Global.Functions;assembly=TH_Global"
+        
         Title="TrakHound Client"
         
         Loaded="Main_Window_Loaded"
@@ -69,7 +71,7 @@
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
     <Grid x:Name="Root_GRID">
         <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">0</GridLength>
+            <GridLength x:Key="ShadowWidth">10</GridLength>
 
             <Color x:Key="inside">#22000000</Color>
             <GradientStopCollection x:Key="gradient">
@@ -812,7 +814,7 @@
                             <Grid x:Name="StatusBar_GRID" DockPanel.Dock="Bottom" Height="25" Background="{StaticResource Accent_Normal}" >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="auto" />
                                 </Grid.ColumnDefinitions>
                                 
                                 <!--Developer Console Show Button-->
@@ -844,46 +846,110 @@
                                     </th_wpf:Button>
 
                                 </StackPanel>
-                                
-                                <!--Message Center-->
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,0,50,0">
 
-                                    <th_wpf:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
-                                        <th_wpf:Button.Style>
-                                            <Style TargetType="th_wpf:Button">
-                                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                                <Setter Property="Background" Value="Transparent"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                                    <!--Server Management-->
+                                    <StackPanel Orientation="Horizontal" Margin="20,0">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
                                                 <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </th_wpf:Button.Style>
-                                    </th_wpf:Button>
-                                    
-                                    <Border CornerRadius="2" Margin="5,4">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Setter Property="Background" Value="#33000000"/>
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
-                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    <DataTrigger Binding="{Binding ServerInstalled}" Value="false">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </Border.Style>
-                                        <Border.ToolTip>
-                                            <TextBlock>
+                                        </StackPanel.Style>
+
+                                        <!--Start / Stop Icon-->
+                                        <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,4,5,4">
+                                            <Grid.Resources>
+                                                <ImageBrush x:Key="Running_IMG" Stretch="Uniform" ImageSource="Resources/Start_01.png"/>
+                                                <ImageBrush x:Key="Pause_IMG" Stretch="Uniform" ImageSource="Resources/Pause_01.png"/>
+                                                <ImageBrush x:Key="Stop_IMG" Stretch="Uniform" ImageSource="Resources/Stop_01.png"/>
+                                                <ImageBrush x:Key="Changing_IMG" Stretch="Uniform" ImageSource="Resources/Generate_01.png"/>
+                                            </Grid.Resources>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Setter Property="OpacityMask" Value="{StaticResource Pause_IMG}" />
+                                                    <Setter Property="Background" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
+                                                            <Setter Property="OpacityMask" Value="{StaticResource Running_IMG}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
+                                                            <Setter Property="OpacityMask" Value="{StaticResource Stop_IMG}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
+                                                            <Setter Property="OpacityMask" Value="{StaticResource Changing_IMG}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
+                                        </Grid>
+
+                                        <TextBlock Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="8pt" VerticalAlignment="Center">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
+                                                            <Setter Property="Text" Value="Server Running" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
+                                                            <Setter Property="Text" Value="Server Stopped" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
+                                                            <Setter Property="Text" Value="Server Status Changing" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                    </StackPanel>
+                                    
+                                    <!--Message Center-->
+                                    <StackPanel Orientation="Horizontal" Margin="20,0,50,0">
+
+                                        <th_wpf:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
+                                            <th_wpf:Button.Style>
+                                                <Style TargetType="th_wpf:Button">
+                                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                                    <Setter Property="Background" Value="Transparent"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="true">
+                                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </th_wpf:Button.Style>
+                                        </th_wpf:Button>
+
+                                        <Border CornerRadius="2" Margin="5,4">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="#33000000"/>
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <Border.ToolTip>
+                                                <TextBlock>
                                                 <Run Text="{Binding NotificationsCount}"/>
                                                 <Run Text="New Messages"/>
-                                            </TextBlock>
-                                        </Border.ToolTip>
-                                        <TextBlock Text="{Binding NotificationsCount}" FontSize="14" Foreground="White" Margin="5,0"/>
-                                    </Border>
+                                                </TextBlock>
+                                            </Border.ToolTip>
+                                            <TextBlock Text="{Binding NotificationsCount}" FontSize="14" Foreground="White" Margin="5,0"/>
+                                        </Border>
+
+                                    </StackPanel>
 
                                 </StackPanel>
+                                
 
                                 <!--Resize Grip Lines-->
                                 <Grid Grid.Column="1">
@@ -920,7 +986,6 @@
                                         </Rectangle.RenderTransform>
                                     </Rectangle>
 
-
                                 </Grid>
 
                                 <Rectangle x:Name="Corner_BottomRight_RECT" Grid.Column="1" Fill="#00000000" MouseEnter="Rectangle_BottomRight_MouseEnter"  MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
@@ -936,15 +1001,6 @@
                                         <RowDefinition Height="auto"/>
                                         <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
                                     </Grid.RowDefinitions>
-
-                                    <!--Pages TabControl-->
-                                    <!--<TabControl x:Name="Pages_TABCONTROL" Grid.Row="1"
-                                            VerticalContentAlignment="Center" TabStripPlacement="Top"
-                                            BorderBrush="#00FFFFFF" BorderThickness="0"
-                                            Padding="0,0,0,0" 
-                                            Background="{StaticResource Window_Background}"
-                                            SelectionChanged="Pages_TABCONTROL_SelectionChanged"   
-                                            />-->
 
                                     <ContentPresenter x:Name="CurrentPage_CONTENT" Grid.Row="1" Content="{Binding CurrentPage}"/>
 

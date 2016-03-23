@@ -48,6 +48,8 @@ namespace TrakHound_Client
             InitializeComponent();
             DataContext = this;
 
+            developerConsole.CurrentOutput = CLIENT_NAME;
+
             this.SourceInitialized += new EventHandler(win_SourceInitialized);
 
             Application.Current.MainWindow = this;
@@ -74,6 +76,8 @@ namespace TrakHound_Client
             //// Wait for the minimum splash time to elapse, then close the splash dialog
             ////while (SplashWait) { System.Threading.Thread.Sleep(200); }
             Splash_Close();
+
+            ServerMonitor_Initialize();
         }
 
         private void Main_Window_Loaded(object sender, RoutedEventArgs e)

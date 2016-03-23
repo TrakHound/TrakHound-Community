@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -20,6 +20,8 @@ using System.Windows.Shapes;
 
 using System.Windows.Media.Animation;
 using System.Collections.ObjectModel;
+
+using TH_Global;
 
 namespace TrakHound_Client.Controls.Developer_Console
 {
@@ -59,21 +61,74 @@ namespace TrakHound_Client.Controls.Developer_Console
             DependencyProperty.Register("Shown", typeof(bool), typeof(PopUp), new PropertyMetadata(false));
 
 
-        public class ConsoleItem
+
+        public Logger.Line SelectedLine
         {
-            public Int64 Row { get; set; }
-            public DateTime Timestamp { get; set; }
-            public string Text { get; set; }
+            get { return (Logger.Line)GetValue(SelectedLineProperty); }
+            set { SetValue(SelectedLineProperty, value); }
         }
 
+        public static readonly DependencyProperty SelectedLineProperty =
+            DependencyProperty.Register("SelectedLine", typeof(Logger.Line), typeof(PopUp), new PropertyMetadata(null));
 
 
-        ObservableCollection<ConsoleItem> consoleOutput;
-        public ObservableCollection<ConsoleItem> ConsoleOutput
+
+        //public class ConsoleItem
+        //{
+        //    public Int64 Row { get; set; }
+        //    public DateTime Timestamp { get; set; }
+        //    public string Text { get; set; }
+        //}
+
+        private class OutputGroup
+        {
+            public OutputGroup()
+            {
+                Lines = new List<Logger.Line>();
+            }
+
+            public string ApplicationName { get; set; }
+
+            public List<Logger.Line> Lines { get; set; }
+        }
+
+        List<OutputGroup> outputGroups = new List<OutputGroup>();
+
+        private string _currentOutput;
+        public string CurrentOutput
+        {
+            get { return _currentOutput; }
+            set
+            {
+                if (value != null && _currentOutput != value)
+                {
+                    Dispatcher.BeginInvoke(new Action<string>(SetCurrentOutput), MainWindow.PRIORITY_BACKGROUND, new object[] { value });
+                }
+                    
+                _currentOutput = value;
+            }
+        }
+
+        private void SetCurrentOutput(string currentOutput)
+        {
+            ConsoleOutput.Clear();
+
+            var outputGroup = outputGroups.Find(x => x.ApplicationName.ToLower() == currentOutput.ToLower());
+            if (outputGroup != null)
+            {
+                foreach (var line in outputGroup.Lines)
+                {
+                    ConsoleOutput.Add(line);
+                }
+            }
+        }
+
+        ObservableCollection<Logger.Line> consoleOutput;
+        public ObservableCollection<Logger.Line> ConsoleOutput
         {
             get
             {
-                if (consoleOutput == null) consoleOutput = new ObservableCollection<ConsoleItem>();
+                if (consoleOutput == null) consoleOutput = new ObservableCollection<Logger.Line>();
                 return consoleOutput;
             }
             set { consoleOutput = value; }
@@ -81,34 +136,73 @@ namespace TrakHound_Client.Controls.Developer_Console
 
         Int64 rowIndex = 0;
 
-        public void AddLine(string line)
+        public void AddLine(Logger.Line line, string applicationName)
         {
-            if (line != null) Dispatcher.BeginInvoke(new Action<string>(AddLine_GUI), new object[] { line });
+            if (line != null) Dispatcher.BeginInvoke(new Action<Logger.Line, string>(AddLine_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { line, applicationName });
         }
 
-        void AddLine_GUI(string line)
+        void AddLine_GUI(Logger.Line line, string applicationName)
         {
-            string[] lines = line.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-
-            foreach (var l in lines)
+            var outputGroup = outputGroups.Find(x => x.ApplicationName.ToLower() == applicationName.ToLower());
+            if (outputGroup == null)
             {
-                var item = new ConsoleItem();
-                item.Row = rowIndex;
-                item.Timestamp = DateTime.Now;
-                item.Text = l;
-
-                rowIndex++;
-
-                ConsoleOutput.Add(item);
-
-                RemoveOldLines();
-
-                CheckScrollPosition();
+                outputGroup = new OutputGroup();
+                outputGroup.ApplicationName = applicationName;
+                outputGroups.Add(outputGroup);
             }
+            line.Row = outputGroup.Lines.Count + 1;
+            outputGroup.Lines.Add(line);
+
+            if (applicationName == CurrentOutput) AddConsoleLine(line);
         }
+
+        void AddConsoleLine(Logger.Line line)
+        {
+            ConsoleOutput.Add(line);
+
+            rowIndex++;
+            RemoveOldLines();
+            CheckScrollPosition();
+        }
+
+        //public void AddLine(string line)
+        //{
+        //    if (line != null) Dispatcher.BeginInvoke(new Action<string>(AddLine_GUI), new object[] { line });
+        //}
+
+        //void AddLine_GUI(string line)
+        //{
+        //    string[] lines = line.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+        //    foreach (var l in lines)
+        //    {
+        //        var item = new ConsoleItem();
+        //        item.Row = rowIndex;
+        //        item.Timestamp = DateTime.Now;
+        //        item.Text = l;
+
+        //        rowIndex++;
+
+        //        ConsoleOutput.Add(item);
+
+        //        RemoveOldLines();
+
+        //        CheckScrollPosition();
+        //    }
+        //}
 
         void RemoveOldLines()
         {
+            foreach (var outputGroup in outputGroups)
+            {
+                if (outputGroup.Lines.Count > MaxLines)
+                {
+                    int first = outputGroup.Lines.Count - MaxLines;
+
+                    for (int x = 0; x < first; x++) outputGroup.Lines.RemoveAt(0);
+                }
+            }
+
             if (ConsoleOutput.Count > MaxLines)
             {
                 int first = ConsoleOutput.Count - MaxLines;
@@ -135,7 +229,7 @@ namespace TrakHound_Client.Controls.Developer_Console
         {
             if (ConsoleOutput.Count > 0)
             {
-                ConsoleItem lastItem = ConsoleOutput[ConsoleOutput.Count - 1];
+                var lastItem = ConsoleOutput[ConsoleOutput.Count - 1];
                 dg.ScrollIntoView(lastItem);
             }
         }
@@ -218,6 +312,15 @@ namespace TrakHound_Client.Controls.Developer_Console
             //}
         }
 
+        private void dg_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (dg.SelectedItem != null && dg.SelectedItems != null && dg.SelectedItems.Count == 1)
+            {
+                SelectedLine = (Logger.Line)dg.SelectedItem;
+            }
+        }
+
+
         private void Copy_Clicked(TH_WPF.Button bt)
         {
             dg.SelectAllCells();
@@ -231,5 +334,39 @@ namespace TrakHound_Client.Controls.Developer_Console
         {
             ConsoleOutput.Clear();
         }
+
+
+        private void Client_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentOutput = MainWindow.CLIENT_NAME;
+            server_BT.IsChecked = false;
+        }
+
+        private void Server_Click(object sender, RoutedEventArgs e)
+        {
+            CurrentOutput = MainWindow.SERVER_NAME;
+            client_BT.IsChecked = false;
+        }
+
+
+        #region "Details"
+
+        public bool DetailsShown
+        {
+            get { return (bool)GetValue(DetailsShownProperty); }
+            set { SetValue(DetailsShownProperty, value); }
+        }
+
+        public static readonly DependencyProperty DetailsShownProperty =
+            DependencyProperty.Register("DetailsShown", typeof(bool), typeof(PopUp), new PropertyMetadata(false));
+
+
+        private void Details_Clicked(TH_WPF.Button bt)
+        {
+            DetailsShown = !DetailsShown;
+        }
+
+        #endregion
+
     }
 }

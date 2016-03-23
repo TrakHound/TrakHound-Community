@@ -16,7 +16,6 @@ namespace TrakHound_Client
             set { SetValue(DevConsole_ShownProperty, value); }
         }
 
-        //double defaultHeight = 400;
         double lastHeight = 400;
 
         public static readonly DependencyProperty DevConsole_ShownProperty =
@@ -36,7 +35,6 @@ namespace TrakHound_Client
             DependencyProperty.Register("DeveloperConsoleHeight", typeof(GridLength), typeof(MainWindow), new PropertyMetadata(new GridLength(0)));
 
 
-
         private void DeveloperConsole_ToolBarItem_Clicked(TH_WPF.Button bt)
         {
             developerConsole.Shown = !developerConsole.Shown;
@@ -51,44 +49,41 @@ namespace TrakHound_Client
                 developerConsole.ScrollLastIntoView();
 
                 DeveloperConsoleHeight = new GridLength(lastHeight);
-
-                //Animate(lastHeight, DeveloperConsoleHeightProperty);
             }
             else
             {
                 lastHeight = DeveloperConsoleHeight.Value;
                 DeveloperConsoleHeight = new GridLength(0);
-                //DeveloperConsoleHeight = developerConsole.ActualHeight;
-                //Animate(0, DeveloperConsoleHeightProperty);
             }  
         }
 
-        //void Animate(double to, DependencyProperty dp)
-        //{
-        //    var animation = new DoubleAnimation();
-
-        //    animation.From = ((GridLength)GetValue(dp)).Value;
-        //    if (!double.IsNaN(to)) animation.To = Math.Max(0, to);
-        //    else animation.To = 0;
-        //    animation.Duration = new Duration(TimeSpan.FromMilliseconds(1000));
-        //    this.BeginAnimation(dp, animation);
-        //}
+        public const string CLIENT_NAME = "TrakHound-Client";
+        public const string SERVER_NAME = "TrakHound-Server";
 
         void Log_Initialize()
         {
-            LogWriter logWriter = new LogWriter();
-            logWriter.Updated += Log_Updated;
-            Console.SetOut(logWriter);
+            Logger.AppicationName = CLIENT_NAME;
+
+            var clientReader = new Logger.LogReader(CLIENT_NAME, DateTime.Now);
+            clientReader.LineAdded += ClientReader_LineAdded;
+
+            var serverReader = new Logger.LogReader(SERVER_NAME, DateTime.Now);
+            serverReader.LineAdded += ServerReader_LineAdded;
         }
 
-        void Log_Updated(string newline)
+        private void ClientReader_LineAdded(Logger.Line line)
         {
-            this.Dispatcher.BeginInvoke(new Action<string>(Log_Updated_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { newline });
+            Dispatcher.BeginInvoke(new Action<Logger.Line, string>(Log_Updated_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { line, CLIENT_NAME });
         }
 
-        void Log_Updated_GUI(string newline)
+        private void ServerReader_LineAdded(Logger.Line line)
         {
-            developerConsole.AddLine(newline);
+            Dispatcher.BeginInvoke(new Action<Logger.Line, string>(Log_Updated_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { line, SERVER_NAME });
+        }
+
+        void Log_Updated_GUI(Logger.Line line, string applicationName)
+        {
+            developerConsole.AddLine(line, applicationName);
         }
 
     }

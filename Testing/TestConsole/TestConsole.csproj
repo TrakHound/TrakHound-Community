@@ -57,23 +57,12 @@
       <HintPath>..\..\packages\System.Data.SQLite.Linq.1.0.99.0\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TH_Configuration">
-      <HintPath>..\..\Libraries\TH_Configuration\bin\Debug\TH_Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="TH_Database">
-      <HintPath>..\..\Libraries\TH_Database\bin\Debug\TH_Database.dll</HintPath>
-    </Reference>
-    <Reference Include="TH_Global">
-      <HintPath>..\..\Libraries\TH_Global\bin\Debug\TH_Global.dll</HintPath>
-    </Reference>
-    <Reference Include="TH_MTConnect">
-      <HintPath>..\..\..\MTConnect\TH_MTConnect\TH_MTConnect\bin\Debug\TH_MTConnect.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -85,9 +74,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\TH_DeviceManager\TH_DeviceManager.csproj">
-      <Project>{b5f883cc-0e97-468c-9ca4-84031f446edf}</Project>
-      <Name>TH_DeviceManager</Name>
+    <ProjectReference Include="..\..\Libraries\TH_Global\TH_Global.csproj">
+      <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
+      <Name>TH_Global</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

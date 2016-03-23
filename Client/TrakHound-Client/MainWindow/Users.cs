@@ -122,36 +122,57 @@ namespace TrakHound_Client
 
         private void Login(UserConfiguration userConfig)
         {
-            serverLoginData = UserLoginFile.Read();
-            if (serverLoginData != null)
+            bool serverRunning = Service_Functions.IsServiceRunning("TrakHound Server");
+            if (serverRunning)
             {
-                if (userConfig == null) ServerUser_Logout();
-                else if (serverLoginData.Username.ToLower() != userConfig.username.ToLower())
+                serverLoginData = UserLoginFile.Read();
+                if (serverLoginData != null)
                 {
-                    ServerUser_Change(userConfig);
+                    if (userConfig == null) ServerUser_Ask_Logout();
+                    else if (serverLoginData.Username.ToLower() != userConfig.username.ToLower())
+                    {
+                        ServerUser_Ask_Change(userConfig);
+                    }
                 }
+                else if (userConfig != null) ServerUser_Ask_Login(userConfig);
             }
-            else if (userConfig != null) ServerUser_Login(userConfig);
+            else
+            {
+                if (userConfig != null) ServerUser_Login(userConfig);
+                else ServerUser_Logout();
+            }
+            
 
             CurrentUser = userConfig;
         }
 
-        private void ServerUser_Login(UserConfiguration userConfig)
+        private void ServerUser_Ask_Login(UserConfiguration userConfig)
         {
             var result = TH_WPF.MessageBox.Show("Login Server User?", "Login Server User", TH_WPF.MessageBoxButtons.YesNo);
-            if (result == TH_WPF.MessageBoxDialogResult.Yes) UserLoginFile.Create(userConfig);
+            if (result == TH_WPF.MessageBoxDialogResult.Yes) ServerUser_Login(userConfig);
         }
 
-        private void ServerUser_Change(UserConfiguration userConfig)
+        private void ServerUser_Ask_Change(UserConfiguration userConfig)
         {
             var result = TH_WPF.MessageBox.Show("Server is logged in as a different user. Change Server User?", "Change Server User", TH_WPF.MessageBoxButtons.YesNo);
-            if (result == TH_WPF.MessageBoxDialogResult.Yes) UserLoginFile.Create(userConfig);
+            if (result == TH_WPF.MessageBoxDialogResult.Yes) ServerUser_Login(userConfig);
+        }
+
+        private void ServerUser_Ask_Logout()
+        {
+            var result = TH_WPF.MessageBox.Show("Server is still logged in. Logout Server User?", "Logout Server User", TH_WPF.MessageBoxButtons.YesNo);
+            if (result == TH_WPF.MessageBoxDialogResult.Yes) ServerUser_Logout();
+        }
+
+
+        private void ServerUser_Login(UserConfiguration userConfig)
+        {
+            UserLoginFile.Create(userConfig);
         }
 
         private void ServerUser_Logout()
         {
-            var result = TH_WPF.MessageBox.Show("Server is still logged in. Logout Server User?", "Logout Server User", TH_WPF.MessageBoxButtons.YesNo);
-            if (result == TH_WPF.MessageBoxDialogResult.Yes) UserLoginFile.Remove();
+            UserLoginFile.Remove();
         }
 
     }

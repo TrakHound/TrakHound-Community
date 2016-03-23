@@ -18,6 +18,7 @@ namespace TH_Global
         public static string AppData = TrakHound + @"\appdata";
         public static string Databases = TrakHound + @"\Databases";
         public static string Devices = TrakHound + @"\Devices";
+        public static string Logs = TrakHound + @"\Logs";
         public static string Plugins = TrakHound + @"\Plugins";
 
         public static void CreateAllDirectories()
@@ -25,12 +26,14 @@ namespace TH_Global
             CreateAppDataDirectory();
             CreateDatabasesDirectory();
             CreateDevicesDirectory();
+            CreateLogsDirectory();
             CreatePluginsDirectory();
         }
 
         public static void CreateAppDataDirectory() { CreateDirectory(AppData); }
         public static void CreateDatabasesDirectory() { CreateDirectory(Databases); }
         public static void CreateDevicesDirectory() { CreateDirectory(Devices); }
+        public static void CreateLogsDirectory() { CreateDirectory(Logs); }
         public static void CreatePluginsDirectory() { CreateDirectory(Plugins); }
 
 

@@ -99,6 +99,7 @@
     <Compile Include="MainWindow\Pages.cs" />
     <Compile Include="MainWindow\PluginMenu.cs" />
     <Compile Include="MainWindow\Plugins.cs" />
+    <Compile Include="MainWindow\Server Management.cs" />
     <Compile Include="MainWindow\SplashScreen.cs" />
     <Compile Include="MainWindow\Users.cs" />
     <Compile Include="MainWindow\WelcomeMessage.cs" />
@@ -340,6 +341,12 @@
     <Resource Include="Resources\TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Generate_01.png" />
+    <Resource Include="Resources\Forward_01.png" />
+    <Resource Include="Resources\Back_01.png" />
+    <Resource Include="Resources\Stop_01.png" />
+    <Resource Include="Resources\Start_01.png" />
+    <Resource Include="Resources\Pause_01.png" />
     <Resource Include="Resources\Edit_02.png" />
     <Resource Include="Resources\Add_01.png" />
     <Resource Include="Resources\Share_01.png" />
