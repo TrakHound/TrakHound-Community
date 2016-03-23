@@ -4,16 +4,11 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Text;
-using System.Linq;
 using System.Collections.Generic;
-
-using System.Runtime.CompilerServices;
-
-using System.Xml;
 using System.IO;
-
-using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Xml;
 
 using TH_Global.Functions;
 
@@ -73,6 +68,13 @@ namespace TH_Global
 
         #region "Public"
 
+        /// <summary>
+        /// Add line to Log
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="file"></param>
+        /// <param name="member"></param>
+        /// <param name="lineNumber"></param>
         public static void Log(string text, [CallerFilePath] string file = "", [CallerMemberName] string member = "", [CallerLineNumber] int lineNumber = 0)
         {
             string[] lines = text.Split(new string[] { "\r\n", "\n", Environment.NewLine }, StringSplitOptions.None);
@@ -438,130 +440,6 @@ namespace TH_Global
 
                 return result;
             }
-
-            
-            //void AddToLog(XmlDocument doc, Line line)
-            //{
-            //    string text = line.text;
-            //    string file = line.file;
-            //    string member = line.member;
-            //    int lineNumber = line.lineNumber;
-
-            //    string assembly = "";
-            //    if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file)).Replace(' ', '_');
-            //    file = Path.GetFileName(file);
-            //    member = member.Replace('.', '_');
-
-            //    // Create Document Root
-            //    XmlNode rootNode = CreateRoot(doc);
-
-            //    //Assembly
-            //    XmlNode assemblyNode = rootNode.SelectSingleNode("//" + assembly);
-
-            //    if (assemblyNode == null)
-            //    {
-            //        XmlNode xn = doc.CreateElement(assembly);
-            //        rootNode.AppendChild(xn);
-            //        assemblyNode = xn;
-            //    }
-
-            //    //File
-            //    XmlNode fileNode = assemblyNode.SelectSingleNode("//" + file);
-
-            //    if (fileNode == null)
-            //    {
-            //        XmlNode xn = doc.CreateElement(file);
-            //        assemblyNode.AppendChild(xn);
-            //        fileNode = xn;
-            //    }
-
-            //    //Member
-            //    XmlNode memberNode = fileNode.SelectSingleNode("//" + member);
-
-            //    if (memberNode == null)
-            //    {
-            //        XmlNode xn = doc.CreateElement(member);
-            //        fileNode.AppendChild(xn);
-            //        memberNode = xn;
-            //    }
-
-            //    //Item
-            //    XmlNode itemNode = doc.CreateElement("Item");
-
-            //    XmlAttribute timestampAttribute = doc.CreateAttribute("timestamp");
-            //    timestampAttribute.Value = DateTime.Now.ToString();
-            //    itemNode.Attributes.Append(timestampAttribute);
-
-            //    XmlAttribute lineAttribute = doc.CreateAttribute("line");
-            //    lineAttribute.Value = lineNumber.ToString();
-            //    itemNode.Attributes.Append(lineAttribute);
-
-            //    XmlAttribute textAttribute = doc.CreateAttribute("text");
-            //    textAttribute.Value = text;
-            //    itemNode.Attributes.Append(textAttribute);
-
-            //    memberNode.AppendChild(itemNode);
-            //}
-
-            //static void WriteDocument(XmlDocument doc, string LogFile)
-            //{
-            //    XmlWriterSettings settings = new XmlWriterSettings();
-            //    //settings.Async = true;
-            //    settings.Indent = true;
-
-            //    try
-            //    {
-            //        using (XmlWriter writer = XmlWriter.Create(LogFile, settings))
-            //        {
-            //            doc.Save(writer);
-            //        }
-            //    }
-            //    catch (Exception ex) { Console.WriteLine("Logger.WriteDocument() :: Exception :: " + ex.Message); }
-            //}
-
-            //static XmlDocument CreateDocument(string LogFile)
-            //{
-            //    XmlDocument Result = new XmlDocument();
-
-            //    if (!File.Exists(LogFile))
-            //    {
-            //        XmlNode docNode = Result.CreateXmlDeclaration("1.0", "UTF-8", null);
-            //        Result.AppendChild(docNode);
-
-            //        string directory = Path.GetDirectoryName(LogFile);
-
-            //        if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-            //    }
-            //    else
-            //    {
-            //        try
-            //        {
-            //            Result.Load(LogFile);
-            //        }
-            //        catch (Exception ex) { Console.WriteLine("Logger.CreateDocument() :: Exception :: " + ex.Message); }
-            //    }
-
-            //    return Result;
-            //}
-
-            //static XmlNode CreateRoot(XmlDocument doc)
-            //{
-            //    XmlNode Result;
-
-            //    if (doc.DocumentElement == null)
-            //    {
-            //        Result = doc.CreateElement("Root");
-            //        doc.AppendChild(Result);
-            //    }
-            //    else Result = doc.DocumentElement;
-
-            //    return Result;
-            //}
-
-            //static string FormatDate(DateTime date)
-            //{
-            //    return date.Year.ToString() + "-" + date.Month.ToString() + "-" + date.Day.ToString();
-            //}
 
         }
     }

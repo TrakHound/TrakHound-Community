@@ -8,6 +8,8 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Reflection;
 
+using TH_Global;
+
 namespace TH_Database
 {
 
@@ -66,16 +68,16 @@ namespace TH_Database
                 }
                 catch (System.Reflection.ReflectionTypeLoadException rtex)
                 {
-                    Console.WriteLine("ReflectionTypeLoadException : " + rtex.Message);
+                    Logger.Log("ReflectionTypeLoadException : " + rtex.Message);
 
                     foreach (var lex in rtex.LoaderExceptions)
                     {
-                        Console.WriteLine("LoaderException : " + lex.Message);
+                        Logger.Log("LoaderException : " + lex.Message);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception : " + ex.Message);
+                    Logger.Log("Exception : " + ex.Message);
                 }
 
                 if (pluginContainer.Plugins != null)
@@ -101,7 +103,7 @@ namespace TH_Database
             }
             catch (Exception ex)
             {
-                Console.WriteLine(path + " :: " + ex.Message);
+                Logger.Log(path + " :: " + ex.Message);
             }
 
             return result;

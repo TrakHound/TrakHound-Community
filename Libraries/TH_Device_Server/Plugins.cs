@@ -56,9 +56,9 @@ namespace TH_Device_Server
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
             if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
-            Console.WriteLine("Server Plugins --------------------------");
-            Console.WriteLine(Plugins.Count.ToString() + " Plugins Found");
-            Console.WriteLine("------------------------------");
+            Logger.Log("Server Plugins --------------------------");
+            Logger.Log(Plugins.Count.ToString() + " Plugins Found");
+            Logger.Log("------------------------------");
             foreach (Lazy<IServerPlugin> lplugin in Plugins)
             {
                 IServerPlugin plugin = lplugin.Value;
@@ -74,9 +74,9 @@ namespace TH_Device_Server
                     version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
                 }
 
-                Console.WriteLine(plugin.Name + " : " + version);
+                Logger.Log(plugin.Name + " : " + version);
             }
-            Console.WriteLine("----------------------------------------");
+            Logger.Log("----------------------------------------");
         }
 
         void LoadPlugins(string Path)

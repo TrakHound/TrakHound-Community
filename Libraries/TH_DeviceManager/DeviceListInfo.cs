@@ -17,40 +17,11 @@ namespace TH_DeviceManager
         public DeviceListInfo(Configuration config)
         {
             Configuration = config;
-
-            //Index = config.Index;
-
-            //UniqueId = config.UniqueId;
-            //TableName = config.TableName;
-
-            //Description = config.Description.Description;
-            //Manufacturer = config.Description.Manufacturer;
-            //Model = config.Description.Model;
-            //Serial = config.Description.Serial;
-            //Id = config.Description.Device_ID;
-
-            //DeviceLinkTag = config.SharedLinkTag;
-
-            //ClientEnabled = config.ClientEnabled;
-            //ServerEnabled = config.ServerEnabled;
         }
 
         public string UniqueId { get; set; }
-        //public string TableName { get; set; }
 
         public int Index { get; set; }
-
-        //public string Description { get; set; }
-        //public string Manufacturer { get; set; }
-        //public string Model { get; set; }
-        //public string Serial { get; set; }
-        //public string Id { get; set; }
-
-        //// SharedListItem link_tag
-        //public string DeviceLinkTag { get; set; }
-
-        //public bool ClientEnabled { get; set; }
-        //public bool ServerEnabled { get; set; }
 
         public Configuration Configuration { get; set; }
 

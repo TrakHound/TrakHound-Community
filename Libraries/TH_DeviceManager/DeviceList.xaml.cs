@@ -785,7 +785,7 @@ namespace TH_DeviceManager
             }
             catch (Exception ex)
             {
-                Console.WriteLine("SaveClicked() :: Exception :: " + ex.Message);
+                Logger.Log("SaveClicked() :: Exception :: " + ex.Message);
             }
         }
 

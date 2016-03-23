@@ -46,8 +46,6 @@ namespace TH_Cycles
                 if (UseDatabases)
                 {
                     CreateCycleTable();
-                    AddOverrideColumns();
-
                     CreateSetupTable();
                 }
 
@@ -169,29 +167,51 @@ namespace TH_Cycles
 
             columns.Add(new ColumnDefinition("DURATION", DataType.Double));
 
+            columns.AddRange(GetOverrideColumns());
+
             ColumnDefinition[] ColArray = columns.ToArray();
 
             Table.Create(config.Databases_Server, cycleTableName, ColArray, cyclePrimaryKey);
         }
 
-        void AddOverrideColumns()
+        List<ColumnDefinition> GetOverrideColumns()
         {
+            var result = new List<ColumnDefinition>();
+
             var cc = CycleConfiguration.Get(config);
             if (cc != null)
             {
-                var CycleColumns = Column.Get(config.Databases_Server, TableNames.Cycles);
-
                 foreach (var ovr in cc.OverrideLinks)
                 {
-                    if (!CycleColumns.Contains(ovr))
-                    {
-                        var columnName = FormatColumnName(ovr).ToUpper();
+                    var columnName = FormatColumnName(ovr).ToUpper();
 
-                        Column.Add(config.Databases_Server, TableNames.Cycles, new ColumnDefinition(columnName, DataType.Double));
-                    }
+                    var column = new ColumnDefinition(columnName, DataType.Double);
+
+                    result.Add(column);
                 }
             }
+
+            return result;
         }
+
+        //void AddOverrideColumns()
+        //{
+        //    var cc = CycleConfiguration.Get(config);
+        //    if (cc != null)
+        //    {
+        //        var CycleColumns = Column.Get(config.Databases_Server, TableNames.Cycles);
+
+        //        foreach (var ovr in cc.OverrideLinks)
+        //        {
+        //            if (!CycleColumns.Contains(ovr))
+        //            {
+        //                var columnName = FormatColumnName(ovr).ToUpper();
+
+        //                Column.Add(config.Databases_Server, TableNames.Cycles, new ColumnDefinition(columnName, DataType.Double));
+        //            }
+        //        }
+        //    }
+        //}
 
         static string FormatColumnName(string str)
         {

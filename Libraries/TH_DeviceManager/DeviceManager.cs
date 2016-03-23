@@ -190,7 +190,7 @@ namespace TH_DeviceManager
                 {
                     added[x].Index = 1000 + (1000 * x);
 
-                    Console.WriteLine("Device Configuration Loaded :: " + added[x].Description.Description);
+                    Logger.Log("Device Configuration Loaded :: " + added[x].Description.Description);
                 }
 
                 foreach (var device in added) Configuration.Save(device);

@@ -21,9 +21,9 @@ namespace TH_Database
 
             Global.Plugins = plugins;
 
-            Console.WriteLine("Database Plugins --------------------------");
+            Logger.Log("Database Plugins --------------------------");
             Logger.Log(plugins.Count.ToString() + " Database Plugins Found");
-            Console.WriteLine("------------------------------");
+            Logger.Log("------------------------------");
             foreach (var plugin in plugins)
             {
                 string name = plugin.Name;
@@ -39,7 +39,7 @@ namespace TH_Database
 
                 Logger.Log(plugin.Name + " : " + version);
             }
-            Console.WriteLine("----------------------------------------");
+            Logger.Log("----------------------------------------");
         }
 
         /// <summary>
@@ -107,112 +107,7 @@ namespace TH_Database
                 if (oldPlugins.Find(x => x.Name == plugin.Name) == null) oldPlugins.Add(plugin);
             }
         }
-
-        //public IEnumerable<Lazy<IDatabasePlugin>> databasePlugins { get; set; }
-
-        //public static List<IDatabasePlugin> Plugins { get; set; }
-
-        //DatabasePlugs DBPLUGS;
-
-        //class DatabasePlugs
-        //{
-        //    [ImportMany(typeof(IDatabasePlugin))]
-        //    public IEnumerable<Lazy<IDatabasePlugin>> Plugins { get; set; }
-        //}
-
-        //public void ReadPlugins()
-        //{
-        //    string plugin_rootpath = FileLocations.Plugins;
-
-        //    if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
-
-        //    Plugins = new List<IDatabasePlugin>();
-
-        //    string pluginsPath;
-
-        //    // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\Plugins')
-        //    pluginsPath = TH_Global.FileLocations.Plugins;
-        //    if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
-
-        //    // Load from App root Directory (doesn't overwrite plugins found in System Directory)
-        //    //pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-        //    pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
-        //    if (Directory.Exists(pluginsPath)) FindPlugins(pluginsPath);
-
-
-        //    Console.WriteLine("Database Plugins --------------------------");
-        //    Console.WriteLine(Plugins.Count.ToString() + " Plugins Found");
-        //    Console.WriteLine("------------------------------");
-        //    foreach (var plugin in Plugins)
-        //    {
-        //        IDatabasePlugin plugin = lplugin.Value;
-
-        //        string name = plugin.Name;
-        //        string version = null;
-
-        //        // Version Info
-        //        Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-        //        if (assembly != null)
-        //        {
-        //            Version v = assembly.GetName().Version;
-        //            version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
-        //        }
-
-        //        Console.WriteLine(plugin.Name + " : " + version);
-        //    }
-        //    Console.WriteLine("----------------------------------------");
-
-
-        //    Global.Plugins = Plugins;
-
-        //}
-
-        //void FindPlugins(string Path)
-        //{
-        //    Console.WriteLine("Searching for Database Plugins in : " + Path);
-
-        //    if (Directory.Exists(Path))
-        //    {
-        //        try
-        //        {
-        //            DBPLUGS = new DatabasePlugs();
-
-        //            var PageCatalog = new DirectoryCatalog(Path);
-        //            var PageContainer = new CompositionContainer(PageCatalog);
-        //            PageContainer.SatisfyImportsOnce(DBPLUGS);
-
-        //            databasePlugins = DBPLUGS.PlugIns;
-
-        //            foreach (Lazy<IDatabasePlugin> DBP in databasePlugins.ToList())
-        //            {
-        //                if (plugins.ToList().Find(x => x.Value.Name.ToLower() == DBP.Value.Name.ToLower()) == null)
-        //                {
-        //                    plugins.Add(DBP);
-        //                }
-        //            }
-        //        }
-        //        catch (System.Reflection.ReflectionTypeLoadException rtex)
-        //        {
-        //            Console.WriteLine("DatabasePluginReader.GetPlugins() : ReflectionTypeLoadException : " + rtex.Message);
-
-        //            foreach (var lex in rtex.LoaderExceptions)
-        //            {
-        //                Console.WriteLine("DatabasePluginReader.GetPlugins() : LoaderException : " + lex.Message);
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            Console.WriteLine("DatabasePluginReader.GetPlugins() : Exception : " + ex.Message);
-        //        }
-
-        //        // Search Subdirectories
-        //        foreach (string directory in Directory.GetDirectories(Path))
-        //        {
-        //            FindPlugins(directory);
-        //        }
-        //    }
-        //}
-
+        
     }
 
 }

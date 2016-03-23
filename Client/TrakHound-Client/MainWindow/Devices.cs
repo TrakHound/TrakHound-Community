@@ -12,6 +12,7 @@ using System.IO;
 using TH_Configuration;
 using TH_Database;
 using TH_DeviceManager;
+using TH_Global;
 using TH_UserManagement.Management;
 
 namespace TrakHound_Client
@@ -135,7 +136,7 @@ namespace TrakHound_Client
         /// <param name="config"></param>
         private void AddDevice(Configuration config)
         {
-            Console.WriteLine("AddDevice() :: " + config.Description.Description);
+            Logger.Log("AddDevice() :: " + config.Description.Description);
 
             if (!Devices.Exists(x => x.UniqueId == config.UniqueId))
             {
@@ -154,7 +155,7 @@ namespace TrakHound_Client
         /// <param name="config"></param>
         private void UpdateDevice(Configuration config)
         {
-            Console.WriteLine("UpdateDevice() :: " + config.Description.Description);
+            Logger.Log("UpdateDevice() :: " + config.Description.Description);
 
             int index = Devices.FindIndex(x => x.UniqueId == config.UniqueId);
             if (index >= 0)
@@ -176,7 +177,7 @@ namespace TrakHound_Client
         /// <param name="config"></param>
         private void RemoveDevice(Configuration config)
         {
-            Console.WriteLine("RemoveDevice() :: " + config.Description.Description);
+            Logger.Log("RemoveDevice() :: " + config.Description.Description);
 
             var match = Devices.Find(x => x.UniqueId == config.UniqueId);
             if (match != null)

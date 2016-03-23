@@ -4,6 +4,7 @@ using System.Linq;
 using System.Data;
 
 using TH_Database;
+using TH_Global;
 using TH_Global.Functions;
 
 namespace TH_SQLite
@@ -122,7 +123,7 @@ namespace TH_SQLite
                     query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + ")";
                     result = (bool)ExecuteQuery<bool>(config, query);
 
-                    Console.WriteLine("Table_Replace() :: " + result.ToString());
+                    Logger.Log("Table_Replace() :: " + result.ToString());
                 }
             }
 

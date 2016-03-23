@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml;
 using System.IO;
 
+using TH_Global;
 using TH_Global.Functions;
 
 namespace TH_UserManagement.Management
@@ -57,7 +58,7 @@ namespace TH_UserManagement.Management
                         result.Password = password;
                     }
                 }
-                catch (Exception ex) { Console.WriteLine("TH_UserManagement.UserLoginFile.WriteDocument() :: Exception :: " + ex.Message); }
+                catch (Exception ex) { Logger.Log("TH_UserManagement.UserLoginFile.WriteDocument() :: Exception :: " + ex.Message); }
             }
 
             return result;
@@ -110,7 +111,7 @@ namespace TH_UserManagement.Management
                     doc.Save(writer);
                 }
             }
-            catch (Exception ex) { Console.WriteLine("TH_UserManagement.UserLoginFile.WriteDocument() :: Exception :: " + ex.Message); }
+            catch (Exception ex) { Logger.Log("TH_UserManagement.UserLoginFile.WriteDocument() :: Exception :: " + ex.Message); }
         }
 
 

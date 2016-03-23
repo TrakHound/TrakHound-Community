@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 
 using System.Reflection;
 
+using TH_Global;
 using TH_Updater;
 
 namespace TrakHound_Client.Pages.Options.Updates
@@ -63,15 +64,15 @@ namespace TrakHound_Client.Pages.Options.Updates
             if (info != null)
             {
                 // Print Auto Update info to Console
-                Console.WriteLine("---- Auto-Update Info ----");
-                //Console.WriteLine("TrakHound - Client");
-                Console.WriteLine("Release Type : " + info.releaseType);
-                Console.WriteLine("Version : " + info.version);
-                Console.WriteLine("Build Date : " + info.buildDate);
-                Console.WriteLine("Download URL : " + info.downloadUrl);
-                Console.WriteLine("Update URL : " + info.updateUrl);
-                Console.WriteLine("File Size : " + info.size);
-                Console.WriteLine("--------------------------");
+                Logger.Log("---- Auto-Update Info ----");
+                //Logger.Log("TrakHound - Client");
+                Logger.Log("Release Type : " + info.releaseType);
+                Logger.Log("Version : " + info.version);
+                Logger.Log("Build Date : " + info.buildDate);
+                Logger.Log("Download URL : " + info.downloadUrl);
+                Logger.Log("Update URL : " + info.updateUrl);
+                Logger.Log("File Size : " + info.size);
+                Logger.Log("--------------------------");
 
                 this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
             }
@@ -93,7 +94,7 @@ namespace TrakHound_Client.Pages.Options.Updates
                     updater.assembly = assembly;
                     updater.Start(info.updateUrl);
 
-                    Console.WriteLine("Update Available : " + latestVersion.ToString());
+                    Logger.Log("Update Available : " + latestVersion.ToString());
 
                     //// Add Notification to Message Center
                     //Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
@@ -140,14 +141,14 @@ namespace TrakHound_Client.Pages.Options.Updates
             if (info != null)
             {
                 // Print Auto Update info to Console
-                Console.WriteLine("---- Manual-Update Info ----");
-                Console.WriteLine("Release Type : " + info.releaseType);
-                Console.WriteLine("Version : " + info.version);
-                Console.WriteLine("Build Date : " + info.buildDate);
-                Console.WriteLine("Download URL : " + info.downloadUrl);
-                Console.WriteLine("Update URL : " + info.updateUrl);
-                Console.WriteLine("File Size : " + info.size);
-                Console.WriteLine("--------------------------");
+                Logger.Log("---- Manual-Update Info ----");
+                Logger.Log("Release Type : " + info.releaseType);
+                Logger.Log("Version : " + info.version);
+                Logger.Log("Build Date : " + info.buildDate);
+                Logger.Log("Download URL : " + info.downloadUrl);
+                Logger.Log("Update URL : " + info.updateUrl);
+                Logger.Log("File Size : " + info.size);
+                Logger.Log("--------------------------");
 
                 this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(ManualUpdater_AppInfoReceived_GUI), new object[] { info });
             }
@@ -164,7 +165,7 @@ namespace TrakHound_Client.Pages.Options.Updates
             {
                 if (version < latestVersion)
                 {
-                    Console.WriteLine("Update Available : " + latestVersion.ToString());
+                    Logger.Log("Update Available : " + latestVersion.ToString());
 
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();

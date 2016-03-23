@@ -82,7 +82,7 @@ namespace TrakHound_Client.Pages.Options.Updates
             }
             else
             {
-                Console.WriteLine("LaunchUpdater() :: Can't find " + appStartPath);
+                Logger.Log("LaunchUpdater() :: Can't find " + appStartPath);
             }
         }
 
@@ -99,15 +99,15 @@ namespace TrakHound_Client.Pages.Options.Updates
             if (info != null)
             {
                 // Print Auto Update info to Console
-                Console.WriteLine("---- Auto-Update Info ----");
-                Console.WriteLine("TrakHound - Client");
-                Console.WriteLine("Release Type : " + info.releaseType);
-                Console.WriteLine("Version : " + info.version);
-                Console.WriteLine("Build Date : " + info.buildDate);
-                Console.WriteLine("Download URL : " + info.downloadUrl);
-                Console.WriteLine("Update URL : " + info.updateUrl);
-                Console.WriteLine("File Size : " + info.size);
-                Console.WriteLine("--------------------------");
+                Logger.Log("---- Auto-Update Info ----");
+                Logger.Log("TrakHound - Client");
+                Logger.Log("Release Type : " + info.releaseType);
+                Logger.Log("Version : " + info.version);
+                Logger.Log("Build Date : " + info.buildDate);
+                Logger.Log("Download URL : " + info.downloadUrl);
+                Logger.Log("Update URL : " + info.updateUrl);
+                Logger.Log("File Size : " + info.size);
+                Logger.Log("--------------------------");
 
                 this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
             }
@@ -135,7 +135,7 @@ namespace TrakHound_Client.Pages.Options.Updates
                     updater.assembly = Assembly.GetExecutingAssembly();
                     updater.Start(info.updateUrl);
 
-                    Console.WriteLine("Update Available : " + latestVersion.ToString());
+                    Logger.Log("Update Available : " + latestVersion.ToString());
 
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
@@ -183,15 +183,15 @@ namespace TrakHound_Client.Pages.Options.Updates
             if (info != null)
             {
                 // Print Auto Update info to Console
-                Console.WriteLine("---- Manual-Update Info ----");
-                Console.WriteLine("TrakHound - Client");
-                Console.WriteLine("Release Type : " + info.releaseType);
-                Console.WriteLine("Version : " + info.version);
-                Console.WriteLine("Build Date : " + info.buildDate);
-                Console.WriteLine("Download URL : " + info.downloadUrl);
-                Console.WriteLine("Update URL : " + info.updateUrl);
-                Console.WriteLine("File Size : " + info.size);
-                Console.WriteLine("--------------------------");
+                Logger.Log("---- Manual-Update Info ----");
+                Logger.Log("TrakHound - Client");
+                Logger.Log("Release Type : " + info.releaseType);
+                Logger.Log("Version : " + info.version);
+                Logger.Log("Build Date : " + info.buildDate);
+                Logger.Log("Download URL : " + info.downloadUrl);
+                Logger.Log("Update URL : " + info.updateUrl);
+                Logger.Log("File Size : " + info.size);
+                Logger.Log("--------------------------");
 
                 this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(ManualUpdater_AppInfoReceived_GUI), new object[] { info });
             }
@@ -214,7 +214,7 @@ namespace TrakHound_Client.Pages.Options.Updates
             {
                 if (version < latestVersion)
                 {
-                    Console.WriteLine("Update Available : " + latestVersion.ToString());
+                    Logger.Log("Update Available : " + latestVersion.ToString());
 
                     // Add Notification to Message Center
                     Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
@@ -287,7 +287,7 @@ namespace TrakHound_Client.Pages.Options.Updates
                                 Plugin_STACK.Children.Add(ui);
                             }
                         }
-                        catch (Exception ex) { Console.WriteLine("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
+                        catch (Exception ex) { Logger.Log("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
                     }
 
                     if (config.SubCategories != null)
@@ -377,7 +377,7 @@ namespace TrakHound_Client.Pages.Options.Updates
         //                            Plugin_STACK.Children.Add(ui);
         //                        }
         //                    }
-        //                    catch (Exception ex) { Console.WriteLine("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
+        //                    catch (Exception ex) { Logger.Log("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
         //                }
         //            }
 
@@ -546,7 +546,7 @@ namespace TrakHound_Client.Pages.Options.Updates
             }
             catch (Exception ex)
             {
-                Console.WriteLine("TrakHound-Client.Pages.Options.Update.Page.SetRegistryKey() : " + ex.Message);
+                Logger.Log("TrakHound-Client.Pages.Options.Update.Page.SetRegistryKey() : " + ex.Message);
             }
         }
 
@@ -574,7 +574,7 @@ namespace TrakHound_Client.Pages.Options.Updates
             }
             catch (Exception ex)
             {
-                Console.WriteLine("TrakHound-Client.Pages.Options.Updates.Page.GetRegistryKey() : " + ex.Message);
+                Logger.Log("TrakHound-Client.Pages.Options.Updates.Page.GetRegistryKey() : " + ex.Message);
             }
 
             return Result;

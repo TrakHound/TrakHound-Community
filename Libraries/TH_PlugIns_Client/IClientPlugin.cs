@@ -258,16 +258,16 @@ namespace TH_Plugins_Client
                 }
                 catch (System.Reflection.ReflectionTypeLoadException rtex)
                 {
-                    Console.WriteLine("ReflectionTypeLoadException : " + rtex.Message);
+                    Logger.Log("ReflectionTypeLoadException : " + rtex.Message);
 
                     foreach (var lex in rtex.LoaderExceptions)
                     {
-                        Console.WriteLine("LoaderException : " + lex.Message);
+                        Logger.Log("LoaderException : " + lex.Message);
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Exception : " + ex.Message);
+                    Logger.Log("Exception : " + ex.Message);
                 }
 
                 if (pluginContainer.Plugins != null)
@@ -300,7 +300,7 @@ namespace TH_Plugins_Client
             }
             catch (Exception ex)
             {
-                Console.WriteLine(path + " :: " + ex.Message);
+                Logger.Log(path + " :: " + ex.Message);
             }          
 
             return result;

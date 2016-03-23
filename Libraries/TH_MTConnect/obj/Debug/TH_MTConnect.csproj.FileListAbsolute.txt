@@ -18,9 +18,9 @@ F:\feenux\TrakHound\MTConnect\TH_MTConnect\TH_MTConnect\obj\Debug\TH_MTConnect.c
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\bin\Debug\TH_MTConnect.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\bin\Debug\TH_MTConnect.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.g.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_MTConnect\obj\Debug\TH_MTConnect.csprojResolveAssemblyReference.cache

@@ -6,6 +6,8 @@
 using System;
 using System.IO;
 
+using TH_Global;
+
 namespace TrakHound_Server_Core
 {
     public partial class Server
@@ -13,7 +15,7 @@ namespace TrakHound_Server_Core
 
         void PrintHeader()
         {
-            Console.WriteLine("--------------------------------------------------");
+            Logger.Log("--------------------------------------------------");
 
             string trakhoundlogo_path = AppDomain.CurrentDomain.BaseDirectory + @"\" + "Header.txt";
 
@@ -25,11 +27,11 @@ namespace TrakHound_Server_Core
 
                     if (trakhoundlogo.Contains("[v]")) trakhoundlogo = trakhoundlogo.Replace("[v]", GetVersion());
 
-                    Console.WriteLine(trakhoundlogo);
+                    Logger.Log(trakhoundlogo);
                 }
             }
 
-            Console.WriteLine("--------------------------------------------------");
+            Logger.Log("--------------------------------------------------");
         }
 
         static string GetVersion()

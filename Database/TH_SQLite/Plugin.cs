@@ -60,7 +60,7 @@ namespace TH_SQLite
             config.UniqueId = GetUniqueId(c);
             config.Configuration = c;
 
-            Console.WriteLine(Type + " Successfully Initialized : " + GetDatabasePath(c));
+            Logger.Log(Type + " Successfully Initialized : " + GetDatabasePath(c));
         }
 
         public bool Ping(object settings, out string msg)

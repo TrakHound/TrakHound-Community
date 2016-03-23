@@ -91,23 +91,33 @@ namespace TH_DeviceCompare_OEE.Timeline
                 {
                     TH_WPF.Histogram.DataBar db;
 
+                    
+
                     int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.id);
                     if (dbIndex < 0)
                     {
                         db = new TH_WPF.Histogram.DataBar();
                         db.Id = info.id;
+
+                        var tt = new OeeToolTip();
+                        tt.Times = info.segmentTimes;
+                        db.ToolTipData = tt;
+
                         histogram.AddDataBar(db);
+
                     }
                     else db = histogram.DataBars[dbIndex];
 
                     db.Value = info.Oee * 100;
 
-                    var toolTip = new OeeToolTip();
-                    toolTip.Times = info.segmentTimes;
-                    toolTip.Oee = info.Oee.ToString("P2");
-                    toolTip.Availability = info.Availability.ToString("P2");
-                    toolTip.Performance = info.Performance.ToString("P2");
-                    db.ToolTipData = toolTip;
+                    // Update ToolTip
+                    if (db.ToolTipData != null)
+                    {
+                        var toolTip = (OeeToolTip)db.ToolTipData;
+                        toolTip.Oee = info.Oee.ToString("P2");
+                        toolTip.Availability = info.Availability.ToString("P2");
+                        toolTip.Performance = info.Performance.ToString("P2");
+                    }
                 }
             }
         }

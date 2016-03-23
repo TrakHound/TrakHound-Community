@@ -281,7 +281,7 @@ namespace TH_Device_Server
                 case ConsoleOutputType.Status:
                     if (configuration != null)
                     {
-                        if (DEBUG) Console.WriteLine("[Status] [" + configuration.Description.Description + " : " + configuration.Description.Device_ID + "] " + line);
+                        if (DEBUG) Logger.Log("[Status] [" + configuration.Description.Description + " : " + configuration.Description.Device_ID + "] " + line);
                     }
 
                     break;
@@ -324,20 +324,20 @@ namespace TH_Device_Server
 
         void PrintDeviceHeader(Configuration config)
         {
-            Console.WriteLine("Device [" + config.Index.ToString() + "] ---------------------------------------");
+            Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------");
 
-            Console.WriteLine("Description ----------------------------");
-            if (config.Description.Description != null) Console.WriteLine(config.Description.Description);
-            if (config.Description.Manufacturer != null) Console.WriteLine(config.Description.Manufacturer);
-            if (config.Description.Model != null) Console.WriteLine(config.Description.Model);
-            if (config.Description.Serial != null) Console.WriteLine(config.Description.Serial);
+            Logger.Log("Description ----------------------------");
+            if (config.Description.Description != null) Logger.Log(config.Description.Description);
+            if (config.Description.Manufacturer != null) Logger.Log(config.Description.Manufacturer);
+            if (config.Description.Model != null) Logger.Log(config.Description.Model);
+            if (config.Description.Serial != null) Logger.Log(config.Description.Serial);
 
-            Console.WriteLine("Agent ----------------------------------");
-            if (config.Agent.IP_Address != null) Console.WriteLine(config.Agent.IP_Address);
-            if (config.Agent.Port > 0) Console.WriteLine(config.Agent.Port.ToString());
-            if (config.Agent.Device_Name != null) Console.WriteLine(config.Agent.Device_Name);
+            Logger.Log("Agent ----------------------------------");
+            if (config.Agent.IP_Address != null) Logger.Log(config.Agent.IP_Address);
+            if (config.Agent.Port > 0) Logger.Log(config.Agent.Port.ToString());
+            if (config.Agent.Device_Name != null) Logger.Log(config.Agent.Device_Name);
 
-            Console.WriteLine("--------------------------------------------------");
+            Logger.Log("--------------------------------------------------");
         }
 
         #endregion
