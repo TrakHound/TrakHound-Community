@@ -1,14 +1,14 @@
 C:\TrakHound\Server\Plugins\TH_InstanceTable\LICENSE.txt
 C:\TrakHound\Server\Plugins\TH_InstanceTable\TH_InstanceTable.dll
 C:\TrakHound\Server\Plugins\TH_InstanceTable\TH_InstanceTable.pdb
-C:\TrakHound\Plugins\Server\Instance Table\LICENSE.txt
-C:\TrakHound\Plugins\Server\Instance Table\TH_InstanceTable.dll
-C:\TrakHound\Plugins\Server\Instance Table\TH_InstanceTable.pdb
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\ConfigurationPage\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable_MarkupCompile.lref
+C:\TrakHound\Plugins\Server\Instance Table\LICENSE.txt
+C:\TrakHound\Plugins\Server\Instance Table\TH_InstanceTable.dll
+C:\TrakHound\Plugins\Server\Instance Table\TH_InstanceTable.pdb
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\ConfigurationPage\Page.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.g.resources
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_InstanceTable\obj\Debug\TH_InstanceTable.Properties.Resources.resources

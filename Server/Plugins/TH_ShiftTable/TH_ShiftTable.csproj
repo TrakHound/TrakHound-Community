@@ -72,11 +72,6 @@
     <Compile Include="TimeAndDate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\MTConnect\TH_MTConnect\TH_MTConnect\TH_MTConnect.csproj">
-      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
-      <Name>TH_MTConnect</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
@@ -92,10 +87,9 @@
       <Name>TH_Global</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
-      <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
-      <Name>TH_PlugIns_Server</Name>
-      <Private>False</Private>
+    <ProjectReference Include="..\..\..\Libraries\TH_Plugins\TH_Plugins.csproj">
+      <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
+      <Name>TH_Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
@@ -116,6 +110,10 @@
       <Project>{51202eb2-c838-456e-9bd0-50840d12a19c}</Project>
       <Name>TH_GeneratedData</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_MTConnect\TH_MTConnect.csproj">
+      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
+      <Name>TH_MTConnect</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +145,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetName).dll $(TargetName).splugin</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

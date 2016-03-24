@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -18,8 +18,8 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
-using TH_MTConnect;
-using TH_Plugins_Server;
+using TH_Plugins;
+using TH_Plugins.Server;
 
 using TH_GeneratedData;
 using TH_InstanceTable;
@@ -43,46 +43,26 @@ namespace TH_Cycles
 
                 config = configuration;
 
-                if (UseDatabases)
-                {
-                    CreateCycleTable();
-                    CreateSetupTable();
-                }
+                CreateCycleTable();
+                CreateSetupTable();
 
                 // $$$ DEBUG $$$
                 if (UseDatabases) DEBUG_AddSetupRows();
             }
         }
 
-
-        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
+        public void GetSentData(EventData data)
         {
-
-        }
-
-        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
-        {
-
-        }
-
-        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
-        {
-
-        }
-
-
-        public void Update_DataEvent(DataEvent_Data de_data)
-        {
-            if (de_data != null)
+            if (data != null)
             {
                 List<CycleData> cycles = null;
 
-                switch (de_data.id.ToLower())
+                switch (data.id.ToLower())
                 {                  
                     // InstanceTable data after Sample received
                     case "instancedata":
 
-                        var instanceDatas = (List<InstanceTable.InstanceData>)de_data.data02;
+                        var instanceDatas = (List<InstanceTable.InstanceData>)data.data02;
 
                         cycles = ProcessCycles(instanceDatas);
 
@@ -94,12 +74,10 @@ namespace TH_Cycles
                     // InstanceData object after current received
                     case "currentinstancedata":
 
-                        var currentInstanceData = (InstanceTable.CurrentInstanceData)de_data.data02;
-
-                        var data = currentInstanceData.data;
+                        var currentInstanceData = (InstanceTable.CurrentInstanceData)data.data02;
 
                         var list = new List<InstanceTable.InstanceData>();
-                        list.Add(data);
+                        list.Add(currentInstanceData.data);
 
                         cycles = ProcessCycles(list);
 
@@ -110,7 +88,7 @@ namespace TH_Cycles
             }
         }
 
-        public event DataEvent_Handler DataEvent;
+        public event SendData_Handler SendData;
 
         public event Status_Handler StatusChanged;
 
@@ -148,7 +126,8 @@ namespace TH_Cycles
 
         void CreateCycleTable()
         {
-            cycleTableName = TablePrefix + TableNames.Cycles;
+            if (config.DatabaseId != null) cycleTableName = config.DatabaseId + "_" + TableNames.Cycles;
+            else cycleTableName = TableNames.Cycles;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -271,7 +250,8 @@ namespace TH_Cycles
 
         void CreateSetupTable()
         {
-            SetupTableName = TablePrefix + TableNames.Cycles_Setup;
+            if (config.DatabaseId != null) SetupTableName = config.DatabaseId + "_" + TableNames.Cycles_Setup;
+            else SetupTableName = TableNames.Cycles;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -560,13 +540,13 @@ namespace TH_Cycles
             if (shiftId != null) cycle.ShiftId = shiftId.id;
         }
 
-        void SendCycleData(List<CycleData> data)
+        void SendCycleData(List<CycleData> cycleData)
         {
-            DataEvent_Data de_data = new DataEvent_Data();
-            de_data.id = "CycleData";
-            de_data.data01 = config;
-            de_data.data02 = data;
-            if (DataEvent != null) DataEvent(de_data);
+            var data = new EventData();
+            data.id = "CycleData";
+            data.data01 = config;
+            data.data02 = cycleData;
+            if (SendData != null) SendData(data);
         }
 
         #endregion

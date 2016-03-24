@@ -9,19 +9,29 @@ namespace TestConsole
 
         static void Main(string[] args)
         {
-            var timer = new System.Timers.Timer();
-            timer.Interval = 1000;
-            timer.Elapsed += Timer_Elapsed;
-            timer.Enabled = true;
+            TH_Database.DatabasePluginReader.ReadPlugins();
+
+
+            var configs = TH_Configuration.Configuration.ReadAll(TH_Global.FileLocations.Devices);
+
+            foreach (var config in configs)
+            {
+                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(StartDeviceServer), config);
+
+               
+            }
+
 
             Console.ReadLine();
         }
 
-        static Int64 output = 0;
-
-        private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        private static void StartDeviceServer(object obj)
         {
-            TH_Global.Logger.Log((output++).ToString());
+            var config = (TH_Configuration.Configuration)obj;
+
+            var server = new TH_Device_Server.Device_Server(config);
+            server.Start();
         }
+
     }
 }

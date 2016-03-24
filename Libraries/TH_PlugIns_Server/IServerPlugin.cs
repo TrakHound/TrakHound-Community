@@ -7,7 +7,6 @@ using System;
 using System.ComponentModel.Composition;
 
 using TH_Configuration;
-using TH_MTConnect;
 
 namespace TH_Plugins_Server
 {

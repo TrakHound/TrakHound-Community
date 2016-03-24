@@ -11,14 +11,13 @@ using System.Text;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
-using TH_MTConnect;
-using TH_Plugins_Server;
+using TH_Plugins;
+using TH_Plugins.Server;
 
 namespace TH_InstanceTable
 {
     public partial class InstanceTable : IServerPlugin
     {
-        #region "PlugIn"
 
         public string Name { get { return "TH_InstanceTable"; } }
 
@@ -34,8 +33,8 @@ namespace TH_InstanceTable
 
             if (ic != null)
             {
-                if (ic.DataItems.Conditions || ic.DataItems.Events || ic.DataItems.Samples) AddMySQL = true;
-                else AddMySQL = false;
+                if (ic.DataItems.Conditions || ic.DataItems.Events || ic.DataItems.Samples) AddDatabases = true;
+                else AddDatabases = false;
 
                 if (firstPass) configuration.CustomClasses.Add(ic);
             }
@@ -45,69 +44,29 @@ namespace TH_InstanceTable
             config = configuration;
         }
 
-        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
+        //void SendData(EventData data)
+        //{
+        //    if (SendData != null) SendData(data);
+        //}
+
+        public void GetSentData(EventData data)
         {
-
-            ColumnNames = GetVariablesFromProbeData(returnData);
-
-            if (UseDatabases) if (AddMySQL) CreateInstanceTable(ColumnNames);
-
+            if (data != null && data.id != null & data.data02 != null)
+            {
+                switch (data.id.ToLower())
+                {
+                    case "mtconnect_probe": Update_Probe((TH_MTConnect.Components.ReturnData)data.data02); break;
+                    case "mtconnect_current": Update_Current((TH_MTConnect.Streams.ReturnData)data.data02); break;
+                    case "mtconnect_sample": Update_Sample((TH_MTConnect.Streams.ReturnData)data.data02); break;
+                }
+            }
         }
 
-        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
-        {
-            CurrentData = returnData;
+        public event SendData_Handler SendData;
 
-            InstanceData instanceData = ProcessSingleInstance(returnData);
+        //public event Status_Handler StatusChanged;
 
-            PreviousInstanceData_old = PreviousInstanceData_new;
-
-            CurrentInstanceData cid = new CurrentInstanceData();
-            cid.currentData = returnData;
-            cid.data = instanceData;
-
-            // Send InstanceData object to other Plugins --
-            DataEvent_Data de_d = new DataEvent_Data();
-            de_d.id = "CurrentInstanceData";
-            de_d.data01 = config;
-            de_d.data02 = cid;
-
-            if (DataEvent != null) DataEvent(de_d);
-            //--------------------------------------------         
-        }
-
-        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
-        {
-            List<InstanceData> instanceDatas = ProcessInstances(CurrentData, returnData);
-
-            if (UseDatabases) if (AddMySQL) AddRowsToDatabase(ColumnNames, instanceDatas);
-
-            PreviousInstanceData_old = PreviousInstanceData_new;
-
-            // Send instanceDatas to other Plugins --------
-            DataEvent_Data de_d = new DataEvent_Data();
-            de_d.id = "InstanceData";
-            de_d.data01 = config;
-            de_d.data02 = instanceDatas;
-
-            SendDataEvent(de_d);
-        }
-
-        void SendDataEvent(DataEvent_Data de_d)
-        {
-            if (DataEvent != null) DataEvent(de_d);
-        }
-
-        public void Update_DataEvent(DataEvent_Data de_data)
-        {
-
-        }
-
-        public event DataEvent_Handler DataEvent;
-
-        public event Status_Handler StatusChanged;
-
-        public event Status_Handler ErrorOccurred;
+        //public event Status_Handler ErrorOccurred;
 
         public void Closing()
         {
@@ -117,11 +76,9 @@ namespace TH_InstanceTable
 
         public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
-        public bool UseDatabases { get; set; }
+        //public bool UseDatabases { get; set; }
 
-        public string TablePrefix { get; set; }
-
-        #endregion
+        //public string TablePrefix { get; set; }
 
 
     }

@@ -16,7 +16,8 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_MTConnect;
-using TH_Plugins_Server;
+using TH_Plugins;
+using TH_Plugins.Server;
 
 namespace TH_InstanceTable
 {
@@ -27,16 +28,65 @@ namespace TH_InstanceTable
 
         Configuration config { get; set; }
 
-        bool AddMySQL = false;
+        bool AddDatabases = false;
 
         List<string> ColumnNames { get; set; }
 
         TH_MTConnect.Streams.ReturnData CurrentData { get; set; }
 
-        void UpdateStatus(string status)
+        //void UpdateStatus(string status)
+        //{
+        //    if (StatusChanged != null) StatusChanged(status);
+        //}
+
+        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
-            if (StatusChanged != null) StatusChanged(status);
+
+            ColumnNames = GetVariablesFromProbeData(returnData);
+
+            if (AddDatabases) CreateInstanceTable(ColumnNames);
+
         }
+
+        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
+        {
+            CurrentData = returnData;
+
+            InstanceData instanceData = ProcessSingleInstance(returnData);
+
+            PreviousInstanceData_old = PreviousInstanceData_new;
+
+            CurrentInstanceData cid = new CurrentInstanceData();
+            cid.currentData = returnData;
+            cid.data = instanceData;
+
+            // Send InstanceData object to other Plugins --
+            var data = new EventData();
+            data.id = "CurrentInstanceData";
+            data.data01 = config;
+            data.data02 = cid;
+
+            if (SendData != null) SendData(data);
+            //--------------------------------------------         
+        }
+
+        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
+        {
+            List<InstanceData> instanceDatas = ProcessInstances(CurrentData, returnData);
+
+            if (AddDatabases) AddRowsToDatabase(ColumnNames, instanceDatas);
+
+            PreviousInstanceData_old = PreviousInstanceData_new;
+
+            // Send instanceDatas to other Plugins --------
+            var data = new EventData();
+            data.id = "InstanceData";
+            data.data01 = config;
+            data.data02 = instanceDatas;
+
+            if (SendData != null) SendData(data);
+        }
+
 
         List<string> GetVariablesFromProbeData(TH_MTConnect.Components.ReturnData returnData)
         {

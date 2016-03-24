@@ -17,8 +17,8 @@ using TH_Configuration;
 using TH_Database;
 using TH_GeneratedData;
 using TH_Global;
-using TH_MTConnect;
-using TH_Plugins_Server;
+using TH_Plugins;
+using TH_Plugins.Server;
 
 namespace TH_ShiftTable
 {
@@ -47,9 +47,24 @@ namespace TH_ShiftTable
         }
 
 
-        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData) { }
+        public void GetSentData(EventData data)
+        {
+            if (data != null)
+            {
+                if (data.id.ToLower() == "generatedeventitems")
+                {                          
+                    List<GeneratedData.GeneratedEventItem> genEventItems = (List<GeneratedData.GeneratedEventItem>)data.data02;
 
-        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
+                    ProcessShifts(genEventItems);
+                }
+                else if (data.id.ToLower() == "mtconnect_current")
+                {
+                    Update_CurrentShiftInfo((TH_MTConnect.Streams.ReturnData)data.data02);
+                }
+            }
+        }
+
+        public void Update_CurrentShiftInfo(TH_MTConnect.Streams.ReturnData returnData)
         {
             currentData = returnData;
 
@@ -91,35 +106,16 @@ namespace TH_ShiftTable
                     TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime_utc", "", returnData.header.creationTime, TablePrefix);
                     TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime_utc", "", returnData.header.creationTime, TablePrefix);
                 }
-            }         
-
-            DataEvent_Data de_dge = new DataEvent_Data();
-            de_dge.id = "ShiftTable_CurrentShiftInfo";
-            de_dge.data01 = configuration;
-            de_dge.data02 = shiftInfo;
-            if (DataEvent != null) DataEvent(de_dge);
-        }
-
-        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
-        {
-
-        }
-
-
-        public void Update_DataEvent(DataEvent_Data de_data)
-        {
-            if (de_data != null)
-            {
-                if (de_data.id.ToLower() == "generatedeventitems")
-                {                          
-                    List<GeneratedData.GeneratedEventItem> genEventItems = (List<GeneratedData.GeneratedEventItem>)de_data.data02;
-
-                    ProcessShifts(genEventItems);
-                }
             }
+
+            var data = new EventData();
+            data.id = "ShiftTable_CurrentShiftInfo";
+            data.data01 = configuration;
+            data.data02 = shiftInfo;
+            if (SendData != null) SendData(data);
         }
 
-        public event DataEvent_Handler DataEvent;
+        public event SendData_Handler SendData;
 
         public event Status_Handler StatusChanged;
 
@@ -217,7 +213,8 @@ namespace TH_ShiftTable
 
         void CreateTable()
         {
-            TableName = TablePrefix + TableNames.Shifts;
+            if (configuration.DatabaseId != null) TableName = configuration.DatabaseId + "_" + TableNames.Shifts;
+            else TableName = TableNames.Shifts;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -540,20 +537,20 @@ namespace TH_ShiftTable
 
         void SendShiftRowInfos(List<ShiftRowInfo> infos)
         {
-            DataEvent_Data de_dge = new DataEvent_Data();
-            de_dge.id = "ShiftTable_ShiftRowInfos";
-            de_dge.data01 = configuration;
-            de_dge.data02 = infos;
-            if (DataEvent != null) DataEvent(de_dge);
+            var data = new EventData();
+            data.id = "ShiftTable_ShiftRowInfos";
+            data.data01 = configuration;
+            data.data02 = infos;
+            if (SendData != null) SendData(data);
         }
 
         void SendGenEventShiftItems(List<GenEventShiftItem> items)
         {
-            DataEvent_Data de_dge = new DataEvent_Data();
-            de_dge.id = "ShiftTable_GenEventShiftItems";
-            de_dge.data01 = configuration;
-            de_dge.data02 = items;
-            if (DataEvent != null) DataEvent(de_dge);
+            var data = new EventData();
+            data.id = "ShiftTable_GenEventShiftItems";
+            data.data01 = configuration;
+            data.data02 = items;
+            if (SendData != null) SendData(data);
         }
 
         #endregion

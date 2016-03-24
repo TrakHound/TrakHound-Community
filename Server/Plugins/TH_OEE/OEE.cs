@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -16,8 +16,8 @@ using System.Data;
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
-using TH_MTConnect;
-using TH_Plugins_Server;
+using TH_Plugins;
+using TH_Plugins.Server;
 
 using TH_Cycles;
 using TH_ShiftTable;
@@ -35,35 +35,19 @@ namespace TH_OEE
         {
             config = configuration;
 
-            if (UseDatabases) CreateTable();
+            CreateTable();
         }
 
 
-        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
+        public void GetSentData(EventData data)
         {
-
-        }
-
-        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
-        {
-
-        }
-
-        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
-        {
-
-        }
-
-
-        public void Update_DataEvent(DataEvent_Data de_data)
-        {
-            if (de_data != null)
+            if (data != null)
             {
-                if (de_data.id.ToLower() == "cycledata")
+                if (data.id.ToLower() == "cycledata")
                 {
-                    if (de_data.data02.GetType() == typeof(List<CycleData>))
+                    if (data.data02.GetType() == typeof(List<CycleData>))
                     {
-                        List<CycleData> cycles = (List<CycleData>)de_data.data02;
+                        List<CycleData> cycles = (List<CycleData>)data.data02;
 
                         ProcessOEE(cycles);
                     }
@@ -71,7 +55,7 @@ namespace TH_OEE
             }
         }
 
-        public event DataEvent_Handler DataEvent;
+        public event SendData_Handler SendData;
 
         public event Status_Handler StatusChanged;
 
@@ -109,7 +93,8 @@ namespace TH_OEE
 
         void CreateTable()
         {
-            TableName = TablePrefix + TableNames.OEE;
+            if (config.DatabaseId != null) TableName = config.DatabaseId + "_" + TableNames.OEE;
+            else TableName = TableNames.OEE;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -326,11 +311,11 @@ namespace TH_OEE
                 dt.Rows.Add(row);
             }
 
-            DataEvent_Data de_data = new DataEvent_Data();
-            de_data.id = "OeeTable";
-            de_data.data01 = config;
-            de_data.data02 = dt;
-            if (DataEvent != null) DataEvent(de_data);
+            var edata = new EventData();
+            edata.id = "OeeTable";
+            edata.data01 = config;
+            edata.data02 = dt;
+            if (SendData != null) SendData(edata);
         }
 
         #endregion

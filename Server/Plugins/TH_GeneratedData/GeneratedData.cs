@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -17,8 +17,8 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_InstanceTable;
-using TH_MTConnect;
-using TH_Plugins_Server;
+using TH_Plugins;
+using TH_Plugins.Server;
 
 namespace TH_GeneratedData
 {
@@ -41,7 +41,6 @@ namespace TH_GeneratedData
                 config = configuration;
 
                 // Snapshot 
-                if (UseDatabases)
                 if (gdc.snapshots.UploadToMySQL)
                 {
                     CreateSnapShotTable();
@@ -49,7 +48,6 @@ namespace TH_GeneratedData
                 }
 
                 // Generated Events
-                if (UseDatabases)
                 if (gdc.generatedEvents.UploadToMySQL)
                 {
                     CreateValueTable(gdc.generatedEvents.events);
@@ -64,39 +62,39 @@ namespace TH_GeneratedData
         }
 
 
-        public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
+        //public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
+        //{
+
+
+        //}
+
+        //public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
+        //{
+
+        //}
+
+        //public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
+        //{
+
+
+        //}
+
+        public void GetSentData(EventData data)
         {
 
-
-        }
-
-        public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
-        {
-
-        }
-
-        public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
-        {
-
-
-        }
-
-        public void Update_DataEvent(DataEvent_Data de_data)
-        {
-
-            if (de_data != null)
+            if (data != null)
             {
 
                 GenDataConfiguration gdc = GetConfiguration(config);
                 if (gdc != null)
                 {
-                    switch (de_data.id.ToLower())
+                    switch (data.id.ToLower())
                     {
 
                         // InstanceTable data after Sample received
                         case "instancedata":
 
-                            List<InstanceTable.InstanceData> instanceDatas = (List<InstanceTable.InstanceData>)de_data.data02;
+                            List<InstanceTable.InstanceData> instanceDatas = (List<InstanceTable.InstanceData>)data.data02;
 
                             List<GeneratedEventItem> geis = ProcessGeneratedEvents(instanceDatas);
 
@@ -112,7 +110,7 @@ namespace TH_GeneratedData
                         // InstanceData object after current received
                         case "currentinstancedata":
 
-                            InstanceTable.CurrentInstanceData currentInstanceData = (InstanceTable.CurrentInstanceData)de_data.data02;
+                            InstanceTable.CurrentInstanceData currentInstanceData = (InstanceTable.CurrentInstanceData)data.data02;
 
                             List<SnapShotItem> snapShots = ProcessSnapShots(previousSSI, currentInstanceData.currentData, currentInstanceData.data);
 
@@ -135,7 +133,7 @@ namespace TH_GeneratedData
 
         }
 
-        public event DataEvent_Handler DataEvent;
+        public event SendData_Handler SendData;
 
         public event Status_Handler StatusChanged;
 
@@ -845,7 +843,9 @@ namespace TH_GeneratedData
 
         void CreateSnapShotTable()
         {
-            SnapshotsTableName = TablePrefix + TableNames.SnapShots;
+            if (config.DatabaseId != null) SnapshotsTableName = config.DatabaseId + "_" + TableNames.SnapShots;
+            else SnapshotsTableName = TableNames.SnapShots;
+
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
@@ -935,7 +935,7 @@ namespace TH_GeneratedData
 
         void CreateValueTable(List<GeneratedEvents.Event> events)
         {
-            var primaryKey = new string[] { "EVENT" , "VALUE" };
+            //var primaryKey = new string[] { "EVENT" , "VALUE" };
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("EVENT", DataType.LargeText),
@@ -943,7 +943,11 @@ namespace TH_GeneratedData
                 new ColumnDefinition("NUMVAL", DataType.Long)
             };
 
-            Table.Replace(config.Databases_Server, TablePrefix + TableNames.GenEventValues, columns.ToArray(), primaryKey);
+            string tableName;
+            if (config.DatabaseId != null) tableName = config.DatabaseId + "_" + TableNames.GenEventValues;
+            else tableName = TableNames.GenEventValues;
+
+            Table.Replace(config.Databases_Server, tableName, columns.ToArray(), genEventValuesPrimaryKey);
 
             if (events != null)
             {
@@ -973,8 +977,8 @@ namespace TH_GeneratedData
                     rowValues.Add(defaultValues);
                 }
 
-                Row.Insert(config.Databases_Server, TableNames.GenEventValues, insertColumns.ToArray(), rowValues, genEventValuesPrimaryKey, true);
-                Row.Insert(config.Databases_Server, TablePrefix + TableNames.GenEventValues, insertColumns.ToArray(), rowValues, primaryKey, true);
+                Row.Insert(config.Databases_Server, tableName, insertColumns.ToArray(), rowValues, genEventValuesPrimaryKey, true);
+                //Row.Insert(config.Databases_Server, TablePrefix + TableNames.GenEventValues, insertColumns.ToArray(), rowValues, primaryKey, true);
             }
         }
 
@@ -992,11 +996,15 @@ namespace TH_GeneratedData
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name, ColArray, genEventsPrimaryKey);
+            string tableName;
+            if (config.DatabaseId != null) tableName = config.DatabaseId + "_" + GenTablePrefix + e.Name;
+            else tableName = GenTablePrefix + e.Name;
+
+            Table.Create(config.Databases_Server, tableName, ColArray, genEventsPrimaryKey);
 
 
             // Make sure each of the CaptureItem Columns are in the table
-            List<string> existingColumns = Column.Get(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name);
+            List<string> existingColumns = Column.Get(config.Databases_Server, tableName);
 
             foreach (GeneratedEvents.CaptureItem item in e.CaptureItems)
             {
@@ -1004,7 +1012,7 @@ namespace TH_GeneratedData
 
                 if (!existingColumns.Contains(columnName))
                 {
-                    Column.Add(config.Databases_Server, TablePrefix + GenTablePrefix + e.Name, new ColumnDefinition(columnName, DataType.LargeText));
+                    Column.Add(config.Databases_Server, tableName, new ColumnDefinition(columnName, DataType.LargeText));
                 }
             }
         }
@@ -1053,7 +1061,11 @@ namespace TH_GeneratedData
                         }
                     }
 
-                    Row.Insert(config.Databases_Server, TablePrefix + GenTablePrefix + eventName, columns.ToArray(), rowValues, genEventsPrimaryKey, true);
+                    string tableName;
+                    if (config.DatabaseId != null) tableName = config.DatabaseId + "_" + GenTablePrefix + eventName;
+                    else tableName = GenTablePrefix + eventName;
+
+                    Row.Insert(config.Databases_Server, tableName, columns.ToArray(), rowValues, genEventsPrimaryKey, true);
                 }
             }
         }
@@ -1387,11 +1399,11 @@ namespace TH_GeneratedData
 
         void SendGeneratedEventItems(List<GeneratedEventItem> items)
         {
-            DataEvent_Data data = new DataEvent_Data();
+            var data = new EventData();
             data.id = "GeneratedEventItems";
             data.data01 = config;
             data.data02 = items.ToList();
-            if (DataEvent != null) DataEvent(data);
+            if (SendData != null) SendData(data);
         }
 
         void SendSnapShotTable(List<SnapShotItem> items)
@@ -1414,21 +1426,21 @@ namespace TH_GeneratedData
                 dt.Rows.Add(row);
             }
 
-            DataEvent_Data data = new DataEvent_Data();
+            var data = new EventData();
             data.id = "SnapShotTable";
             data.data01 = config;
             data.data02 = dt;
-            if (DataEvent != null) DataEvent(data);
+            if (SendData != null) SendData(data);
 
         }
 
         void SendSnapShotItems(List<SnapShotItem> items)
         {
-            DataEvent_Data data = new DataEvent_Data();
+            var data = new EventData();
             data.id = "SnapShotItems";
             data.data01 = config;
             data.data02 = items;
-            if (DataEvent != null) DataEvent(data);
+            if (SendData != null) SendData(data);
         }
 
         #endregion

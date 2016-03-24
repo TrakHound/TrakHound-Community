@@ -85,10 +85,6 @@
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_MTConnect\TH_MTConnect.csproj">
-      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
-      <Name>TH_MTConnect</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_PlugIns_Server\TH_PlugIns_Server.csproj">
       <Project>{c564426d-1737-4a3f-bc95-145d337ec721}</Project>
       <Name>TH_PlugIns_Server</Name>

@@ -21,7 +21,8 @@ namespace TH_InstanceTable
 
         void CreateInstanceTable(List<string> variablesToRecord)
         {
-            TableName = TablePrefix + TableNames.Instance;
+            if (config.DatabaseId != null) TableName = config.DatabaseId + "_" + TableNames.Instance;
+            else TableName = TableNames.Instance;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 

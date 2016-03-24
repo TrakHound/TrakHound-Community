@@ -373,7 +373,7 @@ namespace TH_Configuration
                     {
                         switch (node.Name.ToLower())
                         {
-                            case "agent": result.Agent = Process_Agent(node); break;
+                            //case "agent": result.Agent = Process_Agent(node); break;
                             case "databases_client": result.Databases_Client = Process_Databases(node); break;
                             case "databases_server": result.Databases_Server = Process_Databases(node); break;
                             case "description": result.Description = Process_Description(node); break;
