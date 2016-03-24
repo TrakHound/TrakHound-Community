@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
 
 namespace TH_DeviceCompare_OEE.Values.Performance
 {
@@ -40,7 +40,7 @@ namespace TH_DeviceCompare_OEE.Values.Performance
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
-        void Update(DataEvent_Data de_d)
+        void Update(EventData de_d)
         {
             if (de_d != null && de_d.data01 != null && de_d.data01.GetType() == typeof(Configuration))
             {

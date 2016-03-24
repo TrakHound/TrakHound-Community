@@ -1,6 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using TH_Plugins_Client;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 
 namespace TrakHound_Client
 {
@@ -8,11 +11,8 @@ namespace TrakHound_Client
     {
         Splash.Screen splsh;
 
-        System.Timers.Timer splash_TIMER;
-
         void Splash_Initialize()
         {
-
             splsh = new Splash.Screen();
             Splash_Show();
 
@@ -21,12 +21,6 @@ namespace TrakHound_Client
             Version version = assembly.GetName().Version;
 
             splsh.Version = version.Major.ToString() + "." + version.Minor.ToString() + "." + version.Build.ToString() + "." + version.Revision.ToString();
-
-            //splash_TIMER = new System.Timers.Timer();
-            //splash_TIMER.Interval = 4000;
-            //splash_TIMER.Elapsed += splash_TIMER_Elapsed;
-            //splash_TIMER.Enabled = true;
-
         }
 
         void Splash_Show() { this.Dispatcher.Invoke(new Action(Splash_Show_GUI), MainWindow.PRIORITY_BACKGROUND, new object[] { }); }
@@ -44,14 +38,6 @@ namespace TrakHound_Client
             splsh.Status2 = splsh.Status1;
             splsh.Status1 = status;
             splsh.LoadingProgress = loadingProgress;
-        }
-
-        bool splashWait = true;
-
-        void splash_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            splash_TIMER.Enabled = false;
-            splashWait = false;
         }
 
     }

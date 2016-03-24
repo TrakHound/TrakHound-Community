@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -605,18 +610,18 @@ namespace TrakHound_Client
 
         #region "Options"
 
-        PageManager optionsManager;
+        //PageManager optionsManager;
 
-        void Options_Initialize()
-        {
-            //optionsManager = new PageManager();
-            //optionsManager.AddPage(new Pages.Options.Updates.Page());
-        }
+        //void Options_Initialize()
+        //{
+        //    //optionsManager = new PageManager();
+        //    //optionsManager.AddPage(new Pages.Options.Updates.Page());
+        //}
 
-        public void Options_Open()
-        {
-            //AddPageAsTab(optionsManager, "Options", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png")));
-        }
+        //public void Options_Open()
+        //{
+        //    //AddPageAsTab(optionsManager, "Options", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png")));
+        //}
 
         #endregion
 
@@ -640,7 +645,7 @@ namespace TrakHound_Client
             }
         }
 
-        private void Plugins_AddItems(List<TH_Plugins_Client.PluginConfiguration> configs)
+        private void Plugins_AddItems(List<TH_Plugins.Client.PluginConfiguration> configs)
         {
             pluginsPage.ClearInstalledItems();
 

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +20,8 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 namespace TH_StatusData
 {
@@ -185,25 +191,13 @@ namespace TH_StatusData
 
         private void SendConnectionData(Configuration config, bool connected)
         {
-            var data = new DataEvent_Data();
+            var data = new EventData();
             data.id = "StatusData_Connection";
             data.data01 = config;
             data.data02 = connected;
 
             SendDataEvent(data);
         }
-
-        //private DataEvent_Data GetConnectionData(Database_Configuration config)
-        //{
-        //    bool connected = CheckDatabaseConnections(config);
-
-        //    DataEvent_Data result = new DataEvent_Data();
-        //    result.id = "StatusData_Connection";
-        //    result.data01 = config;
-        //    result.data02 = connected;
-
-        //    return result;
-        //}
 
         #endregion
 
@@ -275,13 +269,13 @@ namespace TH_StatusData
 
         #region "Get Device Data"
 
-        private void SendDataEvent(DataEvent_Data de_d)
+        private void SendDataEvent(EventData data)
         {
-            if (de_d != null)
+            if (data != null)
             {
-                if (de_d.id != null)
+                if (data.id != null)
                 {
-                    if (DataEvent != null) DataEvent(de_d);
+                    if (SendData != null) SendData(data);
                 }
             }
         }
@@ -306,17 +300,17 @@ namespace TH_StatusData
             DataTable oee = GetTableFromList(GetTableName(TableNames.OEE, config.DatabaseId), list);
 
             // Get Variable Data
-            DataEvent_Data variableData = GetVariables(variables, config);
+            EventData variableData = GetVariables(variables, config);
             // Send Variable Data
             SendDataEvent(variableData);
 
-            DataEvent_Data availablityData = GetAvailability(variables, config);
+            EventData availablityData = GetAvailability(variables, config);
             SendDataEvent(availablityData);
 
             if ((bool)availablityData.data02)
             {
                 // Get Snapshot Data
-                DataEvent_Data snapshotData = GetSnapShots(snapshots, config);
+                EventData snapshotData = GetSnapShots(snapshots, config);
                 // Send Snapshot Data
                 SendDataEvent(snapshotData);
 
@@ -325,41 +319,41 @@ namespace TH_StatusData
 
 
                 // Get Gen Event Values
-                DataEvent_Data genEventData = GetGenEventValues(geneventvalues, config);
+                EventData genEventData = GetGenEventValues(geneventvalues, config);
                 // Send Gen Event Values
                 SendDataEvent(genEventData);
 
                 //Get Shift Data
-                DataEvent_Data shiftTableData = GetShifts(shiftData, config);
+                EventData shiftTableData = GetShifts(shiftData, config);
                 // Send Shift Data
                 SendDataEvent(shiftTableData);
 
                 // Get OEE Data
-                DataEvent_Data oeeData = GetOEE(config, shiftData);
+                EventData oeeData = GetOEE(config, shiftData);
                 // Send OEE Data
                 SendDataEvent(oeeData);
             }
         }
 
 
-        private static DataEvent_Data GetVariables(DataTable dt, Configuration config)
+        private static EventData GetVariables(DataTable dt, Configuration config)
         {
-            var result = new DataEvent_Data();
+            var result = new EventData();
 
             if (dt != null)
             {
-                var de_d = new DataEvent_Data();
-                de_d.id = "StatusData_Variables";
-                de_d.data01 = config;
-                de_d.data02 = dt;
+                var data = new EventData();
+                data.id = "StatusData_Variables";
+                data.data01 = config;
+                data.data02 = dt;
 
-                result = de_d;
+                result = data;
             }
 
             return result;
         }
 
-        private DataEvent_Data GetAvailability(DataTable dt, Configuration config)
+        private EventData GetAvailability(DataTable dt, Configuration config)
         {
             bool available = false;
 
@@ -371,7 +365,7 @@ namespace TH_StatusData
 
             //Logger.Log(config.UniqueId + " : Available = " + available.ToString());
 
-            var result = new DataEvent_Data();
+            var result = new EventData();
             result.id = "StatusData_Availability";
             result.data01 = config;
             result.data02 = available;
@@ -379,35 +373,35 @@ namespace TH_StatusData
             return result;
         }
 
-        private static DataEvent_Data GetSnapShots(DataTable dt, Configuration config)
+        private static EventData GetSnapShots(DataTable dt, Configuration config)
         {
-            var result = new DataEvent_Data();
+            var result = new EventData();
 
             if (dt != null)
             {
-                DataEvent_Data de_d = new DataEvent_Data();
-                de_d.id = "StatusData_Snapshots";
-                de_d.data01 = config;
-                de_d.data02 = dt;
+                var data = new EventData();
+                data.id = "StatusData_Snapshots";
+                data.data01 = config;
+                data.data02 = dt;
 
-                result = de_d;
+                result = data;
             }
 
             return result;
         }
 
-        private static DataEvent_Data GetGenEventValues(DataTable dt, Configuration config)
+        private static EventData GetGenEventValues(DataTable dt, Configuration config)
         {
-            DataEvent_Data result = new DataEvent_Data();
+            var result = new EventData();
 
             if (dt != null)
             {
-                DataEvent_Data de_d = new DataEvent_Data();
-                de_d.id = "StatusData_GenEventValues";
-                de_d.data01 = config;
-                de_d.data02 = dt;
+                var data = new EventData();
+                data.id = "StatusData_GenEventValues";
+                data.data01 = config;
+                data.data02 = dt;
 
-                result = de_d;
+                result = data;
             }
 
             return result;
@@ -442,21 +436,21 @@ namespace TH_StatusData
             return result;
         }
 
-        private static DataEvent_Data GetShifts(ShiftData shiftData, Configuration config)
+        private static EventData GetShifts(ShiftData shiftData, Configuration config)
         {
-            DataEvent_Data result = new DataEvent_Data();
+            var result = new EventData();
 
             if (shiftData.shiftDate != null && shiftData.shiftName != null)
             {
                 DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
                 if (shifts_DT != null)
                 {
-                    DataEvent_Data de_d = new DataEvent_Data();
-                    de_d.id = "StatusData_ShiftData";
-                    de_d.data01 = config;
-                    de_d.data02 = shifts_DT;
+                    var data = new EventData();
+                    data.id = "StatusData_ShiftData";
+                    data.data01 = config;
+                    data.data02 = shifts_DT;
 
-                    result = de_d;
+                    result = data;
                 }
             }
 
@@ -466,9 +460,9 @@ namespace TH_StatusData
 
         #endregion
         
-        static DataEvent_Data GetProductionStatusList(Configuration config, ShiftData shiftData)
+        static EventData GetProductionStatusList(Configuration config, ShiftData shiftData)
         {
-            DataEvent_Data result = new DataEvent_Data();
+            var result = new EventData();
 
             DateTime start = DateTime.MinValue;
             DateTime.TryParse(shiftData.shiftStartUTC, out start);
@@ -488,21 +482,21 @@ namespace TH_StatusData
                 DataTable dt = Table.Get(config.Databases_Client, tableName, filter);
                 if (dt != null)
                 {
-                    DataEvent_Data de_d = new DataEvent_Data();
-                    de_d.id = "StatusData_ProductionStatus";
-                    de_d.data01 = config;
-                    de_d.data02 = dt;
+                    var data = new EventData();
+                    data.id = "StatusData_ProductionStatus";
+                    data.data01 = config;
+                    data.data02 = dt;
 
-                    result = de_d;
+                    result = data;
                 }
             }
 
             return result;
         }
 
-        static DataEvent_Data GetOEE(Configuration config, ShiftData shiftData)
+        static EventData GetOEE(Configuration config, ShiftData shiftData)
         {
-            DataEvent_Data result = new DataEvent_Data();
+            var result = new EventData();
 
             if (shiftData.shiftId != null)
             {
@@ -513,12 +507,12 @@ namespace TH_StatusData
                     DataTable dt = Table.Get(config.Databases_Client, GetTableName(TableNames.OEE, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
-                        DataEvent_Data de_d = new DataEvent_Data();
-                        de_d.id = "StatusData_OEE";
-                        de_d.data01 = config;
-                        de_d.data02 = dt;
+                        var data = new EventData();
+                        data.id = "StatusData_OEE";
+                        data.data01 = config;
+                        data.data02 = dt;
 
-                        result = de_d;
+                        result = data;
                     }
                 }
             }

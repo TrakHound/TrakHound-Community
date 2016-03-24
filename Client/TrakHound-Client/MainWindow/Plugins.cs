@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.Windows.Controls;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows.Media;
 
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-
-using System.IO;
-
 using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 using TH_UserManagement.Management;
 using TH_WPF;
-
-using TrakHound_Client.Controls;
 
 namespace TrakHound_Client
 {
@@ -134,7 +130,7 @@ namespace TrakHound_Client
         {
             var result = new List<IClientPlugin>();
 
-            var plugins = PluginTools.FindPlugins(path);
+            var plugins = Reader.FindPlugins<IClientPlugin>(path, new ClientPlugin.PluginContainer(), ClientPlugin.PLUGIN_EXTENSION);
             foreach (var plugin in plugins)
             {
                 // Only add if not already in returned list
@@ -350,7 +346,7 @@ namespace TrakHound_Client
                     try
                     {
                         // Assign event handlers
-                        plugin.DataEvent += Plugin_DataEvent;
+                        plugin.SendData += Plugin_SendData;
 
                         // Process SubPlugins
                         plugin.SubCategories = config.SubCategories;
@@ -476,9 +472,9 @@ namespace TrakHound_Client
         /// Plugin has sent a DataEvent_Data object to other plugins
         /// </summary>
         /// <param name="de_d"></param>
-        private void Plugin_DataEvent(DataEvent_Data de_d)
+        private void Plugin_SendData(EventData data)
         {
-            Plugin_ShowRequested(de_d);
+            Plugin_ShowRequested(data);
 
             foreach (var config in PluginConfigurations)
             {
@@ -491,7 +487,7 @@ namespace TrakHound_Client
                         );
                     if (plugin != null)
                     {
-                        plugin.Update_DataEvent(de_d);
+                        plugin.GetSentData(data);
                     }
                 }
             }
@@ -506,22 +502,22 @@ namespace TrakHound_Client
         /// de_d.data04 = [Optional] Tag
         /// </summary>
         /// <param name="de_d"></param>
-        private void Plugin_ShowRequested(DataEvent_Data de_d)
+        private void Plugin_ShowRequested(EventData data)
         {
-            if (de_d != null && de_d.id != null && de_d.data02 != null)
+            if (data != null && data.id != null && data.data02 != null)
             {
-                if (de_d.id.ToLower() == "show")
+                if (data.id.ToLower() == "show")
                 {
-                    if (typeof(IClientPlugin).IsAssignableFrom(de_d.data02.GetType()))
+                    if (typeof(IClientPlugin).IsAssignableFrom(data.data02.GetType()))
                     {
-                        var plugin = (IClientPlugin)de_d.data02;
+                        var plugin = (IClientPlugin)data.data02;
 
                         string title = plugin.Title;
                         ImageSource img = plugin.Image;
                         string tag = null;
 
-                        if (de_d.data03 != null) title = de_d.data03.ToString();
-                        if (de_d.data04 != null) tag = de_d.data04.ToString();
+                        if (data.data03 != null) title = data.data03.ToString();
+                        if (data.data04 != null) tag = data.data04.ToString();
 
                         AddTab(plugin, title, img, tag);
                     }
@@ -556,16 +552,16 @@ namespace TrakHound_Client
                     //    }
                     //}
 
-                    if (optionsManager != null)
-                    {
-                        foreach (ListButton lb in optionsManager.Pages.ToList())
-                        {
-                            if (lb.Text.ToUpper() == config.Name.ToUpper())
-                            {
-                                optionsManager.Pages.Remove(lb);
-                            }
-                        }
-                    }
+                    //if (optionsManager != null)
+                    //{
+                    //    foreach (ListButton lb in optionsManager.Pages.ToList())
+                    //    {
+                    //        if (lb.Text.ToUpper() == config.Name.ToUpper())
+                    //        {
+                    //            optionsManager.Pages.Remove(lb);
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
@@ -576,7 +572,7 @@ namespace TrakHound_Client
         /// <param name="plugin"></param>
         private void Plugin_CreateOptionsPage(IClientPlugin plugin)
         {
-            if (plugin.Options != null) optionsManager.AddPage(plugin.Options);
+            //if (plugin.Options != null) optionsManager.AddPage(plugin.Options);
         }
 
         /// <summary>
@@ -670,18 +666,18 @@ namespace TrakHound_Client
         /// <param name="userConfig"></param>
         private void Plugins_UpdateUser(UserConfiguration userConfig)
         {
-            var de_d = new DataEvent_Data();
+            var data = new EventData();
 
             if (userConfig != null)
             {
-                de_d.id = "userloggedin";
+                data.id = "userloggedin";
             }
             else
             {
-                de_d.id = "userloggedout";
+                data.id = "userloggedout";
             }
 
-            Plugin_DataEvent(de_d);
+            Plugin_SendData(data);
         }
 
         /// <summary>

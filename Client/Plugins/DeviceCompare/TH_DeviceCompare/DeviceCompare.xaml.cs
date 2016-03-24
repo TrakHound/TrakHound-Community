@@ -6,14 +6,14 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 
-using TH_Plugins_Client;
+using TH_Plugins.Client;
 
 namespace TH_DeviceCompare
 {
     /// <summary>
     /// Interaction logic for DeviceCompare.xaml
     /// </summary>
-    public partial class DeviceCompare : UserControl, IClientPlugin
+    public partial class DeviceCompare : UserControl
     {
         public DeviceCompare()
         {

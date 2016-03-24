@@ -11,7 +11,8 @@ using System.Windows;
 
 using TH_Configuration;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 using TH_WPF;
 
 namespace TH_DeviceCompare_ProductionStatusTimes
@@ -32,29 +33,29 @@ namespace TH_DeviceCompare_ProductionStatusTimes
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
-        void Update(DataEvent_Data de_d)
+        void Update(EventData data)
         {
-            if (de_d != null && de_d.data01 != null && de_d.data01.GetType() == typeof(Configuration))
+            if (data != null && data.data01 != null && data.data01.GetType() == typeof(Configuration))
             {
                 // GenEvent Values
-                if (de_d.id.ToLower() == "statusdata_geneventvalues")
+                if (data.id.ToLower() == "statusdata_geneventvalues")
                 {
                     // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_GenEventValues), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_GenEventValues), Priority_Context, new object[] { data.data02 });
                 }
 
                 // Shifts Table Data
-                if (de_d.id.ToLower() == "statusdata_shiftdata")
+                if (data.id.ToLower() == "statusdata_shiftdata")
                 {
                     // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { data.data02 });
                 }
 
                 // Snapshot Table Data
-                if (de_d.id.ToLower() == "statusdata_snapshots")
+                if (data.id.ToLower() == "statusdata_snapshots")
                 {
                     // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { data.data02 });
                 }
             }
 

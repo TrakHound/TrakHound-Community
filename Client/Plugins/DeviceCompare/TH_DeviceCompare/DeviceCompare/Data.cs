@@ -6,24 +6,24 @@
 using System;
 
 using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
 
 namespace TH_DeviceCompare
 {
     public partial class DeviceCompare
     {
 
-        void UpdateData(DataEvent_Data de_d)
+        void UpdateData(EventData data)
         {
-            if (de_d != null)
+            if (data != null)
             {
-                Configuration config = de_d.data01 as Configuration;
+                Configuration config = data.data01 as Configuration;
                 if (config != null)
                 {
                     DeviceDisplay dd = DeviceDisplays.Find(x => x.UniqueId == config.UniqueId);
                     if (dd != null)
                     {
-                        this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(dd.UpdateData), Priority_Background, new object[] { de_d });
+                        this.Dispatcher.BeginInvoke(new Action<EventData>(dd.UpdateData), Priority_Background, new object[] { data });
                     }
                 }
             }
@@ -31,10 +31,10 @@ namespace TH_DeviceCompare
 
         void DeviceSelected(int index)
         {
-            DataEvent_Data de_d = new DataEvent_Data();
-            de_d.id = "DeviceSelected";
-            de_d.data01 = Devices[index];
-            if (DataEvent != null) DataEvent(de_d);
+            var data = new EventData();
+            data.id = "DeviceSelected";
+            data.data01 = Devices[index];
+            if (SendData != null) SendData(data);
         }
 
     }

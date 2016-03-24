@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -27,7 +27,8 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 using TH_WPF;
 
 using TH_TableManager.Controls;
@@ -253,32 +254,32 @@ namespace TH_TableManager
 
         #endregion
 
-        void UpdateLoggedInChanged(DataEvent_Data de_d)
+        void UpdateLoggedInChanged(EventData data)
         {
-            if (de_d != null)
+            if (data != null)
             {
-                if (de_d.id.ToLower() == "userloggedin")
+                if (data.id.ToLower() == "userloggedin")
                 {
                     LoggedIn = true;
                 }
 
-                if (de_d.id.ToLower() == "userloggedout")
+                if (data.id.ToLower() == "userloggedout")
                 {
                     LoggedIn = false;
                 }
             }
         }
 
-        void UpdateDevicesLoading(DataEvent_Data de_d)
+        void UpdateDevicesLoading(EventData data)
         {
-            if (de_d != null)
+            if (data != null)
             {
-                if (de_d.id.ToLower() == "loadingdevices")
+                if (data.id.ToLower() == "loadingdevices")
                 {
                     LoadingDevices = true;
                 }
 
-                if (de_d.id.ToLower() == "devicesloaded")
+                if (data.id.ToLower() == "devicesloaded")
                 {
                     LoadingDevices = false;
                 }

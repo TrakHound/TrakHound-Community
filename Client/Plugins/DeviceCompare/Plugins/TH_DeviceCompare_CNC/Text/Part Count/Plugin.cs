@@ -9,7 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 namespace TH_DeviceCompare_CNC.Text.Part_Count
 {
@@ -77,14 +78,12 @@ namespace TH_DeviceCompare_CNC.Text.Part_Count
 
         #region "Events"
 
-        public void Update_DataEvent(DataEvent_Data de_d)
+        public void GetSentData(EventData data)
         {
-            Update(de_d);
+            Update(data);
         }
 
-        public event DataEvent_Handler DataEvent;
-
-        public event PluginTools.ShowRequested_Handler ShowRequested;
+        public event SendData_Handler SendData;
 
         #endregion
 

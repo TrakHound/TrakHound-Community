@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TrakHound_Client.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Plugin_Configurations" Type="System.Collections.Generic.List&lt;TH_Plugins_Client.PluginConfiguration&gt;" Scope="User">
+    <Setting Name="Plugin_Configurations" Type="System.Collections.Generic.List&lt;TH_Plugins.Client.PluginConfiguration&gt;" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Usage_MemoryUsed_Value" Type="System.Int64" Scope="User">

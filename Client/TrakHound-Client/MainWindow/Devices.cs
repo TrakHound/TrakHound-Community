@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.Collections.ObjectModel;
-using System.Threading;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Xml;
-using System.IO;
+using System.Linq;
 
 using TH_Configuration;
 using TH_Database;
 using TH_DeviceManager;
 using TH_Global;
-using TH_UserManagement.Management;
+using TH_Plugins;
 
 namespace TrakHound_Client
 {
@@ -68,9 +67,9 @@ namespace TrakHound_Client
         private void DeviceManager_DevicesLoaded_GUI()
         {
             // Send message to plugins that Devices have been loaded
-            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
-            de_d.id = "DevicesLoaded";
-            Plugin_DataEvent(de_d);
+            var data = new EventData();
+            data.id = "DevicesLoaded";
+            Plugin_SendData(data);
         }
 
         private void DeviceManager_LoadingDevices()
@@ -81,9 +80,9 @@ namespace TrakHound_Client
         private void DeviceManager_LoadingDevices_GUI()
         {
             // Send message to plugins that Devices are being loaded
-            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
-            de_d.id = "LoadingDevices";
-            Plugin_DataEvent(de_d);
+            var data = new EventData();
+            data.id = "LoadingDevices";
+            Plugin_SendData(data);
         }
 
 
@@ -124,9 +123,9 @@ namespace TrakHound_Client
             Plugins_UpdateDeviceList(enabledConfigs);
 
             // Send message to plugins that Devices have been loaded
-            TH_Plugins_Client.DataEvent_Data de_d = new TH_Plugins_Client.DataEvent_Data();
-            de_d.id = "devicesloaded";
-            Plugin_DataEvent(de_d);
+            var data = new EventData();
+            data.id = "devicesloaded";
+            Plugin_SendData(data);
         }
 
 

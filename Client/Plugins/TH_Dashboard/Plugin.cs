@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -15,16 +14,16 @@ using TH_Configuration;
 using TH_Plugins;
 using TH_Plugins.Client;
 
-namespace TH_DeviceCompare
+namespace TH_Dashboard
 {
-    public partial class DeviceCompare : IClientPlugin
+    public partial class Dashboard : IClientPlugin
     {
 
         #region "Descriptive"
 
-        public string Title { get { return "Device Compare"; } }
+        public string Title { get { return "Dashboard"; } }
 
-        public string Description { get { return "Compare Device Status and Data in a 'side-by-side' view"; } }
+        public string Description { get { return "Contains and organizes pages for displaying Device data in various ways. Acts as the Home page for other Device Monitoring Plugins."; } }
 
         private BitmapImage _image;
         public ImageSource Image
@@ -33,7 +32,7 @@ namespace TH_DeviceCompare
             {
                 if (_image == null)
                 {
-                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Compare_01.png"));
+                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/Dashboard_01.png"));
                     _image.Freeze();
                 }
 
@@ -53,7 +52,7 @@ namespace TH_DeviceCompare
             {
                 if (_authorImage == null)
                 {
-                    _authorImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/TrakHound_Logo_10_200px.png"));
+                    _authorImage = new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/TrakHound_Logo_10_200px.png"));
                     _authorImage.Freeze();
                 }
 
@@ -61,22 +60,17 @@ namespace TH_DeviceCompare
             }
         }
 
+
         public string LicenseName { get { return "GPLv3"; } }
 
         public string LicenseText { get { return File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\License\" + "License.txt"); } }
 
         #endregion
 
-        #region "Update Information"
-
-        public string UpdateFileURL { get { return null; } }
-
-        #endregion
-
         #region "Plugin Properties/Options"
 
-        public string DefaultParent { get { return "Dashboard"; } }
-        public string DefaultParentCategory { get { return "Pages"; } }
+        public string DefaultParent { get { return null; } }
+        public string DefaultParentCategory { get { return null; } }
 
         public bool AcceptsPlugins { get { return true; } }
 
@@ -90,9 +84,30 @@ namespace TH_DeviceCompare
 
         #endregion
 
+        #region "Update Information"
+
+        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/dashboard-appinfo.json"; } }
+
+        #endregion
+
         #region "Methods"
 
-        public void Initialize() { }
+        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
+
+        public void Initialize()
+        {
+            EnabledPlugins = new List<PluginConfiguration>();
+
+            foreach (PluginConfigurationCategory category in SubCategories)
+            {
+                foreach (PluginConfiguration config in category.PluginConfigurations)
+                {
+                    config.EnabledChanged += config_EnabledChanged;
+
+                    if (config.Enabled) Plugins_Load(config);
+                }
+            }
+        }
 
         public void Opened() { }
         public bool Opening() { return true; }
@@ -106,7 +121,17 @@ namespace TH_DeviceCompare
 
         public void GetSentData(EventData data)
         {
-            UpdateData(data);
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateLoggedInChanged), Priority, new object[] { data });
+
+            this.Dispatcher.BeginInvoke(new Action<EventData>(UpdateDevicesLoading), Priority, new object[] { data });
+
+            if (Plugins != null)
+            {
+                foreach (IClientPlugin plugin in Plugins)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<EventData>(plugin.GetSentData), Priority, new object[] { data });
+                }
+            }
         }
 
         public event SendData_Handler SendData;
@@ -123,7 +148,6 @@ namespace TH_DeviceCompare
                 if (_devices == null)
                 {
                     _devices = new ObservableCollection<Configuration>();
-                    _devices.CollectionChanged += Devices_CollectionChanged;
                 }
                 return _devices;
             }
@@ -135,7 +159,12 @@ namespace TH_DeviceCompare
 
         #endregion
 
+        #region "Options"
+
         public TH_Global.IPage Options { get; set; }
+
+        #endregion
+
 
     }
 }

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +16,8 @@ using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 namespace TH_StatusData
 {
@@ -81,14 +87,12 @@ namespace TH_StatusData
 
         #region "Events"
 
-        public void Update_DataEvent(DataEvent_Data de_d)
+        public void GetSentData(EventData data)
         {
 
         }
 
-        public event DataEvent_Handler DataEvent;
-
-        public event TH_Plugins_Client.PluginTools.ShowRequested_Handler ShowRequested;
+        public event SendData_Handler SendData;
 
         #endregion
 

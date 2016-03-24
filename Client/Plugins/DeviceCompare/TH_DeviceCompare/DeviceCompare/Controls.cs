@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins.Client;
 
 using TH_DeviceCompare.Controls;
 using TH_DeviceCompare.Controls.DeviceDisplay;

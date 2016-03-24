@@ -15,7 +15,8 @@ using System.Windows.Media.Imaging;
 
 using TH_Configuration;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 using TH_DeviceCompare.Controls.DeviceDisplay;
 
@@ -109,16 +110,16 @@ namespace TH_DeviceCompare
         private BitmapImage warningImage;
         private BitmapImage connectionImage;
 
-        public void UpdateData(DataEvent_Data de_d)
+        public void UpdateData(EventData data)
         {
             // Update Last Updated Timestamp
             if (Group.Header != null) Group.Header.LastUpdatedTimestamp = DateTime.Now.ToString();
 
             // Update Connection Status
-            if (de_d.id.ToLower() == "statusdata_connection")
+            if (data.id.ToLower() == "statusdata_connection")
             {
                 bool connected;
-                bool.TryParse(de_d.data02.ToString(), out connected);
+                bool.TryParse(data.data02.ToString(), out connected);
 
                 // If connection attempt failed
                 if (!connected)
@@ -192,14 +193,14 @@ namespace TH_DeviceCompare
             if (Connected)
             {
                 // Availability Data
-                if (de_d.id.ToLower() == "statusdata_availability")
+                if (data.id.ToLower() == "statusdata_availability")
                 {
-                    if (de_d.data02.GetType() == typeof(bool))
+                    if (data.data02.GetType() == typeof(bool))
                     {
                         var overlay = Group.Overlay;
                         if (overlay != null)
                         {
-                            bool avail = (bool)de_d.data02;
+                            bool avail = (bool)data.data02;
                             if (avail)
                             {
                                 overlay.Loading = false;
@@ -223,21 +224,21 @@ namespace TH_DeviceCompare
                 }
 
                 // Snapshot Table Data
-                if (de_d.id.ToLower() == "statusdata_snapshots")
+                if (data.id.ToLower() == "statusdata_snapshots")
                 {
                     // Update Header Data
-                    if (Group.Header != null) Group.Header.UpdateData_Snapshots(de_d.data02);
+                    if (Group.Header != null) Group.Header.UpdateData_Snapshots(data.data02);
                 }
 
                 // Variables Table Data
-                if (de_d.id.ToLower() == "statusdata_variables")
+                if (data.id.ToLower() == "statusdata_variables")
                 {
                     // Update Header Data
-                    if (Group.Header != null) Group.Header.UpdateData_Variables(de_d.data02);
+                    if (Group.Header != null) Group.Header.UpdateData_Variables(data.data02);
                 }
 
                 // Update Child Plugins
-                UpdatePlugins(de_d);
+                UpdatePlugins(data);
             }
         }
 
@@ -245,7 +246,7 @@ namespace TH_DeviceCompare
         /// Update each Plugin related to each Cell
         /// </summary>
         /// <param name="de_d"></param>
-        public void UpdatePlugins(DataEvent_Data de_d)
+        public void UpdatePlugins(EventData data)
         {
             foreach (var cell in Cells)
             {
@@ -254,7 +255,7 @@ namespace TH_DeviceCompare
                 if (o != null)
                 {
                     var plugin = (IClientPlugin)o;
-                    plugin.Update_DataEvent(de_d);
+                    plugin.GetSentData(data);
                 }
             }
         }

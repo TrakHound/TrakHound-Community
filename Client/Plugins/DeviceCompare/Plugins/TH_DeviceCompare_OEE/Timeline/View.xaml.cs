@@ -10,7 +10,8 @@ using System.Linq;
 
 using TH_Configuration;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 namespace TH_DeviceCompare_OEE.Timeline
 {
@@ -29,29 +30,29 @@ namespace TH_DeviceCompare_OEE.Timeline
 
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
-        void Update(DataEvent_Data de_d)
+        void Update(EventData data)
         {
-            if (de_d != null && de_d.data01 != null && de_d.data01.GetType() == typeof(Configuration))
+            if (data != null && data.data01 != null && data.data01.GetType() == typeof(Configuration))
             {
                 // OEE Table Data
-                if (de_d.id.ToLower() == "statusdata_oee")
+                if (data.id.ToLower() == "statusdata_oee")
                 {
                     // OEE Values
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), Priority_Context, new object[] { data.data02 });
                 }
 
                 // Variables Table Data
-                if (de_d.id.ToLower() == "statusdata_variables")
+                if (data.id.ToLower() == "statusdata_variables")
                 {
                     // OEE Timeline / Histogram
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), Priority_Context, new object[] { data.data02 });
                 }
 
                 // Shifts Table Data
-                if (de_d.id.ToLower() == "statusdata_shiftdata")
+                if (data.id.ToLower() == "statusdata_shiftdata")
                 {
                     // OEE Timeline / Histogram
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftData), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftData), Priority_Context, new object[] { data.data02 });
                 }
             }
         }

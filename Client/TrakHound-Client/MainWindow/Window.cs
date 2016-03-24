@@ -1,12 +1,14 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Runtime.InteropServices;
 using WinInterop = System.Windows.Interop;
-
-using TH_Plugins_Client;
 
 namespace TrakHound_Client
 {

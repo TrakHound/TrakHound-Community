@@ -3,18 +3,14 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
-using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 using TH_WPF;
 
 namespace TH_Dashboard
@@ -22,172 +18,8 @@ namespace TH_Dashboard
     /// <summary>
     /// Interaction logic for DashboardPage.xaml
     /// </summary>
-    public partial class Dashboard : UserControl, IClientPlugin
+    public partial class Dashboard : UserControl
     {
-
-        #region "Plugin"
-
-        #region "Descriptive"
-
-        public string Title { get { return "Dashboard"; } }
-
-        public string Description { get { return "Contains and organizes pages for displaying Device data in various ways. Acts as the Home page for other Device Monitoring Plugins."; } }
-
-        private BitmapImage _image;
-        public ImageSource Image
-        {
-            get
-            {
-                if (_image == null)
-                {
-                    _image = new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/Dashboard_01.png"));
-                    _image.Freeze();
-                }
-
-                return _image;
-            }
-        }
-
-
-        public string Author { get { return "TrakHound"; } }
-
-        public string AuthorText { get { return "©2016 Feenux LLC. All Rights Reserved"; } }
-
-        private BitmapImage _authorImage;
-        public ImageSource AuthorImage
-        {
-            get
-            {
-                if (_authorImage == null)
-                {
-                    _authorImage = new BitmapImage(new Uri("pack://application:,,,/TH_Dashboard;component/Resources/TrakHound_Logo_10_200px.png"));
-                    _authorImage.Freeze();
-                }
-
-                return _authorImage;
-            }
-        }
-
-
-        public string LicenseName { get { return "GPLv3"; } }
-
-        public string LicenseText { get { return File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + @"\License\" + "License.txt"); } }
-
-        #endregion
-
-        #region "Plugin Properties/Options"
-
-        public string DefaultParent { get { return null; } }
-        public string DefaultParentCategory { get { return null; } }
-
-        public bool AcceptsPlugins { get { return true; } }
-
-        public bool OpenOnStartUp { get { return true; } }
-
-        public bool ShowInAppMenu { get { return true; } }
-
-        public List<PluginConfigurationCategory> SubCategories { get; set; }
-
-        public List<IClientPlugin> Plugins { get; set; }
-
-        #endregion
-
-        #region "Update Information"
-
-        public string UpdateFileURL { get { return "http://www.feenux.com/trakhound/appinfo/th/dashboard-appinfo.json"; } }
-
-        #endregion
-
-        #region "Methods"
-
-        const System.Windows.Threading.DispatcherPriority Priority = System.Windows.Threading.DispatcherPriority.Background;
-
-        public void Initialize()
-        {
-            EnabledPlugins = new List<PluginConfiguration>();
-
-            foreach (PluginConfigurationCategory category in SubCategories)
-            {
-                foreach (PluginConfiguration config in category.PluginConfigurations)
-                {
-                    config.EnabledChanged += config_EnabledChanged;
-
-                    if (config.Enabled) Plugins_Load(config);
-                }
-            }
-        }
-
-        public void Opened() { }
-        public bool Opening() { return true; }
-
-        public void Closed() { }
-        public bool Closing() { return true; }
-
-        public void Show() 
-        {
-            if (ShowRequested != null)
-            {
-                PluginShowInfo info = new PluginShowInfo();
-                info.Page = this;
-                ShowRequested(info);
-            }
-        }
-
-        #endregion
-
-        #region "Events"
-
-        public void Update_DataEvent(DataEvent_Data de_d)
-        {
-            this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(UpdateLoggedInChanged), Priority, new object[] { de_d });
-
-            this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(UpdateDevicesLoading), Priority, new object[] { de_d });
-
-            if (Plugins != null)
-            {
-                foreach (IClientPlugin plugin in Plugins)
-                {
-                    this.Dispatcher.BeginInvoke(new Action<DataEvent_Data>(plugin.Update_DataEvent), Priority, new object[] { de_d });
-                }
-            }        
-        }
-
-        public event DataEvent_Handler DataEvent;
-
-        public event PluginTools.ShowRequested_Handler ShowRequested;
-
-        #endregion
-
-        #region "Device Properties"
-
-        private ObservableCollection<Configuration> _devices;
-        public ObservableCollection<Configuration> Devices
-        {
-            get
-            {
-                if (_devices == null)
-                {
-                    _devices = new ObservableCollection<Configuration>();
-                }
-                return _devices;
-            }
-            set
-            {
-                _devices = value;
-            }
-        }
-
-        #endregion
-
-        #region "Options"
-
-        public TH_Global.IPage Options { get; set; }
-
-        #endregion
-
-        #endregion
-
-        #region "Dashboard"
 
         public Dashboard()
         {
@@ -247,32 +79,32 @@ namespace TH_Dashboard
             DependencyProperty.Register("LoadingDevices", typeof(bool), typeof(Dashboard), new PropertyMetadata(false));
 
 
-        void UpdateLoggedInChanged(DataEvent_Data de_d)
+        void UpdateLoggedInChanged(EventData data)
         {
-            if (de_d != null)
+            if (data != null)
             {
-                if (de_d.id.ToLower() == "userloggedin")
+                if (data.id.ToLower() == "userloggedin")
                 {
                     LoggedIn = true;
                 }
 
-                if (de_d.id.ToLower() == "userloggedout")
+                if (data.id.ToLower() == "userloggedout")
                 {
                     LoggedIn = false;
                 }
             }
         }
 
-        void UpdateDevicesLoading(DataEvent_Data de_d)
+        void UpdateDevicesLoading(EventData data)
         {
-            if (de_d != null)
+            if (data != null)
             {
-                if (de_d.id.ToLower() == "loadingdevices")
+                if (data.id.ToLower() == "loadingdevices")
                 {
                     LoadingDevices = true;
                 }
 
-                if (de_d.id.ToLower() == "devicesloaded")
+                if (data.id.ToLower() == "devicesloaded")
                 {
                     LoadingDevices = false;
                 }
@@ -297,7 +129,7 @@ namespace TH_Dashboard
                         try
                         {
                             plugin.SubCategories = config.SubCategories;
-                            plugin.DataEvent += Plugin_DataEvent;
+                            plugin.SendData += Plugin_SendData;
 
                             plugin.Initialize();
                         }
@@ -337,9 +169,9 @@ namespace TH_Dashboard
             }
         }
 
-        void Plugin_DataEvent(DataEvent_Data de_d)
+        void Plugin_SendData(EventData data)
         {
-            if (DataEvent != null) DataEvent(de_d);
+            if (SendData != null) SendData(data);
         }
 
         public void Plugins_Unload(PluginConfiguration config)
@@ -437,7 +269,5 @@ namespace TH_Dashboard
             }
         }
 
-        #endregion
-      
     }
 }

@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using TH_Configuration;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
 
 namespace TH_DeviceCompare_CNC.Text.Alarm
 {
@@ -43,14 +43,14 @@ namespace TH_DeviceCompare_CNC.Text.Alarm
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
-        void Update(DataEvent_Data de_d)
+        void Update(EventData data)
         {
-            if (de_d != null && de_d.data01 != null && de_d.data01.GetType() == typeof(Configuration))
+            if (data != null && data.data01 != null && data.data01.GetType() == typeof(Configuration))
             {
                 // Snapshot Table Data
-                if (de_d.id.ToLower() == "statusdata_snapshots")
+                if (data.id.ToLower() == "statusdata_snapshots")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.data02 });
                 }
             }
         }

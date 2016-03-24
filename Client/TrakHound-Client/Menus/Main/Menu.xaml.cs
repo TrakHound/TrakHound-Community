@@ -137,7 +137,7 @@ namespace TrakHound_Client.Menus.Main
         void Options_Clicked()
         {
             Shown = false;
-            if (mw != null) mw.Options_Open();
+            //if (mw != null) mw.Options_Open();
         }
 
         #endregion
