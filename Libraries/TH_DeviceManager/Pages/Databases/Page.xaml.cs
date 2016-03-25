@@ -28,13 +28,15 @@ using TH_Plugins.Server;
 using TH_WPF;
 using TH_UserManagement;
 using TH_UserManagement.Management;
+using TH_Plugins;
+using TH_Plugins.Database;
 
 namespace TH_DeviceManager.Pages.Databases
 {
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, IConfigurationPage
+    public partial class Page : UserControl, TH_Plugins.Server.IConfigurationPage
     {
         public Page()
         {
@@ -125,7 +127,7 @@ namespace TH_DeviceManager.Pages.Databases
             }
         }
 
-        string SaveDatabaseRoot(TH_Database.DatabaseConfigurationPage page, DataTable dt, Page_Type pageType)
+        string SaveDatabaseRoot(TH_Plugins.Database.IConfigurationPage page, DataTable dt, Page_Type pageType)
         {
             string type = page.Plugin.Type.Replace(' ', '_');
 
@@ -227,7 +229,7 @@ namespace TH_DeviceManager.Pages.Databases
             var plugins = TH_Database.Global.Plugins;
             if (plugins != null)
             {
-                var list = new List<TH_Database.IDatabasePlugin>();
+                var list = new List<IDatabasePlugin>();
                 foreach (var plugin in plugins)
                 {
                     list.Add(plugin);
@@ -250,7 +252,7 @@ namespace TH_DeviceManager.Pages.Databases
         {
             if (configurationTable != null)
             {
-                TH_Database.IDatabasePlugin plugin = (TH_Database.IDatabasePlugin)bt.DataObject;
+                var plugin = (IDatabasePlugin)bt.DataObject;
 
                 var group = GetPageGroup(plugin, PageType);
 
@@ -272,7 +274,7 @@ namespace TH_DeviceManager.Pages.Databases
 
         class PageGroup
         {
-            public DatabaseConfigurationPage Page { get; set; }
+            public TH_Plugins.Database.IConfigurationPage Page { get; set; }
             public object ButtonContent { get; set; }
         }
 
@@ -331,7 +333,7 @@ namespace TH_DeviceManager.Pages.Databases
                 if (configButton != null)
                 {
                     object o = Activator.CreateInstance(config_type);
-                    var page = (DatabaseConfigurationPage)o;
+                    var page = (TH_Plugins.Database.IConfigurationPage)o;
 
                     if (pageType == Page_Type.Client) page.ApplicationType = Application_Type.Client;
                     else page.ApplicationType = Application_Type.Server;
@@ -450,7 +452,7 @@ namespace TH_DeviceManager.Pages.Databases
                 if (SettingChanged != null) SettingChanged(null, null, null);
 
                 // Remove Configuration page from list
-                TH_Database.DatabaseConfigurationPage page = (TH_Database.DatabaseConfigurationPage)item.collapseButton.PageContent;
+                var page = (TH_Plugins.Database.IConfigurationPage)item.collapseButton.PageContent;
                 if (page != null)
                 {
                     List<PageGroup> groups;

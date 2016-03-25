@@ -15,3 +15,4 @@ C:\TrakHound\Plugins\Database Plugins\Example.dll
 C:\TrakHound\Plugins\Database Plugins\Example.pdb
 C:\TrakHound\Plugins\Database\Example.dll
 C:\TrakHound\Plugins\Database\Example.pdb
+C:\TrakHound\Plugins\Database\LICENSE.txt

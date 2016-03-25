@@ -18,15 +18,17 @@ using System.Data;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
+using TH_Plugins.Database;
 using TH_UserManagement;
 using TH_UserManagement.Management;
+
 
 namespace TH_MySQL.ConfigurationPage
 {
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, DatabaseConfigurationPage
+    public partial class Page : UserControl, IConfigurationPage
     {
         public Page()
         {

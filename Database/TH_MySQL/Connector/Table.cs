@@ -6,13 +6,14 @@ using MySql.Data.MySqlClient;
 
 using TH_Configuration;
 using TH_Global;
+using TH_Plugins.Database;
 
 namespace TH_MySQL.Connector
 {
     public static class Table
     {
 
-        public static bool Create(MySQL_Configuration config, string tableName, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
+        public static bool Create(MySQL_Configuration config, string tableName, ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
 
             bool Result = false;
@@ -123,7 +124,7 @@ namespace TH_MySQL.Connector
 
         }
 
-        public static bool Replace(MySQL_Configuration config, string tableName, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
+        public static bool Replace(MySQL_Configuration config, string tableName, ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
 
             bool Result = false;

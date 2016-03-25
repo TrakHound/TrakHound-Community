@@ -24,3 +24,5 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManag
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\obj\Debug\TH_UserManagement.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_Plugins.dll
+F:\feenux\TrakHound\TrakHound\Libraries\TH_UserManagement\bin\Debug\TH_Plugins.pdb

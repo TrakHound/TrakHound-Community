@@ -37,3 +37,4 @@ F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\ConfigurationPage\But
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.g.resources
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.dll
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.pdb
+C:\TrakHound\Plugins\Database\LICENSE.txt

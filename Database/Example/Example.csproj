@@ -53,6 +53,10 @@
       <Name>TH_Database</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_Plugins\TH_Plugins.csproj">
+      <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
+      <Name>TH_Plugins</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

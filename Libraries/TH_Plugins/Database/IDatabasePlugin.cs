@@ -1,15 +1,21 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
-using System.Windows.Media;
-
 using System.ComponentModel.Composition;
-
 using System.Data;
 
 using TH_Configuration;
 
-namespace TH_Database
+namespace TH_Plugins.Database
 {
+    /// <summary>
+    /// This is the interface for writing Plugins for Database Connection. 
+    /// All Plugins MUST contain the following properties and methods.
+    /// </summary>
     [InheritedExport(typeof(IDatabasePlugin))]
     public interface IDatabasePlugin
     {
@@ -117,5 +123,4 @@ namespace TH_Database
 
         // ------------------------------------------------------------------------------
     }
-
 }

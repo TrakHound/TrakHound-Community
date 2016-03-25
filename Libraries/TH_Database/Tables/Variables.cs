@@ -9,6 +9,7 @@ using System.Data;
 
 using TH_Configuration;
 using TH_Global;
+using TH_Plugins.Database;
 
 namespace TH_Database.Tables
 {

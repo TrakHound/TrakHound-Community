@@ -20,6 +20,7 @@ using TH_Global;
 using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Server;
+using TH_Plugins.Database;
 
 using TH_GeneratedData;
 using TH_InstanceTable;

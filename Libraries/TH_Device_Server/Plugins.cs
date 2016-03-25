@@ -1,15 +1,11 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.IO;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
 using System.Reflection;
 
 using TH_Configuration;
@@ -110,11 +106,6 @@ namespace TH_Device_Server
                     }
                 }
             }
-        }
-
-        void tpi_StatusChanged(string status)
-        {
-            //UpdateProcessingStatus(status);
         }
 
         void Plugins_Update_SendData(EventData data)

@@ -94,6 +94,10 @@
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TH_Plugins\TH_Plugins.csproj">
+      <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
+      <Name>TH_Plugins</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>

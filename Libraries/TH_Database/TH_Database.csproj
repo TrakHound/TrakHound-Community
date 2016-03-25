@@ -44,16 +44,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ColumnDefinition.cs" />
-    <Compile Include="Configuration\Configuration Page.cs" />
     <Compile Include="Database.cs" />
-    <Compile Include="DatabaseQueue.cs" />
-    <Compile Include="IDatabasePlugin.cs" />
-    <Compile Include="Plugins\PluginReader.cs" />
-    <Compile Include="Plugins\PluginTools.cs" />
+    <Compile Include="PluginReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <None Include="Tables\Configurations\Shared.cs" />
-    <None Include="Tables\Users.cs" />
     <Compile Include="Tables\Variables.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +57,10 @@
     <ProjectReference Include="..\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TH_Plugins\TH_Plugins.csproj">
+      <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
+      <Name>TH_Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

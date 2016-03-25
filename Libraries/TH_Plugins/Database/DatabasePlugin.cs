@@ -1,6 +1,39 @@
-﻿
-namespace TH_Database
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+
+namespace TH_Plugins.Database
 {
+    public static class DatabasePlugin
+    { 
+        public const string PLUGIN_EXTENSION = ".dplugin";
+
+        public class PluginContainer : ReaderContainer
+        {
+            [ImportMany(typeof(TH_Plugins.Database.IDatabasePlugin))]
+            public IEnumerable<Lazy<object>> Plugins { get; set; }
+        }
+
+        /// <summary>
+        /// Add plugins to list making sure that plugins are not repeated in list
+        /// </summary>
+        /// <param name="newPlugins"></param>
+        /// <param name="oldPlugins"></param>
+        static void AddPlugins(List<IDatabasePlugin> newPlugins, List<IDatabasePlugin> oldPlugins)
+        {
+            foreach (var plugin in newPlugins)
+            {
+                if (oldPlugins.Find(x => x.Name == plugin.Name) == null) oldPlugins.Add(plugin);
+            }
+        }
+   
+    }
+
     public enum DataType
     {
         // Boolean 0 - 10

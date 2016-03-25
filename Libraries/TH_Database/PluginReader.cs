@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
 using TH_Global;
+using TH_Plugins;
+using TH_Plugins.Database;
 
 namespace TH_Database
 {
@@ -72,7 +74,7 @@ namespace TH_Database
         {
             var result = new List<IDatabasePlugin>();
 
-            var plugins = PluginTools.FindPlugins(path);
+            var plugins = Reader.FindPlugins<IDatabasePlugin>(path, new DatabasePlugin.PluginContainer(), DatabasePlugin.PLUGIN_EXTENSION);
             foreach (var plugin in plugins)
             {
                 // Only add if not already in returned list
@@ -107,7 +109,7 @@ namespace TH_Database
                 if (oldPlugins.Find(x => x.Name == plugin.Name) == null) oldPlugins.Add(plugin);
             }
         }
-        
+
     }
 
 }

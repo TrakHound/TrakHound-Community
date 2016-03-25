@@ -7,6 +7,7 @@ using System.Text;
 
 using TH_Global;
 using TH_Global.Web;
+using TH_Plugins.Database;
 
 namespace TH_MySQL.PHP
 {
@@ -15,7 +16,7 @@ namespace TH_MySQL.PHP
         const string TABLE_DELIMITER_START = "^^^";
         const string TABLE_DELIMITER_END = "~~~";
 
-        public static bool Create(MySQL_Configuration config, string tablename, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
+        public static bool Create(MySQL_Configuration config, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
 
             bool Result = false;
@@ -95,7 +96,7 @@ namespace TH_MySQL.PHP
 
         }
 
-        public static bool Replace(MySQL_Configuration config, string tablename, TH_Database.ColumnDefinition[] columnDefinitions, string[] primaryKey)
+        public static bool Replace(MySQL_Configuration config, string tablename, ColumnDefinition[] columnDefinitions, string[] primaryKey)
         {
 
             bool Result = false;

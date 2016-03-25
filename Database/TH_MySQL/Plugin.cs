@@ -9,6 +9,8 @@ using MySql.Data.MySqlClient;
 
 using TH_Configuration;
 using TH_Database;
+using TH_Plugins;
+using TH_Plugins.Database;
 
 namespace TH_MySQL
 {

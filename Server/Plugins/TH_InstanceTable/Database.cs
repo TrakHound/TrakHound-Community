@@ -8,6 +8,7 @@ using System.Linq;
 
 using TH_Database;
 using TH_Global;
+using TH_Plugins.Database;
 
 namespace TH_InstanceTable
 {
