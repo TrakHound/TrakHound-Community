@@ -50,10 +50,54 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\DescriptionPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PathStatusPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SystemStatusPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TextDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\OeeToolTip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Data\Oee\ValueDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Controls\DescriptionPanel.xaml.cs">
+      <DependentUpon>DescriptionPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PathStatusPanel.xaml.cs">
+      <DependentUpon>PathStatusPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SystemStatusPanel.xaml.cs">
+      <DependentUpon>SystemStatusPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextDisplay.xaml.cs">
+      <DependentUpon>TextDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Oee\OEEData.cs" />
+    <Compile Include="Data\Oee\TimeLine.cs" />
+    <Compile Include="Controls\OeeToolTip.xaml.cs">
+      <DependentUpon>OeeToolTip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Oee\ValueDisplay.xaml.cs">
+      <DependentUpon>ValueDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugin.cs" />
     <Compile Include="Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
@@ -103,6 +147,10 @@
     <ProjectReference Include="..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
+      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
+      <Name>TH_UserManagement</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>

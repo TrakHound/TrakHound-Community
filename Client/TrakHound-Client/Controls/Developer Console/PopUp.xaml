@@ -148,7 +148,7 @@
                     HorizontalGridLinesBrush="#33ffffff"
                     BorderBrush="#33ffffff"
                     BorderThickness="0"
-                    FontSize="10pt"
+                    FontSize="8pt"
                     VerticalAlignment="Top"
                     >
                     <DataGrid.Resources>

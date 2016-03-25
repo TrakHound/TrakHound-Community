@@ -136,6 +136,29 @@ namespace TH_WPF
             DependencyProperty.Register("BarBrush", typeof(Brush), typeof(TimeProgress), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(170, 255, 255, 255))));
 
 
+
+        public Brush BarBackgroundBrush
+        {
+            get { return (Brush)GetValue(BarBackgroundBrushProperty); }
+            set { SetValue(BarBackgroundBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty BarBackgroundBrushProperty =
+            DependencyProperty.Register("BarBackgroundBrush", typeof(Brush), typeof(TimeProgress), new PropertyMetadata(new SolidColorBrush(Color.FromArgb(50, 255, 255, 255))));
+
+
+
+        public double BarHeight
+        {
+            get { return (double)GetValue(BarHeightProperty); }
+            set { SetValue(BarHeightProperty, value); }
+        }
+
+        public static readonly DependencyProperty BarHeightProperty =
+            DependencyProperty.Register("BarHeight", typeof(double), typeof(TimeProgress), new PropertyMetadata(10d));
+
+
+
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;

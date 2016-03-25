@@ -87,7 +87,12 @@ namespace TH_DevicePage
 
         #region "Events"
 
-        public void GetSentData(EventData data) { Update(data); }
+        public void GetSentData(EventData data)
+        {
+            Update(data);
+
+            foreach (var page in createdPages) page.Update(data);
+        }
 
         public event SendData_Handler SendData;
 

@@ -4,11 +4,325 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TH_DevicePage"
+             
+             xmlns:controls="clr-namespace:TH_DevicePage.Controls"
+             xmlns:histogram="clr-namespace:TH_WPF.Histogram;assembly=TH_WPF"
+             xmlns:oee="clr-namespace:TH_DevicePage.Data.Oee"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+                          
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="Red">
+             d:DesignHeight="600" d:DesignWidth="800">
 
-        <TextBlock Text="{Binding Configuration.Description.Description}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Navbar-->
+        <StackPanel Orientation="Horizontal">
+
+            <th_wpf:Button Text="Edit Device" />
+
+            <th_wpf:Button Text="View Table" />
+
+            <Rectangle Fill="{StaticResource Shade_Light}" Width="1"/>
+
+            <th_wpf:Button Text="Description" />
+
+            <th_wpf:Button Text="Controller" />
+
+            <th_wpf:Button Text="Production" />
+
+            <th_wpf:Button Text="System" />
+
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style x:Key="PanelBorder" TargetType="Border">
+                        <Setter Property="BorderBrush" Value="#66000000"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="CornerRadius" Value="2"/>
+                        <Setter Property="Margin" Value="5"/>
+                        <Setter Property="Background" Value="#33000000"/>
+                    </Style>
+                </StackPanel.Resources>
+
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Device Description-->
+                    <Border Style="{StaticResource PanelBorder}">
+
+                        <controls:DescriptionPanel Configuration="{Binding Configuration}"/>
+
+                    </Border>
+
+                    <!--Controller Status-->
+                    <Border Grid.Column="1" Style="{StaticResource PanelBorder}">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="controls:TextDisplay">
+                                    <Setter Property="Width" Value="250"/>
+                                    <Setter Property="Height" Value="50"/>
+                                    <Setter Property="Margin" Value="5"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                </Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Margin" Value="10,5"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                </Style>
+                            </Grid.Resources>
+
+                            <!--Availability-->
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Availability"/>
+                            <controls:TextDisplay Grid.Column="1" Grid.Row="0" Text="AVAILABLE">
+                                <controls:TextDisplay.Style>
+                                    <Style TargetType="controls:TextDisplay" BasedOn="{StaticResource {x:Type controls:TextDisplay}}">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="AVAILABLE">
+                                                <Setter Property="Background" Value="#FF19B419"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="UNAVAILABLE">
+                                                <Setter Property="Background" Value="Red"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:TextDisplay.Style>
+                            </controls:TextDisplay>
+
+                            <!--Emergency Stop-->
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Emergency Stop"/>
+                            <controls:TextDisplay Grid.Column="1" Grid.Row="1" Text="TRIGGERED">
+                                <controls:TextDisplay.Style>
+                                    <Style TargetType="controls:TextDisplay" BasedOn="{StaticResource {x:Type controls:TextDisplay}}">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="ARMED">
+                                                <Setter Property="Background" Value="#FF19B419"/>
+                                            </Trigger>
+                                            <Trigger Property="Text" Value="TRIGGERED">
+                                                <Setter Property="Background" Value="Red"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:TextDisplay.Style>
+                            </controls:TextDisplay>
+
+                            <!--Controller Mode-->
+                            <TextBlock Grid.Column="0" Grid.Row="2" Text="Controller Mode"/>
+                            <controls:TextDisplay Grid.Column="1" Grid.Row="2" Text="AUTOMATIC">
+                                <controls:TextDisplay.Style>
+                                    <Style TargetType="controls:TextDisplay" BasedOn="{StaticResource {x:Type controls:TextDisplay}}">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="AUTOMATIC">
+                                                <Setter Property="Background" Value="#FF19B419"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:TextDisplay.Style>
+                            </controls:TextDisplay>
+
+                            <!--Execution Mode-->
+                            <TextBlock Grid.Column="0" Grid.Row="3" Text="Execution Mode"/>
+                            <controls:TextDisplay Grid.Column="1" Grid.Row="3" Text="STOPPED">
+                                <controls:TextDisplay.Style>
+                                    <Style TargetType="controls:TextDisplay" BasedOn="{StaticResource {x:Type controls:TextDisplay}}">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="Text" Value="ACTIVE">
+                                                <Setter Property="Background" Value="#FF19B419"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:TextDisplay.Style>
+                            </controls:TextDisplay>
+
+                            <!--Program Name-->
+                            <TextBlock Grid.Column="0" Grid.Row="4" Text="Program Name"/>
+                            <controls:TextDisplay Grid.Column="1" Grid.Row="4" Text="TEST01.NC"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--OEE-->
+                    <Border Style="{StaticResource PanelBorder}">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!--OEE Data-->
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="OEE (Overall Equipment Effiency)" Grid.Row="0" Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="12pt" Margin="10,5"/>
+
+                                <StackPanel Grid.Row="1">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="oee:ValueDisplay">
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                            <Setter Property="BarBrush" Value="White"/>
+                                            <Setter Property="FontSize" Value="14pt"/>
+                                            <Setter Property="Maximum" Value="1"/>
+                                            <Setter Property="FontWeight" Value="Medium"/>
+                                            <Setter Property="Margin" Value="0,0,0,10"/>
+                                        </Style>
+                                    </StackPanel.Resources>
+
+                                    <oee:ValueDisplay Title="OEE" Value="0.762" BarBrush="#FF19B419"/>
+
+                                    <oee:ValueDisplay Title="Availability" Value="0.834" BarBrush="#FF19B419"/>
+
+                                    <oee:ValueDisplay Title="Peformance" Value="0.861" BarBrush="#FF19B419"/>
+
+                                </StackPanel>
+
+                            </Grid>
+
+                            <!--OEE Timeline-->
+                            <Grid Grid.Row="1" Height="300">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="OEE Timeline" Grid.Row="0" Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="10pt" Margin="10,5"/>
+
+                                <histogram:Histogram x:Name="oee_timeline" Grid.Row="1" Margin="10" MaxBarWidth="20" Foreground="{StaticResource Foreground_Opposite_Normal}" BorderBrush="{StaticResource Shade_Light}">
+                                    <histogram:Histogram.Resources>
+                                        <Style TargetType="histogram:DataBar">
+                                            <Setter Property="Orientation" Value="Vertical"/>
+                                            <Setter Property="HorizontalAlignment" Value="Left"/>
+
+                                            <Setter Property="Maximum" Value="100"/>
+                                            <Setter Property="Width" Value="{Binding BarWidth, RelativeSource={RelativeSource Self}}"/>
+                                            <Setter Property="Margin" Value="2,0"/>
+
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Setter Property="BorderBrush" Value="#00000000"/>
+                                            <Setter Property="Background" Value="#00000000"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Setter Property="ToolTipService.ShowDuration" Value="10000"/>
+                                            <Setter Property="ToolTipService.BetweenShowDelay" Value="3000"/>
+                                            <Setter Property="ToolTipService.InitialShowDelay" Value="1000"/>
+
+                                            <Setter Property="ToolTip" Value="{Binding ToolTipData}"/>
+
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="true">
+                                                    <Setter Property="Background" Value="#33ffffff"/>
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="true">
+                                                    <Setter Property="Background" Value="#33ffffff"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </histogram:Histogram.Resources>
+                                    <histogram:Histogram.DataBars>
+                                        <histogram:DataBar Value="50"/>
+                                        <histogram:DataBar Value="80"/>
+                                        <histogram:DataBar Value="75"/>
+                                        <histogram:DataBar Value="25"/>
+                                    </histogram:Histogram.DataBars>
+                                </histogram:Histogram>
+
+                            </Grid>
+
+                        </Grid>
+
+                    </Border>
+
+                    <!--Production Status-->
+                    <Border Grid.Column="1" Style="{StaticResource PanelBorder}">
+
+                        <StackPanel>
+                            <StackPanel.Resources>
+                                <Style TargetType="th_wpf:TimeProgress">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Setter Property="BarBrush" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Setter Property="BarBackgroundBrush" Value="{StaticResource Shade_Light}"/>
+                                    <Setter Property="BarHeight" Value="15"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <th_wpf:TimeProgress Text="Full Production" Value=".6" Maximum="1"/>
+
+                            <th_wpf:TimeProgress Text="Limited Production" Value=".1" Maximum="1"/>
+
+                            <th_wpf:TimeProgress Text="Idle" Value=".25" Maximum="1"/>
+
+                            <th_wpf:TimeProgress Text="Alert" Value=".05" Maximum="1"/>
+
+
+                        </StackPanel>
+
+                    </Border>
+
+                </Grid>
+
+                <!--Path Status-->
+                <Border Style="{StaticResource PanelBorder}">
+
+                    <WrapPanel Orientation="Horizontal">
+
+                        <controls:PathStatusPanel />
+
+                        <controls:PathStatusPanel />
+
+                    </WrapPanel>
+
+                </Border>
+
+                <!--System Status-->
+                <Border Style="{StaticResource PanelBorder}">
+
+                    <controls:SystemStatusPanel />
+
+                </Border>
+
+            </StackPanel>
+
+        </ScrollViewer>
 
     </Grid>
+
 </UserControl>

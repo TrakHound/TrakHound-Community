@@ -15,7 +15,7 @@
              Width="75"         
              >
 
-    <Grid x:Name="root" PreviewMouseDown="root_PreviewMouseDown" Cursor="Hand">
+    <Grid x:Name="root" PreviewMouseDown="root_PreviewMouseDown" Cursor="Hand" Background="Transparent">
 
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>

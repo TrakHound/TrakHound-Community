@@ -9,16 +9,16 @@
              >
 
     <Grid>
-        <Grid.Style>
+        <!--<Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="#00000000"/>
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        <Setter Property="Background" Value="{}"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
-        </Grid.Style>
+        </Grid.Style>-->
 
         <Grid  Margin="10">
             <Grid.RowDefinitions>
@@ -44,7 +44,7 @@
                         <TextBlock Text="{Binding Text}" FontSize="14" TextAlignment="Left">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Foreground" Value="{Binding Foreground}"/>
                                     <Setter Property="FontWeight" Value="Normal"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsSelected}" Value="true">
@@ -58,7 +58,7 @@
                     </Viewbox>
 
                     <!--Time Elapsed-->
-                    <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="10" Foreground="{StaticResource Foreground_Light}" />
+                    <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="10" Foreground="{Binding Foreground}" />
 
                 </Grid>
 
@@ -66,7 +66,7 @@
                 <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" Text="{Binding Percentage}" FontSize="20" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" >
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                            <Setter Property="Foreground" Value="{Binding Foreground}"/>
                             <Setter Property="FontWeight" Value="Normal"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding IsSelected}" Value="true">
@@ -80,7 +80,7 @@
             </Grid>
 
             <!--Time Bar-->
-            <th_wpf:ProgressBar Grid.Row="1" Height="10" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{StaticResource Accent_Normal}" Background="{StaticResource Accent_Hover}" BorderThickness="0"/>
+            <th_wpf:ProgressBar Grid.Row="1" Height="{Binding BarHeight}" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{Binding BarBrush}" Background="{Binding BarBackgroundBrush}" BorderThickness="0"/>
 
         </Grid>
 

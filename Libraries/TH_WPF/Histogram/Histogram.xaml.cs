@@ -40,7 +40,7 @@ namespace TH_WPF.Histogram
         void SetDataBarWidths()
         {
             double controlWidth = itemsControl.ActualWidth;
-            double barWidth = DataBar.MaxBarWidth;
+            double barWidth = MaxBarWidth;
 
             if (controlWidth > 0 && DataBars.Count > 0)
             {
@@ -49,7 +49,7 @@ namespace TH_WPF.Histogram
                 int margin = 4;
 
                 barWidth = (controlWidth - (count * margin)) / count;
-                barWidth = Math.Min(DataBar.MaxBarWidth, barWidth);
+                barWidth = Math.Min(MaxBarWidth, barWidth);
             }
 
             foreach (var dataBar in DataBars)
@@ -83,12 +83,24 @@ namespace TH_WPF.Histogram
         {
             SetDataBarWidths();
         }
-       
+
+        public double MaxBarWidth
+        {
+            get { return (double)GetValue(MaxBarWidthProperty); }
+            set { SetValue(MaxBarWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaxBarWidthProperty =
+            DependencyProperty.Register("MaxBarWidth", typeof(double), typeof(DataBar), new PropertyMetadata(DataBar.DEFAULT_BAR_WIDTH));
+
     }
 
     public class DataBar : TH_WPF.ProgressBar
     {
-        public const double MaxBarWidth = 10d;
+
+        public const double DEFAULT_BAR_WIDTH = 10d;
+
+
 
         public DataBar()
         {
@@ -122,9 +134,9 @@ namespace TH_WPF.Histogram
         }
 
         public static readonly DependencyProperty BarWidthProperty =
-            DependencyProperty.Register("BarWidth", typeof(double), typeof(DataBar), new PropertyMetadata(MaxBarWidth));
+            DependencyProperty.Register("BarWidth", typeof(double), typeof(DataBar), new PropertyMetadata(DEFAULT_BAR_WIDTH));
 
-
+    
         public bool IsSelected
         {
             get { return (bool)GetValue(IsSelectedProperty); }
