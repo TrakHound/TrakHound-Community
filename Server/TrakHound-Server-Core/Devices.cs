@@ -33,11 +33,16 @@ namespace TrakHound_Server_Core
         {
             config.Index = Devices.Count;
 
-            Device_Server server = new Device_Server(config);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(StartDeviceServer), config); 
+        }
 
-            server.Start(false);
+        private void StartDeviceServer(object obj)
+        {
+            var config = (Configuration)obj;
 
+            var server = new Device_Server(config);
             Devices.Add(server);
+            server.Start(); 
         }
 
         #region "Devices Monitor"
@@ -65,7 +70,7 @@ namespace TrakHound_Server_Core
         {
             while (!monitorstop.WaitOne(0, true))
             {
-                DevicesMonitor_Worker(Devices.ToList());
+                DevicesMonitor_Worker();
 
                 Thread.Sleep(5000);
             }
@@ -76,7 +81,7 @@ namespace TrakHound_Server_Core
             if (monitorstop != null) monitorstop.Set();
         }
 
-        void DevicesMonitor_Worker(List<Device_Server> devs)
+        void DevicesMonitor_Worker()
         {
             List<Configuration> configs = null;
 
@@ -99,15 +104,15 @@ namespace TrakHound_Server_Core
                         {
                             int index = -1;
 
-                            if (CurrentUser != null) index = Devices.FindIndex(x => x.configuration.UniqueId == config.UniqueId);
-                            else index = Devices.FindIndex(x => x.configuration.FilePath == config.FilePath);
+                            if (CurrentUser != null) index = Devices.FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
+                            else index = Devices.FindIndex(x => x.Configuration.FilePath == config.FilePath);
 
                             if (index >= 0) // Server is already part of list
                             {
                                 Device_Server server = Devices[index];
 
                                 // Check if Configuration has changed
-                                if (server.configuration.ServerUpdateId != config.ServerUpdateId)
+                                if (server.Configuration.ServerUpdateId != config.ServerUpdateId)
                                 {
                                     // If changed at all then stop the current server
                                     server.Stop();
@@ -115,20 +120,14 @@ namespace TrakHound_Server_Core
                                     // If changed and still enabled then restart server
                                     if (config.ServerEnabled)
                                     {
-                                        server.configuration = config;
-
-                                        // Load/Reload Plugins
-                                        server.LoadPlugins();
-
-                                        // Initialize Database Configurations
-                                        Global.Initialize(server.configuration.Databases_Server);
-
-                                        server.Start(false);
+                                        server.Configuration = config;
+                                        server.Start();
                                     }
                                     else // Remove from List
                                     {
                                         Devices.RemoveAt(index);
-                                        Logger.Log("Device[" + index.ToString() + "] Removed");
+                                        //Logger.Log("Device[" + index.ToString() + "] Removed");
+                                        Logger.Log("Device Removed :: " + server.Configuration.Description.Description + " [" + server.Configuration.Description.Device_ID + "]");
                                     }
                                 }
                             }
@@ -201,11 +200,11 @@ namespace TrakHound_Server_Core
                         config.Index = index;
 
                         Device_Server server = new Device_Server(config);
-                        server.configurationPath = configPath;
-                        server.updateConfigurationFile = false;
+                        server.ConfigurationPath = configPath;
+                        server.UpdateConfigurationFile = false;
 
                         // Initialize Database Configurations
-                        Global.Initialize(server.configuration.Databases_Server);
+                        Global.Initialize(server.Configuration.Databases_Server);
 
                         Result = server;
                     }

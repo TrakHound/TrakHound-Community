@@ -18,7 +18,6 @@ using System.Reflection;
 using TH_Global;
 using TH_Global.Functions;
 
-using TH_Plugins_Client;
 
 namespace Test
 {
@@ -53,55 +52,55 @@ namespace Test
 
             //ReadPlugins();
 
-            CreateControls(5000);
+            //CreateControls(5000);
 
         }
 
-        void CreateControls(int instances)
-        {
-            object obj = new UC();
+        //void CreateControls(int instances)
+        //{
+        //    object obj = new UC();
 
-            for (var x = 0; x < instances; x++) Cells.Add(CreateInstance<UC>(obj));
-        }
+        //    for (var x = 0; x < instances; x++) Cells.Add(CreateInstance<UC>(obj));
+        //}
 
-        void ReadPlugins()
-        {
-            var plugins = PluginTools.FindPlugins(FileLocations.Plugins + "\\Pages");
-            Console.WriteLine(plugins.Count);
+        //void ReadPlugins()
+        //{
+        //    var plugins = PluginTools.FindPlugins(FileLocations.Plugins + "\\Pages");
+        //    Console.WriteLine(plugins.Count);
 
-            foreach (var plugin in plugins)
-            {
-                for (var x = 0; x < 40; x++) Cells.Add(CreateInstance<IClientPlugin>(plugin));
-            }
-        }
+        //    foreach (var plugin in plugins)
+        //    {
+        //        for (var x = 0; x < 40; x++) Cells.Add(CreateInstance<IClientPlugin>(plugin));
+        //    }
+        //}
 
-        private ObservableCollection<object> _cells;
-        /// <summary>
-        /// Collection of Cell controls that represent each IClientPlugin
-        /// </summary>
-        public ObservableCollection<object> Cells
-        {
-            get
-            {
-                if (_cells == null) _cells = new ObservableCollection<object>();
-                return _cells;
-            }
-            set
-            {
-                _cells = value;
-            }
-        }
+        //private ObservableCollection<object> _cells;
+        ///// <summary>
+        ///// Collection of Cell controls that represent each IClientPlugin
+        ///// </summary>
+        //public ObservableCollection<object> Cells
+        //{
+        //    get
+        //    {
+        //        if (_cells == null) _cells = new ObservableCollection<object>();
+        //        return _cells;
+        //    }
+        //    set
+        //    {
+        //        _cells = value;
+        //    }
+        //}
 
-        private T CreateInstance<T>(object plugin)
-        {
-            ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
+        //private T CreateInstance<T>(object plugin)
+        //{
+        //    ConstructorInfo ctor = plugin.GetType().GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, CallingConventions.HasThis, new Type[] { }, null);
 
-            Object_Functions.ObjectActivator<T> createdActivator = Object_Functions.GetActivator<T>(ctor);
+        //    Object_Functions.ObjectActivator<T> createdActivator = Object_Functions.GetActivator<T>(ctor);
 
-            T result = createdActivator();
+        //    T result = createdActivator();
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
 

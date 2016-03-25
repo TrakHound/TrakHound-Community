@@ -20,7 +20,8 @@ using System.Collections.ObjectModel;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 namespace TH_DeviceTable
 {
@@ -29,11 +30,11 @@ namespace TH_DeviceTable
 
         const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
 
-        void Update(DataEvent_Data de_d)
+        void Update(EventData data)
         {
-            if (de_d != null)
+            if (data != null)
             {
-                Configuration config = de_d.data01 as Configuration;
+                Configuration config = data.data01 as Configuration;
                 if (config != null)
                 {
                     int index = DeviceInfos.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
@@ -41,13 +42,13 @@ namespace TH_DeviceTable
                     {
                         DeviceInfo info = DeviceInfos[index];
 
-                        UpdateConnected(de_d, info);
+                        UpdateConnected(data, info);
 
-                        UpdateOEE(de_d, info);
+                        UpdateOEE(data, info);
 
-                        UpdateProductionStatus(de_d, info);
+                        UpdateProductionStatus(data, info);
 
-                        UpdateCNCControllerStatus(de_d, info);
+                        UpdateCNCControllerStatus(data, info);
                     }
 
                     Devices_DG.UpdateLayout();
@@ -55,24 +56,24 @@ namespace TH_DeviceTable
             }
         }
 
-        private void UpdateConnected(DataEvent_Data de_d, DeviceInfo info)
+        private void UpdateConnected(EventData data, DeviceInfo info)
         {
-            if (de_d.id.ToLower() == "statusdata_connection")
+            if (data.id.ToLower() == "statusdata_connection")
             {
                 bool connected;
-                bool.TryParse(de_d.data02.ToString(), out connected);
+                bool.TryParse(data.data02.ToString(), out connected);
 
                 info.Connected = connected;
             }
         }
 
-        private void UpdateOEE(DataEvent_Data de_d, DeviceInfo info)
+        private void UpdateOEE(EventData data, DeviceInfo info)
         {
-            if (de_d.id.ToLower() == "statusdata_oee")
+            if (data.id.ToLower() == "statusdata_oee")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    var dt = de_d.data02 as DataTable;
+                    var dt = data.data02 as DataTable;
                     if (dt != null)
                     {
                         var oeeData = OEEData.FromDataTable(dt);
@@ -86,28 +87,28 @@ namespace TH_DeviceTable
 
         }
 
-        private void UpdateProductionStatus(DataEvent_Data de_d, DeviceInfo info)
+        private void UpdateProductionStatus(EventData data, DeviceInfo info)
         {
-            if (de_d.id.ToLower() == "statusdata_snapshots")
+            if (data.id.ToLower() == "statusdata_snapshots")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    info.ProductionStatus = GetTableValue(de_d.data02, "Production Status");
+                    info.ProductionStatus = GetTableValue(data.data02, "Production Status");
                 }), Priority_Background, new object[] { });
             }
         }
 
-        private void UpdateCNCControllerStatus(DataEvent_Data de_d, DeviceInfo info)
+        private void UpdateCNCControllerStatus(EventData data, DeviceInfo info)
         {
-            if (de_d.id.ToLower() == "statusdata_snapshots")
+            if (data.id.ToLower() == "statusdata_snapshots")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    info.EmergencyStop = GetTableValue(de_d.data02, "Emergency Stop");
-                    info.ControllerMode = GetTableValue(de_d.data02, "Controller Mode");
-                    info.ExecutionMode = GetTableValue(de_d.data02, "Execution Mode");
-                    info.Alarm = GetTableValue(de_d.data02, "Alarm");
-                    info.PartCount = GetTableValue(de_d.data02, "PartCount");
+                    info.EmergencyStop = GetTableValue(data.data02, "Emergency Stop");
+                    info.ControllerMode = GetTableValue(data.data02, "Controller Mode");
+                    info.ExecutionMode = GetTableValue(data.data02, "Execution Mode");
+                    info.Alarm = GetTableValue(data.data02, "Alarm");
+                    info.PartCount = GetTableValue(data.data02, "PartCount");
                 }), Priority_Background, new object[] { });
             }
         }

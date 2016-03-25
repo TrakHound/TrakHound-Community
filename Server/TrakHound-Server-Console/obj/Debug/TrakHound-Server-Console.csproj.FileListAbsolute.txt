@@ -11,8 +11,6 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHoun
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Device_Server.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Plugins_Server.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_MTConnect.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Global.pdb
@@ -21,8 +19,8 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHoun
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_WPF.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Device_Server.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Plugins_Server.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_MTConnect.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.pdb
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Plugins.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Plugins.pdb

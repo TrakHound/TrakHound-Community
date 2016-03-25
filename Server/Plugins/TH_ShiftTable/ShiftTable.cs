@@ -15,6 +15,7 @@ using System.Reflection;
 
 using TH_Configuration;
 using TH_Database;
+using TH_Database.Tables;
 using TH_GeneratedData;
 using TH_Global;
 using TH_Plugins;
@@ -68,45 +69,53 @@ namespace TH_ShiftTable
         {
             currentData = returnData;
 
+            string tablePrefix;
+            if (configuration.DatabaseId != null) tablePrefix = configuration.DatabaseId + "_";
+            else tablePrefix = "";
+
+            DateTime timestamp = returnData.header.creationTime;
+
+            var infos = new List<Variables.VariableData>();
+
             // Update shift_current in "Variables" table
             CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(configuration, returnData.header.creationTime);
-            if (UseDatabases)
+            if (shiftInfo != null)
             {
-                if (shiftInfo != null)
-                {
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_name", shiftInfo.name, returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_id", shiftInfo.id, returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_type", shiftInfo.type, returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_date", shiftInfo.date, returnData.header.creationTime, TablePrefix);
+                infos.Add(new Variables.VariableData("shift_name", shiftInfo.name, timestamp));
+                infos.Add(new Variables.VariableData("shift_id", shiftInfo.id, timestamp));
+                infos.Add(new Variables.VariableData("shift_type", shiftInfo.type, timestamp));
+                infos.Add(new Variables.VariableData("shift_date", shiftInfo.date, timestamp));
 
-                    // Local
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime", shiftInfo.shiftStart.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime", shiftInfo.shiftEnd.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime", shiftInfo.currentTime.ToString(), returnData.header.creationTime, TablePrefix);
+                // Local
+                infos.Add(new Variables.VariableData("shift_begintime", shiftInfo.shiftStart.ToString(), timestamp));
+                infos.Add(new Variables.VariableData("shift_endtime", shiftInfo.shiftEnd.ToString(), timestamp));
+                infos.Add(new Variables.VariableData("shift_currenttime", shiftInfo.currentTime.ToString(), timestamp));
 
-                    // UTC
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime_utc", shiftInfo.shiftStartUTC.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime_utc", shiftInfo.shiftEndUTC.ToString(), returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime_utc", shiftInfo.currentTimeUTC.ToString(), returnData.header.creationTime, TablePrefix);
-                }
-                else
-                {
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_name", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_id", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_type", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_date", "", returnData.header.creationTime, TablePrefix);
-
-                    // Local
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime", "", returnData.header.creationTime, TablePrefix);
-
-                    // UTC
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_begintime_utc", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_endtime_utc", "", returnData.header.creationTime, TablePrefix);
-                    TH_Database.Tables.Variables.Update(configuration.Databases_Server, "shift_currenttime_utc", "", returnData.header.creationTime, TablePrefix);
-                }
+                // UTC
+                infos.Add(new Variables.VariableData("shift_begintime_utc", shiftInfo.shiftStartUTC.ToString(), timestamp));
+                infos.Add(new Variables.VariableData("shift_endtime_utc", shiftInfo.shiftEndUTC.ToString(), timestamp));
+                infos.Add(new Variables.VariableData("shift_currenttime_utc", shiftInfo.currentTimeUTC.ToString(), timestamp));
             }
+            else
+            {
+                infos.Add(new Variables.VariableData("shift_name", "", timestamp));
+                infos.Add(new Variables.VariableData("shift_id", "", timestamp));
+                infos.Add(new Variables.VariableData("shift_type", "", timestamp));
+                infos.Add(new Variables.VariableData("shift_date", "", timestamp));
+
+                // Local
+                infos.Add(new Variables.VariableData("shift_begintime", "", timestamp));
+                infos.Add(new Variables.VariableData("shift_endtime", "", timestamp));
+                infos.Add(new Variables.VariableData("shift_currenttime", "", timestamp));
+
+                // UTC
+                infos.Add(new Variables.VariableData("shift_begintime_utc", "", timestamp));
+                infos.Add(new Variables.VariableData("shift_endtime_utc", "", timestamp));
+                infos.Add(new Variables.VariableData("shift_currenttime_utc", "", timestamp));
+            }
+
+            Variables.Update(configuration.Databases_Server, infos.ToArray(), tablePrefix);
+
 
             var data = new EventData();
             data.id = "ShiftTable_CurrentShiftInfo";
@@ -152,6 +161,11 @@ namespace TH_ShiftTable
 
         void CreateShiftSegmentsTable(List<Shift> shifts)
         {
+            string tablename;
+
+            if (configuration.DatabaseId != null) tablename = configuration.DatabaseId + "_" + TableNames.ShiftSegments;
+            else tablename = TableNames.ShiftSegments;
+
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("SHIFT", DataType.LargeText),
@@ -166,7 +180,7 @@ namespace TH_ShiftTable
 
             var primaryKey = new string[] { "SHIFT_ID", "SEGMENT_ID" };
 
-            Table.Replace(configuration.Databases_Server, TablePrefix + TableNames.ShiftSegments, columns.ToArray(), primaryKey);
+            Table.Replace(configuration.Databases_Server, tablename, columns.ToArray(), primaryKey);
 
             if (shifts != null)
             {
@@ -199,7 +213,7 @@ namespace TH_ShiftTable
                     }
                 }
 
-                Row.Insert(configuration.Databases_Server, TablePrefix + TableNames.ShiftSegments, insertColumns.ToArray(), rowValues, primaryKey, true);
+                Row.Insert(configuration.Databases_Server, tablename, insertColumns.ToArray(), rowValues, primaryKey, true);
             }
         }
 

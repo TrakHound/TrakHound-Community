@@ -39,7 +39,6 @@ namespace TrakHound_Client.Menus.Main
 
             if (mw != null)
             {
-                mw.ZoomLevelChanged += mw_ZoomLevelChanged;
                 mw.CurrentUserChanged += mw_CurrentUserChanged;
             }
 
@@ -50,9 +49,18 @@ namespace TrakHound_Client.Menus.Main
             AddPlugins_MenuItem();
             AddDeviceManager_MenuItem();
             AddDeveloperConsole_MenuItem();
+            AddFullscreen_MenuItem();
         }
 
-        public TrakHound_Client.MainWindow mw;
+        public TrakHound_Client.MainWindow mw
+        {
+            get { return (TrakHound_Client.MainWindow)GetValue(mwProperty); }
+            set { SetValue(mwProperty, value); }
+        }
+
+        public static readonly DependencyProperty mwProperty =
+            DependencyProperty.Register("mw", typeof(TrakHound_Client.MainWindow), typeof(Menu), new PropertyMetadata(null));
+
 
         public bool Shown
         {
@@ -66,6 +74,7 @@ namespace TrakHound_Client.Menus.Main
 
         public static readonly DependencyProperty ShownProperty =
             DependencyProperty.Register("Shown", typeof(bool), typeof(Menu), new PropertyMetadata(false));
+
 
         public void Hide()
         {
@@ -243,6 +252,28 @@ namespace TrakHound_Client.Menus.Main
 
         #endregion
 
+        #region "Fullscreen"
+
+        void AddFullscreen_MenuItem()
+        {
+            MenuItem mi = new MenuItem();
+            mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/FullScreen_02_30px.png"));
+            mi.Text = "Fullscreen";
+            mi.Clicked += Fullscreen_Clicked;
+
+            var bt = new TH_WPF.Button();
+            bt.ButtonContent = mi;
+
+            if (MenuItems.OfType<TH_WPF.Button>().ToList().Find(x => CheckButtonText(x, mi)) == null) MenuItems.Add(bt);
+        }
+
+        private void Fullscreen_Clicked()
+        {
+            if (mw != null && mw.CurrentPage != null) mw.CurrentPage.FullScreen();
+        }
+
+        #endregion
+
         #endregion
 
         #region "Bottom Buttons"
@@ -262,33 +293,27 @@ namespace TrakHound_Client.Menus.Main
 
         #region "Zoom"
 
-        public string ZoomLevelDisplay
+        private void ZoomOut_Clicked(TH_WPF.Button bt)
         {
-            get { return (string)GetValue(ZoomLevelDisplayProperty); }
-            set { SetValue(ZoomLevelDisplayProperty, value); }
-        }
-
-        public static readonly DependencyProperty ZoomLevelDisplayProperty =
-            DependencyProperty.Register("ZoomLevelDisplay", typeof(string), typeof(Menu), new PropertyMetadata("100%"));
-
-        void mw_ZoomLevelChanged(double zoomlevel)
-        {
-            ZoomLevelDisplay = zoomlevel.ToString("P0");
-        }
-
-        private void Zoom_Out_Click(object sender, MouseButtonEventArgs e)
-        {
-            if (mw != null)
+            if (mw != null && mw.CurrentPage != null)
             {
-                mw.ZoomLevel = Math.Max(0.75, mw.ZoomLevel - 0.05);
+                mw.CurrentPage.ZoomOut();
             }
         }
 
-        private void Zoom_In_Click(object sender, MouseButtonEventArgs e)
+        private void ZoomIn_Clicked(TH_WPF.Button bt)
         {
-            if (mw != null)
+            if (mw != null && mw.CurrentPage != null)
             {
-                mw.ZoomLevel = Math.Min(1.25, mw.ZoomLevel + 0.05);
+                mw.CurrentPage.ZoomIn();
+            }
+        }
+
+        private void Reset_Clicked(TH_WPF.Button bt)
+        {
+            if (mw != null && mw.CurrentPage != null)
+            {
+                mw.CurrentPage.SetZoom(1.0);
             }
         }
 

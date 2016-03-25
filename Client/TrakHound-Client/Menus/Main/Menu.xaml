@@ -14,7 +14,7 @@
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
 
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="200"
+             d:DesignHeight="400" d:DesignWidth="300"
              
              HorizontalAlignment="Right"
              VerticalAlignment="Top"
@@ -144,6 +144,51 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
+
+                    <Border BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,0,1" Margin="5">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="Height" Value="35"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="Fill" Value="{StaticResource Shade_Normal}"/>
+                                    <Setter Property="Width" Value="1"/>
+                                    <Setter Property="Margin" Value="0,5"/>
+                                </Style>
+                            </Grid.Resources>
+
+                            <!--Zoom Out-->
+                            <th_wpf:Button Grid.Column="0" Image="/;component/Resources/Minus_04.png" Padding="5,9" Clicked="ZoomOut_Clicked"/>
+
+                            <Rectangle Grid.Column="1"/>
+
+                            <!--Zoom display and reset button-->
+                            <th_wpf:Button Grid.Column="2" Text="{Binding mw.CurrentPage.ZoomLevel, StringFormat=P0}" Clicked="Reset_Clicked"/>
+
+                            <Rectangle Grid.Column="3"/>
+
+                            <!--Zoom In-->
+                            <th_wpf:Button Grid.Column="4" Image="/;component/Resources/Plus_04.png" Padding="5,9" Clicked="ZoomIn_Clicked"/>
+
+                        </Grid>
+
+                    </Border>
                     
                     <!--MenuItem List-->
                     <ItemsControl Grid.Row="2" ItemsSource="{Binding MenuItems}" HorizontalAlignment="Center" Margin="0,10,0,0">
@@ -155,13 +200,16 @@
                         <ItemsControl.Resources>
                             <Style TargetType="th_wpf:Button">
                                 <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="Width" Value="100"/>
-                                <Setter Property="Height" Value="100"/>
-                                <Setter Property="Margin" Value="0"/>
+                                <Setter Property="Width" Value="75"/>
+                                <Setter Property="Height" Value="75"/>
+                                <Setter Property="Margin" Value="0,0,0,5"/>
                                 <Setter Property="Padding" Value="0"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="CornerRadius" Value="1"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource Accent_Hover_Border}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -179,14 +227,14 @@
                             <th_wpf:Button.Style>
                                 <Style TargetType="th_wpf:Button">
                                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    <Setter Property="Background" Value="#00000000"/>
+                                    <Setter Property="Background" Value="Transparent"/>
                                     <Setter Property="Width" Value="40"/>
                                     <Setter Property="Height" Value="40"/>
                                     <Setter Property="Padding" Value="8"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="true">
                                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                            <!--<Setter Property="Background" Value="{StaticResource Accent_Hover}"/>-->
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>

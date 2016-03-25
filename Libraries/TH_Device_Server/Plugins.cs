@@ -75,6 +75,8 @@ namespace TH_Device_Server
                 var foundPlugins = TH_Plugins.Reader.FindPlugins<IServerPlugin>(path, new ServerPlugin.PluginContainer(), ServerPlugin.PLUGIN_EXTENSION);
                 foreach (var plugin in foundPlugins)
                 {
+                    Logger.Log("LoadPlugins() :: " + plugin.Name + " Found");
+
                     if (!plugins.Exists(x => x.Name.ToLower() == plugin.Name.ToLower()))
                     {
                         plugins.Add(plugin);
@@ -98,11 +100,8 @@ namespace TH_Device_Server
                 {
                     try
                     {
-                        //plugin.TablePrefix = TablePrefix;
-                        //plugin.UseDatabases = useDatabases;
                         plugin.SendData -= Plugins_Update_SendData;
                         plugin.SendData += Plugins_Update_SendData;
-                        //plugin.StatusChanged += tpi_StatusChanged;
                         plugin.Initialize(config);
                     }
                     catch (Exception ex)

@@ -1,21 +1,15 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.IO;
-using System.Threading.Tasks;
 
 using TH_Configuration;
 using TH_Database;
 using TH_Database.Tables;
 using TH_Global;
 using TH_Plugins;
-using TH_UserManagement.Management;
 
 namespace TH_Device_Server
 {
@@ -29,12 +23,18 @@ namespace TH_Device_Server
 
         public Configuration Configuration { get; set; }
 
+        public string ConfigurationPath { get; set; }
+
+        public bool UpdateConfigurationFile { get; set; }
+
         private System.Timers.Timer connectionTimer;
 
         public void Start()
         {
             if (Configuration.Databases_Server.Databases.Count > 0)
             {
+                Logger.Log("Device Server Started :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]");
+
                 Initialize(Configuration);
 
                 connectionTimer = new System.Timers.Timer();
@@ -52,21 +52,23 @@ namespace TH_Device_Server
         {
             if (connectionTimer != null) connectionTimer.Enabled = false;
 
+            Plugins_Closing();
+
             Logger.Log("Device Server Stopped :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]");
         }
 
+
         private void Initialize(Configuration config)
         {
+            Configuration = config;
+
             Global.Initialize(config.Databases_Server);
 
             Database.Create(config.Databases_Server);
 
+            InitializeVariablesTables();
+
             LoadPlugins();
-
-            // Initialize any aux tables such as variables
-            InitializeTables();
-
-            // Initialize each Table Plugin with the current Configuration 
             Plugins_Initialize(config);
         }
 
@@ -77,6 +79,7 @@ namespace TH_Device_Server
         private void ConnectionTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var timer = (System.Timers.Timer)sender;
+            timer.Enabled = false;
 
             // Get Connection Status for Databases
             var status = CheckDatabaseConnection(Configuration);
@@ -94,7 +97,11 @@ namespace TH_Device_Server
             }
             else interval = INTERVAL_MIN;
 
-            timer.Interval = interval;
+            if (timer != null)
+            {
+                timer.Interval = interval;
+                timer.Enabled = true;
+            }
         }
 
 
@@ -134,6 +141,46 @@ namespace TH_Device_Server
 
             Plugins_Update_SendData(data);
         }
+
+        void InitializeVariablesTables()
+        {
+            string tablePrefix;
+            if (Configuration.DatabaseId != null) tablePrefix = Configuration.DatabaseId + "_";
+            else tablePrefix = "";
+
+            Variables.CreateTable(Configuration.Databases_Server, tablePrefix);
+        }
+
+        #region "Exception Handler"
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Logger.Log("UnhandledException : " + e.ExceptionObject.ToString());
+        }
+
+        #endregion
+
+        #region "Header"
+
+        void PrintDeviceHeader(Configuration config)
+        {
+            Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------");
+
+            Logger.Log("Description ----------------------------");
+            if (config.Description.Description != null) Logger.Log(config.Description.Description);
+            if (config.Description.Manufacturer != null) Logger.Log(config.Description.Manufacturer);
+            if (config.Description.Model != null) Logger.Log(config.Description.Model);
+            if (config.Description.Serial != null) Logger.Log(config.Description.Serial);
+
+            Logger.Log("Agent ----------------------------------");
+            if (config.Agent.IP_Address != null) Logger.Log(config.Agent.IP_Address);
+            if (config.Agent.Port > 0) Logger.Log(config.Agent.Port.ToString());
+            if (config.Agent.Device_Name != null) Logger.Log(config.Agent.Device_Name);
+
+            Logger.Log("--------------------------------------------------");
+        }
+
+        #endregion
 
 
 
@@ -498,36 +545,7 @@ namespace TH_Device_Server
 
         #endregion
 
-        #region "Exception Handler"
 
-        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Logger.Log("UnhandledException : " + e.ExceptionObject.ToString());
-        }
-
-        #endregion
-
-        #region "Header"
-
-        void PrintDeviceHeader(Configuration config)
-        {
-            Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------");
-
-            Logger.Log("Description ----------------------------");
-            if (config.Description.Description != null) Logger.Log(config.Description.Description);
-            if (config.Description.Manufacturer != null) Logger.Log(config.Description.Manufacturer);
-            if (config.Description.Model != null) Logger.Log(config.Description.Model);
-            if (config.Description.Serial != null) Logger.Log(config.Description.Serial);
-
-            Logger.Log("Agent ----------------------------------");
-            if (config.Agent.IP_Address != null) Logger.Log(config.Agent.IP_Address);
-            if (config.Agent.Port > 0) Logger.Log(config.Agent.Port.ToString());
-            if (config.Agent.Device_Name != null) Logger.Log(config.Agent.Device_Name);
-
-            Logger.Log("--------------------------------------------------");
-        }
-
-        #endregion
 
         #region "Running Time"
 
@@ -613,10 +631,7 @@ namespace TH_Device_Server
 
         #region "Table Management"
 
-        void InitializeTables()
-        {
-            Variables.CreateTable(Configuration.Databases_Server, Configuration.DatabaseId);
-        }
+
 
         #endregion
 

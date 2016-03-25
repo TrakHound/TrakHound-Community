@@ -4,20 +4,12 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
-using System.Xml;
-using System.Data;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading;
-
 using TH_Configuration;
-using TH_Database;
-using TH_Global;
-using TH_MTConnect;
 using TH_Plugins;
-using TH_Plugins.Server;
 
 namespace TH_InstanceTable
 {

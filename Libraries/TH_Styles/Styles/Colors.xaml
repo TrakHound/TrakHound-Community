@@ -6,6 +6,7 @@
     <Color x:Key="Accent_Light_Color">#40a0ff</Color>
     <Color x:Key="Accent_Dark_Color">#0060ff</Color>
     <Color x:Key="Accent_Hover_Color">#200080ff</Color>
+    <Color x:Key="Accent_HoverBorder_Color">#600080ff</Color>
 
     <!--Window Backgrounds-->
     <SolidColorBrush x:Key="Window_Background" Color="#fff"/>
@@ -25,6 +26,7 @@
     <!--<SolidColorBrush x:Key="Accent_Light" Color="#00c0ff"/>-->
     <SolidColorBrush x:Key="Accent_Dark" Color="{StaticResource Accent_Dark_Color}"/>
     <SolidColorBrush x:Key="Accent_Hover" Color="{StaticResource Accent_Hover_Color}"/>
+    <SolidColorBrush x:Key="Accent_Hover_Border" Color="{StaticResource Accent_HoverBorder_Color}"/>
 
     <RadialGradientBrush x:Key="Accent_LightGradient" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
         <RadialGradientBrush.GradientStops>

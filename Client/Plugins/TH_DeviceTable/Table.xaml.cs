@@ -14,7 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 namespace TH_DeviceTable
 {
@@ -46,10 +47,10 @@ namespace TH_DeviceTable
 
         private void OpenDevicePage(Configuration config)
         {
-            var de_d = new DataEvent_Data();
-            de_d.id = "DevicePage_Show";
-            de_d.data01 = config;
-            if (DataEvent != null) DataEvent(de_d);
+            var data = new EventData();
+            data.id = "DevicePage_Show";
+            data.data01 = config;
+            if (SendData != null) SendData(data);
         }
     }
 

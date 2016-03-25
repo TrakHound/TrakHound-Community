@@ -60,7 +60,7 @@
                 </ContentControl>
 
                 <!--Page Control-->
-                <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,14,0">
+                <!--<Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,14,0">
                     <Grid.Style>
                         <Style TargetType="Grid">
                             <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
@@ -110,23 +110,23 @@
                             </Style>
                        </StackPanel.Resources>
 
-                        <!--Zoom Out-->
+                        --><!--Zoom Out--><!--
                         <th_wpf:Button Image="/TrakHound-Client;component/Resources/Minus_04.png" Clicked="ZoomOut_Clicked"/>
                         
-                        <!--Zoom In-->
+                        --><!--Zoom In--><!--
                         <th_wpf:Button Image="/TrakHound-Client;component/Resources/Plus_04.png" Clicked="ZoomIn_Clicked"/>
                         
-                        <!--Zoom Level-->
+                        --><!--Zoom Level--><!--
                         <ComboBox x:Name="zoom_COMBO" ItemsSource="{Binding ZoomLevels}" TextBoxBase.TextChanged="zoom_COMBO_TextChanged" Text="100%" Cursor="Hand" IsEditable="True" IsReadOnly="True"/>
                         
                         <Rectangle Width="1" Fill="#aaffffff" Margin="0,2"/>
                         
-                        <!--Fullscreen-->
+                        --><!--Fullscreen--><!--
                         <th_wpf:Button Image="/TrakHound-Client;component/Resources/FullScreen_02_30px.png" Clicked="Fullscreen_Clicked"/>
                         
                     </StackPanel>
 
-                </Grid>
+                </Grid>-->
 
             </Grid>
 

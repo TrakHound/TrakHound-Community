@@ -32,7 +32,7 @@ namespace TrakHound_Server_Core
         {
             foreach (Device_Server device in Devices)
             {
-                if (device != null) device.Close();
+                if (device != null) device.Stop();
             }
 
             DevicesMonitor_Stop();

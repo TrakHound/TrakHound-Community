@@ -149,7 +149,7 @@
                     BorderBrush="#33ffffff"
                     BorderThickness="0"
                     FontSize="10pt"
-                    VerticalAlignment="Stretch"
+                    VerticalAlignment="Top"
                     >
                     <DataGrid.Resources>
 
@@ -309,11 +309,27 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Text="File Assembly" Foreground="#88ffffff" />
+                                <TextBlock Grid.Column="0" Text="Assembly" Foreground="#88ffffff" />
 
                                 <Rectangle Grid.Column="1" Fill="#33ffffff" Width="1" Margin="0,5"/>
 
                                 <TextBlock Grid.Column="2" Text="{Binding SelectedLine.Assembly}" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Left" TextWrapping="Wrap"/>
+
+                            </Grid>
+
+                            <!--Filename-->
+                            <Grid Margin="10" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Filename" Foreground="#88ffffff" />
+
+                                <Rectangle Grid.Column="1" Fill="#33ffffff" Width="1" Margin="0,5"/>
+
+                                <TextBlock Grid.Column="2" Text="{Binding SelectedLine.Filename}" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Left" TextWrapping="Wrap"/>
 
                             </Grid>
 

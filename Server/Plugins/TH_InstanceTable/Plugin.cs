@@ -4,13 +4,8 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using TH_Configuration;
-using TH_Database;
-using TH_Global;
 using TH_Plugins;
 using TH_Plugins.Server;
 

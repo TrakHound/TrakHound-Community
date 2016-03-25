@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 
 using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 using TH_UserManagement;
 
 namespace Template
@@ -149,11 +150,9 @@ namespace Template
 
         #region "Events"
 
-        public void Update_DataEvent(DataEvent_Data de_d) { }
+        public void GetSentData(EventData data) { }
 
-        public event DataEvent_Handler DataEvent;
-
-        public event PluginTools.ShowRequested_Handler ShowRequested;
+        public event SendData_Handler SendData;
 
         #endregion
 

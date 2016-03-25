@@ -20,7 +20,8 @@ using System.Xml;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
-using TH_Plugins_Server;
+using TH_Plugins;
+using TH_Plugins.Server;
 using TH_UserManagement.Management;
 using TH_WPF;
 
@@ -349,7 +350,7 @@ namespace TH_DeviceManager
             result.Add(new Pages.Description.Page());
 
             //Agent
-            result.Add(new Pages.Agent.Page());
+            //result.Add(new Pages.Agent.Page());
 
             //Databases
             result.Add(new Pages.Databases.Page());
@@ -379,21 +380,6 @@ namespace TH_DeviceManager
             }
 
             return result;
-        }
-
-        class DEBUG : TH_Plugins_Server.IConfigurationPage
-        {
-            public string PageName { get { return null; } }
-            public string Description { get { return null; } }
-            public ImageSource Image { get { return null; } }
-
-            public event TH_Plugins_Server.SettingChanged_Handler SettingChanged;
-
-            public void LoadConfiguration(DataTable dt) { }
-
-            public void SaveConfiguration(DataTable dt) { }
-
-            //public TH_Plugins_Server.Page_Type PageType { get; set; }
         }
 
         private void AddPages(List<IConfigurationPage> pages)

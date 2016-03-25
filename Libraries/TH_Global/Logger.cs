@@ -75,22 +75,25 @@ namespace TH_Global
         /// <param name="file"></param>
         /// <param name="member"></param>
         /// <param name="lineNumber"></param>
-        public static void Log(string text, [CallerFilePath] string file = "", [CallerMemberName] string member = "", [CallerLineNumber] int lineNumber = 0)
+        public static void Log(string text, [CallerFilePath] string filename = "", [CallerMemberName] string member = "", [CallerLineNumber] int lineNumber = 0)
         {
             string[] lines = text.Split(new string[] { "\r\n", "\n", Environment.NewLine }, StringSplitOptions.None);
             foreach (var line in lines)
             {
-                string assembly = "";
-                if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file)).Replace(' ', '_');
-                file = Path.GetFileName(file);
-                member = member.Replace('.', '_');
+                //string assembly = "";
+                //if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file)).Replace(' ', '_');
+                //file = Path.GetFileName(file);
+                //member = member.Replace('.', '_');
 
                 var queueLine = new Line();
                 queueLine.Text = line;
 
                 queueLine.Timestamp = DateTime.Now;
 
-                queueLine.Assembly = assembly;
+                var assembly = System.Reflection.Assembly.GetCallingAssembly();
+
+                queueLine.Assembly = assembly.FullName;
+                queueLine.Filename = filename;
                 queueLine.Member = member;
                 queueLine.LineNumber = lineNumber;
 
@@ -191,6 +194,7 @@ namespace TH_Global
             public DateTime Timestamp { get; set; }
 
             public string Assembly { get; set; }
+            public string Filename { get; set; }
             public string Member { get; set; }
             public int LineNumber { get; set; }
 
@@ -205,6 +209,7 @@ namespace TH_Global
 
                 line.Timestamp = ts;
                 line.Assembly = XML_Functions.GetAttributeValue(lineNode, null, "assembly");
+                line.Filename = XML_Functions.GetAttributeValue(lineNode, null, "filename");
                 line.Member = XML_Functions.GetAttributeValue(lineNode, null, "member");
 
                 string lineNumber = XML_Functions.GetAttributeValue(lineNode, null, "line");
@@ -360,6 +365,10 @@ namespace TH_Global
                 XmlAttribute assemblyAttribute = doc.CreateAttribute("assembly");
                 assemblyAttribute.Value = line.Assembly;
                 itemNode.Attributes.Append(assemblyAttribute);
+
+                XmlAttribute filenameAttribute = doc.CreateAttribute("filename");
+                filenameAttribute.Value = line.Filename;
+                itemNode.Attributes.Append(filenameAttribute);
 
                 XmlAttribute memberAttribute = doc.CreateAttribute("member");
                 memberAttribute.Value = line.Member;

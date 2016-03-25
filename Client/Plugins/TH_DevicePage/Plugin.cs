@@ -6,7 +6,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TH_Configuration;
-using TH_Plugins_Client;
+using TH_Plugins;
+using TH_Plugins.Client;
 
 namespace TH_DevicePage
 {
@@ -36,7 +37,7 @@ namespace TH_DevicePage
 
         public string Author { get { return "TrakHound"; } }
 
-        public string AuthorText { get { return "©2015 Feenux LLC. All Rights Reserved"; } }
+        public string AuthorText { get { return "©2016 Feenux LLC. All Rights Reserved"; } }
 
         public ImageSource AuthorImage { get { return null; } }
 
@@ -86,11 +87,9 @@ namespace TH_DevicePage
 
         #region "Events"
 
-        public void Update_DataEvent(DataEvent_Data de_d) { Update(de_d); }
+        public void GetSentData(EventData data) { Update(data); }
 
-        public event DataEvent_Handler DataEvent;
-
-        public event PluginTools.ShowRequested_Handler ShowRequested;
+        public event SendData_Handler SendData;
 
         #endregion
 

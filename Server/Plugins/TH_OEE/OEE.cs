@@ -5,22 +5,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Xml;
-using System.Reflection;
 using System.Data;
+using System.Linq;
 
 using TH_Configuration;
+using TH_Cycles;
 using TH_Database;
 using TH_Global;
 using TH_Plugins;
 using TH_Plugins.Server;
-
-using TH_Cycles;
-using TH_ShiftTable;
 
 namespace TH_OEE
 {

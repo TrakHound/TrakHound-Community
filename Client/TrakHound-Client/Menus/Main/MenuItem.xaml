@@ -10,8 +10,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              
-             Height="100"
-             Width="100"         
+             Height="75"
+             Width="75"         
              >
 
     <Grid x:Name="root" PreviewMouseDown="root_PreviewMouseDown" Cursor="Hand" Background="Transparent">
@@ -23,7 +23,7 @@
             </Grid.RowDefinitions>
 
             <!--Image-->
-            <Rectangle Width="30" Height="30" Margin="0,0,0,10">
+            <Rectangle Width="30" Height="30" Margin="0,0,0,5">
                 <Rectangle.Resources>
                     <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
                 </Rectangle.Resources>
@@ -42,7 +42,7 @@
             </Rectangle>
 
             <!--Text-->
-            <TextBlock Grid.Row="1" Text="{Binding Text}" FontSize="10pt" TextAlignment="Center" TextWrapping="Wrap" Margin="5,0">
+            <TextBlock Grid.Row="1" Text="{Binding Text}" FontSize="8pt" TextAlignment="Center" TextWrapping="Wrap" Margin="5,2">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>

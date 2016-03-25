@@ -24,7 +24,7 @@ using System.Collections.ObjectModel;
 using TH_Configuration;
 using TH_Database;
 using TH_Global.Functions;
-using TH_Plugins_Server;
+using TH_Plugins.Server;
 using TH_WPF;
 using TH_UserManagement;
 using TH_UserManagement.Management;
@@ -67,7 +67,7 @@ namespace TH_DeviceManager.Pages.Databases
 
         public UserConfiguration currentUser { get; set; }
 
-        public event TH_Plugins_Server.SettingChanged_Handler SettingChanged;
+        public event TH_Plugins.Server.SettingChanged_Handler SettingChanged;
 
         public void LoadConfiguration(DataTable dt)
         {

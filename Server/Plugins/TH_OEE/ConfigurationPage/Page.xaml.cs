@@ -1,24 +1,19 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-using System.Data;
-using System.Collections.ObjectModel;
-
-using TH_Plugins_Server;
-using TH_Configuration;
 using TH_Global.Functions;
+using TH_Plugins.Server;
 using TH_UserManagement.Management;
 
 namespace TH_OEE.ConfigurationPage
@@ -26,7 +21,7 @@ namespace TH_OEE.ConfigurationPage
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Plugins_Server.IConfigurationPage
+    public partial class Page : UserControl, IConfigurationPage
     {
         public Page()
         {

@@ -89,6 +89,8 @@ namespace TrakHound_Client.Controls.Developer_Console
 
             public string ApplicationName { get; set; }
 
+            public Int64 RowIndex { get; set; }
+
             public List<Logger.Line> Lines { get; set; }
         }
 
@@ -150,7 +152,7 @@ namespace TrakHound_Client.Controls.Developer_Console
                 outputGroup.ApplicationName = applicationName;
                 outputGroups.Add(outputGroup);
             }
-            line.Row = outputGroup.Lines.Count + 1;
+            line.Row = outputGroup.RowIndex++;
             outputGroup.Lines.Add(line);
 
             if (applicationName == CurrentOutput) AddConsoleLine(line);

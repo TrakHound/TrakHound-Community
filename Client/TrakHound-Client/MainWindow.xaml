@@ -54,18 +54,13 @@
         >
 
     <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
-            </ResourceDictionary.MergedDictionaries>
+        
+        <!--Main Window Borders-->
+        <SolidColorBrush x:Key="ResizeBorder_Brush" Color="#FFEEEEEE"/>
 
-            <!--Main Window Borders-->
-            <SolidColorBrush x:Key="ResizeBorder_Brush" Color="#FFEEEEEE"/>
+        <Color x:Key="WindowControl_Color">#FFCCCCCC</Color>
+        <SolidColorBrush x:Key="WindowControl_Brush" Color="{StaticResource WindowControl_Color}"/>
 
-            <Color x:Key="WindowControl_Color">#FFCCCCCC</Color>
-            <SolidColorBrush x:Key="WindowControl_Brush" Color="{StaticResource WindowControl_Color}"/>
-            
-        </ResourceDictionary>
     </Window.Resources>
 
     <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
@@ -1002,7 +997,16 @@
                                         <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
                                     </Grid.RowDefinitions>
 
-                                    <ContentPresenter x:Name="CurrentPage_CONTENT" Grid.Row="1" Content="{Binding CurrentPage}"/>
+                                    <ContentPresenter x:Name="CurrentPage_CONTENT" Grid.Row="1" Content="{Binding CurrentPage}">
+                                        <ContentPresenter.LayoutTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
+                                                <SkewTransform/>
+                                                <RotateTransform/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </ContentPresenter.LayoutTransform>
+                                    </ContentPresenter>
 
                                     <GridSplitter Grid.Row="2" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
                                         <GridSplitter.Style>
