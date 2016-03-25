@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -64,12 +64,12 @@ namespace TrakHound_Client.Menus.Plugins
 
         #region "Plugin List"
 
-        ObservableCollection<PluginItem> plugins;
-        public ObservableCollection<PluginItem> Plugins
+        ObservableCollection<TH_WPF.Button> plugins;
+        public ObservableCollection<TH_WPF.Button> Plugins
         {
             get
             {
-                if (plugins == null) plugins = new ObservableCollection<PluginItem>();
+                if (plugins == null) plugins = new ObservableCollection<TH_WPF.Button>();
                 return plugins;
             }
             set

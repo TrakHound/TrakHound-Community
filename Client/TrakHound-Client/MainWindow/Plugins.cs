@@ -229,15 +229,6 @@ namespace TrakHound_Client
             if (pluginsPage != null)
             {
                 Plugins_AddItems(result);
-
-                //pluginsPage.ClearInstalledItems();
-
-                //result.Sort((a, b) => a.Name.CompareTo(b.Name));
-
-                //foreach (var config in result)
-                //{
-                //    pluginsPage.AddPlugin(config);
-                //}
             }
 
             return result;
@@ -447,26 +438,6 @@ namespace TrakHound_Client
 
             
         }
-
-        ///// <summary>
-        ///// Plugin has requested to be shown
-        ///// </summary>
-        ///// <param name="info"></param>
-        ////private void Plugin_ShowRequested(PluginShowInfo info)
-        ////{
-        ////    if (info.Page.GetType() == typeof(IClientPlugin))
-        ////    {
-        ////        var plugin = (IClientPlugin)info.Page;
-
-        ////        string title = info.PageTitle;
-        ////        if (info.PageTitle == null && plugin != null) title = plugin.Title;
-
-        ////        ImageSource image = info.PageImage;
-        ////        if (info.PageImage == null && plugin != null) image = plugin.Image;
-
-        ////        AddTab(plugin, title, image);
-        ////    }
-        ////}
 
         /// <summary>
         /// Plugin has sent a DataEvent_Data object to other plugins

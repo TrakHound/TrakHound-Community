@@ -1,4 +1,4 @@
-﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
 
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
@@ -11,6 +11,7 @@
              
              xmlns:controls="clr-namespace:TrakHound_Client.Controls"
              xmlns:local="clr-namespace:TrakHound_Client.Menus.Main"
+             xmlns:menus="clr-namespace:TrakHound_Client.Menus"
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
 
              mc:Ignorable="d"
@@ -208,6 +209,7 @@
                                 <Setter Property="CornerRadius" Value="1"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                         <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                                         <Setter Property="BorderBrush" Value="{StaticResource Accent_Hover_Border}"/>
                                     </Trigger>

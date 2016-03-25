@@ -10,6 +10,7 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -384,6 +385,8 @@ namespace TH_DeviceManager
 
         private void AddPages(List<IConfigurationPage> pages)
         {
+            pages = pages.OrderBy(x => x.PageName).ToList();
+
             //Create PageItem and add to PageList
             foreach (IConfigurationPage page in pages)
             {
@@ -436,13 +439,13 @@ namespace TH_DeviceManager
 
         static List<Type> pluginPageTypes;
 
-        static List<IConfigurationPage> PluginPages { get; set; }
+        //static List<IConfigurationPage> PluginPages { get; set; }
 
-        class ServerPlugins
-        {
-            [ImportMany(typeof(IServerPlugin))]
-            public IEnumerable<Lazy<IServerPlugin>> Plugins { get; set; }
-        }
+        //class ServerPlugins
+        //{
+        //    [ImportMany(typeof(IServerPlugin))]
+        //    public IEnumerable<Lazy<IServerPlugin>> Plugins { get; set; }
+        //}
 
         public List<Type> GetPluginPageTypes()
         {
@@ -478,25 +481,24 @@ namespace TH_DeviceManager
             {
                 try
                 {
-                    var plugs = new ServerPlugins();
+                    //var plugs = new ServerPlugins();
 
-                    var catalog = new DirectoryCatalog(path);
-                    var container = new CompositionContainer(catalog);
-                    container.SatisfyImportsOnce(plugs);
+                    //var catalog = new DirectoryCatalog(path);
+                    //var container = new CompositionContainer(catalog);
+                    //container.SatisfyImportsOnce(plugs);
 
-                    var plugins = plugs.Plugins;
+                    //var plugins = plugs.Plugins;
 
-                    foreach (var lplugin in plugins)
+                    var plugins = Reader.FindPlugins<IServerPlugin>(path, new ServerPlugin.PluginContainer(), ServerPlugin.PLUGIN_EXTENSION);
+                    foreach (var plugin in plugins)
                     {
-                        IServerPlugin plugin = lplugin.Value;
-
                         if (plugin.ConfigurationPageTypes != null)
                         {
                             foreach (var type in plugin.ConfigurationPageTypes)
                             {
                                 if (type != null)
                                 {
-                                    if (!types.Exists(x => x.GetType() == type))
+                                    if (!types.Exists(x => x.GetType().FullName == type.FullName))
                                     {
                                         types.Add(type);
                                     }

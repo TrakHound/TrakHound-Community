@@ -45,7 +45,6 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\Pl
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_ToolBarItem.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Exit_BT.baml
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\MenuItem.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Message.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\MessageCenter.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Notifications\Notification_Item.baml
@@ -70,7 +69,6 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TabHead
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TH_ToolBarItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Menu.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Exit_BT.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\MenuItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\MainWindow.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Message.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\MessageCenter.g.cs
@@ -97,3 +95,5 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\MenuItem.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\MenuItem.g.cs

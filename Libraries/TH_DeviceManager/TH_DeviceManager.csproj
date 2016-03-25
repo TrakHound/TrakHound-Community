@@ -101,14 +101,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\Agent\Controls\MessageItem.xaml">
+    <None Include="Pages\Agent\Controls\MessageItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Agent\Page.xaml">
+    </None>
+    <None Include="Pages\Agent\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Compile Include="AddDevice\DeviceInfo.cs" />
     <Compile Include="AddDevice\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
@@ -139,12 +139,12 @@
     <Compile Include="Controls\PageItem.xaml.cs">
       <DependentUpon>PageItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Agent\Controls\MessageItem.xaml.cs">
+    <None Include="Pages\Agent\Controls\MessageItem.xaml.cs">
       <DependentUpon>MessageItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Agent\Page.xaml.cs">
+    </None>
+    <None Include="Pages\Agent\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Page Include="Pages\Databases\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

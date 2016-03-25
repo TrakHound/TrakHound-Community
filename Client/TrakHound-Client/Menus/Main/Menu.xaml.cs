@@ -120,7 +120,7 @@ namespace TrakHound_Client.Menus.Main
             MenuItems.Add(bt);
         }
 
-        void DeviceManager_Clicked()
+        void DeviceManager_Clicked(object obj)
         {
             Shown = false;
             if (mw != null) mw.DeviceManager_DeviceList_Open();
@@ -143,7 +143,7 @@ namespace TrakHound_Client.Menus.Main
             MenuItems.Add(bt);
         }
 
-        void Options_Clicked()
+        void Options_Clicked(object obj)
         {
             Shown = false;
             //if (mw != null) mw.Options_Open();
@@ -166,7 +166,7 @@ namespace TrakHound_Client.Menus.Main
             MenuItems.Add(bt);
         }
 
-        void Plugins_Clicked()
+        void Plugins_Clicked(object obj)
         {
             Shown = false;
             if (mw != null) mw.Plugins_Open();
@@ -189,7 +189,7 @@ namespace TrakHound_Client.Menus.Main
             MenuItems.Add(bt);
         }
 
-        void DeveloperConsole_Clicked()
+        void DeveloperConsole_Clicked(object obj)
         {
             if (mw != null) mw.developerConsole.Shown = !mw.developerConsole.Shown;
 
@@ -232,7 +232,7 @@ namespace TrakHound_Client.Menus.Main
             }
         }
 
-        void MyAccount_Clicked()
+        void MyAccount_Clicked(object obj)
         {
             Shown = false;
             if (mw != null) mw.AccountManager_Open();
@@ -267,7 +267,7 @@ namespace TrakHound_Client.Menus.Main
             if (MenuItems.OfType<TH_WPF.Button>().ToList().Find(x => CheckButtonText(x, mi)) == null) MenuItems.Add(bt);
         }
 
-        private void Fullscreen_Clicked()
+        private void Fullscreen_Clicked(object obj)
         {
             if (mw != null && mw.CurrentPage != null) mw.CurrentPage.FullScreen();
         }

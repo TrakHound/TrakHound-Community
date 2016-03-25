@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -18,7 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TrakHound_Client.Menus.Main
+namespace TrakHound_Client.Menus
 {
     /// <summary>
     /// Interaction logic for MenuItem.xaml
@@ -52,12 +52,14 @@ namespace TrakHound_Client.Menus.Main
             DependencyProperty.Register("Text", typeof(string), typeof(MenuItem), new PropertyMetadata(null));
 
 
-        public delegate void Clicked_Handler();
+        public object DataObject { get; set; }
+
+        public delegate void Clicked_Handler(object obj);
         public event Clicked_Handler Clicked;
 
         private void root_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Clicked != null) Clicked();
+            if (Clicked != null) Clicked(DataObject);
         }
 
     }

@@ -29,22 +29,38 @@ namespace TrakHound_Client
         {
             if (plugin.ShowInAppMenu)
             {
-                Menus.Plugins.PluginItem item = new Menus.Plugins.PluginItem();
-                item.plugin = plugin;
+                //Menus.Plugins.PluginItem item = new Menus.Plugins.PluginItem();
+                //item.plugin = plugin;
+                //item.Text = plugin.Title;
+                //item.Image = plugin.Image;
+                //item.Clicked += item_Clicked;
+
+                var item = new Menus.MenuItem();
                 item.Text = plugin.Title;
                 item.Image = plugin.Image;
-                item.Clicked += item_Clicked;
+                item.DataObject = plugin;
+                item.Clicked += Item_Clicked;
 
-                if (!PluginLauncher.Plugins.Contains(item)) PluginLauncher.Plugins.Add(item);
+                var bt = new TH_WPF.Button();
+                bt.ButtonContent = item;
+
+                if (!PluginLauncher.Plugins.Contains(bt)) PluginLauncher.Plugins.Add(bt);
             }
         }
 
-        void item_Clicked(Menus.Plugins.PluginItem item)
+        private void Item_Clicked(object obj)
         {
-            //if (item.plugin != null) AddPageAsTab(item.plugin, item.plugin.Title, item.plugin.Image);
-            if (item.plugin != null) AddTab(item.plugin);
+            if (obj != null) AddTab((IClientPlugin)obj);
             PluginLauncher.Shown = false;
         }
+
+
+        //void item_Clicked(Menus.Plugins.PluginItem item)
+        //{
+        //    //if (item.plugin != null) AddPageAsTab(item.plugin, item.plugin.Title, item.plugin.Image);
+        //    if (item.plugin != null) AddTab(item.plugin);
+        //    PluginLauncher.Shown = false;
+        //}
 
         void RemoveAppFromList(IClientPlugin plugin)
         {

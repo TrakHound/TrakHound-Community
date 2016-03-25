@@ -34,13 +34,18 @@
     <OutputPath>bin\Server\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Classes.cs" />
@@ -50,6 +55,12 @@
     <Compile Include="Components\Tools.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="Plugin\AgentConfiguration.cs" />
+    <Compile Include="Plugin\ConfigurationPage\Controls\MessageItem.xaml.cs">
+      <DependentUpon>MessageItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plugin\ConfigurationPage\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Plugin\Current.cs" />
     <Compile Include="Plugin\Plugin.cs" />
     <Compile Include="Plugin\Probe.cs" />
@@ -71,6 +82,7 @@
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\MTConnect_01.png" />
     <Resource Include="Resources\EventDataValues.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +112,25 @@
       <Name>TH_Plugins</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
+      <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
+      <Name>TH_Styles</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
+      <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
+      <Name>TH_WPF</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Plugin\ConfigurationPage\" />
+    <Page Include="Plugin\ConfigurationPage\Controls\MessageItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Plugin\ConfigurationPage\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
