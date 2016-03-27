@@ -61,7 +61,6 @@ namespace TH_DevicePage.Controls
         }
 
 
-
         #region "Images"
 
         public ImageSource Device_Image
@@ -123,11 +122,11 @@ namespace TH_DevicePage.Controls
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 180);
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 250);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 80);
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 100);
                             }
 
                             result.Freeze();
@@ -189,11 +188,11 @@ namespace TH_DevicePage.Controls
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 250);
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 300);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 250);
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 300);
                             }
 
                             result.Freeze();

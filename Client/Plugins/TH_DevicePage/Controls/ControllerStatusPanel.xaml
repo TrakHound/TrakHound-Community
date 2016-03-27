@@ -1,0 +1,139 @@
+﻿<UserControl x:Class="TH_DevicePage.Controls.ControllerStatusPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_DevicePage.Controls"
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+                          
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <StackPanel Orientation="Horizontal">
+
+        <!--Controller Variables-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="local:TextDisplay">
+                    <Setter Property="Width" Value="250"/>
+                    <Setter Property="Height" Value="40"/>
+                    <Setter Property="Margin" Value="10,5"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="10,5,5,5"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                </Style>
+            </Grid.Resources>
+
+            <!--Availability-->
+            <TextBlock Grid.Column="0" Grid.Row="0" Text="Availability"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="0" Text="AVAILABLE">
+                <local:TextDisplay.Style>
+                    <Style TargetType="local:TextDisplay" BasedOn="{StaticResource {x:Type local:TextDisplay}}">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="AVAILABLE">
+                                <Setter Property="Background" Value="#FF19B419"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="UNAVAILABLE">
+                                <Setter Property="Background" Value="Red"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </local:TextDisplay.Style>
+            </local:TextDisplay>
+
+            <!--Emergency Stop-->
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Emergency Stop"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="1" Text="TRIGGERED">
+                <local:TextDisplay.Style>
+                    <Style TargetType="local:TextDisplay" BasedOn="{StaticResource {x:Type local:TextDisplay}}">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="ARMED">
+                                <Setter Property="Background" Value="#FF19B419"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="TRIGGERED">
+                                <Setter Property="Background" Value="Red"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </local:TextDisplay.Style>
+            </local:TextDisplay>
+
+            <!--Controller Mode-->
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Controller Mode"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="2" Text="AUTOMATIC">
+                <local:TextDisplay.Style>
+                    <Style TargetType="local:TextDisplay" BasedOn="{StaticResource {x:Type local:TextDisplay}}">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="AUTOMATIC">
+                                <Setter Property="Background" Value="#FF19B419"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </local:TextDisplay.Style>
+            </local:TextDisplay>
+
+            <!--Execution Mode-->
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Execution Mode"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="3" Text="STOPPED">
+                <local:TextDisplay.Style>
+                    <Style TargetType="local:TextDisplay" BasedOn="{StaticResource {x:Type local:TextDisplay}}">
+                        <Setter Property="Foreground" Value="White"/>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="ACTIVE">
+                                <Setter Property="Background" Value="#FF19B419"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </local:TextDisplay.Style>
+            </local:TextDisplay>
+
+            <!--Program Name-->
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="Program Name"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="4" Text="TEST01.NC"/>
+
+        </Grid>
+
+        <!--Overrides-->
+        <Grid Margin="5">
+
+            <StackPanel VerticalAlignment="Top">
+                <StackPanel.Resources>
+                    <Style TargetType="local:OverrideStatus">
+                        <Setter Property="Margin" Value="5"/>
+                    </Style>
+                </StackPanel.Resources>
+
+                <local:OverrideStatus Title="Feedrate Override"/>
+
+                <local:OverrideStatus Title="Rapid Override"/>
+
+                <local:OverrideStatus Title="Spindle Override"/>
+
+            </StackPanel>
+                       
+        </Grid>
+        
+    </StackPanel>
+
+</UserControl>

@@ -24,13 +24,13 @@ namespace TH_WPF.LevelIndicator
         public Indicator()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
         public Indicator(int totalLevelCount)
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
 
             TotalLevelCount = totalLevelCount;
         }
@@ -71,7 +71,7 @@ namespace TH_WPF.LevelIndicator
         }
 
         public static readonly DependencyProperty ActiveLevelBrushProperty =
-            DependencyProperty.Register("ActiveLevelBrush", typeof(Brush), typeof(Indicator), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+            DependencyProperty.Register("ActiveLevelBrush", typeof(Brush), typeof(Indicator), new PropertyMetadata(new SolidColorBrush(Colors.Black), new PropertyChangedCallback(LevelBrushFormatPropertyChanged)));
 
 
         public Brush InactiveLevelBrush
@@ -81,8 +81,14 @@ namespace TH_WPF.LevelIndicator
         }
 
         public static readonly DependencyProperty InactiveLevelBrushProperty =
-            DependencyProperty.Register("InactiveLevelBrush", typeof(Brush), typeof(Indicator), new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
-      
+            DependencyProperty.Register("InactiveLevelBrush", typeof(Brush), typeof(Indicator), new PropertyMetadata(new SolidColorBrush(Colors.Gray), new PropertyChangedCallback(LevelBrushFormatPropertyChanged)));
+
+
+        private static void LevelBrushFormatPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+        {
+            var o = (Indicator)dependencyObject;
+            o.SetActiveLevels(o.ActiveLevelCount);
+        }
 
 
         ObservableCollection<Segment> segments;

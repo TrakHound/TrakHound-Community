@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace TH_WPF
 {
@@ -93,7 +94,15 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(double), typeof(MeterDisplay), new PropertyMetadata(100d));
+            DependencyProperty.Register("Maximum", typeof(double), typeof(MeterDisplay), new PropertyMetadata(100d, new PropertyChangedCallback(MaximumPropertyChanged)));
+
+        private static void MaximumPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+        {
+            double max = (double)eventArgs.NewValue;
+
+            var o = (MeterDisplay)dependencyObject;
+            o.ProcessValue(o.Value);
+        }
 
 
         public string ValueFormat
@@ -103,8 +112,15 @@ namespace TH_WPF
         }
 
         public static readonly DependencyProperty ValueFormatProperty =
-            DependencyProperty.Register("ValueFormat", typeof(string), typeof(MeterDisplay), new PropertyMetadata(null));
+            DependencyProperty.Register("ValueFormat", typeof(string), typeof(MeterDisplay), new PropertyMetadata(null, new PropertyChangedCallback(ValueFormatPropertyChanged)));
 
+        private static void ValueFormatPropertyChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs eventArgs)
+        {
+            string valueFormat = (string)eventArgs.NewValue;
+
+            var o = (MeterDisplay)dependencyObject;
+            o.ValueText = o.Value.ToString(valueFormat);
+        }
 
         public string ValueText
         {
@@ -114,6 +130,37 @@ namespace TH_WPF
 
         public static readonly DependencyProperty ValueTextProperty =
             DependencyProperty.Register("ValueText", typeof(string), typeof(MeterDisplay), new PropertyMetadata(null));
+
+
+        public Brush ActiveLevelBrush
+        {
+            get { return (Brush)GetValue(ActiveLevelBrushProperty); }
+            set { SetValue(ActiveLevelBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty ActiveLevelBrushProperty =
+            DependencyProperty.Register("ActiveLevelBrush", typeof(Brush), typeof(MeterDisplay), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+
+
+        public Brush InactiveLevelBrush
+        {
+            get { return (Brush)GetValue(InactiveLevelBrushProperty); }
+            set { SetValue(InactiveLevelBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty InactiveLevelBrushProperty =
+            DependencyProperty.Register("InactiveLevelBrush", typeof(Brush), typeof(MeterDisplay), new PropertyMetadata(new SolidColorBrush(Colors.Gray)));
+
+
+
+        public double IndicatorWidth
+        {
+            get { return (double)GetValue(IndicatorWidthProperty); }
+            set { SetValue(IndicatorWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty IndicatorWidthProperty =
+            DependencyProperty.Register("IndicatorWidth", typeof(double), typeof(MeterDisplay), new PropertyMetadata(75d));
 
 
     }

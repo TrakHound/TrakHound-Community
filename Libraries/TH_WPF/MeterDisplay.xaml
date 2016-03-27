@@ -15,9 +15,9 @@
             <ColumnDefinition Width="85"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding ValueText}" Foreground="{StaticResource Foreground_Normal}" FontSize="{Binding FontSize}" FontFamily="/TH_WPF;component/Fonts/#DS-Digital" Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding ValueText}" Foreground="{Binding Foreground}" FontSize="{Binding FontSize}" FontFamily="/TH_WPF;component/Fonts/#DS-Digital" Margin="10,0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <levelindicator:Indicator x:Name="indicator" Grid.Column="1" Width="75" Margin="5" ActiveLevelBrush="{StaticResource Accent_Normal}" InactiveLevelBrush="{StaticResource Accent_Hover}"/>
+        <levelindicator:Indicator x:Name="indicator" Grid.Column="1" Width="{Binding IndicatorWidth}" Margin="5" ActiveLevelBrush="{Binding ActiveLevelBrush}" InactiveLevelBrush="{Binding InactiveLevelBrush}"/>
 
     </Grid>
 

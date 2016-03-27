@@ -121,4 +121,13 @@
   <data name="About_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\About_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Chart_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Chart_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Generate_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Generate_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Warning_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Warning_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

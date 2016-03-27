@@ -91,7 +91,13 @@ namespace TH_WPF.Histogram
         }
 
         public static readonly DependencyProperty MaxBarWidthProperty =
-            DependencyProperty.Register("MaxBarWidth", typeof(double), typeof(DataBar), new PropertyMetadata(DataBar.DEFAULT_BAR_WIDTH));
+            DependencyProperty.Register("MaxBarWidth", typeof(double), typeof(Histogram), new PropertyMetadata(DataBar.DEFAULT_BAR_WIDTH, new PropertyChangedCallback(BarWidthPropertyChanged)));
+
+        private static void BarWidthPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var h = obj as Histogram;
+            if (h != null) h.SetDataBarWidths();
+        }
 
     }
 

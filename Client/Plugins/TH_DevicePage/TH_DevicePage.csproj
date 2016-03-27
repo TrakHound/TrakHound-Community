@@ -50,11 +50,43 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\AxisStatusPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CategoryPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ControllerStatusPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\DescriptionPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\OeeStatusPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OeeTimeline.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OverrideStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\PathStatusPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ProductionStatusPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SpindleStatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -78,11 +110,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Controls\AxisStatusPanel.xaml.cs">
+      <DependentUpon>AxisStatusPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CategoryPanel.xaml.cs">
+      <DependentUpon>CategoryPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ControllerStatusPanel.xaml.cs">
+      <DependentUpon>ControllerStatusPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\DescriptionPanel.xaml.cs">
       <DependentUpon>DescriptionPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OeeStatusPanel.xaml.cs">
+      <DependentUpon>OeeStatusPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OeeTimeline.xaml.cs">
+      <DependentUpon>OeeTimeline.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\OverrideStatus.xaml.cs">
+      <DependentUpon>OverrideStatus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PathStatusPanel.xaml.cs">
       <DependentUpon>PathStatusPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProductionStatusPanel.xaml.cs">
+      <DependentUpon>ProductionStatusPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpindleStatus.xaml.cs">
+      <DependentUpon>SpindleStatus.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SystemStatusPanel.xaml.cs">
       <DependentUpon>SystemStatusPanel.xaml</DependentUpon>
@@ -156,6 +212,15 @@
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Chart_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Generate_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

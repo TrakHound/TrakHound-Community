@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="TH_DevicePage.Controls.ProductionStatusPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_DevicePage.Controls"
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <StackPanel>
+        <StackPanel.Resources>
+            <Style TargetType="th_wpf:TimeProgress">
+                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                <Setter Property="BarBrush" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                <Setter Property="BarBackgroundBrush" Value="{StaticResource Shade_Light}"/>
+                <Setter Property="BarHeight" Value="15"/>
+            </Style>
+        </StackPanel.Resources>
+
+        <th_wpf:TimeProgress Text="Full Production" Value=".6" Maximum="1"/>
+
+        <th_wpf:TimeProgress Text="Limited Production" Value=".1" Maximum="1"/>
+
+        <th_wpf:TimeProgress Text="Idle" Value=".25" Maximum="1"/>
+
+        <th_wpf:TimeProgress Text="Alert" Value=".05" Maximum="1"/>
+
+    </StackPanel>
+
+</UserControl>

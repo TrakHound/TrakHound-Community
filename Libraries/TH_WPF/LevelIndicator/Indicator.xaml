@@ -14,17 +14,21 @@
              d:DesignWidth="300"
              >
 
-    <ItemsControl ItemsSource="{Binding Segments}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.Resources>
-            <Style TargetType="local:Segment">
-                <Setter Property="VerticalAlignment" Value="Bottom"/>
-            </Style>
-        </ItemsControl.Resources>
-    </ItemsControl>
+    <Grid x:Name="root">
+
+        <ItemsControl ItemsSource="{Binding Segments}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Resources>
+                <Style TargetType="local:Segment">
+                    <Setter Property="VerticalAlignment" Value="Bottom"/>
+                </Style>
+            </ItemsControl.Resources>
+        </ItemsControl>
+
+    </Grid>
 
 </UserControl>

@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="TH_DevicePage.Controls.OeeTimeline"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_DevicePage.Controls"
+             
+             xmlns:histogram="clr-namespace:TH_WPF.Histogram;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Border x:Name="root">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="#33ffffff"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="2"/>
+            </Style>
+        </Border.Style>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!--Title-->
+            <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="8pt" Margin="10,5"/>
+
+            <!--Separator-->
+            <Rectangle Grid.Row="1" Fill="#33ffffff" Height="1"/>
+
+            <histogram:Histogram x:Name="oee_timeline" Grid.Row="2" Margin="10" MaxBarWidth="{Binding MaxBarWidth}" Foreground="{StaticResource Foreground_Opposite_Normal}" BorderBrush="{StaticResource Shade_Light}">
+                <histogram:Histogram.Resources>
+                    <Style TargetType="histogram:DataBar">
+                        <Setter Property="Orientation" Value="Vertical"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+
+                        <Setter Property="Maximum" Value="100"/>
+                        <Setter Property="Width" Value="{Binding BarWidth, RelativeSource={RelativeSource Self}}"/>
+                        <Setter Property="Margin" Value="2,0"/>
+                        
+
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="BorderBrush" Value="#00000000"/>
+                        <Setter Property="Background" Value="#00000000"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="ToolTipService.ShowDuration" Value="10000"/>
+                        <Setter Property="ToolTipService.BetweenShowDelay" Value="3000"/>
+                        <Setter Property="ToolTipService.InitialShowDelay" Value="1000"/>
+
+                        <Setter Property="ToolTip" Value="{Binding ToolTipData}"/>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#33ffffff"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Background" Value="#33ffffff"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </histogram:Histogram.Resources>
+                <histogram:Histogram.DataBars>
+                    <histogram:DataBar Value="50"/>
+                    <histogram:DataBar Value="80"/>
+                    <histogram:DataBar Value="75"/>
+                    <histogram:DataBar Value="25"/>
+                </histogram:Histogram.DataBars>
+            </histogram:Histogram>
+
+        </Grid>
+
+    </Border>
+
+</UserControl>
