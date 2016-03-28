@@ -10,8 +10,54 @@
              d:DesignWidth="200">
     
     <Grid x:Name="root">
-          
-        <th_wpf:Histogram x:Name="histogram" Margin="5" Height="100"/>
+
+        <th_wpf:Histogram x:Name="histogram" Margin="5" Height="100">
+            <th_wpf:Histogram.Style>
+                <Style TargetType="th_wpf:Histogram">
+                    <Setter Property="MaxBarWidth" Value="{Binding MaxBarWidth}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                    <Setter Property="Maximum" Value="1"/>
+                    <Setter Property="Minimum" Value="0"/>
+                    <Setter Property="MajorStep" Value="0.5"/>
+                    <Setter Property="ValueFormat" Value="P0"/>
+                </Style>
+            </th_wpf:Histogram.Style>
+            <th_wpf:Histogram.Resources>
+                <Style TargetType="th_wpf:Label">
+                    <Setter Property="Foreground" Value="{Binding Foreground_Normal}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                </Style>
+                <Style TargetType="th_wpf:DataBar">
+                    <Setter Property="Orientation" Value="Vertical"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+
+                    <Setter Property="Maximum" Value="100"/>
+                    <Setter Property="Width" Value="{Binding BarWidth, RelativeSource={RelativeSource Self}}"/>
+                    <Setter Property="Margin" Value="2,0"/>
+
+
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="BorderBrush" Value="#00000000"/>
+                    <Setter Property="Background" Value="#00000000"/>
+                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                    <Setter Property="ToolTipService.ShowDuration" Value="10000"/>
+                    <Setter Property="ToolTipService.BetweenShowDelay" Value="3000"/>
+                    <Setter Property="ToolTipService.InitialShowDelay" Value="1000"/>
+
+                    <Setter Property="ToolTip" Value="{Binding ToolTipData}"/>
+
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="true">
+                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </th_wpf:Histogram.Resources>
+        </th_wpf:Histogram>
         
     </Grid>
     

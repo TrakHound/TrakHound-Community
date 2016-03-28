@@ -1,4 +1,6 @@
 ﻿using System;
+
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +24,29 @@ namespace TH_DevicePage.Controls
         public ProductionStatusPanel()
         {
             InitializeComponent();
+            root.DataContext = this;
+
+            LoadChartData();
         }
+
+        private ObservableCollection<KeyValuePair<string, int>> _chartData;
+        public ObservableCollection<KeyValuePair<string, int>> ChartData
+        {
+            get
+            {
+                if (_chartData == null) _chartData = new ObservableCollection<KeyValuePair<string, int>>();
+                return _chartData;
+            }
+            set { _chartData = value; }
+        }
+
+        void LoadChartData()
+        {
+            ChartData.Add(new KeyValuePair<string, int>("Full Production", 60));
+            ChartData.Add(new KeyValuePair<string, int>("Limited Production", 10));
+            ChartData.Add(new KeyValuePair<string, int>("Idle", 25));
+            ChartData.Add(new KeyValuePair<string, int>("Alert", 5));
+        }
+
     }
 }

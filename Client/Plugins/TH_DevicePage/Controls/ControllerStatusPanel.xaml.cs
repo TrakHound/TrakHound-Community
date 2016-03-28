@@ -22,6 +22,8 @@ namespace TH_DevicePage.Controls
         public ControllerStatusPanel()
         {
             InitializeComponent();
+            root.DataContext = this;
         }
+
     }
 }

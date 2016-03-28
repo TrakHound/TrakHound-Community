@@ -34,7 +34,6 @@ namespace TH_DeviceCompare
 
                 SortDataItems();
                 LoadHeaderView();
-                SortDeviceDisplays();
             }
 
             if (e.OldItems != null)
@@ -82,7 +81,6 @@ namespace TH_DeviceCompare
 
                     SortDataItems();
                     LoadHeaderView();
-                    SortDeviceDisplays();
                 }
             }
         }
@@ -132,6 +130,7 @@ namespace TH_DeviceCompare
 
             SortDataItems();
             LoadHeaderView();
+            SortDeviceDisplays();
         }
 
         private void SortDeviceDisplays()

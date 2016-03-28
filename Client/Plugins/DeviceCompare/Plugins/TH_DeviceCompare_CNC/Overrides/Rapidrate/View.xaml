@@ -11,7 +11,19 @@
 
     <Grid x:Name="root">
 
-        <th_wpf:MeterDisplay Value="{Binding Value}" FontSize="24pt" Maximum="1" ValueFormat="P1" Width="200"/>
+        <th_wpf:MeterDisplay Value="{Binding Value}" >
+            <th_wpf:MeterDisplay.Style>
+                <Style TargetType="th_wpf:MeterDisplay">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
+                    <Setter Property="ActiveLevelBrush" Value="{StaticResource Accent_Normal}"/>
+                    <Setter Property="InactiveLevelBrush" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="FontSize" Value="24pt"/>
+                    <Setter Property="Maximum" Value="1"/>
+                    <Setter Property="ValueFormat" Value="P1"/>
+                    <Setter Property="Width" Value="200"/>
+                </Style>
+            </th_wpf:MeterDisplay.Style>
+        </th_wpf:MeterDisplay>
 
     </Grid>
     

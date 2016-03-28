@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,14 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Test
+namespace TH_DevicePage.Controls
 {
     /// <summary>
-    /// Interaction logic for UC.xaml
+    /// Interaction logic for ProgramStatusPanel.xaml
     /// </summary>
-    public partial class UC : UserControl
+    public partial class ProgramStatusPanel : UserControl
     {
-        public UC()
+        public ProgramStatusPanel()
         {
             InitializeComponent();
         }

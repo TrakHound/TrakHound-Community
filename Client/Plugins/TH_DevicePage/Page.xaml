@@ -21,20 +21,34 @@
         
         <!--Navbar-->
         <StackPanel Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="Width" Value="30"/>
+                    <Setter Property="Margin" Value="2,0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#33ffffff"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
 
-            <th_wpf:Button Text="Edit Device" />
+            <th_wpf:Button ToolTip="Edit Device" Image="Resources/Edit_02.png" />
 
-            <th_wpf:Button Text="View Table" />
+            <th_wpf:Button ToolTip="View Table" Image="Resources/Table_01.png" />
 
-            <Rectangle Fill="{StaticResource Shade_Light}" Width="1"/>
+            <Rectangle Fill="{StaticResource Shade_Light}" Width="1" Margin="5,2"/>
 
-            <th_wpf:Button Text="Description" />
+            <th_wpf:Button ToolTip="View Device Description" Image="Resources/About_01.png" />
 
-            <th_wpf:Button Text="Controller" />
+            <th_wpf:Button ToolTip="View OEE Status" Image="Resources/Chart_01.png" />
 
-            <th_wpf:Button Text="Production" />
+            <th_wpf:Button ToolTip="View Production Status" Image="Resources/Generate_01.png" />
 
-            <th_wpf:Button Text="System" />
+            <th_wpf:Button ToolTip="View Controller Status" Image="Resources/Warning_01.png" />
 
         </StackPanel>
 
@@ -50,16 +64,7 @@
 
                     <!--Device Description-->
                     <controls:CategoryPanel Title="Device Description" Image="/TH_DevicePage;component/Resources/About_01.png">
-                        <controls:CategoryPanel.PanelContent>
-                            <controls:DescriptionPanel Configuration="{Binding Configuration}" DataContext="{Binding DataContext}"/>
-                        </controls:CategoryPanel.PanelContent>
-                    </controls:CategoryPanel>
-
-                    <!--Controller Status-->
-                    <controls:CategoryPanel Grid.Column="1" Title="Controller Status" Image="/TH_DevicePage;component/Resources/Warning_01.png">
-                        <controls:CategoryPanel.PanelContent>
-                            <controls:ControllerStatusPanel VerticalAlignment="Center"/>
-                        </controls:CategoryPanel.PanelContent>
+                        <controls:DescriptionPanel Configuration="{Binding Configuration}" DataContext="{Binding DataContext}"/>
                     </controls:CategoryPanel>
 
                 </Grid>
@@ -72,17 +77,13 @@
 
                     <!--OEE-->
                     <controls:CategoryPanel x:Name="oeeStatus" Title="OEE (Overall Equipment Effectiveness)" Image="/TH_DevicePage;component/Resources/Chart_01.png">
-                        <controls:CategoryPanel.PanelContent>
-                            <controls:OeeStatusPanel />
-                        </controls:CategoryPanel.PanelContent>
+                        <controls:OeeStatusPanel />
                     </controls:CategoryPanel>
                     
 
                     <!--Production Status-->
                     <controls:CategoryPanel Grid.Column="1" Title="Production Status" Image="/TH_DevicePage;component/Resources/Generate_01.png">
-                        <controls:CategoryPanel.PanelContent>
-                            <controls:ProductionStatusPanel />
-                        </controls:CategoryPanel.PanelContent>
+                        <controls:ProductionStatusPanel />
                     </controls:CategoryPanel>
 
 
@@ -91,27 +92,33 @@
                 <WrapPanel Orientation="Horizontal">
 
                     <!--Spindle Status-->
-                    <controls:CategoryPanel Title="Spindle Status" >
-                        <controls:CategoryPanel.PanelContent>
-                            <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <controls:CategoryPanel Title="Spindle Status" Image="/TH_DevicePage;component/Resources/Spindle_01.png">
+                        <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-                                <controls:SpindleStatus />
+                            <controls:SpindleStatus />
 
-                            </WrapPanel>
-                        </controls:CategoryPanel.PanelContent>
+                        </WrapPanel>
+                    </controls:CategoryPanel>
+
+                    <!--Controller Status-->
+                    <controls:CategoryPanel Grid.Column="1" Title="Controller Status" Image="/TH_DevicePage;component/Resources/Warning_01.png">
+                        <controls:ControllerStatusPanel VerticalAlignment="Center"/>
+                    </controls:CategoryPanel>
+
+                    <!--Program Status-->
+                    <controls:CategoryPanel Grid.Column="1" Title="Program Status">
+                        <controls:ProgramStatusPanel VerticalAlignment="Top"/>
                     </controls:CategoryPanel>
 
                     <!--Path Status-->
                     <controls:CategoryPanel Title="Path Status" >
-                        <controls:CategoryPanel.PanelContent>
-                            <WrapPanel Orientation="Horizontal">
+                        <WrapPanel Orientation="Horizontal">
 
-                                <controls:PathStatusPanel />
+                            <controls:PathStatusPanel />
 
-                                <controls:PathStatusPanel />
+                            <controls:PathStatusPanel />
 
-                            </WrapPanel>
-                        </controls:CategoryPanel.PanelContent>
+                        </WrapPanel>
                     </controls:CategoryPanel>
 
                 </WrapPanel>
@@ -119,9 +126,7 @@
                
                 <!--System Status-->
                 <controls:CategoryPanel Title="System Status" >
-                    <controls:CategoryPanel.PanelContent>
-                        <controls:SystemStatusPanel />
-                    </controls:CategoryPanel.PanelContent>
+                    <controls:SystemStatusPanel />
                 </controls:CategoryPanel>
 
             </StackPanel>

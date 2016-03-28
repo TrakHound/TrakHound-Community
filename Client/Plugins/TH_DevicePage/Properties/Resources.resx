@@ -121,11 +121,38 @@
   <data name="About_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\About_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Auto_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Auto_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BlockSkip_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BlockSkip_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Chart_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Chart_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Edit_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Edit_02.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Generate_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Generate_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MLK_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\MLK_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Off_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Off_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="On_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\On_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleBlock_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleBlock_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Spindle_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Spindle_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Table_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Table_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Warning_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Warning_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

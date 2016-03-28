@@ -32,8 +32,23 @@
             <!--Separator-->
             <Rectangle Grid.Row="1" Fill="#33ffffff" Height="1"/>
 
-            <histogram:Histogram x:Name="oee_timeline" Grid.Row="2" Margin="10" MaxBarWidth="{Binding MaxBarWidth}" Foreground="{StaticResource Foreground_Opposite_Normal}" BorderBrush="{StaticResource Shade_Light}">
+            <histogram:Histogram x:Name="oee_timeline" Grid.Row="2" Margin="10" >
+                <histogram:Histogram.Style>
+                    <Style TargetType="histogram:Histogram">
+                        <Setter Property="MaxBarWidth" Value="{Binding MaxBarWidth}"/>
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Light}"/>
+                        <Setter Property="Maximum" Value="1"/>
+                        <Setter Property="Minimum" Value="0"/>
+                        <Setter Property="MajorStep" Value="0.25"/>
+                        <Setter Property="ValueFormat" Value="P0"/>
+                    </Style>
+                </histogram:Histogram.Style>
                 <histogram:Histogram.Resources>
+                    <Style TargetType="histogram:Label">
+                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource Shade_Light}"/>
+                    </Style>
                     <Style TargetType="histogram:DataBar">
                         <Setter Property="Orientation" Value="Vertical"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>

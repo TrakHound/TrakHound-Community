@@ -46,14 +46,37 @@ namespace TH_DevicePage.Controls
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(CategoryPanel), new PropertyMetadata(null));
 
 
-        public object PanelContent
+
+        public object Content
         {
-            get { return (object)GetValue(PanelContentProperty); }
-            set { SetValue(PanelContentProperty, value); }
+            get { return (object)GetValue(ContentProperty); }
+            set { SetValue(ContentProperty, value); }
         }
 
-        public static readonly DependencyProperty PanelContentProperty =
-            DependencyProperty.Register("PanelContent", typeof(object), typeof(CategoryPanel), new PropertyMetadata(null));
+        public static readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register("Content", typeof(object), typeof(CategoryPanel), new PropertyMetadata(null));
+
+
+
+        public Brush Background
+        {
+            get { return (Brush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background", typeof(Brush), typeof(CategoryPanel), new PropertyMetadata(new SolidColorBrush(TH_WPF.Color_Functions.GetColorFromString("#33000000"))));
+
+
+
+        //public object PanelContent
+        //{
+        //    get { return (object)GetValue(PanelContentProperty); }
+        //    set { SetValue(PanelContentProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty PanelContentProperty =
+        //    DependencyProperty.Register("PanelContent", typeof(object), typeof(CategoryPanel), new PropertyMetadata(null));
 
 
     }

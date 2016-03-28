@@ -45,6 +45,10 @@ namespace TH_DeviceCompare
                 var column = new Column(this);
                 var overlay = new Overlay(config);
 
+                header.Index = config.Index;
+                column.Index = config.Index;
+                overlay.Index = config.Index;
+
                 // Setup Group of Components
                 Group = new GroupInfo();
                 Group.Header = header;

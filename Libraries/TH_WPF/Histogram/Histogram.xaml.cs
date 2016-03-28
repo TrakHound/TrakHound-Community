@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,20 +15,34 @@ namespace TH_WPF.Histogram
         public Histogram()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
-        ObservableCollection<DataBar> databars;
+        ObservableCollection<DataBar> _dataBars;
         public ObservableCollection<DataBar> DataBars
         {
             get
             {
-                if (databars == null) databars = new ObservableCollection<DataBar>();
-                return databars;
+                if (_dataBars == null) _dataBars = new ObservableCollection<DataBar>();
+                return _dataBars;
             }
             set
             {
-                databars = value;
+                _dataBars = value;
+            }
+        }
+
+        ObservableCollection<Label> _labels;
+        public ObservableCollection<Label> Labels
+        {
+            get
+            {
+                if (_labels == null) _labels = new ObservableCollection<Label>();
+                return _labels;
+            }
+            set
+            {
+                _labels = value;
             }
         }
 
@@ -36,6 +52,55 @@ namespace TH_WPF.Histogram
 
             SetDataBarWidths();
         }
+
+        public void Refresh()
+        {
+            SetDataBarWidths();
+
+            SetLabels();
+        }
+
+        void SetLabels()
+        {
+            Labels.Clear();
+
+            double min = Minimum;
+            
+            var labels = new List<Label>();
+
+            for (var x = min; x <= Maximum; x = x + MajorStep)
+            {
+                var txt = new Label();
+                txt.Value = x;
+                txt.Text = x.ToString(ValueFormat);
+
+                //if (x == min) txt.VerticalAlignment = VerticalAlignment.Bottom;
+                //else if (x == Maximum) txt.VerticalAlignment = VerticalAlignment.Top;
+
+                labels.Add(txt);
+            }
+
+            // Get padding for above and below label
+            // Subtract Text Height (12) from ActualHeight
+            double controlHeight = ActualHeight - (labels.Count * 12);
+            double count = labels.Count * 2;
+            if (labels.Count > 2) count = (labels.Count - 1) * 2;
+            double padding = controlHeight / count;
+
+            labels = labels.OrderByDescending(x => x.Value).ToList();
+
+            for (var x = 0; x <= labels.Count - 1; x++)
+            {
+                labels[x].TopPadding = padding;
+                labels[x].BottomPadding = padding;
+
+                if (x == 0) labels[x].TopPadding = 0;
+                else if (x == labels.Count - 1) labels[x].BottomPadding = 0;
+
+                Labels.Add(labels[x]);
+            } 
+        }
+
 
         void SetDataBarWidths()
         {
@@ -59,6 +124,19 @@ namespace TH_WPF.Histogram
         }
 
 
+        private static void PropertyValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var h = obj as Histogram;
+            if (h != null) h.Refresh();
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            Refresh();
+        }
+
+
+
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
@@ -79,10 +157,7 @@ namespace TH_WPF.Histogram
             DependencyProperty.Register("Id", typeof(string), typeof(Histogram), new PropertyMetadata(null));
 
 
-        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            SetDataBarWidths();
-        }
+
 
         public double MaxBarWidth
         {
@@ -91,13 +166,47 @@ namespace TH_WPF.Histogram
         }
 
         public static readonly DependencyProperty MaxBarWidthProperty =
-            DependencyProperty.Register("MaxBarWidth", typeof(double), typeof(Histogram), new PropertyMetadata(DataBar.DEFAULT_BAR_WIDTH, new PropertyChangedCallback(BarWidthPropertyChanged)));
+            DependencyProperty.Register("MaxBarWidth", typeof(double), typeof(Histogram), new PropertyMetadata(DataBar.DEFAULT_BAR_WIDTH, new PropertyChangedCallback(PropertyValueChanged)));
 
-        private static void BarWidthPropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+
+        public double MajorStep
         {
-            var h = obj as Histogram;
-            if (h != null) h.SetDataBarWidths();
+            get { return (double)GetValue(MajorStepProperty); }
+            set { SetValue(MajorStepProperty, value); }
         }
+
+        public static readonly DependencyProperty MajorStepProperty =
+            DependencyProperty.Register("MajorStep", typeof(double), typeof(Histogram), new PropertyMetadata(.5d, new PropertyChangedCallback(PropertyValueChanged)));
+
+
+        public string ValueFormat
+        {
+            get { return (string)GetValue(ValueFormatProperty); }
+            set { SetValue(ValueFormatProperty, value); }
+        }
+
+        public static readonly DependencyProperty ValueFormatProperty =
+            DependencyProperty.Register("ValueFormat", typeof(string), typeof(Histogram), new PropertyMetadata("", new PropertyChangedCallback(PropertyValueChanged)));
+
+
+        public double Maximum
+        {
+            get { return (double)GetValue(MaximumProperty); }
+            set { SetValue(MaximumProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register("Maximum", typeof(double), typeof(Histogram), new PropertyMetadata(10d, new PropertyChangedCallback(PropertyValueChanged)));
+
+
+        public double Minimum
+        {
+            get { return (double)GetValue(MinimumProperty); }
+            set { SetValue(MinimumProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinimumProperty =
+            DependencyProperty.Register("Minimum", typeof(double), typeof(Histogram), new PropertyMetadata(0d, new PropertyChangedCallback(PropertyValueChanged)));
 
     }
 

@@ -3,12 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="200">
     
     <Grid x:Name="root">
-            
-        <ItemsControl ItemsSource="{Binding Times}" />
+
+        <ItemsControl ItemsSource="{Binding Times}" >
+            <ItemsControl.Resources>
+                <Style TargetType="th_wpf:TimeProgress">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="BarBrush" Value="{StaticResource Accent_Normal}"/>
+                    <Setter Property="BarBackgroundBrush" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="BarHeight" Value="10"/>
+                </Style>
+            </ItemsControl.Resources>
+        </ItemsControl>
         
     </Grid>
     

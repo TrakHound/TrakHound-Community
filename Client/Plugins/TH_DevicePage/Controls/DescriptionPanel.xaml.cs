@@ -126,7 +126,7 @@ namespace TH_DevicePage.Controls
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 100);
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 75);
                             }
 
                             result.Freeze();
@@ -188,11 +188,11 @@ namespace TH_DevicePage.Controls
                         {
                             if (result.PixelWidth > result.PixelHeight)
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 300);
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 150);
                             }
                             else
                             {
-                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 300);
+                                result = TH_WPF.Image_Functions.SetImageSize(result, 0, 150);
                             }
 
                             result.Freeze();
