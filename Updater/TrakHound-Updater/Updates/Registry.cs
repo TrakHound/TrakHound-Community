@@ -4,7 +4,6 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Microsoft.Win32;
-using System;
 
 namespace TrakHound_Updater
 {
@@ -60,7 +59,7 @@ namespace TrakHound_Updater
             return result;
         }
 
-        public static string[] GetKeyNames(string groupName)
+        public static string[] GetKeyNames(string groupName = null)
         {
             string[] result = null;
 
@@ -72,8 +71,8 @@ namespace TrakHound_Updater
                 // Open CURRENT_USER/Software/TrakHound Key
                 key = key.OpenSubKey(APP_KEY);
 
-                // Open CURRENT_USER/Software/TrakHound/Updates Key
-                key = key.OpenSubKey(groupName);
+                // Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                if (groupName != null) key = key.OpenSubKey(groupName);
 
                 result = key.GetSubKeyNames();
             }
