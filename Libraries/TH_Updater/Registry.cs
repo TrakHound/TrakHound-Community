@@ -18,105 +18,87 @@ namespace TH_Updater
         public const string APP_KEY = "TrakHound";
 
 
-        public static void SetKey(string groupName, string keyName, object keyValue)
+        public static void SetKey(string keyName, object keyValue, string groupName = null)
         {
             try
             {
                 // Open CURRENT_USER/Software Key
-                RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(ROOT_KEY, true);
+                RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
                 // Create/Open CURRENT_USER/Software/TrakHound Key
-                RegistryKey rootKey = key.CreateSubKey(APP_KEY);
+                key = key.CreateSubKey(APP_KEY);
 
-                // Create/Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.CreateSubKey(groupName);
-
-                // Create/Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                RegistryKey updateKey = updatesKey.CreateSubKey(keyName);
+                // Create/Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                if (groupName != null) key = key.CreateSubKey(groupName);
 
                 // Update value for [keyName] to [keyValue]
-                updateKey.SetValue(keyName, keyValue);
+                key.SetValue(keyName, keyValue);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("AutoUpdater_SetRegistryKey() : " + ex.Message);
-            }
+            catch { }
         }
 
-        public static string GetRegistryKey(string groupName, string keyName)
+        public static string GetKey(string keyName, string groupName = null)
         {
-            string Result = null;
+            string result = null;
 
             try
             {
                 // Open CURRENT_USER/Software Key
-                RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(ROOT_KEY, true);
+                RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
                 // Open CURRENT_USER/Software/TrakHound Key
-                RegistryKey rootKey = key.OpenSubKey(APP_KEY);
+                key = key.OpenSubKey(APP_KEY);
 
-                // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey(groupName);
-
-                // Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                RegistryKey updateKey = updatesKey.OpenSubKey(keyName);
+                // Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                if (groupName != null) key = key.OpenSubKey(groupName);
 
                 // Read value for [keyName] to [keyValue]
-                Result = updateKey.GetValue(keyName).ToString();
+                result = key.GetValue(keyName).ToString();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("AutoUpdater_GetRegistryKey() : " + ex.Message);
-            }
+            catch { }
 
-            return Result;
+            return result;
         }
 
-        public static string[] GetRegistryKeyNames(string groupName)
+        public static string[] GetKeyNames(string groupName)
         {
-            string[] Result = null;
+            string[] result = null;
 
             try
             {
                 // Open CURRENT_USER/Software Key
-                RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(ROOT_KEY, true);
+                RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
                 // Open CURRENT_USER/Software/TrakHound Key
-                RegistryKey rootKey = key.OpenSubKey(APP_KEY);
+                key = key.OpenSubKey(APP_KEY);
 
                 // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey(groupName);
+                key = key.OpenSubKey(groupName);
 
-                Result = updatesKey.GetSubKeyNames();
+                result = key.GetSubKeyNames();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("AutoUpdater_GetRegistryKeys() : " + ex.Message);
-            }
+            catch { }
 
-            return Result;
+            return result;
         }
 
-        public static void DeleteRegistryKey(string groupName, string keyName)
+        public static void DeleteValue(string keyName, string groupName = null)
         {
             try
             {
                 // Open CURRENT_USER/Software Key
-                RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(ROOT_KEY, true);
+                RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
                 // Open CURRENT_USER/Software/TrakHound Key
-                RegistryKey rootKey = key.OpenSubKey(APP_KEY, true);
+                key = key.OpenSubKey(APP_KEY, true);
 
-                // Open CURRENT_USER/Software/TrakHound/Updates Key
-                RegistryKey updatesKey = rootKey.OpenSubKey(groupName, true);
+                // Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                if (groupName != null) key = key.OpenSubKey(groupName, true);
 
-                // Delete CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                updatesKey.DeleteSubKey(keyName, true);
+                // Delete CURRENT_USER/Software/TrakHound/[groupName]/[keyName] Key
+                key.DeleteValue(keyName, true);
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("AutoUpdater_DeleteRegistryKey() : " + ex.Message);
-            }
+            catch { }
         }
 
     }

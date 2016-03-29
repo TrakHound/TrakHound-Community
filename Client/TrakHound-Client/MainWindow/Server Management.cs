@@ -1,9 +1,10 @@
-﻿using System;
+﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Windows;
-using System.ComponentModel;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using TH_Global.Functions;
 
@@ -55,13 +56,11 @@ namespace TrakHound_Client
             Dispatcher.BeginInvoke(new Action(ServerMonitor_GUI), PRIORITY_BACKGROUND, new object[] { });
         }
 
-        const string SERVER_SERVICE_NAME = "TrakHound Server";
-
         private void ServerMonitor_GUI()
         {
-            ServerStatus = Service_Functions.GetServiceStatus(SERVER_SERVICE_NAME);
-            ServerRunning = Service_Functions.IsServiceRunning(SERVER_SERVICE_NAME);
-            ServerInstalled = Service_Functions.IsServiceInstalled(SERVER_SERVICE_NAME);
+            ServerStatus = Service_Functions.GetServiceStatus(TH_Global.ApplicationNames.TRAKHOUND_SERVER_SEVICE_NAME);
+            ServerRunning = Service_Functions.IsServiceRunning(TH_Global.ApplicationNames.TRAKHOUND_SERVER_SEVICE_NAME);
+            ServerInstalled = Service_Functions.IsServiceInstalled(TH_Global.ApplicationNames.TRAKHOUND_SERVER_SEVICE_NAME);
         }
     }
 }

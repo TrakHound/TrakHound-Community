@@ -9,10 +9,11 @@ using System.IO;
 using System.Net;
 
 using TH_Global;
+using TH_Global.Functions;
 
 namespace TH_Updater
 {
-    static class Files
+    public static class Files
     {
 
         public static bool Download(string url, string path)
@@ -24,6 +25,7 @@ namespace TH_Updater
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.DownloadFile(url, path);
+                    Logger.Log("Download Complete");
                 }
 
                 result = true;
@@ -39,7 +41,7 @@ namespace TH_Updater
         
         public static string GetSetupFiles(string url)
         {
-            string setupPath = FileLocations.CreateTempPath();
+            string setupPath = CreateUpdatesPath() + ".exe";
 
             // Download Setup.exe (InstallShield) file
             if (Download(url, setupPath))
@@ -54,18 +56,35 @@ namespace TH_Updater
 
         private static string ExtractFiles(string path)
         {
-            string extractPath = FileLocations.CreateTempPath();
+            string extractPath = RunSetupExtract(path);
+            if (extractPath != null)
+            {
+                string filesPath = extractPath + "\\program files\\TrakHound\\TrakHound";
+
+                if (Directory.Exists(filesPath)) return filesPath;
+            }
+
+            return null;
+        }
+
+        private static string RunSetupExtract(string path)
+        {
+            string extractPath = CreateUpdatesPath();
 
             try
             {
+                Logger.Log("Extracting Setup Files...");
+
                 var info = new ProcessStartInfo();
                 info.FileName = path;
-                info.Arguments = "/a /s /v\"/qn TARGETDIR=\\" + extractPath + "\\\"";
+                info.Arguments = "/a /s /v\"/qn TARGETDIR=\\\"" + extractPath + "\\\"\"";
 
                 var process = new Process();
                 process.StartInfo = info;
                 process.Start();
                 process.WaitForExit();
+
+                Logger.Log("Setup Files Extracted Successfully");
 
                 return extractPath;
             }
@@ -75,6 +94,16 @@ namespace TH_Updater
             }
 
             return null;
+        }
+
+        public static string CreateUpdatesPath()
+        {
+            FileLocations.CreateUpdatesDirectory();
+
+            string filename = String_Functions.RandomString(20);
+
+            return FileLocations.Updates + "\\" + filename;
+
         }
 
     }

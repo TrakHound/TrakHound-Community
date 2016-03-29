@@ -26,5 +26,4 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Database.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Device_Server.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Plugins.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Updater.dll
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\ICSharpCode.SharpZipLib.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Updater.pdb

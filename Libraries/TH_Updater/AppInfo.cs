@@ -50,6 +50,7 @@ namespace TH_Updater
             string path = FileLocations.CreateTempPath();
 
             // Download File
+            Logger.Log("Downloading AppInfo File...");
             if (Files.Download(url, path))
             {
                 // Parse File as AppInfo class

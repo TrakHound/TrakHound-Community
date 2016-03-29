@@ -118,12 +118,12 @@
     <Compile Include="Controls\Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Options\Updates\Page.xaml.cs">
+    <None Include="Pages\Options\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Options\Updates\UpdateItem.xaml.cs">
+    </None>
+    <None Include="Pages\Options\Updates\UpdateItem.xaml.cs">
       <DependentUpon>UpdateItem.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Menus\Plugins\PluginItem.xaml.cs">
       <DependentUpon>PluginItem.xaml</DependentUpon>
     </Compile>
@@ -203,14 +203,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Options\Updates\Page.xaml">
+    <None Include="Pages\Options\Updates\Page.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Pages\Options\Updates\UpdateItem.xaml">
+    </None>
+    <None Include="Pages\Options\Updates\UpdateItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="Menus\Plugins\PluginItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -412,10 +412,6 @@
     <ProjectReference Include="..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Updater\TH_Updater.csproj">
-      <Project>{908a68da-2ba5-49b5-afc0-044e37d8d92a}</Project>
-      <Name>TH_Updater</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
       <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>

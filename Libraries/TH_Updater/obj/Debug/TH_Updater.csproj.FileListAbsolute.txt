@@ -1,7 +1,6 @@
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\bin\Debug\LICENSE.txt
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\bin\Debug\TH_Updater.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\bin\Debug\TH_Updater.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\bin\Debug\ICSharpCode.SharpZipLib.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Updater\bin\Debug\TH_Styles.dll
