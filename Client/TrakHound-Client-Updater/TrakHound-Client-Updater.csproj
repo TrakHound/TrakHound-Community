@@ -72,6 +72,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Apply Updates.cs" />
+    <Compile Include="AppStart.cs" />
+    <Compile Include="Check Updates.cs" />
+    <Compile Include="Extract Setup Files.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

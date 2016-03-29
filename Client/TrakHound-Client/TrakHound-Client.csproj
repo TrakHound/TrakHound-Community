@@ -102,6 +102,7 @@
     <Compile Include="MainWindow\Plugins.cs" />
     <Compile Include="MainWindow\Server Management.cs" />
     <Compile Include="MainWindow\SplashScreen.cs" />
+    <Compile Include="MainWindow\Updates.cs" />
     <Compile Include="MainWindow\Users.cs" />
     <Compile Include="MainWindow\WelcomeMessage.cs" />
     <Compile Include="MainWindow\Window.cs" />

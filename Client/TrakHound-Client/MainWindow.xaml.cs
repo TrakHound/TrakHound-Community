@@ -9,7 +9,6 @@ using System.Windows.Media.Animation;
 using Microsoft.Shell;
 
 using TH_Database;
-using TH_UserManagement.Management;
 
 namespace TrakHound_Client
 {
