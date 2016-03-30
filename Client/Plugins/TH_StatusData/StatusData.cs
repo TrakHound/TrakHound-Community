@@ -332,6 +332,11 @@ namespace TH_StatusData
                 EventData oeeData = GetOEE(config, shiftData);
                 // Send OEE Data
                 SendDataEvent(oeeData);
+
+                // Get Parts Data
+                EventData partsData = GetParts(config, shiftData);
+                // Send Parts Data
+                SendDataEvent(partsData);
             }
         }
 
@@ -509,6 +514,32 @@ namespace TH_StatusData
                     {
                         var data = new EventData();
                         data.id = "StatusData_OEE";
+                        data.data01 = config;
+                        data.data02 = dt;
+
+                        result = data;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        static EventData GetParts(Configuration config, ShiftData shiftData)
+        {
+            var result = new EventData();
+
+            if (shiftData.shiftId != null)
+            {
+                if (shiftData.shiftId.Contains("_"))
+                {
+                    string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_'));
+
+                    DataTable dt = Table.Get(config.Databases_Client, GetTableName(TableNames.Parts, config.DatabaseId), "WHERE SHIFT_ID LIKE '" + shiftQuery + "%'");
+                    if (dt != null)
+                    {
+                        var data = new EventData();
+                        data.id = "StatusData_Parts";
                         data.data01 = config;
                         data.data02 = dt;
 

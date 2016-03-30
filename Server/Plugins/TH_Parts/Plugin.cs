@@ -60,10 +60,12 @@ namespace TH_Parts
                             if (info != null) infos.Add(info);
                         }
 
-                        Database.AddRows(configuration, infos);
-
-                        SendPartInfos(infos);
-                    }     
+                        if (infos.Count > 0)
+                        {
+                            Database.AddRows(configuration, infos);
+                            SendPartInfos(infos);
+                        }
+                    }
                 }
             }
         }

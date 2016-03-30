@@ -25,9 +25,6 @@ namespace TH_DeviceCompare_CNC.Text.Part_Count
             root.DataContext = this;
         }
 
-        const string link = "Part Count";
-
-
         public string Value
         {
             get { return (string)GetValue(ValueProperty); }
@@ -48,7 +45,7 @@ namespace TH_DeviceCompare_CNC.Text.Part_Count
             if (data != null && data.data01 != null && data.data01.GetType() == typeof(Configuration))
             {
                 // Snapshot Table Data
-                if (data.id.ToLower() == "statusdata_snapshots")
+                if (data.id.ToLower() == "statusdata_parts")
                 {
                     this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.data02 });
                 }
@@ -56,14 +53,23 @@ namespace TH_DeviceCompare_CNC.Text.Part_Count
         }
 
 
-        void UpdateText(object snapshotData)
+        void UpdateText(object partsData)
         {
-            DataTable dt = snapshotData as DataTable;
-            if (dt != null)
+            DataTable dt = partsData as DataTable;
+            if (dt != null && dt.Columns.Contains("count"))
             {
-                string value = DataTable_Functions.GetTableValue(dt, "name", link, "value");
+                int count = 0;
+                
+                foreach (DataRow row in dt.Rows)
+                {
 
-                Value = value;
+                    string val = row["count"].ToString();
+
+                    int i = 0;
+                    if (int.TryParse(val, out i)) count += i;
+                }
+
+                Value = count.ToString();
             }
         }
 
