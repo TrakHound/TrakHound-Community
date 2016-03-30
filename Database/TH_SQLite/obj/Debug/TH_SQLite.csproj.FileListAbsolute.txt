@@ -24,6 +24,7 @@ F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\bin\Debug\TH_Styles.dll
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\bin\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\bin\Debug\TH_Styles.pdb
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\bin\Debug\TH_WPF.pdb
+C:\TrakHound\Plugins\Database\LICENSE.txt
 C:\TrakHound\Plugins\Database\TH_SQLite.dll.config
 C:\TrakHound\Plugins\Database\TH_SQLite.dll
 C:\TrakHound\Plugins\Database\TH_SQLite.pdb
@@ -37,4 +38,3 @@ F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\ConfigurationPage\But
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.g.resources
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.dll
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.pdb
-C:\TrakHound\Plugins\Database\LICENSE.txt

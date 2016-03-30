@@ -506,7 +506,9 @@ namespace TrakHound_Client
             {
                 if (!config.Enabled)
                 {
-                    // Remove TabItem
+                    // Remove TabHeader
+                    //TabHeaders.ToList().FindIndex(x => x.Page.PageContent)
+
                     //foreach (TH_TabItem ti in Pages_TABCONTROL.Items.OfType<TH_TabItem>().ToList())
                     //{
                     //    if (ti.Header != null)
@@ -536,6 +538,11 @@ namespace TrakHound_Client
                 }
             }
         }
+
+        //private static bool TestForTabHeaderPlugin(TabHeader tab, string pluginName)
+        //{
+
+        //}
 
         /// <summary>
         /// Create an Options page for the plugin and add it to the Options Manager

@@ -4,6 +4,9 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using Microsoft.Win32;
+using System;
+
+using TH_Global;
 
 namespace TrakHound_Updater
 {
@@ -21,62 +24,62 @@ namespace TrakHound_Updater
         {
             try
             {
-                // Open CURRENT_USER/Software Key
+                // Open LOCAL_MACHINE/Software Key
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
-                // Create/Open CURRENT_USER/Software/TrakHound Key
+                // Create/Open LOCAL_MACHINE/Software/TrakHound Key
                 key = key.CreateSubKey(APP_KEY);
 
-                // Create/Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                // Create/Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.CreateSubKey(groupName);
 
                 // Update value for [keyName] to [keyValue]
                 key.SetValue(keyName, keyValue);
             }
-            catch { }
+            catch(Exception ex) { Logger.Log("SetKey() :: Exception :: " + ex.Message); }
         }
 
-        public static string GetKey(string keyName, string groupName = null)
+        public static string GetValue(string keyName, string groupName = null)
         {
             string result = null;
 
             try
             {
-                // Open CURRENT_USER/Software Key
+                // Open LOCAL_MACHINE/Software Key
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
-                // Open CURRENT_USER/Software/TrakHound Key
+                // Open LOCAL_MACHINE/Software/TrakHound Key
                 key = key.OpenSubKey(APP_KEY);
 
-                // Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                // Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.OpenSubKey(groupName);
 
                 // Read value for [keyName] to [keyValue]
                 result = key.GetValue(keyName).ToString();
             }
-            catch { }
+            catch (Exception ex) { Logger.Log("GetValue() :: Exception :: keyName = " + keyName + " :: groupName = " + groupName + " :: " + ex.Message); }
 
             return result;
         }
 
-        public static string[] GetKeyNames(string groupName = null)
+        public static string[] GetValueNames(string groupName = null)
         {
             string[] result = null;
 
             try
             {
-                // Open CURRENT_USER/Software Key
+                // Open LOCAL_MACHINE/Software Key
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
-                // Open CURRENT_USER/Software/TrakHound Key
+                // Open LOCAL_MACHINE/Software/TrakHound Key
                 key = key.OpenSubKey(APP_KEY);
 
-                // Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                // Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.OpenSubKey(groupName);
 
-                result = key.GetSubKeyNames();
+                result = key.GetValueNames();
             }
-            catch { }
+            catch (Exception ex) { Logger.Log("GetValueNames() :: Exception :: " + ex.Message); }
 
             return result;
         }
@@ -85,19 +88,19 @@ namespace TrakHound_Updater
         {
             try
             {
-                // Open CURRENT_USER/Software Key
+                // Open LOCAL_MACHINE/Software Key
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
-                // Open CURRENT_USER/Software/TrakHound Key
+                // Open LOCAL_MACHINE/Software/TrakHound Key
                 key = key.OpenSubKey(APP_KEY, true);
 
-                // Open CURRENT_USER/Software/TrakHound/[groupName] Key
+                // Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.OpenSubKey(groupName, true);
 
-                // Delete CURRENT_USER/Software/TrakHound/[groupName]/[keyName] Key
+                // Delete LOCAL_MACHINE/Software/TrakHound/[groupName]/[keyName] Key
                 key.DeleteValue(keyName, true);
             }
-            catch { }
+            catch (Exception ex) { Logger.Log("DeleteValue() :: Exception :: " + ex.Message); }
         }
 
     }
