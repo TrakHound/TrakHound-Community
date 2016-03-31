@@ -53,15 +53,15 @@ namespace TH_ShiftTable
         {
             if (data != null)
             {
-                if (data.id.ToLower() == "generatedeventitems")
+                if (data.Id.ToLower() == "generatedeventitems")
                 {                          
-                    var genEventItems = (List<GeneratedEventItem>)data.data02;
+                    var genEventItems = (List<GeneratedEventItem>)data.Data02;
 
                     ProcessShifts(genEventItems);
                 }
-                else if (data.id.ToLower() == "mtconnect_current")
+                else if (data.Id.ToLower() == "mtconnect_current")
                 {
-                    Update_CurrentShiftInfo((TH_MTConnect.Streams.ReturnData)data.data02);
+                    Update_CurrentShiftInfo((TH_MTConnect.Streams.ReturnData)data.Data02);
                 }
             }
         }
@@ -119,9 +119,9 @@ namespace TH_ShiftTable
 
 
             var data = new EventData();
-            data.id = "ShiftTable_CurrentShiftInfo";
-            data.data01 = configuration;
-            data.data02 = shiftInfo;
+            data.Id = "ShiftTable_CurrentShiftInfo";
+            data.Data01 = configuration;
+            data.Data02 = shiftInfo;
             if (SendData != null) SendData(data);
         }
 
@@ -508,18 +508,18 @@ namespace TH_ShiftTable
         void SendShiftRowInfos(List<ShiftRowInfo> infos)
         {
             var data = new EventData();
-            data.id = "ShiftTable_ShiftRowInfos";
-            data.data01 = configuration;
-            data.data02 = infos;
+            data.Id = "ShiftTable_ShiftRowInfos";
+            data.Data01 = configuration;
+            data.Data02 = infos;
             if (SendData != null) SendData(data);
         }
 
         void SendGenEventShiftItems(List<GenEventShiftItem> items)
         {
             var data = new EventData();
-            data.id = "ShiftTable_GenEventShiftItems";
-            data.data01 = configuration;
-            data.data02 = items;
+            data.Id = "ShiftTable_GenEventShiftItems";
+            data.Data01 = configuration;
+            data.Data02 = items;
             if (SendData != null) SendData(data);
         }
 

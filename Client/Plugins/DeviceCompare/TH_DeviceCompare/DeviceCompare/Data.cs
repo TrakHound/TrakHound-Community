@@ -17,7 +17,7 @@ namespace TH_DeviceCompare
         {
             if (data != null)
             {
-                Configuration config = data.data01 as Configuration;
+                Configuration config = data.Data01 as Configuration;
                 if (config != null)
                 {
                     DeviceDisplay dd = DeviceDisplays.Find(x => x.UniqueId == config.UniqueId);
@@ -32,8 +32,8 @@ namespace TH_DeviceCompare
         void DeviceSelected(int index)
         {
             var data = new EventData();
-            data.id = "DeviceSelected";
-            data.data01 = Devices[index];
+            data.Id = "DeviceSelected";
+            data.Data01 = Devices[index];
             if (SendData != null) SendData(data);
         }
 

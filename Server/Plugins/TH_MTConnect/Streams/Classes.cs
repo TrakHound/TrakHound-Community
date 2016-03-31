@@ -55,7 +55,7 @@ namespace TH_MTConnect.Streams
         public ComponentStream(XmlNode ComponentStreamNode)
         {
             XML.AssignProperties(this, ComponentStreamNode);
-            FullAddress = XML.GetFullAddress(ComponentStreamNode);
+            FullAddress = Tools.GetFullAddress(ComponentStreamNode);
 
             DataItems = new DataItemCollection();
         }
@@ -107,18 +107,8 @@ namespace TH_MTConnect.Streams
         }
     }
 
-    public class Condition
+    public class DataItem
     {
-        public Condition() { }
-
-        public Condition(XmlNode ConditionNode)
-        {
-            XML.AssignProperties(this, ConditionNode);
-            FullAddress = XML.GetFullAddress(ConditionNode);
-            Value = ConditionNode.Name;
-            CDATA = ConditionNode.InnerText;
-        }
-
         public string Value { get; set; }
 
         // Required
@@ -126,13 +116,8 @@ namespace TH_MTConnect.Streams
         public DateTime Timestamp { get; set; }
         public string DataItemId { get; set; }
         public string Type { get; set; }
-
-        // Optional
         public string Name { get; set; }
-        public string NativeCode { get; set; }
-        public string NativeSeverity { get; set; }
-        public string Qualifier { get; set; }
-        public string Statistic { get; set; }
+
         public string SubType { get; set; }
 
         public string CDATA { get; set; }
@@ -140,63 +125,54 @@ namespace TH_MTConnect.Streams
         public string FullAddress { get; set; }
     }
 
-    public class Event
+    public class Condition : DataItem
+    {
+        public Condition() { }
+
+        public Condition(XmlNode ConditionNode)
+        {
+            XML.AssignProperties(this, ConditionNode);
+            FullAddress = Tools.GetFullAddress(ConditionNode);
+            Value = ConditionNode.Name;
+            CDATA = ConditionNode.InnerText;
+        }
+
+        // Optional
+        public string NativeCode { get; set; }
+        public string NativeSeverity { get; set; }
+        public string Qualifier { get; set; }
+        public string Statistic { get; set; }
+    }
+
+    public class Event : DataItem
     {
         public Event() { }
 
         public Event(XmlNode EventNode)
         {
             XML.AssignProperties(this, EventNode);
-            FullAddress = XML.GetFullAddress(EventNode);
+            FullAddress = Tools.GetFullAddress(EventNode);
             Type = EventNode.Name;
             CDATA = EventNode.InnerText;
         }
-
-        public string Type { get; set; }
-
-        // Required
-        public Int64 Sequence { get; set; }
-        public DateTime Timestamp { get; set; }
-        public string DataItemId { get; set; }
-
-        // Optional
-        public string SubType { get; set; }
-        public string Name { get; set; }
-
-        public string CDATA { get; set; }
-
-        public string FullAddress { get; set; }
     }
 
-    public class Sample
+    public class Sample : DataItem
     {
         public Sample() { }
 
         public Sample(XmlNode SampleNode)
         {
             XML.AssignProperties(this, SampleNode);
-            FullAddress = XML.GetFullAddress(SampleNode);
+            FullAddress = Tools.GetFullAddress(SampleNode);
             Type = SampleNode.Name;
             CDATA = SampleNode.InnerText;
         }
 
-        public string Type { get; set; }
-
-        // Required
-        public Int64 Sequence { get; set; }
-        public DateTime Timestamp { get; set; }
-        public string DataItemId { get; set; }
-
         // Optional
-        public string SubType { get; set; }
-        public string Name { get; set; }
         public string SampleRate { get; set; }
         public string Statistic { get; set; }
         public string Duration { get; set; }
         public string SampleCount { get; set; }
-
-        public string CDATA { get; set; }
-
-        public string FullAddress { get; set; }
     }
 }

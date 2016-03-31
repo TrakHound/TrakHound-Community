@@ -53,12 +53,12 @@ namespace TH_GeneratedData
                 var gdc = GeneratedDataConfiguration.Get(configuration);
                 if (gdc != null)
                 {
-                    switch (data.id.ToLower())
+                    switch (data.Id.ToLower())
                     {
                         // InstanceTable data after Sample received
                         case "instancedata":
 
-                            var instanceDatas = (List<InstanceData>)data.data02;
+                            var instanceDatas = (List<InstanceData>)data.Data02;
 
                             List<GeneratedEventItem> geis = GeneratedEventItem.Process(configuration, instanceDatas);
 
@@ -73,7 +73,7 @@ namespace TH_GeneratedData
                         // InstanceData object after current received
                         case "currentinstancedata":
 
-                            var currentInstanceData = (CurrentInstanceData)data.data02;
+                            var currentInstanceData = (CurrentInstanceData)data.Data02;
 
                             var info = new SnapShotItem.ProcessInfo();
                             info.CurrentData = currentInstanceData.CurrentData;
@@ -124,9 +124,9 @@ namespace TH_GeneratedData
         void SendGeneratedEventItems(List<GeneratedEventItem> items)
         {
             var data = new EventData();
-            data.id = "GeneratedEventItems";
-            data.data01 = configuration;
-            data.data02 = items.ToList();
+            data.Id = "GeneratedEventItems";
+            data.Data01 = configuration;
+            data.Data02 = items.ToList();
             if (SendData != null) SendData(data);
         }
 
@@ -150,18 +150,18 @@ namespace TH_GeneratedData
             }
 
             var data = new EventData();
-            data.id = "SnapShotTable";
-            data.data01 = configuration;
-            data.data02 = dt;
+            data.Id = "SnapShotTable";
+            data.Data01 = configuration;
+            data.Data02 = dt;
             if (SendData != null) SendData(data);
         }
 
         void SendSnapShotItems(List<SnapShotItem> items)
         {
             var data = new EventData();
-            data.id = "SnapShotItems";
-            data.data01 = configuration;
-            data.data02 = items;
+            data.Id = "SnapShotItems";
+            data.Data01 = configuration;
+            data.Data02 = items;
             if (SendData != null) SendData(data);
         }
 

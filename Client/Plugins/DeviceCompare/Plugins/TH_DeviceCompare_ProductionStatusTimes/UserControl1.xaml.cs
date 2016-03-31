@@ -35,27 +35,27 @@ namespace TH_DeviceCompare_ProductionStatusTimes
 
         void Update(EventData data)
         {
-            if (data != null && data.data01 != null && data.data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
             {
                 // GenEvent Values
-                if (data.id.ToLower() == "statusdata_geneventvalues")
+                if (data.Id.ToLower() == "statusdata_geneventvalues")
                 {
                     // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_GenEventValues), Priority_Context, new object[] { data.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_GenEventValues), Priority_Context, new object[] { data.Data02 });
                 }
 
                 // Shifts Table Data
-                if (data.id.ToLower() == "statusdata_shiftdata")
+                if (data.Id.ToLower() == "statusdata_shiftdata")
                 {
                     // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { data.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_ShiftData), Priority_Context, new object[] { data.Data02 });
                 }
 
                 // Snapshot Table Data
-                if (data.id.ToLower() == "statusdata_snapshots")
+                if (data.Id.ToLower() == "statusdata_snapshots")
                 {
                     // Production Status Times
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { data.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateProductionStatusTimes_SnapshotData), Priority_Context, new object[] { data.Data02 });
                 }
             }
 

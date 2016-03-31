@@ -52,27 +52,27 @@ namespace TH_DevicePage.Controls
 
         public void Update(EventData data)
         {
-            if (data != null && data.data01 != null && data.data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
             {
                 // OEE Table Data
-                if (data.id.ToLower() == "statusdata_oee")
+                if (data.Id.ToLower() == "statusdata_oee")
                 {
                     // OEE Values
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), DevicePage.Priority_Background, new object[] { data.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), DevicePage.Priority_Background, new object[] { data.Data02 });
                 }
 
                 // Variables Table Data
-                if (data.id.ToLower() == "statusdata_variables")
+                if (data.Id.ToLower() == "statusdata_variables")
                 {
                     // OEE Timeline / Histogram
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), DevicePage.Priority_Background, new object[] { data.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), DevicePage.Priority_Background, new object[] { data.Data02 });
                 }
 
                 // Shifts Table Data
-                if (data.id.ToLower() == "statusdata_shiftdata")
+                if (data.Id.ToLower() == "statusdata_shiftdata")
                 {
                     // OEE Timeline / Histogram
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftData), DevicePage.Priority_Background, new object[] { data.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftData), DevicePage.Priority_Background, new object[] { data.Data02 });
                 }
             }
         }

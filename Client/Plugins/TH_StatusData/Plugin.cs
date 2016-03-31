@@ -3,19 +3,12 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Collections.ObjectModel;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 using TH_Configuration;
-using TH_Database;
 using TH_Global;
-using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Client;
 

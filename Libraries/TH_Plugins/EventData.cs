@@ -9,12 +9,12 @@ namespace TH_Plugins
 
     public class EventData
     {
-        public string id { get; set; }
+        public string Id { get; set; }
 
-        public object data01 { get; set; }
-        public object data02 { get; set; }
-        public object data03 { get; set; }
-        public object data04 { get; set; }
-        public object data05 { get; set; }
+        public object Data01 { get; set; }
+        public object Data02 { get; set; }
+        public object Data03 { get; set; }
+        public object Data04 { get; set; }
+        public object Data05 { get; set; }
     }
 }

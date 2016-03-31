@@ -64,7 +64,7 @@ namespace TH_MTConnect.Components
         public Component(XmlNode ComponentNode)
         {
             XML.AssignProperties(this, ComponentNode);
-            FullAddress = XML.GetFullAddress(ComponentNode);
+            FullAddress = Tools.GetFullAddress(ComponentNode);
             Components = new List<Component>();
             DataItems = new DataItemCollection();
         }
@@ -147,7 +147,7 @@ namespace TH_MTConnect.Components
         public DataItem(XmlNode DataItemNode)
         {
             XML.AssignProperties(this, DataItemNode);
-            FullAddress = XML.GetFullAddress(DataItemNode);
+            FullAddress = Tools.GetFullAddress(DataItemNode);
         }
 
 
@@ -158,7 +158,7 @@ namespace TH_MTConnect.Components
 
         // optional
         public string Name { get; set; }
-        public string Subtype { get; set; }
+        public string SubType { get; set; }
         public string Statistic { get; set; }
         public string Units { get; set; }
         public string NativeUnits { get; set; }

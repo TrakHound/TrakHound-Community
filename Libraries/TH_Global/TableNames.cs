@@ -44,6 +44,10 @@ namespace TH_Global
         public const string Parts = "parts";
         // ------------------------------------------------
 
+        // Status --------------------------------------------
+        public const string Status = "status";
+        // ------------------------------------------------
+
     }
 
 }

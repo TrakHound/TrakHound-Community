@@ -94,6 +94,14 @@
       <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
       <Name>TH_Plugins</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\Plugins\TH_MTConnect\TH_MTConnect.csproj">
+      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
+      <Name>TH_MTConnect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Server\Plugins\TH_Status\TH_Status.csproj">
+      <Project>{4e167a2b-4229-444c-9b35-0ed814791fe1}</Project>
+      <Name>TH_Status</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets')" />

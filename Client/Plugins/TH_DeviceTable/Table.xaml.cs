@@ -48,8 +48,8 @@ namespace TH_DeviceTable
         private void OpenDevicePage(Configuration config)
         {
             var data = new EventData();
-            data.id = "DevicePage_Show";
-            data.data01 = config;
+            data.Id = "DevicePage_Show";
+            data.Data01 = config;
             if (SendData != null) SendData(data);
         }
     }

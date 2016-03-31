@@ -68,7 +68,7 @@ namespace TrakHound_Client
         {
             // Send message to plugins that Devices have been loaded
             var data = new EventData();
-            data.id = "DevicesLoaded";
+            data.Id = "DevicesLoaded";
             Plugin_SendData(data);
         }
 
@@ -81,7 +81,7 @@ namespace TrakHound_Client
         {
             // Send message to plugins that Devices are being loaded
             var data = new EventData();
-            data.id = "LoadingDevices";
+            data.Id = "LoadingDevices";
             Plugin_SendData(data);
         }
 
@@ -124,7 +124,7 @@ namespace TrakHound_Client
 
             // Send message to plugins that Devices have been loaded
             var data = new EventData();
-            data.id = "devicesloaded";
+            data.Id = "devicesloaded";
             Plugin_SendData(data);
         }
 

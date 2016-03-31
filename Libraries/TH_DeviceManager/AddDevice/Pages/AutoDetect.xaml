@@ -338,12 +338,12 @@
                 <!--Description Columns-->
                 <DataGridTextColumn Header="IP Address" Binding="{Binding IPAddress}"/>
                 <DataGridTextColumn Header="Port" Binding="{Binding Port}"/>
-                <DataGridTextColumn Header="Device Name" Binding="{Binding Device.name}"/>
+                <DataGridTextColumn Header="Device Name" Binding="{Binding Device.Name}"/>
 
-                <DataGridTextColumn Header="Manufacturer" Binding="{Binding DeviceDescription.manufacturer}"/>
+                <DataGridTextColumn Header="Manufacturer" Binding="{Binding DeviceDescription.Manufacturer}"/>
                 <DataGridTextColumn Header="Type" Binding="{Binding DeviceType}"/>
-                <DataGridTextColumn Header="Model" Binding="{Binding DeviceDescription.model}"/>
-                <DataGridTextColumn Header="Serial" Binding="{Binding DeviceDescription.serialNumber}"/>
+                <DataGridTextColumn Header="Model" Binding="{Binding DeviceDescription.Model}"/>
+                <DataGridTextColumn Header="Serial" Binding="{Binding DeviceDescription.SerialNumber}"/>
                 <DataGridTextColumn Header="Controller" Binding="{Binding Controller}"/>
 
                 <!--Add Button-->

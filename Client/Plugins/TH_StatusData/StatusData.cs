@@ -5,23 +5,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.IO;
 using System.Data;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading;
 
 using TH_Configuration;
 using TH_Database;
 using TH_Global;
 using TH_Global.Functions;
 using TH_Plugins;
-using TH_Plugins.Client;
 
 namespace TH_StatusData
 {
@@ -192,9 +184,9 @@ namespace TH_StatusData
         private void SendConnectionData(Configuration config, bool connected)
         {
             var data = new EventData();
-            data.id = "StatusData_Connection";
-            data.data01 = config;
-            data.data02 = connected;
+            data.Id = "StatusData_Connection";
+            data.Data01 = config;
+            data.Data02 = connected;
 
             SendDataEvent(data);
         }
@@ -273,7 +265,7 @@ namespace TH_StatusData
         {
             if (data != null)
             {
-                if (data.id != null)
+                if (data.Id != null)
                 {
                     if (SendData != null) SendData(data);
                 }
@@ -307,7 +299,7 @@ namespace TH_StatusData
             EventData availablityData = GetAvailability(variables, config);
             SendDataEvent(availablityData);
 
-            if ((bool)availablityData.data02)
+            if ((bool)availablityData.Data02)
             {
                 // Get Snapshot Data
                 EventData snapshotData = GetSnapShots(snapshots, config);
@@ -348,9 +340,9 @@ namespace TH_StatusData
             if (dt != null)
             {
                 var data = new EventData();
-                data.id = "StatusData_Variables";
-                data.data01 = config;
-                data.data02 = dt;
+                data.Id = "StatusData_Variables";
+                data.Data01 = config;
+                data.Data02 = dt;
 
                 result = data;
             }
@@ -371,9 +363,9 @@ namespace TH_StatusData
             //Logger.Log(config.UniqueId + " : Available = " + available.ToString());
 
             var result = new EventData();
-            result.id = "StatusData_Availability";
-            result.data01 = config;
-            result.data02 = available;
+            result.Id = "StatusData_Availability";
+            result.Data01 = config;
+            result.Data02 = available;
 
             return result;
         }
@@ -385,9 +377,9 @@ namespace TH_StatusData
             if (dt != null)
             {
                 var data = new EventData();
-                data.id = "StatusData_Snapshots";
-                data.data01 = config;
-                data.data02 = dt;
+                data.Id = "StatusData_Snapshots";
+                data.Data01 = config;
+                data.Data02 = dt;
 
                 result = data;
             }
@@ -402,9 +394,9 @@ namespace TH_StatusData
             if (dt != null)
             {
                 var data = new EventData();
-                data.id = "StatusData_GenEventValues";
-                data.data01 = config;
-                data.data02 = dt;
+                data.Id = "StatusData_GenEventValues";
+                data.Data01 = config;
+                data.Data02 = dt;
 
                 result = data;
             }
@@ -451,9 +443,9 @@ namespace TH_StatusData
                 if (shifts_DT != null)
                 {
                     var data = new EventData();
-                    data.id = "StatusData_ShiftData";
-                    data.data01 = config;
-                    data.data02 = shifts_DT;
+                    data.Id = "StatusData_ShiftData";
+                    data.Data01 = config;
+                    data.Data02 = shifts_DT;
 
                     result = data;
                 }
@@ -488,9 +480,9 @@ namespace TH_StatusData
                 if (dt != null)
                 {
                     var data = new EventData();
-                    data.id = "StatusData_ProductionStatus";
-                    data.data01 = config;
-                    data.data02 = dt;
+                    data.Id = "StatusData_ProductionStatus";
+                    data.Data01 = config;
+                    data.Data02 = dt;
 
                     result = data;
                 }
@@ -513,9 +505,9 @@ namespace TH_StatusData
                     if (dt != null)
                     {
                         var data = new EventData();
-                        data.id = "StatusData_OEE";
-                        data.data01 = config;
-                        data.data02 = dt;
+                        data.Id = "StatusData_OEE";
+                        data.Data01 = config;
+                        data.Data02 = dt;
 
                         result = data;
                     }
@@ -539,9 +531,9 @@ namespace TH_StatusData
                     if (dt != null)
                     {
                         var data = new EventData();
-                        data.id = "StatusData_Parts";
-                        data.data01 = config;
-                        data.data02 = dt;
+                        data.Id = "StatusData_Parts";
+                        data.Data01 = config;
+                        data.Data02 = dt;
 
                         result = data;
                     }

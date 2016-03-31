@@ -16,6 +16,7 @@ namespace TrakHound_Updater
     static class Registry
     {
 
+        public const string WOW64_KEY = "WOW6432Node";
         public const string ROOT_KEY = "Software";
         public const string APP_KEY = "TrakHound";
 
@@ -28,7 +29,15 @@ namespace TrakHound_Updater
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
                 // Create/Open LOCAL_MACHINE/Software/TrakHound Key
-                key = key.CreateSubKey(APP_KEY);
+                key = key.OpenSubKey(APP_KEY);
+
+                // Try looking for 64 bit version in WOW6432Node key
+                if (key == null)
+                {
+                    key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
+                    key = key.OpenSubKey(WOW64_KEY);
+                    if (key != null) key = key.OpenSubKey(APP_KEY, true);
+                }
 
                 // Create/Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.CreateSubKey(groupName);
@@ -48,8 +57,16 @@ namespace TrakHound_Updater
                 // Open LOCAL_MACHINE/Software Key
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
-                // Open LOCAL_MACHINE/Software/TrakHound Key
+                // Create/Open LOCAL_MACHINE/Software/TrakHound Key
                 key = key.OpenSubKey(APP_KEY);
+
+                // Try looking for 64 bit version in WOW6432Node key
+                if (key == null)
+                {
+                    key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
+                    key = key.OpenSubKey(WOW64_KEY, true);
+                    if (key != null) key = key.OpenSubKey(APP_KEY);
+                }
 
                 // Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.OpenSubKey(groupName);
@@ -71,8 +88,16 @@ namespace TrakHound_Updater
                 // Open LOCAL_MACHINE/Software Key
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
-                // Open LOCAL_MACHINE/Software/TrakHound Key
+                // Create/Open LOCAL_MACHINE/Software/TrakHound Key
                 key = key.OpenSubKey(APP_KEY);
+
+                // Try looking for 64 bit version in WOW6432Node key
+                if (key == null)
+                {
+                    key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
+                    key = key.OpenSubKey(WOW64_KEY, true);
+                    if (key != null) key = key.OpenSubKey(APP_KEY);
+                }
 
                 // Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.OpenSubKey(groupName);
@@ -91,8 +116,16 @@ namespace TrakHound_Updater
                 // Open LOCAL_MACHINE/Software Key
                 RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
 
-                // Open LOCAL_MACHINE/Software/TrakHound Key
-                key = key.OpenSubKey(APP_KEY, true);
+                // Create/Open LOCAL_MACHINE/Software/TrakHound Key
+                key = key.OpenSubKey(APP_KEY);
+
+                // Try looking for 64 bit version in WOW6432Node key
+                if (key == null)
+                {
+                    key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
+                    key = key.OpenSubKey(WOW64_KEY, true);
+                    if (key != null) key = key.OpenSubKey(APP_KEY, true);
+                }
 
                 // Open LOCAL_MACHINE/Software/TrakHound/[groupName] Key
                 if (groupName != null) key = key.OpenSubKey(groupName, true);

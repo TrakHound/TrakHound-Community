@@ -25,3 +25,9 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.exe
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.pdb
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.dll
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Status.dll
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_WPF.dll
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.pdb
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Status.pdb
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_WPF.pdb

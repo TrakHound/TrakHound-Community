@@ -34,7 +34,7 @@ namespace TH_DeviceTable
         {
             if (data != null)
             {
-                Configuration config = data.data01 as Configuration;
+                Configuration config = data.Data01 as Configuration;
                 if (config != null)
                 {
                     int index = DeviceInfos.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
@@ -60,10 +60,10 @@ namespace TH_DeviceTable
 
         private void UpdateConnected(EventData data, DeviceInfo info)
         {
-            if (data.id.ToLower() == "statusdata_connection")
+            if (data.Id.ToLower() == "statusdata_connection")
             {
                 bool connected;
-                bool.TryParse(data.data02.ToString(), out connected);
+                bool.TryParse(data.Data02.ToString(), out connected);
 
                 info.Connected = connected;
             }
@@ -71,11 +71,11 @@ namespace TH_DeviceTable
 
         private void UpdateOEE(EventData data, DeviceInfo info)
         {
-            if (data.id.ToLower() == "statusdata_oee")
+            if (data.Id.ToLower() == "statusdata_oee")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    var dt = data.data02 as DataTable;
+                    var dt = data.Data02 as DataTable;
                     if (dt != null)
                     {
                         var oeeData = OEEData.FromDataTable(dt);
@@ -91,26 +91,26 @@ namespace TH_DeviceTable
 
         private void UpdateProductionStatus(EventData data, DeviceInfo info)
         {
-            if (data.id.ToLower() == "statusdata_snapshots")
+            if (data.Id.ToLower() == "statusdata_snapshots")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    info.ProductionStatus = GetTableValue(data.data02, "Production Status");
+                    info.ProductionStatus = GetTableValue(data.Data02, "Production Status");
                 }), Priority_Background, new object[] { });
             }
         }
 
         private void UpdateCNCControllerStatus(EventData data, DeviceInfo info)
         {
-            if (data.id.ToLower() == "statusdata_snapshots")
+            if (data.Id.ToLower() == "statusdata_snapshots")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    info.EmergencyStop = GetTableValue(data.data02, "Emergency Stop");
-                    info.ControllerMode = GetTableValue(data.data02, "Controller Mode");
-                    info.ExecutionMode = GetTableValue(data.data02, "Execution Mode");
-                    info.Alarm = GetTableValue(data.data02, "Alarm");
-                    info.PartCount = GetTableValue(data.data02, "PartCount");
+                    info.EmergencyStop = GetTableValue(data.Data02, "Emergency Stop");
+                    info.ControllerMode = GetTableValue(data.Data02, "Controller Mode");
+                    info.ExecutionMode = GetTableValue(data.Data02, "Execution Mode");
+                    info.Alarm = GetTableValue(data.Data02, "Alarm");
+                    info.PartCount = GetTableValue(data.Data02, "PartCount");
                 }), Priority_Background, new object[] { });
             }
         }

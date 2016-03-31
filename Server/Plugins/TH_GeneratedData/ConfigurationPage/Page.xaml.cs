@@ -786,7 +786,7 @@ namespace TH_GeneratedData.ConfigurationPage
             CollectedItem dataitem = linkitems.Find(x => x.display == link);
             if (dataitem != null) link = dataitem.id;
 
-            attr += "link||" + link;
+            attr += "link||" + link + ";";
             Table_Functions.UpdateTableValue(null, attr, adr, dt);
         }
 

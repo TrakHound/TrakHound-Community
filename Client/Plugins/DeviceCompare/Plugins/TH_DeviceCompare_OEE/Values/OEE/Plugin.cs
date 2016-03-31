@@ -76,9 +76,9 @@ namespace TH_DeviceCompare_OEE.Values.OEE
 
         #region "Events"
 
-        public void GetSentData(EventData de_d)
+        public void GetSentData(EventData data)
         {
-            Update(de_d);
+            Update(data);
         }
 
         public event SendData_Handler SendData;

@@ -37,11 +37,11 @@ namespace TH_OEE
         {
             if (data != null)
             {
-                if (data.id.ToLower() == "cycledata")
+                if (data.Id.ToLower() == "cycledata")
                 {
-                    if (data.data02.GetType() == typeof(List<CycleData>))
+                    if (data.Data02.GetType() == typeof(List<CycleData>))
                     {
-                        List<CycleData> cycles = (List<CycleData>)data.data02;
+                        List<CycleData> cycles = (List<CycleData>)data.Data02;
 
                         ProcessOEE(cycles);
                     }
@@ -306,9 +306,9 @@ namespace TH_OEE
             }
 
             var edata = new EventData();
-            edata.id = "OeeTable";
-            edata.data01 = config;
-            edata.data02 = dt;
+            edata.Id = "OeeTable";
+            edata.Data01 = config;
+            edata.Data02 = dt;
             if (SendData != null) SendData(edata);
         }
 

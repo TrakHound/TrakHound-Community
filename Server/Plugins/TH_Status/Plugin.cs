@@ -16,26 +16,34 @@ namespace TH_Status
     public class Plugin : IServerPlugin
     {
 
-        public string Name { get { return "TH_Parts"; } }
+        public string Name { get { return "TH_Status"; } }
 
         public void Initialize(Configuration config)
         {
             configuration = config;
 
-            //Database.CreateStatusTable(config);
+            Database.CreateTable(config);
         }
 
+        private List<StatusInfo> statusInfos = new List<StatusInfo>();
 
         public void GetSentData(EventData data)
         {
             if (data != null)
             {
-                if (data.id.ToLower() == "mtconnect_status")
+                if (data.Id.ToLower() == "mtconnect_probe" && data.Data02 != null)
                 {
-                    
-
-
-
+                    var infos = StatusInfo.GetList((TH_MTConnect.Components.ReturnData)data.Data02);
+                    if (infos.Count > 0)
+                    {
+                        statusInfos = infos;
+                        Database.AddRows(configuration, infos);
+                    }
+                }
+                if (data.Id.ToLower() == "mtconnect_current" && data.Data02 != null)
+                {
+                    StatusInfo.ProcessList((TH_MTConnect.Streams.ReturnData)data.Data02, statusInfos);
+                    Database.UpdateRows(configuration, statusInfos);
                 }
             }
         }
@@ -52,7 +60,6 @@ namespace TH_Status
 
 
         private Configuration configuration;
-
 
     }
 }

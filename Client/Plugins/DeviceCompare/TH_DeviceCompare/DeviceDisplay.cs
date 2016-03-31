@@ -120,10 +120,10 @@ namespace TH_DeviceCompare
             if (Group.Header != null) Group.Header.LastUpdatedTimestamp = DateTime.Now.ToString();
 
             // Update Connection Status
-            if (data.id.ToLower() == "statusdata_connection")
+            if (data.Id.ToLower() == "statusdata_connection")
             {
                 bool connected;
-                bool.TryParse(data.data02.ToString(), out connected);
+                bool.TryParse(data.Data02.ToString(), out connected);
 
                 // If connection attempt failed
                 if (!connected)
@@ -197,14 +197,14 @@ namespace TH_DeviceCompare
             if (Connected)
             {
                 // Availability Data
-                if (data.id.ToLower() == "statusdata_availability")
+                if (data.Id.ToLower() == "statusdata_availability")
                 {
-                    if (data.data02.GetType() == typeof(bool))
+                    if (data.Data02.GetType() == typeof(bool))
                     {
                         var overlay = Group.Overlay;
                         if (overlay != null)
                         {
-                            bool avail = (bool)data.data02;
+                            bool avail = (bool)data.Data02;
                             if (avail)
                             {
                                 overlay.Loading = false;
@@ -228,17 +228,17 @@ namespace TH_DeviceCompare
                 }
 
                 // Snapshot Table Data
-                if (data.id.ToLower() == "statusdata_snapshots")
+                if (data.Id.ToLower() == "statusdata_snapshots")
                 {
                     // Update Header Data
-                    if (Group.Header != null) Group.Header.UpdateData_Snapshots(data.data02);
+                    if (Group.Header != null) Group.Header.UpdateData_Snapshots(data.Data02);
                 }
 
                 // Variables Table Data
-                if (data.id.ToLower() == "statusdata_variables")
+                if (data.Id.ToLower() == "statusdata_variables")
                 {
                     // Update Header Data
-                    if (Group.Header != null) Group.Header.UpdateData_Variables(data.data02);
+                    if (Group.Header != null) Group.Header.UpdateData_Variables(data.Data02);
                 }
 
                 // Update Child Plugins

@@ -14,51 +14,93 @@ namespace TH_Status
 {
     public static class Database
     {
-        private static string[] primaryKey = { "SHIFT_ID", "ID" };
+        private static string[] primaryKey = { "INFO_TYPE", "ADDRESS" };
 
-        //public static void CreatePartsTable(Configuration config)
-        //{
-        //    var columns = new List<ColumnDefinition>();
+        public static void CreateTable(Configuration config)
+        {
+            var columns = new List<ColumnDefinition>();
 
-        //    columns.Add(new ColumnDefinition("SHIFT_ID", DataType.SmallText));
-        //    columns.Add(new ColumnDefinition("ID", DataType.MediumText));
-        //    columns.Add(new ColumnDefinition("TIMESTAMP", DataType.DateTime));
-        //    columns.Add(new ColumnDefinition("COUNT", DataType.Long));
+            columns.Add(new ColumnDefinition("INFO_TYPE", DataType.Short));
+            columns.Add(new ColumnDefinition("ADDRESS", DataType.MediumText));
+            columns.Add(new ColumnDefinition("ID", DataType.MediumText));
+            columns.Add(new ColumnDefinition("NAME", DataType.MediumText));
+            columns.Add(new ColumnDefinition("TYPE", DataType.MediumText));
+            columns.Add(new ColumnDefinition("SUB_TYPE", DataType.MediumText));
+            columns.Add(new ColumnDefinition("TIMESTAMP", DataType.DateTime));
+            columns.Add(new ColumnDefinition("VALUE", DataType.LargeText));
 
-        //    ColumnDefinition[] ColArray = columns.ToArray();
+            ColumnDefinition[] ColArray = columns.ToArray();
 
-        //    Table.Create(config.Databases_Server, GetTableName(config), ColArray, primaryKey);
-        //}
+            Table.Create(config.Databases_Server, GetTableName(config), ColArray, primaryKey);
+        }
 
-        //public static void AddRows(Configuration config, List<PartInfo> infos)
-        //{
-        //    var columns = new List<string>();
-        //    columns.Add("SHIFT_ID");
-        //    columns.Add("ID");
-        //    columns.Add("TIMESTAMP");
-        //    columns.Add("COUNT");
+        public static void AddRows(Configuration config, List<StatusInfo> infos)
+        {
+            var columns = new List<string>();
+            columns.Add("INFO_TYPE");
+            columns.Add("ADDRESS");
+            columns.Add("ID");
+            columns.Add("NAME");
+            columns.Add("TYPE");
+            columns.Add("SUB_TYPE");
 
-        //    var tableValues = new List<List<object>>();
+            var tableValues = new List<List<object>>();
 
-        //    foreach (var info in infos)
-        //    {
-        //        var rowValues = new List<object>();
-        //        rowValues.Add(info.ShiftId);
-        //        rowValues.Add(info.Id);
-        //        rowValues.Add(info.Timestamp);
-        //        rowValues.Add(info.Count);
+            foreach (var info in infos)
+            {
+                var rowValues = new List<object>();
+                rowValues.Add((int)info.InfoType);
+                rowValues.Add(info.Address);
+                rowValues.Add(info.Id);
+                rowValues.Add(info.Name);
+                rowValues.Add(info.Type);
+                rowValues.Add(info.SubType);
 
-        //        tableValues.Add(rowValues);
-        //    }
+                tableValues.Add(rowValues);
+            }
 
-        //    Row.Insert(config.Databases_Server, GetTableName(config), columns.ToArray(), tableValues, primaryKey, true);
-        //}
+            Row.Insert(config.Databases_Server, GetTableName(config), columns.ToArray(), tableValues, primaryKey, true);
+        }
 
-        //private static string GetTableName(Configuration config)
-        //{
-        //    if (config.DatabaseId != null) return config.DatabaseId + "_" + TableNames.Parts;
-        //    else return TableNames.Parts;
-        //}
+        public static void UpdateRows(Configuration config, List<StatusInfo> infos)
+        {
+            var columns = new List<string>();
+            columns.Add("INFO_TYPE");
+            columns.Add("ADDRESS");
+            columns.Add("ID");
+            columns.Add("NAME");
+            columns.Add("TYPE");
+            columns.Add("SUB_TYPE");
+
+            columns.Add("TIMESTAMP");
+            columns.Add("VALUE");
+
+            var tableValues = new List<List<object>>();
+
+            foreach (var info in infos)
+            {
+                var rowValues = new List<object>();
+                rowValues.Add((int)info.InfoType);
+                rowValues.Add(info.Address);
+                rowValues.Add(info.Id);
+                rowValues.Add(info.Name);
+                rowValues.Add(info.Type);
+                rowValues.Add(info.SubType);
+
+                rowValues.Add(info.Timestamp);
+                rowValues.Add(info.Value);
+
+                tableValues.Add(rowValues);
+            }
+
+            Row.Insert(config.Databases_Server, GetTableName(config), columns.ToArray(), tableValues, primaryKey, true);
+        }
+
+        private static string GetTableName(Configuration config)
+        {
+            if (config.DatabaseId != null) return config.DatabaseId + "_" + TableNames.Status;
+            else return TableNames.Status;
+        }
 
     }
 }

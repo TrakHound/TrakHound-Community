@@ -40,15 +40,15 @@ namespace TH_DeviceCompare_OEE.Values.Availability
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
-        void Update(EventData de_d)
+        void Update(EventData data)
         {
-            if (de_d != null && de_d.data01 != null && de_d.data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
             {
                 // OEE Table Data
-                if (de_d.id.ToLower() == "statusdata_oee")
+                if (data.Id.ToLower() == "statusdata_oee")
                 {
                     // OEE Values
-                    this.Dispatcher.BeginInvoke(new Action<object>(OEEValues_Update), Priority_Context, new object[] { de_d.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(OEEValues_Update), Priority_Context, new object[] { data.Data02 });
                 }
             }
         }

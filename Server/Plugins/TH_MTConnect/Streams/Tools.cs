@@ -144,5 +144,42 @@ namespace TH_MTConnect.Streams
 
             return result;
         }
+
+
+        public static string GetFullAddress(XmlNode node)
+        {
+            string result = "";
+
+            do
+            {
+                string name = node.Name;
+
+                string address = name;
+
+                string id = XML.GetAttribute(node, "componentId");
+                if (String.IsNullOrEmpty(id)) id = XML.GetAttribute(node, "dataItemId");
+                if (!String.IsNullOrEmpty(id))
+                {
+                    address = name + "[@id='" + id + "']";
+                }
+
+                result = address + "/" + result;
+                node = node.ParentNode;
+
+                if (node == null) break;
+
+            } while (node.Name != "DeviceStream");
+
+            if (result.Length > 0)
+            {
+                if (result[0] != Convert.ToChar("/")) result = "/" + result;
+                if (result.Length > 1)
+                {
+                    if (result[result.Length - 1] == Convert.ToChar("/")) result = result.Remove(result.Length - 1);
+                }
+            }
+
+            return result;
+        }
     }
 }

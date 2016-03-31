@@ -135,9 +135,9 @@ namespace TH_Device_Server
         private void SendDatabaseStatus(bool connected, Configuration config)
         {
             var data = new EventData();
-            data.id = "DatabaseStatus";
-            data.data01 = config;
-            data.data02 = connected;
+            data.Id = "DatabaseStatus";
+            data.Data01 = config;
+            data.Data02 = connected;
 
             Plugins_Update_SendData(data);
         }

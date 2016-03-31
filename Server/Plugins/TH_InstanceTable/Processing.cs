@@ -53,9 +53,9 @@ namespace TH_InstanceTable
 
             // Send InstanceData object to other Plugins --
             var data = new EventData();
-            data.id = "CurrentInstanceData";
-            data.data01 = configuration;
-            data.data02 = cid;
+            data.Id = "CurrentInstanceData";
+            data.Data01 = configuration;
+            data.Data02 = cid;
 
             if (SendData != null) SendData(data);
             //--------------------------------------------         
@@ -71,9 +71,9 @@ namespace TH_InstanceTable
 
             // Send instanceDatas to other Plugins --------
             var data = new EventData();
-            data.id = "InstanceData";
-            data.data01 = configuration;
-            data.data02 = instanceDatas;
+            data.Id = "InstanceData";
+            data.Data01 = configuration;
+            data.Data02 = instanceDatas;
 
             if (SendData != null) SendData(data);
         }

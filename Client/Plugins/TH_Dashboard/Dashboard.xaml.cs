@@ -83,12 +83,12 @@ namespace TH_Dashboard
         {
             if (data != null)
             {
-                if (data.id.ToLower() == "userloggedin")
+                if (data.Id.ToLower() == "userloggedin")
                 {
                     LoggedIn = true;
                 }
 
-                if (data.id.ToLower() == "userloggedout")
+                if (data.Id.ToLower() == "userloggedout")
                 {
                     LoggedIn = false;
                 }
@@ -99,12 +99,12 @@ namespace TH_Dashboard
         {
             if (data != null)
             {
-                if (data.id.ToLower() == "loadingdevices")
+                if (data.Id.ToLower() == "loadingdevices")
                 {
                     LoadingDevices = true;
                 }
 
-                if (data.id.ToLower() == "devicesloaded")
+                if (data.Id.ToLower() == "devicesloaded")
                 {
                     LoadingDevices = false;
                 }

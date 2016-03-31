@@ -46,12 +46,12 @@ namespace TH_DeviceCompare_CNC.Text.Execution_Mode
 
         void Update(EventData data)
         {
-            if (data != null && data.data01 != null && data.data01.GetType() == typeof(Configuration))
+            if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
             {
                 // Snapshot Table Data
-                if (data.id.ToLower() == "statusdata_snapshots")
+                if (data.Id.ToLower() == "statusdata_snapshots")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.Data02 });
                 }
             }
         }

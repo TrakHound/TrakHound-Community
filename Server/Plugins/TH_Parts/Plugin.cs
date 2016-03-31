@@ -36,9 +36,9 @@ namespace TH_Parts
         {
             if (data != null)
             {
-                if (data.id.ToLower() == "generatedeventitems")
+                if (data.Id.ToLower() == "generatedeventitems")
                 {
-                    var genEventItems = (List<GeneratedEventItem>)data.data02;
+                    var genEventItems = (List<GeneratedEventItem>)data.Data02;
 
                     var pc = PartsConfiguration.Get(configuration);
                     if (pc != null)
@@ -79,9 +79,9 @@ namespace TH_Parts
         private void SendPartInfos(List<PartInfo> infos)
         {
             var data = new EventData();
-            data.id = "PartInfos";
-            data.data01 = configuration;
-            data.data02 = infos;
+            data.Id = "PartInfos";
+            data.Data01 = configuration;
+            data.Data02 = infos;
             if (SendData != null) SendData(data);
         }
     }

@@ -51,12 +51,12 @@ namespace TH_Cycles
             {
                 List<CycleData> cycles = null;
 
-                switch (data.id.ToLower())
+                switch (data.Id.ToLower())
                 {                  
                     // InstanceTable data after Sample received
                     case "instancedata":
 
-                        var instanceDatas = (List<InstanceData>)data.data02;
+                        var instanceDatas = (List<InstanceData>)data.Data02;
 
                         cycles = ProcessCycles(instanceDatas);
 
@@ -68,7 +68,7 @@ namespace TH_Cycles
                     // InstanceData object after current received
                     case "currentinstancedata":
 
-                        var currentInstanceData = (CurrentInstanceData)data.data02;
+                        var currentInstanceData = (CurrentInstanceData)data.Data02;
 
                         var list = new List<InstanceData>();
                         list.Add(currentInstanceData.Data);
@@ -493,9 +493,9 @@ namespace TH_Cycles
         void SendCycleData(List<CycleData> cycleData)
         {
             var data = new EventData();
-            data.id = "CycleData";
-            data.data01 = configuration;
-            data.data02 = cycleData;
+            data.Id = "CycleData";
+            data.Data01 = configuration;
+            data.Data02 = cycleData;
             if (SendData != null) SendData(data);
         }
 

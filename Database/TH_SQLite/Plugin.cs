@@ -185,7 +185,7 @@ namespace TH_SQLite
             if (typeof(T) == typeof(string))
             {
                 object o = command.ExecuteScalar();
-                if (o != null) result = o.ToString();
+                if (o != null) result = ConvertFromSafe(o.ToString());
             }
 
             // DataTable
@@ -195,6 +195,10 @@ namespace TH_SQLite
                 using (var a = new SQLiteDataAdapter(command))
                 {
                     a.Fill(dt);
+                }
+                foreach (DataRow row in dt.Rows)
+                {
+                    ConvertRowFromSafe(row);
                 }
                 result = dt;
             }
@@ -229,6 +233,8 @@ namespace TH_SQLite
 
                         row.ItemArray = values;
 
+                        ConvertRowFromSafe(row);
+
                         result = row;
                     }
                 }
@@ -242,7 +248,7 @@ namespace TH_SQLite
                 {
                     if (reader.HasRows)
                     {
-                        while (reader.Read()) tables.Add(reader[0].ToString());
+                        while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
                     }
                 }
                 result = tables.ToArray();
@@ -256,13 +262,18 @@ namespace TH_SQLite
                 {
                     if (reader.HasRows)
                     {
-                        while (reader.Read()) tables.Add(reader[0].ToString());
+                        while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
                     }
                 }
                 result = tables;
             }
 
             return result;
+        }
+
+        private static void ConvertRowFromSafe(DataRow row)
+        {
+            for (var x = 0; x <= row.ItemArray.Length - 1; x++) { row[x] = ConvertFromSafe(row.ItemArray[x].ToString()); }
         }
 
 
@@ -344,7 +355,18 @@ namespace TH_SQLite
         static string ConvertToSafe(string s)
         {
             string r = s;
-            if (r.Contains("'")) r = r.Replace("'", "\'");
+            if (r.Contains("'")) r = r.Replace("'", "%27");
+            if (r.Contains("@")) r = r.Replace("@", "%40");
+            if (r.Contains("=")) r = r.Replace("=", "%3D");
+            return r;
+        }
+
+        static string ConvertFromSafe(string s)
+        {
+            string r = s;
+            if (r.Contains("%27")) r = r.Replace("%27", "'");
+            if (r.Contains("%40")) r = r.Replace("%40", "@");
+            if (r.Contains("%3D")) r = r.Replace("%3D", "=");
             return r;
         }
 

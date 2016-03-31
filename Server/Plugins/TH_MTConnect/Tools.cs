@@ -61,36 +61,11 @@ namespace TH_MTConnect
                     {
                         info.SetValue(obj, Convert.ChangeType(Value, t), null);
                     }
-
-                    
                 }
             }
         }
 
-        public static string GetFullAddress(XmlNode Node)
-        {
-            string Result = "";
-
-            do
-            {
-                Result = Node.Name + "/" + Result;
-                Node = Node.ParentNode;
-
-                if (Node == null) break;
-
-            } while (Node.Name != "Device");
-
-            if (Result.Length > 0)
-            {
-                if (Result[0] != Convert.ToChar("/")) Result = "/" + Result;
-                if (Result.Length > 1)
-                {
-                    if (Result[Result.Length - 1] == Convert.ToChar("/")) Result = Result.Remove(Result.Length - 1);
-                }
-            }
-
-            return Result;
-        }
+        
     }
 
     public static class Tables
