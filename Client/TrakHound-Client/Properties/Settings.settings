@@ -20,5 +20,8 @@
     <Setting Name="FirstOpen" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
+    <Setting Name="LastVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">initial</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

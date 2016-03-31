@@ -5,15 +5,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Globalization;
-using System.Xml;
 using System.Data;
-using System.Net;
 using System.IO;
+using System.Net;
+using System.Xml;
+
+using TH_Global.Functions;
 
 namespace TH_MTConnect
 {
@@ -31,11 +28,11 @@ namespace TH_MTConnect
 
     public static class XML
     {
-        public static string GetAttribute(XmlNode Node, string AttributeName)
+        public static string GetAttribute(XmlNode Node, string attributeName)
         {
             if (Node.Attributes != null)
             {
-                var nameAttribute = Node.Attributes[AttributeName];
+                var nameAttribute = Node.Attributes[String_Functions.LowercaseFirstCharacter(attributeName)];
                 if (nameAttribute != null)
                     return nameAttribute.Value;
                 else

@@ -111,7 +111,7 @@ namespace TH_MTConnect.Components
                         if (ChildNode.Attributes["category"] != null)
                         {
 
-                            DataItem dataItem = new DataItem(ChildNode);
+                            var dataItem = new DataItem(ChildNode);
 
                             foreach (XmlNode ChildChildNode in ChildNode.ChildNodes)
                             {
@@ -134,26 +134,29 @@ namespace TH_MTConnect.Components
                             }
 
                             // Add to corresponding List in DataItemCollection object
-                            switch (dataItem.Category.ToLower())
+                            if (dataItem.Category != null)
                             {
-                                case "condition":
+                                switch (dataItem.Category.ToLower())
+                                {
+                                    case "condition":
 
-                                    Result.Conditions.Add(dataItem);
+                                        Result.Conditions.Add(dataItem);
 
-                                    break;
+                                        break;
 
-                                case "event":
+                                    case "event":
 
-                                    Result.Events.Add(dataItem);
+                                        Result.Events.Add(dataItem);
 
-                                    break;
+                                        break;
 
-                                case "sample":
+                                    case "sample":
 
-                                    Result.Samples.Add(dataItem);
+                                        Result.Samples.Add(dataItem);
 
-                                    break;
-                            }
+                                        break;
+                                }
+                            }                         
                         }
                     }
                 }

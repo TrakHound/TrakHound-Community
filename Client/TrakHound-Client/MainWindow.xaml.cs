@@ -71,6 +71,7 @@ namespace TrakHound_Client
             Splash_UpdateStatus("...Finishing Up", 100);
 
             WelcomeMessage();
+            CheckVersion();
 
             //// Wait for the minimum splash time to elapse, then close the splash dialog
             ////while (SplashWait) { System.Threading.Thread.Sleep(200); }
@@ -101,6 +102,28 @@ namespace TrakHound_Client
         void currentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             System.Windows.MessageBox.Show(e.ExceptionObject.ToString());
+        }
+
+        private void CheckVersion()
+        {
+            // Build Information
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            Version version = assembly.GetName().Version;
+
+            string last = Properties.Settings.Default.LastVersion;
+            if (last != "intial" && last != version.ToString())
+            {
+                Properties.Settings.Default.LastVersion = version.ToString();
+                Properties.Settings.Default.Save();
+
+                // Add Notification to Message Center
+                var message = new Controls.Message_Center.Message_Data();
+                message.Title = "TrakHound Updated to " + version.ToString();
+                message.Text = "TrakHound Successfully Updated from " + last + " to " + version.ToString();
+                message.Type = Controls.Message_Center.MessageType.notification;
+                message.Image = new System.Windows.Media.Imaging.BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Update_01.png"));
+                messageCenter.AddMessage(message);
+            }
         }
 
     }

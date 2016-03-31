@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Text;
 
 namespace TH_Global.Functions
@@ -43,6 +48,12 @@ namespace TH_Global.Functions
             }
 
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(s.ToLower());
+        }
+
+        public static string LowercaseFirstCharacter(string s)
+        {
+            if (s != null && s.Length > 0) return s.Remove(0, 1).Insert(0, s[0].ToString().ToLower());
+            return s;
         }
 
         public static string ToPhoneNumber(string s)

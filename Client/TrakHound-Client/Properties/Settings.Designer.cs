@@ -92,5 +92,17 @@ namespace TrakHound_Client.Properties {
                 this["FirstOpen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("initial")]
+        public string LastVersion {
+            get {
+                return ((string)(this["LastVersion"]));
+            }
+            set {
+                this["LastVersion"] = value;
+            }
+        }
     }
 }
