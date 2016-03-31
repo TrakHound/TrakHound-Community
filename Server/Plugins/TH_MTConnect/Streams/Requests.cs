@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -40,8 +40,8 @@ namespace TH_MTConnect.Streams
                     if (deviceStreams != null)
                     {
                         result = new ReturnData();
-                        result.header = header;
-                        result.deviceStreams = deviceStreams;
+                        result.Header = header;
+                        result.DeviceStreams = deviceStreams;
                     }
                 }
             }
@@ -65,7 +65,7 @@ namespace TH_MTConnect.Streams
                     {
                         DeviceStream deviceStream = Tools.GetDeviceStreamFromXML(deviceNode);
 
-                        deviceStream.dataItems = Tools.GetDataItemsFromDeviceStream(deviceStream);
+                        deviceStream.DataItems = Tools.GetDataItemsFromDeviceStream(deviceStream);
 
                         result.Add(deviceStream);
                     }

@@ -1,11 +1,11 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
 
-using TH_GeneratedData;
+using TH_GeneratedData.GeneratedEvents;
 
 namespace TH_ShiftTable
 {
@@ -51,7 +51,7 @@ namespace TH_ShiftTable
             return eventName.ToUpper() + "__" + resultValue.Replace(' ', '_').ToUpper();
         }
 
-        public static string FormatColumnName(GeneratedData.GeneratedEvents.Event genEvent, GeneratedData.GeneratedEvents.Value value)
+        public static string FormatColumnName(Event genEvent, Value value)
         {
             return genEvent.Name.ToUpper() + "__" + value.Result.Value.Replace(' ', '_').ToUpper();
         }
@@ -80,7 +80,7 @@ namespace TH_ShiftTable
         {
             int Result = 0;
 
-            DateTime current = currentData.header.creationTime.ToLocalTime();
+            DateTime current = currentData.Header.CreationTime.ToLocalTime();
 
             DateTime start = Tools.GetDateTimeFromShiftTime(info.start, info.date, info.start.dayOffset);
             DateTime end = Tools.GetDateTimeFromShiftTime(info.end, info.date, info.end.dayOffset);

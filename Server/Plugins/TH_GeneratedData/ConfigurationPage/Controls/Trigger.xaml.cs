@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.Data;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
 using System.Collections.ObjectModel;
+using System.Data;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace TH_GeneratedData.ConfigurationPage.Controls
 {
@@ -45,14 +37,14 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
         public Page.Trigger ParentTrigger;
 
 
-        public TH_GeneratedData.ConfigurationPage.Page ParentPage
+        public Page ParentPage
         {
-            get { return (TH_GeneratedData.ConfigurationPage.Page)GetValue(ParentPageProperty); }
+            get { return (Page)GetValue(ParentPageProperty); }
             set { SetValue(ParentPageProperty, value); }
         }
 
         public static readonly DependencyProperty ParentPageProperty =
-            DependencyProperty.Register("ParentPage", typeof(TH_GeneratedData.ConfigurationPage.Page), typeof(Trigger), new PropertyMetadata(null));
+            DependencyProperty.Register("ParentPage", typeof(Page), typeof(Trigger), new PropertyMetadata(null));
 
 
         public delegate void SettingChanged_Handler();
@@ -90,16 +82,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
                 modifiers = value;
             }
         }
-
-
-        //public object SelectedModifier
-        //{
-        //    get { return (object)GetValue(SelectedModifierProperty); }
-        //    set { SetValue(SelectedModifierProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty SelectedModifierProperty =
-        //    DependencyProperty.Register("SelectedModifier", typeof(object), typeof(Trigger), new PropertyMetadata(null));
 
 
         #region "Value"

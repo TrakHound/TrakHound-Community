@@ -49,9 +49,11 @@ namespace TH_DeviceTable
                         UpdateProductionStatus(data, info);
 
                         UpdateCNCControllerStatus(data, info);
+
+                        if (Devices_DG.Items.NeedsRefresh) Devices_DG.Items.Refresh();
                     }
 
-                    Devices_DG.UpdateLayout();
+                    //Devices_DG.UpdateLayout();
                 }
             }
         }

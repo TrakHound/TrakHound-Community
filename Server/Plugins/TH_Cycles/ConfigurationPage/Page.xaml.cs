@@ -239,7 +239,7 @@ namespace TH_Cycles.ConfigurationPage
                     ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
-                        foreach (Device device in returnData.devices)
+                        foreach (Device device in returnData.Devices)
                         {
                             DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
 
@@ -274,11 +274,11 @@ namespace TH_Cycles.ConfigurationPage
 
             foreach (DataItem item in items)
             {
-                CollectedItem ci = new CollectedItem();
-                ci.id = item.id;
-                ci.name = item.name;
-                ci.category = item.category;
-                ci.type = item.type;
+                var ci = new CollectedItem();
+                ci.id = item.Id;
+                ci.name = item.Name;
+                ci.category = item.Category;
+                ci.type = item.Type;
 
                 if (ci.name != null) ci.display = ci.id + " : " + ci.name;
                 else ci.display = ci.id;

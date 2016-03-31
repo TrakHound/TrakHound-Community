@@ -48,9 +48,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConfigurationPage.xaml.cs">
-      <DependentUpon>ConfigurationPage.xaml</DependentUpon>
-    </None>
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationPage\Controls\CheckBox.cs" />
     <Compile Include="ConfigurationPage\Page.xaml.cs">
@@ -116,10 +113,6 @@
     <Resource Include="Resources\Help_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConfigurationPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
     <Page Include="ConfigurationPage\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +122,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

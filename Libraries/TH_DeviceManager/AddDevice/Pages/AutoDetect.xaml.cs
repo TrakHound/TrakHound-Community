@@ -217,7 +217,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             {
                 result = true;
 
-                foreach (var device in probe.devices)
+                foreach (var device in probe.Devices)
                 {
                     this.Dispatcher.BeginInvoke(new Action<IPAddress, int, Device>(AddDeviceInfo), PRIORITY_BACKGROUND, new object[] { ip, port, device });
                 }
@@ -250,7 +250,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             bool alreadyAdded = ParentPage.DeviceManager.Devices.ToList().Exists(x =>
             x.Agent.Address == address.ToString() &&
             x.Agent.Port == port &&
-            x.Agent.DeviceName == device.name
+            x.Agent.DeviceName == device.Name
             );
 
             if (!alreadyAdded)
@@ -336,9 +336,9 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             string x = tag.ToLower();
 
-            string manufacturer = ToLower(device.description.manufacturer);
-            string model = ToLower(device.description.model);
-            string deviceName = ToLower(device.name);
+            string manufacturer = ToLower(device.Description.Manufacturer);
+            string model = ToLower(device.Description.Model);
+            string deviceName = ToLower(device.Name);
 
             if (GetLinkTagMatchValue(deviceName, x)) return true;
             if (GetLinkTagMatchValue(model, x)) return true;
@@ -537,11 +537,11 @@ namespace TH_DeviceManager.AddDevice.Pages
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Port", info.Port.ToString());
 
             // Save DeviceName
-            config.Agent.DeviceName = info.Device.name;
-            XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/DeviceName", info.Device.name);
+            config.Agent.DeviceName = info.Device.Name;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/DeviceName", info.Device.Name);
 
             // Save Heartbeat
-            config.Agent.DeviceName = info.Device.name;
+            config.Agent.DeviceName = info.Device.Name;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Heartbeat", "5000");
         }
 

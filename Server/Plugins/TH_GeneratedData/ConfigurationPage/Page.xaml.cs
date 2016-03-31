@@ -57,14 +57,6 @@ namespace TH_GeneratedData.ConfigurationPage
             }
         }
 
-        //public ImageSource Image
-        //{
-        //    get { return (ImageSource)GetValue(ImageProperty); }
-        //}
-
-        //public static readonly DependencyProperty ImageProperty =
-        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_GeneratedData;component/Resources/Group_01.png"))));
-
 
         public event SettingChanged_Handler SettingChanged;
 
@@ -231,9 +223,9 @@ namespace TH_GeneratedData.ConfigurationPage
                     ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
-                        foreach (Device device in returnData.devices)
+                        foreach (Device device in returnData.Devices)
                         {
-                            DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
+                            DataItemCollection dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(device);
 
                             List<DataItem> items = new List<DataItem>();
 
@@ -266,11 +258,11 @@ namespace TH_GeneratedData.ConfigurationPage
 
             foreach (DataItem item in items)
             {
-                CollectedItem ci = new CollectedItem();
-                ci.id = item.id;
-                ci.name = item.name;
-                ci.category = item.category;
-                ci.type = item.type;
+                var ci = new CollectedItem();
+                ci.id = item.Id;
+                ci.name = item.Name;
+                ci.category = item.Category;
+                ci.type = item.Type;
 
                 if (ci.name != null) ci.display = ci.id + " : " + ci.name;
                 else ci.display = ci.id;

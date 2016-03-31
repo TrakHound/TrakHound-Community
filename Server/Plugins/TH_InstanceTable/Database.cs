@@ -22,7 +22,7 @@ namespace TH_InstanceTable
 
         void CreateInstanceTable(List<string> variablesToRecord)
         {
-            if (config.DatabaseId != null) TableName = config.DatabaseId + "_" + TableNames.Instance;
+            if (configuration.DatabaseId != null) TableName = configuration.DatabaseId + "_" + TableNames.Instance;
             else TableName = TableNames.Instance;
 
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
@@ -35,7 +35,7 @@ namespace TH_InstanceTable
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(config.Databases_Server, TableName, ColArray, primaryKey);
+            Table.Create(configuration.Databases_Server, TableName, ColArray, primaryKey);
 
         }
 
@@ -57,9 +57,9 @@ namespace TH_InstanceTable
                 {
                     List<object> values = new List<object>();
 
-                    values.Add(instanceData.timestamp);
-                    values.Add(instanceData.sequence);
-                    values.Add(instanceData.agentInstanceId);
+                    values.Add(instanceData.Timestamp);
+                    values.Add(instanceData.Sequence);
+                    values.Add(instanceData.AgentInstanceId);
 
                     bool changed = false;
 
@@ -68,16 +68,16 @@ namespace TH_InstanceTable
 
                     foreach (string column in columns)
                     {
-                        InstanceData.Value value = instanceData.values.Find(x => x.id.ToUpper() == column.ToUpper());
-                        InstanceData.Value prev_Value = null;
+                        InstanceData.DataItemValue value = instanceData.Values.Find(x => x.Id.ToUpper() == column.ToUpper());
+                        InstanceData.DataItemValue prev_Value = null;
 
-                        if (previousData != null) prev_Value = previousData.values.Find(x => x.id.ToUpper() == column.ToUpper());
+                        if (previousData != null) prev_Value = previousData.Values.Find(x => x.Id.ToUpper() == column.ToUpper());
 
                         string val = null;
                         string prev_val = null;
 
-                        if (value != null) val = value.value;
-                        if (prev_Value != null) prev_val = prev_Value.value;
+                        if (value != null) val = value.Value;
+                        if (prev_Value != null) prev_val = prev_Value.Value;
 
                         prev_output += column + ":" + prev_val + "|";
                         output += column + ":" + val + "|";
@@ -108,7 +108,7 @@ namespace TH_InstanceTable
 
                     countLeft -= interval;
 
-                    Row.Insert(config.Databases_Server, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), primaryKey, false);
+                    Row.Insert(configuration.Databases_Server, TableName, columnsMySQL.ToArray(), ValuesToAdd.ToList(), primaryKey, false);
                 }
             }
         }

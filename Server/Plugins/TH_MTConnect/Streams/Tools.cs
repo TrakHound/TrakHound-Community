@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -15,7 +15,7 @@ namespace TH_MTConnect.Streams
 
         public static DeviceStream GetDeviceStreamFromXML(XmlNode DeviceNode)
         {
-            DeviceStream Result = null;
+            DeviceStream result = null;
 
             if (DeviceNode != null)
             {
@@ -35,28 +35,28 @@ namespace TH_MTConnect.Streams
 
                             case "events":
 
-                                Result.dataItems.Events.AddRange(ProcessEvents(ChildNode));
+                                result.DataItems.Events.AddRange(ProcessEvents(ChildNode));
 
                                 break;
 
                             case "samples":
 
-                                Result.dataItems.Samples.AddRange(ProcessSamples(ChildNode));
+                                result.DataItems.Samples.AddRange(ProcessSamples(ChildNode));
 
                                 break;
                         }
                     }
                 }
 
-                Result = deviceStream;
+                result = deviceStream;
             }
 
-            return Result;
+            return result;
         }
 
         public static ComponentStream ProcessComponentStream(XmlNode ComponentStreamNode)
         {
-            ComponentStream Result = new ComponentStream(ComponentStreamNode);
+            ComponentStream result = new ComponentStream(ComponentStreamNode);
 
             foreach (XmlNode DataItemNode in ComponentStreamNode.ChildNodes)
             {
@@ -66,83 +66,83 @@ namespace TH_MTConnect.Streams
                     {
                         case "condition":
 
-                            Result.dataItems.Conditions.AddRange(ProcessConditions(DataItemNode));
+                            result.DataItems.Conditions.AddRange(ProcessConditions(DataItemNode));
 
                             break;
 
                         case "events":
 
-                            Result.dataItems.Events.AddRange(ProcessEvents(DataItemNode));
+                            result.DataItems.Events.AddRange(ProcessEvents(DataItemNode));
 
                             break;
 
                         case "samples":
 
-                            Result.dataItems.Samples.AddRange(ProcessSamples(DataItemNode));
+                            result.DataItems.Samples.AddRange(ProcessSamples(DataItemNode));
 
                             break;
                     }
                 }
             }
 
-            return Result;
+            return result;
         }
 
         public static List<Condition> ProcessConditions(XmlNode ConditionNode)
         {
-            List<Condition> Result = new List<Condition>();
+            List<Condition> result = new List<Condition>();
 
             foreach (XmlNode ChildNode in ConditionNode.ChildNodes)
             {
                 Condition condition = new Condition(ChildNode);
-                Result.Add(condition);
+                result.Add(condition);
             }
 
-            return Result;
+            return result;
         }
 
         public static List<Event> ProcessEvents(XmlNode EventsNode)
         {
-            List<Event> Result = new List<Event>();
+            List<Event> result = new List<Event>();
 
             foreach (XmlNode EventNode in EventsNode.ChildNodes)
             {
                 Event event_DI = new Event(EventNode);
-                Result.Add(event_DI);
+                result.Add(event_DI);
             }
 
-            return Result;
+            return result;
         }
 
         public static List<Sample> ProcessSamples(XmlNode SamplesNode)
         {
-            List<Sample> Result = new List<Sample>();
+            List<Sample> result = new List<Sample>();
 
             foreach (XmlNode SampleNode in SamplesNode.ChildNodes)
             {
                 Sample sample_DI = new Sample(SampleNode);
-                Result.Add(sample_DI);
+                result.Add(sample_DI);
             }
 
-            return Result;
+            return result;
         }
 
         public static DataItemCollection GetDataItemsFromDeviceStream(DeviceStream deviceStream)
         {
-            DataItemCollection Result = new DataItemCollection();
+            DataItemCollection result = new DataItemCollection();
 
             foreach (ComponentStream componentStream in deviceStream.ComponentStreams)
             {
-                foreach (Condition condition_DI in componentStream.dataItems.Conditions) Result.Conditions.Add(condition_DI);
-                foreach (Event event_DI in componentStream.dataItems.Events) Result.Events.Add(event_DI);
-                foreach (Sample sample_DI in componentStream.dataItems.Samples) Result.Samples.Add(sample_DI);
+                foreach (Condition item in componentStream.DataItems.Conditions) result.Conditions.Add(item);
+                foreach (Event item in componentStream.DataItems.Events) result.Events.Add(item);
+                foreach (Sample item in componentStream.DataItems.Samples) result.Samples.Add(item);
             }
 
-            foreach (Condition condition_DI in deviceStream.dataItems.Conditions) Result.Conditions.Add(condition_DI);
-            foreach (Event event_DI in deviceStream.dataItems.Events) Result.Events.Add(event_DI);
-            foreach (Sample sample_DI in deviceStream.dataItems.Samples) Result.Samples.Add(sample_DI);
+            foreach (Condition item in deviceStream.DataItems.Conditions) result.Conditions.Add(item);
+            foreach (Event item in deviceStream.DataItems.Events) result.Events.Add(item);
+            foreach (Sample item in deviceStream.DataItems.Samples) result.Samples.Add(item);
 
-            return Result;
+            return result;
         }
     }
 }

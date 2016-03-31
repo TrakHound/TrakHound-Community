@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -16,7 +16,7 @@ namespace TH_MTConnect.Streams
         {
             ComponentStreams = new List<ComponentStream>();
 
-            dataItems = new DataItemCollection();
+            DataItems = new DataItemCollection();
         }
 
         public DeviceStream(XmlNode DeviceStreamNode)
@@ -24,24 +24,24 @@ namespace TH_MTConnect.Streams
             XML.AssignProperties(this, DeviceStreamNode);
             ComponentStreams = new List<ComponentStream>();
 
-            dataItems = new DataItemCollection();
+            DataItems = new DataItemCollection();
         }
 
         // Required
-        public string name { get; set; }
-        public string uuid { get; set; }
+        public string Name { get; set; }
+        public string Uuid { get; set; }
 
-        public List<ComponentStream> ComponentStreams;
+        public List<ComponentStream> ComponentStreams { get; set; }
 
-        public DataItemCollection dataItems;
+        public DataItemCollection DataItems { get; set; }
 
         public void Dispose()
         {
             ComponentStreams.Clear();
             ComponentStreams = null;
 
-            dataItems.Dispose();
-            dataItems = null;
+            DataItems.Dispose();
+            DataItems = null;
         }
     }
 
@@ -49,34 +49,34 @@ namespace TH_MTConnect.Streams
     {
         public ComponentStream()
         {
-            dataItems = new DataItemCollection();
+            DataItems = new DataItemCollection();
         }
 
         public ComponentStream(XmlNode ComponentStreamNode)
         {
             XML.AssignProperties(this, ComponentStreamNode);
-            fullAddress = XML.GetFullAddress(ComponentStreamNode);
+            FullAddress = XML.GetFullAddress(ComponentStreamNode);
 
-            dataItems = new DataItemCollection();
+            DataItems = new DataItemCollection();
         }
 
         // Required
-        public string componentId { get; set; }
-        public string component { get; set; }
+        public string ComponentId { get; set; }
+        public string Component { get; set; }
 
         // Optional
-        public string name { get; set; }
-        public string nativeName { get; set; }
-        public string uuid { get; set; }
+        public string Name { get; set; }
+        public string NativeName { get; set; }
+        public string Uuid { get; set; }
 
-        public DataItemCollection dataItems;
+        public DataItemCollection DataItems { get; set; }
 
-        public string fullAddress { get; set; }
+        public string FullAddress { get; set; }
 
         public void Dispose()
         {
-            dataItems.Dispose();
-            dataItems = null;
+            DataItems.Dispose();
+            DataItems = null;
         }
     }
 
@@ -91,15 +91,16 @@ namespace TH_MTConnect.Streams
             Samples = new List<Sample>();
         }
 
-        public List<Condition> Conditions;
-        public List<Event> Events;
-        public List<Sample> Samples;
+        public List<Condition> Conditions { get; set; }
+        public List<Event> Events { get; set; }
+        public List<Sample> Samples { get; set; }
 
         public void Dispose()
         {
             Conditions.Clear();
             Events.Clear();
             Samples.Clear();
+
             Conditions = null;
             Events = null;
             Samples = null;
@@ -113,30 +114,30 @@ namespace TH_MTConnect.Streams
         public Condition(XmlNode ConditionNode)
         {
             XML.AssignProperties(this, ConditionNode);
-            fullAddress = XML.GetFullAddress(ConditionNode);
-            value = ConditionNode.Name;
+            FullAddress = XML.GetFullAddress(ConditionNode);
+            Value = ConditionNode.Name;
             CDATA = ConditionNode.InnerText;
         }
 
-        public string value { get; set; }
+        public string Value { get; set; }
 
         // Required
-        public Int64 sequence { get; set; }
-        public DateTime timestamp { get; set; }
-        public string dataItemId { get; set; }
-        public string type { get; set; }
+        public Int64 Sequence { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string DataItemId { get; set; }
+        public string Type { get; set; }
 
         // Optional
-        public string name { get; set; }
-        public string nativeCode { get; set; }
-        public string nativeSeverity { get; set; }
-        public string qualifier { get; set; }
-        public string statistic { get; set; }
-        public string subType { get; set; }
+        public string Name { get; set; }
+        public string NativeCode { get; set; }
+        public string NativeSeverity { get; set; }
+        public string Qualifier { get; set; }
+        public string Statistic { get; set; }
+        public string SubType { get; set; }
 
         public string CDATA { get; set; }
 
-        public string fullAddress { get; set; }
+        public string FullAddress { get; set; }
     }
 
     public class Event
@@ -146,7 +147,7 @@ namespace TH_MTConnect.Streams
         public Event(XmlNode EventNode)
         {
             XML.AssignProperties(this, EventNode);
-            fullAddress = XML.GetFullAddress(EventNode);
+            FullAddress = XML.GetFullAddress(EventNode);
             Type = EventNode.Name;
             CDATA = EventNode.InnerText;
         }
@@ -154,17 +155,17 @@ namespace TH_MTConnect.Streams
         public string Type { get; set; }
 
         // Required
-        public Int64 sequence { get; set; }
-        public DateTime timestamp { get; set; }
-        public string dataItemId { get; set; }
+        public Int64 Sequence { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string DataItemId { get; set; }
 
         // Optional
-        public string subType { get; set; }
-        public string name { get; set; }
+        public string SubType { get; set; }
+        public string Name { get; set; }
 
         public string CDATA { get; set; }
 
-        public string fullAddress { get; set; }
+        public string FullAddress { get; set; }
     }
 
     public class Sample
@@ -174,7 +175,7 @@ namespace TH_MTConnect.Streams
         public Sample(XmlNode SampleNode)
         {
             XML.AssignProperties(this, SampleNode);
-            fullAddress = XML.GetFullAddress(SampleNode);
+            FullAddress = XML.GetFullAddress(SampleNode);
             Type = SampleNode.Name;
             CDATA = SampleNode.InnerText;
         }
@@ -182,20 +183,20 @@ namespace TH_MTConnect.Streams
         public string Type { get; set; }
 
         // Required
-        public Int64 sequence { get; set; }
-        public DateTime timestamp { get; set; }
-        public string dataItemId { get; set; }
+        public Int64 Sequence { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string DataItemId { get; set; }
 
         // Optional
-        public string subType { get; set; }
-        public string name { get; set; }
-        public string sampleRate { get; set; }
-        public string statistic { get; set; }
-        public string duration { get; set; }
-        public string sampleCount { get; set; }
+        public string SubType { get; set; }
+        public string Name { get; set; }
+        public string SampleRate { get; set; }
+        public string Statistic { get; set; }
+        public string Duration { get; set; }
+        public string SampleCount { get; set; }
 
         public string CDATA { get; set; }
 
-        public string fullAddress { get; set; }
+        public string FullAddress { get; set; }
     }
 }

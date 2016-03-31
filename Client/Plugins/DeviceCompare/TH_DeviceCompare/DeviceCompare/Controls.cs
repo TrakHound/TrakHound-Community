@@ -331,7 +331,8 @@ namespace TH_DeviceCompare
             "Availability",
             "Performance",
             "Timeline (OEE)",
-            "Production Status", 
+            "Production Status",
+            "Part Count",
             "Program Name",
             "Feedrate Override",
             "Rapidrate Override",
@@ -340,7 +341,6 @@ namespace TH_DeviceCompare
             "Controller Mode",
             "Execution Mode",
             "Alarm",
-            "Part Count",
         };
 
         /// <summary>

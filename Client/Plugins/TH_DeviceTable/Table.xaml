@@ -98,7 +98,7 @@
                                             <Setter Property="Foreground" Value="Red"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding OeeStatus}" Value="1">
-                                                    <Setter Property="Foreground" Value="Yellow"/>
+                                                    <Setter Property="Foreground" Value="#0080ff"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding OeeStatus}" Value="2">
                                                     <Setter Property="Foreground" Value="#FF19B419"/>
@@ -171,7 +171,7 @@
                                             <Setter Property="Foreground" Value="Red"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
-                                                    <Setter Property="Foreground" Value="Yellow"/>
+                                                    <Setter Property="Foreground" Value="#0080ff"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
                                                     <Setter Property="Foreground" Value="#FF19B419"/>
@@ -244,7 +244,7 @@
                                             <Setter Property="Foreground" Value="Red"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
-                                                    <Setter Property="Foreground" Value="Yellow"/>
+                                                    <Setter Property="Foreground" Value="#0080ff"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
                                                     <Setter Property="Foreground" Value="#FF19B419"/>

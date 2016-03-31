@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -30,19 +30,19 @@ namespace TH_MTConnect.Components
                         {
                             case "components":
 
-                                device.components.AddRange(ProcessComponents(ChildNode));
+                                device.Components.AddRange(ProcessComponents(ChildNode));
 
                                 break;
 
                             case "dataitems":
 
-                                device.dataItems = ProcessDataItems(ChildNode);
+                                device.DataItems = ProcessDataItems(ChildNode);
 
                                 break;
 
                             case "description":
 
-                                device.description = new Description(ChildNode);
+                                device.Description = new Description(ChildNode);
 
                                 break;
                         }
@@ -73,19 +73,19 @@ namespace TH_MTConnect.Components
                         {
                             case "components":
 
-                                component.components.AddRange(ProcessComponents(ChildChildNode));
+                                component.Components.AddRange(ProcessComponents(ChildChildNode));
 
                                 break;
 
                             case "dataitems":
 
-                                component.dataItems = ProcessDataItems(ChildChildNode);
+                                component.DataItems = ProcessDataItems(ChildChildNode);
 
                                 break;
 
                             case "description":
 
-                                component.description = new Description(ChildChildNode);
+                                component.Description = new Description(ChildChildNode);
 
                                 break;
                         }
@@ -121,12 +121,12 @@ namespace TH_MTConnect.Components
                                     {
                                         case "source":
 
-                                            dataItem.source = new DataItem.Source(ChildChildNode);
+                                            dataItem.Source = new Source(ChildChildNode);
                                             break;
 
                                         case "constraints":
 
-                                            dataItem.constraints = ProcessConstraints(ChildChildNode);
+                                            dataItem.Constraints = ProcessConstraints(ChildChildNode);
 
                                             break;
                                     }
@@ -134,7 +134,7 @@ namespace TH_MTConnect.Components
                             }
 
                             // Add to corresponding List in DataItemCollection object
-                            switch (dataItem.category.ToLower())
+                            switch (dataItem.Category.ToLower())
                             {
                                 case "condition":
 
@@ -162,9 +162,9 @@ namespace TH_MTConnect.Components
             return Result;
         }
 
-        static DataItem.Constraints ProcessConstraints(XmlNode ConstraintsNode)
+        static Constraints ProcessConstraints(XmlNode ConstraintsNode)
         {
-            DataItem.Constraints Result = new DataItem.Constraints();
+            var result = new Constraints();
 
             foreach (XmlNode ChildNode in ConstraintsNode.ChildNodes)
             {
@@ -172,56 +172,56 @@ namespace TH_MTConnect.Components
                 {
                     switch (ChildNode.Name.ToLower())
                     {
-                        case "value": Result.value = ChildNode.InnerText; break;
-                        case "minimum": Result.minimum = ChildNode.InnerText; break;
-                        case "maximum": Result.maximum = ChildNode.InnerText; break;
+                        case "value": result.Value = ChildNode.InnerText; break;
+                        case "minimum": result.Minimum = ChildNode.InnerText; break;
+                        case "maximum": result.Maximum = ChildNode.InnerText; break;
 
-                        case "filter": Result.filter = new DataItem.Constraints.Filter(ChildNode); break;
+                        case "filter": result.Filter = new Filter(ChildNode); break;
                     }
                 }
             }
 
-            return Result;
+            return result;
         }
 
         public static DataItemCollection GetDataItemsFromDevice(Device device)
         {
-            DataItemCollection DIC = new DataItemCollection();
+            var result = new DataItemCollection();
 
-            foreach (DataItem condition_DI in device.dataItems.Conditions) DIC.Conditions.Add(condition_DI);
-            foreach (DataItem event_DI in device.dataItems.Events) DIC.Events.Add(event_DI);
-            foreach (DataItem sample_DI in device.dataItems.Samples) DIC.Samples.Add(sample_DI);
+            foreach (DataItem item in device.DataItems.Conditions) result.Conditions.Add(item);
+            foreach (DataItem item in device.DataItems.Events) result.Events.Add(item);
+            foreach (DataItem item in device.DataItems.Samples) result.Samples.Add(item);
 
-            foreach (Component component in device.components)
+            foreach (Component component in device.Components)
             {
-                DataItemCollection CDIC = GetDataItemsFromComponent(component);
+                DataItemCollection collection = GetDataItemsFromComponent(component);
 
-                foreach (DataItem condition_DI in CDIC.Conditions) DIC.Conditions.Add(condition_DI);
-                foreach (DataItem event_DI in CDIC.Events) DIC.Events.Add(event_DI);
-                foreach (DataItem sample_DI in CDIC.Samples) DIC.Samples.Add(sample_DI);
+                foreach (DataItem item in collection.Conditions) result.Conditions.Add(item);
+                foreach (DataItem item in collection.Events) result.Events.Add(item);
+                foreach (DataItem item in collection.Samples) result.Samples.Add(item);
             }
 
-            return DIC;
+            return result;
         }
 
         static DataItemCollection GetDataItemsFromComponent(Component component)
         {
-            DataItemCollection DIC = new DataItemCollection();
+            var result = new DataItemCollection();
 
-            foreach (DataItem condition_DI in component.dataItems.Conditions) DIC.Conditions.Add(condition_DI);
-            foreach (DataItem event_DI in component.dataItems.Events) DIC.Events.Add(event_DI);
-            foreach (DataItem sample_DI in component.dataItems.Samples) DIC.Samples.Add(sample_DI);
+            foreach (DataItem item in component.DataItems.Conditions) result.Conditions.Add(item);
+            foreach (DataItem item in component.DataItems.Events) result.Events.Add(item);
+            foreach (DataItem item in component.DataItems.Samples) result.Samples.Add(item);
 
-            foreach (Component childcomponent in component.components)
+            foreach (Component childcomponent in component.Components)
             {
-                DataItemCollection CDIC = GetDataItemsFromComponent(childcomponent);
+                DataItemCollection collection = GetDataItemsFromComponent(childcomponent);
 
-                foreach (DataItem condition_DI in CDIC.Conditions) DIC.Conditions.Add(condition_DI);
-                foreach (DataItem event_DI in CDIC.Events) DIC.Events.Add(event_DI);
-                foreach (DataItem sample_DI in CDIC.Samples) DIC.Samples.Add(sample_DI);
+                foreach (DataItem item in collection.Conditions) result.Conditions.Add(item);
+                foreach (DataItem item in collection.Events) result.Events.Add(item);
+                foreach (DataItem item in collection.Samples) result.Samples.Add(item);
             }
 
-            return DIC;
+            return result;
         }
     }
 }

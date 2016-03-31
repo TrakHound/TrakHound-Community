@@ -26,7 +26,7 @@ namespace TH_DeviceManager.AddDevice
         {
             get
             {
-                if (Device != null) return Device.description;
+                if (Device != null) return Device.Description;
                 else return null;
             }
         }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -18,20 +18,20 @@ namespace TH_MTConnect
         public Header_Devices(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = DateTime_Functions.ConvertDateTimeToUTC(creationTime);
+            CreationTime = DateTime_Functions.ConvertDateTimeToUTC(CreationTime);
         }
 
         // Required
-        public Int64 assetBufferSize { get; set; }
-        public Int64 assetCount { get; set; }
-        public Int64 bufferSize { get; set; }
-        public DateTime creationTime { get; set; }
-        public Int64 instanceId { get; set; }
-        public string sender { get; set; }
-        public string version { get; set; }
+        public Int64 AssetBufferSize { get; set; }
+        public Int64 AssetCount { get; set; }
+        public Int64 BufferSize { get; set; }
+        public DateTime CreationTime { get; set; }
+        public Int64 InstanceId { get; set; }
+        public string Sender { get; set; }
+        public string Version { get; set; }
 
         // Optional
-        public string testIndicator { get; set; }
+        public string TestIndicator { get; set; }
     }
 
     /// <summary>
@@ -44,22 +44,22 @@ namespace TH_MTConnect
         public Header_Streams(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = DateTime_Functions.ConvertDateTimeToUTC(creationTime);
+            CreationTime = DateTime_Functions.ConvertDateTimeToUTC(CreationTime);
         }
 
         // Required
-        public Int64 bufferSize { get; set; }
-        public DateTime creationTime { get; set; }
-        public Int64 instanceId { get; set; }
-        public string sender { get; set; }
-        public string version { get; set; }
+        public Int64 BufferSize { get; set; }
+        public DateTime CreationTime { get; set; }
+        public Int64 InstanceId { get; set; }
+        public string Sender { get; set; }
+        public string Version { get; set; }
 
-        public Int64 firstSequence { get; set; }
-        public Int64 lastSequence { get; set; }
-        public Int64 nextSequence { get; set; }
+        public Int64 FirstSequence { get; set; }
+        public Int64 LastSequence { get; set; }
+        public Int64 NextSequence { get; set; }
 
         // Optional
-        public string testIndicator { get; set; }
+        public string TestIndicator { get; set; }
     }
 
     /// <summary>
@@ -72,19 +72,19 @@ namespace TH_MTConnect
         public Header_Assets(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = DateTime_Functions.ConvertDateTimeToUTC(creationTime);
+            CreationTime = DateTime_Functions.ConvertDateTimeToUTC(CreationTime);
         }
 
         // Required
-        public Int64 assetBufferSize { get; set; }
-        public Int64 assetCount { get; set; }
-        public DateTime creationTime { get; set; }
-        public Int64 instanceId { get; set; }
-        public string sender { get; set; }
-        public string version { get; set; }
+        public Int64 AssetBufferSize { get; set; }
+        public Int64 AssetCount { get; set; }
+        public DateTime CreationTime { get; set; }
+        public Int64 InstanceId { get; set; }
+        public string Sender { get; set; }
+        public string Version { get; set; }
 
         // Optional
-        public string testIndicator { get; set; }
+        public string TestIndicator { get; set; }
     }
 
     /// <summary>
@@ -97,23 +97,23 @@ namespace TH_MTConnect
         public Header_Error(XmlNode HeaderNode)
         {
             XML.AssignProperties(this, HeaderNode);
-            creationTime = DateTime_Functions.ConvertDateTimeToUTC(creationTime);
+            CreationTime = DateTime_Functions.ConvertDateTimeToUTC(CreationTime);
         }
 
         // Required
-        public Int64 assetBufferSize { get; set; }
-        public Int64 assetCount { get; set; }
-        public Int64 bufferSize { get; set; }
-        public DateTime creationTime { get; set; }
-        public Int64 instanceId { get; set; }
-        public string sender { get; set; }
-        public string version { get; set; }
+        public Int64 AssetBufferSize { get; set; }
+        public Int64 AssetCount { get; set; }
+        public Int64 BufferSize { get; set; }
+        public DateTime CreationTime { get; set; }
+        public Int64 InstanceId { get; set; }
+        public string Sender { get; set; }
+        public string Version { get; set; }
 
         // Optional
-        public string testIndicator { get; set; }
-        public Int64 nextSequence { get; set; }
-        public Int64 lastSequence { get; set; }
-        public Int64 firstSequence { get; set; }
+        public string TestIndicator { get; set; }
+        public Int64 NextSequence { get; set; }
+        public Int64 LastSequence { get; set; }
+        public Int64 FirstSequence { get; set; }
     }
 
 }

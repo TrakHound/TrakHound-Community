@@ -24,13 +24,13 @@ namespace TH_Parts
         public int Count { get; set; }
 
 
-        public static PartInfo Get(Configuration config, GeneratedData.GeneratedEventItem genEventItem)
+        public static PartInfo Get(Configuration config, GeneratedEventItem genEventItem)
         {
             var pc = PartsConfiguration.Get(config);
             if (pc != null)
             {
-                if (genEventItem.eventName == pc.PartsEventName &&
-                genEventItem.value == String_Functions.UppercaseFirst(pc.PartsEventValue.Replace('_', ' ')))
+                if (genEventItem.EventName == pc.PartsEventName &&
+                genEventItem.Value == String_Functions.UppercaseFirst(pc.PartsEventValue.Replace('_', ' ')))
                 {
                     var captureItem = genEventItem.CaptureItems.Find(x => x.name == pc.PartsCaptureItemLink);
                     if (captureItem != null)
@@ -38,7 +38,7 @@ namespace TH_Parts
                         int count = 0;
                         if (int.TryParse(captureItem.value, out count))
                         {
-                            DateTime timestamp = genEventItem.timestamp;
+                            DateTime timestamp = genEventItem.Timestamp;
 
                             string shiftId = null;
                             var shiftInfo = CurrentShiftInfo.Get(config, timestamp);

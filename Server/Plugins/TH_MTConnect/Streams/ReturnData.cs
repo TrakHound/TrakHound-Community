@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -16,15 +16,15 @@ namespace TH_MTConnect.Streams
     public class ReturnData : IDisposable
     {
         // Device object with heirarchy of values and xml structure
-        public List<DeviceStream> deviceStreams;
+        public List<DeviceStream> DeviceStreams { get; set; }
 
         // Header Information
-        public Header_Streams header;
+        public Header_Streams Header { get; set; }
 
         public void Dispose()
         {
-            deviceStreams.Clear();
-            deviceStreams = null;
+            DeviceStreams.Clear();
+            DeviceStreams = null;
         }
     }
 }

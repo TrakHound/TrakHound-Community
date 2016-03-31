@@ -30,8 +30,6 @@ namespace TH_InstanceTable.ConfigurationPage
         {
             InitializeComponent();
             DataContext = this;
-
-            CreateExampleTable();
         }
 
         public string PageName
@@ -56,14 +54,6 @@ namespace TH_InstanceTable.ConfigurationPage
                 return _image;
             }
         }
-
-        //public ImageSource Image
-        //{
-        //    get { return (ImageSource)GetValue(ImageProperty); }
-        //}
-
-        //public static readonly DependencyProperty ImageProperty =
-        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_InstanceTable;component/Resources/Hourglass_01.png"))));
 
 
         public event SettingChanged_Handler SettingChanged;
@@ -123,92 +113,23 @@ namespace TH_InstanceTable.ConfigurationPage
 
             foreach (Controls.CheckBox chk in ConditionItems)
             {
-                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.id, dt);
-                else Table_Functions.RemoveTableRow(prefix + chk.id, dt);
+                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
+                else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
             }
 
             foreach (Controls.CheckBox chk in EventItems)
             {
-                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.id, dt);
-                else Table_Functions.RemoveTableRow(prefix + chk.id, dt);
+                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
+                else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
             }
 
             foreach (Controls.CheckBox chk in SampleItems)
             {
-                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.id, dt);
-                else Table_Functions.RemoveTableRow(prefix + chk.id, dt);
+                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
+                else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
             }
 
         }
-
-        ObservableCollection<object> exampletableitems;
-        public ObservableCollection<object> ExampleTableItems
-        {
-            get
-            {
-                if (exampletableitems == null)
-                    exampletableitems = new ObservableCollection<object>();
-                return exampletableitems;
-            }
-
-            set
-            {
-                exampletableitems = value;
-            }
-        }
-
-        void CreateExampleTable()
-        {
-
-            ExampleTableItems.Clear();
-
-            ExampleTableItem item;
-
-            item = new ExampleTableItem();
-            item.Timestamp = "2015-11-09 11:41:53";
-            item.Sequence = "4918141249";
-            item.AgentInstanceId = "1425445166";
-            item.Avail = "AVAILABLE";
-            item.Msg = "UNAVAILABLE";
-            item.Estop = "ARMED";
-            item.Cn2 = "X-0.085416 Y-1.094673";
-            item.Cn3 = "AUTOMATIC";
-            item.Cn4 = "458";
-            item.Cn5 = "FLANGE_CAM.NGC";
-            item.Cn6 = "ACTIVE";
-            ExampleTableItems.Add(item);
-
-            item = new ExampleTableItem();
-            item.Timestamp = "2015-11-09 11:41:53";
-            item.Sequence = "4918141343";
-            item.AgentInstanceId = "1425445166";
-            item.Avail = "AVAILABLE";
-            item.Msg = "UNAVAILABLE";
-            item.Estop = "ARMED";
-            item.Cn2 = "X-0.193921 Y-1.078708";
-            item.Cn3 = "AUTOMATIC";
-            item.Cn4 = "459";
-            item.Cn5 = "FLANGE_CAM.NGC";
-            item.Cn6 = "ACTIVE";
-            ExampleTableItems.Add(item);
-
-            item = new ExampleTableItem();
-            item.Timestamp = "2015-11-09 11:41:53";
-            item.Sequence = "4918141436";
-            item.AgentInstanceId = "1425445166";
-            item.Avail = "AVAILABLE";
-            item.Msg = "UNAVAILABLE";
-            item.Estop = "ARMED";
-            item.Cn2 = "X-0.300094 Y-1.052036";
-            item.Cn3 = "AUTOMATIC";
-            item.Cn4 = "460";
-            item.Cn5 = "FLANGE_CAM.NGC";
-            item.Cn6 = "ACTIVE";
-            ExampleTableItems.Add(item);
-
-        }
-
-
 
         DataTable configurationTable;
 
@@ -380,20 +301,20 @@ namespace TH_InstanceTable.ConfigurationPage
 
         void AddConditionItem(DataItem dataItem)
         {
-            if (ConditionItems.ToList().Find(x => x.id == dataItem.id) == null)
+            if (ConditionItems.ToList().Find(x => x.Id == dataItem.Id) == null)
             {
                 Controls.CheckBox chk = new Controls.CheckBox();
 
                 // Set text
-                if (dataItem.name == null) chk.Content = dataItem.id;
-                else chk.Content = dataItem.id + " : " + dataItem.name;
+                if (dataItem.Name == null) chk.Content = dataItem.Id;
+                else chk.Content = dataItem.Id + " : " + dataItem.Name;
 
-                chk.id = dataItem.id;
-                chk.name = dataItem.name;
+                chk.Id = dataItem.Id;
+                chk.Name = dataItem.Name;
 
                 // Set Checked based on whether it is found in 'Omit' list
                 string prefix = "/InstanceTable/DataItems/Omit/";
-                string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
+                string s = Table_Functions.GetTableValue(prefix + dataItem.Id, configurationTable);
                 if (s != null) chk.IsChecked = false;
                 else chk.IsChecked = true;
 
@@ -406,20 +327,20 @@ namespace TH_InstanceTable.ConfigurationPage
 
         void AddEventItem(DataItem dataItem)
         {
-            if (EventItems.ToList().Find(x => x.id == dataItem.id) == null)
+            if (EventItems.ToList().Find(x => x.Id == dataItem.Id) == null)
              {
                  Controls.CheckBox chk = new Controls.CheckBox();
 
                  // Set text
-                 if (dataItem.name == null) chk.Content = dataItem.id;
-                 else chk.Content = dataItem.id + " : " + dataItem.name;
+                 if (dataItem.Name == null) chk.Content = dataItem.Id;
+                 else chk.Content = dataItem.Id + " : " + dataItem.Name;
 
-                 chk.id = dataItem.id;
-                 chk.name = dataItem.name;
+                 chk.Id = dataItem.Id;
+                 chk.Name = dataItem.Name;
 
                  // Set Checked based on whether it is found in 'Omit' list
                  string prefix = "/InstanceTable/DataItems/Omit/";
-                 string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
+                 string s = Table_Functions.GetTableValue(prefix + dataItem.Id, configurationTable);
                  if (s != null) chk.IsChecked = false;
                  else chk.IsChecked = true;
 
@@ -432,20 +353,20 @@ namespace TH_InstanceTable.ConfigurationPage
 
         void AddSampleItem(DataItem dataItem)
         {
-            if (SampleItems.ToList().Find(x => x.id == dataItem.id) == null)
+            if (SampleItems.ToList().Find(x => x.Id == dataItem.Id) == null)
             {
                 Controls.CheckBox chk = new Controls.CheckBox();
 
                 // Set text
-                if (dataItem.name == null) chk.Content = dataItem.id;
-                else chk.Content = dataItem.id + " : " + dataItem.name;
+                if (dataItem.Name == null) chk.Content = dataItem.Id;
+                else chk.Content = dataItem.Id + " : " + dataItem.Name;
 
-                chk.id = dataItem.id;
-                chk.name = dataItem.name;
+                chk.Id = dataItem.Id;
+                chk.Name = dataItem.Name;
 
                 // Set Checked based on whether it is found in 'Omit' list
                 string prefix = "/InstanceTable/DataItems/Omit/";
-                string s = Table_Functions.GetTableValue(prefix + dataItem.id, configurationTable);
+                string s = Table_Functions.GetTableValue(prefix + dataItem.Id, configurationTable);
                 if (s != null) chk.IsChecked = false;
                 else chk.IsChecked = true;
 
@@ -460,13 +381,13 @@ namespace TH_InstanceTable.ConfigurationPage
         void Omit_Checked(object sender, RoutedEventArgs e)
         {
             Controls.CheckBox chk = (Controls.CheckBox)sender;
-            ChangeSetting("/InstanceTable/DataItems/Omit/" + chk.id, chk.id, "True");
+            ChangeSetting("/InstanceTable/DataItems/Omit/" + chk.Id, chk.Id, "True");
         }
 
         void Omit_Unchecked(object sender, RoutedEventArgs e)
         {
             Controls.CheckBox chk = (Controls.CheckBox)sender;
-            ChangeSetting("/InstanceTable/DataItems/Omit/" + chk.id, chk.id, "False");
+            ChangeSetting("/InstanceTable/DataItems/Omit/" + chk.Id, chk.Id, "False");
         }
 
 
@@ -544,7 +465,7 @@ namespace TH_InstanceTable.ConfigurationPage
                     ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
-                        foreach (Device device in returnData.devices)
+                        foreach (Device device in returnData.Devices)
                         {
                             DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
 
@@ -569,60 +490,12 @@ namespace TH_InstanceTable.ConfigurationPage
             }
         }
 
-        //void probe_ProbeFinished(ReturnData returnData, Probe sender)
-        //{
-        //    if (returnData != null)
-        //    {
-        //        foreach (Device device in returnData.devices)
-        //        {
-        //            DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
-
-        //            // Conditions
-        //            foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { dataItem });
-
-        //            // Events
-        //            foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { dataItem });
-
-        //            // Samples
-        //            foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { dataItem });
-        //        }
-        //    }
-
-        //    // Set 'Loading' to false
-        //    this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
-        //}
-
         void OmitProbeFinished()
         {
             OmitItemsLoading = false;
         }
 
-        
-        //void probe_ProbeError(Probe.ErrorData errorData)
-        //{
-
-        //    // Set 'Loading' to false
-        //    this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
-
-        //}
-
         #endregion
-
-    }
-
-    public class ExampleTableItem
-    {
-        public string Timestamp { get; set; }
-        public string Sequence { get; set; }
-        public string AgentInstanceId { get; set; }
-        public string Avail { get; set; }
-        public string Msg { get; set; }
-        public string Estop { get; set; }
-        public string Cn2 { get; set; }
-        public string Cn3 { get; set; }
-        public string Cn4 { get; set; }
-        public string Cn5 { get; set; }
-        public string Cn6 { get; set; }
 
     }
 

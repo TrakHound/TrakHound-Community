@@ -1,7 +1,10 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace TH_Cycles
 {
@@ -9,7 +12,6 @@ namespace TH_Cycles
     {
         public Override()
         {
-            //values = new List<double>();
             Values = new List<OverrideValue>();
         }
 
@@ -60,16 +62,6 @@ namespace TH_Cycles
         }
 
         public List<OverrideValue> Values { get; set; }
-
-        //private List<double> values;
-        //public List<double> Values
-        //{
-        //    get { return values; }
-        //    set
-        //    {
-        //        values = value;
-        //    }
-        //}
     }
 
     public class OverrideValue

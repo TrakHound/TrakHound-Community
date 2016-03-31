@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -39,8 +39,8 @@ namespace TH_MTConnect.Components
                     if (devices != null)
                     {
                         result = new ReturnData();
-                        result.header = header;
-                        result.devices = devices;
+                        result.Header = header;
+                        result.Devices = devices;
                     }
                 }
             }
@@ -64,7 +64,7 @@ namespace TH_MTConnect.Components
                     {
                         Device device = Tools.GetDeviceFromXML(deviceNode);
 
-                        device.dataItems = Tools.GetDataItemsFromDevice(device);
+                        device.DataItems = Tools.GetDataItemsFromDevice(device);
 
                         result.Add(device);
                     }
@@ -86,7 +86,7 @@ namespace TH_MTConnect.Components
                 {
                     XmlNode headerNode = headerNodes[0];
 
-                    Header_Devices header = new Header_Devices(headerNode);
+                    var header = new Header_Devices(headerNode);
 
                     result = header;
                 }

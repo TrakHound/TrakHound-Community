@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
 using System.Collections.ObjectModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace TH_GeneratedData.ConfigurationPage.Controls
 {
@@ -47,7 +39,6 @@ namespace TH_GeneratedData.ConfigurationPage.Controls
 
         public delegate void Clicked_Handler(Snapshot_Item item);
 
-        //string prefix = "/GeneratedData/SnapShotData/";
 
         #region "Name"
 

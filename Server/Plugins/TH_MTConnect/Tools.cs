@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -130,8 +130,8 @@ namespace TH_MTConnect
         {
             public TableInfo() { }
 
-            public string name { get; set; }
-            public string value { get; set; }
+            public string Name { get; set; }
+            public string Value { get; set; }
 
         }
 
@@ -151,9 +151,9 @@ namespace TH_MTConnect
 
                             foreach (XmlNode valueNode in child.ChildNodes)
                             {
-                                TableInfo info = new TableInfo();
-                                info.name = name;
-                                info.value = valueNode.Name;
+                                var info = new TableInfo();
+                                info.Name = name;
+                                info.Value = valueNode.Name;
                                 result.Add(info);
                             }
                         }
@@ -174,8 +174,8 @@ namespace TH_MTConnect
             foreach (TableInfo info in infos)
             {
                 DataRow row = result.NewRow();
-                row["NAME"] = info.name;
-                row["VALUE"] = info.value;
+                row["NAME"] = info.Name;
+                row["VALUE"] = info.Value;
                 result.Rows.Add(row);
             }
 

@@ -16,33 +16,43 @@ namespace TH_InstanceTable
 
         public string Name { get { return "TH_InstanceTable"; } }
 
-        public void Initialize(Configuration configuration)
+        public void Initialize(Configuration config)
         {
-            InstanceConfiguration ic = null;
-
-            if (firstPass)
-            {
-                ic = InstanceConfiguration.Read(configuration.ConfigurationXML);
-            }
-            else ic = InstanceConfiguration.Get(configuration);
-
+            InstanceConfiguration ic = InstanceConfiguration.Read(config.ConfigurationXML);
             if (ic != null)
             {
-                if (ic.DataItems.Conditions || ic.DataItems.Events || ic.DataItems.Samples) AddDatabases = true;
+                if (ic.Conditions || ic.Events || ic.Samples) AddDatabases = true;
                 else AddDatabases = false;
 
-                if (firstPass) configuration.CustomClasses.Add(ic);
+                config.CustomClasses.Add(ic);
             }
 
-            firstPass = false;
-
-            config = configuration;
+            configuration = config;
         }
 
-        //void SendData(EventData data)
+        //public void Initialize(Configuration config)
         //{
-        //    if (SendData != null) SendData(data);
+        //    InstanceConfiguration ic = null;
+
+        //    if (firstPass)
+        //    {
+        //        ic = InstanceConfiguration.Read(config.ConfigurationXML);
+        //    }
+        //    else ic = InstanceConfiguration.Get(config);
+
+        //    if (ic != null)
+        //    {
+        //        if (ic.DataItems.Conditions || ic.DataItems.Events || ic.DataItems.Samples) AddDatabases = true;
+        //        else AddDatabases = false;
+
+        //        if (firstPass) config.CustomClasses.Add(ic);
+        //    }
+
+        //    firstPass = false;
+
+        //    configuration = config;
         //}
+
 
         public void GetSentData(EventData data)
         {

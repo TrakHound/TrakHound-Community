@@ -33,7 +33,7 @@ namespace TH_ShiftTable
 
         public void Initialize(Configuration config)
         {
-            ShiftConfiguration sc = ShiftConfiguration.ReadXML(config.ConfigurationXML);
+            ShiftConfiguration sc = ShiftConfiguration.Read(config.ConfigurationXML);
 
             if (sc != null)
             {
@@ -55,7 +55,7 @@ namespace TH_ShiftTable
             {
                 if (data.id.ToLower() == "generatedeventitems")
                 {                          
-                    List<GeneratedData.GeneratedEventItem> genEventItems = (List<GeneratedData.GeneratedEventItem>)data.data02;
+                    var genEventItems = (List<GeneratedEventItem>)data.data02;
 
                     ProcessShifts(genEventItems);
                 }
@@ -74,12 +74,12 @@ namespace TH_ShiftTable
             if (configuration.DatabaseId != null) tablePrefix = configuration.DatabaseId + "_";
             else tablePrefix = "";
 
-            DateTime timestamp = returnData.header.creationTime;
+            DateTime timestamp = returnData.Header.CreationTime;
 
             var infos = new List<Variables.VariableData>();
 
             // Update shift_current in "Variables" table
-            CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(configuration, returnData.header.creationTime);
+            CurrentShiftInfo shiftInfo = CurrentShiftInfo.Get(configuration, returnData.Header.CreationTime);
             if (shiftInfo != null)
             {
                 infos.Add(new Variables.VariableData("shift_name", shiftInfo.name, timestamp));
@@ -135,10 +135,6 @@ namespace TH_ShiftTable
         {
 
         }
-
-        //public TH_Plugins_Server.ConfigurationPage ConfigurationPage { get { return new ConfigurationPage.Page(); } }
-
-        //public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
 
         public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
@@ -272,14 +268,14 @@ namespace TH_ShiftTable
             ShiftConfiguration sc = ShiftConfiguration.Get(config);
             if (sc != null)
             {
-                GeneratedData.GenDataConfiguration gdc = GeneratedData.GetConfiguration(config);
+                var gdc = GeneratedDataConfiguration.Get(config);
                 if (gdc != null)
                 {
-                    foreach (GeneratedData.GeneratedEvents.Event genEvent in gdc.generatedEvents.events)
+                    foreach (var genEvent in gdc.GeneratedEventsConfiguration.Events)
                     {
                         string columnName;
 
-                        foreach (GeneratedData.GeneratedEvents.Value value in genEvent.Values)
+                        foreach (var value in genEvent.Values)
                         {
                             columnName = Tools.FormatColumnName(genEvent, value);
 
@@ -297,46 +293,7 @@ namespace TH_ShiftTable
             return result;
         }
 
-        //void AddGeneratedEventColumns()
-        //{
-        //    ShiftConfiguration sc = ShiftConfiguration.Get(configuration);
-        //    if (sc != null)
-        //    {
-        //        GeneratedData.GenDataConfiguration gdc = GeneratedData.GetConfiguration(configuration);
-        //        if (gdc != null)
-        //        {
-        //            GenEventColumns = new List<string>();
-
-        //            foreach (GeneratedData.GeneratedEvents.Event genEvent in gdc.generatedEvents.events)
-        //            {
-        //                string columnName;
-
-        //                foreach (GeneratedData.GeneratedEvents.Value value in genEvent.Values)
-        //                {
-        //                    columnName = Tools.FormatColumnName(genEvent, value);
-
-        //                    if (!ShiftTableColumns.Contains(columnName))
-        //                    {
-        //                        Column.Add(configuration.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
-        //                    }
-
-        //                    GenEventColumns.Add(columnName);
-        //                }
-
-        //                // Add GenEvent.Default column
-        //                columnName = Tools.FormatColumnName(genEvent.Name, genEvent.Default.NumVal, genEvent.Default.Value);
-
-        //                if (!ShiftTableColumns.Contains(columnName))
-        //                {
-        //                    Column.Add(configuration.Databases_Server, TableName, new ColumnDefinition(columnName, DataType.Long));
-        //                }
-
-        //                GenEventColumns.Add(columnName);
-        //            }
-        //        }
-        //    }
-        //}
-
+        
         List<ShiftRowInfo> GetExistingValues()
         {
             List<ShiftRowInfo> Result = new List<ShiftRowInfo>();
@@ -410,13 +367,11 @@ namespace TH_ShiftTable
                         }
 
                         Result.Add(sri);
-
                     }
                 }
             }
             
             return Result;
-
         }
 
         void UpdateShiftRows(List<ShiftRowInfo> infos)
@@ -471,7 +426,7 @@ namespace TH_ShiftTable
 
         #region "Processing"
 
-        void ProcessShifts(List<GeneratedData.GeneratedEventItem> genEventItems)
+        void ProcessShifts(List<GeneratedEventItem> genEventItems)
         {
             List<GenEventShiftItem> genEventShiftItems = GenEventShiftItem.Get(configuration, genEventItems);
 

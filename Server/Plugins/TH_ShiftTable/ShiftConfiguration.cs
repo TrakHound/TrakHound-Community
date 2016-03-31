@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -12,7 +12,6 @@ using TH_Configuration;
 
 namespace TH_ShiftTable
 {
-
     public class ShiftConfiguration
     {
         public ShiftConfiguration()
@@ -26,10 +25,9 @@ namespace TH_ShiftTable
         public List<GeneratedEventConfiguration> generatedEvents;
 
 
-        public static ShiftConfiguration ReadXML(XmlDocument configXML)
+        public static ShiftConfiguration Read(XmlDocument configXML)
         {
-
-            ShiftConfiguration Result = new ShiftConfiguration();
+            var result = new ShiftConfiguration();
 
             XmlNodeList nodes = configXML.SelectNodes("/Settings/ShiftData");
 
@@ -51,7 +49,7 @@ namespace TH_ShiftTable
                             if (info != null)
                             {
                                 Type t = info.PropertyType;
-                                info.SetValue(Result, Convert.ChangeType(Child.InnerText, t), null);
+                                info.SetValue(result, Convert.ChangeType(Child.InnerText, t), null);
                             }
                             else
                             {
@@ -65,7 +63,7 @@ namespace TH_ShiftTable
                                             {
                                                 if (shiftNode.NodeType == XmlNodeType.Element)
                                                 {
-                                                    Result.shifts.Add(ProcessShift(shiftNode));
+                                                    result.shifts.Add(ProcessShift(shiftNode));
                                                 }
                                             }
                                         }
@@ -81,7 +79,7 @@ namespace TH_ShiftTable
                                             {
                                                 if (eventNode.NodeType == XmlNodeType.Element)
                                                 {
-                                                    Result.generatedEvents.Add(ProcessGeneratedEvent(eventNode));
+                                                    result.generatedEvents.Add(ProcessGeneratedEvent(eventNode));
                                                 }
                                             }
 
@@ -95,18 +93,17 @@ namespace TH_ShiftTable
                 }
             }
 
-            return Result;
-
+            return result;
         }
 
         public static ShiftConfiguration Get(Configuration configuration)
         {
-            ShiftConfiguration Result = null;
+            ShiftConfiguration result = null;
 
             var customClass = configuration.CustomClasses.Find(x => x.GetType() == typeof(ShiftConfiguration));
-            if (customClass != null) Result = (ShiftConfiguration)customClass;
+            if (customClass != null) result = (ShiftConfiguration)customClass;
 
-            return Result;
+            return result;
         }
 
         #region "Private"
@@ -253,7 +250,6 @@ namespace TH_ShiftTable
         }
 
         #endregion
-
     }
 
     public class Shift

@@ -12,119 +12,122 @@ using TH_Configuration;
 
 namespace TH_InstanceTable
 {
-    public partial class InstanceTable
+    public class InstanceConfiguration
     {
-        public class InstanceConfiguration
+        public InstanceConfiguration()
         {
-            public InstanceConfiguration() { DataItems = new InstanceConfiguration_DataItems(); }
+            //DataItems = new InstanceConfiguration_DataItems();
+            Omit = new List<string>();
+        }
 
-            public int number { get; set; }
+        //public int Number { get; set; }
 
-            public InstanceConfiguration_DataItems DataItems;
+        public bool Conditions { get; set; }
+        public bool Events { get; set; }
+        public bool Samples { get; set; }
 
-            public static InstanceConfiguration Read(XmlDocument xml)
+        public List<string> Omit { get; set; }
+
+        //public InstanceConfiguration_DataItems DataItems;
+
+        public static InstanceConfiguration Read(XmlDocument xml)
+        {
+            var result = new InstanceConfiguration();
+
+            XmlNodeList nodes = xml.SelectNodes("/Settings/InstanceTable");
+
+            if (nodes != null)
             {
-
-                InstanceConfiguration result = new InstanceConfiguration();
-
-                XmlNodeList nodes = xml.SelectNodes("/Settings/InstanceTable");
-
-                if (nodes != null)
+                if (nodes.Count > 0)
                 {
-                    if (nodes.Count > 0)
+
+                    XmlNode node = nodes[0];
+
+                    foreach (XmlNode Child in node.ChildNodes)
                     {
-
-                        XmlNode node = nodes[0];
-
-                        foreach (XmlNode Child in node.ChildNodes)
+                        if (Child.NodeType == XmlNodeType.Element)
                         {
-                            if (Child.NodeType == XmlNodeType.Element)
+                            // Read Properties
+                            if (Child.InnerText != "")
                             {
-                                // Read Properties
-                                if (Child.InnerText != "")
+                                Type Setting = typeof(InstanceConfiguration);
+                                PropertyInfo info = Setting.GetProperty(Child.Name);
+
+                                if (info != null)
                                 {
-                                    Type Setting = typeof(InstanceConfiguration);
-                                    PropertyInfo info = Setting.GetProperty(Child.Name);
-
-                                    if (info != null)
+                                    Type t = info.PropertyType;
+                                    info.SetValue(result, Convert.ChangeType(Child.InnerText, t), null);
+                                }
+                                else
+                                {
+                                    switch (Child.Name.ToLower())
                                     {
-                                        Type t = info.PropertyType;
-                                        info.SetValue(result, Convert.ChangeType(Child.InnerText, t), null);
-                                    }
-                                    else
-                                    {
-                                        switch (Child.Name.ToLower())
-                                        {
-                                            case "dataitems":
+                                        case "dataitems":
 
-                                                foreach (XmlNode DataItemNode in Child.ChildNodes)
+                                            foreach (XmlNode DataItemNode in Child.ChildNodes)
+                                            {
+                                                if (DataItemNode.NodeType == XmlNodeType.Element)
                                                 {
-                                                    if (DataItemNode.NodeType == XmlNodeType.Element)
+                                                    switch (DataItemNode.Name.ToLower())
                                                     {
-                                                        switch (DataItemNode.Name.ToLower())
-                                                        {
-                                                            case "conditions":
-                                                                result.DataItems.Conditions = Convert.ToBoolean(DataItemNode.InnerText);
-                                                                break;
+                                                        case "conditions":
+                                                            result.Conditions = Convert.ToBoolean(DataItemNode.InnerText);
+                                                            break;
 
-                                                            case "events":
-                                                                result.DataItems.Events = Convert.ToBoolean(DataItemNode.InnerText);
-                                                                break;
+                                                        case "events":
+                                                            result.Events = Convert.ToBoolean(DataItemNode.InnerText);
+                                                            break;
 
-                                                            case "samples":
-                                                                result.DataItems.Samples = Convert.ToBoolean(DataItemNode.InnerText);
-                                                                break;
+                                                        case "samples":
+                                                            result.Samples = Convert.ToBoolean(DataItemNode.InnerText);
+                                                            break;
 
-                                                            case "omit":
+                                                        case "omit":
 
-                                                                foreach (XmlNode OmitNode in DataItemNode.ChildNodes)
+                                                            foreach (XmlNode OmitNode in DataItemNode.ChildNodes)
+                                                            {
+                                                                if (OmitNode.NodeType == XmlNodeType.Element)
                                                                 {
-                                                                    if (OmitNode.NodeType == XmlNodeType.Element)
-                                                                    {
-                                                                        result.DataItems.Omit.Add(OmitNode.Name.ToUpper());
-                                                                    }
+                                                                    result.Omit.Add(OmitNode.Name.ToUpper());
                                                                 }
+                                                            }
 
-                                                                break;
-                                                        }
+                                                            break;
                                                     }
                                                 }
+                                            }
 
-                                                break;
-                                        }
+                                            break;
                                     }
                                 }
                             }
                         }
                     }
                 }
-
-                return result;
-
             }
 
-            public static InstanceConfiguration Get(Configuration config)
-            {
-                InstanceConfiguration Result = null;
-
-                var customClass = config.CustomClasses.Find(x => x.GetType() == typeof(InstanceConfiguration));
-                if (customClass != null) Result = (InstanceConfiguration)customClass;
-
-                return Result;
-
-            }
+            return result;
         }
 
-        public class InstanceConfiguration_DataItems
+        public static InstanceConfiguration Get(Configuration config)
         {
-            public InstanceConfiguration_DataItems() { Omit = new List<string>(); }
+            InstanceConfiguration Result = null;
 
-            public bool Conditions { get; set; }
-            public bool Events { get; set; }
-            public bool Samples { get; set; }
+            var customClass = config.CustomClasses.Find(x => x.GetType() == typeof(InstanceConfiguration));
+            if (customClass != null) Result = (InstanceConfiguration)customClass;
 
-            public List<string> Omit;
+            return Result;
         }
-
     }
+
+    //public class InstanceConfiguration_DataItems
+    //{
+    //    public InstanceConfiguration_DataItems() { Omit = new List<string>(); }
+
+    //    public bool Conditions { get; set; }
+    //    public bool Events { get; set; }
+    //    public bool Samples { get; set; }
+
+    //    public List<string> Omit { get; set; }
+    //}
 }

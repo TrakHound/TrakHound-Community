@@ -73,7 +73,18 @@
     <Compile Include="ConfigurationPage\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GeneratedData.cs" />
+    <Compile Include="Configurations\GeneratedDataConfiguration.cs" />
+    <Compile Include="Configurations\GeneratedEventsConfiguration.cs" />
+    <Compile Include="Configurations\SnapshotsConfiguration.cs" />
+    <Compile Include="Database\GeneratedEvents.cs" />
+    <Compile Include="Database\Snapshots.cs" />
+    <Compile Include="GeneratedEventItem.cs" />
+    <Compile Include="GeneratedEvents\CaptureItem.cs" />
+    <Compile Include="GeneratedEvents\Event.cs" />
+    <Compile Include="GeneratedEvents\MultiTrigger.cs" />
+    <Compile Include="GeneratedEvents\Return.cs" />
+    <Compile Include="GeneratedEvents\Trigger.cs" />
+    <Compile Include="GeneratedEvents\Value.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -81,6 +92,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SnapshotItem.cs" />
+    <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">

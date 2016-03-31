@@ -8,79 +8,74 @@ using System.Collections.Generic;
 
 namespace TH_InstanceTable
 {
-    public partial class InstanceTable
+    public class InstanceData : IDisposable
     {
+        public InstanceData() { Values = new List<DataItemValue>(); }
 
-        public class InstanceData : IDisposable
+        public DateTime Timestamp { get; set; }
+        public Int64 Sequence { get; set; }
+        public Int64 AgentInstanceId { get; set; }
+
+        public class DataItemValue
         {
-            public InstanceData() { values = new List<Value>(); }
+            public string Id { get; set; }
+            public string Value { get; set; }
 
-            public DateTime timestamp { get; set; }
-            public Int64 sequence { get; set; }
-            public Int64 agentInstanceId { get; set; }
-
-            public class Value
+            public DataItemValue Copy()
             {
-                public string id { get; set; }
-                public string value { get; set; }
-
-                public Value Copy()
-                {
-                    var result = new Value();
-                    result.id = id;
-                    result.value = value;
-                    return result;
-                }
-            }
-
-            public InstanceData Copy()
-            {
-                InstanceData result = new InstanceData();
-                result.timestamp = timestamp;
-                result.sequence = sequence;
-                result.agentInstanceId = agentInstanceId;
-
-                foreach (InstanceData.Value val in values)
-                {
-                    if (val != null)
-                    {
-                        InstanceData.Value newval = new InstanceData.Value();
-                        newval.id = val.id;
-                        newval.value = val.value;
-                        result.values.Add(newval.Copy());
-                    }
-                }
-
+                var result = new DataItemValue();
+                result.Id = Id;
+                result.Value = Value;
                 return result;
             }
+        }
 
-            public List<Value> values;
+        public InstanceData Copy()
+        {
+            InstanceData result = new InstanceData();
+            result.Timestamp = Timestamp;
+            result.Sequence = Sequence;
+            result.AgentInstanceId = AgentInstanceId;
 
-            public void Dispose()
+            foreach (InstanceData.DataItemValue val in Values)
             {
-                values.Clear();
-                values = null;
+                if (val != null)
+                {
+                    InstanceData.DataItemValue newval = new InstanceData.DataItemValue();
+                    newval.Id = val.Id;
+                    newval.Value = val.Value;
+                    result.Values.Add(newval.Copy());
+                }
             }
 
-            ~InstanceData()
-            {
-                Dispose();
-            }
+            return result;
         }
 
-        class InstanceVariableData
+        public List<DataItemValue> Values { get; set; }
+
+        public void Dispose()
         {
-            public string id { get; set; }
-            public object value { get; set; }
-            public DateTime timestamp { get; set; }
-            public Int64 sequence { get; set; }
+            Values.Clear();
+            Values = null;
         }
 
-        public class CurrentInstanceData
+        ~InstanceData()
         {
-            public TH_MTConnect.Streams.ReturnData currentData { get; set; }
-            public InstanceData data { get; set; }
+            Dispose();
         }
+    }
 
+    class InstanceVariableData
+    {
+        public string Id { get; set; }
+        public object Value { get; set; }
+        public DateTime Timestamp { get; set; }
+        public Int64 Sequence { get; set; }
+    }
+
+    public class CurrentInstanceData
+    {
+        public TH_MTConnect.Streams.ReturnData CurrentData { get; set; }
+        public InstanceData Data { get; set; }
     }
 }

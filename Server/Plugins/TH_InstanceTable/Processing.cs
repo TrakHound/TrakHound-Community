@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
@@ -16,46 +16,45 @@ namespace TH_InstanceTable
     public partial class InstanceTable
     {
 
-        bool firstPass = true;
+        private Configuration configuration;
 
-        Configuration config { get; set; }
+        private bool AddDatabases = false;
 
-        bool AddDatabases = false;
+        private List<string> columnNames;
 
-        List<string> ColumnNames { get; set; }
+        private TH_MTConnect.Streams.ReturnData currentData;
 
-        TH_MTConnect.Streams.ReturnData CurrentData { get; set; }
+        // Before ProcessInstances()
+        private InstanceData PreviousInstanceData_old;
+        // After ProcessInstances()
+        private InstanceData PreviousInstanceData_new;
 
-        //void UpdateStatus(string status)
-        //{
-        //    if (StatusChanged != null) StatusChanged(status);
-        //}
 
         public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
 
-            ColumnNames = GetVariablesFromProbeData(returnData);
+            columnNames = GetVariablesFromProbeData(returnData);
 
-            if (AddDatabases) CreateInstanceTable(ColumnNames);
+            if (AddDatabases) CreateInstanceTable(columnNames);
 
         }
 
         public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
-            CurrentData = returnData;
+            currentData = returnData;
 
             InstanceData instanceData = ProcessSingleInstance(returnData);
 
             PreviousInstanceData_old = PreviousInstanceData_new;
 
             CurrentInstanceData cid = new CurrentInstanceData();
-            cid.currentData = returnData;
-            cid.data = instanceData;
+            cid.CurrentData = returnData;
+            cid.Data = instanceData;
 
             // Send InstanceData object to other Plugins --
             var data = new EventData();
             data.id = "CurrentInstanceData";
-            data.data01 = config;
+            data.data01 = configuration;
             data.data02 = cid;
 
             if (SendData != null) SendData(data);
@@ -64,16 +63,16 @@ namespace TH_InstanceTable
 
         public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
         {
-            List<InstanceData> instanceDatas = ProcessInstances(CurrentData, returnData);
+            List<InstanceData> instanceDatas = ProcessInstances(currentData, returnData);
 
-            if (AddDatabases) AddRowsToDatabase(ColumnNames, instanceDatas);
+            if (AddDatabases) AddRowsToDatabase(columnNames, instanceDatas);
 
             PreviousInstanceData_old = PreviousInstanceData_new;
 
             // Send instanceDatas to other Plugins --------
             var data = new EventData();
             data.id = "InstanceData";
-            data.data01 = config;
+            data.data01 = configuration;
             data.data02 = instanceDatas;
 
             if (SendData != null) SendData(data);
@@ -85,39 +84,39 @@ namespace TH_InstanceTable
 
             List<string> Result = new List<string>();
 
-            TH_MTConnect.Components.DataItemCollection dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(returnData.devices[0]);
+            TH_MTConnect.Components.DataItemCollection dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(returnData.Devices[0]);
 
-            var ic = InstanceConfiguration.Get(config);
+            var ic = InstanceConfiguration.Get(configuration);
             if (ic != null)
             {
-                if (ic.DataItems.Conditions)
+                if (ic.Conditions)
                 {
                     // Conditions -------------------------------------------------------------------------
                     foreach (TH_MTConnect.Components.DataItem dataItem in dataItems.Conditions)
                     {
-                        string name = dataItem.id.ToUpper();
+                        string name = dataItem.Id.ToUpper();
                         if (!Result.Contains(name)) Result.Add(name);
                     }
                     // ------------------------------------------------------------------------------------
                 }
 
-                if (ic.DataItems.Events)
+                if (ic.Events)
                 {
                     // Events -----------------------------------------------------------------------------
                     foreach (TH_MTConnect.Components.DataItem dataItem in dataItems.Events)
                     {
-                        string name = dataItem.id.ToUpper();
+                        string name = dataItem.Id.ToUpper();
                         if (!Result.Contains(name)) Result.Add(name);
                     }
                     // ------------------------------------------------------------------------------------
                 }
 
-                if (ic.DataItems.Samples)
+                if (ic.Samples)
                 {
                     // Samples ----------------------------------------------------------------------------
                     foreach (TH_MTConnect.Components.DataItem dataItem in dataItems.Samples)
                     {
-                        string name = dataItem.id.ToUpper();
+                        string name = dataItem.Id.ToUpper();
                         if (!Result.Contains(name)) Result.Add(name);
                     }
                     // ------------------------------------------------------------------------------------
@@ -128,10 +127,6 @@ namespace TH_InstanceTable
 
         }
 
-        // Before ProcessInstances()
-        InstanceData PreviousInstanceData_old;
-        // After ProcessInstances()
-        InstanceData PreviousInstanceData_new;
 
         // Process instance table after receiving Sample Data
         List<InstanceData> ProcessInstances(TH_MTConnect.Streams.ReturnData currentData, TH_MTConnect.Streams.ReturnData sampleData)
@@ -142,31 +137,31 @@ namespace TH_InstanceTable
 
             if (currentData != null && sampleData != null)
             {
-                if (sampleData.deviceStreams != null && currentData.deviceStreams != null)
+                if (sampleData.DeviceStreams != null && currentData.DeviceStreams != null)
                 {
                     // Get all of the DataItems from the DeviceStream object
-                    TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(sampleData.deviceStreams[0]);
+                    TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(sampleData.DeviceStreams[0]);
 
                     // Convert the DataItems to a List of InstanceVariableData objects
                     List<InstanceVariableData> values = GetVariableDataFromDataItemCollection(dataItems);
 
                     // Get List of Distinct Timestamps
-                    IEnumerable<DateTime> timestamps = values.Select(x => x.timestamp).Distinct();
+                    IEnumerable<DateTime> timestamps = values.Select(x => x.Timestamp).Distinct();
 
                     // Sort timestamps by DateTime ASC
                     List<DateTime> sortedTimestamps = timestamps.ToList();
                     sortedTimestamps.Sort();
 
                     // Get List of Variables used
-                    IEnumerable<string> usedVariables = values.Select(x => x.id).Distinct();
+                    IEnumerable<string> usedVariables = values.Select(x => x.Id).Distinct();
 
                     bool anyChanged = false;
 
-                    var ic = InstanceConfiguration.Get(config);
+                    var ic = InstanceConfiguration.Get(configuration);
 
                     foreach (string variable in usedVariables.ToList())
                     {
-                        if (ic.DataItems.Omit.Find(x => x.ToLower() == variable.ToLower()) == null)
+                        if (ic.Omit.Find(x => x.ToLower() == variable.ToLower()) == null)
                         {
                             anyChanged = true;
                             break;
@@ -177,7 +172,7 @@ namespace TH_InstanceTable
                     {
                         foreach (DateTime timestamp in sortedTimestamps.ToList())
                         {
-                            InstanceData data = new InstanceData();
+                            var data = new InstanceData();
 
                             // Preset previous values into new InstanceData object
                             if (previousData != null) data = previousData.Copy();
@@ -185,34 +180,34 @@ namespace TH_InstanceTable
                             else FillInstanceDataWithCurrentData(usedVariables.ToList(), data, currentData);
 
                             // Set timestamp for InstanceData object
-                            data.timestamp = timestamp;
+                            data.Timestamp = timestamp;
 
-                            data.agentInstanceId = currentData.header.instanceId;
+                            data.AgentInstanceId = currentData.Header.InstanceId;
 
                             // Get List of Values at this timestamp
-                            List<InstanceVariableData> valuesAtTimestamp = values.FindAll(x => x.timestamp == timestamp);
+                            List<InstanceVariableData> valuesAtTimestamp = values.FindAll(x => x.Timestamp == timestamp);
 
                             foreach (InstanceVariableData ivd in valuesAtTimestamp)
                             {
-                                InstanceData.Value oldval = data.values.Find(x => x.id == ivd.id);
+                                InstanceData.DataItemValue oldval = data.Values.Find(x => x.Id == ivd.Id);
                                 // if value with id is already in data.values then overwrite the value
                                 if (oldval != null)
                                 {
-                                    if (oldval.value != ivd.value.ToString())
+                                    if (oldval.Value != ivd.Value.ToString())
                                     {
-                                        oldval.value = ivd.value.ToString();
+                                        oldval.Value = ivd.Value.ToString();
                                     }
                                 }
                                 // if not already in data.values then create new InstanceData.Value object and add it
                                 else
                                 {
-                                    InstanceData.Value newval = new InstanceData.Value();
-                                    newval.id = ivd.id;
-                                    newval.value = ivd.value.ToString();
-                                    data.values.Add(newval);
+                                    var newval = new InstanceData.DataItemValue();
+                                    newval.Id = ivd.Id;
+                                    newval.Value = ivd.Value.ToString();
+                                    data.Values.Add(newval);
                                 }
 
-                                data.sequence = ivd.sequence;
+                                data.Sequence = ivd.Sequence;
                             }
 
                             previousData = data.Copy();
@@ -222,7 +217,7 @@ namespace TH_InstanceTable
 
                             foreach (var value in valuesAtTimestamp)
                             {
-                                if (ic.DataItems.Omit.Find(x => x.ToLower() == value.id.ToLower()) == null)
+                                if (ic.Omit.Find(x => x.ToLower() == value.Id.ToLower()) == null)
                                 {
                                     changed = true;
                                     break;
@@ -261,9 +256,9 @@ namespace TH_InstanceTable
         {
             InstanceData Result = new InstanceData(); ;
 
-            Result.timestamp = currentData.header.creationTime;
-            Result.agentInstanceId = currentData.header.instanceId;
-            Result.sequence = currentData.header.lastSequence;
+            Result.Timestamp = currentData.Header.CreationTime;
+            Result.AgentInstanceId = currentData.Header.InstanceId;
+            Result.Sequence = currentData.Header.LastSequence;
 
             FillInstanceDataWithCurrentData(new List<string>(), Result, currentData);
 
@@ -274,41 +269,41 @@ namespace TH_InstanceTable
         {
 
             // Get all of the DataItems from the DeviceStream object
-            TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(currentData.deviceStreams[0]);
+            TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(currentData.DeviceStreams[0]);
 
             // Set Conditions
             foreach (TH_MTConnect.Streams.Condition condition_DI in dataItems.Conditions)
             {
-                if (!usedVariables.Contains(condition_DI.dataItemId))
+                if (!usedVariables.Contains(condition_DI.DataItemId))
                 {
-                    InstanceData.Value value = new InstanceData.Value();
-                    value.id = condition_DI.dataItemId;
-                    value.value = condition_DI.value;
-                    data.values.Add(value);
+                    var value = new InstanceData.DataItemValue();
+                    value.Id = condition_DI.DataItemId;
+                    value.Value = condition_DI.Value;
+                    data.Values.Add(value);
                 }
             }
 
             // Set Events
             foreach (TH_MTConnect.Streams.Event event_DI in dataItems.Events)
             {
-                if (!usedVariables.Contains(event_DI.dataItemId))
+                if (!usedVariables.Contains(event_DI.DataItemId))
                 {
-                    InstanceData.Value value = new InstanceData.Value();
-                    value.id = event_DI.dataItemId;
-                    value.value = event_DI.CDATA;
-                    data.values.Add(value);
+                    var value = new InstanceData.DataItemValue();
+                    value.Id = event_DI.DataItemId;
+                    value.Value = event_DI.CDATA;
+                    data.Values.Add(value);
                 }
             }
 
             // Set Samples
             foreach (TH_MTConnect.Streams.Sample sample_DI in dataItems.Samples)
             {
-                if (!usedVariables.Contains(sample_DI.dataItemId))
+                if (!usedVariables.Contains(sample_DI.DataItemId))
                 {
-                    InstanceData.Value value = new InstanceData.Value();
-                    value.id = sample_DI.dataItemId;
-                    value.value = sample_DI.CDATA;
-                    data.values.Add(value);
+                    var value = new InstanceData.DataItemValue();
+                    value.Id = sample_DI.DataItemId;
+                    value.Value = sample_DI.CDATA;
+                    data.Values.Add(value);
                 }
             }
 
@@ -322,12 +317,11 @@ namespace TH_InstanceTable
             // Get Conditions
             foreach (TH_MTConnect.Streams.Condition condition_DI in dataItems.Conditions)
             {
-                InstanceVariableData instanceData = new InstanceVariableData();
-
-                instanceData.id = condition_DI.dataItemId;
-                instanceData.value = condition_DI.value;
-                instanceData.timestamp = condition_DI.timestamp;
-                instanceData.sequence = condition_DI.sequence;
+                var instanceData = new InstanceVariableData();
+                instanceData.Id = condition_DI.DataItemId;
+                instanceData.Value = condition_DI.Value;
+                instanceData.Timestamp = condition_DI.Timestamp;
+                instanceData.Sequence = condition_DI.Sequence;
 
                 Result.Add(instanceData);
             }
@@ -335,12 +329,11 @@ namespace TH_InstanceTable
             // Get Events
             foreach (TH_MTConnect.Streams.Event event_DI in dataItems.Events)
             {
-                InstanceVariableData instanceData = new InstanceVariableData();
-
-                instanceData.id = event_DI.dataItemId;
-                instanceData.value = event_DI.CDATA;
-                instanceData.timestamp = event_DI.timestamp;
-                instanceData.sequence = event_DI.sequence;
+                var instanceData = new InstanceVariableData();
+                instanceData.Id = event_DI.DataItemId;
+                instanceData.Value = event_DI.CDATA;
+                instanceData.Timestamp = event_DI.Timestamp;
+                instanceData.Sequence = event_DI.Sequence;
 
                 Result.Add(instanceData);
             }
@@ -348,18 +341,17 @@ namespace TH_InstanceTable
             // Get Samples
             foreach (TH_MTConnect.Streams.Sample sample_DI in dataItems.Samples)
             {
-                InstanceVariableData instanceData = new InstanceVariableData();
-
-                instanceData.id = sample_DI.dataItemId;
-                instanceData.value = sample_DI.CDATA;
-                instanceData.timestamp = sample_DI.timestamp;
-                instanceData.sequence = sample_DI.sequence;
+                var instanceData = new InstanceVariableData();
+                instanceData.Id = sample_DI.DataItemId;
+                instanceData.Value = sample_DI.CDATA;
+                instanceData.Timestamp = sample_DI.Timestamp;
+                instanceData.Sequence = sample_DI.Sequence;
 
                 Result.Add(instanceData);
             }
 
             // Sort List by timestamp ASC
-            Result.Sort((x, y) => x.timestamp.Second.CompareTo(y.timestamp.Second));
+            Result.Sort((x, y) => x.Timestamp.Second.CompareTo(y.Timestamp.Second));
 
             return Result;
 

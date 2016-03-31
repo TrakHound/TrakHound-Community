@@ -5,18 +5,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using TH_Configuration;
-using TH_Global;
-using TH_Global.Functions;
-
+using TH_GeneratedData;
 using TH_Plugins;
 using TH_Plugins.Server;
-
-using TH_GeneratedData;
 
 namespace TH_Parts
 {
@@ -45,12 +38,12 @@ namespace TH_Parts
             {
                 if (data.id.ToLower() == "generatedeventitems")
                 {
-                    var genEventItems = (List<GeneratedData.GeneratedEventItem>)data.data02;
+                    var genEventItems = (List<GeneratedEventItem>)data.data02;
 
                     var pc = PartsConfiguration.Get(configuration);
                     if (pc != null)
                     {
-                        genEventItems = genEventItems.FindAll(x => x.eventName == pc.PartsEventName);
+                        genEventItems = genEventItems.FindAll(x => x.EventName == pc.PartsEventName);
 
                         var infos = new List<PartInfo>();
 
