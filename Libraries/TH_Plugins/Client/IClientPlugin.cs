@@ -21,8 +21,6 @@ namespace TH_Plugins.Client
     public interface IClientPlugin : IPage
     {
 
-        #region "Description"
-
         /// <summary>
         /// Sets the Title of the Plugin
         /// (ex. TH_Dashboard's Title = "Dashboard")
@@ -66,18 +64,16 @@ namespace TH_Plugins.Client
         /// </summary>
         string LicenseText { get; }
 
-        #endregion
 
-        #region "Update Information"
+
 
         /// <summary>
         /// Url pointing to the 'appinfo' file to use for Automatic Updates (if applicable)
         /// </summary>
         string UpdateFileURL { get; }
 
-        #endregion
 
-        #region "Plugin Properties/Options"
+
 
         /// <summary>
         /// Used to set the default parent plugin's name 
@@ -117,7 +113,6 @@ namespace TH_Plugins.Client
         /// </summary>
         List<IClientPlugin> Plugins { get; set; }
 
-        #endregion
 
 
         /// <summary>

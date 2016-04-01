@@ -66,7 +66,7 @@ namespace TH_GeneratedData
                             SendGeneratedEventItems(geis);
                             // ----------------------------------------------------
 
-                            if (UseDatabases) if (gdc.GeneratedEventsConfiguration.UploadToMySQL) Database.GeneratedEvents.InsertEventItems(configuration, geis);
+                            if (gdc.GeneratedEventsConfiguration.UploadToMySQL) Database.GeneratedEvents.InsertEventItems(configuration, geis);
 
                             break;
 
@@ -82,7 +82,7 @@ namespace TH_GeneratedData
 
                             List<SnapShotItem> snapShots = SnapShotItem.Process(configuration, info);
 
-                            if (UseDatabases) if (gdc.SnapshotsConfiguration.UploadToMySQL) Database.Snapshots.UpdateRows(configuration, snapShots);
+                            if (gdc.SnapshotsConfiguration.UploadToMySQL) Database.Snapshots.UpdateRows(configuration, snapShots);
 
                             previousSSI = snapShots;
 
@@ -110,9 +110,9 @@ namespace TH_GeneratedData
 
         public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
-        public bool UseDatabases { get; set; }
+        //public bool UseDatabases { get; set; }
 
-        public string TablePrefix { get; set; }
+        //public string TablePrefix { get; set; }
 
 
 

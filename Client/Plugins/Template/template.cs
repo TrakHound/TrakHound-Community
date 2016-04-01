@@ -10,7 +10,6 @@ using System.Windows.Media;
 using TH_Configuration;
 using TH_Plugins;
 using TH_Plugins.Client;
-using TH_UserManagement;
 
 namespace Template
 {

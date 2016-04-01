@@ -59,10 +59,6 @@
       <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
       <Name>TH_Plugins</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
-      <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
-      <Name>TH_UserManagement</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

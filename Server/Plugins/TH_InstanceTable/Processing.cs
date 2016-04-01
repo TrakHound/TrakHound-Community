@@ -51,14 +51,28 @@ namespace TH_InstanceTable
             cid.CurrentData = returnData;
             cid.Data = instanceData;
 
-            // Send InstanceData object to other Plugins --
+            SendCurrentInstanceData(configuration, cid);
+            SendInstanceData(configuration, new List<InstanceData>() { instanceData });
+        }
+
+        private void SendInstanceData(Configuration config, List<InstanceData> instanceDatas)
+        {
+            var data = new EventData();
+            data.Id = "InstanceData";
+            data.Data01 = config;
+            data.Data02 = instanceDatas;
+
+            if (SendData != null) SendData(data);
+        }
+
+        private void SendCurrentInstanceData(Configuration config, CurrentInstanceData instanceData)
+        {
             var data = new EventData();
             data.Id = "CurrentInstanceData";
             data.Data01 = configuration;
-            data.Data02 = cid;
+            data.Data02 = instanceData;
 
-            if (SendData != null) SendData(data);
-            //--------------------------------------------         
+            if (SendData != null) SendData(data);    
         }
 
         public void Update_Sample(TH_MTConnect.Streams.ReturnData returnData)
@@ -69,13 +83,7 @@ namespace TH_InstanceTable
 
             PreviousInstanceData_old = PreviousInstanceData_new;
 
-            // Send instanceDatas to other Plugins --------
-            var data = new EventData();
-            data.Id = "InstanceData";
-            data.Data01 = configuration;
-            data.Data02 = instanceDatas;
-
-            if (SendData != null) SendData(data);
+            SendInstanceData(configuration, instanceDatas);
         }
 
 
@@ -254,25 +262,23 @@ namespace TH_InstanceTable
         // Process InstanceData after receiving Current Data
         InstanceData ProcessSingleInstance(TH_MTConnect.Streams.ReturnData currentData)
         {
-            InstanceData Result = new InstanceData(); ;
+            var result = new InstanceData(); ;
+            result.Timestamp = currentData.Header.CreationTime;
+            result.AgentInstanceId = currentData.Header.InstanceId;
+            result.Sequence = currentData.Header.LastSequence;
 
-            Result.Timestamp = currentData.Header.CreationTime;
-            Result.AgentInstanceId = currentData.Header.InstanceId;
-            Result.Sequence = currentData.Header.LastSequence;
+            FillInstanceDataWithCurrentData(new List<string>(), result, currentData);
 
-            FillInstanceDataWithCurrentData(new List<string>(), Result, currentData);
-
-            return Result;
+            return result;
         }
 
         void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, TH_MTConnect.Streams.ReturnData currentData)
         {
-
             // Get all of the DataItems from the DeviceStream object
-            TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(currentData.DeviceStreams[0]);
+            var dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(currentData.DeviceStreams[0]);
 
             // Set Conditions
-            foreach (TH_MTConnect.Streams.Condition condition_DI in dataItems.Conditions)
+            foreach (var condition_DI in dataItems.Conditions)
             {
                 if (!usedVariables.Contains(condition_DI.DataItemId))
                 {
@@ -280,11 +286,12 @@ namespace TH_InstanceTable
                     value.Id = condition_DI.DataItemId;
                     value.Value = condition_DI.Value;
                     data.Values.Add(value);
+                    usedVariables.Add(value.Id);
                 }
             }
 
             // Set Events
-            foreach (TH_MTConnect.Streams.Event event_DI in dataItems.Events)
+            foreach (var event_DI in dataItems.Events)
             {
                 if (!usedVariables.Contains(event_DI.DataItemId))
                 {
@@ -292,11 +299,12 @@ namespace TH_InstanceTable
                     value.Id = event_DI.DataItemId;
                     value.Value = event_DI.CDATA;
                     data.Values.Add(value);
+                    usedVariables.Add(value.Id);
                 }
             }
 
             // Set Samples
-            foreach (TH_MTConnect.Streams.Sample sample_DI in dataItems.Samples)
+            foreach (var sample_DI in dataItems.Samples)
             {
                 if (!usedVariables.Contains(sample_DI.DataItemId))
                 {
@@ -304,9 +312,9 @@ namespace TH_InstanceTable
                     value.Id = sample_DI.DataItemId;
                     value.Value = sample_DI.CDATA;
                     data.Values.Add(value);
+                    usedVariables.Add(value.Id);
                 }
             }
-
         }
 
         List<InstanceVariableData> GetVariableDataFromDataItemCollection(TH_MTConnect.Streams.DataItemCollection dataItems)

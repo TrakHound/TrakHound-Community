@@ -138,9 +138,9 @@ namespace TH_ShiftTable
 
         public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 
-        public bool UseDatabases { get; set; }
+        //public bool UseDatabases { get; set; }
 
-        public string TablePrefix { get; set; }
+        //public string TablePrefix { get; set; }
 
         #endregion
 
@@ -296,81 +296,78 @@ namespace TH_ShiftTable
         
         List<ShiftRowInfo> GetExistingValues()
         {
-            List<ShiftRowInfo> Result = new List<ShiftRowInfo>();
+            var Result = new List<ShiftRowInfo>();
 
-            if (UseDatabases)
+            DataTable dt = Table.Get(configuration.Databases_Server, TableName);
+            if (dt != null)
             {
-                DataTable dt = Table.Get(configuration.Databases_Server, TableName);
-                if (dt != null)
+                foreach (DataRow row in dt.Rows)
                 {
-                    foreach (DataRow row in dt.Rows)
+                    ShiftRowInfo sri = new ShiftRowInfo();
+
+                    sri.id = row["id"].ToString();
+
+                    DateTime date = DateTime.MinValue;
+                    DateTime.TryParse(row["date"].ToString(), out date);
+                    sri.date = new ShiftDate(date);
+
+                    sri.shift = row["shift"].ToString();
+
+                    int segmentid = -1;
+                    int.TryParse(row["segmentid"].ToString(), out segmentid);
+                    sri.segmentId = segmentid;
+
+                    // get start time -----------------------------------------
+                    date = DateTime.MinValue;
+                    DateTime.TryParse(row["start"].ToString(), out date);
+                    sri.start = new ShiftTime(date);
+                    // --------------------------------------------------------
+
+                    // get end time -------------------------------------------
+                    date = DateTime.MinValue;
+                    DateTime.TryParse(row["end"].ToString(), out date);
+                    sri.end = new ShiftTime(date);
+                    // --------------------------------------------------------
+
+                    // get start time utc -------------------------------------
+                    date = DateTime.MinValue;
+                    DateTime.TryParse(row["start_utc"].ToString(), out date);
+                    sri.start = new ShiftTime(date);
+                    // --------------------------------------------------------
+
+                    // get end time utc ---------------------------------------
+                    date = DateTime.MinValue;
+                    DateTime.TryParse(row["end_utc"].ToString(), out date);
+                    sri.end = new ShiftTime(date);
+                    // --------------------------------------------------------
+
+                    sri.type = row["type"].ToString();
+
+                    int totalTime = -1;
+                    int.TryParse(row["totaltime"].ToString(), out totalTime);
+                    sri.totalTime = totalTime;
+
+                    // Get all of the rest of the columns as GenEventRowInfos
+                    List<object> values = row.ItemArray.ToList();
+                    if (values.Count > 8)
                     {
-                        ShiftRowInfo sri = new ShiftRowInfo();
-
-                        sri.id = row["id"].ToString();
-
-                        DateTime date = DateTime.MinValue;
-                        DateTime.TryParse(row["date"].ToString(), out date);
-                        sri.date = new ShiftDate(date);
-
-                        sri.shift = row["shift"].ToString();
-
-                        int segmentid = -1;
-                        int.TryParse(row["segmentid"].ToString(), out segmentid);
-                        sri.segmentId = segmentid;
-
-                        // get start time -----------------------------------------
-                        date = DateTime.MinValue;
-                        DateTime.TryParse(row["start"].ToString(), out date);
-                        sri.start = new ShiftTime(date);
-                        // --------------------------------------------------------
-
-                        // get end time -------------------------------------------
-                        date = DateTime.MinValue;
-                        DateTime.TryParse(row["end"].ToString(), out date);
-                        sri.end = new ShiftTime(date);
-                        // --------------------------------------------------------
-
-                        // get start time utc -------------------------------------
-                        date = DateTime.MinValue;
-                        DateTime.TryParse(row["start_utc"].ToString(), out date);
-                        sri.start = new ShiftTime(date);
-                        // --------------------------------------------------------
-
-                        // get end time utc ---------------------------------------
-                        date = DateTime.MinValue;
-                        DateTime.TryParse(row["end_utc"].ToString(), out date);
-                        sri.end = new ShiftTime(date);
-                        // --------------------------------------------------------
-
-                        sri.type = row["type"].ToString();
-
-                        int totalTime = -1;
-                        int.TryParse(row["totaltime"].ToString(), out totalTime);
-                        sri.totalTime = totalTime;
-
-                        // Get all of the rest of the columns as GenEventRowInfos
-                        List<object> values = row.ItemArray.ToList();
-                        if (values.Count > 8)
+                        for (int x = 9; x <= values.Count - 1; x++)
                         {
-                            for (int x = 9; x <= values.Count - 1; x++)
-                            {
-                                GenEventRowInfo geri = new GenEventRowInfo();
-                                geri.columnName = row.Table.Columns[x].ColumnName;
+                            GenEventRowInfo geri = new GenEventRowInfo();
+                            geri.columnName = row.Table.Columns[x].ColumnName;
 
-                                int seconds = -1;
-                                int.TryParse(values[x].ToString(), out seconds);
-                                geri.seconds = seconds;
+                            int seconds = -1;
+                            int.TryParse(values[x].ToString(), out seconds);
+                            geri.seconds = seconds;
 
-                                sri.genEventRowInfos.Add(geri);
-                            }
+                            sri.genEventRowInfos.Add(geri);
                         }
-
-                        Result.Add(sri);
                     }
+
+                    Result.Add(sri);
                 }
             }
-            
+
             return Result;
         }
 
@@ -437,7 +434,7 @@ namespace TH_ShiftTable
 
             List<ShiftRowInfo> changedInfos = UpdateRowInfos(shiftRowInfos);
 
-            if (UseDatabases) UpdateShiftRows(changedInfos);
+            UpdateShiftRows(changedInfos);
 
             // Send List of Shift Info to other Plugins
             SendShiftRowInfos(changedInfos);
