@@ -101,9 +101,17 @@
                     </controls:CategoryPanel>
 
                     <!--Controller Status-->
-                    <controls:CategoryPanel Grid.Column="1" Title="Controller Status" Image="/TH_DevicePage;component/Resources/Warning_01.png">
+                    <ItemsControl ItemsSource="{Binding ControllerPanels}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <!--<controls:CategoryPanel Grid.Column="1" Title="Controller Status" Image="/TH_DevicePage;component/Resources/Warning_01.png">
                         <controls:ControllerStatusPanel VerticalAlignment="Center"/>
-                    </controls:CategoryPanel>
+                    </controls:CategoryPanel>-->
 
                     <!--Program Status-->
                     <controls:CategoryPanel Grid.Column="1" Title="Program Status">

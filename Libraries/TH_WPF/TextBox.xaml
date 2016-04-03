@@ -10,6 +10,7 @@
              d:DesignWidth="100" 
              
              Focusable="True"
+             FontSize="12pt"
              >
 
     <UserControl.Resources>
@@ -159,9 +160,9 @@
                              TextChanged="txt_TextChanged"
                              BorderThickness="0"
                              Background="#00000000"
-                             FontSize="12pt"
+                             FontSize="{Binding FontSize}"
                              Foreground="{StaticResource Foreground_Normal}"
-                             Height="35"
+                             MinHeight="35"
                              VerticalAlignment="Center" VerticalContentAlignment="Center"
                              MaxLines="1"
                              CaretBrush="Black"
@@ -173,6 +174,9 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsFocused}" Value="True">
                                             <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Self}}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding TextWrapping}" Value="true">
+                                            <Setter Property="TextWrapping" Value="Wrap"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

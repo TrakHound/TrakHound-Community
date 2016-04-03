@@ -92,6 +92,16 @@ namespace TH_WPF
         public static readonly DependencyProperty RequiredProperty =
             DependencyProperty.Register("Required", typeof(bool), typeof(TextBox), new PropertyMetadata(false));
 
+
+        public bool TextWrapping
+        {
+            get { return (bool)GetValue(TextWrappingProperty); }
+            set { SetValue(TextWrappingProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextWrappingProperty =
+            DependencyProperty.Register("TextWrapping", typeof(bool), typeof(TextBox), new PropertyMetadata(false));
+
         #endregion
 
         #region "Public Methods"

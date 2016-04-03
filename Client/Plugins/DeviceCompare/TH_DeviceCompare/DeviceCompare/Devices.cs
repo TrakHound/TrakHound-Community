@@ -32,8 +32,11 @@ namespace TH_DeviceCompare
                     if (newConfig != null) AddDevice(newConfig);
                 }
 
+                //SortDataItems();
+                //LoadHeaderView();
                 SortDataItems();
                 LoadHeaderView();
+                SortDeviceDisplays();
             }
 
             if (e.OldItems != null)
@@ -81,6 +84,10 @@ namespace TH_DeviceCompare
 
                     SortDataItems();
                     LoadHeaderView();
+                    SortDeviceDisplays();
+
+                    //SortDataItems();
+                    //LoadHeaderView();
                 }
             }
         }
@@ -112,7 +119,16 @@ namespace TH_DeviceCompare
                 display.CellAdded += Display_CellAdded;
                 display.CellSizeChanged += display_CellSizeChanged;
 
-                Dispatcher.BeginInvoke(new Action<DeviceDisplay>(AddDeviceDisplay_GUI), Priority_Background, new object[] { display });
+                DeviceDisplays.Add(display);
+                if (display.Group.Header != null) Headers.Add(display.Group.Header);
+                if (display.Group.Column != null) Columns.Add(display.Group.Column);
+                if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
+
+                //SortDataItems();
+                //LoadHeaderView();
+                //SortDeviceDisplays();
+
+                //Dispatcher.BeginInvoke(new Action<DeviceDisplay>(AddDeviceDisplay_GUI), Priority_Background, new object[] { display });
             }
         }
 

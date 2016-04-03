@@ -46,6 +46,17 @@ namespace TH_DevicePage.Controls
             DependencyProperty.Register("Image", typeof(ImageSource), typeof(CategoryPanel), new PropertyMetadata(null));
 
 
+        public string Id
+        {
+            get { return (string)GetValue(IdProperty); }
+            set { SetValue(IdProperty, value); }
+        }
+
+        public static readonly DependencyProperty IdProperty =
+            DependencyProperty.Register("Id", typeof(string), typeof(CategoryPanel), new PropertyMetadata(null));
+
+
+
 
         public object Content
         {

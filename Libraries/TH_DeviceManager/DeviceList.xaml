@@ -291,7 +291,7 @@
                         <DataGridTextColumn Header="Serial" Binding="{Binding Description.Serial}"/>
                         <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
 
-                        <DataGridTextColumn Header="Index" Binding="{Binding Index}"/>
+                        <!--<DataGridTextColumn Header="Index" Binding="{Binding Index}"/>-->
 
                     </DataGrid.Columns>
 

@@ -51,6 +51,8 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Status\Controller.cs" />
+    <Compile Include="Tools.cs" />
     <Page Include="Controls\AvailabilityStatusPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -63,7 +65,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ControllerStatusPanel.xaml">
+    <Page Include="Controls\Controller\Panel\ControllerStatusPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,7 +138,7 @@
     <Compile Include="Controls\CategoryPanel.xaml.cs">
       <DependentUpon>CategoryPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ControllerStatusPanel.xaml.cs">
+    <Compile Include="Controls\Controller\Panel\ControllerStatusPanel.xaml.cs">
       <DependentUpon>ControllerStatusPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DescriptionPanel.xaml.cs">
@@ -175,6 +177,7 @@
     <Compile Include="Controls\TextDisplay.xaml.cs">
       <DependentUpon>TextDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\Controller\Manager.cs" />
     <Compile Include="Data\Oee\OEEData.cs" />
     <Compile Include="Data\Oee\TimeLine.cs" />
     <Compile Include="Controls\OeeToolTip.xaml.cs">
@@ -183,6 +186,7 @@
     <Compile Include="Data\Oee\ValueDisplay.xaml.cs">
       <DependentUpon>ValueDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\Tools.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>

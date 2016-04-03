@@ -25,6 +25,15 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <!--<Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                            <Setter Property="Background" Value="#FF19B419"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>-->
 
             <!--Title-->
             <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Opposite_Normal}" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" FontSize="10pt" Margin="10,5"/>
@@ -39,6 +48,12 @@
                         <Setter Property="Width" Value="50"/>
                         <Setter Property="Margin" Value="10"/>
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                <Setter Property="Background" Value="#ffffff"/>
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
                     </Style>
                 </local:ImageDisplay.Style>
             </local:ImageDisplay>

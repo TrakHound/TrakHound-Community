@@ -52,6 +52,7 @@
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
             <Setter Property="BorderThickness" Value="0,1,0,0" />
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
+            <Setter Property="MinHeight" Value="50"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Connected}" Value="false">
                     <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
@@ -66,7 +67,52 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
+
+        <Style x:Key="CellNoPadding" TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0,0,0,0"/>
+            <Setter Property="MinHeight" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}"
+                                Margin="0"
+                                Padding="0"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                >
+                            <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="false">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Self}}"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <SolidColorBrush x:Key="High" Color="#FF19B419"/>
+        <SolidColorBrush x:Key="Medium" Color="Orange"/>
+        <SolidColorBrush x:Key="Low" Color="Red"/>
+
+        <Style TargetType="{x:Type th_wpf:MeterDisplay}">
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
+            <Setter Property="ActiveLevelBrush" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="InactiveLevelBrush" Value="{StaticResource Accent_Hover}"/>
+            <Setter Property="FontSize" Value="24pt"/>
+            <Setter Property="Maximum" Value="1"/>
+            <Setter Property="ValueFormat" Value="P1"/>
+            <Setter Property="Width" Value="auto"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid>
@@ -84,226 +130,107 @@
                 <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
 
                 <!--OEE-->
-                <DataGridTemplateColumn Header="OEE">
+                <DataGridTemplateColumn Header="OEE" CellStyle="{StaticResource CellNoPadding}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Height="30" Width="200" Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="90"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <th_wpf:ProgressBar Grid.Column="1" Value="{Binding Oee}" Maximum="1" AnimateValueChange="False">
-                                    <th_wpf:ProgressBar.Style>
-                                        <Style TargetType="th_wpf:ProgressBar">
-                                            <Setter Property="Foreground" Value="Red"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding OeeStatus}" Value="1">
-                                                    <Setter Property="Foreground" Value="#0080ff"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding OeeStatus}" Value="2">
-                                                    <Setter Property="Foreground" Value="#FF19B419"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </th_wpf:ProgressBar.Style>
-                                </th_wpf:ProgressBar>
-                                
-                                <TextBlock Grid.Column="0" Text="{Binding Oee, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
-
-                                <!--Gloss Effect-->
-                                <Border IsHitTestVisible="False" Grid.Column="1">
-
-                                    <Grid IsHitTestVisible="False">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="4.5*"/>
-                                            <RowDefinition Height="5.5*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Border IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                    <GradientStop Color="#10ffffff" Offset="0"/>
-                                                    <GradientStop Color="#30ffffff" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <Border Grid.Row="1" IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                    <GradientStop Color="#00ffffff" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                                    <GradientStop Color="#10000000" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                    </Grid>
-
-                                </Border>
-
-                            </Grid>
+                            <th_wpf:MeterDisplay Value="{Binding Oee}" >
+                                <th_wpf:MeterDisplay.Style>
+                                    <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding OeeStatus}" Value="0">
+                                                <Setter Property="ActiveLevelBrush" Value="White"/>
+                                                <Setter Property="InactiveLevelBrush" Value="#88ffffff"/>
+                                                <Setter Property="Foreground" Value="White" />
+                                                <Setter Property="Background" Value="{StaticResource Low}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding OeeStatus}" Value="1">
+                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource Medium}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding OeeStatus}" Value="2">
+                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource High}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </th_wpf:MeterDisplay.Style>
+                            </th_wpf:MeterDisplay>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
                 <!--Availability-->
-                <DataGridTemplateColumn Header="Availability">
+                <DataGridTemplateColumn Header="Availability" CellStyle="{StaticResource CellNoPadding}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Height="30" Width="200" Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="90"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <th_wpf:ProgressBar Grid.Column="1" Value="{Binding Availability}" Maximum="1" AnimateValueChange="False">
-                                    <th_wpf:ProgressBar.Style>
-                                        <Style TargetType="th_wpf:ProgressBar">
-                                            <Setter Property="Foreground" Value="Red"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
-                                                    <Setter Property="Foreground" Value="#0080ff"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
-                                                    <Setter Property="Foreground" Value="#FF19B419"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </th_wpf:ProgressBar.Style>
-                                </th_wpf:ProgressBar>
-
-                                <TextBlock Grid.Column="0" Text="{Binding Availability, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
-
-                                <!--Gloss Effect-->
-                                <Border IsHitTestVisible="False" Grid.Column="1">
-
-                                    <Grid IsHitTestVisible="False">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="4.5*"/>
-                                            <RowDefinition Height="5.5*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Border IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                    <GradientStop Color="#10ffffff" Offset="0"/>
-                                                    <GradientStop Color="#30ffffff" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <Border Grid.Row="1" IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                    <GradientStop Color="#00ffffff" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                                    <GradientStop Color="#10000000" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                    </Grid>
-
-                                </Border>
-                                
-                            </Grid>
+                            <th_wpf:MeterDisplay Value="{Binding Availability}" >
+                                <th_wpf:MeterDisplay.Style>
+                                    <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
+                                                <Setter Property="ActiveLevelBrush" Value="White"/>
+                                                <Setter Property="InactiveLevelBrush" Value="#88ffffff"/>
+                                                <Setter Property="Foreground" Value="White" />
+                                                <Setter Property="Background" Value="{StaticResource Low}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
+                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource Medium}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
+                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource High}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </th_wpf:MeterDisplay.Style>
+                            </th_wpf:MeterDisplay>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
                 <!--Performance-->
-                <DataGridTemplateColumn Header="Performance">
+                <DataGridTemplateColumn Header="Performance" CellStyle="{StaticResource CellNoPadding}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Height="30" Width="200" Margin="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="90"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <th_wpf:ProgressBar Grid.Column="1" Value="{Binding Performance}" Maximum="1" AnimateValueChange="False">
-                                    <th_wpf:ProgressBar.Style>
-                                        <Style TargetType="th_wpf:ProgressBar">
-                                            <Setter Property="Foreground" Value="Red"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
-                                                    <Setter Property="Foreground" Value="#0080ff"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
-                                                    <Setter Property="Foreground" Value="#FF19B419"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </th_wpf:ProgressBar.Style>
-                                </th_wpf:ProgressBar>
-                                
-                                <TextBlock Grid.Column="0" Text="{Binding Performance, StringFormat=P2}" Foreground="{StaticResource Foreground_Normal}" FontSize="14pt" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0"/>
-
-                                <!--Gloss Effect-->
-                                <Border IsHitTestVisible="False" Grid.Column="1">
-
-                                    <Grid IsHitTestVisible="False">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="4.5*"/>
-                                            <RowDefinition Height="5.5*"/>
-                                        </Grid.RowDefinitions>
-
-                                        <Border IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                    <GradientStop Color="#10ffffff" Offset="0"/>
-                                                    <GradientStop Color="#30ffffff" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <Border Grid.Row="1" IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                    <GradientStop Color="#00ffffff" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                                            <Border.Background>
-                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                                    <GradientStop Color="#10000000" Offset="1"/>
-                                                </LinearGradientBrush>
-                                            </Border.Background>
-                                        </Border>
-
-                                    </Grid>
-
-                                </Border>
-                                
-                            </Grid>
+                            <th_wpf:MeterDisplay Value="{Binding Performance}" >
+                                <th_wpf:MeterDisplay.Style>
+                                    <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
+                                                <Setter Property="ActiveLevelBrush" Value="White"/>
+                                                <Setter Property="InactiveLevelBrush" Value="#88ffffff"/>
+                                                <Setter Property="Foreground" Value="White" />
+                                                <Setter Property="Background" Value="{StaticResource Low}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
+                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource Medium}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
+                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource High}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </th_wpf:MeterDisplay.Style>
+                            </th_wpf:MeterDisplay>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
                 <!--Production Status-->
-                <DataGridTextColumn Header="Production Status" Binding="{Binding ProductionStatus}"/>
+                <!--<DataGridTextColumn Header="Production Status" Binding="{Binding ProductionStatus}"/>-->
+                <DataGridTemplateColumn Header="Production Status" CellStyle="{StaticResource CellNoPadding}">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <th_wpf:TimeProgress Text="{Binding ProductionStatus}" Value="34" Maximum="100">
+                                <th_wpf:TimeProgress.Style>
+                                    <Style TargetType="th_wpf:TimeProgress">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                        <Setter Property="BarBrush" Value="{StaticResource Accent_Normal}"/>
+                                        <Setter Property="BarBackgroundBrush" Value="{StaticResource Accent_Hover}"/>
+                                        <Setter Property="BarHeight" Value="10"/>
+                                    </Style>
+                                </th_wpf:TimeProgress.Style>
+                            </th_wpf:TimeProgress>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <!--CNC Controller Status Variables-->
                 <DataGridTextColumn Header="Emergency Stop" Binding="{Binding EmergencyStop}">
@@ -320,10 +247,12 @@
                                             >
                                             <Border.Style>
                                                 <Style TargetType="Border">
-                                                    <Setter Property="Background" Value="Red"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="ARMED">
                                                             <Setter Property="Background" Value="#FF19B419"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="TRIGGERED">
+                                                            <Setter Property="Background" Value="Red"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>

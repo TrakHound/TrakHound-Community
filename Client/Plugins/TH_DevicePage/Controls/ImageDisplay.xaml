@@ -20,7 +20,7 @@
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="Background" Value="{Binding Foreground}"/>
                 </Style>
             </Grid.Style>
         </Grid>

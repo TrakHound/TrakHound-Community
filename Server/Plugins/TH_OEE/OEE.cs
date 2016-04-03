@@ -197,7 +197,15 @@ namespace TH_OEE
                     if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
                     {
                         oeeData.OperatingTime = cycle.Duration.TotalSeconds;
-                        oeeData.IdealOperatingTime = IdealTimeFromOverrides(cycle).TotalSeconds;
+
+                        if (cycle.CycleOverrides.Count > 0)
+                        {
+                            oeeData.IdealOperatingTime = IdealTimeFromOverrides(cycle).TotalSeconds;
+                        }
+                        else
+                        {
+                            oeeData.IdealOperatingTime = oeeData.OperatingTime;
+                        }                  
                     }
                 }
 

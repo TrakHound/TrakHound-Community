@@ -158,11 +158,6 @@ namespace TH_ShiftTable
 
         void CreateShiftSegmentsTable(List<Shift> shifts)
         {
-            string tablename;
-
-            if (configuration.DatabaseId != null) tablename = configuration.DatabaseId + "_" + TableNames.ShiftSegments;
-            else tablename = TableNames.ShiftSegments;
-
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
                 new ColumnDefinition("SHIFT", DataType.LargeText),
@@ -177,7 +172,7 @@ namespace TH_ShiftTable
 
             var primaryKey = new string[] { "SHIFT_ID", "SEGMENT_ID" };
 
-            Table.Replace(configuration.Databases_Server, tablename, columns.ToArray(), primaryKey);
+            Table.Replace(configuration.Databases_Server, GetTableName(TableNames.ShiftSegments), columns.ToArray(), primaryKey);
 
             if (shifts != null)
             {
@@ -210,12 +205,12 @@ namespace TH_ShiftTable
                     }
                 }
 
-                Row.Insert(configuration.Databases_Server, tablename, insertColumns.ToArray(), rowValues, primaryKey, true);
+                Row.Insert(configuration.Databases_Server, GetTableName(TableNames.ShiftSegments), insertColumns.ToArray(), rowValues, primaryKey, true);
             }
         }
 
 
-        public string TableName = TableNames.Shifts;
+        //public string TableName = TableNames.Shifts;
         string[] primaryKey = { "ID" };
 
         List<string> ShiftTableColumns;
@@ -224,9 +219,6 @@ namespace TH_ShiftTable
 
         void CreateTable()
         {
-            if (configuration.DatabaseId != null) TableName = configuration.DatabaseId + "_" + TableNames.Shifts;
-            else TableName = TableNames.Shifts;
-
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
             columns.Add(new ColumnDefinition("ID", DataType.LargeText, true));
@@ -253,12 +245,12 @@ namespace TH_ShiftTable
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
-            Table.Create(configuration.Databases_Server, TableName, ColArray, primaryKey);  
+            Table.Create(configuration.Databases_Server, GetTableName(TableNames.Shifts), ColArray, primaryKey);  
         }
 
         void GetTableColumns()
         {
-            ShiftTableColumns = Column.Get(configuration.Databases_Server, TableName);
+            ShiftTableColumns = Column.Get(configuration.Databases_Server, GetTableName(TableNames.Shifts));
         }
 
         static List<string> GetGeneratedEventColumnNames(Configuration config)
@@ -298,7 +290,7 @@ namespace TH_ShiftTable
         {
             var Result = new List<ShiftRowInfo>();
 
-            DataTable dt = Table.Get(configuration.Databases_Server, TableName);
+            DataTable dt = Table.Get(configuration.Databases_Server, GetTableName(TableNames.Shifts));
             if (dt != null)
             {
                 foreach (DataRow row in dt.Rows)
@@ -416,7 +408,13 @@ namespace TH_ShiftTable
                 rowValues.Add(values);
             }
 
-            Row.Insert(configuration.Databases_Server, TableName, columns.ToArray(), rowValues, primaryKey, true);
+            Row.Insert(configuration.Databases_Server, GetTableName(TableNames.Shifts), columns.ToArray(), rowValues, primaryKey, true);
+        }
+
+        private string GetTableName(string table)
+        {
+            if (configuration.DatabaseId != null) return configuration.DatabaseId + "_" + table;
+            else return table;
         }
 
         #endregion

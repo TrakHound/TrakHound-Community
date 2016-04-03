@@ -32,6 +32,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
                 <!--Image-->
@@ -50,6 +51,8 @@
                 <!--Title-->
                 <TextBlock Grid.Column="1" Text="{Binding Title}" Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="12pt" Margin="0,5"/>
 
+                <!--Id-->
+                <TextBlock Grid.Column="2" Text="{Binding Id}" Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="12pt" Margin="10,5"/>
 
             </Grid>
             

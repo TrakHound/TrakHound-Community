@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -15,15 +16,25 @@ using System.Windows.Shapes;
 namespace TH_DevicePage.Controls
 {
     /// <summary>
-    /// Interaction logic for ControllerStatusPanel.xaml
+    /// Interaction logic for TextDisplay.xaml
     /// </summary>
-    public partial class ControllerStatusPanel : UserControl
+    public partial class TextDisplay : UserControl
     {
-        public ControllerStatusPanel()
+        public TextDisplay()
         {
             InitializeComponent();
             root.DataContext = this;
         }
 
+
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(TextDisplay), new PropertyMetadata(null));
+        
     }
 }

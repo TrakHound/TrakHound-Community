@@ -80,11 +80,6 @@ namespace TH_Global
             string[] lines = text.Split(new string[] { "\r\n", "\n", Environment.NewLine }, StringSplitOptions.None);
             foreach (var line in lines)
             {
-                //string assembly = "";
-                //if (file != "") assembly = Path.GetFileName(Path.GetDirectoryName(file)).Replace(' ', '_');
-                //file = Path.GetFileName(file);
-                //member = member.Replace('.', '_');
-
                 var queueLine = new Line();
                 queueLine.Text = line;
 

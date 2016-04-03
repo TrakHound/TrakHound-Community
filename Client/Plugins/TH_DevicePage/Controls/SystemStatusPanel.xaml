@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="TH_DevicePage.Controls.SystemStatusPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_DevicePage.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="System Status" Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="16pt"/>
+
+        <Grid Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="local:TextDisplay">
+                    <Setter Property="Width" Value="250"/>
+                    <Setter Property="Height" Value="50"/>
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="Margin" Value="10,5"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                </Style>
+            </Grid.Resources>
+
+            <!--Power-->
+            <TextBlock Grid.Column="0" Grid.Row="1" Text="Power"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="1" Text="On"/>
+
+            
+            <!--Coolant-->
+                    
+            <!--Low Coolant-->
+            <TextBlock Grid.Column="0" Grid.Row="2" Text="Low Coolant"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="2" Text="Normal"/>
+
+            <!--Coolant Motor-->
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Coolant Motor"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="3" Text="Normal"/>
+
+            <!--Coolant Pressure-->
+            <TextBlock Grid.Column="0" Grid.Row="4" Text="Coolant Pressure"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="4" Text="Normal"/>
+
+            <!--Coolant Filter-->
+            <TextBlock Grid.Column="0" Grid.Row="5" Text="Coolant Filter"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="5" Text="Normal"/>
+            
+            
+            <!--Hydraulic-->
+
+            <!--Low Hydraulic Level-->
+            <TextBlock Grid.Column="0" Grid.Row="6" Text="Low Hydraulic Level"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="6" Text="Normal"/>
+
+            <!--Hydraulic Pressure-->
+            <TextBlock Grid.Column="0" Grid.Row="7" Text="Hydraulic Pressure"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="7" Text="Normal"/>
+
+            <!--Hydraulic Temperature-->
+            <TextBlock Grid.Column="0" Grid.Row="8" Text="Hydraulic Temperature"/>
+            <local:TextDisplay Grid.Column="1" Grid.Row="8" Text="Normal"/>
+
+
+        </Grid>
+
+    </Grid>
+    
+</UserControl>

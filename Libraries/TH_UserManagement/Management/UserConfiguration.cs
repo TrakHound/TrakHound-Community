@@ -30,6 +30,10 @@ namespace TH_UserManagement.Management
         public string zipcode { get; set; }
         public string image_url { get; set; }
         public DateTime last_login { get; set; }
+        public int device_limit { get; set; }
+        public int device_count { get; set; }
+        public int user_level { get; set; }
+        public int plan_type { get; set; }
 
         public static UserConfiguration GetFromDataRow(DataRow row)
         {

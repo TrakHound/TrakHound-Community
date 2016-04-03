@@ -201,10 +201,12 @@ namespace TH_StatusData
             TableNames.Variables,
             TableNames.GenEventValues,
             TableNames.ShiftSegments,
+            TableNames.Status,
         };
 
         private static string[] dataTableFilters = new string[]
         {
+            null,
             null,
             null,
             null,
@@ -215,6 +217,7 @@ namespace TH_StatusData
         {
             "NAME, VALUE",
             "VARIABLE, VALUE",
+            null,
             null,
             null,
         };
@@ -290,6 +293,7 @@ namespace TH_StatusData
             DataTable geneventvalues = GetTableFromList(GetTableName(TableNames.GenEventValues, config.DatabaseId), list);
             DataTable shifts = GetTableFromList(GetTableName(TableNames.Shifts, config.DatabaseId), list);
             DataTable oee = GetTableFromList(GetTableName(TableNames.OEE, config.DatabaseId), list);
+            DataTable status = GetTableFromList(GetTableName(TableNames.Status, config.DatabaseId), list);
 
             // Get Variable Data
             EventData variableData = GetVariables(variables, config);
@@ -329,6 +333,11 @@ namespace TH_StatusData
                 EventData partsData = GetParts(config, shiftData);
                 // Send Parts Data
                 SendDataEvent(partsData);
+
+                // Get Status Data
+                EventData statusData = GetStatus(status, config);
+                // Send Status Data
+                SendDataEvent(statusData);
             }
         }
 
@@ -395,6 +404,23 @@ namespace TH_StatusData
             {
                 var data = new EventData();
                 data.Id = "StatusData_GenEventValues";
+                data.Data01 = config;
+                data.Data02 = dt;
+
+                result = data;
+            }
+
+            return result;
+        }
+
+        private static EventData GetStatus(DataTable dt, Configuration config)
+        {
+            var result = new EventData();
+
+            if (dt != null)
+            {
+                var data = new EventData();
+                data.Id = "StatusData_Status";
                 data.Data01 = config;
                 data.Data02 = dt;
 

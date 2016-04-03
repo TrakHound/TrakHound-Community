@@ -44,9 +44,13 @@ namespace TH_UserManagement.Management.Remote
         {
             bool result = false;
 
-            string tableName = CreateTableName(userConfig);
+            if (userConfig.plan_type > 0 && userConfig.device_count >= userConfig.device_limit)
+            {
+                TH_WPF.MessageBox.Show("You have exceeded the number of devices allowed for your plan. Please contact TrakHound to add more devices to your account. info@trakhound.org", "Device Limit Exceeded", TH_WPF.MessageBoxButtons.Ok);
+                return false;
+            }
 
-            //configuration.TableName = tableName;
+            string tableName = CreateTableName(userConfig);
 
             result = Create(tableName);
             if (result)
@@ -59,12 +63,6 @@ namespace TH_UserManagement.Management.Remote
                 string uniqueId = Configuration.GenerateUniqueID();
                 configuration.UniqueId = uniqueId;
                 XML_Functions.SetInnerText(configuration.ConfigurationXML, "UniqueId", uniqueId);
-
-                // Set Enabled to False
-                //configuration.ClientEnabled = false;
-                //configuration.ServerEnabled = false;
-                //XML_Functions.SetInnerText(configuration.ConfigurationXML, "ClientEnabled", "false");
-                //XML_Functions.SetInnerText(configuration.ConfigurationXML, "ServerEnabled", "false");
 
                 DataTable dt = TH_Configuration.Converter.XMLToTable(configuration.ConfigurationXML);
 
@@ -112,7 +110,6 @@ namespace TH_UserManagement.Management.Remote
 
             if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
 
-            //string url = "https://www.feenux.com/php/configurations/getconfigurationslist.php";
             string url = PHPFilePath + "getconfigurationslist.php";
             string responseString = HTTP.SendData(url, values);
 
@@ -120,19 +117,16 @@ namespace TH_UserManagement.Management.Remote
             {
                 result = new List<Configuration>();
 
-                //string[] tables = responseString.Split('%');
                 string[] tables = responseString.Split(TABLE_DELIMITER_START.ToCharArray());
 
                 foreach (string table in tables)
                 {
                     if (!String.IsNullOrEmpty(table))
                     {
-                        //var delimiter = table.IndexOf('~');
                         var delimiter = table.IndexOf(TABLE_DELIMITER_END);
                         if (delimiter > 0)
                         {
                             string tablename = table.Substring(0, delimiter);
-                            //string tabledata = table.Substring(delimiter + 1);
                             string tabledata = table.Substring(delimiter + TABLE_DELIMITER_END.Length);
 
                             DataTable dt = JSON.ToTable(tabledata);
@@ -158,6 +152,7 @@ namespace TH_UserManagement.Management.Remote
             return result;
         }
 
+       
         public static List<DataTable> GetDeviceInfos(UserConfiguration userConfig)
         {
             List<DataTable> result = null;
