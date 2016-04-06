@@ -21,9 +21,16 @@ namespace TH_Plugins.Database
     [InheritedExport(typeof(IConfigurationPage))]
     public interface IConfigurationPage
     {
-        string PageName { get; }
+        /// <summary>
+        /// Title of the page (ex. MySQL)
+        /// </summary>
+        string Title { get; }
 
+        /// <summary>
+        /// Image related to the Database Type (ex. MySQL Dolphin logo)
+        /// </summary>
         ImageSource Image { get; }
+
 
         event SettingChanged_Handler SettingChanged;
 

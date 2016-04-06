@@ -73,31 +73,31 @@ namespace TH_Database
             return result;
         }
 
-        public static bool CheckPermissions(Database_Configuration config, Application_Type type)
-        {
-            bool result = false;
+        //public static bool CheckPermissions(Database_Configuration config, Application_Type type)
+        //{
+        //    bool result = false;
 
-            if (Global.Plugins != null)
-            {
-                foreach (var plugin in Global.Plugins)
-                {
-                    try
-                    {
-                        if (Global.CheckType(plugin, config))
-                        {
-                            result = plugin.CheckPermissions(config.Configuration, type);
-                            break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log("CheckPermissions : Exception : " + ex.Message);
-                    }
-                }
-            }
+        //    if (Global.Plugins != null)
+        //    {
+        //        foreach (var plugin in Global.Plugins)
+        //        {
+        //            try
+        //            {
+        //                if (Global.CheckType(plugin, config))
+        //                {
+        //                    result = plugin.CheckPermissions(config.Configuration, type);
+        //                    break;
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Logger.Log("CheckPermissions : Exception : " + ex.Message);
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public const string DateString = "yyyy-MM-dd H:mm:ss";
 

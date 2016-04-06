@@ -19,19 +19,48 @@ namespace TH_Plugins.Database
     [InheritedExport(typeof(IDatabasePlugin))]
     public interface IDatabasePlugin
     {
+        /// <summary>
+        /// Name of the Plugin (ex. MySQL Database Plugin
+        /// </summary>
         string Name { get; }
 
+        /// <summary>
+        /// Name of the Database Type (ex. MySQL)
+        /// Use the underscore character ('_') instead of spaces (ex. 'SQL_Server')
+        /// </summary>
         string Type { get; }
 
+        /// <summary>
+        /// Configuration Page Type (ex. typeof(TH_MySQL.ConfigurationPage.Page))
+        /// </summary>
         Type Config_Page { get; }
 
+
+        /// <summary>
+        /// Method to create the 'Configuration Button' used in the TH_DeviceManager.Database.Page usercontrol.
+        /// Typically contains the Database Name, IP address, and any other basic info to 
+        /// quickly identify which database is which
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
         object CreateConfigurationButton(DataTable dt);
 
+        /// <summary>
+        /// Method to intialize the plugin using the Database_Configuration object passed as an argument.
+        /// This is where the configuration can be read and processed by the plugin
+        /// </summary>
+        /// <param name="config"></param>
         void Initialize(Database_Configuration config);
 
+        /// <summary>
+        /// Method to determine if the database is able to be connected to.
+        /// This can also include checks for user permissions, etc.
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
         bool Ping(object settings, out string msg);
 
-        bool CheckPermissions(object settings, Application_Type type);
 
 
         // Database Functions -----------------------------------------------------------

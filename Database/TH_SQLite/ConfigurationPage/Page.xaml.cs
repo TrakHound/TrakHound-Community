@@ -1,23 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Data;
-
-using TH_Configuration;
-using TH_Database;
-using TH_Global;
 using TH_Global.Functions;
 using TH_Plugins.Database;
 
@@ -34,7 +27,7 @@ namespace TH_SQLite.ConfigurationPage
             DataContext = this;
         }
 
-        public string PageName { get { return "SQLite"; } }
+        public string Title { get { return "SQLite"; } }
 
         public ImageSource Image { get { return null; } }
 
@@ -167,6 +160,11 @@ namespace TH_SQLite.ConfigurationPage
 
         public static readonly DependencyProperty DatabasePathProperty =
             DependencyProperty.Register("DatabasePath", typeof(string), typeof(Page), new PropertyMetadata(null));
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.ToString());
+        }
 
     }
 }

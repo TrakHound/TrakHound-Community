@@ -14,6 +14,25 @@
 
         <StackPanel>
 
+            <!--SQLite Description-->
+            <Grid MaxWidth="600" HorizontalAlignment="Left" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="/TH_SQLite;component/Resources/sqlite_logo.png" Margin="0,0,20,0" Height="50"/>
+
+                <TextBlock Grid.Column="1" Foreground="{StaticResource Foreground_Normal}" FontSize="10pt" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap">
+                    <Run Text="SQLite is a serverless database system that is written to a single local file."/>
+                    <Run Text="There is no setup necessary and the file will be automatically created based on the path set below."/>
+                    <Run Text="This is a good choice for testing TrakHound or when not used on a network."/>
+                    <Run Text="More information on SQLite can be found"/>
+                    <Hyperlink NavigateUri="https://www.sqlite.org/" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink>
+                </TextBlock>
+
+            </Grid>
+
             <!--Manual Configuration-->
             <Grid>
                 <Grid.ColumnDefinitions>

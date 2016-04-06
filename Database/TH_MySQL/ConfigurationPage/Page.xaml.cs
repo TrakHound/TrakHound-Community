@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using System.Data;
-
-using TH_Database;
-using TH_Global;
-using TH_Global.Functions;
 using TH_Plugins.Database;
-using TH_UserManagement;
 using TH_UserManagement.Management;
-
 
 namespace TH_MySQL.ConfigurationPage
 {
@@ -40,7 +32,7 @@ namespace TH_MySQL.ConfigurationPage
             SetTrakHoundClourServer();
         }
 
-        public string PageName { get { return "MySQL"; } }
+        public string Title { get { return "MySQL"; } }
 
         public ImageSource Image { get { return null; } }
 
@@ -586,5 +578,9 @@ namespace TH_MySQL.ConfigurationPage
 
         #endregion
 
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.ToString());
+        }
     }
 }

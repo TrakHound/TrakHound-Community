@@ -83,9 +83,9 @@ namespace TH_MySQL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap MySQL_01 {
+        internal static System.Drawing.Bitmap logo_mysql_170x115 {
             get {
-                object obj = ResourceManager.GetObject("MySQL_01", resourceCulture);
+                object obj = ResourceManager.GetObject("logo_mysql_170x115", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

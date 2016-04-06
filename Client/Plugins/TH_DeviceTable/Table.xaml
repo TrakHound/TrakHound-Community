@@ -248,7 +248,45 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
+
+                <!--Device Status-->
+                <DataGridTemplateColumn MinWidth="30">
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="Device Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Displays the Device's current status whether it is in Production, Idle, or Alert.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="S" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Production}" Value="true">
+                                                <Setter Property="Background" Value="#FF19B419"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Idle}" Value="true">
+                                                <Setter Property="Background" Value="#00FFFF"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Alert}" Value="true">
+                                                <Setter Property="Background" Value="#FF0000"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <!--Description Columns-->
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

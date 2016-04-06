@@ -13,6 +13,24 @@
         
         <StackPanel>
 
+            <!--Wait for permission from MySQL / Oracle on logo use-->
+            <!--<Grid MaxWidth="600" HorizontalAlignment="Left" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="/TH_MySQL;component/Resources/logo-mysql-170x115.png" Margin="0,0,20,0" Height="75"/>
+
+                <TextBlock Grid.Column="1" Foreground="{StaticResource Foreground_Normal}" FontSize="10pt" TextAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap">
+                    <Run Text="MySQL is a server based database system that is capable of supporting multiple connections and users."/>
+                    <Run Text="This is a good choice for users that don't already have another database system setup yet need a database that be accessed from multiple PCs."/>
+                    <Run Text="MySQL can be downloaded from"/>
+                    <Hyperlink NavigateUri="https://www.mysql.com/downloads/" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink>
+                </TextBlock>
+
+            </Grid>-->
+
             <StackPanel Orientation="Horizontal">
 
                 <!--CheckBox-->

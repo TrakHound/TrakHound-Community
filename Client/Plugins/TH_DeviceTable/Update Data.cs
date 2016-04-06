@@ -36,6 +36,8 @@ namespace TH_DeviceTable
                         UpdateDatabaseConnection(data, info);
                         UpdateAvailability(data, info);
 
+                        UpdateStatus(data, info);
+
                         UpdateOEE(data, info);
 
                         UpdateProductionStatus(data, info);
@@ -61,11 +63,6 @@ namespace TH_DeviceTable
                     info.Connected = (bool)data.Data02;
                 }
 
-                //bool connected;
-                //bool.TryParse(data.Data02.ToString(), out connected);
-
-                //info.Connected = connected;
-
                 Refresh();
             }
         }
@@ -79,14 +76,44 @@ namespace TH_DeviceTable
                     info.Available = (bool)data.Data02;
                 }
 
-                //bool connected;
-                //bool.TryParse(data.Data02.ToString(), out connected);
-
-                //info.Connected = connected;
-
                 Refresh();
             }
         }
+
+
+        private void UpdateStatus(EventData data, DeviceInfo info)
+        {
+            if (data.Id.ToLower() == "statusdata_snapshots")
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    bool b;
+                    string s;
+
+                    // Alert
+                    b = false;
+                    s = GetTableValue(data.Data02, "Alert");
+                    bool.TryParse(s, out b);
+                    info.Alert = b;
+
+                    // Idle
+                    b = false;
+                    s = GetTableValue(data.Data02, "Idle");
+                    bool.TryParse(s, out b);
+                    info.Idle = b;
+
+                    // Production
+                    b = false;
+                    s = GetTableValue(data.Data02, "Production");
+                    bool.TryParse(s, out b);
+                    info.Production = b;
+
+                    Refresh();
+                    
+                }), PRIORITY_BACKGROUND, new object[] { });
+            }
+        }
+
 
         private void UpdateOEE(EventData data, DeviceInfo info)
         {
@@ -123,7 +150,6 @@ namespace TH_DeviceTable
 
             if (data.Id.ToLower() == "statusdata_shiftdata")
             {
-                //UpdateProductionStatusValue(data.Data02, info);
                 Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(UpdateProductionStatusValue), PRIORITY_BACKGROUND, new object[] { data.Data02, info });
             }
         }

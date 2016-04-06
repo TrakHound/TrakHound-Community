@@ -134,7 +134,6 @@
     <EmbeddedResource Include="LICENSE.txt" />
     <Resource Include="Resources\CheckMark_01.png" />
     <Resource Include="Resources\Help_01.png" />
-    <Resource Include="Resources\MySQL_01.png" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="ConfigurationPage\Button.xaml">
@@ -151,6 +150,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo-mysql-170x115.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

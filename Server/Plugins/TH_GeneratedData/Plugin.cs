@@ -48,7 +48,7 @@ namespace TH_GeneratedData
 
         public void GetSentData(EventData data)
         {
-            if (data != null)
+            if (data != null && data.Id != null && configuration != null)
             {
                 var gdc = GeneratedDataConfiguration.Get(configuration);
                 if (gdc != null)

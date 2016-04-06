@@ -74,6 +74,43 @@ namespace TH_DeviceTable
 
         #endregion
 
+        #region "Status"
+
+        private bool _alert;
+        public bool Alert
+        {
+            get { return _alert; }
+            set
+            {
+                _alert = value;
+                PropertyChanged.ChangeAndNotify<bool>(ref _alert, value, () => Alert);
+            }
+        }
+
+        private bool _idle;
+        public bool Idle
+        {
+            get { return _idle; }
+            set
+            {
+                _idle = value;
+                PropertyChanged.ChangeAndNotify<bool>(ref _idle, value, () => Idle);
+            }
+        }
+
+        private bool _production;
+        public bool Production
+        {
+            get { return _production; }
+            set
+            {
+                _production = value;
+                PropertyChanged.ChangeAndNotify<bool>(ref _production, value, () => Production);
+            }
+        }
+
+        #endregion
+
         #region "OEE"
 
         private double _oee;
