@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 using TH_Configuration;
 using TH_Plugins;
-using TH_Plugins.Client;
 
 namespace TH_DeviceTable
 {
@@ -51,6 +43,11 @@ namespace TH_DeviceTable
             data.Id = "DevicePage_Show";
             data.Data01 = config;
             if (SendData != null) SendData(data);
+        }
+
+        private void Refresh_Clicked(TH_WPF.Button bt)
+        {
+            Devices_DG.Items.Refresh();
         }
     }
 

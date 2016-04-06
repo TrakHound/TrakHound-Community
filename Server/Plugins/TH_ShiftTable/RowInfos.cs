@@ -55,9 +55,9 @@ namespace TH_ShiftTable
 
         public static List<ShiftRowInfo> Get(Configuration config, List<GenEventShiftItem> genEventShiftItems, TH_MTConnect.Streams.ReturnData currentData)
         {
-            List<ShiftRowInfo> Result = new List<ShiftRowInfo>();
+            var result = new List<ShiftRowInfo>();
 
-            ShiftConfiguration sc = ShiftConfiguration.Get(config);
+            var sc = ShiftConfiguration.Get(config);
 
             IEnumerable<ShiftDate> shiftDates = genEventShiftItems.Select(x => x.shiftDate).Distinct();
             foreach (ShiftDate shiftDate in shiftDates)
@@ -72,7 +72,7 @@ namespace TH_ShiftTable
                     IEnumerable<Segment> segments = sameShifts.Select(x => x.segment).Distinct();
                     foreach (Segment segment in segments)
                     {
-                        ShiftRowInfo sri = new ShiftRowInfo();
+                        var sri = new ShiftRowInfo();
                         sri.id = Tools.GetShiftId(shiftDate, segment);
                         sri.date = shiftDate;
                         sri.shift = shiftName;
@@ -88,7 +88,7 @@ namespace TH_ShiftTable
 
                         sri.totalTime = Tools.GetTotalShiftSeconds(sri, currentData);
 
-                        if (sc != null)
+                        if (sri.totalTime > 0 && sc != null)
                         {
                             IEnumerable<string> eventNames = genEventShiftItems.Select(x => x.eventName).Distinct();
                             foreach (string eventName in eventNames.ToList())
@@ -125,13 +125,12 @@ namespace TH_ShiftTable
                             }
                         }
 
-                        Result.Add(sri);
-
+                        result.Add(sri);
                     }
                 }
             }
 
-            return Result;
+            return result;
         }
     }
 

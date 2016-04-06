@@ -187,12 +187,18 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void PingNodes_Finished()
         {
-            Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }));
+            //Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }));
         }
 
         #endregion
 
         #region "MTConnect Probe"
+
+        private class RunProbeInfo
+        {
+            public IPAddress Address { get; set; }
+            public int Port { get; set; }
+        }
 
         private void RunProbe(object o)
         {
@@ -200,30 +206,47 @@ namespace TH_DeviceManager.AddDevice.Pages
 
             var ports = new int[] { 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010 };
 
+            portCount = ports.Length;
+
             foreach (var port in ports)
             {
-                RunProbe(ip, port);
+                var info = new RunProbeInfo();
+                info.Address = ip;
+                info.Port = port;
+
+                ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbeOnPort), info);
+            } 
+        }
+
+        private void RunProbeOnPort(object o)
+        {
+            if (o != null)
+            {
+                var info = (RunProbeInfo)o;
+
+                string url = TH_MTConnect.HTTP.GetUrl(info.Address.ToString(), info.Port, null);
+
+                var probe = Requests.Get(url, null, 2000, 1);
+                if (probe != null)
+                {
+                    foreach (var device in probe.Devices)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action<IPAddress, int, Device>(AddDeviceInfo), PRIORITY_BACKGROUND, new object[] { info.Address, info.Port, device });
+                    }
+                }
+
+                StopDevicesLoading(info.Port);
             }
         }
 
-        private bool RunProbe(IPAddress ip, int port)
+        int portCount;
+
+        private void StopDevicesLoading(int port)
         {
-            bool result = false;
-
-            string url = TH_MTConnect.HTTP.GetUrl(ip.ToString(), port, null);
-
-            var probe = Requests.Get(url, null, 2000, 1);
-            if (probe != null)
+            if (port >= portCount)
             {
-                result = true;
-
-                foreach (var device in probe.Devices)
-                {
-                    this.Dispatcher.BeginInvoke(new Action<IPAddress, int, Device>(AddDeviceInfo), PRIORITY_BACKGROUND, new object[] { ip, port, device });
-                }
+                Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }), PRIORITY_BACKGROUND, new object[] { });
             }
-
-            return result;
         }
 
         #endregion
@@ -247,11 +270,8 @@ namespace TH_DeviceManager.AddDevice.Pages
         private void AddDeviceInfo(IPAddress address, int port, Device device)
         {
             // Check if already in DeviceManagerList.Devices
-            bool alreadyAdded = ParentPage.DeviceManager.Devices.ToList().Exists(x =>
-            x.Agent.Address == address.ToString() &&
-            x.Agent.Port == port &&
-            x.Agent.DeviceName == device.Name
-            );
+            bool alreadyAdded = ParentPage.DeviceManager.Devices.ToList().Exists(x => 
+            TestAgentConfiguration(x, address, port, device));
 
             if (!alreadyAdded)
             {
@@ -276,6 +296,22 @@ namespace TH_DeviceManager.AddDevice.Pages
             {
                 DevicesAlreadyAdded += 1;
             }
+        }
+
+        private bool TestAgentConfiguration(Configuration config, IPAddress address, int port, Device device)
+        {
+            bool result = false;
+
+            var ac = TH_MTConnect.Plugin.AgentConfiguration.Read(config.ConfigurationXML);
+            if (ac != null)
+            {
+                if (address.ToString() == ac.Address && port == ac.Port && device.Name == ac.DeviceName)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
         }
 
         private ImageSource GetSourceFromImage(System.Drawing.Image img)

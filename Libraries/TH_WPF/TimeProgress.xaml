@@ -8,17 +8,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              >
 
-    <Grid>
-        <!--<Grid.Style>
-            <Style TargetType="Grid">
-                <Setter Property="Background" Value="#00000000"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                        <Setter Property="Background" Value="{}"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>-->
+    <Grid x:Name="root">
 
         <Grid  Margin="10">
             <Grid.RowDefinitions>

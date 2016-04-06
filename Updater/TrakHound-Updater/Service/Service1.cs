@@ -22,30 +22,30 @@ namespace TrakHound_Updater
 
         protected override void OnStart(string[] args)
         {
-            ServiceStatus serviceStatus = new ServiceStatus();
-            serviceStatus.dwCurrentState = ServiceState.SERVICE_START_PENDING;
-            serviceStatus.dwWaitHint = 10000;
-            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+            var status = new ServiceStatus();
+            status.dwCurrentState = ServiceState.SERVICE_START_PENDING;
+            status.dwWaitHint = 10000;
+            SetServiceStatus(this.ServiceHandle, ref status);
 
             StartUpdates();
 
             // Update the service state to Running.
-            serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
-            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+            status.dwCurrentState = ServiceState.SERVICE_RUNNING;
+            SetServiceStatus(this.ServiceHandle, ref status);
         }
 
         protected override void OnStop()
         {
-            ServiceStatus serviceStatus = new ServiceStatus();
-            serviceStatus.dwCurrentState = ServiceState.SERVICE_STOP_PENDING;
-            serviceStatus.dwWaitHint = 10000;
-            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+            var status = new ServiceStatus();
+            status.dwCurrentState = ServiceState.SERVICE_STOP_PENDING;
+            status.dwWaitHint = 10000;
+            SetServiceStatus(this.ServiceHandle, ref status);
 
             StopUpdates();
 
             // Update the service state to Stopped.
-            serviceStatus.dwCurrentState = ServiceState.SERVICE_STOPPED;
-            SetServiceStatus(this.ServiceHandle, ref serviceStatus);
+            status.dwCurrentState = ServiceState.SERVICE_STOPPED;
+            SetServiceStatus(this.ServiceHandle, ref status);
         }
 
         #region "Service Status"

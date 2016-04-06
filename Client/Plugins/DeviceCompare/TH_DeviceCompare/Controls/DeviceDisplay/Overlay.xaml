@@ -38,74 +38,17 @@
 
             <Grid>
 
-                <!--Loading Animation-->
-                <!--<Grid>
-                    --><!--<Grid.Style>
-                        <Style TargetType="Grid">
-                            <Setter Property="Opacity" Value="0.0"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Loading}" Value="true">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                    <DataTrigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="1.0" To="0.0"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Grid.Style>--><!--
-
-                    <loadinganimation:Wheel HorizontalAlignment="Center" VerticalAlignment="Center" Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
-
-                </Grid>-->
-
                 <!--Connection Image-->
-                <Grid>
-                    <!--<Grid.Style>
+                <Grid Width="35" Height="35">
+                    <Grid.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding ConnectionImage}" />
+                    </Grid.Resources>
+                    <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Opacity" Value="0.0"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding ConnectionImage}" Value="{x:Null}">
-                                    <DataTrigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="0.0" To="1.0"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                    <DataTrigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Duration="00:00:00.5" Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" BeginTime="00:00:00.5"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </DataTrigger.ExitActions>
-                                </DataTrigger>
-                            </Style.Triggers>
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
                         </Style>
-                    </Grid.Style>-->
-
-                    <Grid Width="35" Height="35">
-                        <Grid.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding ConnectionImage}" />
-                        </Grid.Resources>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
-                            </Style>
-                        </Grid.Style>
-                    </Grid>
-
+                    </Grid.Style>
                 </Grid>
 
             </Grid>

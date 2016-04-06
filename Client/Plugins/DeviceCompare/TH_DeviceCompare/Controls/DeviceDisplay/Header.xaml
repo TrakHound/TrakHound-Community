@@ -347,9 +347,9 @@
                         </Rectangle.Resources>
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
-                                <Setter Property="Height" Value="150"/>
+                                <Setter Property="MaxHeight" Value="150"/>
                                 <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-                                <Setter Property="Margin" Value="10,0"/>
+                                <Setter Property="Margin" Value="10"/>
                                 <Setter Property="OpacityMask" Value="{StaticResource IMG}"/>
                             </Style>
                         </Rectangle.Style>
@@ -358,12 +358,16 @@
                 </Grid>
 
                 <!--Device Description-->
-                <TextBlock Grid.Row="3" Text="{Binding DeviceDescription.Description}" FontSize="10pt" FontWeight="Bold" Foreground="{StaticResource Foreground_Opposite_Normal}">
+                <TextBlock Grid.Row="3" Text="{Binding DeviceDescription.Description}" >
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="Padding" Value="10,5,10,2"/>
-                            <Setter Property="TextAlignment" Value="Left"/>
+                            <Setter Property="FontSize" Value="10pt"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Large}">

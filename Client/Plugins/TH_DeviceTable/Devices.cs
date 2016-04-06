@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using TH_Configuration;
+using TH_Global.Functions;
 
 namespace TH_DeviceTable
 {
@@ -35,7 +36,10 @@ namespace TH_DeviceTable
         {
             var info = new DeviceInfo();
             info.Configuration = config;
+            LoadManufacturerLogo(config.FileLocations.Manufacturer_Logo_Path, info);
             DeviceInfos.Add(info);
+
+            DeviceInfos.Sort();
         }
 
     }

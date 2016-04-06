@@ -133,6 +133,9 @@
   <data name="List_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\List_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Refresh_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Refresh_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Warning_01_40px" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Warning_01_40px.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>

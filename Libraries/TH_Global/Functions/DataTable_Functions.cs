@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -30,6 +35,22 @@ namespace TH_Global.Functions
             if (row.Table.Columns.Contains(key)) if (row[key] != null) val = row[key].ToString();
 
             if (val != null) double.TryParse(val, out result);
+
+            return result;
+        }
+
+        public static bool RowExists(DataTable dt, string keyColumn, string key)
+        {
+            bool result = false;
+
+            if (dt.Columns.Contains(keyColumn))
+            {
+                DataView dv = dt.AsDataView();
+                dv.RowFilter = keyColumn + "='" + key + "'";
+                DataTable temp_dt = dv.ToTable();
+                if (temp_dt != null && temp_dt.Rows.Count > 0) result = true;
+                temp_dt.Dispose();
+            }
 
             return result;
         }
@@ -105,6 +126,94 @@ namespace TH_Global.Functions
         }
 
 
+        public static class TrakHound
+        {
+            public const string ATTRIBUTE_ID_DELIMITER = "||";
+            public const string ATTRIBUTE_ID_EOL = ";";
+
+            public static string GetRowAttribute(string name, DataRow row)
+            {
+                string attributes = row["attributes"].ToString();
+
+                if (attributes.Contains(name))
+                {
+                    int index = GetIndexOfId(name, attributes);
+                    if (index >= 0)
+                    {
+                        int b = attributes.IndexOf(ATTRIBUTE_ID_DELIMITER, index) + 2;
+                        int c = attributes.IndexOf(ATTRIBUTE_ID_EOL, index);
+
+                        if (b >= 0 && (c - b) > 0)
+                        {
+                            return attributes.Substring(b, c - b);
+                        }
+                    }
+                }
+
+                return null;
+            }
+
+            private static int GetIndexOfId(string id, string attributes)
+            {
+                int result = -1;
+
+                int start = 0;
+
+                while (result < 0 && start >= 0)
+                {
+                    start = attributes.IndexOf(id, start);
+                    if (start >= 0 && start < attributes.Length - 2)
+                    {
+                        // If next characters are the id delimiter
+                        if (attributes.Substring(start + id.Length, 2) == ATTRIBUTE_ID_DELIMITER)
+                        {
+                            result = start;
+                        }
+                        else start++;
+                    }
+                }
+
+                return result;
+            }
+
+            public static int GetUnusedAddressId(string prefix, DataTable dt)
+            {
+                int id = 0;
+                string adr = prefix + "||";
+                string test = adr + id.ToString("00");
+
+                if (dt != null)
+                {
+                    while (DataTable_Functions.RowExists(dt, "address", test))
+                    {
+                        id += 1;
+                        test = adr + id.ToString("00");
+                    }
+                }
+
+                return id;
+            }
+
+            public static void DeleteRows(string like, string likeColumn, DataTable dt)
+            {
+                if (dt.Columns.Contains(likeColumn))
+                {
+                    string filter = likeColumn + " LIKE '" + like + "'";
+                    DataView dv = dt.AsDataView();
+                    dv.RowFilter = filter;
+                    DataTable temp_dt = dv.ToTable();
+                    if (temp_dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in temp_dt.Rows)
+                        {
+                            DataRow dbRow = dt.Rows.Find(row[likeColumn]);
+                            if (dbRow != null) dt.Rows.Remove(dbRow);
+                        }
+                    }
+                }
+            }
+        }
+
 
         public static void WriteRowstoConsole(string Title, DataTable DT)
         {
@@ -141,68 +250,6 @@ namespace TH_Global.Functions
             Console.WriteLine(full);
 
         }
-
-
-
-
-        //public static string GetTableValue(string key, DataTable dt)
-        //{
-        //    string result = null;
-
-        //    DataRow row = dt.Rows.Find(key);
-        //    if (row != null)
-        //    {
-        //        result = row["value"].ToString();
-        //    }
-
-        //    return result;
-        //}
-
-        //public static string RemoveTableRow(string key, DataTable dt)
-        //{
-        //    string result = null;
-
-        //    DataRow row = dt.Rows.Find(key);
-        //    if (row != null)
-        //    {
-        //        dt.Rows.Remove(row);
-        //    }
-
-        //    return result;
-        //}
-
-        //public static void UpdateTableValue(string value, string key, DataTable dt)
-        //{
-        //    DataRow row = dt.Rows.Find(key);
-        //    if (row != null)
-        //    {
-        //        row["value"] = value;
-        //    }
-        //    else
-        //    {
-        //        row = dt.NewRow();
-        //        row["address"] = key;
-        //        row["value"] = value;
-        //        dt.Rows.Add(row);
-        //    }
-        //}
-
-        //public static void UpdateTableValue(string value, string attributes, string key, DataTable dt)
-        //{
-        //    DataRow row = dt.Rows.Find(key);
-        //    if (row != null)
-        //    {
-        //        row["value"] = value;
-        //    }
-        //    else
-        //    {
-        //        row = dt.NewRow();
-        //        row["address"] = key;
-        //        row["value"] = value;
-        //        row["attributes"] = attributes;
-        //        dt.Rows.Add(row);
-        //    }
-        //}
 
     }
 }

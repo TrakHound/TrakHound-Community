@@ -123,8 +123,6 @@ namespace TH_SQLite
 
                     query = "CREATE TABLE IF NOT EXISTS " + tablename + " (" + coldef + keydef + ")";
                     result = (bool)ExecuteQuery<bool>(config, query);
-
-                    Logger.Log("Table_Replace() :: " + result.ToString());
                 }
             }
 

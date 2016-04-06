@@ -113,6 +113,16 @@ namespace TH_DeviceTable.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Refresh_01 {
+            get {
+                object obj = ResourceManager.GetObject("Refresh_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Warning_01_40px {
             get {
                 object obj = ResourceManager.GetObject("Warning_01_40px", resourceCulture);

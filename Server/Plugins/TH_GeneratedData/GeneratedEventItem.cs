@@ -36,10 +36,10 @@ namespace TH_GeneratedData
             if (gdc != null)
             {
                 // Loop through each InstanceData object in instanceDatas
-                foreach (InstanceData instanceData in instanceDatas)
+                foreach (var instanceData in instanceDatas)
                 {
                     // Loop through all of the Events and process Event using instanceData object
-                    foreach (Event e in gdc.GeneratedEventsConfiguration.Events)
+                    foreach (var e in gdc.GeneratedEventsConfiguration.Events)
                     {
                         Return eventReturn = e.Process(instanceData);
 
@@ -57,7 +57,7 @@ namespace TH_GeneratedData
                             }
                         }
 
-                        GeneratedEventItem gei = new GeneratedEventItem();
+                        var gei = new GeneratedEventItem();
                         gei.EventName = e.Name;
                         gei.Timestamp = e.CurrentValue.TimeStamp;
                         gei.Value = e.CurrentValue.Value;

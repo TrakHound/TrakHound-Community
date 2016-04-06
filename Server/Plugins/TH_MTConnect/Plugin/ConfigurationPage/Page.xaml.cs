@@ -109,6 +109,9 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
         public void SaveConfiguration(DataTable dt)
         {
+            // Remove old rows
+            DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
+
             // Save IP Address
             DataTable_Functions.UpdateTableValue(dt, "address", prefix + "Address", "value", Address);
 

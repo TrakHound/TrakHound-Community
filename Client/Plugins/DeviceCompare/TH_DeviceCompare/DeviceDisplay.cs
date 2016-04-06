@@ -189,9 +189,6 @@ namespace TH_DeviceCompare
                         Connected = connected;
                     }
                 }
-
-                // Update Connected Property
-                //if (Connected != connected) Connected = connected;
             }
 
             if (Connected)
@@ -281,10 +278,13 @@ namespace TH_DeviceCompare
 
             if (plugins != null)
             {
-                foreach (var plugin in plugins)
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    AddPlugin(plugin, configs);
-                }
+                    foreach (var plugin in plugins)
+                    {
+                        AddPlugin(plugin, configs);
+                    }
+                }), Priority_Background, new object[] { });
             }
         }
 
@@ -330,15 +330,15 @@ namespace TH_DeviceCompare
             {
                 if (config.Enabled)
                 {
-                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                    {
+                    //Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    //{
                         var p = CreatePluginInstance(plugin, configs);
 
                         var cell = CreateCell(p);
                         if (cell != null) Cells.Add(cell);
 
                         if (CellAdded != null) CellAdded(this, new RoutedEventArgs());
-                    }), Priority_Context, new object[] { });
+                    //}), Priority_Context, new object[] { });
                 }
             }
         }

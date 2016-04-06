@@ -669,26 +669,11 @@
                                             <Style TargetType="Grid">
                                                 <Setter Property="Opacity" Value="1.0"/>
                                                 <Setter Property="MaxWidth" Value="100"/>
-                                                <!--<Setter Property="Opacity" Value="0.0"/>-->
-
                                                 <Setter Property="Background" Value="#00000000" />
                                                 <Style.Triggers>
 
                                                     <Trigger Property="IsMouseOver" Value="True">
-                                                        <Trigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </Trigger.EnterActions>
-                                                        <Trigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard FillBehavior="Stop">
-                                                                    <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </Trigger.ExitActions>
+                                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                                                     </Trigger>
 
                                                     <DataTrigger Binding="{Binding LoggedIn}" Value="true">
@@ -739,6 +724,9 @@
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Login_GRID}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
                                                             <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                                         </DataTrigger>
@@ -759,6 +747,9 @@
                                                 <Style TargetType="Path">
                                                     <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
                                                     <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Login_GRID}" Value="True">
+                                                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                                        </DataTrigger>
                                                         <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
                                                             <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
                                                         </DataTrigger>
@@ -842,6 +833,7 @@
 
                                 </StackPanel>
 
+                                
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
 
                                     <!--Server Management-->
@@ -947,42 +939,12 @@
                                 
 
                                 <!--Resize Grip Lines-->
-                                <Grid Grid.Column="1">
-                                    <Rectangle Fill="{StaticResource Accent_Dark}" Margin="-3,-1,0,0" Height="25" Width="1" RenderTransformOrigin="0.5,0.5" >
-                                        <Rectangle.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform/>
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="45"/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Rectangle.RenderTransform>
-                                    </Rectangle>
-
-                                    <Rectangle Fill="{StaticResource Accent_Dark}" Margin="5,5,0,0" Height="17" Width="1" RenderTransformOrigin="0.5,0.5" >
-                                        <Rectangle.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform/>
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="45"/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Rectangle.RenderTransform>
-                                    </Rectangle>
-
-                                    <Rectangle Fill="{StaticResource Accent_Dark}" Margin="11,11,0,0" Height="10" Width="1" RenderTransformOrigin="0.5,0.5" >
-                                        <Rectangle.RenderTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform/>
-                                                <SkewTransform/>
-                                                <RotateTransform Angle="45"/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </Rectangle.RenderTransform>
-                                    </Rectangle>
-
+                                <Grid Grid.Column="1" Width="25">
+                                    <Line X1="2" Y1="20" X2="20" Y2="2" Stroke="#33000000" StrokeThickness="1"/>
+                                    <Line X1="8" Y1="22" X2="22" Y2="8" Stroke="#33000000" StrokeThickness="1"/>
+                                    <Line X1="15" Y1="22" X2="22" Y2="15" Stroke="#33000000" StrokeThickness="1"/>
                                 </Grid>
-
+                                
                                 <Rectangle x:Name="Corner_BottomRight_RECT" Grid.Column="1" Fill="#00000000" MouseEnter="Rectangle_BottomRight_MouseEnter"  MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
 
                             </Grid>
@@ -1095,10 +1057,10 @@
 
                 <!--Main Menu Drop Down--> 
                 <menus_main:Menu x:Name="MainMenu"
-                                Shown="False" ShownChanged="MainMenu_ShownChanged"
-                                />
+                            Shown="False" ShownChanged="MainMenu_ShownChanged"
+                            />
 
-
+                <!--Login Menu-->
                 <user:Menu x:Name="LoginMenu" Margin="0,30,144,0" Shown="False" 
                            CurrentUserChanged="LoginMenu_CurrentUserChanged" 
                            ShownChanged="LoginMenu_ShownChanged" 

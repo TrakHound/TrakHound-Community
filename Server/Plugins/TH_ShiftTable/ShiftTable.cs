@@ -423,7 +423,7 @@ namespace TH_ShiftTable
 
         void ProcessShifts(List<GeneratedEventItem> genEventItems)
         {
-            List<GenEventShiftItem> genEventShiftItems = GenEventShiftItem.Get(configuration, genEventItems);
+            var genEventShiftItems = GenEventShiftItem.Get(configuration, genEventItems);
 
             // Send List of GenEventShiftItems to other Plugins
             SendGenEventShiftItems(genEventShiftItems);
@@ -441,7 +441,7 @@ namespace TH_ShiftTable
         // Returns list of CHANGED ShiftRowInfo objects and updates rowInfos
         List<ShiftRowInfo> UpdateRowInfos(List<ShiftRowInfo> newInfos)
         {
-            List<ShiftRowInfo> Result = new List<ShiftRowInfo>();
+            var result = new List<ShiftRowInfo>();
 
             foreach (ShiftRowInfo newInfo in newInfos)
             {
@@ -463,7 +463,7 @@ namespace TH_ShiftTable
 
                         foreach (string column in GenEventColumns)
                         {
-                            GenEventRowInfo emptyGeri = new GenEventRowInfo();
+                            var emptyGeri = new GenEventRowInfo();
                             emptyGeri.columnName = column;
                             info.genEventRowInfos.Add(emptyGeri);
                         }
@@ -481,20 +481,19 @@ namespace TH_ShiftTable
                         }
                         else
                         {
-                            GenEventRowInfo newGeri = new GenEventRowInfo();
+                            var newGeri = new GenEventRowInfo();
                             newGeri.columnName = geri.columnName;
                             newGeri.seconds += geri.seconds;
                             info.genEventRowInfos.Add(newGeri);
                         }
                     }
 
-                    Result.Add(info);
+                    result.Add(info);
                     rowInfos.Add(info);
                 }
             }
 
-            return Result;
-
+            return result;
         }
 
         // Used to hold previous rowinfos
@@ -563,13 +562,13 @@ namespace TH_ShiftTable
             // ------------------------
             if (segmentEnd < segmentStart) { segmentEnd = segmentEnd.AddDays(1); }
 
-            SegmentShiftTimes Result = new SegmentShiftTimes();
-            Result.start = start;
-            Result.end = end;
-            Result.segmentStart = segmentStart;
-            Result.segmentEnd = segmentEnd;
+            var result = new SegmentShiftTimes();
+            result.start = start;
+            result.end = end;
+            result.segmentStart = segmentStart;
+            result.segmentEnd = segmentEnd;
 
-            return Result;
+            return result;
         }
     }
 }

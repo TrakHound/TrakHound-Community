@@ -178,6 +178,7 @@ namespace TH_WPF
 
         #endregion
 
+
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender.GetType() == typeof(Rectangle))

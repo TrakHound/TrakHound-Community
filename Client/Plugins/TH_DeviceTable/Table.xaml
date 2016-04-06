@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             xmlns:local="clr-namespace:TH_DeviceTable"
-             
+             xmlns:local="clr-namespace:TH_DeviceTable"     
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d" 
@@ -29,14 +28,21 @@
                             >
                             <Grid>
                                 <!--Content-->
-                                <Border Padding="10,0">
-                                    <ContentPresenter  VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                <Border>
+                                    <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                                        <ContentPresenter.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </ContentPresenter.Resources>
+                                    </ContentPresenter>
                                 </Border>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                <Setter Property="Background" Value="#33ffffff"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -54,9 +60,6 @@
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
             <Setter Property="MinHeight" Value="50"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Connected}" Value="false">
-                    <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
-                </DataTrigger>
                 <Trigger Property="IsMouseOver" Value="true">
                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
@@ -68,8 +71,7 @@
             </Style.Triggers>
         </Style>
 
-
-        <Style x:Key="CellNoPadding" TargetType="DataGridCell">
+        <Style TargetType="{x:Type DataGridCell}">
             <Setter Property="BorderThickness" Value="0,0,0,0"/>
             <Setter Property="MinHeight" Value="35"/>
             <Setter Property="Template">
@@ -81,7 +83,28 @@
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="0"
                                 >
-                            <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+                            <Grid>
+
+                                <!--Content-->
+                                <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+                                <!--Overlay-->
+                                <!--<Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                                    <Setter Property="Background" Value="#88000000"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Available}" Value="false">
+                                                    <Setter Property="Background" Value="#33000000"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>-->
+
+                            </Grid>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -116,8 +139,33 @@
     </UserControl.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <DataGrid x:Name="Devices_DG" Grid.Row="0" ItemsSource="{Binding DeviceInfos}"
+        <!--Navbar-->
+        <StackPanel Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="Width" Value="30"/>
+                    <Setter Property="Margin" Value="2,0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#33ffffff"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+
+            <th_wpf:Button ToolTip="Refresh" Image="Resources/Refresh_01.png" Clicked="Refresh_Clicked"/>
+
+        </StackPanel>
+
+        <DataGrid x:Name="Devices_DG" Grid.Row="1" ItemsSource="{Binding DeviceInfos}"
                   AutoGenerateColumns="False"
                   BorderBrush="Transparent"
                   HeadersVisibility="Column"
@@ -125,12 +173,122 @@
 
             <DataGrid.Columns>
 
+                <!--Database Connection Status-->
+                <DataGridTemplateColumn MinWidth="30">
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="Database Connection Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Displays a warning image if the Device's Database Connection cannot be established
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Width="20" Height="20" Margin="5">
+                                <Grid.Resources>
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
+                                </Grid.Resources>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Background" Value="Red"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Connected}" Value="false">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+               
+                <!--Availabilty Status-->
+                <DataGridTemplateColumn MinWidth="30">
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="Device Availability Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Displays a warning image if the Device's MTConnect Availability status is set to 'UNAVAILABLE'
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid Width="20" Height="20" Margin="5">
+                                <Grid.Resources>
+                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
+                                </Grid.Resources>
+                                <Grid.Style>
+                                    <Style TargetType="Grid">
+                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                        <Setter Property="Background" Value="OrangeRed"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Available}" Value="false">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
                 <!--Description Columns-->
-                <DataGridTextColumn Header="Device ID" Binding="{Binding Description.Device_ID}"/>
-                <DataGridTextColumn Header="Description" Binding="{Binding Description.Description}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Device ID">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Viewbox Margin="10">
+                                <TextBlock Text="{Binding Description.Device_ID}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </Viewbox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Description" MaxWidth="200">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <!--OEE-->
-                <DataGridTemplateColumn Header="OEE" CellStyle="{StaticResource CellNoPadding}">
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="OEE" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="OEE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <th_wpf:MeterDisplay Value="{Binding Oee}" >
@@ -158,7 +316,20 @@
                 </DataGridTemplateColumn>
 
                 <!--Availability-->
-                <DataGridTemplateColumn Header="Availability" CellStyle="{StaticResource CellNoPadding}">
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="Availability" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Availability portion of the Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="Availability" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <th_wpf:MeterDisplay Value="{Binding Availability}" >
@@ -186,7 +357,20 @@
                 </DataGridTemplateColumn>
 
                 <!--Performance-->
-                <DataGridTemplateColumn Header="Performance" CellStyle="{StaticResource CellNoPadding}">
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="Performance" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Performance portion of the Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="Performance" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <th_wpf:MeterDisplay Value="{Binding Performance}" >
@@ -214,11 +398,23 @@
                 </DataGridTemplateColumn>
 
                 <!--Production Status-->
-                <!--<DataGridTextColumn Header="Production Status" Binding="{Binding ProductionStatus}"/>-->
-                <DataGridTemplateColumn Header="Production Status" CellStyle="{StaticResource CellNoPadding}">
+                <DataGridTemplateColumn MinWidth="200">
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="Production Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Current Production Status value and the percentage of time that the device has been in this status for the current shift.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="Production Status" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <th_wpf:TimeProgress Text="{Binding ProductionStatus}" Value="34" Maximum="100">
+                            <th_wpf:TimeProgress Text="{Binding ProductionStatus}" Value="{Binding ProductionStatusSeconds}" Maximum="{Binding ProductionStatusTotal}">
                                 <th_wpf:TimeProgress.Style>
                                     <Style TargetType="th_wpf:TimeProgress">
                                         <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
@@ -231,278 +427,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
-                <!--CNC Controller Status Variables-->
-                <DataGridTextColumn Header="Emergency Stop" Binding="{Binding EmergencyStop}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Border
-                                            Margin="0"
-                                            BorderBrush="{TemplateBinding BorderBrush}" 
-                                            BorderThickness="0"
-                                            >
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="ARMED">
-                                                            <Setter Property="Background" Value="#FF19B419"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="TRIGGERED">
-                                                            <Setter Property="Background" Value="Red"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <Grid>
-
-                                                <TextBlock x:Name="txt" Margin="10,0" Text="{Binding EmergencyStop}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="White"/>
-                                                            <Setter Property="FontWeight" Value="Bold"/>
-                                                            <Setter Property="FontSize" Value="12pt"/>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-
-                                                <!--Gloss Overlay-->
-                                                <Border IsHitTestVisible="False">
-
-                                                    <Grid IsHitTestVisible="False">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="4.5*"/>
-                                                            <RowDefinition Height="5.5*"/>
-                                                        </Grid.RowDefinitions>
-
-                                                        <Border IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                    <GradientStop Color="#10ffffff" Offset="0"/>
-                                                                    <GradientStop Color="#30ffffff" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                        <Border Grid.Row="1" IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                                    <GradientStop Color="#00ffffff" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                                                    <GradientStop Color="#10000000" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                    </Grid>
-
-                                                </Border>
-
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                
-                <DataGridTextColumn Header="Controller Mode" Binding="{Binding ControllerMode}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Border
-                                            Margin="0"
-                                            BorderBrush="{TemplateBinding BorderBrush}" 
-                                            BorderThickness="0"
-                                            >
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="AUTOMATIC">
-                                                            <Setter Property="Background" Value="#FF19B419"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <Grid>
-
-                                                <TextBlock x:Name="txt" Margin="10,0" Text="{Binding ControllerMode}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                                            <Setter Property="FontWeight" Value="Bold"/>
-                                                            <Setter Property="FontSize" Value="12pt"/>
-                                                            <Style.Triggers>
-                                                                <Trigger Property="Text" Value="AUTOMATIC">
-                                                                    <Setter Property="Foreground" Value="White"/>
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-
-                                                <!--Gloss Overlay-->
-                                                <Border IsHitTestVisible="False">
-
-                                                    <Grid IsHitTestVisible="False">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="4.5*"/>
-                                                            <RowDefinition Height="5.5*"/>
-                                                        </Grid.RowDefinitions>
-
-                                                        <Border IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                    <GradientStop Color="#10ffffff" Offset="0"/>
-                                                                    <GradientStop Color="#30ffffff" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                        <Border Grid.Row="1" IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                                    <GradientStop Color="#00ffffff" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                                                    <GradientStop Color="#10000000" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                    </Grid>
-
-                                                </Border>
-
-                                            </Grid>
-                                           
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
-                
-                <DataGridTextColumn Header="Execution Mode" Binding="{Binding ExecutionMode}">
-                    <DataGridTextColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type DataGridCell}">
-                                        <Border
-                                            Margin="0"
-                                            BorderBrush="{TemplateBinding BorderBrush}" 
-                                            BorderThickness="0"
-                                            >
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="ACTIVE">
-                                                            <Setter Property="Background" Value="#FF19B419"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Text, ElementName=txt}" Value="STOPPED">
-                                                            <Setter Property="Background" Value="Red"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-
-                                            <Grid>
-
-                                                <TextBlock x:Name="txt" Margin="10,0" Text="{Binding ExecutionMode}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                                            <Setter Property="FontWeight" Value="Bold"/>
-                                                            <Setter Property="FontSize" Value="12pt"/>
-                                                            <Style.Triggers>
-                                                                <Trigger Property="Text" Value="ACTIVE">
-                                                                    <Setter Property="Foreground" Value="White"/>
-                                                                </Trigger>
-                                                                <Trigger Property="Text" Value="STOPPED">
-                                                                    <Setter Property="Foreground" Value="White"/>
-                                                                </Trigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-
-                                                <!--Gloss Overlay-->
-                                                <Border IsHitTestVisible="False">
-
-                                                    <Grid IsHitTestVisible="False">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="4.5*"/>
-                                                            <RowDefinition Height="5.5*"/>
-                                                        </Grid.RowDefinitions>
-
-                                                        <Border IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                    <GradientStop Color="#10ffffff" Offset="0"/>
-                                                                    <GradientStop Color="#30ffffff" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                        <Border Grid.Row="1" IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                                    <GradientStop Color="#00ffffff" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                                                    <GradientStop Color="#10000000" Offset="0"/>
-                                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                                                    <GradientStop Color="#10000000" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>
-
-                                                    </Grid>
-
-                                                </Border>
-
-                                            </Grid>
-                                            
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </DataGridTextColumn.CellStyle>
-                </DataGridTextColumn>
 
             </DataGrid.Columns>
 

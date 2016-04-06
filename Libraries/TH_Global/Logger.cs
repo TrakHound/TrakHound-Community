@@ -115,7 +115,7 @@ namespace TH_Global
 
                 foreach (XmlNode lineNode in nodes)
                 {
-                    string t = XML_Functions.GetAttributeValue(lineNode, null, "timestamp");
+                    string t = XML_Functions.GetAttributeValue(lineNode, "timestamp");
                     if (t != null)
                     {
                         DateTime date = DateTime.MinValue;
@@ -153,7 +153,7 @@ namespace TH_Global
 
                         foreach (XmlNode lineNode in node.ChildNodes)
                         {
-                            string t = XML_Functions.GetAttributeValue(lineNode, null, "timestamp");
+                            string t = XML_Functions.GetAttributeValue(lineNode, "timestamp");
                             if (t != null)
                             {
                                 DateTime date = DateTime.MinValue;
@@ -200,14 +200,14 @@ namespace TH_Global
                 line.Text = lineNode.InnerText;
 
                 DateTime ts = DateTime.MinValue;
-                DateTime.TryParse(XML_Functions.GetAttributeValue(lineNode, null, "timestamp"), out ts);
+                DateTime.TryParse(XML_Functions.GetAttributeValue(lineNode, "timestamp"), out ts);
 
                 line.Timestamp = ts;
-                line.Assembly = XML_Functions.GetAttributeValue(lineNode, null, "assembly");
-                line.Filename = XML_Functions.GetAttributeValue(lineNode, null, "filename");
-                line.Member = XML_Functions.GetAttributeValue(lineNode, null, "member");
+                line.Assembly = XML_Functions.GetAttributeValue(lineNode, "assembly");
+                line.Filename = XML_Functions.GetAttributeValue(lineNode, "filename");
+                line.Member = XML_Functions.GetAttributeValue(lineNode, "member");
 
-                string lineNumber = XML_Functions.GetAttributeValue(lineNode, null, "line");
+                string lineNumber = XML_Functions.GetAttributeValue(lineNode, "line");
                 if (lineNumber != null)
                 {
                     int n = -1;

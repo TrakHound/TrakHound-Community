@@ -104,7 +104,7 @@
                             <Setter Property="Background" Value="Transparent"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding DarkBackground}" Value="true">
-                                    <Setter Property="Background" Value="#ddd"/>
+                                    <Setter Property="Background" Value="#ccc"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

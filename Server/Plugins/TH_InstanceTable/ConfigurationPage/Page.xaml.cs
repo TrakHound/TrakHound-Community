@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using TH_Global.Functions;
 using TH_MTConnect.Components;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;
@@ -96,6 +97,9 @@ namespace TH_InstanceTable.ConfigurationPage
 
         public void SaveConfiguration(DataTable dt)
         {
+            // Remove old rows
+            DataTable_Functions.TrakHound.DeleteRows("/InstanceTable/*", "address", dt);
+
 
             string prefix = "/InstanceTable/DataItems/";
 

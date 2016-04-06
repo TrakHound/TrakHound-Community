@@ -68,25 +68,17 @@ namespace TH_Global.Functions
             return result;
         }
 
-        public static string GetAttributeValue(XmlNode node, string xPath, string attributeName)
+        public static string GetAttributeValue(XmlNode node, string attributeName)
         {
             string result = null;
 
             if (node != null)
             {
-                XmlNode n = node;
-
-                if (xPath != null)
+                if (node != null)
                 {
-                    var selectNode = node.SelectSingleNode(xPath);
-                    n = selectNode;
-                }
-
-                if (n != null)
-                {
-                    if (n.Attributes != null)
+                    if (node.Attributes != null)
                     {
-                        var attribute = n.Attributes[attributeName];
+                        var attribute = node.Attributes[attributeName];
                         if (attribute != null) result = attribute.Value;
                     }
                 }

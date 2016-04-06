@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -13,10 +18,13 @@ namespace TH_WPF
         public TimeProgress()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
         public int Index { get; set; }
+
+        public object DataObject { get; set; }
+
 
         public string Text
         {
@@ -26,7 +34,6 @@ namespace TH_WPF
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(TimeProgress), new PropertyMetadata("Time Progress"));
-
 
 
         public bool IsSelected
@@ -59,6 +66,36 @@ namespace TH_WPF
             DependencyProperty.Register("Percentage", typeof(string), typeof(TimeProgress), new PropertyMetadata(null));
 
 
+        
+        public double Value
+        {
+            get { return (double)GetValue(ValueProperty); }
+            set
+            {
+                SetValue(ValueProperty, value);
+                Update();
+            }
+        }
+
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.Register("Value", typeof(double), typeof(TimeProgress), new PropertyMetadata(0d, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public double Maximum
+        {
+            get { return (double)GetValue(MaximumProperty); }
+            set { SetValue(MaximumProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaximumProperty =
+            DependencyProperty.Register("Maximum", typeof(double), typeof(TimeProgress), new PropertyMetadata(1d, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var tp = obj as TimeProgress;
+            if (tp != null) tp.Update();
+        }
 
         private void Update()
         {
@@ -77,30 +114,6 @@ namespace TH_WPF
 
             BarValue = Value;
             BarMaximum = Maximum;
-        }
-
-        private double _value;
-        public double Value 
-        {
-            get { return _value; }
-            set
-            {
-                _value = value;
-
-                Update();
-            }
-        }
-
-        private double _maximum;
-        public double Maximum
-        {
-            get { return _maximum; }
-            set
-            {
-                _maximum = value;
-
-                Update();
-            }
         }
 
         #region "Bar Properties"

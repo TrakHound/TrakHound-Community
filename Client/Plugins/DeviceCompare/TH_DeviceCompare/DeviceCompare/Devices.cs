@@ -32,8 +32,6 @@ namespace TH_DeviceCompare
                     if (newConfig != null) AddDevice(newConfig);
                 }
 
-                //SortDataItems();
-                //LoadHeaderView();
                 SortDataItems();
                 LoadHeaderView();
                 SortDeviceDisplays();
@@ -85,9 +83,6 @@ namespace TH_DeviceCompare
                     SortDataItems();
                     LoadHeaderView();
                     SortDeviceDisplays();
-
-                    //SortDataItems();
-                    //LoadHeaderView();
                 }
             }
         }
@@ -123,12 +118,6 @@ namespace TH_DeviceCompare
                 if (display.Group.Header != null) Headers.Add(display.Group.Header);
                 if (display.Group.Column != null) Columns.Add(display.Group.Column);
                 if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
-
-                //SortDataItems();
-                //LoadHeaderView();
-                //SortDeviceDisplays();
-
-                //Dispatcher.BeginInvoke(new Action<DeviceDisplay>(AddDeviceDisplay_GUI), Priority_Background, new object[] { display });
             }
         }
 

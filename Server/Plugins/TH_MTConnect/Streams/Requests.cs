@@ -4,11 +4,10 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Xml;
 using System.Collections.Generic;
+using System.Xml;
 
-using TH_MTConnect;
-using TH_MTConnect.Streams;
+using TH_Global;
 
 namespace TH_MTConnect.Streams
 {
@@ -23,26 +22,37 @@ namespace TH_MTConnect.Streams
 
             if (response != null)
             {
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(response);
-
-                if (doc.DocumentElement != null)
+                try
                 {
-                    // Get Root Element from Xml Document
-                    XmlElement root = doc.DocumentElement;
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(response);
 
-                    // Get Header_Streams object from Root node
-                    Header_Streams header = GetHeader(root);
-
-                    // Get DeviceStream object from Root node
-                    List<DeviceStream> deviceStreams = GetDeviceStream(root);
-
-                    if (deviceStreams != null)
+                    if (doc.DocumentElement != null)
                     {
-                        result = new ReturnData();
-                        result.Header = header;
-                        result.DeviceStreams = deviceStreams;
+                        // Get Root Element from Xml Document
+                        XmlElement root = doc.DocumentElement;
+
+                        // Get Header_Streams object from Root node
+                        Header_Streams header = GetHeader(root);
+
+                        // Get DeviceStream object from Root node
+                        List<DeviceStream> deviceStreams = GetDeviceStream(root);
+
+                        if (deviceStreams != null)
+                        {
+                            result = new ReturnData();
+                            result.Header = header;
+                            result.DeviceStreams = deviceStreams;
+                        }
                     }
+                }
+                catch (XmlException ex)
+                {
+                    Logger.Log("XmlException :: " + ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Exception :: " + ex.Message);
                 }
             }
 
