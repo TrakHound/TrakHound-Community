@@ -204,7 +204,8 @@ namespace TH_DeviceCompare_ProductionStatusTimes
 
                 foreach (var time in Times)
                 {
-                    if (time.Text.ToLower() == currentValue.ToLower()) time.IsSelected = true;
+                    if (time.Text != null && currentValue != null && 
+                        time.Text.ToLower() == currentValue.ToLower()) time.IsSelected = true;
                     else time.IsSelected = false;
                 }
             }

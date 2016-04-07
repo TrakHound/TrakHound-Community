@@ -48,7 +48,9 @@ namespace TH_DeviceManager.Pages.Databases
 
         #region "Page Interface"
 
-        public string PageName { get { return "Databases"; } }
+        public string Title { get { return "Databases"; } }
+
+        //public string PageName { get { return "Databases"; } }
 
         //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/DatabaseConfig_01.png")); } }
 
@@ -70,6 +72,15 @@ namespace TH_DeviceManager.Pages.Databases
         public UserConfiguration currentUser { get; set; }
 
         public event TH_Plugins.Server.SettingChanged_Handler SettingChanged;
+
+
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data)
+        {
+
+        }
+
 
         public void LoadConfiguration(DataTable dt)
         {

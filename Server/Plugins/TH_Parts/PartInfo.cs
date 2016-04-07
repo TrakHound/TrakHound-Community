@@ -6,7 +6,7 @@
 using System;
 
 using TH_Configuration;
-using TH_GeneratedData;
+using TH_GeneratedData.GeneratedEvents;
 using TH_ShiftTable;
 
 using TH_Global.Functions;
@@ -24,7 +24,7 @@ namespace TH_Parts
         public int Count { get; set; }
 
 
-        public static PartInfo Get(Configuration config, GeneratedEventItem genEventItem)
+        public static PartInfo Get(Configuration config, GeneratedEvent genEventItem)
         {
             var pc = PartsConfiguration.Get(config);
             if (pc != null)

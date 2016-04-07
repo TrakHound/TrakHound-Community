@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
@@ -17,6 +18,7 @@ using System.Windows.Shapes;
 
 using TH_Global.Functions;
 using TH_MTConnect.Components;
+using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;
 
@@ -33,13 +35,7 @@ namespace TH_InstanceTable.ConfigurationPage
             DataContext = this;
         }
 
-        public string PageName
-        {
-            get { return (string)GetValue(PageNameProperty); }
-        }
-
-        public static readonly DependencyProperty PageNameProperty =
-            DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Instance Table"));
+        public string Title { get { return "Instance Data"; } }
 
         private BitmapImage _image;
         public ImageSource Image
@@ -58,6 +54,14 @@ namespace TH_InstanceTable.ConfigurationPage
 
 
         public event SettingChanged_Handler SettingChanged;
+
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data)
+        {
+            GetProbeData(data);
+        }
+
 
         public void LoadConfiguration(DataTable dt)
         {
@@ -88,7 +92,7 @@ namespace TH_InstanceTable.ConfigurationPage
             val = false;
             if (bool.TryParse(s, out val)) samples_CHK.IsChecked = val;
 
-            LoadAgentSettings(dt);
+            //LoadAgentSettings(dt);
 
             configurationTable = dt;
 
@@ -240,6 +244,29 @@ namespace TH_InstanceTable.ConfigurationPage
         private void conditions_CHK_Unchecked(object sender, RoutedEventArgs e)
         {
             ChangeSetting("/InstanceTable/DataItems/Conditions", "Conditions", "False");
+        }
+
+        void GetProbeData(EventData data)
+        {
+            if (data != null && data.Id != null && data.Data02 != null)
+            {
+                if (data.Id.ToLower() == "mtconnect_probe")
+                {
+                    var dataItems = (List<DataItem>)data.Data02;
+
+                    //Conditions
+                    foreach (var item in dataItems.FindAll(x => x.Category.ToLower() == "condition"))
+                        this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { item });
+
+                    // Events
+                    foreach (var item in dataItems.FindAll(x => x.Category.ToLower() == "event"))
+                        this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { item });
+
+                    // Samples
+                    foreach (var item in dataItems.FindAll(x => x.Category.ToLower() == "sample"))
+                        this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { item });
+                }
+            }
         }
 
         #region "Omit Data Items"
@@ -395,109 +422,110 @@ namespace TH_InstanceTable.ConfigurationPage
         }
 
 
-        void LoadAgentSettings(DataTable dt)
-        {
-            OmitItemsLoading = true;
 
-            string prefix = "/Agent/";
+        //void LoadAgentSettings(DataTable dt)
+        //{
+        //    OmitItemsLoading = true;
 
-            string ip = Table_Functions.GetTableValue(prefix + "Address", dt);
-            // Get deprecated value if new value is not found
-            if (String.IsNullOrEmpty(ip)) ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+        //    string prefix = "/Agent/";
 
-            string p = Table_Functions.GetTableValue(prefix + "Port", dt);
+        //    string ip = Table_Functions.GetTableValue(prefix + "Address", dt);
+        //    // Get deprecated value if new value is not found
+        //    if (String.IsNullOrEmpty(ip)) ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
 
-            string devicename = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
-            // Get deprecated value if new value is not found
-            if (String.IsNullOrEmpty(devicename)) devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+        //    string p = Table_Functions.GetTableValue(prefix + "Port", dt);
 
-            string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
-            string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
+        //    string devicename = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
+        //    // Get deprecated value if new value is not found
+        //    if (String.IsNullOrEmpty(devicename)) devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
 
-            int port;
-            int.TryParse(p, out port);
+        //    string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
+        //    string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
 
-            // Proxy Settings
-            TH_MTConnect.HTTP.ProxySettings proxy = null;
-            if (proxyPort != null)
-            {
-                int proxy_p = -1;
-                if (int.TryParse(proxyPort, out proxy_p))
-                {
-                    proxy = new TH_MTConnect.HTTP.ProxySettings();
-                    proxy.Address = proxyAddress;
-                    proxy.Port = proxy_p;
-                }
-            }
+        //    int port;
+        //    int.TryParse(p, out port);
 
-            RunProbe(ip, proxy, port, devicename);
-        }
+        //    // Proxy Settings
+        //    TH_MTConnect.HTTP.ProxySettings proxy = null;
+        //    if (proxyPort != null)
+        //    {
+        //        int proxy_p = -1;
+        //        if (int.TryParse(proxyPort, out proxy_p))
+        //        {
+        //            proxy = new TH_MTConnect.HTTP.ProxySettings();
+        //            proxy.Address = proxyAddress;
+        //            proxy.Port = proxy_p;
+        //        }
+        //    }
 
-        Thread runProbe_THREAD;
+        //    RunProbe(ip, proxy, port, devicename);
+        //}
 
-        class Probe_Info
-        {
-            public string address;
-            public int port;
-            public string deviceName;
-            public TH_MTConnect.HTTP.ProxySettings proxy;
-        }
+        //Thread runProbe_THREAD;
 
-        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
-        {
-            if (runProbe_THREAD != null) runProbe_THREAD.Abort();
+        //class Probe_Info
+        //{
+        //    public string address;
+        //    public int port;
+        //    public string deviceName;
+        //    public TH_MTConnect.HTTP.ProxySettings proxy;
+        //}
 
-            var info = new Probe_Info();
-            info.address = address;
-            info.port = port;
-            info.deviceName = deviceName;
-            info.proxy = proxy;
+        //void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
+        //{
+        //    if (runProbe_THREAD != null) runProbe_THREAD.Abort();
 
-            runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
-            runProbe_THREAD.Start(info);
-        }
+        //    var info = new Probe_Info();
+        //    info.address = address;
+        //    info.port = port;
+        //    info.deviceName = deviceName;
+        //    info.proxy = proxy;
 
-        void RunProbe_Worker(object o)
-        {
-            if (o != null)
-            {
-                var info = o as Probe_Info;
-                if (info != null)
-                {
-                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
+        //    runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
+        //    runProbe_THREAD.Start(info);
+        //}
 
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
-                    if (returnData != null)
-                    {
-                        foreach (Device device in returnData.Devices)
-                        {
-                            DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
+        //void RunProbe_Worker(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        var info = o as Probe_Info;
+        //        if (info != null)
+        //        {
+        //            string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
 
-                            // Conditions
-                            foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { dataItem });
+        //            ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
+        //            if (returnData != null)
+        //            {
+        //                foreach (Device device in returnData.Devices)
+        //                {
+        //                    DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
 
-                            // Events
-                            foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { dataItem });
+        //                    // Conditions
+        //                    foreach (DataItem dataItem in dataItems.Conditions) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { dataItem });
 
-                            // Samples
-                            foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { dataItem });
-                        }
-                    }
-                    else
-                    {
+        //                    // Events
+        //                    foreach (DataItem dataItem in dataItems.Events) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { dataItem });
 
-                    }
+        //                    // Samples
+        //                    foreach (DataItem dataItem in dataItems.Samples) this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { dataItem });
+        //                }
+        //            }
+        //            else
+        //            {
 
-                    // Set 'Loading' to false
-                    this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
-                }
-            }
-        }
+        //            }
 
-        void OmitProbeFinished()
-        {
-            OmitItemsLoading = false;
-        }
+        //            // Set 'Loading' to false
+        //            this.Dispatcher.BeginInvoke(new Action(OmitProbeFinished), priority, null);
+        //        }
+        //    }
+        //}
+
+        //void OmitProbeFinished()
+        //{
+        //    OmitItemsLoading = false;
+        //}
 
         #endregion
 

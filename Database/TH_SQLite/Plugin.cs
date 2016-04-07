@@ -112,14 +112,14 @@ namespace TH_SQLite
 
             using (var connection = new SQLiteConnection(GetConnectionString(config)))
             {
+                connection.Close();
+
                 try
                 {
                     connection.Open();
 
                     using (var command = new SQLiteCommand(query, connection))
                     {
-                        //command.ExecuteNonQuery();
-
                         result = ProcessResult<T>(command);
                     }
                 }

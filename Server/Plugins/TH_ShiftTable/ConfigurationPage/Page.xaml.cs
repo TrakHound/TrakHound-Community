@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TH_Global.Functions;
+using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;
 
@@ -30,13 +31,7 @@ namespace TH_ShiftTable.ConfigurationPage
             DataContext = this;
         }
 
-        public string PageName
-        {
-            get { return (string)GetValue(PageNameProperty); }
-        }
-
-        public static readonly DependencyProperty PageNameProperty =
-            DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Shifts"));
+        public string Title { get { return "Shifts"; } }
 
         private BitmapImage _image;
         public ImageSource Image
@@ -53,20 +48,16 @@ namespace TH_ShiftTable.ConfigurationPage
             }
         }
 
-        //public ImageSource Image
-        //{
-        //    get { return (ImageSource)GetValue(ImageProperty); }
-        //}
-
-        //public static readonly DependencyProperty ImageProperty =
-        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_ShiftTable;component/Resources/Timer_01.png"))));
-
-
-        //public string PageName { get { return "Shifts"; } }
-
-        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_ShiftTable;component/Resources/Timer_01.png")); } }
-
         public event SettingChanged_Handler SettingChanged;
+
+
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data)
+        {
+
+        }
+
 
         #region "Load Configuration"
 

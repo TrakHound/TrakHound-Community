@@ -29,12 +29,12 @@ namespace TH_GeneratedData
 
                 configuration = config;
 
-                // Snapshot 
-                if (gdc.SnapshotsConfiguration.UploadToMySQL)
-                {
-                    Database.Snapshots.CreateTable(config);
-                    Database.Snapshots.IntializeRows(config);
-                }
+                //// Snapshot 
+                //if (gdc.SnapshotsConfiguration.UploadToMySQL)
+                //{
+                //    Database.Snapshots.CreateTable(config);
+                //    Database.Snapshots.IntializeRows(config);
+                //}
 
                 // Generated Events
                 if (gdc.GeneratedEventsConfiguration.UploadToMySQL)
@@ -71,30 +71,30 @@ namespace TH_GeneratedData
                             break;
 
                         // InstanceData object after current received
-                        case "currentinstancedata":
+                        //case "currentinstancedata":
 
-                            var currentInstanceData = (CurrentInstanceData)data.Data02;
+                        //    var currentInstanceData = (CurrentInstanceData)data.Data02;
 
-                            var info = new SnapShotItem.ProcessInfo();
-                            info.CurrentData = currentInstanceData.CurrentData;
-                            info.CurrentInstanceData = currentInstanceData.Data;
-                            info.PreviousItems = previousSSI;
+                        //    var info = new SnapShotItem.ProcessInfo();
+                        //    info.CurrentData = currentInstanceData.CurrentData;
+                        //    info.CurrentInstanceData = currentInstanceData.Data;
+                        //    info.PreviousItems = previousSSI;
 
-                            List<SnapShotItem> snapShots = SnapShotItem.Process(configuration, info);
+                        //    List<SnapShotItem> snapShots = SnapShotItem.Process(configuration, info);
 
-                            if (gdc.SnapshotsConfiguration.UploadToMySQL) Database.Snapshots.UpdateRows(configuration, snapShots);
+                        //    if (gdc.SnapshotsConfiguration.UploadToMySQL) Database.Snapshots.UpdateRows(configuration, snapShots);
 
-                            previousSSI = snapShots;
+                        //    previousSSI = snapShots;
 
-                            // Send Table of SnapShotItems to other Plugins--------
-                            SendSnapShotTable(snapShots);
-                            // ----------------------------------------------------
+                        //    // Send Table of SnapShotItems to other Plugins--------
+                        //    SendSnapShotTable(snapShots);
+                        //    // ----------------------------------------------------
 
-                            // Send List of SnapShotItems to other Plugins--------
-                            SendSnapShotItems(snapShots);
-                            // ----------------------------------------------------
+                        //    // Send List of SnapShotItems to other Plugins--------
+                        //    SendSnapShotItems(snapShots);
+                        //    // ----------------------------------------------------
 
-                            break;
+                        //    break;
                     }
                 }
             }
@@ -108,7 +108,13 @@ namespace TH_GeneratedData
 
         public void Closing() { }
 
-        public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
+        public Type[] ConfigurationPageTypes
+        {
+            get
+            {
+                return new Type[] { typeof(ConfigurationPage.Page) };
+            }
+        }
 
         //public bool UseDatabases { get; set; }
 
@@ -118,7 +124,7 @@ namespace TH_GeneratedData
 
         private Configuration configuration;
 
-        private List<SnapShotItem> previousSSI;
+        //private List<SnapShotItem> previousSSI;
 
 
         void SendGeneratedEventItems(List<GeneratedEventItem> items)
@@ -130,40 +136,40 @@ namespace TH_GeneratedData
             if (SendData != null) SendData(data);
         }
 
-        void SendSnapShotTable(List<SnapShotItem> items)
-        {
-            var dt = new DataTable();
-            dt.Columns.Add("Timestamp");
-            dt.Columns.Add("Name");
-            dt.Columns.Add("Value");
-            dt.Columns.Add("Previous_Value");
+        //void SendSnapShotTable(List<SnapShotItem> items)
+        //{
+        //    var dt = new DataTable();
+        //    dt.Columns.Add("Timestamp");
+        //    dt.Columns.Add("Name");
+        //    dt.Columns.Add("Value");
+        //    dt.Columns.Add("Previous_Value");
 
-            foreach (SnapShotItem item in items)
-            {
-                var row = dt.NewRow();
-                row["Timestamp"] = item.timestamp;
-                row["Name"] = item.name;
-                row["Value"] = item.value;
-                row["Previous_Value"] = item.previous_value;
+        //    foreach (SnapShotItem item in items)
+        //    {
+        //        var row = dt.NewRow();
+        //        row["Timestamp"] = item.timestamp;
+        //        row["Name"] = item.name;
+        //        row["Value"] = item.value;
+        //        row["Previous_Value"] = item.previous_value;
 
-                dt.Rows.Add(row);
-            }
+        //        dt.Rows.Add(row);
+        //    }
 
-            var data = new EventData();
-            data.Id = "SnapShotTable";
-            data.Data01 = configuration;
-            data.Data02 = dt;
-            if (SendData != null) SendData(data);
-        }
+        //    var data = new EventData();
+        //    data.Id = "SnapShotTable";
+        //    data.Data01 = configuration;
+        //    data.Data02 = dt;
+        //    if (SendData != null) SendData(data);
+        //}
 
-        void SendSnapShotItems(List<SnapShotItem> items)
-        {
-            var data = new EventData();
-            data.Id = "SnapShotItems";
-            data.Data01 = configuration;
-            data.Data02 = items;
-            if (SendData != null) SendData(data);
-        }
+        //void SendSnapShotItems(List<SnapShotItem> items)
+        //{
+        //    var data = new EventData();
+        //    data.Id = "SnapShotItems";
+        //    data.Data01 = configuration;
+        //    data.Data02 = items;
+        //    if (SendData != null) SendData(data);
+        //}
 
     }
 }

@@ -11,10 +11,10 @@ using TH_Plugins.Server;
 
 namespace TH_InstanceTable
 {
-    public partial class InstanceTable : IServerPlugin
+    public partial class Plugin : IServerPlugin
     {
 
-        public string Name { get { return "TH_InstanceTable"; } }
+        public string Name { get { return "TH_InstanceData"; } }
 
         public void Initialize(Configuration config)
         {

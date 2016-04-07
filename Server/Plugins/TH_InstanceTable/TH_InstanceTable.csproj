@@ -54,7 +54,7 @@
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Database.cs" />
-    <Compile Include="Instance Data.cs" />
+    <Compile Include="InstanceData.cs" />
     <Compile Include="Processing.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

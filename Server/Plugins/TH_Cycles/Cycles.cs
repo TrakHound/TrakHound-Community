@@ -291,10 +291,10 @@ namespace TH_Cycles
                     {
                         if (cc.CycleEventName != null)
                         {
-                            var gdc = GeneratedDataConfiguration.Get(configuration);
-                            if (gdc != null)
+                            var gec = GeneratedEventsConfiguration.Get(configuration);
+                            if (gec != null)
                             {
-                                var cycleEvent = gdc.GeneratedEventsConfiguration.Events.Find(x => x.Name.ToLower() == cc.CycleEventName.ToLower());
+                                var cycleEvent = gec.Events.Find(x => x.Name.ToLower() == cc.CycleEventName.ToLower());
                                 if (cycleEvent != null)
                                 {
                                     var latestData = orderedData.FindAll(x => x.Timestamp > lastTimestamp);

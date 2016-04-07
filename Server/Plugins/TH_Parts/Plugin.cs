@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 
 using TH_Configuration;
-using TH_GeneratedData;
+using TH_GeneratedData.GeneratedEvents;
 using TH_Plugins;
 using TH_Plugins.Server;
 
@@ -38,7 +38,7 @@ namespace TH_Parts
             {
                 if (data.Id.ToLower() == "generatedeventitems")
                 {
-                    var genEventItems = (List<GeneratedEventItem>)data.Data02;
+                    var genEventItems = (List<GeneratedEvent>)data.Data02;
 
                     var pc = PartsConfiguration.Get(configuration);
                     if (pc != null)

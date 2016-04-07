@@ -308,7 +308,7 @@ namespace TH_DeviceManager
             }
         }
 
-        List<IConfigurationPage> ConfigurationPages = new List<IConfigurationPage>();
+        public List<IConfigurationPage> ConfigurationPages = new List<IConfigurationPage>();
 
 
         Thread loadPages_Thread;
@@ -341,6 +341,8 @@ namespace TH_DeviceManager
             LoadConfiguration();
 
             PagesLoading = false;
+
+            GetProbeData(ConfigurationTable);
         }
 
         private List<IConfigurationPage> CreatePages(List<Type> pluginPageTypes)
@@ -385,7 +387,7 @@ namespace TH_DeviceManager
 
         private void AddPages(List<IConfigurationPage> pages)
         {
-            pages = pages.OrderBy(x => x.PageName).ToList();
+            pages = pages.OrderBy(x => x.Title).ToList();
 
             //Create PageItem and add to PageList
             foreach (IConfigurationPage page in pages)
@@ -409,7 +411,7 @@ namespace TH_DeviceManager
         void AddPageButton(IConfigurationPage page)
         {
             var bt = new ListButton();
-            bt.Text = page.PageName;
+            bt.Text = page.Title;
 
             if (page.Image != null) bt.Image = page.Image;
             else bt.Image = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/Plug_01.png"));
@@ -516,6 +518,135 @@ namespace TH_DeviceManager
                 {
                     GetPluginPageTypes(directory, types);
                 }
+            }
+        }
+
+        #endregion
+
+        #region "MTC Data Items"  
+
+        public class ProbeDataItem
+        {
+            public string id { get; set; }
+            public string name { get; set; }
+
+            public string display { get; set; }
+
+            public string category { get; set; }
+            public string type { get; set; }
+
+            public override string ToString()
+            {
+                return display;
+            }
+        }
+
+        void GetProbeData(DataTable dt)
+        {
+            LoadAgentSettings(dt);
+        }
+
+        void LoadAgentSettings(DataTable dt)
+        {
+            string prefix = "/Agent/";
+
+            string ip = Table_Functions.GetTableValue(prefix + "Address", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(ip)) ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+
+            string p = Table_Functions.GetTableValue(prefix + "Port", dt);
+
+            string devicename = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
+            // Get deprecated value if new value is not found
+            if (String.IsNullOrEmpty(devicename)) devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+
+            string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
+            string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
+
+            int port;
+            int.TryParse(p, out port);
+
+            // Proxy Settings
+            TH_MTConnect.HTTP.ProxySettings proxy = null;
+            if (proxyPort != null)
+            {
+                int proxy_p = -1;
+                if (int.TryParse(proxyPort, out proxy_p))
+                {
+                    proxy = new TH_MTConnect.HTTP.ProxySettings();
+                    proxy.Address = proxyAddress;
+                    proxy.Port = proxy_p;
+                }
+            }
+
+            RunProbe(ip, proxy, port, devicename);
+        }
+
+        class Probe_Info
+        {
+            public string address;
+            public int port;
+            public string deviceName;
+            public TH_MTConnect.HTTP.ProxySettings proxy;
+        }
+
+        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
+        {
+            var info = new Probe_Info();
+            info.address = address;
+            info.port = port;
+            info.deviceName = deviceName;
+            info.proxy = proxy;
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
+        }
+
+        void RunProbe_Worker(object o)
+        {
+            if (o != null)
+            {
+                var info = o as Probe_Info;
+                if (info != null)
+                {
+                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
+
+                    var returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
+                    if (returnData != null)
+                    {
+                        foreach (var device in returnData.Devices)
+                        {
+                            var dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(device);
+
+                            var items = new List<TH_MTConnect.Components.DataItem>();
+
+                            // Conditions
+                            foreach (var dataItem in dataItems.Conditions) if (!items.Exists(x => x.Id == dataItem.Id)) items.Add(dataItem);
+
+                            // Events
+                            foreach (var dataItem in dataItems.Events) if (!items.Exists(x => x.Id == dataItem.Id)) items.Add(dataItem);
+
+                            // Samples
+                            foreach (var dataItem in dataItems.Samples) if (!items.Exists(x => x.Id == dataItem.Id)) items.Add(dataItem);
+
+                            SendProbeDataItems(items);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SendProbeDataItems(List<TH_MTConnect.Components.DataItem> items)
+        {
+            foreach (var page in ConfigurationPages)
+            {
+                var data = new EventData();
+                data.Id = "MTConnect_Probe";
+                data.Data02 = items;
+
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    page.GetSentData(data);
+                }), PRIORITY_BACKGROUND, new object[] { });     
             }
         }
 

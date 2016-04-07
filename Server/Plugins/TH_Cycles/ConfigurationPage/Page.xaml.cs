@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 
 using TH_Global.Functions;
 using TH_MTConnect.Components;
+using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;
 
@@ -34,13 +35,15 @@ namespace TH_Cycles.ConfigurationPage
             DataContext = this;
         }
 
-        public string PageName
-        {
-            get { return (string)GetValue(PageNameProperty); }
-        }
+        public string Title { get { return "Cycles"; } }
 
-        public static readonly DependencyProperty PageNameProperty =
-            DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Cycles"));
+        //public string PageName
+        //{
+        //    get { return (string)GetValue(PageNameProperty); }
+        //}
+
+        //public static readonly DependencyProperty PageNameProperty =
+        //    DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Cycles"));
 
         //public ImageSource Image
         //{
@@ -67,6 +70,15 @@ namespace TH_Cycles.ConfigurationPage
 
 
         public event SettingChanged_Handler SettingChanged;
+
+
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data)
+        {
+
+        }
+
 
         public void LoadConfiguration(DataTable dt)
         {
@@ -358,17 +370,17 @@ namespace TH_Cycles.ConfigurationPage
             }
         }
 
-        List<TH_GeneratedData.ConfigurationPage.Page.Event> genEvents;
+        List<TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event> genEvents;
 
         void GetGeneratedEvents(DataTable dt)
         {
             GeneratedEvents.Clear();
 
-            genEvents = TH_GeneratedData.ConfigurationPage.Page.GetGeneratedEvents(dt);
+            genEvents = TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.GetGeneratedEvents(dt);
 
             if (genEvents != null)
             {
-                foreach (TH_GeneratedData.ConfigurationPage.Page.Event ev in genEvents)
+                foreach (TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev in genEvents)
                 {
                     GeneratedEvents.Add(String_Functions.UppercaseFirst(ev.name.Replace('_', ' ')));
                 }
@@ -398,7 +410,7 @@ namespace TH_Cycles.ConfigurationPage
 
             if (genEvents != null)
             {
-                TH_GeneratedData.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == eventName.ToLower());
+                TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == eventName.ToLower());
                 if (ev != null)
                 {
                     // Add each Value

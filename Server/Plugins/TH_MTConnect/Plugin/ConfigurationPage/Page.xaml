@@ -35,7 +35,7 @@
                 </Grid.Style>
             </Grid>
 
-            <TextBlock Text="Agent" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Title}" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
         </StackPanel>
 

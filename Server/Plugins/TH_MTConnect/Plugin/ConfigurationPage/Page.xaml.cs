@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 
 using TH_Global.Functions;
 using TH_MTConnect.Components;
+using TH_Plugins;
 using TH_Plugins.Server;
 
 namespace TH_MTConnect.Plugin.ConfigurationPage
@@ -35,7 +36,7 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
         #region "Page Interface"
 
-        public string PageName { get { return "Agent"; } }
+        public string Title { get { return "Agent"; } }
 
         private BitmapImage _image;
         public ImageSource Image
@@ -52,9 +53,15 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             }
         }
 
-        public event SaveRequest_Handler SaveRequest;
-
         public event SettingChanged_Handler SettingChanged;
+
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data)
+        {
+
+        }
+
 
         public void LoadConfiguration(DataTable dt)
         {

@@ -12,7 +12,7 @@ using TH_Plugins.Database;
 
 namespace TH_InstanceTable
 {
-    public partial class InstanceTable
+    public partial class Plugin
     {
 
         public string TableName = TableNames.Instance;

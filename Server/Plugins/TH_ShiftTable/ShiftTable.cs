@@ -16,7 +16,7 @@ using System.Reflection;
 using TH_Configuration;
 using TH_Database;
 using TH_Database.Tables;
-using TH_GeneratedData;
+using TH_GeneratedData.GeneratedEvents;
 using TH_Global;
 using TH_Plugins;
 using TH_Plugins.Server;
@@ -55,7 +55,7 @@ namespace TH_ShiftTable
             {
                 if (data.Id.ToLower() == "generatedeventitems")
                 {                          
-                    var genEventItems = (List<GeneratedEventItem>)data.Data02;
+                    var genEventItems = (List<GeneratedEvent>)data.Data02;
 
                     ProcessShifts(genEventItems);
                 }
@@ -260,10 +260,10 @@ namespace TH_ShiftTable
             ShiftConfiguration sc = ShiftConfiguration.Get(config);
             if (sc != null)
             {
-                var gdc = GeneratedDataConfiguration.Get(config);
-                if (gdc != null)
+                var gec = GeneratedEventsConfiguration.Get(config);
+                if (gec != null)
                 {
-                    foreach (var genEvent in gdc.GeneratedEventsConfiguration.Events)
+                    foreach (var genEvent in gec.Events)
                     {
                         string columnName;
 
@@ -421,7 +421,7 @@ namespace TH_ShiftTable
 
         #region "Processing"
 
-        void ProcessShifts(List<GeneratedEventItem> genEventItems)
+        void ProcessShifts(List<GeneratedEvent> genEventItems)
         {
             var genEventShiftItems = GenEventShiftItem.Get(configuration, genEventItems);
 

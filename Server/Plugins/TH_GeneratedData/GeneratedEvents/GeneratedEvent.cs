@@ -9,13 +9,11 @@ using System.Collections.Generic;
 using TH_Configuration;
 using TH_InstanceTable;
 
-using TH_GeneratedData.GeneratedEvents;
-
-namespace TH_GeneratedData
+namespace TH_GeneratedData.GeneratedEvents
 {
-    public class GeneratedEventItem
+    public class GeneratedEvent
     {
-        public GeneratedEventItem() { CaptureItems = new List<CaptureItem>(); }
+        public GeneratedEvent() { CaptureItems = new List<CaptureItem>(); }
 
         public string EventName { get; set; }
 
@@ -27,19 +25,19 @@ namespace TH_GeneratedData
 
         public List<CaptureItem> CaptureItems { get; set; }
 
-        public static List<GeneratedEventItem> Process(Configuration config, List<InstanceData> instanceDatas)
+        public static List<GeneratedEvent> Process(Configuration config, List<InstanceData> instanceDatas)
         {
-            var result = new List<GeneratedEventItem>();
+            var result = new List<GeneratedEvent>();
 
             // Get GenDataConfiguration object from Configuration.CustomClasses List (if exists)
-            var gdc = GeneratedDataConfiguration.Get(config);
-            if (gdc != null)
+            var gec = GeneratedEventsConfiguration.Get(config);
+            if (gec != null)
             {
                 // Loop through each InstanceData object in instanceDatas
                 foreach (var instanceData in instanceDatas)
                 {
                     // Loop through all of the Events and process Event using instanceData object
-                    foreach (var e in gdc.GeneratedEventsConfiguration.Events)
+                    foreach (var e in gec.Events)
                     {
                         Return eventReturn = e.Process(instanceData);
 
@@ -57,7 +55,7 @@ namespace TH_GeneratedData
                             }
                         }
 
-                        var gei = new GeneratedEventItem();
+                        var gei = new GeneratedEvent();
                         gei.EventName = e.Name;
                         gei.Timestamp = e.CurrentValue.TimeStamp;
                         gei.Value = e.CurrentValue.Value;

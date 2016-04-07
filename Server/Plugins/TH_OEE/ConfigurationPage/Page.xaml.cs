@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using TH_Global.Functions;
+using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement.Management;
 
@@ -29,13 +30,7 @@ namespace TH_OEE.ConfigurationPage
             DataContext = this;
         }
 
-        public string PageName
-        {
-            get { return (string)GetValue(PageNameProperty); }
-        }
-
-        public static readonly DependencyProperty PageNameProperty =
-            DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("OEE"));
+        public string Title { get { return "OEE"; } }
 
         private BitmapImage _image;
         public ImageSource Image
@@ -52,20 +47,16 @@ namespace TH_OEE.ConfigurationPage
             }
         }
 
-        //public ImageSource Image
-        //{
-        //    get { return (ImageSource)GetValue(ImageProperty); }
-        //}
-
-        //public static readonly DependencyProperty ImageProperty =
-        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_OEE;component/Resources/Chart_01.png"))));
-
-
-        //public string PageName { get { return "OEE"; } }
-
-        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_OEE;component/Resources/Chart_01.png")); } }
-
         public event SettingChanged_Handler SettingChanged;
+
+
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data)
+        {
+
+        }
+
 
         public void LoadConfiguration(DataTable dt)
         {

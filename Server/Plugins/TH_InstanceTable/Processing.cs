@@ -13,7 +13,7 @@ using TH_Plugins;
 
 namespace TH_InstanceTable
 {
-    public partial class InstanceTable
+    public partial class Plugin
     {
 
         private Configuration configuration;

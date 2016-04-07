@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TH_Configuration;
-using TH_GeneratedData;
 using TH_GeneratedData.GeneratedEvents;
 
 namespace TH_ShiftTable
@@ -37,7 +36,7 @@ namespace TH_ShiftTable
 
         public List<CaptureItem> CaptureItems;
 
-        public static List<GenEventShiftItem> Get(Configuration config, List<GeneratedEventItem> genEventItems)
+        public static List<GenEventShiftItem> Get(Configuration config, List<GeneratedEvent> genEventItems)
         {
             List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
 
@@ -56,7 +55,7 @@ namespace TH_ShiftTable
 
                 foreach (ListInfo nameInfo in nameInfos)
                 {
-                    GeneratedEventItem previousItem = previousData.PreviousItems.Find(x => x.EventName.ToLower() == nameInfo.title.ToLower());
+                    GeneratedEvent previousItem = previousData.PreviousItems.Find(x => x.EventName.ToLower() == nameInfo.title.ToLower());
 
                     for (int i = 0; i <= nameInfo.genEventItems.Count - 1; i++)
                     {
@@ -92,10 +91,10 @@ namespace TH_ShiftTable
 
         public class PreviousData
         {
-            public PreviousData() { PreviousItems = new List<GeneratedEventItem>(); }
+            public PreviousData() { PreviousItems = new List<GeneratedEvent>(); }
 
             public string Id { get; set; }
-            public List<GeneratedEventItem> PreviousItems { get; set; }
+            public List<GeneratedEvent> PreviousItems { get; set; }
         }
 
         public static List<PreviousData> previousItems = new List<PreviousData>();
@@ -104,13 +103,13 @@ namespace TH_ShiftTable
 
         class ListInfo
         {
-            public ListInfo() { genEventItems = new List<GeneratedEventItem>(); }
+            public ListInfo() { genEventItems = new List<GeneratedEvent>(); }
 
             public string title { get; set; }
-            public List<GeneratedEventItem> genEventItems { get; set; }
+            public List<GeneratedEvent> genEventItems { get; set; }
         }
 
-        static List<GenEventShiftItem> GetItems(ShiftConfiguration stc, GeneratedEventItem item1, GeneratedEventItem item2)
+        static List<GenEventShiftItem> GetItems(ShiftConfiguration stc, GeneratedEvent item1, GeneratedEvent item2)
         {
             List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
 
@@ -133,7 +132,7 @@ namespace TH_ShiftTable
             return Result;
         }
 
-        static List<ListInfo> GetListByName(List<GeneratedEventItem> genEventItems)
+        static List<ListInfo> GetListByName(List<GeneratedEvent> genEventItems)
         {
             List<ListInfo> Result = new List<ListInfo>();
 
@@ -152,7 +151,7 @@ namespace TH_ShiftTable
             return Result;
         }
 
-        static List<GenEventShiftItem> GetItemsDuringShift(GeneratedEventItem item1, GeneratedEventItem item2, ShiftDate date, Shift shift)
+        static List<GenEventShiftItem> GetItemsDuringShift(GeneratedEvent item1, GeneratedEvent item2, ShiftDate date, Shift shift)
         {
             List<GenEventShiftItem> Result = new List<GenEventShiftItem>();
 
@@ -165,7 +164,7 @@ namespace TH_ShiftTable
             return Result;
         }
 
-        static GenEventShiftItem GetItemDuringSegment(GeneratedEventItem item1, GeneratedEventItem item2, ShiftDate date, Segment segment)
+        static GenEventShiftItem GetItemDuringSegment(GeneratedEvent item1, GeneratedEvent item2, ShiftDate date, Segment segment)
         {
             GenEventShiftItem Result = null;
 
@@ -228,7 +227,7 @@ namespace TH_ShiftTable
             return Result;
         }
 
-        static int GetItemDuringSegmentType(GeneratedEventItem item1, GeneratedEventItem item2, Segment segment, ShiftDate date)
+        static int GetItemDuringSegmentType(GeneratedEvent item1, GeneratedEvent item2, Segment segment, ShiftDate date)
         {
             // Get Times for segment and convert timestamps to Local
             SegmentShiftTimes sst = SegmentShiftTimes.Get(item1.Timestamp, item2.Timestamp, date, segment);

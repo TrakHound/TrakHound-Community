@@ -27,6 +27,7 @@ using System.IO;
 using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
+using TH_Plugins;
 using TH_Plugins.Server;
 using TH_UserManagement;
 using TH_UserManagement.Management;
@@ -46,9 +47,7 @@ namespace TH_DeviceManager.Pages.Description
 
         #region "Page Interface"
 
-        public string PageName { get { return "Description"; } }
-
-        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/About_01.png")); } }
+        public string Title { get { return "Description"; } }
 
         private BitmapImage _image;
         public ImageSource Image
@@ -67,9 +66,16 @@ namespace TH_DeviceManager.Pages.Description
 
         public UserConfiguration currentUser { get; set; }
 
-        public event SaveRequest_Handler SaveRequest;
-
         public event SettingChanged_Handler SettingChanged;
+
+
+        public event SendData_Handler SendData;
+
+        public void GetSentData(EventData data)
+        {
+
+        }
+
 
         public void LoadConfiguration(DataTable dt)
         {

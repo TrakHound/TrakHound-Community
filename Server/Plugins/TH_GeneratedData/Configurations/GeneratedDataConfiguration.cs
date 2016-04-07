@@ -27,11 +27,11 @@ namespace TH_GeneratedData
     {
         public GeneratedDataConfiguration()
         {
-            SnapshotsConfiguration = new SnapshotsConfiguration();
+            //SnapshotsConfiguration = new SnapshotsConfiguration();
             GeneratedEventsConfiguration = new GeneratedEventsConfiguration();
         }
 
-        public SnapshotsConfiguration SnapshotsConfiguration { get; set; }
+        //public SnapshotsConfiguration SnapshotsConfiguration { get; set; }
 
         public GeneratedEventsConfiguration GeneratedEventsConfiguration { get; set; }
 
@@ -66,11 +66,11 @@ namespace TH_GeneratedData
                             {
                                 switch (childNode.Name.ToLower())
                                 {
-                                    case "snapshotdata":
+                                    //case "snapshotdata":
 
-                                        result.SnapshotsConfiguration = SnapshotsConfiguration.Read(childNode);
+                                    //    result.SnapshotsConfiguration = SnapshotsConfiguration.Read(childNode);
 
-                                        break;
+                                    //    break;
 
                                     case "generatedevents":
 
