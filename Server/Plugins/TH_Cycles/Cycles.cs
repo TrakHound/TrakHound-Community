@@ -88,10 +88,7 @@ namespace TH_Cycles
 
         public event Status_Handler ErrorOccurred;
 
-        public void Closing()
-        {
-
-        }
+        public void Closing() { }
 
         public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
 

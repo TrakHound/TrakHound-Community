@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using TH_Global.Functions;
-using TH_GeneratedData.GeneratedEvents;
 using TH_MTConnect.Components;
 using TH_Plugins;
 using TH_Plugins.Server;
@@ -128,6 +126,9 @@ namespace TH_Cycles.ConfigurationPage
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
+
+        #region "MTC Probe Data"
+
         ObservableCollection<CollectedItem> _collectedItems;
         public ObservableCollection<CollectedItem> CollectedItems
         {
@@ -145,24 +146,6 @@ namespace TH_Cycles.ConfigurationPage
         }
 
         private List<DataItem> probeData = new List<DataItem>();
-
-
-        ObservableCollection<GeneratedEventItem> _generatedEventItems;
-        public ObservableCollection<GeneratedEventItem> GeneratedEventItems
-        {
-            get
-            {
-                if (_generatedEventItems == null)
-                    _generatedEventItems = new ObservableCollection<GeneratedEventItem>();
-                return _generatedEventItems;
-            }
-
-            set
-            {
-                _generatedEventItems = value;
-            }
-        }
-
 
         public class CollectedItem
         {
@@ -184,21 +167,6 @@ namespace TH_Cycles.ConfigurationPage
             {
                 return Display;
             }
-        }
-
-        public class GeneratedEventItem
-        {
-            public GeneratedEventItem(TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event e)
-            {
-                Id = e.name;
-                Name = String_Functions.UppercaseFirst(e.name.Replace('_', ' ').ToLower());
-                Event = e;
-            }
-
-            public string Id { get; set; }
-            public string Name { get; set; }
-
-            public TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event Event { get; set; }
         }
 
         void GetProbeData(EventData data)
@@ -225,6 +193,41 @@ namespace TH_Cycles.ConfigurationPage
             }
         }
 
+        #endregion
+
+        #region "Generated Events"
+
+        ObservableCollection<GeneratedEventItem> _generatedEventItems;
+        public ObservableCollection<GeneratedEventItem> GeneratedEventItems
+        {
+            get
+            {
+                if (_generatedEventItems == null)
+                    _generatedEventItems = new ObservableCollection<GeneratedEventItem>();
+                return _generatedEventItems;
+            }
+
+            set
+            {
+                _generatedEventItems = value;
+            }
+        }
+
+        public class GeneratedEventItem
+        {
+            public GeneratedEventItem(TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event e)
+            {
+                Id = e.name;
+                Name = String_Functions.UppercaseFirst(e.name.Replace('_', ' ').ToLower());
+                Event = e;
+            }
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+
+            public TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event Event { get; set; }
+        }
+
         private void LoadGeneratedEventItems(DataTable dt)
         {
             GeneratedEventItems.Clear();
@@ -236,225 +239,6 @@ namespace TH_Cycles.ConfigurationPage
             }
         }
 
-
-
-
-
-
-
-
-
-
-        #region "MTC Data Items"
-
-        //ObservableCollection<CollectedItem> collecteditems;
-        //public ObservableCollection<CollectedItem> CollectedItems
-        //{
-        //    get
-        //    {
-        //        if (collecteditems == null)
-        //            collecteditems = new ObservableCollection<CollectedItem>();
-        //        return collecteditems;
-        //    }
-
-        //    set
-        //    {
-        //        collecteditems = value;
-        //    }
-        //}
-
-        //public class CollectedItem
-        //{
-        //    public string Id { get; set; }
-        //    public string Name { get; set; }
-
-        //    public string Display { get; set; }
-
-        //    public string Category { get; set; }
-        //    public string Type { get; set; }
-
-        //    public override string ToString()
-        //    {
-        //        return Display;
-        //    }
-        //}
-
-        //void LoadAgentSettings(DataTable dt)
-        //{
-        //    string prefix = "/Agent/";
-
-        //    string ip = Table_Functions.GetTableValue(prefix + "Address", dt);
-        //    // Get deprecated value if new value is not found
-        //    if (String.IsNullOrEmpty(ip)) ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
-
-        //    string p = Table_Functions.GetTableValue(prefix + "Port", dt);
-
-        //    string devicename = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
-        //    // Get deprecated value if new value is not found
-        //    if (String.IsNullOrEmpty(devicename)) devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
-
-        //    string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
-        //    string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
-
-        //    int port;
-        //    int.TryParse(p, out port);
-
-        //    // Proxy Settings
-        //    TH_MTConnect.HTTP.ProxySettings proxy = null;
-        //    if (proxyPort != null)
-        //    {
-        //        int proxy_p = -1;
-        //        if (int.TryParse(proxyPort, out proxy_p))
-        //        {
-        //            proxy = new TH_MTConnect.HTTP.ProxySettings();
-        //            proxy.Address = proxyAddress;
-        //            proxy.Port = proxy_p;
-        //        }
-        //    }
-
-        //    CollectedItems.Clear();
-
-        //    RunProbe(ip, proxy, port, devicename);
-        //}
-
-        //Thread runProbe_THREAD;
-
-        //class Probe_Info
-        //{
-        //    public string address;
-        //    public int port;
-        //    public string deviceName;
-        //    public TH_MTConnect.HTTP.ProxySettings proxy;
-        //}
-
-        //void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
-        //{
-        //    if (runProbe_THREAD != null) runProbe_THREAD.Abort();
-
-        //    var info = new Probe_Info();
-        //    info.address = address;
-        //    info.port = port;
-        //    info.deviceName = deviceName;
-        //    info.proxy = proxy;
-
-        //    runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
-        //    runProbe_THREAD.Start(info);
-        //}
-
-        //void RunProbe_Worker(object o)
-        //{
-        //    if (o != null)
-        //    {
-        //        var info = o as Probe_Info;
-        //        if (info != null)
-        //        {
-        //            string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
-
-        //            ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
-        //            if (returnData != null)
-        //            {
-        //                foreach (Device device in returnData.Devices)
-        //                {
-        //                    DataItemCollection dataItems = Tools.GetDataItemsFromDevice(device);
-
-        //                    List<DataItem> items = new List<DataItem>();
-
-        //                    // Conditions
-        //                    foreach (DataItem dataItem in dataItems.Conditions) items.Add(dataItem);
-
-        //                    // Events
-        //                    foreach (DataItem dataItem in dataItems.Events) items.Add(dataItem);
-
-        //                    // Samples
-        //                    foreach (DataItem dataItem in dataItems.Samples) items.Add(dataItem);
-
-        //                    this.Dispatcher.BeginInvoke(new Action<List<DataItem>>(AddDataItems), priority, new object[] { items });
-        //                }
-        //            }
-        //            else
-        //            {
-
-        //            }
-
-        //            // Set 'Loading' to false
-        //            this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
-        //        }
-        //    }
-        //}
-
-        //void AddDataItems(List<DataItem> items)
-        //{
-        //    List<CollectedItem> list = new List<CollectedItem>();
-
-        //    foreach (DataItem item in items)
-        //    {
-        //        var ci = new CollectedItem();
-        //        ci.Id = item.Id;
-        //        ci.Name = item.Name;
-        //        ci.Category = item.Category;
-        //        ci.Type = item.Type;
-
-        //        if (ci.Name != null) ci.Display = ci.id + " : " + ci.name;
-        //        else ci.Display = ci.id;
-
-        //        if (list.Find(x => x.id == ci.id) == null) list.Add(ci);
-        //    }
-
-        //    list.Sort((x, y) => string.Compare(x.id, y.id));
-
-        //    foreach (CollectedItem item in list) CollectedItems.Add(item);
-
-        //}
-
-        //void ProbeFinished()
-        //{
-        //    this.Dispatcher.BeginInvoke(new Action(CycleNameLink_UpdateCollectedLink), priority, new object[] { });
-
-        //    foreach (var item in OverrideLinks)
-        //    {
-        //        this.Dispatcher.BeginInvoke(new Action<Controls.OverrideLinkItem>(OverrideLink_UpdateCollectedLink), priority, new object[] { item });
-        //    }
-
-        //    //foreach (Controls.Snapshot_Item item in SnapshotItems)
-        //    //{
-        //    //    this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(SnapshotItem_UpdateCollectedLink), priority, new object[] { item });
-        //    //}
-
-        //    //foreach (Controls.Event ev in events)
-        //    //{
-        //    //    foreach (Controls.Value v in ev.Values)
-        //    //    {
-        //    //        foreach (Controls.Trigger t in v.Triggers)
-        //    //        {
-        //    //            this.Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { t });
-        //    //        }
-        //    //    }
-
-        //    //    foreach (Controls.CaptureItem ci in ev.CaptureItems)
-        //    //    {
-        //    //        this.Dispatcher.BeginInvoke(new Action<Controls.CaptureItem>(CaptureItem_UpdateCollectedLink), priority, new object[] { ci });
-        //    //    }
-        //    //}
-        //}
-
-        //void CycleNameLink_UpdateCollectedLink()
-        //{
-        //    if (SelectedCycleNameLink != null)
-        //    {
-        //        Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.id == SelectedCycleNameLink.ToString());
-        //        if (ci != null) SelectedCycleNameLink = ci.display;
-        //    }
-        //}
-
-        //void OverrideLink_UpdateCollectedLink(Controls.OverrideLinkItem item)
-        //{
-        //    Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.id == item.collectedlink_COMBO.Text);
-        //    if (ci != null) item.collectedlink_COMBO.Text = ci.display;
-        //}
-
-        #endregion
-
-        #region "Generated Events"
 
         ObservableCollection<object> _generatedeventvalues;
         public ObservableCollection<object> GeneratedEventValues
@@ -494,25 +278,6 @@ namespace TH_Cycles.ConfigurationPage
                     }
                 }
             }
-
-            //if (genEvents != null)
-            //{
-            //    TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == eventName.ToLower());
-            //    if (ev != null)
-            //    {
-            //        // Add each Value
-            //        foreach (var value in ev.values)
-            //        {
-            //            GeneratedEventValues.Add(value.result.value);
-            //        }
-
-            //        // Add Default Value
-            //        if (ev.Default != null)
-            //        {
-            //            GeneratedEventValues.Add(ev.Default.value);
-            //        }
-            //    }
-            //}
         }
 
         #endregion
@@ -556,7 +321,6 @@ namespace TH_Cycles.ConfigurationPage
                 {
                     string val = DataTable_Functions.GetRowValue("Value", row);
                     if (val != null) SelectedCycleEventName = val;
-                    //if (val != null) SelectedCycleEventName = String_Functions.UppercaseFirst(val.Replace('_', ' '));
                 }
             }
         }

@@ -66,7 +66,9 @@ namespace TH_Parts.ConfigurationPage
         {
             configurationTable = dt;
 
-            GetGeneratedEvents(dt);
+            LoadGeneratedEventItems(dt);
+
+            //GetGeneratedEvents(dt);
 
             ClearData();
             LoadData(dt);
@@ -97,42 +99,83 @@ namespace TH_Parts.ConfigurationPage
 
         const string prefix = "/Parts/";
 
-
-
-        #region "Generated Events"
-
-        ObservableCollection<object> _generatedEvents;
-        public ObservableCollection<object> GeneratedEvents
+        ObservableCollection<GeneratedEventItem> _generatedEventItems;
+        public ObservableCollection<GeneratedEventItem> GeneratedEventItems
         {
             get
             {
-                if (_generatedEvents == null)
-                    _generatedEvents = new ObservableCollection<object>();
-                return _generatedEvents;
+                if (_generatedEventItems == null)
+                    _generatedEventItems = new ObservableCollection<GeneratedEventItem>();
+                return _generatedEventItems;
             }
 
             set
             {
-                _generatedEvents = value;
+                _generatedEventItems = value;
             }
         }
 
-        List<TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event> genEvents;
-
-        void GetGeneratedEvents(DataTable dt)
+        public class GeneratedEventItem
         {
-            GeneratedEvents.Clear();
-
-            genEvents = TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.GetGeneratedEvents(dt);
-
-            if (genEvents != null)
+            public GeneratedEventItem(TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event e)
             {
-                foreach (TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev in genEvents)
-                {
-                    GeneratedEvents.Add(String_Functions.UppercaseFirst(ev.name.Replace('_', ' ')));
-                }
+                Id = e.name;
+                Name = String_Functions.UppercaseFirst(e.name.Replace('_', ' ').ToLower());
+                Event = e;
+            }
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+
+            public TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event Event { get; set; }
+        }
+
+        private void LoadGeneratedEventItems(DataTable dt)
+        {
+            GeneratedEventItems.Clear();
+
+            var events = TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.GetGeneratedEvents(dt);
+            foreach (var e in events)
+            {
+                GeneratedEventItems.Add(new GeneratedEventItem(e));
             }
         }
+
+
+        #region "Generated Events"
+
+        //ObservableCollection<object> _generatedEvents;
+        //public ObservableCollection<object> GeneratedEvents
+        //{
+        //    get
+        //    {
+        //        if (_generatedEvents == null)
+        //            _generatedEvents = new ObservableCollection<object>();
+        //        return _generatedEvents;
+        //    }
+
+        //    set
+        //    {
+        //        _generatedEvents = value;
+        //    }
+        //}
+
+        //List<TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event> genEvents;
+
+        //void GetGeneratedEvents(DataTable dt)
+        //{
+        //    GeneratedEvents.Clear();
+
+        //    genEvents = TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.GetGeneratedEvents(dt);
+
+        //    if (genEvents != null)
+        //    {
+        //        foreach (TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev in genEvents)
+        //        {
+        //            GeneratedEvents.Add(String_Functions.UppercaseFirst(ev.name.Replace('_', ' ')));
+        //        }
+        //    }
+        //}
 
 
         ObservableCollection<object> _generatedEventValues;
@@ -151,37 +194,73 @@ namespace TH_Parts.ConfigurationPage
             }
         }
 
-        void GetGeneratedEventValues(string eventName)
+        void GetGeneratedEventValues(string Id)
         {
             GeneratedEventValues.Clear();
 
-            if (genEvents != null)
+            if (GeneratedEventItems != null)
             {
-                TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == eventName.ToLower());
-                if (ev != null)
+                var e = GeneratedEventItems.ToList().Find(x => x.Id == Id);
+                if (e != null)
                 {
                     // Add each Value
-                    foreach (var value in ev.values)
+                    foreach (var value in e.Event.values)
                     {
                         GeneratedEventValues.Add(value.result.value);
                     }
 
                     // Add Default Value
-                    if (ev.Default != null)
+                    if (e.Event.Default != null)
                     {
-                        GeneratedEventValues.Add(ev.Default.value);
+                        GeneratedEventValues.Add(e.Event.Default.value);
                     }
                 }
             }
         }
 
-        ObservableCollection<object> _generatedEventCaptureItems;
-        public ObservableCollection<object> GeneratedEventCaptureItems
+        //void GetGeneratedEventValues(string eventName)
+        //{
+        //    GeneratedEventValues.Clear();
+
+        //    if (genEvents != null)
+        //    {
+        //        TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == eventName.ToLower());
+        //        if (ev != null)
+        //        {
+        //            // Add each Value
+        //            foreach (var value in ev.values)
+        //            {
+        //                GeneratedEventValues.Add(value.result.value);
+        //            }
+
+        //            // Add Default Value
+        //            if (ev.Default != null)
+        //            {
+        //                GeneratedEventValues.Add(ev.Default.value);
+        //            }
+        //        }
+        //    }
+        //}
+
+        public class CaptureItem
+        {
+            public CaptureItem(TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.CaptureItem item)
+            {
+                Id = item.name;
+                Name = String_Functions.UppercaseFirst(item.name.Replace('_', ' '));
+            }
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        ObservableCollection<CaptureItem> _generatedEventCaptureItems;
+        public ObservableCollection<CaptureItem> GeneratedEventCaptureItems
         {
             get
             {
                 if (_generatedEventCaptureItems == null)
-                    _generatedEventCaptureItems = new ObservableCollection<object>();
+                    _generatedEventCaptureItems = new ObservableCollection<CaptureItem>();
                 return _generatedEventCaptureItems;
             }
 
@@ -191,24 +270,46 @@ namespace TH_Parts.ConfigurationPage
             }
         }
 
-        void GetGeneratedEventCaptureItems(string eventName)
+        void GetGeneratedEventCaptureItems(string Id)
         {
             GeneratedEventCaptureItems.Clear();
 
-            if (genEvents != null)
+            if (GeneratedEventItems != null)
             {
-                TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == eventName.ToLower());
-                if (ev != null)
+                var e = GeneratedEventItems.ToList().Find(x => x.Id == Id);
+                if (e != null)
                 {
                     // Add each Value
-                    foreach (var item in ev.captureItems)
+                    foreach (var item in e.Event.captureItems)
                     {
-                        string name = item.name;
-                        if (name != null) GeneratedEventCaptureItems.Add(String_Functions.UppercaseFirst(name.Replace('_', ' ')));
+                        var i = new CaptureItem(item);
+                        GeneratedEventCaptureItems.Add(i);
+
+                        //string name = item.name;
+                        //if (name != null) GeneratedEventCaptureItems.Add(String_Functions.UppercaseFirst(name.Replace('_', ' ')));
                     }
                 }
             }
         }
+
+        //void GetGeneratedEventCaptureItems(string eventName)
+        //{
+        //    GeneratedEventCaptureItems.Clear();
+
+        //    if (genEvents != null)
+        //    {
+        //        TH_GeneratedData.GeneratedEvents.ConfigurationPage.Page.Event ev = genEvents.Find(x => String_Functions.UppercaseFirst(x.name.Replace('_', ' ')).ToLower() == eventName.ToLower());
+        //        if (ev != null)
+        //        {
+        //            // Add each Value
+        //            foreach (var item in ev.captureItems)
+        //            {
+        //                string name = item.name;
+        //                if (name != null) GeneratedEventCaptureItems.Add(String_Functions.UppercaseFirst(name.Replace('_', ' ')));
+        //            }
+        //        }
+        //    }
+        //}
 
         #endregion
 
@@ -225,21 +326,34 @@ namespace TH_Parts.ConfigurationPage
 
         private void PartsEventName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string selectedItem = null;
-
             ComboBox cmbox = (ComboBox)sender;
-            if (cmbox.SelectedItem != null) selectedItem = cmbox.SelectedItem.ToString();
-
-            if (selectedItem != null)
+            if (cmbox.SelectedItem != null)
             {
-                GetGeneratedEventValues(selectedItem);
-                GetGeneratedEventCaptureItems(selectedItem);
+                var item = (GeneratedEventItem)cmbox.SelectedItem;
+                GetGeneratedEventValues(item.Id);
+                GetGeneratedEventCaptureItems(item.Id);
             }
 
             if (cmbox.IsKeyboardFocused || cmbox.IsMouseCaptured)
             {
                 if (SettingChanged != null) SettingChanged("Parts Event Name", null, null);
             }
+
+            //string selectedItem = null;
+
+            //ComboBox cmbox = (ComboBox)sender;
+            //if (cmbox.SelectedItem != null) selectedItem = cmbox.SelectedItem.ToString();
+
+            //if (selectedItem != null)
+            //{
+            //    GetGeneratedEventValues(selectedItem);
+            //    GetGeneratedEventCaptureItems(selectedItem);
+            //}
+
+            //if (cmbox.IsKeyboardFocused || cmbox.IsMouseCaptured)
+            //{
+            //    if (SettingChanged != null) SettingChanged("Parts Event Name", null, null);
+            //}
         }
 
         void LoadPartsEventName(DataTable dt)
@@ -252,7 +366,8 @@ namespace TH_Parts.ConfigurationPage
                 foreach (var row in rows)
                 {
                     string val = DataTable_Functions.GetRowValue("Value", row);
-                    if (val != null) SelectedPartsEventName = String_Functions.UppercaseFirst(val.Replace('_', ' '));
+                    if (val != null) SelectedPartsEventName = val;
+                    //if (val != null) SelectedPartsEventName = String_Functions.UppercaseFirst(val.Replace('_', ' '));
                 }
             }
         }
@@ -338,7 +453,8 @@ namespace TH_Parts.ConfigurationPage
                 foreach (var row in rows)
                 {
                     string val = DataTable_Functions.GetRowValue("Value", row);
-                    if (val != null) SelectedPartCountLink = String_Functions.UppercaseFirst(val.Replace('_', ' '));
+                    if (val != null) SelectedPartCountLink = val;
+                    //if (val != null) SelectedPartCountLink = String_Functions.UppercaseFirst(val.Replace('_', ' '));
                 }
             }
         }

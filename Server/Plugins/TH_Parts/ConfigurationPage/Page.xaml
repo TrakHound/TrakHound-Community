@@ -122,7 +122,15 @@
 
                 </StackPanel>
 
-                <ComboBox x:Name="eventName_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedPartsEventName}" SelectionChanged="PartsEventName_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <ComboBox Margin="0,0,0,30" Width="200" Height="30"
+                          ItemsSource="{Binding GeneratedEventItems}"
+                          SelectedValue="{Binding SelectedPartsEventName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectedValuePath="Id"
+                          DisplayMemberPath="Name"
+                          SelectionChanged="PartsEventName_SelectionChanged"
+                          IsEditable="True" 
+                          VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
 
                 <!--Title and Help-->
@@ -186,7 +194,13 @@
 
                 </StackPanel>
 
-                <ComboBox x:Name="producedValue_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEventValues}" Text="{Binding SelectedProducedEventValue}" SelectionChanged="producedValue_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <ComboBox Margin="0,0,0,30" Width="200" Height="30"
+                          ItemsSource="{Binding GeneratedEventValues}"
+                          SelectedValue="{Binding SelectedProducedEventValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          SelectionChanged="producedValue_COMBO_SelectionChanged"
+                          IsEditable="True" 
+                          VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
 
                 <!--Title and Help-->
@@ -250,7 +264,15 @@
 
                 </StackPanel>
 
-                <ComboBox x:Name="partCountLink_COMBO" Margin="0,0" Width="200" ItemsSource="{Binding GeneratedEventCaptureItems}" Text="{Binding SelectedPartCountLink}" SelectionChanged="partCountLink_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <ComboBox Margin="0,0" Width="200" Height="30"
+                          ItemsSource="{Binding GeneratedEventCaptureItems}"
+                          SelectedValue="{Binding SelectedPartCountLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectedValuePath="Id"
+                          DisplayMemberPath="Name"
+                          SelectionChanged="partCountLink_COMBO_SelectionChanged" 
+                          IsEditable="True"
+                          VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
             </StackPanel>
 
