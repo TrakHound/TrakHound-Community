@@ -37,22 +37,6 @@ namespace TH_Cycles.ConfigurationPage
 
         public string Title { get { return "Cycles"; } }
 
-        //public string PageName
-        //{
-        //    get { return (string)GetValue(PageNameProperty); }
-        //}
-
-        //public static readonly DependencyProperty PageNameProperty =
-        //    DependencyProperty.Register("PageName", typeof(string), typeof(Page), new PropertyMetadata("Cycles"));
-
-        //public ImageSource Image
-        //{
-        //    get { return (ImageSource)GetValue(ImageProperty); }
-        //}
-
-        //public static readonly DependencyProperty ImageProperty =
-        //    DependencyProperty.Register("Image", typeof(ImageSource), typeof(Page), new PropertyMetadata(new BitmapImage(new Uri("pack://application:,,,/TH_Cycles;component/Resources/Cycle_01.png"))));
-
         private BitmapImage _image;
         public ImageSource Image
         {
@@ -68,6 +52,7 @@ namespace TH_Cycles.ConfigurationPage
             }
         }
 
+        public bool Loaded { get; set; }
 
         public event SettingChanged_Handler SettingChanged;
 
@@ -113,12 +98,12 @@ namespace TH_Cycles.ConfigurationPage
         }
 
         public void SaveConfiguration(DataTable dt)
-        {
-            SaveCycleEventName(dt);
-            SaveStoppedEventValueName(dt);
-            SaveCycleNameLink(dt);
-            SaveProductionTypes(dt);
-            SaveOverrideLinks(dt);
+        { 
+                SaveCycleEventName(dt);
+                SaveStoppedEventValueName(dt);
+                SaveCycleNameLink(dt);
+                SaveProductionTypes(dt);
+                SaveOverrideLinks(dt);
         }
 
         DataTable configurationTable;

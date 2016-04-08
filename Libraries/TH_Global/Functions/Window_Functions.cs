@@ -5,6 +5,7 @@ using System.Text;
 
 namespace TH_Global.Functions
 {
+
     public static class Window_Functions
     {
 

@@ -48,6 +48,8 @@ namespace TH_ShiftTable.ConfigurationPage
             }
         }
 
+        public bool Loaded { get; set; }
+
         public event SettingChanged_Handler SettingChanged;
 
 
@@ -224,29 +226,29 @@ namespace TH_ShiftTable.ConfigurationPage
 
         public void SaveConfiguration(DataTable dt)
         {
-            string prefix = "/ShiftData/Shifts/";
+                string prefix = "/ShiftData/Shifts/";
 
-            // Clear all shift rows first (so that Ids can be sequentially assigned) --------------
-            string filter = "address LIKE '" + prefix + "*'";
-            DataView dv = dt.AsDataView();
-            dv.RowFilter = filter;
-            DataTable temp_dt = dv.ToTable();
-            foreach (DataRow row in temp_dt.Rows)
-            {
-                DataRow dbRow = dt.Rows.Find(row["address"]);
-                if (dbRow != null) dt.Rows.Remove(dbRow);
-            }
-            // ------------------------------------------------------------------------------------
-
-            if (shifts != null)
-            {
-                foreach (Shift s in shifts)
+                // Clear all shift rows first (so that Ids can be sequentially assigned) --------------
+                string filter = "address LIKE '" + prefix + "*'";
+                DataView dv = dt.AsDataView();
+                dv.RowFilter = filter;
+                DataTable temp_dt = dv.ToTable();
+                foreach (DataRow row in temp_dt.Rows)
                 {
-                    SaveShift(s, dt);
+                    DataRow dbRow = dt.Rows.Find(row["address"]);
+                    if (dbRow != null) dt.Rows.Remove(dbRow);
                 }
-            }
+                // ------------------------------------------------------------------------------------
 
-            configurationTable = dt;
+                if (shifts != null)
+                {
+                    foreach (Shift s in shifts)
+                    {
+                        SaveShift(s, dt);
+                    }
+                }
+
+                configurationTable = dt;
         }
 
         static void SaveShift(Shift s, DataTable dt)

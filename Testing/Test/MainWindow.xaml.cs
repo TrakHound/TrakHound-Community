@@ -29,41 +29,6 @@ namespace Test
         {
             InitializeComponent();
             DataContext = this;
-
-            LoadPieChartData();
-        }
-
-        private void LoadPieChartData()
-        {
-            //((PieSeries)mcChart.Series[0]).ItemsSource =
-            //    new KeyValuePair<string, int>[]{
-            //new KeyValuePair<string, int>("Project Manager", 12),
-            //new KeyValuePair<string, int>("CEO", 25),
-            //new KeyValuePair<string, int>("Software Engg.", 5),
-            //new KeyValuePair<string, int>("Team Leader", 6),
-            //new KeyValuePair<string, int>("Project Leader", 10),
-            //new KeyValuePair<string, int>("Developer", 4) };
-
-            ChartData.Add(new KeyValuePair<string, int>("Project Manager", 12));
-            ChartData.Add(new KeyValuePair<string, int>("CEO", 25));
-            ChartData.Add(new KeyValuePair<string, int>("Software Engg.", 5));
-            ChartData.Add(new KeyValuePair<string, int>("Team Leader", 6));
-            ChartData.Add(new KeyValuePair<string, int>("Project Leader", 10));
-            ChartData.Add(new KeyValuePair<string, int>("Developer", 4));
-
-
-        }
-
-
-        private ObservableCollection<KeyValuePair<string, int>> _chartData;
-        public ObservableCollection<KeyValuePair<string, int>> ChartData
-        {
-            get
-            {
-                if (_chartData == null) _chartData = new ObservableCollection<KeyValuePair<string, int>>();
-                return _chartData;
-            }
-            set { _chartData = value; }
         }
 
     }

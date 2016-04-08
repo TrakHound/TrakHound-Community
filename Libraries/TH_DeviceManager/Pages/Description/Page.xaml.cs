@@ -64,7 +64,7 @@ namespace TH_DeviceManager.Pages.Description
             }
         }
 
-        public UserConfiguration currentUser { get; set; }
+        public bool Loaded { get; set; }
 
         public event SettingChanged_Handler SettingChanged;
 

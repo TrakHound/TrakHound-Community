@@ -1,35 +1,26 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Data;
-using System.Collections.ObjectModel;
 
 using TH_Configuration;
 using TH_Database;
+using TH_Global;
 using TH_Global.Functions;
-using TH_Plugins.Server;
-using TH_WPF;
-using TH_UserManagement;
-using TH_UserManagement.Management;
 using TH_Plugins;
 using TH_Plugins.Database;
+using TH_UserManagement.Management;
+using TH_WPF;
 
 namespace TH_DeviceManager.Pages.Databases
 {
@@ -50,10 +41,6 @@ namespace TH_DeviceManager.Pages.Databases
 
         public string Title { get { return "Databases"; } }
 
-        //public string PageName { get { return "Databases"; } }
-
-        //public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_DeviceManager;component/Resources/DatabaseConfig_01.png")); } }
-
         private BitmapImage _image;
         public ImageSource Image
         {
@@ -69,7 +56,7 @@ namespace TH_DeviceManager.Pages.Databases
             }
         }
 
-        public UserConfiguration currentUser { get; set; }
+        public bool Loaded { get; set; }
 
         public event TH_Plugins.Server.SettingChanged_Handler SettingChanged;
 
@@ -100,9 +87,7 @@ namespace TH_DeviceManager.Pages.Databases
         public void SaveConfiguration(DataTable dt)
         {
             // Clear all old database rows first
-            ClearAddresses("/Databases/", dt); // OBSOLETE SO Make sure it clears it (2-11-16)
-            ClearAddresses("/Databases_Client/", dt);
-            ClearAddresses("/Databases_Server/", dt);
+            ClearDatabases(dt);
 
             SaveConfigurationPages(clientPageGroups, dt, Page_Type.Client);
             SaveConfigurationPages(serverPageGroups, dt, Page_Type.Server);
@@ -123,6 +108,13 @@ namespace TH_DeviceManager.Pages.Databases
                     group.Page.SaveConfiguration(dt);
                 }
             }
+        }
+
+        private void ClearDatabases(DataTable dt)
+        {
+            ClearAddresses("/Databases/", dt); // OBSOLETE SO Make sure it clears it (2-11-16)
+            ClearAddresses("/Databases_Client/", dt);
+            ClearAddresses("/Databases_Server/", dt);
         }
 
         static void ClearAddresses(string prefix, DataTable dt)
@@ -292,7 +284,7 @@ namespace TH_DeviceManager.Pages.Databases
         List<PageGroup> clientPageGroups;
         List<PageGroup> serverPageGroups;
 
-        
+
         private void GetPageGroups(DataTable dt)
         {
             clientPageGroups = GetPageGroups(dt, Page_Type.Client);
@@ -519,5 +511,40 @@ namespace TH_DeviceManager.Pages.Databases
                 if (SettingChanged != null) SettingChanged(null, null, null);
             }
         }
+
+        #region "Default"
+
+        private void Default_Clicked(TH_WPF.Button bt)
+        {
+            if (configurationTable != null)
+            {
+                ClearDatabases(configurationTable);
+
+                UpdateDatabaseConfiguration(configurationTable);
+
+                LoadConfiguration(configurationTable);
+
+                if (SettingChanged != null) SettingChanged(null, null, null);
+            }  
+        }
+
+        private void UpdateDatabaseConfiguration(DataTable dt)
+        {
+            DataTable_Functions.UpdateTableValue(dt, "address", "/DatabaseId", "value", Configuration.GenerateDatabaseId());
+
+            AddDatabaseConfiguration("/Databases_Client", dt);
+            AddDatabaseConfiguration("/Databases_Server", dt);
+        }
+
+        private void AddDatabaseConfiguration(string prefix, DataTable dt)
+        {
+            string path = FileLocations.Databases + "\\TrakHound.db";
+
+            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "/SQLite||00", "attributes", "id||00");
+            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "/SQLite||00/DatabasePath", "value", path);
+        }
+
+        #endregion
+
     }
 }

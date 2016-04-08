@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800">
 
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -18,7 +18,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+        
         <!--Title and Image-->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
@@ -37,12 +37,12 @@
 
             <TextBlock Text="Databases" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
+            <!--Description-->
+            <TextBlock Text="Configure the Databases that this device writes data to and reads from" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="20,5" VerticalAlignment="Center"/>
+
         </StackPanel>
 
-        <!--Description-->
-        <TextBlock Grid.Row="1" Text="Configure the Databases that this device writes data to and reads from" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20"/>
-
-        
+        <!--Type and Database ID-->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,10">
             <StackPanel.Resources>
                 <Style TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
@@ -130,16 +130,11 @@
 
             <TextBlock Text="Add" FontSize="12pt" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,0,5" VerticalAlignment="Center"/>
 
-            <!--<StackPanel Orientation="Horizontal" Margin="0,10">-->
-          
-                <!--Buttons-->
-                <ItemsControl ItemsSource="{Binding DatabaseTypeList}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.Resources>
+            <StackPanel Orientation="Horizontal">
+                
+                <!--Default Button-->
+                <th_wpf:Button Clicked="Default_Clicked">
+                    <th_wpf:Button.Style>
                         <Style TargetType="th_wpf:Button">
                             <Setter Property="Visibility" Value="Visible"/>
                             <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -150,6 +145,7 @@
                             <Setter Property="Margin" Value="0,0,10,0"/>
                             <Setter Property="FontSize" Value="14"/>
                             <Setter Property="Image" Value="/TH_DeviceManager;component/Resources/Add_01.png"/>
+                            <Setter Property="Text" Value="Default"/>
                             <Setter Property="HorizontalAlignment" Value="Left"/>
                             <Setter Property="CornerRadius" Value="2"/>
                             <Style.Triggers>
@@ -161,95 +157,80 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
+
+                <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
+
+                <!--Buttons-->
+                <ItemsControl ItemsSource="{Binding DatabaseTypeList}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.Resources>
+                        <Style TargetType="th_wpf:Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Height" Value="35"/>
+                            <Setter Property="ImageTextPadding" Value="10"/>
+                            <Setter Property="Padding" Value="10,5"/>
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Image" Value="/TH_DeviceManager;component/Resources/Add_01.png"/>
+
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="CornerRadius" Value="2"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
                     </ItemsControl.Resources>
                 </ItemsControl>
 
-                <!--Arrow-->
-                <!--<Rectangle Fill="{StaticResource Accent_Normal}" Height="20" Width="20" HorizontalAlignment="Left" VerticalAlignment="Center">
-                    <Rectangle.RenderTransform>
-                        <TranslateTransform X="0"/>
-                    </Rectangle.RenderTransform>
-
-                    <Rectangle.Resources>
-                        <ImageBrush x:Key="Arrow_IMG" Stretch="Uniform" ImageSource="/TH_DeviceManager;component/Resources/Carrot_Arrow_Up_01.png" />
-                    </Rectangle.Resources>
-                    <Rectangle.LayoutTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="-90"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Rectangle.LayoutTransform>
-
-                    <Rectangle.Style>
-                        <Style TargetType="Rectangle">
-                            <Setter Property="OpacityMask" Value="{StaticResource Arrow_IMG}" />
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                
-                                <EventTrigger RoutedEvent="Rectangle.Loaded">
-                                    <BeginStoryboard>
-                                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
-
-                                            <DoubleAnimation Duration="00:00:0.5" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" From="0" To="30" >
-                                                <DoubleAnimation.EasingFunction>
-                                                    <CubicEase EasingMode="EaseOut"/>
-                                                </DoubleAnimation.EasingFunction>
-                                            </DoubleAnimation>
-
-                                        </Storyboard>
-                                    </BeginStoryboard>
-                                </EventTrigger>
-
-                                <DataTrigger Binding="{Binding DisplayDatabases}" Value="true">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-
-                                <DataTrigger Binding="{Binding DatabaseTypeList.Count}" Value="0">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-
-                            </Style.Triggers>
-                        </Style>
-                    </Rectangle.Style>
-                </Rectangle>-->
-
-            <!--</StackPanel>-->
+            </StackPanel>
 
         </StackPanel>
 
-        <Rectangle Grid.Row="4" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,20"/>
+        <Rectangle Grid.Row="4" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,0"/>
 
         <!--List-->
-        <Grid Grid.Row="5">
+        <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto">
 
-            <ItemsControl ItemsSource="{Binding DatabaseList}" Margin="0,10" HorizontalContentAlignment="Stretch">
-                <ItemsControl.Resources>
-                    <Style TargetType="th_wpf:CollapseButton">
-                        <Setter Property="Margin" Value="0,10"/>
-                    </Style>
-                </ItemsControl.Resources>
-            </ItemsControl>
+            <Grid>
 
-            <!--No Items Text-->
-            <TextBlock FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding DatabaseList.Count}" Value="0">
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>             
+                <ItemsControl ItemsSource="{Binding DatabaseList}" Margin="0,10" HorizontalContentAlignment="Stretch">
+                    <ItemsControl.Resources>
+                        <Style TargetType="th_wpf:CollapseButton">
+                            <Setter Property="Margin" Value="0,10"/>
+                        </Style>
+                    </ItemsControl.Resources>
+                </ItemsControl>
+
+                <!--No Items Text-->
+                <TextBlock FontSize="14pt" Foreground="{StaticResource Foreground_Light}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DatabaseList.Count}" Value="0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>             
                 No Databases are configured <LineBreak/>
                 Select the type of Database to add above
-            </TextBlock>
+                </TextBlock>
 
-        </Grid>
+            </Grid>
 
+        </ScrollViewer>
+        
     </Grid>
     
 </UserControl>

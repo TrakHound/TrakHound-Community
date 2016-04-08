@@ -29,7 +29,7 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-using TH_WPF.Histogram;
+using TH_WPF;
 
 
 namespace Test {
@@ -44,14 +44,6 @@ namespace Test {
         #line 13 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Grid dummy;
-        
-        #line default
-        #line hidden
-        
-        
-        #line 15 "..\..\MainWindow.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal TH_WPF.Histogram.Histogram parts_timeline;
         
         #line default
         #line hidden
@@ -88,9 +80,6 @@ namespace Test {
             {
             case 1:
             this.dummy = ((System.Windows.Controls.Grid)(target));
-            return;
-            case 2:
-            this.parts_timeline = ((TH_WPF.Histogram.Histogram)(target));
             return;
             }
             this._contentLoaded = true;

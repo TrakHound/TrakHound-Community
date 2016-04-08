@@ -33,8 +33,7 @@ namespace TH_Parts.ConfigurationPage
         }
 
         public string Title { get { return "Parts"; } }
-
-    
+   
         private BitmapImage _image;
         public ImageSource Image
         {
@@ -50,6 +49,7 @@ namespace TH_Parts.ConfigurationPage
             }
         }
 
+        public bool Loaded { get; set; }
 
         public event SettingChanged_Handler SettingChanged;
 
@@ -87,10 +87,10 @@ namespace TH_Parts.ConfigurationPage
         }
 
         public void SaveConfiguration(DataTable dt)
-        {
-            SavePartsEventName(dt);
-            SaveProducedEventValueName(dt);
-            SavePartCountLink(dt);
+        { 
+                SavePartsEventName(dt);
+                SaveProducedEventValueName(dt);
+                SavePartCountLink(dt);
         }
 
         DataTable configurationTable;

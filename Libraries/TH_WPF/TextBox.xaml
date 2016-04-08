@@ -19,24 +19,23 @@
 
     </UserControl.Resources>
 
-    <StackPanel x:Name="root_STACK">
+    <StackPanel x:Name="root">
 
         <!--Title and Help-->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
 
             <!--Title-->
-            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+            <TextBlock Text="{Binding Title}" Foreground="{StaticResource Foreground_Normal}" Margin="0,0,10,0" FontSize="{Binding FontSize}" VerticalAlignment="Center"/>
 
             <!--Help-->
             <Rectangle Width="15" Height="15" VerticalAlignment="Center" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
@@ -48,10 +47,6 @@
                         </StackPanel>
                     </ToolTip>
                 </Rectangle.ToolTip>
-
-                <!--<Rectangle.Resources>
-                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_WPF;component/Resources/Help_01.png" />
-                </Rectangle.Resources>-->
 
                 <Rectangle.Style>
                     <Style TargetType="Rectangle">
@@ -103,7 +98,7 @@
                     <Grid Margin="10,0">
 
                         <!--Example-->
-                        <TextBlock FontSize="12pt" FontStyle="Italic" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
+                        <TextBlock FontSize="{Binding FontSize}" FontStyle="Italic" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -141,7 +136,7 @@
                         </TextBlock>
 
                         <!--Instructions-->
-                        <TextBlock Text="{Binding Instructions}" FontSize="12pt" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
+                        <TextBlock Text="{Binding Instructions}" FontSize="{Binding FontSize}" Foreground="{StaticResource Foreground_Light}" VerticalAlignment="Center" Margin="2,0" >
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -162,7 +157,7 @@
                              Background="#00000000"
                              FontSize="{Binding FontSize}"
                              Foreground="{StaticResource Foreground_Normal}"
-                             MinHeight="35"
+                             Padding="0,8"
                              VerticalAlignment="Center" VerticalContentAlignment="Center"
                              MaxLines="1"
                              CaretBrush="Black"

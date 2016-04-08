@@ -10,409 +10,424 @@
              mc:Ignorable="d" 
              d:DesignWidth="800">
 
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--Title and Image-->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
-            <!--Image-->
-            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
-                <Grid.Resources>
-                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
-                </Grid.Resources>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
-                    </Style>
-                </Grid.Style>
-            </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Title}" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <!--Title and Image-->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
-        </StackPanel>
+                <!--Image-->
+                <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                    <Grid.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                    </Grid.Resources>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
 
-        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+                <TextBlock Text="Cycles" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+
+            </StackPanel>
+
+            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="20,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
             Use Cycles to track machine programs or sequences. 
             Uses a Generated Event with that corresponds to events such as 'Cycle Active', 'Cycle Stopped', 'Cycle Paused', etc.
-        </TextBlock>
+            </TextBlock>
 
-        <StackPanel Grid.Row="2" Margin="0,10" HorizontalAlignment="Left">
-                       
-            <StackPanel>
-                <StackPanel.Resources>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Margin" Value="0,0,0,10"/>
-                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                    </Style>
-                </StackPanel.Resources>
+        </Grid>
 
-                <!--Title and Help-->
-                <StackPanel Orientation="Horizontal">
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,0"/>
 
-                    <!--Title-->
-                    <TextBlock Text="Event Name" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
-                    <!--Help-->
-                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                        <Rectangle.ToolTip>
-                            <ToolTip MaxWidth="400">
-                                <StackPanel>
-                                    <TextBlock Text="Device Description" FontWeight="Bold"/>
-                                    <TextBlock TextWrapping="Wrap">
-                                            Select the Generated Event that define Cycle Execution.
-                                    </TextBlock>
-                                </StackPanel>
-                            </ToolTip>
-                        </Rectangle.ToolTip>
+            <StackPanel Grid.Row="2" Margin="0,10" HorizontalAlignment="Left">
 
-
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#0080ff"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-
-                    </Rectangle>
-
-                </StackPanel>
-
-                <ComboBox x:Name="eventName_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedCycleEventName}" SelectionChanged="CycleEventName_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
-
-
-                <!--Title and Help-->
-                <StackPanel Orientation="Horizontal">
-
-                    <!--Title-->
-                    <TextBlock Text="Cycle Stopped Value" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                    <!--Help-->
-                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                        <Rectangle.ToolTip>
-                            <ToolTip MaxWidth="400">
-                                <StackPanel>
-                                    <TextBlock Text="Device Description" FontWeight="Bold"/>
-                                    <TextBlock TextWrapping="Wrap">
-                                            Select the Generated Event Value that corresponds to a STOPPED cycle
-                                    </TextBlock>
-                                </StackPanel>
-                            </ToolTip>
-                        </Rectangle.ToolTip>
-
-
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#0080ff"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-
-                    </Rectangle>
-
-                </StackPanel>
-
-                <ComboBox x:Name="stoppedValue_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEventValues}" Text="{Binding SelectedStoppedEventValue}" SelectionChanged="stoppedValue_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
-
-
-                <!--Title and Help-->
-                <StackPanel Orientation="Horizontal">
-
-                    <!--Title-->
-                    <TextBlock Text="Cycle Name Link" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                    <!--Help-->
-                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                        <Rectangle.ToolTip>
-                            <ToolTip MaxWidth="400">
-                                <StackPanel>
-                                    <TextBlock Text="Device Description" FontWeight="Bold"/>
-                                    <TextBlock TextWrapping="Wrap">
-                                            Select the MTConnect DataItem tag that corresponds to the cycle name (ex.Program Name).
-                                    </TextBlock>
-                                </StackPanel>
-                            </ToolTip>
-                        </Rectangle.ToolTip>
-
-
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#0080ff"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-
-                    </Rectangle>
-
-                </StackPanel>
-
-                <ComboBox x:Name="cyclenamelink_COMBO" Margin="0,0" Width="200" ItemsSource="{Binding CollectedItems}" Text="{Binding SelectedCycleNameLink}" SelectionChanged="cyclenamelink_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
-
-            </StackPanel>
-            
-            
-            <!--Production Types-->
-            <StackPanel Margin="0,20">
-                <StackPanel.Resources>
-                    <Style TargetType="control:ProductionTypeItem">
-                        <Setter Property="Margin" Value="0,8"/>
-                    </Style>
-                </StackPanel.Resources>
-
-                <!--Title and Help-->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-
-                    <!--Title-->
-                    <TextBlock Text="Production Types" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                    <!--Help-->
-                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                        <Rectangle.ToolTip>
-                            <ToolTip MaxWidth="400">
-                                <StackPanel>
-                                    <TextBlock Text="Production Types" FontWeight="Bold"/>
-                                    <TextBlock TextWrapping="Wrap">
-                                            Set the Production Type for each Event Value.
-                                    </TextBlock>
-                                </StackPanel>
-                            </ToolTip>
-                        </Rectangle.ToolTip>
-
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#0080ff"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-
-                    </Rectangle>
-
-                </StackPanel>
-
-                <Rectangle Height="1" Margin="0,0,0,10" Fill="{StaticResource Shade_Normal}"/>
-                
-                <ItemsControl ItemsSource="{Binding ProductionTypes}"/>
-
-            </StackPanel>
-            
-
-            <!--Override Links-->
-            <StackPanel Margin="0,20">
-                <StackPanel.Resources>
-                    <Style TargetType="control:OverrideLinkItem">
-                        <Setter Property="Margin" Value="0,8"/>
-                    </Style>
-                </StackPanel.Resources>
-
-                <!--Title and Help-->
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-
-                    <!--Title-->
-                    <TextBlock Text="Override Links" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
-
-                    <!--Help-->
-                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                        <Rectangle.ToolTip>
-                            <ToolTip MaxWidth="400">
-                                <StackPanel>
-                                    <TextBlock Text="Device Description" FontWeight="Bold"/>
-                                    <TextBlock TextWrapping="Wrap">
-                                            Assign Overrides that effect the performance of the device such as Feedrate Override.
-                                    </TextBlock>
-                                </StackPanel>
-                            </ToolTip>
-                        </Rectangle.ToolTip>
-
-
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="#0080ff"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="true">
-                                        <Trigger.EnterActions>
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.EnterActions>
-                                        <Trigger.ExitActions>
-                                            <BeginStoryboard>
-                                                <Storyboard FillBehavior="Stop">
-                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                        <ColorAnimation.EasingFunction>
-                                                            <CubicEase EasingMode="EaseOut"/>
-                                                        </ColorAnimation.EasingFunction>
-                                                    </ColorAnimation>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </Trigger.ExitActions>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Rectangle.Style>
-
-                    </Rectangle>
-
-                </StackPanel>
-                
-                <Rectangle Height="1" Margin="0,0,0,10" Fill="{StaticResource Shade_Normal}"/>
-
-                <ItemsControl ItemsSource="{Binding OverrideLinks}"/>
-
-                <!--Add Value Button-->
-                <th_wpf:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TH_Cycles;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
-                                </Trigger>
-                            </Style.Triggers>
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Margin" Value="0,0,0,10"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
                         </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>
+                    </StackPanel.Resources>
+
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Title-->
+                        <TextBlock Text="Event Name" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Select the Generated Event that define Cycle Execution.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
+
+                    <ComboBox x:Name="eventName_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedCycleEventName}" SelectionChanged="CycleEventName_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Title-->
+                        <TextBlock Text="Cycle Stopped Value" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Select the Generated Event Value that corresponds to a STOPPED cycle
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
+
+                    <ComboBox x:Name="stoppedValue_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEventValues}" Text="{Binding SelectedStoppedEventValue}" SelectionChanged="stoppedValue_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal">
+
+                        <!--Title-->
+                        <TextBlock Text="Cycle Name Link" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Select the MTConnect DataItem tag that corresponds to the cycle name (ex.Program Name).
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
+
+                    <ComboBox x:Name="cyclenamelink_COMBO" Margin="0,0" Width="200" ItemsSource="{Binding CollectedItems}" Text="{Binding SelectedCycleNameLink}" SelectionChanged="cyclenamelink_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
+                </StackPanel>
+
+
+                <!--Production Types-->
+                <StackPanel Margin="0,20">
+                    <StackPanel.Resources>
+                        <Style TargetType="control:ProductionTypeItem">
+                            <Setter Property="Margin" Value="0,8"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                        <!--Title-->
+                        <TextBlock Text="Production Types" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Production Types" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Set the Production Type for each Event Value.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
+
+                    <Rectangle Height="1" Margin="0,0,0,10" Fill="{StaticResource Shade_Normal}"/>
+
+                    <ItemsControl ItemsSource="{Binding ProductionTypes}"/>
+
+                </StackPanel>
+
+
+                <!--Override Links-->
+                <StackPanel Margin="0,20">
+                    <StackPanel.Resources>
+                        <Style TargetType="control:OverrideLinkItem">
+                            <Setter Property="Margin" Value="0,8"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <!--Title and Help-->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+
+                        <!--Title-->
+                        <TextBlock Text="Override Links" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                        <!--Help-->
+                        <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                            <Rectangle.ToolTip>
+                                <ToolTip MaxWidth="400">
+                                    <StackPanel>
+                                        <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                            Assign Overrides that effect the performance of the device such as Feedrate Override.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Rectangle.ToolTip>
+
+
+                            <Rectangle.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Cycles;component/Resources/Help_01.png" />
+                            </Rectangle.Resources>
+
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Fill" Value="#0080ff"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard FillBehavior="Stop">
+                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                            <ColorAnimation.EasingFunction>
+                                                                <CubicEase EasingMode="EaseOut"/>
+                                                            </ColorAnimation.EasingFunction>
+                                                        </ColorAnimation>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
+
+                        </Rectangle>
+
+                    </StackPanel>
+
+                    <Rectangle Height="1" Margin="0,0,0,10" Fill="{StaticResource Shade_Normal}"/>
+
+                    <ItemsControl ItemsSource="{Binding OverrideLinks}"/>
+
+                    <!--Add Value Button-->
+                    <th_wpf:Button Height="40" Text="Add Override Link" ImageTextPadding="10" Image="/TH_Cycles;component/Resources/Add_01.png" Margin="0,20" Clicked="AddOverrideLink_Clicked" HorizontalAlignment="Left" FocusManager.IsFocusScope="False">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
+
+                </StackPanel>
 
             </StackPanel>
-                       
-        </StackPanel>
 
+        </ScrollViewer>
+               
     </Grid>
 
 </UserControl>

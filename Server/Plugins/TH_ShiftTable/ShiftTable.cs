@@ -48,7 +48,6 @@ namespace TH_ShiftTable
             }
         }
 
-
         public void GetSentData(EventData data)
         {
             if (data != null)
@@ -137,10 +136,6 @@ namespace TH_ShiftTable
         }
 
         public Type[] ConfigurationPageTypes { get { return new Type[] { typeof(ConfigurationPage.Page) }; } }
-
-        //public bool UseDatabases { get; set; }
-
-        //public string TablePrefix { get; set; }
 
         #endregion
 

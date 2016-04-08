@@ -53,6 +53,8 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             }
         }
 
+        public bool Loaded { get; set; }
+
         public event SettingChanged_Handler SettingChanged;
 
         public event SendData_Handler SendData;
@@ -62,22 +64,21 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
         }
 
-
         public void LoadConfiguration(DataTable dt)
         {
             Loading = true;
 
             configurationTable = dt;
 
-            // Load Cloud Settings
-            bool cloud = false;
-            string cloud_str = DataTable_Functions.GetTableValue(dt, "address", "/UseTrakHoundCloud", "value");
-            if (cloud_str != null)
-            {
-                bool.TryParse(cloud_str, out cloud);
-            }
+            //// Load Cloud Settings
+            //bool cloud = false;
+            //string cloud_str = DataTable_Functions.GetTableValue(dt, "address", "/UseTrakHoundCloud", "value");
+            //if (cloud_str != null)
+            //{
+            //    bool.TryParse(cloud_str, out cloud);
+            //}
 
-            UseTrakHoundCloud = cloud;
+            //UseTrakHoundCloud = cloud;
 
 
             // Load IP Address
@@ -116,27 +117,27 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
         public void SaveConfiguration(DataTable dt)
         {
-            // Remove old rows
-            DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
+                // Remove old rows
+                DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
 
-            // Save IP Address
-            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "Address", "value", Address);
+                // Save IP Address
+                DataTable_Functions.UpdateTableValue(dt, "address", prefix + "Address", "value", Address);
 
-            // Save Port
-            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "Port", "value", Port);
+                // Save Port
+                DataTable_Functions.UpdateTableValue(dt, "address", prefix + "Port", "value", Port);
 
-            // Save Device Name
-            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "DeviceName", "value", DeviceName);
+                // Save Device Name
+                DataTable_Functions.UpdateTableValue(dt, "address", prefix + "DeviceName", "value", DeviceName);
 
-            // Save Heartbeat
-            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "Heartbeat", "value", Heartbeat.ToString());
+                // Save Heartbeat
+                DataTable_Functions.UpdateTableValue(dt, "address", prefix + "Heartbeat", "value", Heartbeat.ToString());
 
 
-            // Save Proxy Address
-            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "ProxyAddress", "value", ProxyAddress);
+                // Save Proxy Address
+                DataTable_Functions.UpdateTableValue(dt, "address", prefix + "ProxyAddress", "value", ProxyAddress);
 
-            // Save Proxy Port
-            DataTable_Functions.UpdateTableValue(dt, "address", prefix + "ProxyPort", "value", ProxyPort);
+                // Save Proxy Port
+                DataTable_Functions.UpdateTableValue(dt, "address", prefix + "ProxyPort", "value", ProxyPort);
         }
 
         #endregion
@@ -147,14 +148,14 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
         DataTable configurationTable;
 
 
-        public bool UseTrakHoundCloud
-        {
-            get { return (bool)GetValue(UseTrakHoundCloudProperty); }
-            set { SetValue(UseTrakHoundCloudProperty, value); }
-        }
+        //public bool UseTrakHoundCloud
+        //{
+        //    get { return (bool)GetValue(UseTrakHoundCloudProperty); }
+        //    set { SetValue(UseTrakHoundCloudProperty, value); }
+        //}
 
-        public static readonly DependencyProperty UseTrakHoundCloudProperty =
-            DependencyProperty.Register("UseTrakHoundCloud", typeof(bool), typeof(Page), new PropertyMetadata(false));
+        //public static readonly DependencyProperty UseTrakHoundCloudProperty =
+        //    DependencyProperty.Register("UseTrakHoundCloud", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
 
         public bool Loading

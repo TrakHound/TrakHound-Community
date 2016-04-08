@@ -66,7 +66,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel>
+        <StackPanel Margin="20">
 
             <!--Title and Image-->
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10" FocusManager.IsFocusScope="False">
@@ -74,7 +74,7 @@
                 <!--Image-->
                 <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
                     <Grid.Resources>
-                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_GeneratedData;component/Resources/Camera_01.png" />
                     </Grid.Resources>
                     <Grid.Style>
                         <Style TargetType="Grid">
@@ -84,69 +84,17 @@
                     </Grid.Style>
                 </Grid>
 
-                <TextBlock Text="{Binding Title}" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <TextBlock Text="Snapshot Data" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
-            </StackPanel>
-
-            <!--Descriptions-->
-            <TextBlock FontSize="10pt" Foreground="#888" Margin="0,15,10,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+                <!--Description-->
+                <TextBlock FontSize="10pt" Foreground="#888" Margin="20,5" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center">
                 Snapshot data is a central table for current device data. 
-                Three types of data are avaiable:
-            </TextBlock>
-
-            <StackPanel>
-
-                <!--Collected-->
-                <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="Collected" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                    <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
-                                Any MTConnect data item (Conditions, Events, and Samples). 
-                                This essentially allows for a more user friendly name to be applied to the data item.
-                    </TextBlock>
-
-                </Grid>
-
-                <!--Generated-->
-                <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="Generated" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                    <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
-                                Stores the current value of a Generated Event for display in a client application.
-                    </TextBlock>
-
-                </Grid>
-
-                <!--Variable-->
-                <Grid MaxWidth="800" HorizontalAlignment="Left" Margin="0,10,0,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="Variable" FontSize="10pt" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                    <TextBlock Grid.Column="1" FontSize="10pt" Foreground="#888" TextWrapping="Wrap">
-                                Generic variable storage. Read from the 'variables' table in the device's database and can be written to from any plugin or program.
-                                This is also used to read data from an outside source such as an ERP system.
-                    </TextBlock>
-
-                </Grid>
+                </TextBlock>
 
             </StackPanel>
 
             <!--Add Item-->
-            <th_wpf:Button Text="Add Item" Height="35" HorizontalAlignment="Left" Margin="0,15" Image="/TH_GeneratedData;component/Resources/Add_01.png">
+            <th_wpf:Button Text="Add Item" Clicked="Add_Clicked" Height="35" HorizontalAlignment="Left" Margin="0,20,0,0" Image="/TH_GeneratedData;component/Resources/Add_01.png">
                 <th_wpf:Button.Style>
                     <Style TargetType="th_wpf:Button">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -169,7 +117,9 @@
 
             <DataGrid x:Name="Snapshots_DG" ItemsSource="{Binding Snapshots}"
                 AutoGenerateColumns="False"
-                VerticalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto"
+                ScrollViewer.CanContentScroll="True"
+                HorizontalScrollBarVisibility="Auto"
                 HeadersVisibility="Column"
                 IsReadOnly="False"
                 Validation.ErrorTemplate="{x:Null}"
@@ -216,27 +166,19 @@
                     </DataGridTemplateColumn>
 
                     <!--Name-->
-                    <DataGridTemplateColumn Header="Name" MinWidth="250">
+                    <DataGridTemplateColumn Header="Name" MinWidth="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <th_wpf:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Instructions="Enter name of Snapshot" FontSize="10pt"/>
+                                <th_wpf:TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Instructions="Enter name of Snapshot" TextChanged="TXT_TextChanged"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <!--Type-->
-                    <DataGridTemplateColumn Header="Value" MinWidth="150">
+                    <DataGridTemplateColumn Header="Type" MinWidth="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox Height="35" ItemsSource="{Binding GeneratedValues}" SelectedItem="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-
-                    <DataGridTemplateColumn Header="Message Type" MinWidth="150">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ComboBox Height="35" SelectedItem="{Binding MessageType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox Height="35" SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="CMBX_SelectionChanged">
                                     <snapshot:SnapshotType>Collected</snapshot:SnapshotType>
                                     <snapshot:SnapshotType>Generated</snapshot:SnapshotType>
                                     <snapshot:SnapshotType>Variable</snapshot:SnapshotType>
@@ -245,12 +187,32 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-
-                    <!--Message-->
-                    <DataGridTemplateColumn Header="Message" MinWidth="500" Width="*">
+                    <!--Link-->
+                    <DataGridTemplateColumn Header="Link" MinWidth="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <th_wpf:TextBox Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Example="Message Text" FontSize="10pt"/>
+                                <ComboBox Height="35"
+                                          SelectedValue="{Binding Link, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                          SelectionChanged="CMBX_SelectionChanged"
+                                          >
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                            <Setter Property="IsEditable" Value="True"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Type}" Value="{x:Static snapshot:SnapshotType.Collected}">
+                                                    <Setter Property="ItemsSource" Value="{Binding CollectedItems, RelativeSource={RelativeSource AncestorType={x:Type local:Page}}}"/>
+                                                    <Setter Property="SelectedValuePath" Value="Id"/>
+                                                    <Setter Property="DisplayMemberPath" Value="Display"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Type}" Value="{x:Static snapshot:SnapshotType.Generated}">
+                                                    <Setter Property="ItemsSource" Value="{Binding GeneratedEventItems, RelativeSource={RelativeSource AncestorType={x:Type local:Page}}}"/>
+                                                    <Setter Property="SelectedValuePath" Value="Id"/>
+                                                    <Setter Property="DisplayMemberPath" Value="Name"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ComboBox.Style>
+                                </ComboBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

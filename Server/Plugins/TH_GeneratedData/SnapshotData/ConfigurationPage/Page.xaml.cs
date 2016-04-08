@@ -16,6 +16,9 @@ using System.Collections.ObjectModel;
 using System.Data;
 
 using TH_Global;
+using TH_Global.Functions;
+
+using TH_MTConnect.Components;
 using TH_Plugins;
 using TH_Plugins.Server;
 
@@ -34,7 +37,6 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
 
         public string Title { get { return "Snapshot Data"; } }
 
-
         private BitmapImage _image;
         public ImageSource Image
         {
@@ -50,6 +52,7 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
             }
         }
 
+        public bool Loaded { get; set; }
 
         public event SettingChanged_Handler SettingChanged;
 
@@ -58,18 +61,76 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
 
         public void GetSentData(EventData data)
         {
-
+            GetProbeData(data);
         }
 
 
         public void LoadConfiguration(DataTable dt)
         {
+            LoadGeneratedEventItems(dt);
+
+            string address = "/GeneratedData/SnapShotData/";
+
+            string filter = "address LIKE '" + address + "*'";
+            DataView dv = dt.AsDataView();
+            dv.RowFilter = filter;
+            DataTable temp_dt = dv.ToTable();
+            temp_dt.PrimaryKey = new DataColumn[] { temp_dt.Columns["address"] };
+
+            Snapshots.Clear();
+
+            foreach (DataRow row in temp_dt.Rows)
+            {
+                var snapshot = new Snapshot();
+                snapshot.Name = DataTable_Functions.TrakHound.GetRowAttribute("name", row);
+
+                string type = DataTable_Functions.TrakHound.GetLastNode(row);
+                if (type != null)
+                {
+                    switch (type.ToLower())
+                    {
+                        case "collected": snapshot.Type = SnapshotType.Collected; break;
+                        case "generated": snapshot.Type = SnapshotType.Generated; break;
+                        case "variable": snapshot.Type = SnapshotType.Variable; break;
+                    }
+                }
+
+                snapshot.Link = DataTable_Functions.TrakHound.GetRowAttribute("link", row);
+                Snapshots.Add(snapshot);
+            }
+
+            Snapshots_DG.Items.Refresh();
+
 
         }
 
         public void SaveConfiguration(DataTable dt)
         {
+            string prefix = "/GeneratedData/SnapShotData/";
 
+            // Clear all snapshot rows first (so that Ids can be sequentially assigned)
+            DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
+            
+            // Loop through SnapshotItems and add each item back to table with sequential id's
+            foreach (var snapshot in Snapshots)
+            {
+                if (snapshot.Name != null && snapshot.Link != null)
+                {
+                    string p = "/GeneratedData/SnapShotData/" + String_Functions.UppercaseFirst(snapshot.Type.ToString().ToLower());
+                    int id = DataTable_Functions.TrakHound.GetUnusedAddressId(p, dt);
+                    string adr = p + "||" + id.ToString("00");
+
+                    string attr = "";
+                    attr += "id||" + id.ToString("00") + ";";
+                    attr += "name||" + snapshot.Name + ";";
+
+                    string link = snapshot.Link;
+
+                    attr += "link||" + link + ";";
+
+                    DataTable_Functions.UpdateTableValue(dt, "address", adr, "attributes", attr);
+                }
+            }
         }
 
         ObservableCollection<Snapshot> _snapshots;
@@ -88,16 +149,142 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
             }
         }
 
+        ObservableCollection<CollectedItem> _collectedItems;
+        public ObservableCollection<CollectedItem> CollectedItems
+        {
+            get
+            {
+                if (_collectedItems == null)
+                    _collectedItems = new ObservableCollection<CollectedItem>();
+                return _collectedItems;
+            }
+
+            set
+            {
+                _collectedItems = value;
+            }
+        }
+
+        private List<DataItem> probeData = new List<DataItem>();
+
+
+        ObservableCollection<GeneratedEventItem> _generatedEventItems;
+        public ObservableCollection<GeneratedEventItem> GeneratedEventItems
+        {
+            get
+            {
+                if (_generatedEventItems == null)
+                    _generatedEventItems = new ObservableCollection<GeneratedEventItem>();
+                return _generatedEventItems;
+            }
+
+            set
+            {
+                _generatedEventItems = value;
+            }
+        }
+
+
+        public class CollectedItem
+        {
+            public CollectedItem(DataItem dataItem)
+            {
+                Id = dataItem.Id;
+                Name = dataItem.Name;
+
+                if (Name != null) Display = Id + " : " + Name;
+                else Display = Id;
+            }          
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+
+            public string Display { get; set; }
+
+            public override string ToString()
+            {
+                return Display;
+            }
+        }
+
+        public class GeneratedEventItem
+        {
+            public GeneratedEventItem(GeneratedEvents.ConfigurationPage.Page.Event e)
+            {
+                Id = e.name;
+                Name = String_Functions.UppercaseFirst(e.name.Replace('_', ' ').ToLower());
+            }
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        void GetProbeData(EventData data)
+        {
+            if (data != null && data.Id != null && data.Data02 != null)
+            {
+                if (data.Id.ToLower() == "mtconnect_probe")
+                {
+                    var dataItems = (List<DataItem>)data.Data02;
+                    LoadCollectedItems(dataItems);
+                }
+            }
+        }
+
+        private void LoadCollectedItems(List<DataItem> dataItems)
+        {
+            CollectedItems.Clear();
+
+            foreach (var dataItem in dataItems)
+            {
+                var item = new CollectedItem(dataItem);
+                CollectedItems.Add(item);
+                probeData.Add(dataItem);
+            }
+        }
+
+        private void LoadGeneratedEventItems(DataTable dt)
+        {
+            GeneratedEventItems.Clear();
+
+            var events = GeneratedEvents.ConfigurationPage.Page.GetGeneratedEvents(dt);
+            foreach (var e in events)
+            {
+                GeneratedEventItems.Add(new GeneratedEventItem(e));
+            }
+        }
+
+
+        private void Add_Clicked(TH_WPF.Button bt)
+        {
+            Snapshots.Add(new Snapshot());
+            if (SettingChanged != null) SettingChanged(null, null, null);
+        }
+
         private void Remove_Clicked(TH_WPF.Button bt)
         {
+            if (bt.DataObject != null)
+            {
+                var snapshot = (Snapshot)bt.DataObject;
 
+                int index = Snapshots.ToList().FindIndex(x => x.Name == snapshot.Name);
+                if (index >= 0) Snapshots.RemoveAt(index);
+
+                if (SettingChanged != null) SettingChanged(null, null, null);
+            }
+        }
+
+        private void TXT_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var txt = (TextBox)sender;
+            if (txt.IsMouseCaptured || txt.IsKeyboardFocused) if (SettingChanged != null) SettingChanged(null, null, null);
+        }
+
+        private void CMBX_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cmbx = (ComboBox)sender;
+            if (cmbx.IsMouseCaptured || cmbx.IsKeyboardFocused) if (SettingChanged != null) SettingChanged(null, null, null);
         }
     }
 
-    public class Snapshot
-    {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Link { get; set; }
-    }
 }

@@ -204,7 +204,6 @@ namespace TH_ShiftTable
 
         public override bool Equals(object obj)
         {
-
             ShiftTime other = obj as ShiftTime;
             if (object.ReferenceEquals(other, null)) return false;
 

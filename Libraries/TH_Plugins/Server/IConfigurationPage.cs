@@ -18,6 +18,7 @@ namespace TH_Plugins.Server
 
         event SettingChanged_Handler SettingChanged;
 
+        bool Loaded { get; set; }
 
         event SendData_Handler SendData;
 

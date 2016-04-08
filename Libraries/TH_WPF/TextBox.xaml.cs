@@ -23,7 +23,7 @@ namespace TH_WPF
         public TextBox()
         {
             InitializeComponent();
-            root_STACK.DataContext = this;
+            root.DataContext = this;
         }
 
         public event TextChangedEventHandler TextChanged;
@@ -101,6 +101,16 @@ namespace TH_WPF
 
         public static readonly DependencyProperty TextWrappingProperty =
             DependencyProperty.Register("TextWrapping", typeof(bool), typeof(TextBox), new PropertyMetadata(false));
+
+
+        public double FontSize
+        {
+            get { return (double)GetValue(FontSizeProperty); }
+            set { SetValue(FontSizeProperty, value); }
+        }
+
+        public static readonly DependencyProperty FontSizeProperty =
+            DependencyProperty.Register("FontSize", typeof(double), typeof(TextBox), new PropertyMetadata(14d));
 
         #endregion
 

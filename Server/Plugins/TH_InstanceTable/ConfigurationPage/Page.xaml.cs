@@ -52,6 +52,7 @@ namespace TH_InstanceTable.ConfigurationPage
             }
         }
 
+        public bool Loaded { get; set; }
 
         public event SettingChanged_Handler SettingChanged;
 
@@ -61,7 +62,6 @@ namespace TH_InstanceTable.ConfigurationPage
         {
             GetProbeData(data);
         }
-
 
         public void LoadConfiguration(DataTable dt)
         {
@@ -94,6 +94,9 @@ namespace TH_InstanceTable.ConfigurationPage
 
             //LoadAgentSettings(dt);
 
+            // Load Omit items using MTConnect Probe Data
+            if (probeData != null) LoadProbeData(probeData);
+
             configurationTable = dt;
 
             Loading = false;
@@ -101,42 +104,41 @@ namespace TH_InstanceTable.ConfigurationPage
 
         public void SaveConfiguration(DataTable dt)
         {
-            // Remove old rows
-            DataTable_Functions.TrakHound.DeleteRows("/InstanceTable/*", "address", dt);
+                // Remove old rows
+                DataTable_Functions.TrakHound.DeleteRows("/InstanceTable/*", "address", dt);
 
 
-            string prefix = "/InstanceTable/DataItems/";
+                string prefix = "/InstanceTable/DataItems/";
 
-            // Save Conditions
-            Table_Functions.UpdateTableValue(conditions_CHK.IsChecked.ToString(), prefix + "Conditions", dt);
+                // Save Conditions
+                Table_Functions.UpdateTableValue(conditions_CHK.IsChecked.ToString(), prefix + "Conditions", dt);
 
-            // Save Events
-            Table_Functions.UpdateTableValue(events_CHK.IsChecked.ToString(), prefix + "Events", dt);
+                // Save Events
+                Table_Functions.UpdateTableValue(events_CHK.IsChecked.ToString(), prefix + "Events", dt);
 
-            // Save Samples
-            Table_Functions.UpdateTableValue(samples_CHK.IsChecked.ToString(), prefix + "Samples", dt);
+                // Save Samples
+                Table_Functions.UpdateTableValue(samples_CHK.IsChecked.ToString(), prefix + "Samples", dt);
 
 
-            prefix = "/InstanceTable/DataItems/Omit/";
+                prefix = "/InstanceTable/DataItems/Omit/";
 
-            foreach (Controls.CheckBox chk in ConditionItems)
-            {
-                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
-                else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
-            }
+                foreach (Controls.CheckBox chk in ConditionItems)
+                {
+                    if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
+                    else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
+                }
 
-            foreach (Controls.CheckBox chk in EventItems)
-            {
-                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
-                else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
-            }
+                foreach (Controls.CheckBox chk in EventItems)
+                {
+                    if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
+                    else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
+                }
 
-            foreach (Controls.CheckBox chk in SampleItems)
-            {
-                if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
-                else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
-            }
-
+                foreach (Controls.CheckBox chk in SampleItems)
+                {
+                    if (chk.IsChecked == false) Table_Functions.UpdateTableValue(null, prefix + chk.Id, dt);
+                    else Table_Functions.RemoveTableRow(prefix + chk.Id, dt);
+                }
         }
 
         DataTable configurationTable;
@@ -246,6 +248,8 @@ namespace TH_InstanceTable.ConfigurationPage
             ChangeSetting("/InstanceTable/DataItems/Conditions", "Conditions", "False");
         }
 
+        private List<DataItem> probeData;
+
         void GetProbeData(EventData data)
         {
             if (data != null && data.Id != null && data.Data02 != null)
@@ -254,19 +258,26 @@ namespace TH_InstanceTable.ConfigurationPage
                 {
                     var dataItems = (List<DataItem>)data.Data02;
 
-                    //Conditions
-                    foreach (var item in dataItems.FindAll(x => x.Category.ToLower() == "condition"))
-                        this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { item });
+                    probeData = dataItems;
 
-                    // Events
-                    foreach (var item in dataItems.FindAll(x => x.Category.ToLower() == "event"))
-                        this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { item });
-
-                    // Samples
-                    foreach (var item in dataItems.FindAll(x => x.Category.ToLower() == "sample"))
-                        this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { item });
+                    if (configurationTable != null) LoadProbeData(dataItems);
                 }
             }
+        }
+
+        private void LoadProbeData(List<DataItem> items)
+        {
+            //Conditions
+            foreach (var item in items.FindAll(x => x.Category.ToLower() == "condition"))
+                this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { item });
+
+            // Events
+            foreach (var item in items.FindAll(x => x.Category.ToLower() == "event"))
+                this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { item });
+
+            // Samples
+            foreach (var item in items.FindAll(x => x.Category.ToLower() == "sample"))
+                this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { item });
         }
 
         #region "Omit Data Items"

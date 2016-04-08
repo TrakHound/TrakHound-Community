@@ -122,7 +122,7 @@ namespace TH_DeviceManager
             }
         }
 
-        private void Restore_Clicked(TH_WPF.Button bt) { LoadConfiguration(); }
+        private void Restore_Clicked(TH_WPF.Button bt) { RestorePages(); }
 
         private void DeviceManager_Clicked(TH_WPF.Button bt)
         {
@@ -180,16 +180,34 @@ namespace TH_DeviceManager
 
         void LoadConfiguration()
         {
+
+        }
+
+        private void LoadPage(IConfigurationPage page)
+        {
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (!page.Loaded) page.LoadConfiguration(ConfigurationTable.Copy());
+                page.Loaded = true;
+            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+        }
+
+        private void RestorePages()
+        {
             if (ConfigurationTable != null)
             {
                 if (ConfigurationPages != null)
                 {
                     foreach (IConfigurationPage page in ConfigurationPages)
                     {
-                        this.Dispatcher.BeginInvoke(new Action(() => { page.LoadConfiguration(ConfigurationTable); }));
+                        Dispatcher.BeginInvoke(new Action(() => { page.Loaded = false; }));
                     }
+
+                    if (CurrentPage != null) LoadPage((IConfigurationPage)CurrentPage);
                 }
             }
+
+            SaveNeeded = false;
         }
 
 
@@ -205,7 +223,8 @@ namespace TH_DeviceManager
                 {
                     foreach (IConfigurationPage page in ConfigurationPages)
                     {
-                        page.SaveConfiguration(dt);
+                        if (page.Loaded) page.SaveConfiguration(dt);
+                        page.Loaded = false;
                     }
                 }
 
@@ -429,10 +448,17 @@ namespace TH_DeviceManager
 
         void Page_Selected(ListButton lb)
         {
-            foreach (ListButton olb in PageList) if (olb != lb) olb.IsSelected = false;
-            lb.IsSelected = true;
+            if (lb.DataObject != null)
+            {
+                var page = (IConfigurationPage)lb.DataObject;
 
-            if (lb.DataObject != null) CurrentPage = lb.DataObject;
+                LoadPage(page);
+
+                foreach (ListButton olb in PageList) if (olb != lb) olb.IsSelected = false;
+                lb.IsSelected = true;
+
+                CurrentPage = page;
+            }
         }
 
         #endregion

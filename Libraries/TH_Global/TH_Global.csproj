@@ -70,6 +70,7 @@
     <Compile Include="Functions\Service_Functions.cs" />
     <Compile Include="Functions\String_Functions.cs" />
     <Compile Include="Functions\TimeSpan_Functions.cs" />
+    <Compile Include="Functions\UI_Functions.cs" />
     <Compile Include="Functions\Window_Functions.cs" />
     <Compile Include="Functions\XML_Functions.cs" />
     <Compile Include="Logger.cs" />

@@ -219,13 +219,15 @@
             </Grid>
 
             <!--Page Content-->
-            <Border Grid.Column="1" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1,1,0,1">
+            <Border Grid.Column="1" Background="{StaticResource Window_Background}" BorderBrush="{StaticResource Accent_Dark}" BorderThickness="1,1,0,1">
 
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{StaticResource Window_Background}">
+                <ContentControl Content="{Binding CurrentPage}"/>
 
-                    <ContentControl Margin="40,40,20,20" Content="{Binding CurrentPage}"/>
+                <!--<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Background="{StaticResource Window_Background}">
 
-                </ScrollViewer>
+                    --><!--<ContentControl Margin="40,40,20,20" Content="{Binding CurrentPage}"/>--><!--
+
+                </ScrollViewer>-->
 
             </Border>
 

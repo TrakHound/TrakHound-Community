@@ -49,6 +49,7 @@ namespace TH_OEE.ConfigurationPage
 
         public event SettingChanged_Handler SettingChanged;
 
+        public bool Loaded { get; set; }
 
         public event SendData_Handler SendData;
 

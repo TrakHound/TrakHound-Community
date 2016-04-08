@@ -10,237 +10,251 @@
              mc:Ignorable="d" 
              >
 
-    <Grid>
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--Title and Image-->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <!--Image-->
-            <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
-                <Grid.Resources>
-                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
-                </Grid.Resources>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                        <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
-                    </Style>
-                </Grid.Style>
-            </Grid>
+            <!--Title and Image-->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
 
-            <TextBlock Text="{Binding Title}" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <!--Image-->
+                <Grid Height="30" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,0,0" VerticalAlignment="Center">
+                    <Grid.Resources>
+                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding Image}" />
+                    </Grid.Resources>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                            <Setter Property="Background" Value="{StaticResource Foreground_Normal}"/>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
 
-        </StackPanel>
+                <TextBlock Text="Parts" FontSize="20pt" Foreground="{StaticResource Foreground_Normal}" Margin="10,0,0,0" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="1" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="0,10,10,20" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left">
+            </StackPanel>
+
+            <TextBlock Grid.Column="1" FontSize="10pt" Foreground="{StaticResource Foreground_Light}" Margin="20,5" TextWrapping="Wrap" MaxWidth="800" HorizontalAlignment="Left" VerticalAlignment="Center">
             Use Parts to track Part Count.
             Uses a Generated Event with that corresponds to an event such as 'Parts Produced'.
-        </TextBlock>
+            </TextBlock>
 
-        <StackPanel Grid.Row="2" Margin="0,10" HorizontalAlignment="Left">
-            <StackPanel.Resources>
-                <Style TargetType="StackPanel">
-                    <Setter Property="Margin" Value="0,0,0,10"/>
-                    <Setter Property="HorizontalAlignment" Value="Left"/>
-                </Style>
-            </StackPanel.Resources>
+        </Grid>
 
-            <!--Title and Help-->
-            <StackPanel Orientation="Horizontal">
+        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}" Margin="0,15,0,0"/>
 
-                <!--Title-->
-                <TextBlock Text="Event Name" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
 
-                <!--Help-->
-                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                    <Rectangle.ToolTip>
-                        <ToolTip MaxWidth="400">
-                            <StackPanel>
-                                <TextBlock Text="Device Description" FontWeight="Bold"/>
-                                <TextBlock TextWrapping="Wrap">
+            <StackPanel Grid.Row="2" Margin="0,10" HorizontalAlignment="Left">
+                <StackPanel.Resources>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Margin" Value="0,0,0,10"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                    </Style>
+                </StackPanel.Resources>
+
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
+
+                    <!--Title-->
+                    <TextBlock Text="Event Name" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
                                             Select the Generated Event that defines Part Count Changed.
-                                </TextBlock>
-                            </StackPanel>
-                        </ToolTip>
-                    </Rectangle.ToolTip>
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
 
-                    <Rectangle.Resources>
-                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Parts;component/Resources/Help_01.png" />
-                    </Rectangle.Resources>
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Parts;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
 
-                    <Rectangle.Style>
-                        <Style TargetType="Rectangle">
-                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="#0080ff"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                    <ColorAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseOut"/>
-                                                    </ColorAnimation.EasingFunction>
-                                                </ColorAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard FillBehavior="Stop">
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                    <ColorAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseOut"/>
-                                                    </ColorAnimation.EasingFunction>
-                                                </ColorAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Rectangle.Style>
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
 
-                </Rectangle>
+                    </Rectangle>
 
-            </StackPanel>
+                </StackPanel>
 
-            <ComboBox x:Name="eventName_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedPartsEventName}" SelectionChanged="PartsEventName_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <ComboBox x:Name="eventName_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedPartsEventName}" SelectionChanged="PartsEventName_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
 
-            <!--Title and Help-->
-            <StackPanel Orientation="Horizontal">
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
 
-                <!--Title-->
-                <TextBlock Text="Parts Produced Value" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                    <!--Title-->
+                    <TextBlock Text="Parts Produced Value" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
-                <!--Help-->
-                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                    <Rectangle.ToolTip>
-                        <ToolTip MaxWidth="400">
-                            <StackPanel>
-                                <TextBlock Text="Device Description" FontWeight="Bold"/>
-                                <TextBlock TextWrapping="Wrap">
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
                                             Select the Generated Event Value that corresponds to when Parts are Produced
-                                </TextBlock>
-                            </StackPanel>
-                        </ToolTip>
-                    </Rectangle.ToolTip>
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
 
 
-                    <Rectangle.Resources>
-                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Parts;component/Resources/Help_01.png" />
-                    </Rectangle.Resources>
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Parts;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
 
-                    <Rectangle.Style>
-                        <Style TargetType="Rectangle">
-                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="#0080ff"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                    <ColorAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseOut"/>
-                                                    </ColorAnimation.EasingFunction>
-                                                </ColorAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard FillBehavior="Stop">
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                    <ColorAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseOut"/>
-                                                    </ColorAnimation.EasingFunction>
-                                                </ColorAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Rectangle.Style>
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
 
-                </Rectangle>
+                    </Rectangle>
 
-            </StackPanel>
+                </StackPanel>
 
-            <ComboBox x:Name="producedValue_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEventValues}" Text="{Binding SelectedProducedEventValue}" SelectionChanged="producedValue_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                <ComboBox x:Name="producedValue_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEventValues}" Text="{Binding SelectedProducedEventValue}" SelectionChanged="producedValue_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
 
-            <!--Title and Help-->
-            <StackPanel Orientation="Horizontal">
+                <!--Title and Help-->
+                <StackPanel Orientation="Horizontal">
 
-                <!--Title-->
-                <TextBlock Text="Part Count Link" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
+                    <!--Title-->
+                    <TextBlock Text="Part Count Link" Foreground="#333" Margin="0,0,10,0" FontSize="12pt" VerticalAlignment="Center"/>
 
-                <!--Help-->
-                <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
-                    <Rectangle.ToolTip>
-                        <ToolTip MaxWidth="400">
-                            <StackPanel>
-                                <TextBlock Text="Device Description" FontWeight="Bold"/>
-                                <TextBlock TextWrapping="Wrap">
+                    <!--Help-->
+                    <Rectangle Width="15" Height="15" MouseDown="Help_MouseDown" MouseEnter="Help_MouseEnter" MouseLeave="Help_MouseLeave">
+                        <Rectangle.ToolTip>
+                            <ToolTip MaxWidth="400">
+                                <StackPanel>
+                                    <TextBlock Text="Device Description" FontWeight="Bold"/>
+                                    <TextBlock TextWrapping="Wrap">
                                             Select the Generated Event Value Capture Item that corresponds to the number of Parts Produced (ex.Part Count).
-                                </TextBlock>
-                            </StackPanel>
-                        </ToolTip>
-                    </Rectangle.ToolTip>
+                                    </TextBlock>
+                                </StackPanel>
+                            </ToolTip>
+                        </Rectangle.ToolTip>
 
 
-                    <Rectangle.Resources>
-                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Parts;component/Resources/Help_01.png" />
-                    </Rectangle.Resources>
+                        <Rectangle.Resources>
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_Parts;component/Resources/Help_01.png" />
+                        </Rectangle.Resources>
 
-                    <Rectangle.Style>
-                        <Style TargetType="Rectangle">
-                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="#0080ff"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
-                                                    <ColorAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseOut"/>
-                                                    </ColorAnimation.EasingFunction>
-                                                </ColorAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard FillBehavior="Stop">
-                                                <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
-                                                    <ColorAnimation.EasingFunction>
-                                                        <CubicEase EasingMode="EaseOut"/>
-                                                    </ColorAnimation.EasingFunction>
-                                                </ColorAnimation>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Rectangle.Style>
+                        <Rectangle.Style>
+                            <Style TargetType="Rectangle">
+                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                <Setter Property="Fill" Value="#0080ff"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Trigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#00aaff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.EnterActions>
+                                        <Trigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard FillBehavior="Stop">
+                                                    <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#0080ff">
+                                                        <ColorAnimation.EasingFunction>
+                                                            <CubicEase EasingMode="EaseOut"/>
+                                                        </ColorAnimation.EasingFunction>
+                                                    </ColorAnimation>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </Trigger.ExitActions>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Rectangle.Style>
 
-                </Rectangle>
+                    </Rectangle>
+
+                </StackPanel>
+
+                <ComboBox x:Name="partCountLink_COMBO" Margin="0,0" Width="200" ItemsSource="{Binding GeneratedEventCaptureItems}" Text="{Binding SelectedPartCountLink}" SelectionChanged="partCountLink_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
             </StackPanel>
 
-            <ComboBox x:Name="partCountLink_COMBO" Margin="0,0" Width="200" ItemsSource="{Binding GeneratedEventCaptureItems}" Text="{Binding SelectedPartCountLink}" SelectionChanged="partCountLink_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
-
-        </StackPanel>
+        </ScrollViewer>
 
     </Grid>
 
