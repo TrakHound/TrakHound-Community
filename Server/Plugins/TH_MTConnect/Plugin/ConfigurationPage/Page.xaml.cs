@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Threading;
@@ -61,7 +62,7 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
         public void GetSentData(EventData data)
         {
-
+            GetProbeHeader(data);
         }
 
         public void LoadConfiguration(DataTable dt)
@@ -69,17 +70,6 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             Loading = true;
 
             configurationTable = dt;
-
-            //// Load Cloud Settings
-            //bool cloud = false;
-            //string cloud_str = DataTable_Functions.GetTableValue(dt, "address", "/UseTrakHoundCloud", "value");
-            //if (cloud_str != null)
-            //{
-            //    bool.TryParse(cloud_str, out cloud);
-            //}
-
-            //UseTrakHoundCloud = cloud;
-
 
             // Load IP Address
             Address = DataTable_Functions.GetTableValue(dt, "address", prefix + "Address", "value");
@@ -109,8 +99,8 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
             MTCDeviceList.Clear();
 
-            // Agent Info
-            GetAgentInfo();
+            //// Agent Info
+            //GetAgentInfo();
 
             Loading = false;
         }
@@ -146,16 +136,6 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
         string prefix = "/Agent/";
 
         DataTable configurationTable;
-
-
-        //public bool UseTrakHoundCloud
-        //{
-        //    get { return (bool)GetValue(UseTrakHoundCloudProperty); }
-        //    set { SetValue(UseTrakHoundCloudProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty UseTrakHoundCloudProperty =
-        //    DependencyProperty.Register("UseTrakHoundCloud", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
 
         public bool Loading
@@ -264,7 +244,7 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
                 }
 
                 // Proxy Settings
-                TH_MTConnect.HTTP.ProxySettings proxy = null;                
+                HTTP.ProxySettings proxy = null;                
                 if (ProxyPort != null)
                 {
                     int proxyPort = -1;
@@ -291,7 +271,7 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             public string address;
             public int port;
             public string deviceName;
-            public TH_MTConnect.HTTP.ProxySettings proxy;
+            public HTTP.ProxySettings proxy;
         }
 
         void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
@@ -381,7 +361,16 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
         {
             ConnectionTestLoading = loading;
 
-            GetAgentInfo();
+            var data = new EventData();
+            data.Data01 = Address;
+            data.Data02 = Port;
+            data.Data03 = DeviceName;
+            data.Id = "EditPage_RequestProbe";
+
+            if (SendData != null) SendData(data);
+
+
+            //GetAgentInfo();
         }
 
         int[] tryPorts = new int[] { 5000, 5001, 5002, 5003, 5004, 5005 };
@@ -552,98 +541,118 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             DependencyProperty.Register("AssetCount", typeof(string), typeof(Page), new PropertyMetadata(null));
 
 
-        public string DeviceCount
-        {
-            get { return (string)GetValue(DeviceCountProperty); }
-            set { SetValue(DeviceCountProperty, value); }
-        }
-
-        public static readonly DependencyProperty DeviceCountProperty =
-            DependencyProperty.Register("DeviceCount", typeof(string), typeof(Page), new PropertyMetadata(null));
-       
-
         #endregion
 
-        Thread agentInfo_THREAD;
-
-        void GetAgentInfo()
+       
+        void GetProbeHeader(EventData data)
         {
-            if (agentInfo_THREAD != null) agentInfo_THREAD.Abort();
-
-            string ip = null;
-            int port = -1;
-
-            // Get IP Address or URL
-            ip = Address;
-            if (ip != null)
+            if (data != null && data.Id != null && data.Data02 != null)
             {
-                if (ip.Length > 7)
+                if (data.Id.ToLower() == "mtconnect_probe_header")
                 {
-                    if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
-                }
-
-                // Get Port
-                if (Port != null)
-                {
-                    int.TryParse(Port, out port);
-                }
-
-                var info = new Probe_Info();
-                info.address = ip;
-                info.port = port;
-
-                TH_MTConnect.HTTP.ProxySettings proxy = null;
-                if (ProxyPort != null)
-                {
-                    int proxyPort = -1;
-                    if (int.TryParse(ProxyPort, out proxyPort))
-                    {
-                        proxy = new TH_MTConnect.HTTP.ProxySettings();
-                        proxy.Address = ProxyAddress;
-                        proxy.Port = proxyPort;
-                    }
-                }
-
-                info.proxy = proxy;
-
-                agentInfo_THREAD = new Thread(new ParameterizedThreadStart(GetAgentInfo_Worker));
-                agentInfo_THREAD.Start(info);
-            }
-        }
-
-        void GetAgentInfo_Worker(object o)
-        {
-            if (o != null)
-            {
-                var info = o as Probe_Info;
-                if (info != null)
-                {
-                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
-
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
-
-                    this.Dispatcher.BeginInvoke(new Action<ReturnData>(GetAgentInfo_GUI), priority, new object[] { returnData });
+                    var header = (Header_Devices)data.Data02;
+                    LoadProbeHeader(header);
                 }
             }
         }
 
-        void GetAgentInfo_GUI(ReturnData returnData)
+        private void LoadProbeHeader(Header_Devices header)
         {
-            if (returnData != null)
-            {
-                var header = returnData.Header;
-                if (returnData.Header != null)
-                {
-                    InstanceId = header.InstanceId.ToString();
-                    Sender = header.Sender;
-                    Version = header.Version;
-                    BufferSize = String_Functions.FileSizeSuffix(header.BufferSize);
-                    AssetBufferSize = String_Functions.FileSizeSuffix(header.AssetBufferSize);
-                    AssetCount = header.AssetCount.ToString();
-                    DeviceCount = returnData.Devices.Count.ToString();
-                }
-            }
+            InstanceId = header.InstanceId.ToString();
+            Sender = header.Sender;
+            Version = header.Version;
+            BufferSize = String_Functions.FileSizeSuffix(header.BufferSize);
+            AssetBufferSize = String_Functions.FileSizeSuffix(header.AssetBufferSize);
+            AssetCount = header.AssetCount.ToString();
         }
+
+
+
+
+
+
+
+
+        //Thread agentInfo_THREAD;
+
+        //void GetAgentInfo()
+        //{
+        //    if (agentInfo_THREAD != null) agentInfo_THREAD.Abort();
+
+        //    string ip = null;
+        //    int port = -1;
+
+        //    // Get IP Address or URL
+        //    ip = Address;
+        //    if (ip != null)
+        //    {
+        //        if (ip.Length > 7)
+        //        {
+        //            if (ip != String.Empty) if (ip.Substring(0, 7).ToLower() == "http://") ip = ip.Substring(7);
+        //        }
+
+        //        // Get Port
+        //        if (Port != null)
+        //        {
+        //            int.TryParse(Port, out port);
+        //        }
+
+        //        var info = new Probe_Info();
+        //        info.address = ip;
+        //        info.port = port;
+
+        //        TH_MTConnect.HTTP.ProxySettings proxy = null;
+        //        if (ProxyPort != null)
+        //        {
+        //            int proxyPort = -1;
+        //            if (int.TryParse(ProxyPort, out proxyPort))
+        //            {
+        //                proxy = new TH_MTConnect.HTTP.ProxySettings();
+        //                proxy.Address = ProxyAddress;
+        //                proxy.Port = proxyPort;
+        //            }
+        //        }
+
+        //        info.proxy = proxy;
+
+        //        agentInfo_THREAD = new Thread(new ParameterizedThreadStart(GetAgentInfo_Worker));
+        //        agentInfo_THREAD.Start(info);
+        //    }
+        //}
+
+        //void GetAgentInfo_Worker(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        var info = o as Probe_Info;
+        //        if (info != null)
+        //        {
+        //            string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
+
+        //            ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
+
+        //            this.Dispatcher.BeginInvoke(new Action<ReturnData>(GetAgentInfo_GUI), priority, new object[] { returnData });
+        //        }
+        //    }
+        //}
+
+        //void GetAgentInfo_GUI(ReturnData returnData)
+        //{
+        //    if (returnData != null)
+        //    {
+        //        var header = returnData.Header;
+        //        if (returnData.Header != null)
+        //        {
+        //            InstanceId = header.InstanceId.ToString();
+        //            Sender = header.Sender;
+        //            Version = header.Version;
+        //            BufferSize = String_Functions.FileSizeSuffix(header.BufferSize);
+        //            AssetBufferSize = String_Functions.FileSizeSuffix(header.AssetBufferSize);
+        //            AssetCount = header.AssetCount.ToString();
+        //            DeviceCount = returnData.Devices.Count.ToString();
+        //        }
+        //    }
+        //}
 
         void ClearAgentInfo()
         {
@@ -653,7 +662,6 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             BufferSize = null;
             AssetBufferSize = null;
             AssetCount = null;
-            DeviceCount = null;
         }
 
         #endregion

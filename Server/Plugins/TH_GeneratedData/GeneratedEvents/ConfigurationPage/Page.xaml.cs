@@ -165,7 +165,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         {
             if (data != null && data.Id != null && data.Data02 != null)
             {
-                if (data.Id.ToLower() == "mtconnect_probe")
+                if (data.Id.ToLower() == "mtconnect_probe_dataitems")
                 {
                     CollectedItems.Clear();
 

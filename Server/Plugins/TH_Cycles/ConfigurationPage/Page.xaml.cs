@@ -173,7 +173,7 @@ namespace TH_Cycles.ConfigurationPage
         {
             if (data != null && data.Id != null && data.Data02 != null)
             {
-                if (data.Id.ToLower() == "mtconnect_probe")
+                if (data.Id.ToLower() == "mtconnect_probe_dataitems")
                 {
                     var dataItems = (List<DataItem>)data.Data02;
                     LoadCollectedItems(dataItems);

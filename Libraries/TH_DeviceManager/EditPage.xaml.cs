@@ -371,9 +371,6 @@ namespace TH_DeviceManager
             //Description
             result.Add(new Pages.Description.Page());
 
-            //Agent
-            //result.Add(new Pages.Agent.Page());
-
             //Databases
             result.Add(new Pages.Databases.Page());
 
@@ -414,7 +411,7 @@ namespace TH_DeviceManager
                 Dispatcher.BeginInvoke(new Action(() => {
 
                     AddPageButton(page);
-
+                    page.SendData += page_SendData;
                     page.SettingChanged += page_SettingChanged;
 
                 }), PRIORITY_BACKGROUND, new object[] { });
@@ -439,6 +436,24 @@ namespace TH_DeviceManager
             bt.DataObject = page;
 
             PageList.Add(bt);
+        }
+
+        private void page_SendData(EventData data)
+        {
+            if (data != null && data.Id != null)
+            {
+                if (data.Id.ToLower() == "editpage_requestprobe")
+                {
+                    if (data.Data01 != null && data.Data02 != null && data.Data03 != null)
+                    {
+                        string address = (string)data.Data01;
+                        int id = (int)data.Data02;
+                        string deviceName = (string)data.Data03;
+
+                        GetProbeData(address, id, deviceName);
+                    }
+                }
+            }
         }
 
         void page_SettingChanged(string name, string oldVal, string newVal)
@@ -572,6 +587,11 @@ namespace TH_DeviceManager
             LoadAgentSettings(dt);
         }
 
+        void GetProbeData(string address, int port, string deviceName)
+        {
+            RunProbe(address, null, port, deviceName);
+        }
+
         void LoadAgentSettings(DataTable dt)
         {
             string prefix = "/Agent/";
@@ -639,6 +659,8 @@ namespace TH_DeviceManager
                     var returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
                     {
+                        SendProbeHeader(returnData.Header);
+
                         foreach (var device in returnData.Devices)
                         {
                             var dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(device);
@@ -661,14 +683,29 @@ namespace TH_DeviceManager
             }
         }
 
-        private void SendProbeDataItems(List<TH_MTConnect.Components.DataItem> items)
+        private void SendProbeHeader(TH_MTConnect.Header_Devices header)
         {
+            var data = new EventData();
+            data.Id = "MTConnect_Probe_Header";
+            data.Data02 = header;
+
             foreach (var page in ConfigurationPages)
             {
-                var data = new EventData();
-                data.Id = "MTConnect_Probe";
-                data.Data02 = items;
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    page.GetSentData(data);
+                }), PRIORITY_BACKGROUND, new object[] { });
+            }
+        }
 
+        private void SendProbeDataItems(List<TH_MTConnect.Components.DataItem> items)
+        {
+            var data = new EventData();
+            data.Id = "MTConnect_Probe_DataItems";
+            data.Data02 = items;
+
+            foreach (var page in ConfigurationPages)
+            {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     page.GetSentData(data);

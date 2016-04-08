@@ -279,13 +279,6 @@
                                 <Run Text="{Binding AssetCount}"/>
                                 </TextBlock>
 
-                                <!--Device Count-->
-                                <TextBlock>
-                                <Run Text="Device Count"/>
-                                <Run Text=":"/>
-                                <Run Text="{Binding DeviceCount}"/>
-                                </TextBlock>
-
                             </StackPanel>
 
                         </th_wpf:CollapseButton.PageContent>
