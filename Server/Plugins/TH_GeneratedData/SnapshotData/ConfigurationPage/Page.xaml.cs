@@ -100,8 +100,6 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
             }
 
             Snapshots_DG.Items.Refresh();
-
-
         }
 
         public void SaveConfiguration(DataTable dt)

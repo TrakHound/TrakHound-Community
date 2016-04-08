@@ -126,7 +126,16 @@
 
                     </StackPanel>
 
-                    <ComboBox x:Name="eventName_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEvents}" Text="{Binding SelectedCycleEventName}" SelectionChanged="CycleEventName_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                    <ComboBox Margin="0,0,0,30" Width="200"  Height="30"
+                              ItemsSource="{Binding GeneratedEventItems}"
+                              SelectedValue="{Binding SelectedCycleEventName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="Name"
+                              SelectionChanged="CycleEventName_SelectionChanged"
+                              IsEditable="True" 
+                              VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                              FontSize="14" Background="{x:Null}" Cursor="Hand"
+                              />
 
 
                     <!--Title and Help-->
@@ -190,7 +199,14 @@
 
                     </StackPanel>
 
-                    <ComboBox x:Name="stoppedValue_COMBO" Margin="0,0,0,30" Width="200" ItemsSource="{Binding GeneratedEventValues}" Text="{Binding SelectedStoppedEventValue}" SelectionChanged="stoppedValue_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                    <ComboBox Margin="0,0,0,30" Width="200" Height="30"
+                              ItemsSource="{Binding GeneratedEventValues}" 
+                              SelectedValue="{Binding SelectedStoppedEventValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              SelectionChanged="stoppedValue_COMBO_SelectionChanged" 
+                              IsEditable="True" 
+                              VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                              FontSize="14" Background="{x:Null}" Cursor="Hand"
+                              />
 
 
                     <!--Title and Help-->
@@ -254,7 +270,18 @@
 
                     </StackPanel>
 
-                    <ComboBox x:Name="cyclenamelink_COMBO" Margin="0,0" Width="200" ItemsSource="{Binding CollectedItems}" Text="{Binding SelectedCycleNameLink}" SelectionChanged="cyclenamelink_COMBO_SelectionChanged" IsEditable="True" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+                    <ComboBox Margin="0,0" Width="200" Height="30" 
+                              ItemsSource="{Binding CollectedItems}" 
+                              SelectedValue="{Binding SelectedCycleNameLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="Display"
+                              SelectionChanged="cyclenamelink_COMBO_SelectionChanged"
+                              IsEditable="True" 
+                              VerticalAlignment="Center" 
+                              VerticalContentAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              FontSize="14" Background="{x:Null}" Cursor="Hand"
+                              />
 
                 </StackPanel>
 

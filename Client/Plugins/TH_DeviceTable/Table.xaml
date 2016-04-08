@@ -190,22 +190,36 @@
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Width="20" Height="20" Margin="5">
-                                <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
-                                </Grid.Resources>
+                            <Grid>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="Red"/>
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Setter Property="Background" Value="Transparent"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Background" Value="Red"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Grid.Style>
+
+                                <Grid Width="20" Height="20" Margin="5">
+                                    <Grid.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
+                                    </Grid.Resources>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Background" Value="White"/>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -228,22 +242,36 @@
                     </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Grid Width="20" Height="20" Margin="5">
-                                <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
-                                </Grid.Resources>
+                            <Grid>
                                 <Grid.Style>
                                     <Style TargetType="Grid">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="OrangeRed"/>
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Setter Property="Background" Value="Transparent"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Available}" Value="false">
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Background" Value="OrangeRed"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Grid.Style>
+
+                                <Grid Width="20" Height="20" Margin="5">
+                                    <Grid.Resources>
+                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
+                                    </Grid.Resources>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                            <Setter Property="Background" Value="White"/>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Available}" Value="false">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+
                             </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
