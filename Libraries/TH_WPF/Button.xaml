@@ -15,15 +15,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" 
              d:DesignWidth="30"
+             FocusManager.IsFocusScope="False"
+             Focusable="False"
              >
 
-    <Border x:Name="bd">
+    <Border x:Name="bd" FocusManager.IsFocusScope="False">
 
-        <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}">
-            
-            <Grid>
+        <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}"  FocusManager.IsFocusScope="False">
 
-                <Border Padding="{Binding Padding}">
+            <Grid FocusManager.IsFocusScope="False">
+
+                <Border Padding="{Binding Padding}" FocusManager.IsFocusScope="False">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Background">
@@ -46,7 +48,7 @@
                         </Style>
                     </Border.Style>
 
-                    <Grid>
+                    <Grid FocusManager.IsFocusScope="False">
 
                         <Grid.ColumnDefinitions>
                             
@@ -111,7 +113,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Image-->
-                        <Grid MaxHeight="{Binding MaxImageHeight}">
+                        <Grid MaxHeight="{Binding MaxImageHeight}" FocusManager.IsFocusScope="False">
                             <Grid.Style>
                                 <Style TargetType="Grid">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -129,7 +131,7 @@
                                 </Style>
                             </Grid.Style>
 
-                            <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
+                            <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" FocusManager.IsFocusScope="False">
                                 <Grid.Resources>
                                     <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="{Binding Image, Mode=OneWay}" />
                                 </Grid.Resources>
@@ -144,7 +146,7 @@
                         </Grid>
 
                         <!--Text Label-->
-                        <Grid>
+                        <Grid FocusManager.IsFocusScope="False">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="{Binding TextBottomPadding}"/>
@@ -164,7 +166,7 @@
                                 </Style>
                             </Grid.Style>
 
-                            <TextBlock Text="{Binding Text}" FontSize="{Binding FontSize}" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Text}" FontSize="{Binding FontSize}" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
                                 <TextBlock.Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Foreground" Value="{Binding Foreground}"/>
@@ -185,14 +187,14 @@
                         </Grid>
 
                         <!--Custom Content-->
-                        <ContentControl Grid.ColumnSpan="3" Content="{Binding ButtonContent}"/>
+                        <ContentControl Grid.ColumnSpan="3" Content="{Binding ButtonContent}" FocusManager.IsFocusScope="False"/>
 
                     </Grid>
 
                 </Border>
 
                 <!--Gloss Effect-->
-                <Border Grid.ColumnSpan="3" IsHitTestVisible="False">
+                <Border Grid.ColumnSpan="3" IsHitTestVisible="False" FocusManager.IsFocusScope="False">
                     <Border.Style>
                         <Style TargetType="Border">
                             <Setter Property="Visibility" Value="Visible"/>

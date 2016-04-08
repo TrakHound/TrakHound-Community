@@ -158,18 +158,20 @@
                              FontSize="{Binding FontSize}"
                              Foreground="{StaticResource Foreground_Normal}"
                              Padding="0,8"
-                             VerticalAlignment="Center" VerticalContentAlignment="Center"
+                             VerticalAlignment="Center" 
+                             VerticalContentAlignment="Center"
                              MaxLines="1"
                              CaretBrush="Black"
                              Focusable="True"
                              PreviewKeyDown="txt_PreviewKeyDown"
+                             MouseUp="txt_MouseDown"
+                             GotMouseCapture="txt_GotMouseCapture"
+                             GotKeyboardFocus="txt_GotKeyboardFocus"
+                             LostFocus="txt_LostFocus"
                              >
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsFocused}" Value="True">
-                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Self}}" />
-                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding TextWrapping}" Value="true">
                                             <Setter Property="TextWrapping" Value="Wrap"/>
                                         </DataTrigger>
@@ -181,13 +183,13 @@
                     </Grid>
                     
                     <!--Clear Button-->
-                    <th_wpf:Button Grid.Column="1" Image="Resources/X_01.png" Width="25" Height="25" Margin="0,0,5,0" ToolTip="Clear" Clicked="Clear_Clicked" FocusManager.IsFocusScope="False">
+                    <th_wpf:Button Grid.Column="1" Image="Resources/X_01.png" Width="25" Height="25" Margin="0,0,5,0" ToolTip="Clear" Clicked="Clear_Clicked" Focusable="False" FocusManager.IsFocusScope="False">
                         <th_wpf:Button.Style>
                             <Style TargetType="th_wpf:Button">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Setter Property="Foreground" Value="{StaticResource Shade_Normal}"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root_STACK}" Value="true">
+                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=root}" Value="true">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                     <Trigger Property="IsMouseOver" Value="true">

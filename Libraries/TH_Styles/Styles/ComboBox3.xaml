@@ -152,7 +152,7 @@
                         <TextBox Name="PART_EditableTextBox" Margin="10, 3, 40, 3"                     
                      IsReadOnly="{TemplateBinding IsReadOnly}"
                      Visibility="Hidden" Background="Transparent"
-                     HorizontalAlignment="Center" VerticalAlignment="Center"
+                     HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center"
                      Focusable="True" >
                             <TextBox.Template>
                                 <ControlTemplate TargetType="TextBox" >

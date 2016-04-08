@@ -218,6 +218,33 @@ namespace TH_WPF
             if (EnterPressed != null) EnterPressed(sender, e);
         }
 
+
+        private bool keyboardFocused = false;
+        private bool mouseFocused = false;
+
+        private void txt_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (!mouseFocused) txt.SelectAll();
+            mouseFocused = true;
+
+            e.Handled = true;
+        }
+
+        private void txt_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (!keyboardFocused) txt.SelectAll();
+            keyboardFocused = true;
+
+            e.Handled = true;
+        }
+
+        private void txt_LostFocus(object sender, RoutedEventArgs e)
+        {
+            keyboardFocused = false;
+            mouseFocused = false;
+        }
+
+
         private void Clear_Clicked(Button bt)
         {
             ClearText();
@@ -225,5 +252,9 @@ namespace TH_WPF
 
         #endregion
 
+        private void txt_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
     }
 }
