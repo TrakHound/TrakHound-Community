@@ -99,9 +99,6 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
             MTCDeviceList.Clear();
 
-            //// Agent Info
-            //GetAgentInfo();
-
             Loading = false;
         }
 
@@ -363,14 +360,15 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
             var data = new EventData();
             data.Data01 = Address;
-            data.Data02 = Port;
+
+            int port = 5000;
+            int.TryParse(Port, out port);
+            data.Data02 = port;
+
             data.Data03 = DeviceName;
             data.Id = "EditPage_RequestProbe";
 
             if (SendData != null) SendData(data);
-
-
-            //GetAgentInfo();
         }
 
         int[] tryPorts = new int[] { 5000, 5001, 5002, 5003, 5004, 5005 };

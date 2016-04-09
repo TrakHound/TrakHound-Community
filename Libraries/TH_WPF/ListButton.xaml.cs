@@ -18,7 +18,7 @@ namespace TH_WPF
     /// <summary>
     /// Interaction logic for ListButton.xaml
     /// </summary>
-    public partial class ListButton : UserControl
+    public partial class ListButton : UserControl, IComparable
     {
         public ListButton()
         {
@@ -153,6 +153,20 @@ namespace TH_WPF
         {
             MouseOver = false;
         }
+
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+
+            var i = obj as ListButton;
+            if (i != null)
+            {
+                return Text.CompareTo(i.Text);
+            }
+            else return 1;
+        }
+        
 
     }
 }

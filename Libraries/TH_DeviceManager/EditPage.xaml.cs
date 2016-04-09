@@ -178,11 +178,6 @@ namespace TH_DeviceManager
 
         #region "Load / Save Device"
 
-        void LoadConfiguration()
-        {
-
-        }
-
         private void LoadPage(IConfigurationPage page)
         {
             Dispatcher.BeginInvoke(new Action(() =>
@@ -204,14 +199,13 @@ namespace TH_DeviceManager
                     }
 
                     if (CurrentPage != null) LoadPage((IConfigurationPage)CurrentPage);
+
+                    GetProbeData(ConfigurationTable);
                 }
             }
 
             SaveNeeded = false;
         }
-
-
-        Thread save_THREAD;
 
         private void Save(DataTable dt)
         {
@@ -228,10 +222,7 @@ namespace TH_DeviceManager
                     }
                 }
 
-                if (save_THREAD != null) save_THREAD.Abort();
-
-                save_THREAD = new Thread(new ParameterizedThreadStart(Save_Worker));
-                save_THREAD.Start(dt);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(Save_Worker), dt);
             }
         }
 
@@ -289,14 +280,14 @@ namespace TH_DeviceManager
                 }
             }
 
-            this.Dispatcher.BeginInvoke(new Action<bool>(Save_Finished), PRIORITY_BACKGROUND, new object[] { success });
+            this.Dispatcher.BeginInvoke(new Action<bool>(Save_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { success });
         }
 
         private void Save_Finished(bool success)
         {
             if (!success) TH_WPF.MessageBox.Show("Device did not save correctly. Try Again." + Environment.NewLine + @"A backup of the Device has been created in the 'C:\TrakHound\Temp directory'");
 
-            if (Configuration != null) LoadConfiguration();
+            RestorePages();
 
             SaveNeeded = false;
             Saving = false;
@@ -329,100 +320,79 @@ namespace TH_DeviceManager
 
         public List<IConfigurationPage> ConfigurationPages = new List<IConfigurationPage>();
 
-
-        Thread loadPages_Thread;
-
         private void LoadPages()
         {
             PagesLoading = true;
 
-            if (loadPages_Thread != null) loadPages_Thread.Abort();
-
-            loadPages_Thread = new Thread(new ThreadStart(LoadPages_Worker));
-            loadPages_Thread.Start();
+            if (pluginPageTypes == null)
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(LoadPages_Worker));
+            }
+            else
+            {
+                LoadPages_Finished(pluginPageTypes);
+            }
         }
 
-        private void LoadPages_Worker()
+        private void LoadPages_Worker(object o)
         {
             var types = GetPluginPageTypes();
 
-            Dispatcher.BeginInvoke(new Action<List<Type>>(LoadPages_Finished), PRIORITY_BACKGROUND, new object[] { types });
+            Dispatcher.BeginInvoke(new Action<List<Type>>(LoadPages_Finished), UI_Functions.PRIORITY_BACKGROUND, new object[] { types });
         }
 
         private void LoadPages_Finished(List<Type> types)
         {
-            var pages = CreatePages(types);
+            CreatePages(types);
 
-            ConfigurationPages = pages;
-
-            AddPages(pages);
-
-            LoadConfiguration();
-
-            PagesLoading = false;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                PagesLoading = false;
+            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
 
             GetProbeData(ConfigurationTable);
         }
 
-        private List<IConfigurationPage> CreatePages(List<Type> pluginPageTypes)
+
+        private void CreatePages(List<Type> pluginPageTypes)
         {
-            var result = new List<IConfigurationPage>();
-
-            //Description
-            result.Add(new Pages.Description.Page());
-
-            //Databases
-            result.Add(new Pages.Databases.Page());
-
-            var types = GetPluginPageTypes();
-
-            var pluginPages = GetPluginPages(pluginPageTypes);
-
-            //Load configuration pages from plugins
-            if (pluginPages != null)
+            // Create List of IConfigurationPage Types
+            var types = new List<Type>();
+            types.Add(typeof(Pages.Description.Page));
+            types.Add(typeof(Pages.Databases.Page));
+            foreach (var type in pluginPageTypes)
             {
-                result.AddRange(pluginPages);
+                types.Add(type);
             }
 
-            return result;
-        }
-
-        private List<IConfigurationPage> GetPluginPages(List<Type> pageTypes)
-        {
-            var result = new List<IConfigurationPage>();
-
-            foreach (var type in pageTypes)
+            foreach (var type in types)
             {
-                object o = Activator.CreateInstance(type);
-                var page = (IConfigurationPage)o;
-                result.Add(page);
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var page = CreatePage(type);
+                    AddPage(page);
+                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
-
-            return result;
         }
 
-        private void AddPages(List<IConfigurationPage> pages)
+        private static IConfigurationPage CreatePage(Type type)
         {
-            pages = pages.OrderBy(x => x.Title).ToList();
-
-            //Create PageItem and add to PageList
-            foreach (IConfigurationPage page in pages)
-            {
-                Dispatcher.BeginInvoke(new Action(() => {
-
-                    AddPageButton(page);
-                    page.SendData += page_SendData;
-                    page.SettingChanged += page_SettingChanged;
-
-                }), PRIORITY_BACKGROUND, new object[] { });
-            }
-
-            // Select the first page
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (PageList.Count > 0) Page_Selected((ListButton)PageList[0]);
-            }), PRIORITY_BACKGROUND, new object[] { });
+            object o = Activator.CreateInstance(type);
+            var page = (IConfigurationPage)o;
+            return page;
         }
+
+        private void AddPage(IConfigurationPage page)
+        {
+            AddPageButton(page);
+            page.SendData += page_SendData;
+            page.SettingChanged += page_SettingChanged;
+
+            ConfigurationPages.Add(page);
+        }
+
+
+        bool first = true;
 
         void AddPageButton(IConfigurationPage page)
         {
@@ -435,7 +405,11 @@ namespace TH_DeviceManager
             bt.Selected += Page_Selected;
             bt.DataObject = page;
 
+            if (first) Page_Selected(bt);
+            first = false;
+
             PageList.Add(bt);
+            PageList.Sort();
         }
 
         private void page_SendData(EventData data)
@@ -482,14 +456,6 @@ namespace TH_DeviceManager
 
         static List<Type> pluginPageTypes;
 
-        //static List<IConfigurationPage> PluginPages { get; set; }
-
-        //class ServerPlugins
-        //{
-        //    [ImportMany(typeof(IServerPlugin))]
-        //    public IEnumerable<Lazy<IServerPlugin>> Plugins { get; set; }
-        //}
-
         public List<Type> GetPluginPageTypes()
         {
             var result = pluginPageTypes;
@@ -498,14 +464,10 @@ namespace TH_DeviceManager
             {
                 result = new List<Type>();
 
-                string plugin_rootpath = FileLocations.Plugins + @"\Server";
-
-                if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
-
                 string pluginsPath;
 
                 // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-                pluginsPath = TH_Global.FileLocations.Plugins + @"\Server\";
+                pluginsPath = FileLocations.Plugins;
                 if (Directory.Exists(pluginsPath)) GetPluginPageTypes(pluginsPath, result);
 
                 // Load from App root Directory (doesn't overwrite plugins found in System Directory)
@@ -524,14 +486,6 @@ namespace TH_DeviceManager
             {
                 try
                 {
-                    //var plugs = new ServerPlugins();
-
-                    //var catalog = new DirectoryCatalog(path);
-                    //var container = new CompositionContainer(catalog);
-                    //container.SatisfyImportsOnce(plugs);
-
-                    //var plugins = plugs.Plugins;
-
                     var plugins = Reader.FindPlugins<IServerPlugin>(path, new ServerPlugin.PluginContainer(), ServerPlugin.PLUGIN_EXTENSION);
                     foreach (var plugin in plugins)
                     {
