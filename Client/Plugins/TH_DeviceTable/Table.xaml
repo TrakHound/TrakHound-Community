@@ -56,7 +56,7 @@
         
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-            <Setter Property="BorderThickness" Value="0,1,0,0" />
+            <Setter Property="BorderThickness" Value="0,1,0,1" />
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
             <Setter Property="MinHeight" Value="50"/>
             <Style.Triggers>
@@ -169,6 +169,7 @@
                   AutoGenerateColumns="False"
                   BorderBrush="Transparent"
                   HeadersVisibility="Column"
+                  VerticalAlignment="Stretch"
                   >
 
             <DataGrid.Columns>

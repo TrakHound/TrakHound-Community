@@ -21,8 +21,9 @@ namespace TH_DeviceTable
             get { return _connected; }
             set
             {
+                var val = _connected;
                 _connected = value;
-                PropertyChanged.ChangeAndNotify<bool>(ref _connected, value, () => Connected);
+                if (val != _connected) NotifyChanged("Connected");
             }
         }
 
@@ -32,8 +33,9 @@ namespace TH_DeviceTable
             get { return _available; }
             set
             {
+                var val = _available;
                 _available = value;
-                PropertyChanged.ChangeAndNotify<bool>(ref _available, value, () => Available);
+                if (val != _available) NotifyChanged("Available");
             }
         }
 
@@ -56,8 +58,9 @@ namespace TH_DeviceTable
             get { return _manufacturerLogo; }
             set
             {
+                var val = _manufacturerLogo;
                 _manufacturerLogo = value;
-                PropertyChanged.ChangeAndNotify<ImageSource>(ref _manufacturerLogo, value, () => ManufacturerLogo);
+                if (val != _manufacturerLogo) NotifyChanged("ManufacturerLogo");
             }
         }
 
@@ -67,8 +70,9 @@ namespace TH_DeviceTable
             get { return _manufacturerLogoLoading; }
             set
             {
+                var val = _manufacturerLogoLoading;
                 _manufacturerLogoLoading = value;
-                PropertyChanged.ChangeAndNotify<bool>(ref _manufacturerLogoLoading, value, () => ManufacturerLogoLoading);
+                if (val != _manufacturerLogoLoading) NotifyChanged("ManufacturerLogoLoading");
             }
         }
 
@@ -82,8 +86,9 @@ namespace TH_DeviceTable
             get { return _alert; }
             set
             {
+                var val = _alert;
                 _alert = value;
-                PropertyChanged.ChangeAndNotify<bool>(ref _alert, value, () => Alert);
+                if (val != _alert) NotifyChanged("Alert");
             }
         }
 
@@ -93,8 +98,9 @@ namespace TH_DeviceTable
             get { return _idle; }
             set
             {
+                var val = _idle;
                 _idle = value;
-                PropertyChanged.ChangeAndNotify<bool>(ref _idle, value, () => Idle);
+                if (val != _idle) NotifyChanged("Idle");
             }
         }
 
@@ -104,8 +110,9 @@ namespace TH_DeviceTable
             get { return _production; }
             set
             {
+                var val = _production;
                 _production = value;
-                PropertyChanged.ChangeAndNotify<bool>(ref _production, value, () => Production);
+                if (val != _production) NotifyChanged("Production");
             }
         }
 
@@ -119,7 +126,10 @@ namespace TH_DeviceTable
             get { return _oee; }
             set
             {
-                PropertyChanged.ChangeAndNotify<double>(ref _oee, value, () => Oee);
+                var val = _oee;
+                _oee = value;
+                if (val != _oee) NotifyChanged("Oee");
+
                 if (_oee >= 0.75) OeeStatus = 2;
                 else if (_oee >= 0.5) OeeStatus = 1;
                 else OeeStatus = 0;
@@ -130,7 +140,12 @@ namespace TH_DeviceTable
         public int OeeStatus
         {
             get { return _oeeStatus; }
-            set { PropertyChanged.ChangeAndNotify<int>(ref _oeeStatus, value, () => OeeStatus); }
+            set
+            {
+                var val = _oeeStatus;
+                _oeeStatus = value;
+                if (val != _oeeStatus) NotifyChanged("OeeStatus");
+            }
         }
 
         private double _availability;
@@ -139,7 +154,10 @@ namespace TH_DeviceTable
             get { return _availability; }
             set
             {
-                PropertyChanged.ChangeAndNotify<double>(ref _availability, value, () => Availability);
+                var val = _availability;
+                _availability = value;
+                if (val != _availability) NotifyChanged("Availability");
+
                 if (_availability >= 0.75) AvailabilityStatus = 2;
                 else if (_availability >= 0.5) AvailabilityStatus = 1;
                 else AvailabilityStatus = 0;
@@ -150,7 +168,12 @@ namespace TH_DeviceTable
         public int AvailabilityStatus
         {
             get { return _availabilityStatus; }
-            set { PropertyChanged.ChangeAndNotify<int>(ref _availabilityStatus, value, () => AvailabilityStatus); }
+            set
+            {
+                var val = _availabilityStatus;
+                _availabilityStatus = value;
+                if (val != _availabilityStatus) NotifyChanged("AvailabilityStatus");
+            }
         }
 
         private double _performance;
@@ -159,7 +182,10 @@ namespace TH_DeviceTable
             get { return _performance; }
             set
             {
-                PropertyChanged.ChangeAndNotify<double>(ref _performance, value, () => Performance);
+                var val = _performance;
+                _performance = value;
+                if (val != _performance) NotifyChanged("Performance");
+
                 if (_performance >= 0.75) PerformanceStatus = 2;
                 else if (_performance >= 0.5) PerformanceStatus = 1;
                 else PerformanceStatus = 0;
@@ -170,7 +196,12 @@ namespace TH_DeviceTable
         public int PerformanceStatus
         {
             get { return _performanceStatus; }
-            set { PropertyChanged.ChangeAndNotify<int>(ref _performanceStatus, value, () => PerformanceStatus); }
+            set
+            {
+                var val = _performanceStatus;
+                _performanceStatus = value;
+                if (val != _performanceStatus) NotifyChanged("PerformanceStatus");
+            }
         }
 
         #endregion
@@ -181,26 +212,46 @@ namespace TH_DeviceTable
         public string ProductionStatus
         {
             get { return _productionStatus; }
-            set { PropertyChanged.ChangeAndNotify<string>(ref _productionStatus, value, () => ProductionStatus); }
+            set
+            {
+                var val = _productionStatus;
+                _productionStatus = value;
+                if (val != _productionStatus) NotifyChanged("ProductionStatus");
+            }
         }
 
         private double _productionStatusTotal;
         public double ProductionStatusTotal
         {
             get { return _productionStatusTotal; }
-            set { PropertyChanged.ChangeAndNotify<double>(ref _productionStatusTotal, value, () => ProductionStatusTotal); }
+            set
+            {
+                var val = _productionStatusTotal;
+                _productionStatusTotal = value;
+                if (val != _productionStatusTotal) NotifyChanged("ProductionStatusTotal");
+            }
         }
 
         private double _productionStatusSeconds;
         public double ProductionStatusSeconds
         {
             get { return _productionStatusSeconds; }
-            set { PropertyChanged.ChangeAndNotify<double>(ref _productionStatusSeconds, value, () => ProductionStatusSeconds); }
+            set
+            {
+                var val = _productionStatusSeconds;
+                _productionStatusSeconds = value;
+                if (val != _productionStatusSeconds) NotifyChanged("ProductionStatusSeconds");
+            }
         }
 
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void NotifyChanged(string propertyName)
+        {
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #region "IComparable"
 
@@ -321,40 +372,40 @@ namespace TH_DeviceTable
 
     }
 
-    public static class Extensions
-    {
-        public static bool ChangeAndNotify<T>(this PropertyChangedEventHandler handler,
-             ref T field, T value, Expression<Func<T>> memberExpression)
-        {
-            if (memberExpression == null)
-            {
-                throw new ArgumentNullException("memberExpression");
-            }
-            var body = memberExpression.Body as MemberExpression;
-            if (body == null)
-            {
-                throw new ArgumentException("Lambda must return a property.");
-            }
-            if (EqualityComparer<T>.Default.Equals(field, value))
-            {
-                return false;
-            }
+    //public static class Extensions
+    //{
+    //    public static bool ChangeAndNotify<T>(this PropertyChangedEventHandler handler,
+    //         ref T field, T value, Expression<Func<T>> memberExpression)
+    //    {
+    //        if (memberExpression == null)
+    //        {
+    //            throw new ArgumentNullException("memberExpression");
+    //        }
+    //        var body = memberExpression.Body as MemberExpression;
+    //        if (body == null)
+    //        {
+    //            throw new ArgumentException("Lambda must return a property.");
+    //        }
+    //        if (EqualityComparer<T>.Default.Equals(field, value))
+    //        {
+    //            return false;
+    //        }
 
-            var vmExpression = body.Expression as ConstantExpression;
-            if (vmExpression != null)
-            {
-                LambdaExpression lambda = Expression.Lambda(vmExpression);
-                Delegate vmFunc = lambda.Compile();
-                object sender = vmFunc.DynamicInvoke();
+    //        var vmExpression = body.Expression as ConstantExpression;
+    //        if (vmExpression != null)
+    //        {
+    //            LambdaExpression lambda = Expression.Lambda(vmExpression);
+    //            Delegate vmFunc = lambda.Compile();
+    //            object sender = vmFunc.DynamicInvoke();
 
-                if (handler != null)
-                {
-                    handler(sender, new PropertyChangedEventArgs(body.Member.Name));
-                }
-            }
+    //            if (handler != null)
+    //            {
+    //                handler(sender, new PropertyChangedEventArgs(body.Member.Name));
+    //            }
+    //        }
 
-            field = value;
-            return true;
-        }
-    }
+    //        field = value;
+    //        return true;
+    //    }
+    //}
 }
