@@ -46,9 +46,9 @@ namespace TrakHound_Client.Menus.Main
             Root_GRID.Height = 0;
 
             // 1st Row
-            AddDeviceManager_MenuItem();
-            AddOptions_MenuItem();
             AddPlugins_MenuItem();
+            AddDeviceManager_MenuItem();
+            //AddOptions_MenuItem();          
 
             // 2nd Row
             AddFullscreen_MenuItem();

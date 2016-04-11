@@ -199,28 +199,9 @@ namespace TH_Dashboard
             return s;
         }
 
-        private void lb_Selected(ListButton LB)
+        private void lb_Selected(ListButton lb)
         {
-            foreach (ListButton oLB in Pages)
-            {
-                if (oLB == LB) oLB.IsSelected = true;
-                else oLB.IsSelected = false;
-            }
-
-            foreach (PluginConfigurationCategory category in SubCategories)
-            {
-                PluginConfiguration config = category.PluginConfigurations.Find(x => GetPluginName(x.Name) == GetPluginName(LB.Text));
-                if (config != null)
-                {
-                    currentPage = config;
-                    break;
-                }
-
-            }
-
-            UserControl childPlugIn = LB.DataObject as UserControl;
-
-            PageContent = childPlugIn;
+            SelectPage(lb);
         }
 
         void config_EnabledChanged(PluginConfiguration config)
@@ -231,39 +212,67 @@ namespace TH_Dashboard
 
         #endregion
 
+        private void SelectPage(ListButton lb)
+        {
+            foreach (var olb in Pages)
+            {
+                if (olb == lb) olb.IsSelected = true;
+                else olb.IsSelected = false;
+            }
+
+            foreach (var category in SubCategories)
+            {
+                var config = category.PluginConfigurations.Find(x => GetPluginName(x.Name) == GetPluginName(lb.Text));
+                if (config != null)
+                {
+                    currentPage = config;
+                    break;
+                }
+            }
+
+            var childPlugIn = lb.DataObject as UserControl;
+
+            PageContent = childPlugIn;
+
+            int index = Pages.ToList().FindIndex(x => x == lb);
+            if (index >= 0)
+            {
+                Properties.Settings.Default.SelectedPage = index;
+                Properties.Settings.Default.Save();
+            }
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (PageContent == null)
             {
-                if (Pages.Count > 0)
+                int selectedPage = Properties.Settings.Default.SelectedPage;
+
+                if (Pages.Count > selectedPage)
                 {
-                    if (Pages[0].GetType() == typeof(ListButton))
+                    ListButton lb = Pages[selectedPage];
+
+                    foreach (var oLB in Pages)
                     {
-                        ListButton lb = (ListButton)Pages[0];
+                        if (oLB == lb) oLB.IsSelected = true;
+                        else oLB.IsSelected = false;
+                    }
 
-                        foreach (ListButton oLB in Pages)
+                    var plugin = lb.DataObject as IClientPlugin;
+                    if (plugin != null)
+                    {
+                        foreach (var category in SubCategories)
                         {
-                            if (oLB == lb) oLB.IsSelected = true;
-                            else oLB.IsSelected = false;
-                        }
-
-                        IClientPlugin plugin = lb.DataObject as IClientPlugin;
-                        if (plugin != null)
-                        {
-                            foreach (PluginConfigurationCategory category in SubCategories)
+                            var config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
+                            if (config != null)
                             {
-                                PluginConfiguration config = category.PluginConfigurations.Find(x => x.Name.ToUpper() == plugin.Title.ToUpper());
-                                if (config != null)
-                                {
-                                    currentPage = config;
-                                    break;
-                                }
+                                currentPage = config;
+                                break;
                             }
-
-                            UserControl childPlugIn = lb.DataObject as UserControl;
-
-                            PageContent = childPlugIn;
                         }
+
+                        var childPlugIn = lb.DataObject as UserControl;
+                        PageContent = childPlugIn;
                     }
                 }
             }

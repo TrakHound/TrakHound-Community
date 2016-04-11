@@ -499,7 +499,20 @@
                 </DataGridTemplateColumn>
 
                 <!--Part Count-->
-                <DataGridTemplateColumn Header="Part Count">
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <Grid Background="Transparent">
+                            <Grid.ToolTip>
+                                <StackPanel MaxWidth="300">
+                                    <TextBlock Text="Part Count" FontWeight="Bold" Margin="0,0,0,5"/>
+                                    <TextBlock TextWrapping="Wrap">
+                                        Total Part Count for the current shift.
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid.ToolTip>
+                            <TextBlock Text="Part Count" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </DataGridTemplateColumn.Header>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Viewbox Margin="10">

@@ -207,6 +207,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             var ports = new int[] { 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010 };
 
             portCount = ports.Length;
+            returnedPorts = 0;
 
             foreach (var port in ports)
             {
@@ -235,15 +236,17 @@ namespace TH_DeviceManager.AddDevice.Pages
                     }
                 }
 
-                StopDevicesLoading(info.Port);
+                returnedPorts++;
+                StopDevicesLoading(returnedPorts);
             }
         }
 
         int portCount;
+        int returnedPorts;
 
-        private void StopDevicesLoading(int port)
+        private void StopDevicesLoading(int ports)
         {
-            if (port >= portCount)
+            if (ports >= portCount)
             {
                 Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }), PRIORITY_BACKGROUND, new object[] { });
             }

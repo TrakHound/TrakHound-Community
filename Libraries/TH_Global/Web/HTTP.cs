@@ -304,7 +304,147 @@ namespace TH_Global.Web
 
             return result;
         }
+
+        public class HeaderData
+        {
+            public string Id { get; set; }
+            public string Text { get; set; }
+        }
+
+        #region "POST"
+
+        public static string POST(string url, byte[] postBytes)
+        {
+            return SendData("POST", url, postBytes);
+        }
+
+        public static string POST(string url, byte[] postBytes, HeaderData[] headers)
+        {
+            return SendData("POST", url, postBytes, headers);
+        }
+
+        public static string POST(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
+        {
+            return SendData("POST", url, postBytes, headers, userAgent);
+        }
+
+        public static string POST(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
+        {
+            return SendData("POST", url, postBytes, headers, userAgent, credential);
+        }
+
+        #endregion
+
+        #region "PUT"
+
+        public static string PUT(string url)
+        {
+            return SendData("PUT", url);
+        }
+
+        public static string PUT(string url, byte[] postBytes)
+        {
+            return SendData("PUT", url, postBytes);
+        }
+
+        public static string PUT(string url, byte[] postBytes, HeaderData[] headers)
+        {
+            return SendData("PUT", url, postBytes, headers);
+        }
+
+        public static string PUT(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
+        {
+            return SendData("PUT", url, postBytes, headers, userAgent);
+        }
+
+        public static string PUT(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
+        {
+            return SendData("PUT", url, postBytes, headers, userAgent, credential);
+        }
+
+        #endregion
+
+
+        private static string SendData(string method, string url, byte[] postBytes = null, HeaderData[] headers = null, string userAgent = null, NetworkCredential credential = null)
+        {
+
+            string result = null;
+
+            int attempts = 0;
+            bool success = false;
+            string message = null;
+
+            // Try to send data for number of connectionAttempts
+            while (attempts < connectionAttempts && !success)
+            {
+                attempts += 1;
+
+                try
+                {
+                    // Create HTTP request and define Header info
+                    var request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Timeout = timeout;
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    //request.ContentType = "application/json";
+
+                    // Set the Method
+                    request.Method = method;
+
+                    // Set the UserAgent
+                    if (userAgent != null) request.UserAgent = userAgent;
+                    else request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)";
+
+                    // Add Header data to request stream (if present)
+                    if (headers != null)
+                    {
+                        foreach (var header in headers)
+                        {
+                            request.Headers[header.Id] = header.Text;
+                        }
+                    }
+
+                    // set NetworkCredentials
+                    if (credential != null)
+                    {
+                        request.Credentials = credential;
+                        request.PreAuthenticate = true;
+                    }
+
+                    // Add POST data to request stream
+                    if (postBytes != null)
+                    {
+                        request.ContentLength = postBytes.Length;
+
+                        Stream postStream = request.GetRequestStream();
+                        postStream.Write(postBytes, 0, postBytes.Length);
+                        postStream.Flush();
+                        postStream.Close();
+                    }
+                    else request.ContentLength = 0;
+
+                    // Get HTTP resonse and return as string
+                    using (var response = (HttpWebResponse)request.GetResponse())
+                    using (var s = response.GetResponseStream())
+                    using (var reader = new StreamReader(s))
+                    {
+                        result = reader.ReadToEnd();
+                        success = true;
+                    }
+                }
+                catch (WebException wex) { message = wex.Message; }
+                catch (Exception ex) { message = ex.Message; }
+
+                if (!success) System.Threading.Thread.Sleep(1000);
+            }
+
+            if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);
+
+            return result;
+        }
+
         
+
+
 
 
 

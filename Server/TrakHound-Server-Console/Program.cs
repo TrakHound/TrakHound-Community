@@ -6,8 +6,12 @@
 using System;
 using System.IO;
 
+using System.Runtime.InteropServices;
+using System.Threading;
+
 using TH_Global;
 using TH_Global.Functions;
+using Microsoft.Win32;
 
 using TrakHound_Server_Core;
 
@@ -17,17 +21,60 @@ namespace TrakHound_Server_Console
     {
         static void Main(string[] args)
         {
+            _handler += new EventHandler(Handler);
+            SetConsoleCtrlHandler(_handler, true);
+
             var worker = new Worker();
 
             Console.ReadLine();
+
+            //hold the console so it doesn’t run off the end
+            while (!exitSystem)
+            {
+                Thread.Sleep(500);
+            }
         }
+
+        static bool exitSystem = false;
+
+        #region Trap application termination
+        [DllImport("Kernel32")]
+        private static extern bool SetConsoleCtrlHandler(EventHandler handler, bool add);
+
+        private delegate bool EventHandler(CtrlType sig);
+        static EventHandler _handler;
+
+        enum CtrlType
+        {
+            CTRL_C_EVENT = 0,
+            CTRL_BREAK_EVENT = 1,
+            CTRL_CLOSE_EVENT = 2,
+            CTRL_LOGOFF_EVENT = 5,
+            CTRL_SHUTDOWN_EVENT = 6
+        }
+
+        private static bool Handler(CtrlType sig)
+        {
+            Worker.RestartServerService();
+
+            Thread.Sleep(500);
+
+            //allow main to run off
+            exitSystem = true;
+
+            //shutdown right away so there are no lingering threads
+            Environment.Exit(-1);
+
+            return true;
+        }
+        #endregion
     }
 
     class Worker
     {
         Server server;
 
-        bool serverServiceWasRunning = false;
+        static bool serverServiceWasRunning = false;
 
         public Worker()
         {
@@ -48,7 +95,7 @@ namespace TrakHound_Server_Console
             TH_UserManagement.Management.UserManagementSettings.ReadConfiguration();
 
             server = new Server();
-            server.Stopped += Server_Stopped;
+            //server.Stopped += Server_Stopped;
             server.Login();
 
             string path = TH_Global.FileLocations.AppData + @"\nigolresu";
@@ -66,7 +113,7 @@ namespace TrakHound_Server_Console
             server.Start();
         }
 
-        private void Server_Stopped()
+        public static void RestartServerService()
         {
             // If Server Service was running when Console was started then start the service again
             if (serverServiceWasRunning) StartServerService();
@@ -79,7 +126,7 @@ namespace TrakHound_Server_Console
             if (server != null) server.Login();
         }
 
-        private static bool StartServerService()
+        public static bool StartServerService()
         {
             bool result = true;
 
@@ -96,7 +143,7 @@ namespace TrakHound_Server_Console
             return result;
         }
 
-        private static bool StopServerService()
+        public static bool StopServerService()
         {
             bool result = true;
 

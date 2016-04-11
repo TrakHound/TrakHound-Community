@@ -74,33 +74,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
-      <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
-      <Name>TH_Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Database\TH_Database.csproj">
-      <Project>{00e275c4-3494-4fcc-8781-fd815024117e}</Project>
-      <Name>TH_Database</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Device_Server\TH_Device_Server.csproj">
-      <Project>{de797c18-8530-40b6-964f-3164e34420f9}</Project>
-      <Name>TH_Device_Server</Name>
+    <ProjectReference Include="..\..\Libraries\TH_GitHub\TH_GitHub.csproj">
+      <Project>{725221c1-50a4-41a4-a8a8-11735ebe0d88}</Project>
+      <Name>TH_GitHub</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Libraries\TH_Plugins\TH_Plugins.csproj">
-      <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
-      <Name>TH_Plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\Plugins\TH_MTConnect\TH_MTConnect.csproj">
-      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
-      <Name>TH_MTConnect</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Server\Plugins\TH_Status\TH_Status.csproj">
-      <Project>{4e167a2b-4229-444c-9b35-0ed814791fe1}</Project>
-      <Name>TH_Status</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
