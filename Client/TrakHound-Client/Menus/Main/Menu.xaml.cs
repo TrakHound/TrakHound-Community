@@ -44,12 +44,15 @@ namespace TrakHound_Client.Menus.Main
 
             Root_GRID.Width = 0;
             Root_GRID.Height = 0;
-           
-            //AddOptions_MenuItem();
-            AddPlugins_MenuItem();
+
+            // 1st Row
             AddDeviceManager_MenuItem();
-            AddDeveloperConsole_MenuItem();
+            AddOptions_MenuItem();
+            AddPlugins_MenuItem();
+
+            // 2nd Row
             AddFullscreen_MenuItem();
+            AddDeveloperConsole_MenuItem();
         }
 
         public TrakHound_Client.MainWindow mw
@@ -146,7 +149,7 @@ namespace TrakHound_Client.Menus.Main
         void Options_Clicked(object obj)
         {
             Shown = false;
-            //if (mw != null) mw.Options_Open();
+            if (mw != null) mw.Options_Open();
         }
 
         #endregion

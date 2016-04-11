@@ -23,7 +23,7 @@ namespace TH_DeviceTable
 
         void Update(EventData data)
         {
-            if (data != null)
+            if (data != null && data.Id != null && data.Data01 != null)
             {
                 Configuration config = data.Data01 as Configuration;
                 if (config != null)
@@ -41,17 +41,11 @@ namespace TH_DeviceTable
                         UpdateOEE(data, info);
 
                         UpdateProductionStatus(data, info);
+
+                        UpdatePartCount(data, info);
                     }
                 }
             }
-        }
-
-        private void Refresh()
-        {
-            //if (Devices_DG.Items.NeedsRefresh)
-            //{
-            //    Devices_DG.Items.Refresh();
-            //}
         }
 
         private void UpdateDatabaseConnection(EventData data, DeviceInfo info)
@@ -62,8 +56,6 @@ namespace TH_DeviceTable
                 {
                     info.Connected = (bool)data.Data02;
                 }
-
-                Refresh();
             }
         }
 
@@ -75,11 +67,8 @@ namespace TH_DeviceTable
                 {
                     info.Available = (bool)data.Data02;
                 }
-
-                Refresh();
             }
         }
-
 
         private void UpdateStatus(EventData data, DeviceInfo info)
         {
@@ -107,13 +96,10 @@ namespace TH_DeviceTable
                     s = GetTableValue(data.Data02, "Production");
                     bool.TryParse(s, out b);
                     info.Production = b;
-
-                    Refresh();
                     
                 }), PRIORITY_BACKGROUND, new object[] { });
             }
         }
-
 
         private void UpdateOEE(EventData data, DeviceInfo info)
         {
@@ -129,12 +115,9 @@ namespace TH_DeviceTable
                         info.Oee = oeeData.Oee;
                         info.Availability = oeeData.Availability;
                         info.Performance = oeeData.Performance;
-
-                        Refresh();
                     }
                 }), PRIORITY_BACKGROUND, new object[] { });
             }
-
         }
 
         private void UpdateProductionStatus(EventData data, DeviceInfo info)
@@ -144,17 +127,16 @@ namespace TH_DeviceTable
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     info.ProductionStatus = GetTableValue(data.Data02, "Production Status");
-                    Refresh();
                 }), PRIORITY_BACKGROUND, new object[] { });
             }
 
             if (data.Id.ToLower() == "statusdata_shiftdata")
             {
-                Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(UpdateProductionStatusValue), PRIORITY_BACKGROUND, new object[] { data.Data02, info });
+                Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(UpdateProductionStatusTime), PRIORITY_BACKGROUND, new object[] { data.Data02, info });
             }
         }
 
-        void UpdateProductionStatusValue(object shiftData, DeviceInfo info)
+        private void UpdateProductionStatusTime(object shiftData, DeviceInfo info)
         {
             DataTable dt = shiftData as DataTable;
             if (dt != null)
@@ -190,8 +172,6 @@ namespace TH_DeviceTable
                             info.ProductionStatusTotal = totalSeconds;
                             info.ProductionStatusSeconds = seconds;
 
-                            Refresh();
-
                             break;
                         }
                     }
@@ -199,7 +179,34 @@ namespace TH_DeviceTable
             }
         }
 
-        static double GetTime(string columnName, DataTable dt)
+        private void UpdatePartCount(EventData data, DeviceInfo info)
+        {
+            if (data.Id.ToLower() == "statusdata_parts" && data.Data02 != null)
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var dt = data.Data02 as DataTable;
+                    if (dt != null && dt.Columns.Contains("count"))
+                    {
+                        int count = 0;
+
+                        foreach (DataRow row in dt.Rows)
+                        {
+
+                            string val = row["count"].ToString();
+
+                            int i = 0;
+                            if (int.TryParse(val, out i)) count += i;
+                        }
+
+                        info.PartCount = count;
+                    }
+                }), PRIORITY_BACKGROUND, new object[] { });
+            }
+        }
+
+
+        private static double GetTime(string columnName, DataTable dt)
         {
             double result = 0;
 

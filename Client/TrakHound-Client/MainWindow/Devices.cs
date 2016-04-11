@@ -135,7 +135,7 @@ namespace TrakHound_Client
         /// <param name="config"></param>
         private void AddDevice(Configuration config)
         {
-            Logger.Log("AddDevice() :: " + config.Description.Description);
+            Logger.Log("AddDevice() :: " + config.Description.Description, Logger.LogLineType.Debug);
 
             if (!Devices.Exists(x => x.UniqueId == config.UniqueId))
             {
@@ -154,7 +154,7 @@ namespace TrakHound_Client
         /// <param name="config"></param>
         private void UpdateDevice(Configuration config)
         {
-            Logger.Log("UpdateDevice() :: " + config.Description.Description);
+            Logger.Log("UpdateDevice() :: " + config.Description.Description, Logger.LogLineType.Debug);
 
             int index = Devices.FindIndex(x => x.UniqueId == config.UniqueId);
             if (index >= 0)
@@ -176,7 +176,7 @@ namespace TrakHound_Client
         /// <param name="config"></param>
         private void RemoveDevice(Configuration config)
         {
-            Logger.Log("RemoveDevice() :: " + config.Description.Description);
+            Logger.Log("RemoveDevice() :: " + config.Description.Description, Logger.LogLineType.Debug);
 
             var match = Devices.Find(x => x.UniqueId == config.UniqueId);
             if (match != null)

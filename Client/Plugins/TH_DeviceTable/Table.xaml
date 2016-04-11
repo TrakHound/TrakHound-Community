@@ -16,6 +16,8 @@
             <Setter Property="MinHeight" Value="30"/>
             <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
             <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -56,7 +58,7 @@
         
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-            <Setter Property="BorderThickness" Value="0,1,0,1" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
             <Setter Property="MinHeight" Value="50"/>
             <Style.Triggers>
@@ -168,6 +170,7 @@
         <DataGrid x:Name="Devices_DG" Grid.Row="1" ItemsSource="{Binding DeviceInfos}"
                   AutoGenerateColumns="False"
                   BorderBrush="Transparent"
+                  BorderThickness="0"
                   HeadersVisibility="Column"
                   VerticalAlignment="Stretch"
                   >
@@ -491,6 +494,17 @@
                                     </Style>
                                 </th_wpf:TimeProgress.Style>
                             </th_wpf:TimeProgress>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <!--Part Count-->
+                <DataGridTemplateColumn Header="Part Count">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Viewbox Margin="10">
+                                <TextBlock Text="{Binding PartCount}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </Viewbox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -38,14 +38,14 @@ namespace TH_SQLite
                         if (!File.Exists(path))
                         {
                             SQLiteConnection.CreateFile(path);
-                            Logger.Log("SQLite Database File Created : " + path);
+                            Logger.Log("SQLite Database File Created : " + path, Logger.LogLineType.Notification);
                         }
-                        else Logger.Log("SQLite Database File Found : " + path);
+                        else Logger.Log("SQLite Database File Found : " + path, Logger.LogLineType.Notification);
 
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log(ex.Message);
+                        Logger.Log(ex.Message, Logger.LogLineType.Error);
                     }
                 }
             }
@@ -68,7 +68,7 @@ namespace TH_SQLite
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log(ex.Message);
+                        Logger.Log(ex.Message, Logger.LogLineType.Error);
                     }
                 }
             }

@@ -91,6 +91,12 @@
                                     <Setter Property="Text" Value="Hide Details"/>
                                     <Setter Property="Image" Value="/TrakHound-Client;component/Resources/Forward_01.png"/>
                                 </DataTrigger>
+                                <DataTrigger Binding="{Binding ConsoleOutput.Count}" Value="0">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter Property="Foreground" Value="#33ffffff"/>
+                                </Trigger>
                             </Style.Triggers>
                         </Style>
                     </th_wpf:Button.Style>
@@ -157,7 +163,6 @@
                         <Style x:Key="DGC_Centered" TargetType="DataGridCell">
                             <Setter Property="MinHeight" Value="25"/>
                             <Setter Property="Height" Value="25"/>
-                            <!--<Setter Property="BorderThickness" Value="0,0,0,0"/>-->
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type DataGridCell}">
@@ -185,7 +190,6 @@
 
                         <!--ConsoleText CellStyle (Left Align Text)-->
                         <Style x:Key="DGC_Left" TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
-                            <!--<Setter Property="BorderThickness" Value="0,0,0,0"/>-->
                             <Setter Property="MinHeight" Value="25"/>
                             <Setter Property="Height" Value="25"/>
                             <Setter Property="Template">
@@ -217,6 +221,7 @@
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" Binding="{Binding Row}" MinWidth="50" CellStyle="{StaticResource DGC_Centered}"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" MinWidth="100" CellStyle="{StaticResource DGC_Centered}"/>
                         <DataGridTextColumn Header="Timestamp" Binding="{Binding Timestamp}" MinWidth="150" CellStyle="{StaticResource DGC_Centered}"/>
                         <DataGridTextColumn Header="Text" Binding="{Binding Text}" Width="*" CellStyle="{StaticResource DGC_Left}"/>
                     </DataGrid.Columns>
@@ -268,6 +273,22 @@
                             <TextBlock Text="Details" Foreground="{StaticResource Foreground_Opposite_Normal}" Margin="10" />
 
                             <Rectangle Fill="#33ffffff" Height="1" Margin="10,0"/>
+
+                            <!--Type-->
+                            <Grid Margin="10" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Type" Foreground="#88ffffff" />
+
+                                <Rectangle Grid.Column="1" Fill="#33ffffff" Width="1" Margin="0,5"/>
+
+                                <TextBlock Grid.Column="2" Text="{Binding SelectedLine.Type}" FontWeight="Bold" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Left" TextWrapping="Wrap"/>
+
+                            </Grid>
 
                             <!--Text-->
                             <Grid Margin="10" HorizontalAlignment="Stretch">

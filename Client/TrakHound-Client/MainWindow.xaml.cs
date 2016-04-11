@@ -24,7 +24,7 @@ namespace TrakHound_Client
             init();
         }
 
-        private const int DEFAULT_ANIMATION_FRAMERATE = 30;
+        private const int DEFAULT_ANIMATION_FRAMERATE = 40;
 
         public const System.Windows.Threading.DispatcherPriority PRIORITY_BACKGROUND = System.Windows.Threading.DispatcherPriority.Background;
         public const System.Windows.Threading.DispatcherPriority PRIORITY_CONTEXT_IDLE = System.Windows.Threading.DispatcherPriority.ContextIdle;
@@ -73,8 +73,7 @@ namespace TrakHound_Client
             WelcomeMessage();
             CheckVersion();
 
-            //// Wait for the minimum splash time to elapse, then close the splash dialog
-            ////while (SplashWait) { System.Threading.Thread.Sleep(200); }
+            // Wait for the minimum splash time to elapse, then close the splash dialog
             Splash_Close();
 
             ServerMonitor_Initialize();

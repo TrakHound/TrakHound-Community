@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Data;
-
-using TH_Global;
 
 using TH_DevicePage.Controls.Controller;
 
@@ -98,7 +95,6 @@ namespace TH_DevicePage.Data.Controller
 
 
         }
-
 
 
     }

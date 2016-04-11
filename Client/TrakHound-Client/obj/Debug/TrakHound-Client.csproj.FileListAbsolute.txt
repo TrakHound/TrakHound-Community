@@ -86,3 +86,5 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.baml

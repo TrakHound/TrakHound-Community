@@ -18,9 +18,15 @@ namespace TH_Global
         public static string AppData = TrakHound + @"\appdata";
         public static string Databases = TrakHound + @"\Databases";
         public static string Devices = TrakHound + @"\Devices";
-        public static string Logs = TrakHound + @"\Logs";
         public static string Plugins = TrakHound + @"\Plugins";
         public static string Updates = TrakHound + @"\Updates";
+
+        // Logging
+        public static string Logs = TrakHound + @"\Logs";
+        public static string DebugLogs = Logs + @"\Debug";
+        public static string ErrorLogs = Logs + @"\Error";
+        public static string NotificationLogs = Logs + @"\Notification";
+        public static string WarningLogs = Logs + @"\Warning";
 
         public static void CreateAllDirectories()
         {
@@ -32,22 +38,29 @@ namespace TH_Global
             CreateUpdatesDirectory();
         }
 
-        public static void CreateAppDataDirectory() { CreateDirectory(AppData); }
+        public static void CreateAppDataDirectory() { CreateDirectory(AppData, true); }
         public static void CreateDatabasesDirectory() { CreateDirectory(Databases); }
         public static void CreateDevicesDirectory() { CreateDirectory(Devices); }
-        public static void CreateLogsDirectory() { CreateDirectory(Logs); }
+        public static void CreateLogsDirectory()
+        {
+            CreateDirectory(Logs);
+            CreateDirectory(DebugLogs);
+            CreateDirectory(ErrorLogs);
+            CreateDirectory(NotificationLogs);
+            CreateDirectory(WarningLogs);
+        }
         public static void CreatePluginsDirectory() { CreateDirectory(Plugins); }
-        public static void CreateUpdatesDirectory() { CreateDirectory(Updates); }
+        public static void CreateUpdatesDirectory() { CreateDirectory(Updates, true); }
 
 
-        private static void CreateDirectory(string path)
+        private static void CreateDirectory(string path, bool hidden = false)
         {
             try
             {
                 if (!Directory.Exists(path))
                 {
                     DirectoryInfo info = Directory.CreateDirectory(path);
-                    info.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
+                    if (hidden) info.Attributes = FileAttributes.Directory | FileAttributes.Hidden;
                 }
             }
             catch (Exception ex)

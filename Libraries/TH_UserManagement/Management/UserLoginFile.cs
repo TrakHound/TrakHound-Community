@@ -16,8 +16,8 @@ namespace TH_UserManagement.Management
         {
             bool result = false;
 
-            TH_Global.FileLocations.CreateAppDataDirectory();
-            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+            FileLocations.CreateAppDataDirectory();
+            string path = FileLocations.AppData + @"\nigolresu";
 
             Remove(path);
 
@@ -40,12 +40,12 @@ namespace TH_UserManagement.Management
         {
             LoginData result = null;
 
-            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+            string path = FileLocations.AppData + @"\nigolresu";
             if (File.Exists(path))
             {
                 try
                 {
-                    XmlDocument xml = new XmlDocument();
+                    var xml = new XmlDocument();
                     xml.Load(path);
 
                     string username = XML_Functions.GetInnerText(xml, "Username");
@@ -90,7 +90,7 @@ namespace TH_UserManagement.Management
 
         public static void Remove()
         {
-            string path = TH_Global.FileLocations.AppData + @"\nigolresu";
+            string path = FileLocations.AppData + @"\nigolresu";
             Remove(path);
         }
 
@@ -101,12 +101,12 @@ namespace TH_UserManagement.Management
 
         private static void WriteDocument(XmlDocument doc, string path)
         {
-            XmlWriterSettings settings = new XmlWriterSettings();
+            var settings = new XmlWriterSettings();
             settings.Indent = false;
 
             try
             {
-                using (XmlWriter writer = XmlWriter.Create(path, settings))
+                using (var writer = XmlWriter.Create(path, settings))
                 {
                     doc.Save(writer);
                 }

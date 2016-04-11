@@ -61,7 +61,7 @@ namespace TH_SQLite
             config.UniqueId = GetUniqueId(c);
             config.Configuration = c;
 
-            Logger.Log(Type + " Successfully Initialized : " + GetDatabasePath(c));
+            Logger.Log(Type + " Successfully Initialized : " + GetDatabasePath(c), Logger.LogLineType.Notification);
         }
 
         public bool Ping(object settings, out string msg)
@@ -125,12 +125,12 @@ namespace TH_SQLite
                 }
                 catch (SQLiteException sqex)
                 {
-                    Logger.Log("SQLiteException :: " + sqex.Message);
+                    Logger.Log("SQLiteException :: " + sqex.Message, Logger.LogLineType.Error);
                     if (typeof(T) == typeof(bool)) result = false;
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception :: " + ex.Message);
+                    Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error);
                     if (typeof(T) == typeof(bool)) result = false;
                 }
                 finally
@@ -176,7 +176,7 @@ namespace TH_SQLite
             if (typeof(T) == typeof(Int64))
             {
                 object o = command.ExecuteScalar();
-                var val = (Int64)(-1);
+                Int64 val = -1;
                 if (o != null) Int64.TryParse(o.ToString(), out val);
                 result = val;
             }

@@ -9,7 +9,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             Width="800"
+             MaxWidth="800"
              >
 
     <StackPanel>
@@ -79,42 +79,6 @@
             </Border>
 
         </Grid>
-
-        <!--Usage Info-->
-        <!--<Grid Margin="5,10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-
-            <TextBlock Text="Usage Information" FontSize="12" Foreground="{StaticResource Foreground_Light}"/>
-
-            <Border Grid.Row="1" Margin="0,5" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2">
-
-                <StackPanel Margin="10,10">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Margin" Value="5"/>
-                        </Style>
-                    </StackPanel.Resources>
-
-                    <TextBlock>
-                        <Run Text="Current Memory Usage : " Foreground="{StaticResource Foreground_Light}"/>
-                        <Run Text="{Binding Usage_MemoryUsed}" Foreground="{StaticResource Foreground_Normal}"/>
-                    </TextBlock>
-
-                    <TextBlock>
-                        <Run Text="Most Memory Used : " Foreground="{StaticResource Foreground_Light}"/>
-                        <Run Text="{Binding Usage_MostMemoryUsed_Value}" Foreground="{StaticResource Foreground_Normal}"/>
-                        <Run Text="@" Foreground="{StaticResource Foreground_Light}" FontSize="10"/>
-                        <Run Text="{Binding Usage_MostMemoryUsed_Date}" Foreground="{StaticResource Foreground_Light}" FontSize="10"/>
-                    </TextBlock>
-
-                </StackPanel>
-
-            </Border>
-
-        </Grid>-->
 
     </StackPanel>
     

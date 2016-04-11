@@ -6,57 +6,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Xml;
 
 using TH_Global.Functions;
 
-namespace System.Runtime.CompilerServices
-{
-    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
-    public sealed class CallerMemberNameAttribute : Attribute
-    {
-    }
-
-    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
-    public sealed class CallerFilePathAttribute : Attribute
-    {
-    }
-
-    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
-    public sealed class CallerLineNumberAttribute : Attribute
-    {
-    }
-}
-
 namespace TH_Global
 {
-    public class LogWriter : TextWriter
-    {
-        public delegate void Updated_Handler(string newline);
-        public event Updated_Handler Updated;
-
-        public override Encoding Encoding
-        {
-            get { return Encoding.ASCII; }
-        }
-
-        public override void Write(char value)
-        {
-            if (Updated != null) Updated(value.ToString());
-        }
-
-        public override void Write(string value)
-        {
-            if (Updated != null) Updated(value);
-        }
-
-        public override void WriteLine(string value)
-        {
-            if (Updated != null) Updated(value);
-        }
-    }
 
     public static class Logger
     {
@@ -75,17 +32,17 @@ namespace TH_Global
         /// <param name="file"></param>
         /// <param name="member"></param>
         /// <param name="lineNumber"></param>
-        public static void Log(string text, [CallerFilePath] string filename = "", [CallerMemberName] string member = "", [CallerLineNumber] int lineNumber = 0)
+        public static void Log(string text, LogLineType type = LogLineType.Notification, [CallerFilePath] string filename = "", [CallerMemberName] string member = "", [CallerLineNumber] int lineNumber = 0)
         {
             string[] lines = text.Split(new string[] { "\r\n", "\n", Environment.NewLine }, StringSplitOptions.None);
             foreach (var line in lines)
             {
                 var queueLine = new Line();
                 queueLine.Text = line;
-
+                queueLine.Type = type;
                 queueLine.Timestamp = DateTime.Now;
 
-                var assembly = System.Reflection.Assembly.GetCallingAssembly();
+                var assembly = Assembly.GetCallingAssembly();
 
                 queueLine.Assembly = assembly.FullName;
                 queueLine.Filename = filename;
@@ -97,18 +54,23 @@ namespace TH_Global
             }  
         }
 
-        public static void ReadOutputLog()
-        {
-
-
-
-        }
-
         public static string ReadOutputLogText(string applicationName, DateTime timestamp)
         {
             string result = null;
 
-            XmlNode[] nodes = ReadOutputLogXml(applicationName, timestamp);
+            result += ReadOutputLogText(LogLineType.Debug, applicationName, timestamp);
+            result += ReadOutputLogText(LogLineType.Error, applicationName, timestamp);
+            result += ReadOutputLogText(LogLineType.Notification, applicationName, timestamp);
+            result += ReadOutputLogText(LogLineType.Warning, applicationName, timestamp);
+
+            return result;
+        }
+
+        private static string ReadOutputLogText(LogLineType type, string applicationName, DateTime timestamp)
+        {
+            string result = null;
+
+            XmlNode[] nodes = ReadOutputLogXml(type, applicationName, timestamp);
             if (nodes != null)
             {
                 result = "";
@@ -133,11 +95,19 @@ namespace TH_Global
             return result;
         }
 
-        public static XmlNode[] ReadOutputLogXml(string applicationName, DateTime timestamp)
+        public static XmlNode[] ReadOutputLogXml(LogLineType type, string applicationName, DateTime timestamp)
         {
             XmlNode[] result = null;
 
-            string path = FileLocations.Logs + @"\Log-" + FormatDate(DateTime.Now) + ".xml";
+            string path = @"\Log-" + FormatDate(DateTime.Now) + ".xml";
+
+            switch (type)
+            {
+                case LogLineType.Debug: path = FileLocations.DebugLogs + path; break;
+                case LogLineType.Error: path = FileLocations.ErrorLogs + path; break;
+                case LogLineType.Notification: path = FileLocations.NotificationLogs + path; break;
+                case LogLineType.Warning: path = FileLocations.WarningLogs + path; break;
+            }
 
             try
             {
@@ -180,12 +150,41 @@ namespace TH_Global
             return result;
         }
 
+        public enum LogLineType
+        {
+            /// <summary>
+            /// Used for debugging only, Shows detailed information
+            /// </summary>
+            Debug,
+
+            /// <summary>
+            /// Used to show warninig information (ex. 'Could not find file' when method continues anyways)
+            /// </summary>
+            Warning,
+
+            /// <summary>
+            /// Used to show error information (ex. a feature will not work because of this error)
+            /// </summary>
+            Error,
+
+            /// <summary>
+            /// Used to show notification information (ex. a feature has started)
+            /// </summary>
+            Notification,
+
+            /// <summary>
+            /// Used to only write to the console
+            /// </summary>
+            Console,
+        }
+
         public class Line
         {
             public Int64 Row { get; set; }
 
-            public string Text { get; set; }
+            public LogLineType Type { get; set; }
 
+            public string Text { get; set; }
             public DateTime Timestamp { get; set; }
 
             public string Assembly { get; set; }
@@ -223,11 +222,17 @@ namespace TH_Global
         {
             public string AppicationName { get; set; }
 
-            private DateTime previousTimestamp = DateTime.MinValue;
+            private DateTime lastDebugTimestamp = DateTime.MinValue;
+            private DateTime lastErrorTimestamp = DateTime.MinValue;
+            private DateTime lastNotificationTimestamp = DateTime.MinValue;
+            private DateTime lastWarningTimestamp = DateTime.MinValue;
 
             public LogReader(string applicationName, DateTime StartTimestamp)
             {
-                previousTimestamp = StartTimestamp;
+                lastDebugTimestamp = StartTimestamp;
+                lastErrorTimestamp = StartTimestamp;
+                lastNotificationTimestamp = StartTimestamp;
+                lastWarningTimestamp = StartTimestamp;
 
                 Init(applicationName);
             }
@@ -241,27 +246,78 @@ namespace TH_Global
             {
                 AppicationName = applicationName;
 
-                var watcher = new FileSystemWatcher(FileLocations.Logs);
-                watcher.Changed += Watcher_Changed;
-                watcher.EnableRaisingEvents = true;
+                FileLocations.CreateLogsDirectory();
+
+                // Debug Watcher
+                var debugWatcher = new FileSystemWatcher(FileLocations.DebugLogs);
+                debugWatcher.Changed += DebugWatcher_Changed;
+                debugWatcher.EnableRaisingEvents = true;
+
+                // Error Watcher
+                var errorWatcher = new FileSystemWatcher(FileLocations.ErrorLogs);
+                errorWatcher.Changed += ErrorWatcher_Changed;
+                errorWatcher.EnableRaisingEvents = true;
+
+                // Notification Watcher
+                var notificationWatcher = new FileSystemWatcher(FileLocations.NotificationLogs);
+                notificationWatcher.Changed += NotificationWatcher_Changed;
+                notificationWatcher.EnableRaisingEvents = true;
+
+                // Warning Watcher
+                var warningWatcher = new FileSystemWatcher(FileLocations.WarningLogs);
+                warningWatcher.Changed += WarningWatcher_Changed;
+                warningWatcher.EnableRaisingEvents = true;
             }
 
-            private void Watcher_Changed(object sender, FileSystemEventArgs e)
+            private void DebugWatcher_Changed(object sender, FileSystemEventArgs e)
             {
-                if (e.ChangeType == WatcherChangeTypes.Changed)
-                {
-                    var nodes = ReadOutputLogXml(AppicationName, previousTimestamp);
-                    if (nodes != null)
-                    {
-                        foreach (var node in nodes)
-                        {
-                            var line = Line.FromXmlNode(node);
-                            previousTimestamp = line.Timestamp;
-                            if (LineAdded != null) LineAdded(line);
-                        }
-                    }
+                if (e.ChangeType == WatcherChangeTypes.Changed) ReadChanged(LogLineType.Debug);
+            }
 
-                    
+            private void ErrorWatcher_Changed(object sender, FileSystemEventArgs e)
+            {
+                if (e.ChangeType == WatcherChangeTypes.Changed) ReadChanged(LogLineType.Error);
+            }
+
+            private void NotificationWatcher_Changed(object sender, FileSystemEventArgs e)
+            {
+                if (e.ChangeType == WatcherChangeTypes.Changed) ReadChanged(LogLineType.Notification);
+            }
+
+            private void WarningWatcher_Changed(object sender, FileSystemEventArgs e)
+            {
+                if (e.ChangeType == WatcherChangeTypes.Changed) ReadChanged(LogLineType.Warning);
+            }
+
+            private void ReadChanged(LogLineType type)
+            {
+                DateTime time = DateTime.MinValue;
+                switch (type)
+                {
+                    case LogLineType.Debug: time = lastDebugTimestamp; break;
+                    case LogLineType.Error: time = lastErrorTimestamp; break;
+                    case LogLineType.Notification: time = lastNotificationTimestamp; break;
+                    case LogLineType.Warning: time = lastWarningTimestamp; break;
+                }
+
+                var nodes = ReadOutputLogXml(type, AppicationName, time);
+                if (nodes != null)
+                {
+                    foreach (var node in nodes)
+                    {
+                        var line = Line.FromXmlNode(node);
+
+                        switch (type)
+                        {
+                            case LogLineType.Debug: lastDebugTimestamp = line.Timestamp; break;
+                            case LogLineType.Error: time = lastErrorTimestamp = line.Timestamp; break;
+                            case LogLineType.Notification: time = lastNotificationTimestamp = line.Timestamp; break;
+                            case LogLineType.Warning: time = lastWarningTimestamp = line.Timestamp; break;
+                        }
+
+                        line.Type = type;
+                        if (LineAdded != null) LineAdded(line);
+                    }
                 }
             }
 
@@ -278,9 +334,7 @@ namespace TH_Global
 
         static string FormatTimestamp(DateTime date)
         {
-            //return String.Format(@"yyyy-MM-ddTHH\:mm\:ss.fffffffzzz", date);
             return date.ToString(@"yyyy-MM-ddTHH\:mm\:ss.fffffffzzz");
-            //return date.ToString("s", System.Globalization.CultureInfo.InvariantCulture);
         }
         
 
@@ -293,46 +347,41 @@ namespace TH_Global
 
             private List<Line> queue;
 
+            private LoggerConfiguration configuration;
+
             public LogQueue()
             {
+                configuration = LoggerConfiguration.Read();
+
                 queue = new List<Line>();
 
                 queue_TIMER = new System.Timers.Timer();
-                queue_TIMER.Interval = 5000;
+                queue_TIMER.Interval = Math.Max(500, configuration.QueueWriteInterval);
                 queue_TIMER.Elapsed += queue_TIMER_Elapsed;
                 queue_TIMER.Enabled = true;
             }
 
-            public void AddLineToQueue(Line line) { queue.Add(line); }
-
-            void queue_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+            private void queue_TIMER_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
             {
-                if (queue != null && queue.Count > 0)
-                {
-                    try
-                    {
-                        FileLocations.CreateLogsDirectory();
-
-                        string path = FileLocations.Logs + @"\Log-" + FormatDate(DateTime.Now) + ".xml";
-
-                        // Create Log (XmlDocument)
-                        XmlDocument doc = CreateDocument(path);
-
-                        Line[] lines = queue.ToArray();
-                        foreach (Line line in lines)
-                        {
-                            AddToLog(doc, line);
-                        }
-
-                        WriteDocument(doc, path);
-
-                        queue.Clear();
-                    }
-                    catch (Exception ex) { Console.WriteLine("Logger.queue_TIMER_Elapsed() :: Exception :: " + ex.Message); }
-                }
+                ProcessQueue();
             }
 
-            void AddToLog(XmlDocument doc, Line line)
+
+            public void AddLineToQueue(Line line)
+            {
+                bool add = false;
+                switch(line.Type)
+                {
+                    case LogLineType.Debug: add = configuration.Debug; break;
+                    case LogLineType.Error: add = configuration.Error; break;
+                    case LogLineType.Notification: add = configuration.Notification; break;
+                    case LogLineType.Warning: add = configuration.Warning; break;
+                }
+
+                if (add) queue.Add(line);
+            }
+
+            private void AddToLog(XmlDocument doc, Line line)
             {
                 string appName = Logger.AppicationName;
                 if (appName == null) appName = Path.GetFileNameWithoutExtension(AppDomain.CurrentDomain.FriendlyName);
@@ -353,7 +402,7 @@ namespace TH_Global
                 appNameNode.AppendChild(lineNode);
             }
 
-            static XmlNode CreateLineNode(XmlDocument doc, Line line)
+            private static XmlNode CreateLineNode(XmlDocument doc, Line line)
             {
                 XmlNode itemNode = doc.CreateElement("Line");
 
@@ -382,7 +431,60 @@ namespace TH_Global
                 return itemNode;
             }
 
-            static void WriteDocument(XmlDocument doc, string path)
+
+            private void ProcessQueue()
+            {
+                if (queue != null && queue.Count > 0)
+                {
+                    try
+                    {
+                        FileLocations.CreateLogsDirectory();
+
+                        ProcessQueue(LogLineType.Debug);
+                        ProcessQueue(LogLineType.Error);
+                        ProcessQueue(LogLineType.Notification);
+                        ProcessQueue(LogLineType.Warning);
+
+                        queue.Clear();
+                    }
+                    catch (Exception ex) { Console.WriteLine("ProcessQueue() :: Exception :: " + ex.Message); }
+                }
+            }
+
+            private void ProcessQueue(LogLineType type)
+            {
+                var lines = queue.FindAll(x => x.Type == type);
+                if (lines != null && lines.Count > 0)
+                {
+                    try
+                    {
+                        FileLocations.CreateLogsDirectory();
+
+                        string path = @"\Log-" + FormatDate(DateTime.Now) + ".xml";
+
+                        switch (type)
+                        {
+                            case LogLineType.Debug: path = FileLocations.DebugLogs + path; break;
+                            case LogLineType.Error: path = FileLocations.ErrorLogs + path; break;
+                            case LogLineType.Notification: path = FileLocations.NotificationLogs + path; break;
+                            case LogLineType.Warning: path = FileLocations.WarningLogs + path; break;
+                        }
+
+                        // Create Log (XmlDocument)
+                        XmlDocument doc = CreateDocument(path);
+
+                        foreach (Line line in lines)
+                        {
+                            AddToLog(doc, line);
+                        }
+
+                        WriteDocument(doc, path);
+                    }
+                    catch (Exception ex) { Console.WriteLine("ProcessQueue(LogLineType) :: Exception :: " + type.ToString() + " :: " + ex.Message); }
+                }
+            }
+
+            private static void WriteDocument(XmlDocument doc, string path)
             {
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
@@ -400,14 +502,14 @@ namespace TH_Global
                 catch (Exception ex) { Console.WriteLine("Logger.WriteDocument() :: Exception :: " + ex.Message); }
             }
 
-            static XmlDocument CreateDocument(string LogFile)
+            private static XmlDocument CreateDocument(string LogFile)
             {
-                XmlDocument Result = new XmlDocument();
+                var result = new XmlDocument();
 
                 if (!File.Exists(LogFile))
                 {
-                    XmlNode docNode = Result.CreateXmlDeclaration("1.0", "UTF-8", null);
-                    Result.AppendChild(docNode);
+                    XmlNode docNode = result.CreateXmlDeclaration("1.0", "UTF-8", null);
+                    result.AppendChild(docNode);
 
                     FileLocations.CreateLogsDirectory();
                 }
@@ -415,15 +517,15 @@ namespace TH_Global
                 {
                     try
                     {
-                        Result.Load(LogFile);
+                        result.Load(LogFile);
                     }
                     catch (Exception ex) { Console.WriteLine("Logger.CreateDocument() :: Exception :: " + ex.Message); }
                 }
 
-                return Result;
+                return result;
             }
 
-            static XmlNode CreateRoot(XmlDocument doc)
+            private static XmlNode CreateRoot(XmlDocument doc)
             {
                 XmlNode result;
 
@@ -445,8 +547,257 @@ namespace TH_Global
                 return result;
             }
 
+
+            private void StartConfigurationFileWatcher()
+            {
+                var watcher = new FileSystemWatcher(FileLocations.TrakHound, LoggerConfiguration.CONFIG_FILENAME);
+                watcher.Changed += Watcher_Changed;
+                watcher.EnableRaisingEvents = true;
+            }
+
+            private void Watcher_Changed(object sender, FileSystemEventArgs e)
+            {
+                configuration = LoggerConfiguration.Read();
+            }
+
+
+            public void CleanFiles()
+            {
+                if (configuration != null)
+                {
+                    CleanFiles(configuration.KeepDebugDays, LogLineType.Debug);
+                    CleanFiles(configuration.KeepErrorDays, LogLineType.Error);
+                    CleanFiles(configuration.KeepErrorDays, LogLineType.Notification);
+                    CleanFiles(configuration.KeepWarningDays, LogLineType.Warning);
+                }
+            }
+
+            private static void CleanFiles(int days, LogLineType type)
+            {
+                string path = null;
+                switch (type)
+                {
+                    case LogLineType.Debug: path = FileLocations.DebugLogs; break;
+                    case LogLineType.Error: path = FileLocations.ErrorLogs; break;
+                    case LogLineType.Notification: path = FileLocations.NotificationLogs; break;
+                    case LogLineType.Warning: path = FileLocations.WarningLogs; break;
+                }
+
+                if (days == 0)
+                {
+                    // Delete everything
+                    if (path != null && !Directory.Exists(path)) Directory.Delete(path, true);
+                }
+                else
+                {
+                    // Only delete files older than the days set in parameter
+                    DateTime threshold = DateTime.Now - TimeSpan.FromDays(days);
+
+                    if (path != null && Directory.Exists(path))
+                    {
+                        string[] filePaths = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+                        if (filePaths.Length > 0)
+                        {
+                            foreach (var filePath in filePaths)
+                            {
+                                var fileInfo = new FileInfo(filePath);
+                                if (fileInfo != null)
+                                {
+                                    if (fileInfo.LastWriteTime < threshold) File.Delete(filePath);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public class LoggerConfiguration
+        {
+            public LoggerConfiguration()
+            {
+                QueueWriteInterval = 5000;
+
+                Debug = false;
+                Error = true;
+                Notification = true;
+                Warning = false;
+                
+                KeepDebugDays = 2;
+                KeepErrorDays = 14;
+                KeepNotificationDays = 1;
+                KeepWarningDays = 7;
+            }
+
+            /// <summary>
+            /// Sets the interval (in ms) that the queue writes to the log file (Minimum is 500ms)
+            /// </summary>
+            public int QueueWriteInterval { get; set; }
+
+
+            /// <summary>
+            /// Toggle Debug data collection On/Off
+            /// </summary>
+            public bool Debug { get; set; }
+
+            /// <summary>
+            /// Toggle Error data collection On/Off
+            /// </summary>
+            public bool Error { get; set; }
+
+            /// <summary>
+            /// Toggle Notification data collection On/Off
+            /// </summary>
+            public bool Notification { get; set; }
+
+            /// <summary>
+            /// Toggle Warning data collection On/Off
+            /// </summary>
+            public bool Warning { get; set; }
+
+
+            /// <summary>
+            /// Set number of days to keep Debug files
+            /// </summary>
+            public int KeepDebugDays { get; set; }
+
+            /// <summary>
+            /// Set number of days to keep Error files
+            /// </summary>
+            public int KeepErrorDays { get; set; }
+
+            /// <summary>
+            /// Set number of days to keep Notification files
+            /// </summary>
+            public int KeepNotificationDays { get; set; }
+
+            /// <summary>
+            /// Set number of days to keep Warning files
+            /// </summary>
+            public int KeepWarningDays { get; set; }
+
+
+            #region "Configuration File"
+
+            public const string CONFIG_FILENAME = "logger_config.xml";
+            public static string CONFIG_FILEPATH = FileLocations.TrakHound + @"\" + CONFIG_FILENAME;
+
+
+            public static bool Create(LoggerConfiguration config)
+            {
+                bool result = false;
+
+                Remove();
+
+                if (config != null)
+                {
+                    var xml = CreateDocument(config);
+                    WriteDocument(xml, CONFIG_FILEPATH);
+                }
+
+                return result;
+            }
+
+            public static LoggerConfiguration Read()
+            {
+                var result = new LoggerConfiguration();
+
+                if (File.Exists(CONFIG_FILEPATH))
+                {
+                    try
+                    {
+                        var xml = new XmlDocument();
+                        xml.Load(CONFIG_FILEPATH);
+
+                        foreach (XmlNode node in xml.DocumentElement.ChildNodes)
+                        {
+                            if (node.NodeType == XmlNodeType.Element)
+                            {
+                                if (node.InnerText != "")
+                                {
+                                    Type Settings = typeof(LoggerConfiguration);
+                                    PropertyInfo info = Settings.GetProperty(node.Name);
+
+                                    if (info != null)
+                                    {
+                                        Type t = info.PropertyType;
+                                        info.SetValue(result, Convert.ChangeType(node.InnerText, t), null);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+                }
+
+                return result;
+            }
+
+            public static void Remove()
+            {
+                if (File.Exists(CONFIG_FILEPATH)) File.Delete(CONFIG_FILEPATH);
+            }
+
+
+            private static XmlDocument CreateDocument(LoggerConfiguration config)
+            {
+                var result = new XmlDocument();
+
+                XmlNode docNode = result.CreateXmlDeclaration("1.0", "UTF-8", null);
+                result.AppendChild(docNode);
+
+                XmlNode root = result.CreateElement("LoggerConfiguration");
+                result.AppendChild(root);
+
+                foreach (var info in typeof(LoggerConfiguration).GetProperties())
+                {
+                    XmlNode node = result.CreateElement(info.Name);
+                    var val = info.GetValue(config, new object[] { });
+                    if (val != null) node.InnerText = val.ToString();
+                    root.AppendChild(node);
+                }
+
+                return result;
+            }
+
+            private static void WriteDocument(XmlDocument doc, string path)
+            {
+                var settings = new XmlWriterSettings();
+                settings.Indent = false;
+
+                try
+                {
+                    using (var writer = XmlWriter.Create(path, settings))
+                    {
+                        doc.Save(writer);
+                    }
+                }
+                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
+            }
+
+            #endregion
+
         }
 
     }
 
+}
+
+// Used to enable autofilling parameter for CallerMemberName, CallerFilePath, and CallerLineNumber in .NET 4.0 (built in for .NET 4.5)
+namespace System.Runtime.CompilerServices
+{
+    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
+    public sealed class CallerMemberNameAttribute : Attribute
+    {
+    }
+
+    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
+    public sealed class CallerFilePathAttribute : Attribute
+    {
+    }
+
+    [AttributeUsageAttribute(AttributeTargets.Parameter, Inherited = false)]
+    public sealed class CallerLineNumberAttribute : Attribute
+    {
+    }
 }

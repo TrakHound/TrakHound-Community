@@ -199,7 +199,7 @@ namespace TrakHound_Client.Controls
         #region "Closing"
 
         const double TAB_CLOSING_ANIMATION_TIME = 300;
-        const double SPACE_CLOSING_ANIMATION_TIME = 500;
+        const double SPACE_CLOSING_ANIMATION_TIME = 300;
 
         double spaceWidth = 0;
 

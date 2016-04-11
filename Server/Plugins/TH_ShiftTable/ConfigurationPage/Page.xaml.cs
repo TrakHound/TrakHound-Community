@@ -88,7 +88,7 @@ namespace TH_ShiftTable.ConfigurationPage
 
         public List<Shift> shifts;
 
-        static List<Shift> GetShifts(DataTable dt)
+        public static List<Shift> GetShifts(DataTable dt)
         {
             List<Shift> result = new List<Shift>();
 

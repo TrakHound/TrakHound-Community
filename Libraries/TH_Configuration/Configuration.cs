@@ -23,6 +23,8 @@ namespace TH_Configuration
     public class Configuration : IComparable, INotifyPropertyChanged
     {
         /// <summary>
+        /// *** IN PROGRESS :: 4-9-16 *** NOT FULLY IMPLENETED YET
+        /// 
         /// Each property must also change the ConfigurationXML to match the change.
         /// This will keep the xml and object synced
         /// 

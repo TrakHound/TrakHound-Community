@@ -9,11 +9,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             Width="800"
+             MaxWidth="800"
              mc:Ignorable="d" 
              d:DesignHeight="300">
 
-    <Grid MaxWidth="800">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -39,7 +39,7 @@
         <TextBlock Grid.Row="1" Margin="0,0,0,20" FontSize="12" FontWeight="Bold" Foreground="{StaticResource Foreground_Normal}" VerticalAlignment="Center" TextWrapping="Wrap" 
                        Text="Note that plugins may be licensed differently than TrakHound itself."/>
 
-        <TextBlock Grid.Row="2" Text="{Binding LicenseText}" Foreground="{StaticResource Foreground_Normal}"/>
+        <TextBlock Grid.Row="2" Text="{Binding LicenseText}" TextWrapping="Wrap" Foreground="{StaticResource Foreground_Normal}"/>
         
     </Grid>
     

@@ -102,7 +102,6 @@
     <Compile Include="MainWindow\Plugins.cs" />
     <Compile Include="MainWindow\Server Management.cs" />
     <Compile Include="MainWindow\SplashScreen.cs" />
-    <Compile Include="MainWindow\Updates.cs" />
     <Compile Include="MainWindow\Users.cs" />
     <Compile Include="MainWindow\WelcomeMessage.cs" />
     <Compile Include="MainWindow\Window.cs" />
@@ -159,6 +158,9 @@
       <DependentUpon>Notification_Item.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Options\General\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Options\Logger\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Plugins\Installed\ListItem.xaml.cs">
@@ -268,6 +270,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Options\General\Page.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Options\Logger\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

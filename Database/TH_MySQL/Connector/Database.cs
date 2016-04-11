@@ -55,7 +55,7 @@ namespace TH_MySQL.Connector
                 }
                 catch (MySqlException ex)
                 {
-                    Logger.Log(ex.Message);
+                    Logger.Log(ex.Message, Logger.LogLineType.Error);
                 }
                 catch (Exception ex) { }
             }
@@ -106,7 +106,7 @@ namespace TH_MySQL.Connector
                 }
                 catch (MySqlException ex)
                 {
-                    Logger.Log(ex.Message);
+                    Logger.Log(ex.Message, Logger.LogLineType.Error);
                 }
                 catch (Exception ex) { }
             }

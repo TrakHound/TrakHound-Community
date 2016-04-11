@@ -610,18 +610,25 @@ namespace TrakHound_Client
 
         #region "Options"
 
-        //PageManager optionsManager;
+        public PageManager optionsManager;
 
-        //void Options_Initialize()
-        //{
-        //    //optionsManager = new PageManager();
-        //    //optionsManager.AddPage(new Pages.Options.Updates.Page());
-        //}
+        void Options_Initialize()
+        {
+            if (optionsManager == null)
+            {
+                optionsManager = new PageManager();
+                optionsManager.TabTitle = "Options";
+                optionsManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png"));
+                optionsManager.AddPage(new Pages.Options.Logger.Page());
+            }
+        }
 
-        //public void Options_Open()
-        //{
-        //    //AddPageAsTab(optionsManager, "Options", new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png")));
-        //}
+        public void Options_Open()
+        {
+            Options_Initialize();
+
+            AddTab(optionsManager);
+        }
 
         #endregion
 

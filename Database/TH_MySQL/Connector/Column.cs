@@ -56,9 +56,12 @@ namespace TH_MySQL.Connector
                 }
                 catch (MySql.Data.MySqlClient.MySqlException ex)
                 {
-                    Logger.Log(ex.Message);
+                    Logger.Log("MySqlException :: " + ex.Message, Logger.LogLineType.Error);
                 }
-                catch (Exception ex) { }
+                catch (Exception ex)
+                {
+                    Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error);
+                }
             }
 
             return Result;
@@ -104,9 +107,14 @@ namespace TH_MySQL.Connector
 
                     success = true;
                 }
-                catch (MySqlException ex) { }
-
-                catch (Exception ex) { }
+                catch (MySql.Data.MySqlClient.MySqlException ex)
+                {
+                    Logger.Log("MySqlException :: " + ex.Message, Logger.LogLineType.Error);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error);
+                }
             }
 
             return Result;

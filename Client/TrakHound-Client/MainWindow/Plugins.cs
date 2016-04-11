@@ -118,6 +118,11 @@ namespace TrakHound_Client
             path = AppDomain.CurrentDomain.BaseDirectory;
             if (Directory.Exists(path)) AddPlugins(GetPlugins(path), result);
 
+            foreach (var plugin in result)
+            {
+                TH_Global.Logger.Log(plugin.Title + " Loaded", TH_Global.Logger.LogLineType.Notification);
+            }
+
             return result;
         }
 

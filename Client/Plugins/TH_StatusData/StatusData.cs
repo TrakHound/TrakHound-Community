@@ -176,7 +176,7 @@ namespace TH_StatusData
             bool ping = TH_Database.Global.Ping(config, out msg);
 
             if (ping) { result = true; }
-            else Logger.Log("CheckDatabaseConnection() :: Error :: " + config.Type + " :: " + config.UniqueId + " :: " + msg);
+            else Logger.Log("CheckDatabaseConnection() :: Error :: " + config.Type + " :: " + config.UniqueId + " :: " + msg, Logger.LogLineType.Error);
 
             return result;
         }
@@ -368,8 +368,6 @@ namespace TH_StatusData
             if (val != null) bool.TryParse(val, out available);
             // If not found in table, assume that it is available (for compatibility purposes)
             else available = true;
-
-            //Logger.Log(config.UniqueId + " : Available = " + available.ToString());
 
             var result = new EventData();
             result.Id = "StatusData_Availability";

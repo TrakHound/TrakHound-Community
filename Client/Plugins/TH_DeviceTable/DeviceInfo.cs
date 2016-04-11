@@ -246,6 +246,22 @@ namespace TH_DeviceTable
 
         #endregion
 
+        #region "Part Count"
+
+        private int _partCount;
+        public int PartCount
+        {
+            get { return _partCount; }
+            set
+            {
+                var val = _partCount;
+                _partCount = value;
+                if (val != _partCount) NotifyChanged("PartCount");
+            }
+        }
+
+        #endregion
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyChanged(string propertyName)
@@ -371,41 +387,4 @@ namespace TH_DeviceTable
         #endregion
 
     }
-
-    //public static class Extensions
-    //{
-    //    public static bool ChangeAndNotify<T>(this PropertyChangedEventHandler handler,
-    //         ref T field, T value, Expression<Func<T>> memberExpression)
-    //    {
-    //        if (memberExpression == null)
-    //        {
-    //            throw new ArgumentNullException("memberExpression");
-    //        }
-    //        var body = memberExpression.Body as MemberExpression;
-    //        if (body == null)
-    //        {
-    //            throw new ArgumentException("Lambda must return a property.");
-    //        }
-    //        if (EqualityComparer<T>.Default.Equals(field, value))
-    //        {
-    //            return false;
-    //        }
-
-    //        var vmExpression = body.Expression as ConstantExpression;
-    //        if (vmExpression != null)
-    //        {
-    //            LambdaExpression lambda = Expression.Lambda(vmExpression);
-    //            Delegate vmFunc = lambda.Compile();
-    //            object sender = vmFunc.DynamicInvoke();
-
-    //            if (handler != null)
-    //            {
-    //                handler(sender, new PropertyChangedEventArgs(body.Member.Name));
-    //            }
-    //        }
-
-    //        field = value;
-    //        return true;
-    //    }
-    //}
 }
