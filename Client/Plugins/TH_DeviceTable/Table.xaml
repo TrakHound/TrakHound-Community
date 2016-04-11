@@ -303,13 +303,13 @@
                                     <Style TargetType="Grid">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Production}" Value="true">
-                                                <Setter Property="Background" Value="#FF19B419"/>
+                                                <Setter Property="Background" Value="{StaticResource High}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Idle}" Value="true">
-                                                <Setter Property="Background" Value="#00FFFF"/>
+                                                <Setter Property="Background" Value="{StaticResource Medium}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Alert}" Value="true">
-                                                <Setter Property="Background" Value="#FF0000"/>
+                                                <Setter Property="Background" Value="{StaticResource Low}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
