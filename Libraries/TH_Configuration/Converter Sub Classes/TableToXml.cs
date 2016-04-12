@@ -55,8 +55,6 @@ namespace TH_Configuration.Converter_Sub_Classes
                 }
             }
 
-            //WriteDocument(result, @"C:\Temp\TestConfigXML.xml");
-
             return result;
         }
 
@@ -117,7 +115,10 @@ namespace TH_Configuration.Converter_Sub_Classes
                     doc.Save(writer);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                TH_Global.Logger.Log(ex.Message, TH_Global.Logger.LogLineType.Warning);
+            }
         }
 
     }

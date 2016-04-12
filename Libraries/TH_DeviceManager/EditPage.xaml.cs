@@ -345,10 +345,7 @@ namespace TH_DeviceManager
         {
             CreatePages(types);
 
-            //Dispatcher.BeginInvoke(new Action(() =>
-            //{
-                PagesLoading = false;
-            //}), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            PagesLoading = false;
 
             GetProbeData(ConfigurationTable);
         }
@@ -367,11 +364,8 @@ namespace TH_DeviceManager
 
             foreach (var type in types)
             {
-                //Dispatcher.BeginInvoke(new Action(() =>
-                //{
-                    var page = CreatePage(type);
-                    AddPage(page);
-                //}), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                var page = CreatePage(type);
+                AddPage(page);
             }
         }
 

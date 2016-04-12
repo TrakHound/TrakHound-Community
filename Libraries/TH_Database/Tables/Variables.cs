@@ -47,20 +47,6 @@ namespace TH_Database.Tables
             Row.Insert(config, TablePrefix + TableNames.Variables, columns.ToArray(), values.ToArray(), primaryKey, true);
         }
 
-        //public class UpdateInfo
-        //{
-        //    public UpdateInfo(string variable, string value, DateTime timestamp)
-        //    {
-        //        Variable = variable;
-        //        Value = value;
-        //        Timestamp = timestamp;
-        //    }
-
-        //    public string Variable { get; set; }
-        //    public string Value { get; set; }
-        //    public DateTime Timestamp { get; set; }
-        //}
-
         public static void Update(Database_Settings config, VariableData[] infos, string TablePrefix = "")
         {
             if (infos.Length > 0)

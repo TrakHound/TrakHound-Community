@@ -33,7 +33,7 @@ namespace TH_Configuration
             }
             catch (Exception ex)
             {
-                Logger.Log("XMLToTable() :: Exception :: " + ex.Message);
+                Logger.Log("XMLToTable() :: Exception :: " + ex.Message, Logger.LogLineType.Warning);
             }
 
             return result;

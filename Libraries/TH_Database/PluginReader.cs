@@ -23,9 +23,9 @@ namespace TH_Database
 
             Global.Plugins = plugins;
 
-            Logger.Log("Database Plugins --------------------------");
-            Logger.Log(plugins.Count.ToString() + " Database Plugins Found");
-            Logger.Log("------------------------------");
+            Logger.Log("Database Plugins --------------------------", Logger.LogLineType.Console);
+            Logger.Log(plugins.Count.ToString() + " Database Plugins Found", Logger.LogLineType.Console);
+            Logger.Log("------------------------------", Logger.LogLineType.Console);
             foreach (var plugin in plugins)
             {
                 string name = plugin.Name;
@@ -39,9 +39,9 @@ namespace TH_Database
                     version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
                 }
 
-                Logger.Log(plugin.Name + " : " + version);
+                Logger.Log(plugin.Name + " : " + version, Logger.LogLineType.Console);
             }
-            Logger.Log("----------------------------------------");
+            Logger.Log("----------------------------------------", Logger.LogLineType.Console);
         }
 
         /// <summary>

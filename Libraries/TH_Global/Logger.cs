@@ -565,10 +565,10 @@ namespace TH_Global
             {
                 if (configuration != null)
                 {
-                    CleanFiles(configuration.KeepDebugDays, LogLineType.Debug);
-                    CleanFiles(configuration.KeepErrorDays, LogLineType.Error);
-                    CleanFiles(configuration.KeepErrorDays, LogLineType.Notification);
-                    CleanFiles(configuration.KeepWarningDays, LogLineType.Warning);
+                    CleanFiles(configuration.DebugRecycleDays, LogLineType.Debug);
+                    CleanFiles(configuration.ErrorRecycleDays, LogLineType.Error);
+                    CleanFiles(configuration.NotificationRecycleDays, LogLineType.Notification);
+                    CleanFiles(configuration.WarningRecycleDays, LogLineType.Warning);
                 }
             }
 
@@ -621,12 +621,12 @@ namespace TH_Global
                 Debug = false;
                 Error = true;
                 Notification = true;
-                Warning = false;
-                
-                KeepDebugDays = 2;
-                KeepErrorDays = 14;
-                KeepNotificationDays = 1;
-                KeepWarningDays = 7;
+                Warning = true;
+
+                DebugRecycleDays = 7;
+                ErrorRecycleDays = 7;
+                NotificationRecycleDays = 1;
+                WarningRecycleDays = 1;
             }
 
             /// <summary>
@@ -659,22 +659,22 @@ namespace TH_Global
             /// <summary>
             /// Set number of days to keep Debug files
             /// </summary>
-            public int KeepDebugDays { get; set; }
+            public int DebugRecycleDays { get; set; }
 
             /// <summary>
             /// Set number of days to keep Error files
             /// </summary>
-            public int KeepErrorDays { get; set; }
+            public int ErrorRecycleDays { get; set; }
 
             /// <summary>
             /// Set number of days to keep Notification files
             /// </summary>
-            public int KeepNotificationDays { get; set; }
+            public int NotificationRecycleDays { get; set; }
 
             /// <summary>
             /// Set number of days to keep Warning files
             /// </summary>
-            public int KeepWarningDays { get; set; }
+            public int WarningRecycleDays { get; set; }
 
 
             #region "Configuration File"
@@ -763,7 +763,7 @@ namespace TH_Global
             private static void WriteDocument(XmlDocument doc, string path)
             {
                 var settings = new XmlWriterSettings();
-                settings.Indent = false;
+                settings.Indent = true;
 
                 try
                 {

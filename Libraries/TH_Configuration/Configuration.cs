@@ -227,13 +227,6 @@ namespace TH_Configuration
             set
             {
                 _uniqueId = value;
-
-                //if (_uniqueId != null)
-                //{
-                //    // If using the old format of 80 chars, then resize
-                //    if (_uniqueId.Length > 20) _uniqueId = GenerateUniqueID();
-                //}
-
                 UpdateConfigurationXML("UniqueId", _uniqueId);
             }
         }
@@ -248,7 +241,6 @@ namespace TH_Configuration
             set
             {
                 _databaseId = value;
-
                 UpdateConfigurationXML("DatabaseId", _databaseId);
             }
         }
@@ -323,7 +315,7 @@ namespace TH_Configuration
             }
             else
             {
-                Logger.Log("Configuration File Not Found : " + path);
+                Logger.Log("Configuration File Not Found : " + path, Logger.LogLineType.Warning);
             }
 
             return result;
@@ -355,7 +347,7 @@ namespace TH_Configuration
             }
             else
             {
-                Logger.Log("Configuration File Directory Not Found : " + path);
+                Logger.Log("Configuration File Directory Not Found : " + path, Logger.LogLineType.Warning);
             }
 
             return result.ToArray();
@@ -672,7 +664,7 @@ namespace TH_Configuration
 
                     result = true;
                 }
-                catch (Exception ex) { Logger.Log("Error during Configuration Xml Save : " + ex.Message); }
+                catch (Exception ex) { Logger.Log("Error during Configuration Xml Save : " + ex.Message, Logger.LogLineType.Warning); }
             }
 
             return result;

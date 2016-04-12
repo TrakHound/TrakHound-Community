@@ -30,20 +30,40 @@ namespace TestConsole
             //    }
             //}
 
-            var credentials = new Authentication.Crendentials();
-            credentials.Username = "patrickritchie";
-            credentials.Password = "ethan123";
+            //var credentials = new Authentication.Crendentials();
+            //credentials.Username = "patrickritchie";
+            //credentials.Password = "ethan123";
 
-            var issue = new TH_GitHub.Issues.Issue();
-            issue.Title = "Test Issue 2";
-            issue.Content = "Issue Content";
-            issue.Comments = "Issue Comments";
-            issue.Username = "TrakHound";
-            issue.Type = Issues.IssueType.UserSubmitted;
+            //var issue = new TH_GitHub.Issues.Issue();
+            //issue.Title = "Test Issue 2";
+            //issue.Content = "Issue Content";
+            //issue.Comments = "Issue Comments";
+            //issue.Username = "TrakHound";
+            //issue.Type = Issues.IssueType.UserSubmitted;
 
-            TH_GitHub.Issues.Create(issue, credentials);
+            //TH_GitHub.Issues.Create(issue, credentials);
+
+
+
+            string time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 0, 45));
+            Console.WriteLine(time);
+
+            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 1, 23));
+            Console.WriteLine(time);
+
+            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(2,39, 1));
+            Console.WriteLine(time);
+
+            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 0, 0, 0, 329));
+            Console.WriteLine(time);
+
+
+            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(3, 14, 7, 56, 246));
+            Console.WriteLine(time);
 
             Console.ReadLine();
+
+            
         }
 
     }

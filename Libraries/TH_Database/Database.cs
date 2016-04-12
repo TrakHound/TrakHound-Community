@@ -39,7 +39,7 @@ namespace TH_Database
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log("Initialize : Exception : " + ex.Message);
+                            Logger.Log("Initialize : Exception : " + ex.Message, Logger.LogLineType.Error);
                         }                       
                     }
                 }
@@ -65,40 +65,14 @@ namespace TH_Database
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Ping : Exception : " + ex.Message);
+                        Logger.Log("Ping : Exception : " + ex.Message, Logger.LogLineType.Error);
                     }     
                 }
             }
 
             return result;
         }
-
-        //public static bool CheckPermissions(Database_Configuration config, Application_Type type)
-        //{
-        //    bool result = false;
-
-        //    if (Global.Plugins != null)
-        //    {
-        //        foreach (var plugin in Global.Plugins)
-        //        {
-        //            try
-        //            {
-        //                if (Global.CheckType(plugin, config))
-        //                {
-        //                    result = plugin.CheckPermissions(config.Configuration, type);
-        //                    break;
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Logger.Log("CheckPermissions : Exception : " + ex.Message);
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
+        
         public const string DateString = "yyyy-MM-dd H:mm:ss";
 
         /// <summary>
@@ -187,7 +161,7 @@ namespace TH_Database
                     info.plugin.Database_Create(info.configuration);
                 }
             }
-            catch (Exception ex) { Logger.Log("Database.CreateWorker() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Database.CreateWorker() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
         public static void Drop(Database_Settings settings, string databaseName)
@@ -225,7 +199,7 @@ namespace TH_Database
                     info.plugin.Database_Drop(info.configuration);
                 }
             }
-            catch (Exception ex) { Logger.Log("Database.DropWorker() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Database.DropWorker() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
     }
@@ -319,7 +293,7 @@ namespace TH_Database
                     info.plugin.Table_Create(info.configuration, info.tablename, info.columnDefinitions, info.primaryKey);
                 }
             }
-            catch (Exception ex) { Logger.Log("Table.CreateWorker() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Table.CreateWorker() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -361,7 +335,7 @@ namespace TH_Database
                     info.plugin.Table_Replace(info.configuration, info.tablename, info.columnDefinitions, info.primaryKey);
                 }
             }
-            catch (Exception ex) { Logger.Log("Table.ReplaceWorker() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Table.ReplaceWorker() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -401,7 +375,7 @@ namespace TH_Database
                     info.plugin.Table_Drop(info.configuration, info.tablename);
                 }
             }
-            catch (Exception ex) { Logger.Log("Table.DropWorker1() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Table.DropWorker1() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -441,7 +415,7 @@ namespace TH_Database
                     info.plugin.Table_Drop(info.configuration, info.tablenames);
                 }
             }
-            catch (Exception ex) { Logger.Log("Table.DropWorker2() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Table.DropWorker2() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -481,7 +455,7 @@ namespace TH_Database
                     info.plugin.Table_Truncate(info.configuration, info.tablename);
                 }
             }
-            catch (Exception ex) { Logger.Log("Table.TruncateWorker() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Table.TruncateWorker() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -659,56 +633,6 @@ namespace TH_Database
 
             return result;
         }
-
-        //public static DataTable[] Get(Database_Settings settings, string[] tablenames, string filterExpression)
-        //{
-        //    DataTable[] result = null;
-        //    bool found = false;
-
-        //    foreach (var database in settings.Databases)
-        //    {
-        //        if (Global.Plugins != null)
-        //        {
-        //            foreach (var plugin in Global.Plugins)
-        //            {
-        //                if (Global.CheckType(plugin, database))
-        //                {
-        //                    result = plugin.Table_Get(database.Configuration, tablenames, filterExpression);
-        //                    found = true;
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //        if (found) break;
-        //    }
-
-        //    return result;
-        //}
-
-        //public static DataTable[] Get(Database_Settings settings, string[] tablenames, string filterExpression, string columns)
-        //{
-        //    DataTable[] result = null;
-        //    bool found = false;
-
-        //    foreach (var database in settings.Databases)
-        //    {
-        //        if (Global.Plugins != null)
-        //        {
-        //            foreach (var plugin in Global.Plugins)
-        //            {
-        //                if (Global.CheckType(plugin, database))
-        //                {
-        //                    result = plugin.Table_Get(database.Configuration, tablenames, filterExpression, columns);
-        //                    found = true;
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //        if (found) break;
-        //    }
-
-        //    return result;
-        //}
 
 
         public static string[] List(Database_Settings settings)
@@ -892,7 +816,7 @@ namespace TH_Database
                     info.plugin.Column_Add(info.configuration, info.tablename, info.columnDefinition);
                 }
             }
-            catch (Exception ex) { Logger.Log("Column.AddWorker() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Column.AddWorker() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
     }
@@ -988,7 +912,7 @@ namespace TH_Database
                     info.plugin.Row_Insert(info.configuration, info.tablename, info.columns, info.values, info.primaryKey, info.update);
                 }
             }
-            catch (Exception ex) { Logger.Log("Column.InsertWorker1() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Column.InsertWorker1() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -1032,7 +956,7 @@ namespace TH_Database
                     info.plugin.Row_Insert(info.configuration, info.tablename, info.columns, info.values, info.primaryKey, info.update);
                 }
             }
-            catch (Exception ex) { Logger.Log("Column.InsertWorker2() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Column.InsertWorker2() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -1076,7 +1000,7 @@ namespace TH_Database
                     info.plugin.Row_Insert(info.configuration, info.tablename, info.columnsList, info.valuesList, info.primaryKey, info.update);
                 }
             }
-            catch (Exception ex) { Logger.Log("Column.InsertWorker3() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Column.InsertWorker3() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -1116,7 +1040,7 @@ namespace TH_Database
                     info.plugin.Row_Insert(info.configuration, info.query);
                 }
             }
-            catch (Exception ex) { Logger.Log("Column.InsertWorker4() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Column.InsertWorker4() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 
@@ -1263,7 +1187,7 @@ namespace TH_Database
                     info.plugin.CustomCommand(info.configuration, info.commandText);
                 }
             }
-            catch (Exception ex) { Logger.Log("Column.CustomCommandWorker() : Exception : " + ex.Message); }
+            catch (Exception ex) { Logger.Log("Column.CustomCommandWorker() : Exception : " + ex.Message, Logger.LogLineType.Error); }
         }
 
 

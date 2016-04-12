@@ -48,7 +48,7 @@ namespace TrakHound_Client.Menus.Main
             // 1st Row
             AddPlugins_MenuItem();
             AddDeviceManager_MenuItem();
-            //AddOptions_MenuItem();          
+            AddOptions_MenuItem();
 
             // 2nd Row
             AddFullscreen_MenuItem();

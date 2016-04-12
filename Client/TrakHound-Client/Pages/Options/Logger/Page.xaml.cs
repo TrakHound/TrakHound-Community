@@ -1,25 +1,15 @@
-﻿// Copyright (c) 2015 Feenux LLC, All Rights Reserved.
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-using System.Diagnostics;
 
 using TH_Global;
 using TH_Global.Functions;
@@ -36,6 +26,8 @@ namespace TrakHound_Client.Pages.Options.Logger
         {
             InitializeComponent();
             DataContext = this;
+
+            Load();
         }
 
         public string Title { get { return "Logs"; } }
@@ -50,8 +42,84 @@ namespace TrakHound_Client.Pages.Options.Logger
         public bool Closing() { return true; }
 
 
+        private void Load()
+        {
+            var config = TH_Global.Logger.LoggerConfiguration.Read();
 
-        #region "Heartbeat"
+            QueueWriteInterval = config.QueueWriteInterval;
+
+            DebugEnabled = config.Debug;
+            ErrorEnabled = config.Error;
+            NotificationEnabled = config.Notification;
+            WarningEnabled = config.Warning;
+
+            DebugRecycleDays = GetMillisecondsFromDays(config.DebugRecycleDays);
+            ErrorRecycleDays = GetMillisecondsFromDays(config.ErrorRecycleDays);
+            NotificationRecycleDays = GetMillisecondsFromDays(config.NotificationRecycleDays);
+            WarningRecycleDays = GetMillisecondsFromDays(config.WarningRecycleDays);
+        }
+
+        private System.Timers.Timer settingChangedTimer;
+
+        public void SettingChanged()
+        {
+            if (settingChangedTimer != null) settingChangedTimer.Enabled = false;
+
+            settingChangedTimer = new System.Timers.Timer();
+            settingChangedTimer.Interval = 1000;
+            settingChangedTimer.Elapsed += SettingChangedTimer_Elapsed;
+            settingChangedTimer.Enabled = true;
+        }
+
+        private void SettingChangedTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var timer = (System.Timers.Timer)sender;
+            timer.Enabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Save();
+            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });           
+        }
+
+        private void Save()
+        {
+            var config = new TH_Global.Logger.LoggerConfiguration();
+            config.QueueWriteInterval = QueueWriteInterval;
+
+            config.Debug = DebugEnabled;
+            config.Error = ErrorEnabled;
+            config.Notification = NotificationEnabled;
+            config.Warning = WarningEnabled;
+
+            config.DebugRecycleDays = GetDaysFromMilliseconds(DebugRecycleDays);
+            config.ErrorRecycleDays = GetDaysFromMilliseconds(ErrorRecycleDays);
+            config.NotificationRecycleDays = GetDaysFromMilliseconds(NotificationRecycleDays);
+            config.WarningRecycleDays = GetDaysFromMilliseconds(WarningRecycleDays);
+
+            TH_Global.Logger.LoggerConfiguration.Create(config);
+        }
+
+        private static int GetDaysFromMilliseconds(long ms)
+        {
+            var ts = TimeSpan.FromMilliseconds(ms);
+            return ts.Days;
+        }
+
+        private static long GetMillisecondsFromDays(int days)
+        {
+            var ts = TimeSpan.FromDays(days);
+            return Convert.ToInt64(ts.TotalMilliseconds);
+        }
+
+
+        #region "Dependency Properties"
+
+        private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            var o = obj as Page;
+            if (o != null) o.SettingChanged();
+        }
 
         public int QueueWriteInterval
         {
@@ -60,78 +128,92 @@ namespace TrakHound_Client.Pages.Options.Logger
         }
 
         public static readonly DependencyProperty QueueWriteIntervalProperty =
-            DependencyProperty.Register("QueueWriteInterval", typeof(int), typeof(Page), new PropertyMetadata(5000));
+            DependencyProperty.Register("QueueWriteInterval", typeof(int), typeof(Page), new PropertyMetadata(5000, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
-        public TimeSpan QueueWriteInterval_TimeSpan
+
+        public bool DebugEnabled
         {
-            get { return (TimeSpan)GetValue(QueueWriteInterval_TimeSpanProperty); }
-            set { SetValue(QueueWriteInterval_TimeSpanProperty, value); }
+            get { return (bool)GetValue(DebugEnabledProperty); }
+            set { SetValue(DebugEnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty QueueWriteInterval_TimeSpanProperty =
-            DependencyProperty.Register("QueueWriteInterval_TimeSpan", typeof(TimeSpan), typeof(Page), new PropertyMetadata(TimeSpan.FromMilliseconds(5000)));
+        public static readonly DependencyProperty DebugEnabledProperty =
+            DependencyProperty.Register("DebugEnabled", typeof(bool), typeof(Page), new PropertyMetadata(false, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
-        private void queueWriteInterval_TXT_TextChanged(object sender, TextChangedEventArgs e)
+        public bool ErrorEnabled
         {
-            if (queueWriteInterval_TXT.Text != String.Empty)
-            {
-                TimeSpan ts = GetTimeSpanFromString(queueWriteInterval_TXT.Text);
-                QueueWriteInterval_TimeSpan = ts;
-                if (ts.TotalMilliseconds < int.MaxValue)
-                {
-                    QueueWriteInterval = Convert.ToInt32(ts.TotalMilliseconds);
-                }
-            }
+            get { return (bool)GetValue(ErrorEnabledProperty); }
+            set { SetValue(ErrorEnabledProperty, value); }
         }
 
-        private void QueueWriteInterval_Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public static readonly DependencyProperty ErrorEnabledProperty =
+            DependencyProperty.Register("ErrorEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public bool NotificationEnabled
         {
-            QueueWriteInterval_TimeSpan = TimeSpan.FromMilliseconds(QueueWriteInterval);
+            get { return (bool)GetValue(NotificationEnabledProperty); }
+            set { SetValue(NotificationEnabledProperty, value); }
         }
 
-        private void queueWriteInterval_TXT_LostFocus(object sender, RoutedEventArgs e)
+        public static readonly DependencyProperty NotificationEnabledProperty =
+            DependencyProperty.Register("NotificationEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public bool WarningEnabled
         {
-            queueWriteInterval_TXT.Clear();
+            get { return (bool)GetValue(WarningEnabledProperty); }
+            set { SetValue(WarningEnabledProperty, value); }
         }
 
-        private static TimeSpan GetTimeSpanFromString(string s)
+        public static readonly DependencyProperty WarningEnabledProperty =
+            DependencyProperty.Register("WarningEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        private const long DAY_MS = 86400000;
+        private const long WEEK_MS = 604800000;
+
+
+        public long DebugRecycleDays
         {
-            TimeSpan result = TimeSpan.Zero;
-            if (TimeSpan.TryParse(s, out result)) return result;
-            else
-            {
-                s = s.Trim();
-                //Milliseconds
-                if (s.Length > 2)
-                {
-                    string unit = s.Substring(s.Length - 2, 2);
-                    if (unit == "ms")
-                    {
-                        double ms;
-                        if (double.TryParse(s.Substring(0, s.Length - 2), out ms))
-                        {
-                            result = TimeSpan.FromMilliseconds(ms);
-                        }
-                    }
-                }
-                //Seconds
-                if (result == TimeSpan.Zero && s.Length > 1)
-                {
-                    string unit = s.Substring(s.Length - 1, 1);
-                    if (unit == "s")
-                    {
-                        double seconds;
-                        if (double.TryParse(s.Substring(0, s.Length - 1), out seconds))
-                        {
-                            result = TimeSpan.FromSeconds(seconds);
-                        }
-                    }
-                }
-            }
-            return result;
+            get { return (long)GetValue(DebugRecycleDaysProperty); }
+            set { SetValue(DebugRecycleDaysProperty, value); }
         }
+
+        public static readonly DependencyProperty DebugRecycleDaysProperty =
+            DependencyProperty.Register("DebugRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(WEEK_MS, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public long ErrorRecycleDays
+        {
+            get { return (long)GetValue(ErrorRecycleDaysProperty); }
+            set { SetValue(ErrorRecycleDaysProperty, value); }
+        }
+
+        public static readonly DependencyProperty ErrorRecycleDaysProperty =
+            DependencyProperty.Register("ErrorRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(WEEK_MS, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public long NotificationRecycleDays
+        {
+            get { return (long)GetValue(NotificationRecycleDaysProperty); }
+            set { SetValue(NotificationRecycleDaysProperty, value); }
+        }
+
+        public static readonly DependencyProperty NotificationRecycleDaysProperty =
+            DependencyProperty.Register("NotificationRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(DAY_MS, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public long WarningRecycleDays
+        {
+            get { return (long)GetValue(WarningRecycleDaysProperty); }
+            set { SetValue(WarningRecycleDaysProperty, value); }
+        }
+
+        public static readonly DependencyProperty WarningRecycleDaysProperty =
+            DependencyProperty.Register("WarningRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(DAY_MS, new PropertyChangedCallback(Value_PropertyChanged)));
 
         #endregion
 
@@ -188,5 +270,19 @@ namespace TrakHound_Client.Pages.Options.Logger
         }
 
 
+        private void RestoreDefaults_Clicked(TH_WPF.Button bt)
+        {
+            QueueWriteInterval = 5000;
+
+            DebugEnabled = false;
+            ErrorEnabled = true;
+            NotificationEnabled = true;
+            WarningEnabled = true;
+
+            DebugRecycleDays = WEEK_MS;
+            ErrorRecycleDays = WEEK_MS;
+            NotificationRecycleDays = DAY_MS;
+            WarningRecycleDays = DAY_MS;
+        }
     }
 }

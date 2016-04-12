@@ -36,5 +36,32 @@ namespace TH_Global.Functions
             return result;
         }
 
+        public static string ToFormattedString(TimeSpan ts)
+        {
+
+            if (ts >= new TimeSpan(1, 0, 0, 0))
+            {
+                return ts.ToString("d' Days 'h'h 'm'm 's's'");
+            }
+            else if (ts >= new TimeSpan(1, 0, 0))
+            {
+                return ts.ToString("h'h 'm'm 's's'");
+            }
+            else if (ts >= new TimeSpan(0, 1, 0))
+            {
+                return ts.ToString("m'm 's's'");
+            }
+            else if (ts >= new TimeSpan(0, 0, 1))
+            {
+                return ts.ToString("s\\.ff' Seconds'");
+            }
+            else
+            {
+                return ts.ToString("fff' Milliseconds'");
+            }
+
+
+        }
+
     }
 }
