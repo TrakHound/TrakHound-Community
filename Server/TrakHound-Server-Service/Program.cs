@@ -1,11 +1,9 @@
-﻿using System;
-using System.Configuration.Install;
-using System.Reflection;
-using System.Collections.Generic;
-using System.Linq;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TrakHound_Server_Service
 {

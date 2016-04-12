@@ -100,6 +100,8 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
             }
 
             Snapshots_DG.Items.Refresh();
+
+            if (!Loaded) LoadCollectedItems(probeData);
         }
 
         public void SaveConfiguration(DataTable dt)
@@ -114,9 +116,9 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
             {
                 if (snapshot.Name != null && snapshot.Link != null)
                 {
-                    string p = "/GeneratedData/SnapShotData/" + String_Functions.UppercaseFirst(snapshot.Type.ToString().ToLower());
-                    int id = DataTable_Functions.TrakHound.GetUnusedAddressId(p, dt);
-                    string adr = p + "||" + id.ToString("00");
+                    string adr = "/GeneratedData/SnapShotData/" + String_Functions.UppercaseFirst(snapshot.Type.ToString().ToLower());
+                    int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
+                    adr = adr + "||" + id.ToString("00");
 
                     string attr = "";
                     attr += "id||" + id.ToString("00") + ";";
@@ -147,23 +149,23 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
             }
         }
 
-        ObservableCollection<CollectedItem> _collectedItems;
-        public ObservableCollection<CollectedItem> CollectedItems
-        {
-            get
-            {
-                if (_collectedItems == null)
-                    _collectedItems = new ObservableCollection<CollectedItem>();
-                return _collectedItems;
-            }
+        //ObservableCollection<CollectedItem> _collectedItems;
+        //public ObservableCollection<CollectedItem> CollectedItems
+        //{
+        //    get
+        //    {
+        //        if (_collectedItems == null)
+        //            _collectedItems = new ObservableCollection<CollectedItem>();
+        //        return _collectedItems;
+        //    }
 
-            set
-            {
-                _collectedItems = value;
-            }
-        }
+        //    set
+        //    {
+        //        _collectedItems = value;
+        //    }
+        //}
 
-        private List<DataItem> probeData = new List<DataItem>();
+        //private List<DataItem> probeData = new List<DataItem>();
 
 
         ObservableCollection<GeneratedEventItem> _generatedEventItems;
@@ -183,27 +185,27 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
         }
 
 
-        public class CollectedItem
-        {
-            public CollectedItem(DataItem dataItem)
-            {
-                Id = dataItem.Id;
-                Name = dataItem.Name;
+        //public class CollectedItem
+        //{
+        //    public CollectedItem(DataItem dataItem)
+        //    {
+        //        Id = dataItem.Id;
+        //        Name = dataItem.Name;
 
-                if (Name != null) Display = Id + " : " + Name;
-                else Display = Id;
-            }          
+        //        if (Name != null) Display = Id + " : " + Name;
+        //        else Display = Id;
+        //    }          
 
-            public string Id { get; set; }
-            public string Name { get; set; }
+        //    public string Id { get; set; }
+        //    public string Name { get; set; }
 
-            public string Display { get; set; }
+        //    public string Display { get; set; }
 
-            public override string ToString()
-            {
-                return Display;
-            }
-        }
+        //    public override string ToString()
+        //    {
+        //        return Display;
+        //    }
+        //}
 
         public class GeneratedEventItem
         {
@@ -217,29 +219,29 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
             public string Name { get; set; }
         }
 
-        void GetProbeData(EventData data)
-        {
-            if (data != null && data.Id != null && data.Data02 != null)
-            {
-                if (data.Id.ToLower() == "mtconnect_probe_dataitems")
-                {
-                    var dataItems = (List<DataItem>)data.Data02;
-                    LoadCollectedItems(dataItems);
-                }
-            }
-        }
+        //void GetProbeData(EventData data)
+        //{
+        //    if (data != null && data.Id != null && data.Data02 != null)
+        //    {
+        //        if (data.Id.ToLower() == "mtconnect_probe_dataitems")
+        //        {
+        //            var dataItems = (List<DataItem>)data.Data02;
+        //            LoadCollectedItems(dataItems);
+        //        }
+        //    }
+        //}
 
-        private void LoadCollectedItems(List<DataItem> dataItems)
-        {
-            CollectedItems.Clear();
+        //private void LoadCollectedItems(List<DataItem> dataItems)
+        //{
+        //    CollectedItems.Clear();
 
-            foreach (var dataItem in dataItems)
-            {
-                var item = new CollectedItem(dataItem);
-                CollectedItems.Add(item);
-                probeData.Add(dataItem);
-            }
-        }
+        //    foreach (var dataItem in dataItems)
+        //    {
+        //        var item = new CollectedItem(dataItem);
+        //        CollectedItems.Add(item);
+        //        probeData.Add(dataItem);
+        //    }
+        //}
 
         private void LoadGeneratedEventItems(DataTable dt)
         {
@@ -251,6 +253,113 @@ namespace TH_GeneratedData.SnapshotData.ConfigurationPage
                 GeneratedEventItems.Add(new GeneratedEventItem(e));
             }
         }
+
+
+        #region "MTC Probe Data"
+
+        List_Functions.ObservableCollectionEx<CollectedItem> _collectedItems;
+        public List_Functions.ObservableCollectionEx<CollectedItem> CollectedItems
+        {
+            get
+            {
+                if (_collectedItems == null)
+                    _collectedItems = new List_Functions.ObservableCollectionEx<CollectedItem>();
+                return _collectedItems;
+            }
+
+            set
+            {
+                _collectedItems = value;
+            }
+        }
+
+        private List<DataItem> probeData = new List<DataItem>();
+
+        public class CollectedItem : IComparable
+        {
+            public CollectedItem() { }
+
+            public CollectedItem(DataItem dataItem)
+            {
+                Id = dataItem.Id;
+                Name = dataItem.Name;
+
+                if (Name != null) Display = Id + " : " + Name;
+                else Display = Id;
+            }
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+
+            public string Display { get; set; }
+
+            public override string ToString()
+            {
+                return Display;
+            }
+
+            public CollectedItem Copy()
+            {
+                var copy = new CollectedItem();
+                copy.Id = Id;
+                copy.Name = Name;
+                copy.Display = Display;
+
+                return copy;
+            }
+
+            public int CompareTo(object obj)
+            {
+                if (obj == null) return 1;
+
+                var i = obj as CollectedItem;
+                if (i != null)
+                {
+                    return Display.CompareTo(i.Display);
+                }
+                else return 1;
+            }
+        }
+
+        void GetProbeData(EventData data)
+        {
+            if (data != null && data.Id != null && data.Data02 != null)
+            {
+                if (data.Id.ToLower() == "mtconnect_probe_dataitems")
+                {
+                    var dataItems = (List<DataItem>)data.Data02;
+                    probeData = dataItems;
+                    if (Loaded) LoadCollectedItems(dataItems);
+                }
+            }
+        }
+
+        private void LoadCollectedItems(List<DataItem> dataItems)
+        {
+            var newItems = new List<CollectedItem>();
+
+            foreach (var dataItem in dataItems)
+            {
+                var item = new CollectedItem(dataItem);
+                newItems.Add(item.Copy());
+            }
+
+            foreach (var newItem in newItems)
+            {
+                if (!CollectedItems.ToList().Exists(x => x.Id == newItem.Id)) CollectedItems.Add(newItem);
+            }
+
+            foreach (var item in CollectedItems)
+            {
+                if (!newItems.Exists(x => x.Id == item.Id)) CollectedItems.Remove(item);
+            }
+
+            CollectedItems.SupressNotification = true;
+            CollectedItems.Sort();
+            CollectedItems.SupressNotification = false;
+        }
+
+        #endregion
 
 
         private void Add_Clicked(TH_WPF.Button bt)

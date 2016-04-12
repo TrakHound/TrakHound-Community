@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_Cycles.ConfigurationPage.Controls"
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              MinWidth="300"
@@ -23,7 +24,28 @@
 
                     <TextBlock Text="Link" FontSize="8pt" Foreground="#888" Margin="10,0" VerticalAlignment="Center"/>
 
-                    <ComboBox x:Name="collectedlink_COMBO" MinWidth="200" Padding="20,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" IsSynchronizedWithCurrentItem="False" TextBoxBase.TextChanged="ComboBox_TextChanged" IsEditable="True" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand"/>
+                    <!--<ComboBox x:Name="collectedlink_COMBO" MinWidth="200" Padding="20,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" IsSynchronizedWithCurrentItem="False" TextBoxBase.TextChanged="ComboBox_TextChanged" IsEditable="True" SelectionChanged="Link_SelectionChanged" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="14" Cursor="Hand"/>-->
+                    <ComboBox 
+                              MinWidth="200" Height="30" Padding="20,0" 
+                              DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}"
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="Display"
+                              SelectionChanged="Link_SelectionChanged"
+                              VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                              FontSize="14" Cursor="Hand"
+                        >
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Setter Property="SelectedValue" Value="{Binding SelectedId, RelativeSource={RelativeSource AncestorType=local:OverrideLinkItem}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CollectedItems.Count}" Value="0">
+                                        <Setter Property="Text" Value="{Binding SelectedId, RelativeSource={RelativeSource AncestorType=local:OverrideLinkItem}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Setter Property="IsEditable" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
 
                 </StackPanel>
 

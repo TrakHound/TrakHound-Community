@@ -5,6 +5,7 @@
 
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -107,27 +108,35 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage.Controls
         void LoadEventValues()
         {
             value_COMBO.Items.Clear();
-
-            var item = link_COMBO.SelectedItem as Page.CollectedItem;
-            if (item != null)
+            
+            if (SelectedLink != null)
             {
-                if (item.Category == "EVENT")
+                int index = ParentPage.CollectedItems.ToList().FindIndex(x => x.Id == SelectedLink.ToString());
+                if (index >= 0)
                 {
-                    if (ParentPage != null)
+                    var item = ParentPage.CollectedItems[index];
+                    //var item = link_COMBO.SelectedItem as Page.CollectedItem;
+                    if (item != null)
                     {
-                        DataTable dt = ParentPage.EventValues;
-
-                        if (dt != null)
+                        if (item.Category == "EVENT")
                         {
-                            DataView dv = ParentPage.EventValues.AsDataView();
-                            dv.RowFilter = "NAME='" + item.Type + "'";
-                            DataTable temp_dt = dv.ToTable(false, "VALUE");
-
-                            foreach (DataRow row in temp_dt.Rows)
+                            if (ParentPage != null)
                             {
-                                string value = row[0].ToString();
+                                DataTable dt = ParentPage.EventValues;
 
-                                value_COMBO.Items.Add(value);
+                                if (dt != null)
+                                {
+                                    DataView dv = ParentPage.EventValues.AsDataView();
+                                    dv.RowFilter = "NAME='" + item.Type + "'";
+                                    DataTable temp_dt = dv.ToTable(false, "VALUE");
+
+                                    foreach (DataRow row in temp_dt.Rows)
+                                    {
+                                        string value = row[0].ToString();
+
+                                        value_COMBO.Items.Add(value);
+                                    }
+                                }
                             }
                         }
                     }
@@ -181,6 +190,16 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage.Controls
         #endregion
 
         #region "Link"
+
+        public object SelectedLink
+        {
+            get { return (object)GetValue(SelectedLinkProperty); }
+            set { SetValue(SelectedLinkProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedLinkProperty =
+            DependencyProperty.Register("SelectedLink", typeof(object), typeof(Trigger), new PropertyMetadata(null));
+
 
         private void Link_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

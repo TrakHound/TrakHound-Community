@@ -272,16 +272,26 @@
 
                     <ComboBox Margin="0,0" Width="200" Height="30" 
                               ItemsSource="{Binding CollectedItems}" 
-                              SelectedValue="{Binding SelectedCycleNameLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               SelectedValuePath="Id"
                               DisplayMemberPath="Display"
                               SelectionChanged="cyclenamelink_COMBO_SelectionChanged"
-                              IsEditable="True" 
                               VerticalAlignment="Center" 
                               VerticalContentAlignment="Center"
                               HorizontalContentAlignment="Center"
                               FontSize="14" Background="{x:Null}" Cursor="Hand"
-                              />
+                              >
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Setter Property="SelectedValue" Value="{Binding SelectedCycleNameLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CollectedItems.Count}" Value="0">
+                                        <Setter Property="Text" Value="{Binding SelectedCycleNameLink, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Setter Property="IsEditable" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
 
                 </StackPanel>
 

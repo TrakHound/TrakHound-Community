@@ -80,9 +80,6 @@ namespace TH_Cycles.ConfigurationPage
 
         void ClearData()
         {
-            SelectedCycleEventName = null;
-            SelectedStoppedEventValue = null;
-            SelectedCycleNameLink = null;
             ProductionTypes.Clear();
         }
 
@@ -93,49 +90,38 @@ namespace TH_Cycles.ConfigurationPage
             LoadCycleNameLink(dt);
             LoadProductionTypes(dt);
             LoadOverrideLinks(dt);
+
+            if (!Loaded) LoadCollectedItems(probeData);
         }
 
         public void SaveConfiguration(DataTable dt)
-        { 
-                SaveCycleEventName(dt);
-                SaveStoppedEventValueName(dt);
-                SaveCycleNameLink(dt);
-                SaveProductionTypes(dt);
-                SaveOverrideLinks(dt);
+        {
+            DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
+
+            SaveCycleEventName(dt);
+            SaveStoppedEventValueName(dt);
+            SaveCycleNameLink(dt);
+            SaveProductionTypes(dt);
+            SaveOverrideLinks(dt);
         }
 
         DataTable configurationTable;
 
         const string prefix = "/Cycles/";
 
-        //ObservableCollection<object> cycleNameLinks;
-        //public ObservableCollection<object> CycleNameLinks
-        //{
-        //    get
-        //    {
-        //        if (cycleNameLinks == null)
-        //            cycleNameLinks = new ObservableCollection<object>();
-        //        return cycleNameLinks;
-        //    }
-
-        //    set
-        //    {
-        //        cycleNameLinks = value;
-        //    }
-        //}
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
 
         #region "MTC Probe Data"
 
-        ObservableCollection<CollectedItem> _collectedItems;
-        public ObservableCollection<CollectedItem> CollectedItems
+        List_Functions.ObservableCollectionEx<CollectedItem> _collectedItems;
+        public List_Functions.ObservableCollectionEx<CollectedItem> CollectedItems
         {
             get
             {
                 if (_collectedItems == null)
-                    _collectedItems = new ObservableCollection<CollectedItem>();
+                    _collectedItems = new List_Functions.ObservableCollectionEx<CollectedItem>();
                 return _collectedItems;
             }
 
@@ -147,8 +133,10 @@ namespace TH_Cycles.ConfigurationPage
 
         private List<DataItem> probeData = new List<DataItem>();
 
-        public class CollectedItem
+        public class CollectedItem : IComparable
         {
+            public CollectedItem() { }
+
             public CollectedItem(DataItem dataItem)
             {
                 Id = dataItem.Id;
@@ -167,6 +155,28 @@ namespace TH_Cycles.ConfigurationPage
             {
                 return Display;
             }
+
+            public CollectedItem Copy()
+            {
+                var copy = new CollectedItem();
+                copy.Id = Id;
+                copy.Name = Name;
+                copy.Display = Display;
+
+                return copy;
+            }
+
+            public int CompareTo(object obj)
+            {
+                if (obj == null) return 1;
+
+                var i = obj as CollectedItem;
+                if (i != null)
+                {
+                    return Display.CompareTo(i.Display);
+                }
+                else return 1;
+            }
         }
 
         void GetProbeData(EventData data)
@@ -176,21 +186,35 @@ namespace TH_Cycles.ConfigurationPage
                 if (data.Id.ToLower() == "mtconnect_probe_dataitems")
                 {
                     var dataItems = (List<DataItem>)data.Data02;
-                    LoadCollectedItems(dataItems);
+                    probeData = dataItems;
+                    if (Loaded) LoadCollectedItems(dataItems);
                 }
             }
         }
 
         private void LoadCollectedItems(List<DataItem> dataItems)
         {
-            CollectedItems.Clear();
+            var newItems = new List<CollectedItem>();
 
             foreach (var dataItem in dataItems)
             {
                 var item = new CollectedItem(dataItem);
-                CollectedItems.Add(item);
-                probeData.Add(dataItem);
+                newItems.Add(item.Copy());
             }
+
+            foreach (var newItem in newItems)
+            {
+                if (!CollectedItems.ToList().Exists(x => x.Id == newItem.Id)) CollectedItems.Add(newItem);
+            }
+
+            foreach (var item in CollectedItems)
+            {
+                if (!newItems.Exists(x => x.Id == item.Id)) CollectedItems.Remove(item);
+            }
+
+            CollectedItems.SupressNotification = true;
+            CollectedItems.Sort();
+            CollectedItems.SupressNotification = false;
         }
 
         #endregion
@@ -412,13 +436,7 @@ namespace TH_Cycles.ConfigurationPage
         void SaveCycleNameLink(DataTable dt)
         {
             string val = null;
-            string text = null;
-            if (SelectedCycleNameLink != null) text = SelectedCycleNameLink.ToString();
-            if (text != null)
-            {
-                var link = CollectedItems.ToList().Find(x => x.Display == text);
-                if (link != null) val = link.Id;
-            }
+            if (SelectedCycleNameLink != null) val = SelectedCycleNameLink.ToString();
 
             if (val != null) Table_Functions.UpdateTableValue(val, prefix + "CycleNameLink", dt);
         }
@@ -513,36 +531,12 @@ namespace TH_Cycles.ConfigurationPage
 
         void SaveProductionTypes(DataTable dt)
         {
-            // Clear all old rows first (so that Ids can be sequentially assigned)
-            string filter = "address LIKE '" + prefix + "ProductionTypes/*'";
-            DataView dv = dt.AsDataView();
-            dv.RowFilter = filter;
-            DataTable temp_dt = dv.ToTable();
-            foreach (DataRow row in temp_dt.Rows)
-            {
-                DataRow dbRow = dt.Rows.Find(row["address"]);
-                if (dbRow != null) dt.Rows.Remove(dbRow);
-            }
-
             foreach (var productionType in ProductionTypes)
             {
                 var item = (Controls.ProductionTypeItem)productionType;
 
-                int id = 0;
-                string adr = prefix + "ProductionTypes/Value||";
-                string test = adr + id.ToString("00");
-
-                // Reassign Id (to keep everything in sequence)
-                if (configurationTable != null)
-                {
-                    while (Table_Functions.GetTableValue(test, dt) != null)
-                    {
-                        id += 1;
-                        test = adr + id.ToString("00");
-                    }
-                }
-
-                adr = test;
+                int id = DataTable_Functions.TrakHound.GetUnusedAddressId(prefix + "ProductionTypes/Value", dt);
+                string adr = prefix + "ProductionTypes/Value||" + id.ToString("00");
 
                 string attr = "";
                 attr += "id||" + id.ToString("00") + ";";
@@ -595,13 +589,7 @@ namespace TH_Cycles.ConfigurationPage
                 {
                     var item = new Controls.OverrideLinkItem();
                     item.ParentPage = this;
-
-                    //string val = DataTable_Functions.GetRowValue("Value", row);
-                    //var dataItem = CollectedItems.ToList().Find(x => x.id == val);
-                    //if (dataItem != null) val = dataItem.display;
-                    //item.collectedlink_COMBO.Text = val;
-
-                    item.collectedlink_COMBO.Text = DataTable_Functions.GetRowValue("Value", row);
+                    item.SelectedId = DataTable_Functions.GetRowValue("Value", row);
                     item.RemoveClicked += OverrideLinkItem_RemoveClicked;
                     item.SettingChanged += OverrideLinkItem_SettingChanged;
                     OverrideLinks.Add(item);
@@ -621,44 +609,15 @@ namespace TH_Cycles.ConfigurationPage
 
         void SaveOverrideLinks(DataTable dt)
         {
-            // Clear all old rows first (so that Ids can be sequentially assigned)
-            string filter = "address LIKE '" + prefix + "OverrideLinks/*'";
-            DataView dv = dt.AsDataView();
-            dv.RowFilter = filter;
-            DataTable temp_dt = dv.ToTable();
-            foreach (DataRow row in temp_dt.Rows)
-            {
-                DataRow dbRow = dt.Rows.Find(row["address"]);
-                if (dbRow != null) dt.Rows.Remove(dbRow);
-            }
-
             foreach (var overrideLink in OverrideLinks)
             {
                 var item = (Controls.OverrideLinkItem)overrideLink;
 
-                int id = 0;
-                string adr = prefix + "OverrideLinks/Value||";
-                string test = adr + id.ToString("00");
+                int id = DataTable_Functions.TrakHound.GetUnusedAddressId(prefix + "OverrideLinks/Value", dt);
+                string adr = prefix + "OverrideLinks/Value||" + id.ToString("00");
 
-                // Reassign Id (to keep everything in sequence)
-                if (configurationTable != null)
-                {
-                    while (Table_Functions.GetTableValue(test, dt) != null)
-                    {
-                        id += 1;
-                        test = adr + id.ToString("00");
-                    }
-                }
-
-                adr = test;
-
-                string val = item.collectedlink_COMBO.Text;
-                string text = item.collectedlink_COMBO.Text;
-                if (text != null)
-                {
-                    var link = CollectedItems.ToList().Find(x => x.Display == text);
-                    if (link != null) val = link.Id;
-                }
+                string val = null;
+                if (item.SelectedId != null) val = item.SelectedId.ToString();
 
                 string attr = "";
                 attr += "id||" + id.ToString("00") + ";";
@@ -719,6 +678,6 @@ namespace TH_Cycles.ConfigurationPage
                 }
             }
         }
- 
+
     }
 }

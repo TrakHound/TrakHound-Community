@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Collections;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +13,38 @@ namespace TH_Global.Functions
 {
     public static class List_Functions
     {
+        public class ObservableCollectionEx<T> : ObservableCollection<T>
+        {
+            private bool _notificationSupressed = false;
+            private bool _supressNotification = false;
+            public bool SupressNotification
+            {
+                get
+                {
+                    return _supressNotification;
+                }
+                set
+                {
+                    _supressNotification = value;
+                    if (_supressNotification == false && _notificationSupressed)
+                    {
+                        this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                        _notificationSupressed = false;
+                    }
+                }
+            }
+
+            protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+            {
+                if (SupressNotification)
+                {
+                    _notificationSupressed = true;
+                    return;
+                }
+                base.OnCollectionChanged(e);
+            }
+        }
+
 
         public static void Sort(this IList o)
         {

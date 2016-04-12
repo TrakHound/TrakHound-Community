@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TH_GeneratedData.GeneratedEvents.ConfigurationPage.Controls"
              
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
@@ -33,7 +34,26 @@
                 <!--Link-->
                 <Grid>
 
-                    <ComboBox x:Name="link_COMBO" Padding="10,0" DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}" TextBoxBase.TextChanged="Link_TextChanged" SelectionChanged="Link_SelectionChanged" Margin="0,5" IsEditable="True" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Background="{x:Null}"/>
+                    <ComboBox MinWidth="200" Height="30" Padding="20,0" 
+                              DataContext="{Binding ParentPage}" ItemsSource="{Binding CollectedItems}"
+                              SelectedValuePath="Id"
+                              DisplayMemberPath="Display"
+                              SelectionChanged="Link_SelectionChanged"
+                              VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" 
+                              FontSize="14" Cursor="Hand"
+                        >
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Setter Property="SelectedValue" Value="{Binding SelectedLink, RelativeSource={RelativeSource AncestorType=local:Trigger}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CollectedItems.Count}" Value="0">
+                                        <Setter Property="Text" Value="{Binding SelectedLink, RelativeSource={RelativeSource AncestorType=local:Trigger}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Setter Property="IsEditable" Value="True"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
 
                     <!--Instructions-->
                     <TextBlock Text="Data Link" FontSize="12pt" Foreground="#888" VerticalAlignment="Center" TextAlignment="Center" Margin="20,0,30,0" >
@@ -41,10 +61,10 @@
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Text, ElementName=link_COMBO}" Value="">
+                                    <DataTrigger Binding="{Binding SelectedLink}" Value="">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Text, ElementName=link_COMBO}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding SelectedLink}" Value="{x:Null}">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>

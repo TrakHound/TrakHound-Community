@@ -35,6 +35,18 @@ namespace TH_Cycles.ConfigurationPage.Controls
             DependencyProperty.Register("ParentPage", typeof(Page), typeof(OverrideLinkItem), new PropertyMetadata(null));
 
 
+
+        public object SelectedId
+        {
+            get { return (object)GetValue(SelectedIdProperty); }
+            set { SetValue(SelectedIdProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedIdProperty =
+            DependencyProperty.Register("SelectedId", typeof(object), typeof(OverrideLinkItem), new PropertyMetadata(null));
+
+
+
         public delegate void SettingChanged_Handler();
         public event SettingChanged_Handler SettingChanged;
 

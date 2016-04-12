@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -62,7 +61,6 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         public void GetSentData(EventData data)
         {
             GetProbeData(data);
-
         }
 
         public void LoadConfiguration(DataTable dt)
@@ -83,14 +81,25 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
             foreach (Event e in genEvents) GeneratedEvents.Add(e);
 
             // Load MTConnect DataItems using Probe Data
-            if (probeData != null) LoadProbeData(probeData);
+            if (!Loaded) LoadCollectedItems(probeData);
 
             loading = false;
         }
 
         public void SaveConfiguration(DataTable dt)
         {
-                SaveGeneratedEvents(dt);
+            string prefix = "/GeneratedData/GeneratedEvents/";
+
+            // Clear all generated event rows first (so that Ids can be sequentially assigned)
+            DataTable_Functions.TrakHound.DeleteRows(prefix + "*", "address", dt);
+           
+            if (GeneratedEvents != null)
+            {
+                foreach (Event e in GeneratedEvents)
+                {
+                    SaveEvent(e, dt);
+                }
+            }
         }
 
         bool loading = false;
@@ -112,28 +121,32 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
         DataTable configurationTable;
-       
+
 
         #region "MTC Data Items"  
-     
-        ObservableCollection<CollectedItem> collecteditems;
-        public ObservableCollection<CollectedItem> CollectedItems
+        
+        List_Functions.ObservableCollectionEx<CollectedItem> _collectedItems;
+        public List_Functions.ObservableCollectionEx<CollectedItem> CollectedItems
         {
             get
             {
-                if (collecteditems == null)
-                    collecteditems = new ObservableCollection<CollectedItem>();
-                return collecteditems;
+                if (_collectedItems == null)
+                    _collectedItems = new List_Functions.ObservableCollectionEx<CollectedItem>();
+                return _collectedItems;
             }
 
             set
             {
-                collecteditems = value;
+                _collectedItems = value;
             }
         }
 
-        public class CollectedItem
+        private List<DataItem> probeData = new List<DataItem>();
+
+        public class CollectedItem : IComparable
         {
+            public CollectedItem() { }
+
             public CollectedItem(DataItem dataItem)
             {
                 Id = dataItem.Id;
@@ -157,9 +170,31 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
             {
                 return Display;
             }
-        }
 
-        private List<DataItem> probeData;
+            public CollectedItem Copy()
+            {
+                var copy = new CollectedItem();
+                copy.Id = Id;
+                copy.Name = Name;
+                copy.Display = Display;
+                copy.Category = Category;
+                copy.Type = Type;
+
+                return copy;
+            }
+
+            public int CompareTo(object obj)
+            {
+                if (obj == null) return 1;
+
+                var i = obj as CollectedItem;
+                if (i != null)
+                {
+                    return Display.CompareTo(i.Display);
+                }
+                else return 1;
+            }
+        }
 
         void GetProbeData(EventData data)
         {
@@ -167,24 +202,37 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
             {
                 if (data.Id.ToLower() == "mtconnect_probe_dataitems")
                 {
-                    CollectedItems.Clear();
-
                     var dataItems = (List<DataItem>)data.Data02;
-
                     probeData = dataItems;
-
-                    if (configurationTable != null) LoadProbeData(dataItems);
+                    if (Loaded) LoadCollectedItems(dataItems);
                 }
             }
         }
 
-        private void LoadProbeData(List<DataItem> items)
+        private void LoadCollectedItems(List<DataItem> dataItems)
         {
-            foreach (var dataItem in items)
+            var newItems = new List<CollectedItem>();
+
+            foreach (var dataItem in dataItems)
             {
                 var item = new CollectedItem(dataItem);
-                if (!CollectedItems.ToList().Exists(x => x.Id == item.Id)) CollectedItems.Add(item);
+                newItems.Add(item.Copy());
             }
+
+            foreach (var newItem in newItems)
+            {
+                if (!CollectedItems.ToList().Exists(x => x.Id == newItem.Id)) CollectedItems.Add(newItem);
+            }
+
+            foreach (var item in CollectedItems)
+            {
+                if (!newItems.Exists(x => x.Id == item.Id)) CollectedItems.Remove(item);
+            }
+
+            CollectedItems.SupressNotification = true;
+            CollectedItems.Sort();
+            CollectedItems.SupressNotification = false;
+
 
             foreach (Controls.Event ev in events)
             {
@@ -202,7 +250,32 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
                 }
             }
         }
-        
+
+        //private void LoadProbeData(List<DataItem> items)
+        //{
+        //    foreach (var dataItem in items)
+        //    {
+        //        var item = new CollectedItem(dataItem);
+        //        if (!CollectedItems.ToList().Exists(x => x.Id == item.Id)) CollectedItems.Add(item);
+        //    }
+
+        //    foreach (Controls.Event ev in events)
+        //    {
+        //        foreach (Controls.Value v in ev.Values)
+        //        {
+        //            foreach (Controls.Trigger t in v.Triggers)
+        //            {
+        //                Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { t });
+        //            }
+        //        }
+
+        //        foreach (Controls.CaptureItem ci in ev.CaptureItems)
+        //        {
+        //            Dispatcher.BeginInvoke(new Action<Controls.CaptureItem>(CaptureItem_UpdateCollectedLink), priority, new object[] { ci });
+        //        }
+        //    }
+        //}
+
 
         public DataTable EventValues;
 
@@ -241,7 +314,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         public static readonly DependencyProperty DisplayEventsProperty =
             DependencyProperty.Register("DisplayEvents", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
-        
+
         ObservableCollection<TH_WPF.CollapseButton> eventbuttons;
         public ObservableCollection<TH_WPF.CollapseButton> EventButtons
         {
@@ -262,48 +335,10 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
 
         #region "Save"
 
-        void SaveGeneratedEvents(DataTable dt)
-        {
-            string prefix = "/GeneratedData/GeneratedEvents/";
-
-            // Clear all generated event rows first (so that Ids can be sequentially assigned)
-            string filter = "address LIKE '" + prefix + "*'";
-            DataView dv = dt.AsDataView();
-            dv.RowFilter = filter;
-            DataTable temp_dt = dv.ToTable();
-            foreach (DataRow row in temp_dt.Rows)
-            {
-                DataRow dbRow = dt.Rows.Find(row["address"]);
-                if (dbRow != null) dt.Rows.Remove(dbRow);
-            }
-
-            if (GeneratedEvents != null)
-            {
-                foreach (Event e in GeneratedEvents)
-                {
-                    SaveEvent(e, dt);
-                }
-            }
-        }
-
         void SaveEvent(Event e, DataTable dt)
         {
-
-            int id = 0;
-            string adr = "/GeneratedData/GeneratedEvents/Event||";
-            string test = adr + id.ToString("00");
-
-            // Reassign Id (to keep everything in sequence)
-            if (configurationTable != null)
-            {
-                while (Table_Functions.GetTableValue(test, dt) != null)
-                {
-                    id += 1;
-                    test = adr + id.ToString("00");
-                }
-            }
-
-            adr = test;
+            int id = DataTable_Functions.TrakHound.GetUnusedAddressId("/GeneratedData/GeneratedEvents/Event", dt);
+            string adr = "/GeneratedData/GeneratedEvents/Event||" + id.ToString("00");
 
             e.id = id;
 
@@ -340,25 +375,10 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
 
         void SaveValue(Value v, Event e, DataTable dt)
         {
-            int id = 0;
-            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Value||";
-            string test = adr + id.ToString("00");
-
-
-            // Reassign Id (to keep everything in sequence)
-            if (configurationTable != null)
-            {
-                while (Table_Functions.GetTableValue(test, dt) != null)
-                {
-                    id += 1;
-                    test = adr + id.ToString("00");
-                }
-            }
-
-            adr = test;
+            int id = DataTable_Functions.TrakHound.GetUnusedAddressId("/GeneratedData/GeneratedEvents/Event" + e.id.ToString("00") + "/Value", dt);
+            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Value||" + id.ToString("00");
 
             v.id = id;
-
 
             // Save Root
             string attr = "";
@@ -383,24 +403,12 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         {
             if (t.link != null && t.modifier != null)
             {
-                int id = 0;
                 string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00");
                 adr += "/Value||" + v.id.ToString("00") + "/Triggers";
-                adr += "/Trigger||";
-                string test = adr + id.ToString("00");
+                adr += "/Trigger";
 
-
-                // Reassign Id (to keep everything in sequence)
-                if (configurationTable != null)
-                {
-                    while (Table_Functions.GetTableValue(test, dt) != null)
-                    {
-                        id += 1;
-                        test = adr + id.ToString("00");
-                    }
-                }
-
-                adr = test;
+                int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
+                adr = adr + "||" + id.ToString("00");
 
                 t.id = id;
 
@@ -437,28 +445,16 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
 
         void SaveCaptureItems(CaptureItem ci, Event e, DataTable dt)
         {
-            int id = 0;
-            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Capture/Item||";
-            string test = adr + id.ToString("00");
-
-            // Reassign Id (to keep everything in sequence)
-            if (configurationTable != null)
-            {
-                while (Table_Functions.GetTableValue(test, dt) != null)
-                {
-                    id += 1;
-                    test = adr + id.ToString("00");
-                }
-            }
-
-            adr = test;
+            string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Capture/Item";
+            int id = DataTable_Functions.TrakHound.GetUnusedAddressId(adr, dt);
+            adr = adr + "||" + id.ToString("00");
 
             ci.id = id;
 
             // Save Root
             string attr = "";
             attr += "id||" + ci.id.ToString("00") + ";";
-            attr += "name||" + ci.name.Replace(' ','_').ToLower() + ";";
+            attr += "name||" + ci.name.Replace(' ', '_').ToLower() + ";";
 
             string link = ci.link;
             List<CollectedItem> linkitems = CollectedItems.ToList();
@@ -952,7 +948,8 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
                 result.DataItems.Add(item.Id);
             }
 
-            result.link_COMBO.Text = t.link;
+            //result.link_COMBO.Text = t.link;
+            result.SelectedLink = t.link;
 
             //result.SelectedLink = t.link;
             result.modifier_COMBO.SelectedItem = t.modifier;
@@ -991,8 +988,15 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
 
         void Trigger_UpdateCollectedLink(Controls.Trigger item)
         {
-            Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.Id == item.link_COMBO.Text);
-            if (ci != null) item.link_COMBO.Text = ci.Display;
+            //if (item.SelectedLink != null)
+            //{
+            //    Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.Id == item.SelectedLink.ToString());
+            //    if (ci != null) item.link_COMBO.Text = ci.Display;
+            //}
+
+
+            //Page.CollectedItem ci = CollectedItems.ToList().Find(x => x.Id == item.link_COMBO.Text);
+            //if (ci != null) item.link_COMBO.Text = ci.Display;
         }
 
         #endregion
@@ -1014,7 +1018,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
             {
                 result.CaptureName = String_Functions.UppercaseFirst(ci.name.Replace('_', ' '));
             }
-            
+
             result.link_COMBO.Text = ci.link;
 
             return result;
@@ -1131,7 +1135,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         {
             public int id { get; set; }
             public int numval { get; set; }
-            public string value { get; set; } 
+            public string value { get; set; }
             public string link { get; set; }
 
             public string modifier { get; set; }
@@ -1140,7 +1144,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         public class Result
         {
             public int numval { get; set; }
-            public string value { get; set; }         
+            public string value { get; set; }
         }
 
         public class CaptureItem
@@ -1151,12 +1155,6 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
         }
 
         #endregion
-
-
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
 
     }
 }

@@ -24,28 +24,21 @@ namespace TH_Device_Server
 
         public void LoadPlugins()
         {
-            string plugin_rootpath = FileLocations.Plugins + @"\Server";
-
-            if (!Directory.Exists(plugin_rootpath)) Directory.CreateDirectory(plugin_rootpath);
-
             plugins = new List<IServerPlugin>();
 
             string pluginsPath;
 
             // Load from System Directory first (easier for user to navigate to 'C:\TrakHound\')
-            pluginsPath = plugin_rootpath;
+            pluginsPath = FileLocations.Plugins;
             if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
             // Load from App root Directory (doesn't overwrite plugins found in System Directory)
             pluginsPath = AppDomain.CurrentDomain.BaseDirectory;
             if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
 
-            pluginsPath = AppDomain.CurrentDomain.BaseDirectory + @"Plugins\";
-            if (Directory.Exists(pluginsPath)) LoadPlugins(pluginsPath);
-
-            Logger.Log("Server Plugins --------------------------");
-            Logger.Log(plugins.Count.ToString() + " Plugins Found");
-            Logger.Log("------------------------------");
+            Logger.Log("Server Plugins --------------------------", Logger.LogLineType.Console);
+            Logger.Log(plugins.Count.ToString() + " Plugins Found", Logger.LogLineType.Console);
+            Logger.Log("------------------------------", Logger.LogLineType.Console);
             foreach (var plugin in plugins)
             {
                 string name = plugin.Name;
@@ -59,9 +52,9 @@ namespace TH_Device_Server
                     version = "v" + v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString() + "." + v.Revision.ToString();
                 }
 
-                Logger.Log(plugin.Name + " : " + version);
+                Logger.Log(plugin.Name + " : " + version, Logger.LogLineType.Notification);
             }
-            Logger.Log("----------------------------------------");
+            Logger.Log("----------------------------------------", Logger.LogLineType.Console);
         }
 
         void LoadPlugins(string path)
@@ -83,7 +76,7 @@ namespace TH_Device_Server
                     LoadPlugins(directory);
                 }
             }
-            else Logger.Log("Plugins Directory Doesn't Exist (" + path + ")");
+            else Logger.Log("Plugins Directory Doesn't Exist (" + path + ")", Logger.LogLineType.Warning);
         }
 
         void Plugins_Initialize(Configuration config)
@@ -100,7 +93,7 @@ namespace TH_Device_Server
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Initialize :: Exception :: " + plugin.Name + " :: " + ex.Message);
+                        Logger.Log("Initialize :: Exception :: " + plugin.Name + " :: " + ex.Message, Logger.LogLineType.Error);
                     }
                 }
             }
@@ -118,7 +111,7 @@ namespace TH_Device_Server
                     }
                     catch (Exception ex)
                     {
-                        Logger.Log("Plugin :: Exception : " + plugin.Name + " :: " + ex.Message);
+                        Logger.Log("Plugin :: Exception : " + plugin.Name + " :: " + ex.Message, Logger.LogLineType.Error);
                     }
                 }
             }

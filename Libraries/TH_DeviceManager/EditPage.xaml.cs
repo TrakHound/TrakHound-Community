@@ -257,7 +257,7 @@ namespace TH_DeviceManager
                             string localPath = FileLocations.TrakHoundTemp + @"\" + temp_filename;
 
                             try { backupXml.Save(localPath); }
-                            catch (Exception ex) { Logger.Log("Error during Configuration Xml Backup"); }
+                            catch (Exception ex) { Logger.Log("Error during Configuration Xml Backup", Logger.LogLineType.Warning); }
                         }
 
                         success = Configurations.ClearConfigurationTable(tablename);
@@ -345,10 +345,10 @@ namespace TH_DeviceManager
         {
             CreatePages(types);
 
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
+            //Dispatcher.BeginInvoke(new Action(() =>
+            //{
                 PagesLoading = false;
-            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+            //}), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
 
             GetProbeData(ConfigurationTable);
         }
@@ -367,11 +367,11 @@ namespace TH_DeviceManager
 
             foreach (var type in types)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
+                //Dispatcher.BeginInvoke(new Action(() =>
+                //{
                     var page = CreatePage(type);
                     AddPage(page);
-                }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
+                //}), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
         }
 
@@ -495,18 +495,16 @@ namespace TH_DeviceManager
                             {
                                 if (type != null)
                                 {
-                                    if (!types.Exists(x => x.GetType().FullName == type.FullName))
+                                    if (!types.Exists(x => x.FullName == type.FullName))
                                     {
                                         types.Add(type);
                                     }
                                 }
                             }
-                        }
-
-                        
+                        }  
                     }
                 }
-                catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message); }
+                catch (Exception ex) { Logger.Log("LoadPlugins() : Exception : " + ex.Message, Logger.LogLineType.Error); }
 
                 // Search Subdirectories
                 foreach (string directory in Directory.GetDirectories(path))
@@ -535,6 +533,8 @@ namespace TH_DeviceManager
                 return display;
             }
         }
+
+        private List<TH_MTConnect.Components.DataItem> probeData = new List<TH_MTConnect.Components.DataItem>();
 
         void GetProbeData(DataTable dt)
         {
@@ -631,6 +631,7 @@ namespace TH_DeviceManager
                             foreach (var dataItem in dataItems.Samples) if (!items.Exists(x => x.Id == dataItem.Id)) items.Add(dataItem);
 
                             SendProbeDataItems(items);
+                            probeData = items;
                         }
                     }
                 }

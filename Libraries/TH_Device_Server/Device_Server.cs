@@ -33,7 +33,7 @@ namespace TH_Device_Server
         {
             if (Configuration.Databases_Server.Databases.Count > 0)
             {
-                Logger.Log("Device Server Started :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]");
+                Logger.Log("Device Server Started :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]", Logger.LogLineType.Notification);
 
                 Initialize(Configuration);
 
@@ -44,7 +44,7 @@ namespace TH_Device_Server
             }
             else
             {
-                Logger.Log("No Server Databases Configured");
+                Logger.Log("No Server Databases Configured", Logger.LogLineType.Warning);
             }
         }
 
@@ -54,7 +54,7 @@ namespace TH_Device_Server
 
             Plugins_Closing();
 
-            Logger.Log("Device Server Stopped :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]");
+            Logger.Log("Device Server Stopped :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]", Logger.LogLineType.Notification);
         }
 
 
@@ -92,7 +92,7 @@ namespace TH_Device_Server
                 // Increase the interval by 25% until interval == interval_max
                 interval = Math.Min(Convert.ToInt32(interval + (interval * 0.25)), INTERVAL_MAX);
 
-                Logger.Log("Error in Database Connection... Retrying in " + interval.ToString() + "ms");
+                Logger.Log("Error in Database Connection... Retrying in " + interval.ToString() + "ms", Logger.LogLineType.Warning);
                 if (status.Message != null) Logger.Log(status.Message);
             }
             else interval = INTERVAL_MIN;
@@ -153,20 +153,20 @@ namespace TH_Device_Server
 
         void PrintDeviceHeader(Configuration config)
         {
-            Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------");
+            Logger.Log("Device [" + config.Index.ToString() + "] ---------------------------------------", Logger.LogLineType.Console);
 
-            Logger.Log("Description ----------------------------");
-            if (config.Description.Description != null) Logger.Log(config.Description.Description);
-            if (config.Description.Manufacturer != null) Logger.Log(config.Description.Manufacturer);
-            if (config.Description.Model != null) Logger.Log(config.Description.Model);
-            if (config.Description.Serial != null) Logger.Log(config.Description.Serial);
+            Logger.Log("Description ----------------------------", Logger.LogLineType.Console);
+            if (config.Description.Description != null) Logger.Log(config.Description.Description, Logger.LogLineType.Console);
+            if (config.Description.Manufacturer != null) Logger.Log(config.Description.Manufacturer, Logger.LogLineType.Console);
+            if (config.Description.Model != null) Logger.Log(config.Description.Model, Logger.LogLineType.Console);
+            if (config.Description.Serial != null) Logger.Log(config.Description.Serial, Logger.LogLineType.Console);
 
-            Logger.Log("Agent ----------------------------------");
-            if (config.Agent.IP_Address != null) Logger.Log(config.Agent.IP_Address);
-            if (config.Agent.Port > 0) Logger.Log(config.Agent.Port.ToString());
-            if (config.Agent.Device_Name != null) Logger.Log(config.Agent.Device_Name);
+            Logger.Log("Agent ----------------------------------", Logger.LogLineType.Console);
+            if (config.Agent.IP_Address != null) Logger.Log(config.Agent.IP_Address, Logger.LogLineType.Console);
+            if (config.Agent.Port > 0) Logger.Log(config.Agent.Port.ToString(), Logger.LogLineType.Console);
+            if (config.Agent.Device_Name != null) Logger.Log(config.Agent.Device_Name, Logger.LogLineType.Console);
 
-            Logger.Log("--------------------------------------------------");
+            Logger.Log("--------------------------------------------------", Logger.LogLineType.Console);
         }
 
     }

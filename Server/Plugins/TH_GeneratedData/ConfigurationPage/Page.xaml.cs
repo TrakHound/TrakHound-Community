@@ -113,198 +113,308 @@ namespace TH_GeneratedData.ConfigurationPage
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
 
         DataTable configurationTable;
-       
 
-        #region "MTC Data Items"  
-     
-        ObservableCollection<CollectedItem> collecteditems;
-        public ObservableCollection<CollectedItem> CollectedItems
+
+        //#region "MTC Data Items"  
+
+        //ObservableCollection<CollectedItem> collecteditems;
+        //public ObservableCollection<CollectedItem> CollectedItems
+        //{
+        //    get
+        //    {
+        //        if (collecteditems == null)
+        //            collecteditems = new ObservableCollection<CollectedItem>();
+        //        return collecteditems;
+        //    }
+
+        //    set
+        //    {
+        //        collecteditems = value;
+        //    }
+        //}
+
+        //public class CollectedItem
+        //{
+        //    public string id { get; set; }
+        //    public string name { get; set; }
+
+        //    public string display { get; set; }
+
+        //    public string category { get; set; }
+        //    public string type { get; set; }
+
+        //    public override string ToString()
+        //    {
+        //        return display;
+        //    }
+        //}
+
+        //void LoadAgentSettings(DataTable dt)
+        //{
+        //    string prefix = "/Agent/";
+
+        //    string ip = Table_Functions.GetTableValue(prefix + "Address", dt);
+        //    // Get deprecated value if new value is not found
+        //    if (String.IsNullOrEmpty(ip)) ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
+
+        //    string p = Table_Functions.GetTableValue(prefix + "Port", dt);
+
+        //    string devicename = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
+        //    // Get deprecated value if new value is not found
+        //    if (String.IsNullOrEmpty(devicename)) devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
+
+        //    string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
+        //    string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
+
+        //    int port;
+        //    int.TryParse(p, out port);
+
+        //    // Proxy Settings
+        //    TH_MTConnect.HTTP.ProxySettings proxy = null;
+        //    if (proxyPort != null)
+        //    {
+        //        int proxy_p = -1;
+        //        if (int.TryParse(proxyPort, out proxy_p))
+        //        {
+        //            proxy = new TH_MTConnect.HTTP.ProxySettings();
+        //            proxy.Address = proxyAddress;
+        //            proxy.Port = proxy_p;
+        //        }
+        //    }
+
+        //    CollectedItems.Clear();
+
+        //    RunProbe(ip, proxy, port, devicename);
+        //}
+
+        //Thread runProbe_THREAD;
+
+        //class Probe_Info
+        //{
+        //    public string address;
+        //    public int port;
+        //    public string deviceName;
+        //    public TH_MTConnect.HTTP.ProxySettings proxy;
+        //}
+
+        //void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
+        //{
+        //    if (runProbe_THREAD != null) runProbe_THREAD.Abort();
+
+        //    var info = new Probe_Info();
+        //    info.address = address;
+        //    info.port = port;
+        //    info.deviceName = deviceName;
+        //    info.proxy = proxy;
+
+        //    runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
+        //    runProbe_THREAD.Start(info);
+        //}
+
+        //void RunProbe_Worker(object o)
+        //{
+        //    if (o != null)
+        //    {
+        //        var info = o as Probe_Info;
+        //        if (info != null)
+        //        {
+        //            string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
+
+        //            ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
+        //            if (returnData != null)
+        //            {
+        //                foreach (Device device in returnData.Devices)
+        //                {
+        //                    DataItemCollection dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(device);
+
+        //                    List<DataItem> items = new List<DataItem>();
+
+        //                    // Conditions
+        //                    foreach (DataItem dataItem in dataItems.Conditions) items.Add(dataItem);
+
+        //                    // Events
+        //                    foreach (DataItem dataItem in dataItems.Events) items.Add(dataItem);
+
+        //                    // Samples
+        //                    foreach (DataItem dataItem in dataItems.Samples) items.Add(dataItem);
+
+        //                    this.Dispatcher.BeginInvoke(new Action<List<DataItem>>(AddDataItems), priority, new object[] { items });
+        //                }
+        //            }
+        //            else
+        //            {
+
+        //            }
+
+        //            // Set 'Loading' to false
+        //            this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
+        //        }
+        //    }
+        //}
+
+        //void AddDataItems(List<DataItem> items)
+        //{
+        //    List<CollectedItem> list = new List<CollectedItem>();
+
+        //    foreach (DataItem item in items)
+        //    {
+        //        var ci = new CollectedItem();
+        //        ci.id = item.Id;
+        //        ci.name = item.Name;
+        //        ci.category = item.Category;
+        //        ci.type = item.Type;
+
+        //        if (ci.name != null) ci.display = ci.id + " : " + ci.name;
+        //        else ci.display = ci.id;
+
+        //        if (list.Find(x => x.id == ci.id) == null) list.Add(ci);
+        //    }
+
+        //    list.Sort((x, y) => string.Compare(x.id, y.id));
+
+        //    foreach (CollectedItem item in list) CollectedItems.Add(item);
+
+        //}
+
+        //void ProbeFinished()
+        //{
+        //    foreach (Controls.Snapshot_Item item in SnapshotItems)
+        //    {
+        //        this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(SnapshotItem_UpdateCollectedLink), priority, new object[] { item });
+        //    }
+
+        //    foreach (Controls.Event ev in events)
+        //    {
+        //        foreach (Controls.Value v in ev.Values)
+        //        {
+        //            foreach (Controls.Trigger t in v.Triggers)
+        //            {
+        //                this.Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { t });
+        //            } 
+        //        }
+
+        //        foreach (Controls.CaptureItem ci in ev.CaptureItems)
+        //        {
+        //            this.Dispatcher.BeginInvoke(new Action<Controls.CaptureItem>(CaptureItem_UpdateCollectedLink), priority, new object[] { ci });
+        //        }
+        //    }
+        //}
+
+        //public DataTable EventValues;
+
+        //void LoadEventValues()
+        //{
+        //    EventValues = TH_MTConnect.Tables.GetEventTypes();
+        //}
+
+        //#endregion
+
+        #region "MTC Probe Data"
+
+        List_Functions.ObservableCollectionEx<CollectedItem> _collectedItems;
+        public List_Functions.ObservableCollectionEx<CollectedItem> CollectedItems
         {
             get
             {
-                if (collecteditems == null)
-                    collecteditems = new ObservableCollection<CollectedItem>();
-                return collecteditems;
+                if (_collectedItems == null)
+                    _collectedItems = new List_Functions.ObservableCollectionEx<CollectedItem>();
+                return _collectedItems;
             }
 
             set
             {
-                collecteditems = value;
+                _collectedItems = value;
             }
         }
 
-        public class CollectedItem
+        private List<DataItem> probeData = new List<DataItem>();
+
+        public class CollectedItem : IComparable
         {
-            public string id { get; set; }
-            public string name { get; set; }
+            public CollectedItem() { }
 
-            public string display { get; set; }
+            public CollectedItem(DataItem dataItem)
+            {
+                Id = dataItem.Id;
+                Name = dataItem.Name;
 
-            public string category { get; set; }
-            public string type { get; set; }
+                if (Name != null) Display = Id + " : " + Name;
+                else Display = Id;
+            }
+
+            public string Id { get; set; }
+            public string Name { get; set; }
+
+            public string Display { get; set; }
 
             public override string ToString()
             {
-                return display;
+                return Display;
             }
-        }
 
-        void LoadAgentSettings(DataTable dt)
-        {
-            string prefix = "/Agent/";
-
-            string ip = Table_Functions.GetTableValue(prefix + "Address", dt);
-            // Get deprecated value if new value is not found
-            if (String.IsNullOrEmpty(ip)) ip = Table_Functions.GetTableValue(prefix + "IP_Address", dt);
-
-            string p = Table_Functions.GetTableValue(prefix + "Port", dt);
-
-            string devicename = Table_Functions.GetTableValue(prefix + "DeviceName", dt);
-            // Get deprecated value if new value is not found
-            if (String.IsNullOrEmpty(devicename)) devicename = Table_Functions.GetTableValue(prefix + "Device_Name", dt);
-
-            string proxyAddress = Table_Functions.GetTableValue(prefix + "ProxyAddress", dt);
-            string proxyPort = Table_Functions.GetTableValue(prefix + "ProxyPort", dt);
-
-            int port;
-            int.TryParse(p, out port);
-
-            // Proxy Settings
-            TH_MTConnect.HTTP.ProxySettings proxy = null;
-            if (proxyPort != null)
+            public CollectedItem Copy()
             {
-                int proxy_p = -1;
-                if (int.TryParse(proxyPort, out proxy_p))
+                var copy = new CollectedItem();
+                copy.Id = Id;
+                copy.Name = Name;
+                copy.Display = Display;
+
+                return copy;
+            }
+
+            public int CompareTo(object obj)
+            {
+                if (obj == null) return 1;
+
+                var i = obj as CollectedItem;
+                if (i != null)
                 {
-                    proxy = new TH_MTConnect.HTTP.ProxySettings();
-                    proxy.Address = proxyAddress;
-                    proxy.Port = proxy_p;
+                    return Display.CompareTo(i.Display);
                 }
+                else return 1;
             }
-
-            CollectedItems.Clear();
-
-            RunProbe(ip, proxy, port, devicename);
         }
 
-        Thread runProbe_THREAD;
-
-        class Probe_Info
+        void GetProbeData(EventData data)
         {
-            public string address;
-            public int port;
-            public string deviceName;
-            public TH_MTConnect.HTTP.ProxySettings proxy;
-        }
-
-        void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
-        {
-            if (runProbe_THREAD != null) runProbe_THREAD.Abort();
-
-            var info = new Probe_Info();
-            info.address = address;
-            info.port = port;
-            info.deviceName = deviceName;
-            info.proxy = proxy;
-
-            runProbe_THREAD = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
-            runProbe_THREAD.Start(info);
-        }
-
-        void RunProbe_Worker(object o)
-        {
-            if (o != null)
+            if (data != null && data.Id != null && data.Data02 != null)
             {
-                var info = o as Probe_Info;
-                if (info != null)
+                if (data.Id.ToLower() == "mtconnect_probe_dataitems")
                 {
-                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
-
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
-                    if (returnData != null)
-                    {
-                        foreach (Device device in returnData.Devices)
-                        {
-                            DataItemCollection dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(device);
-
-                            List<DataItem> items = new List<DataItem>();
-
-                            // Conditions
-                            foreach (DataItem dataItem in dataItems.Conditions) items.Add(dataItem);
-
-                            // Events
-                            foreach (DataItem dataItem in dataItems.Events) items.Add(dataItem);
-
-                            // Samples
-                            foreach (DataItem dataItem in dataItems.Samples) items.Add(dataItem);
-
-                            this.Dispatcher.BeginInvoke(new Action<List<DataItem>>(AddDataItems), priority, new object[] { items });
-                        }
-                    }
-                    else
-                    {
-
-                    }
-
-                    // Set 'Loading' to false
-                    this.Dispatcher.BeginInvoke(new Action(ProbeFinished), priority, null);
+                    var dataItems = (List<DataItem>)data.Data02;
+                    probeData = dataItems;
+                    if (Loaded) LoadCollectedItems(dataItems);
                 }
             }
         }
 
-        void AddDataItems(List<DataItem> items)
+        private void LoadCollectedItems(List<DataItem> dataItems)
         {
-            List<CollectedItem> list = new List<CollectedItem>();
+            var o = SelectedCycleNameLink;
+            if (o != null) TH_Global.Logger.Log("link = " + o.ToString());
+            else TH_Global.Logger.Log("link = null");
 
-            foreach (DataItem item in items)
+            var newItems = new List<CollectedItem>();
+
+            foreach (var dataItem in dataItems)
             {
-                var ci = new CollectedItem();
-                ci.id = item.Id;
-                ci.name = item.Name;
-                ci.category = item.Category;
-                ci.type = item.Type;
-
-                if (ci.name != null) ci.display = ci.id + " : " + ci.name;
-                else ci.display = ci.id;
-
-                if (list.Find(x => x.id == ci.id) == null) list.Add(ci);
+                var item = new CollectedItem(dataItem);
+                newItems.Add(item.Copy());
             }
 
-            list.Sort((x, y) => string.Compare(x.id, y.id));
-
-            foreach (CollectedItem item in list) CollectedItems.Add(item);
-
-        }
-
-        void ProbeFinished()
-        {
-            foreach (Controls.Snapshot_Item item in SnapshotItems)
+            foreach (var newItem in newItems)
             {
-                this.Dispatcher.BeginInvoke(new Action<Controls.Snapshot_Item>(SnapshotItem_UpdateCollectedLink), priority, new object[] { item });
+                if (!CollectedItems.ToList().Exists(x => x.Id == newItem.Id)) CollectedItems.Add(newItem);
             }
 
-            foreach (Controls.Event ev in events)
+            foreach (var item in CollectedItems)
             {
-                foreach (Controls.Value v in ev.Values)
-                {
-                    foreach (Controls.Trigger t in v.Triggers)
-                    {
-                        this.Dispatcher.BeginInvoke(new Action<Controls.Trigger>(Trigger_UpdateCollectedLink), priority, new object[] { t });
-                    } 
-                }
-
-                foreach (Controls.CaptureItem ci in ev.CaptureItems)
-                {
-                    this.Dispatcher.BeginInvoke(new Action<Controls.CaptureItem>(CaptureItem_UpdateCollectedLink), priority, new object[] { ci });
-                }
+                if (!newItems.Exists(x => x.Id == item.Id)) CollectedItems.Remove(item);
             }
-        }
 
-        public DataTable EventValues;
-
-        void LoadEventValues()
-        {
-            EventValues = TH_MTConnect.Tables.GetEventTypes();
+            CollectedItems.SupressNotification = true;
+            CollectedItems.Sort();
+            CollectedItems.SupressNotification = false;
         }
 
         #endregion
