@@ -222,6 +222,19 @@ namespace TH_WPF.Histogram
             this.DataContext = this;
         }
 
+
+
+        public object DataObject
+        {
+            get { return (object)GetValue(DataObjectProperty); }
+            set { SetValue(DataObjectProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataObjectProperty =
+            DependencyProperty.Register("DataObject", typeof(object), typeof(DataBar), new PropertyMetadata(null));
+
+
+
         public string Id
         {
             get { return (string)GetValue(IdProperty); }
@@ -260,6 +273,8 @@ namespace TH_WPF.Histogram
 
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(DataBar), new PropertyMetadata(false));
+
+
 
     }
 }

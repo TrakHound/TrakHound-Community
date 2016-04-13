@@ -208,6 +208,16 @@ namespace TH_DeviceTable
 
         #region "Production Status"
 
+        public class ProductionStatusInfo
+        {
+            public string Value { get; set; }
+            public int Numval { get; set; }
+            public Brush Brush { get; set; }
+            public Brush HoverBrush { get; set; }
+        }
+
+        public List<ProductionStatusInfo> ProductionStatusInfos = new List<ProductionStatusInfo>();
+
         private string _productionStatus;
         public string ProductionStatus
         {
@@ -241,6 +251,31 @@ namespace TH_DeviceTable
                 var val = _productionStatusSeconds;
                 _productionStatusSeconds = value;
                 if (val != _productionStatusSeconds) NotifyChanged("ProductionStatusSeconds");
+            }
+        }
+
+
+        private Brush _productionStatusBrush;
+        public Brush ProductionStatusBrush
+        {
+            get { return _productionStatusBrush; }
+            set
+            {
+                var val = _productionStatusBrush;
+                _productionStatusBrush = value;
+                if (val != _productionStatusBrush) NotifyChanged("ProductionStatusBrush");
+            }
+        }
+
+        private Brush _productionStatusBrushHover;
+        public Brush ProductionStatusBrushHover
+        {
+            get { return _productionStatusBrushHover; }
+            set
+            {
+                var val = _productionStatusBrushHover;
+                _productionStatusBrushHover = value;
+                if (val != _productionStatusBrushHover) NotifyChanged("ProductionStatusBrushHover");
             }
         }
 

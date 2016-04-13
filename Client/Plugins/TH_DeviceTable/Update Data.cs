@@ -12,6 +12,7 @@ using TH_Configuration;
 using TH_Global;
 using TH_Global.Functions;
 using TH_Plugins;
+using TH_WPF;
 
 namespace TH_DeviceTable
 {
@@ -120,6 +121,7 @@ namespace TH_DeviceTable
             }
         }
 
+
         private void UpdateProductionStatus(EventData data, DeviceInfo info)
         {
             if (data.Id.ToLower() == "statusdata_snapshots")
@@ -127,12 +129,80 @@ namespace TH_DeviceTable
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     info.ProductionStatus = GetTableValue(data.Data02, "Production Status");
+
+                    var i = info.ProductionStatusInfos.Find(x => x.Value == info.ProductionStatus);
+                    if (i != null)
+                    {
+                        info.ProductionStatusBrush = i.Brush;
+                        info.ProductionStatusBrushHover = i.HoverBrush;
+                    }
                 }), PRIORITY_BACKGROUND, new object[] { });
             }
 
             if (data.Id.ToLower() == "statusdata_shiftdata")
             {
                 Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(UpdateProductionStatusTime), PRIORITY_BACKGROUND, new object[] { data.Data02, info });
+            }
+
+            if (data.Id.ToLower() == "statusdata_geneventvalues")
+            {
+                Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(UpdateProductionStatusTimes_GenEventValues), PRIORITY_BACKGROUND, new object[] { data.Data02, info });
+            }
+        }
+
+        // Get list of Production Status variables to get numval for each to set colors
+        void UpdateProductionStatusTimes_GenEventValues(object geneventvalues, DeviceInfo info)
+        {
+            DataTable dt = geneventvalues as DataTable;
+            if (dt != null)
+            {
+                DataView dv = dt.AsDataView();
+                dv.RowFilter = "EVENT = 'production_status'";
+                DataTable temp_dt = dv.ToTable();
+
+                if (temp_dt != null)
+                {
+                    foreach (DataRow row in temp_dt.Rows)
+                    {
+                        string val = row["VALUE"].ToString();
+
+                        // Get the Numval 
+                        int numval = -1;
+                        int.TryParse(row["NUMVAL"].ToString(), out numval);
+
+                        if (!info.ProductionStatusInfos.ToList().Exists(x => x.Value == val))
+                        {
+                            var i = new DeviceInfo.ProductionStatusInfo();
+                            i.Value = val;
+                            i.Numval = numval;
+                            info.ProductionStatusInfos.Add(i);
+
+                            info.ProductionStatusInfos = info.ProductionStatusInfos.OrderByDescending(x => x.Numval).ToList();
+                        }
+                    }
+
+                    // Set Bar Colors
+                    foreach (var i in info.ProductionStatusInfos)
+                    {
+                        if (i.Numval == info.ProductionStatusInfos.Count - 1)
+                        {
+                            i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen");
+                            i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen_Hover");
+                        }
+                        else if (i.Numval == 0)
+                        {
+                            i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed");
+                            i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed_Hover");
+                        }
+                        else
+                        {
+                            i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue");
+                            i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue_Hover");
+                        }
+                    }
+
+                    temp_dt.Dispose();
+                }
             }
         }
 
@@ -179,9 +249,32 @@ namespace TH_DeviceTable
             }
         }
 
+
+        private bool useSnapshotForParts = false;
+
         private void UpdatePartCount(EventData data, DeviceInfo info)
         {
-            if (data.Id.ToLower() == "statusdata_parts" && data.Data02 != null)
+            // Use Snapshot table if Part Count is given as a total for the day
+            if (data.Id.ToLower() == "statusdata_snapshots")
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    int count = 0;
+
+                    string val = GetTableValue(data.Data02, "Part Count");
+                    if (val != null)
+                    {
+                        useSnapshotForParts = true;
+
+                        int.TryParse(val, out count);
+
+                        info.PartCount = count;
+                    }
+                }), PRIORITY_BACKGROUND, new object[] { });
+            }
+
+            // Use the Parts table is Part Count is given as DISCRETE (number of parts per event) and not the total for the day
+            if (data.Id.ToLower() == "statusdata_parts" && data.Data02 != null && !useSnapshotForParts)
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -192,7 +285,6 @@ namespace TH_DeviceTable
 
                         foreach (DataRow row in dt.Rows)
                         {
-
                             string val = row["count"].ToString();
 
                             int i = 0;

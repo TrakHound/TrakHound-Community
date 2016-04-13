@@ -15,8 +15,8 @@
             <th_wpf:MeterDisplay.Style>
                 <Style TargetType="th_wpf:MeterDisplay">
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
-                    <Setter Property="ActiveLevelBrush" Value="{StaticResource Accent_Normal}"/>
-                    <Setter Property="InactiveLevelBrush" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="ActiveLevelBrush" Value="#333"/>
+                    <Setter Property="InactiveLevelBrush" Value="#33000000"/>
                     <Setter Property="FontSize" Value="24pt"/>
                     <Setter Property="Maximum" Value="1"/>
                     <Setter Property="ValueFormat" Value="P1"/>

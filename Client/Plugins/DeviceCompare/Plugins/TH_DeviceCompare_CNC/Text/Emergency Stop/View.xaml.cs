@@ -71,7 +71,7 @@ namespace TH_DeviceCompare_CNC.Text.Emergency_Stop
                         Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                         Background = new SolidColorBrush(Color.FromRgb(25, 180, 25));
                         break;
-                    default:
+                    case "TRIGGERED":
                         Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                         Background = new SolidColorBrush(Colors.Red);
                         break;

@@ -17,8 +17,6 @@
             </Style>
         </Grid.Resources>
 
-        <!--<local:CategoryPanel Title="Controller Status" Id="{Binding Id}" Image="/TH_DevicePage;component/Resources/Warning_01.png">-->
-
             <StackPanel>
 
                 <!--Controller Variables-->
@@ -45,7 +43,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Power-->
-                        <local:AvailabilityStatusPanel Title="Power" HorizontalAlignment="Left" Margin="10,10,10,0"/>
+                        <!--<local:AvailabilityStatusPanel Title="Power" Availability="{Binding Availability}" HorizontalAlignment="Left" Margin="10,10,10,0"/>-->
 
                         <!--Emergency Stop-->
                         <Grid Grid.Column="1" VerticalAlignment="Center">
@@ -65,35 +63,16 @@
 
                             <!--Emergency Stop-->
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Emergency Stop"/>
-                            <local:TextDisplay Grid.Column="1" Grid.Row="0" Text="TRIGGERED">
+                            <local:TextDisplay Grid.Column="1" Grid.Row="0" Text="{Binding EmergencyStop}">
                                 <local:TextDisplay.Style>
                                     <Style TargetType="local:TextDisplay" BasedOn="{StaticResource {x:Type local:TextDisplay}}">
                                         <Setter Property="Foreground" Value="White"/>
                                         <Style.Triggers>
                                             <Trigger Property="Text" Value="ARMED">
-                                                <Setter Property="Background" Value="#66ffffff"/>
+                                            <Setter Property="Background" Value="#FF19B419"/>
                                             </Trigger>
                                             <Trigger Property="Text" Value="TRIGGERED">
                                                 <Setter Property="Background" Value="Red"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </local:TextDisplay.Style>
-                            </local:TextDisplay>
-
-                            <!--Message-->
-                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Message"/>
-                            <local:TextDisplay Grid.Column="1" Grid.Row="1" Text="ESTOP Triggered">
-                                <local:TextDisplay.Style>
-                                    <Style TargetType="local:TextDisplay" BasedOn="{StaticResource {x:Type local:TextDisplay}}">
-                                        <Setter Property="Foreground" Value="White"/>
-                                        <Setter Property="Background" Value="#33ffffff"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="Text" Value="{x:Null}">
-                                                <Setter Property="Background" Value="Transparent"/>
-                                            </Trigger>
-                                            <Trigger Property="Text" Value="">
-                                                <Setter Property="Background" Value="Transparent"/>
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
@@ -106,7 +85,7 @@
 
                 </Grid>
 
-
+                <!--Controller Mode-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <StackPanel.Resources>
                         <Style TargetType="local:ModeStatusPanel">
@@ -135,19 +114,53 @@
 
                 </StackPanel>
 
+                <!--Overrides-->
                 <StackPanel Orientation="Horizontal">
 
                     <!--Feedrate Override-->
-                    <local:OverrideStatus Title="Feedrate Override"/>
+                    <local:OverrideStatus Title="Feedrate Override" Value="{Binding FeedrateOverride}"/>
 
                     <!--Rapid Override-->
-                    <local:OverrideStatus Title="Rapid Override"/>
+                    <local:OverrideStatus Title="Rapid Override" Value="{Binding RapidOverride}"/>
 
                 </StackPanel>
 
+            <!--Message-->
+            <StackPanel>
+
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="Message">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Margin" Value="10,5,5,5"/>
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                
+                <local:TextDisplay Grid.Column="1" Grid.Row="1" Text="{Binding Message}">
+                    <local:TextDisplay.Style>
+                        <Style TargetType="local:TextDisplay">
+                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="Height" Value="40"/>
+                            <Setter Property="Margin" Value="10,5"/>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="{x:Null}">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                                <Trigger Property="Text" Value="">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </local:TextDisplay.Style>
+                </local:TextDisplay>
+
             </StackPanel>
 
-        <!--</local:CategoryPanel>-->
+        </StackPanel>
 
     </Grid>
 

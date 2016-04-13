@@ -36,5 +36,17 @@ namespace TH_DevicePage.Controls
             DependencyProperty.Register("Title", typeof(string), typeof(OverrideStatus), new PropertyMetadata(null));
 
 
+        public double Value
+        {
+            get { return (double)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.Register("Value", typeof(double), typeof(OverrideStatus), new PropertyMetadata(0d));
+
+
+
+
     }
 }

@@ -8,7 +8,6 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_Gener
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\CaptureItem.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\Default.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\EventButton.baml
-F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\Trigger.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\CaptureItem.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\Default.g.cs
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\Event.g.cs
@@ -21,6 +20,7 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\Generate
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\TH_GeneratedData_MarkupCompile.lref
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\Event.baml
+F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\Trigger.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Controls\Value.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\GeneratedEvents\ConfigurationPage\Page.baml
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_GeneratedData\obj\Debug\SnapshotData\ConfigurationPage\Page.baml

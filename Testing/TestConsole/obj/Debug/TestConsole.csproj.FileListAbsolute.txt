@@ -7,8 +7,10 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\EntityFramework.SqlS
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\System.Data.SQLite.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\System.Data.SQLite.EF6.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\System.Data.SQLite.Linq.dll
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_GitHub.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\Newtonsoft.Json.dll
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_GitHub.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Global.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\EntityFramework.xml
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\EntityFramework.SqlServer.xml
@@ -17,5 +19,3 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.exe
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\obj\Debug\TestConsole.pdb
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_GitHub.dll
-F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_GitHub.pdb

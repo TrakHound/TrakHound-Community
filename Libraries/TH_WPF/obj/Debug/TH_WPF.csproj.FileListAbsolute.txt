@@ -61,6 +61,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\Segment.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TickMark.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TimeLine.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeProgress.g.cs
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeSlider.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF_MarkupCompile.lref
@@ -81,10 +82,9 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TextBox.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\Segment.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TimeLine.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeProgress.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeSlider.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.g.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeSlider.g.cs
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeSlider.baml

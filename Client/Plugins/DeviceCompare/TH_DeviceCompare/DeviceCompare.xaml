@@ -18,9 +18,9 @@
              >
 
     <!--Disable the Vertical ScrollBar and use the one for the Columns and RowHeaders (only applies if Page is zoomed)-->
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Background="{StaticResource Window_Background}">
 
-        <Grid>
+        <Grid Background="#10000000">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MinHeight="30"/>
                 <RowDefinition Height="*" />
@@ -39,14 +39,17 @@
                     <Grid Height="30" VerticalAlignment="Bottom">
                         <Grid.Resources>
                             <Style TargetType="th_wpf:Button">
-                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                <!--<Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>-->
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                 <Setter Property="Background" Value="Transparent"/>
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="true">
-                                        <Setter Property="Background" Value="#20ffffff"/>
+                                        <!--<Setter Property="Background" Value="#20ffffff"/>-->
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Light}"/>
                                     </Trigger>
                                     <Trigger Property="IsEnabled" Value="false">
-                                        <Setter Property="Foreground" Value="#20ffffff"/>
+                                        <!--<Setter Property="Foreground" Value="#20ffffff"/>-->
+                                        <Setter Property="Foreground" Value="{StaticResource Accent_Hover}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>

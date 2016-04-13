@@ -53,12 +53,15 @@ namespace TH_MTConnect.Plugin
             if (ac != null)
             {
                 // Run a Probe request and get the returned data
-                if (probeData == null) probeData = GetProbe(ac);
-                if (probeData != null)
+                if (probeData == null)
                 {
+                    probeData = GetProbe(ac);
+
                     // Send the Probe data to other plugins
                     SendProbeData(probeData, config);
-
+                }
+                if (probeData != null)
+                {
                     // Run a Current request and get the returned data
                     var currentData = GetCurrent(ac);
                     if (currentData != null)

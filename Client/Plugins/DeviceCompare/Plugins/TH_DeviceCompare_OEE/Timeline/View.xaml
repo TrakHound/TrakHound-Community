@@ -40,7 +40,7 @@
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="BorderBrush" Value="#00000000"/>
                     <Setter Property="Background" Value="#00000000"/>
-                    <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                    <!--<Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>-->
                     <Setter Property="ToolTipService.ShowDuration" Value="10000"/>
                     <Setter Property="ToolTipService.BetweenShowDelay" Value="3000"/>
                     <Setter Property="ToolTipService.InitialShowDelay" Value="1000"/>
@@ -54,6 +54,16 @@
                         <Trigger Property="IsSelected" Value="true">
                             <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                         </Trigger>
+                        <DataTrigger Binding="{Binding DataObject}" Value="0">
+                            <Setter Property="Foreground" Value="{StaticResource StatusBlue}" />
+                            <!--<Setter Property="Background" Value="{StaticResource StatusBlue}"/>-->
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DataObject}" Value="1">
+                            <Setter Property="Foreground" Value="{StaticResource StatusBlue}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding DataObject}" Value="2">
+                            <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </th_wpf:Histogram.Resources>

@@ -43,6 +43,10 @@ namespace TH_Status
             {
                 var device = probe.Devices[0];
 
+                foreach (var item in device.DataItems.Conditions) result.Add(ProcessDataItem(item));
+                foreach (var item in device.DataItems.Events) result.Add(ProcessDataItem(item));
+                foreach (var item in device.DataItems.Samples) result.Add(ProcessDataItem(item));
+
                 foreach (var component in device.Components)
                 {
                     result.AddRange(ProcessComponent(component));
@@ -102,6 +106,10 @@ namespace TH_Status
             if (current.DeviceStreams != null && current.DeviceStreams.Count > 0)
             {
                 var device = current.DeviceStreams[0];
+
+                foreach (var item in device.DataItems.Conditions) ProcessDataItem(item, infos);
+                foreach (var item in device.DataItems.Events) ProcessDataItem(item, infos);
+                foreach (var item in device.DataItems.Samples) ProcessDataItem(item, infos);
 
                 foreach (var componentStream in device.ComponentStreams)
                 {

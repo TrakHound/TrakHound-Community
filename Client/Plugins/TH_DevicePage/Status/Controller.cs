@@ -89,8 +89,9 @@ namespace TH_DevicePage
             switch (type.ToLower())
             {
                 case "controller_mode": UpdateControllerMode(panel, row); break;
-
-
+                case "emergency_stop": UpdateEmergencyStop(panel, row); break;
+                case "availability": UpdateAvailabilty(panel, row); break;
+                case "message": UpdateMessage(panel, row); break;
 
             }
 
@@ -100,9 +101,32 @@ namespace TH_DevicePage
         private void UpdateControllerMode(Panel panel, DataRow row)
         {
             string value = row["Value"].ToString();
-
             panel.ControllerMode = value;
         }
+
+        private void UpdateEmergencyStop(Panel panel, DataRow row)
+        {
+            string value = row["Value"].ToString();
+            panel.EmergencyStop = value;
+        }
+
+        private void UpdateAvailabilty(Panel panel, DataRow row)
+        {
+            string value = row["Value"].ToString();
+            panel.Availability = value;
+        }
+
+        private void UpdateMessage(Panel panel, DataRow row)
+        {
+            string value = row["Value"].ToString();
+            panel.Message = value;
+        }
+
+        //private void UpdateMessage(Panel panel, DataRow row)
+        //{
+        //    string value = row["Value"].ToString();
+        //    panel.Message = value;
+        //}
 
 
     }

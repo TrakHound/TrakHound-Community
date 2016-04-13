@@ -30,7 +30,7 @@
             <!--Separator-->
             <Rectangle Grid.Row="1" Fill="#33ffffff" Height="1"/>
 
-            <!--Power (Availability)-->
+            <!--Power / Availability-->
             <Grid Grid.Row="2">
                 <Grid.Resources>
                     <Style TargetType="local:ImageDisplay">
@@ -50,7 +50,7 @@
                         <Style TargetType="local:ImageDisplay" BasedOn="{StaticResource {x:Type local:ImageDisplay}}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Availability}" Value="AVAILABLE">
-                                    <Setter Property="Background" Value="#00ff00"/>
+                                    <Setter Property="Background" Value="#FF19B419"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

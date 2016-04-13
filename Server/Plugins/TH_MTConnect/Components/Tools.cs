@@ -110,7 +110,6 @@ namespace TH_MTConnect.Components
                     {
                         if (ChildNode.Attributes["category"] != null)
                         {
-
                             var dataItem = new DataItem(ChildNode);
 
                             foreach (XmlNode ChildChildNode in ChildNode.ChildNodes)

@@ -57,6 +57,7 @@
         </ContextMenu>
         
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
@@ -91,20 +92,20 @@
                                 <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
                                 <!--Overlay-->
-                                <!--<Grid>
+                                <Grid>
                                     <Grid.Style>
                                         <Style TargetType="Grid">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                    <Setter Property="Background" Value="#88000000"/>
-                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding Available}" Value="false">
-                                                    <Setter Property="Background" Value="#33000000"/>
+                                                    <Setter Property="Background" Value="#11000000"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Connected}" Value="false">
+                                                    <Setter Property="Background" Value="#22000000"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                </Grid>-->
+                                </Grid>
 
                             </Grid>
                         </Border>
@@ -122,10 +123,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
-        <SolidColorBrush x:Key="High" Color="#FF19B419"/>
-        <SolidColorBrush x:Key="Medium" Color="Orange"/>
-        <SolidColorBrush x:Key="Low" Color="Red"/>
 
         <Style TargetType="{x:Type th_wpf:MeterDisplay}">
             <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
@@ -147,7 +144,7 @@
         </Grid.RowDefinitions>
 
         <!--Navbar-->
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Background="{StaticResource Accent_Normal}">
             <StackPanel.Resources>
                 <Style TargetType="th_wpf:Button">
                     <Setter Property="Background" Value="Transparent"/>
@@ -167,364 +164,378 @@
 
         </StackPanel>
 
-        <DataGrid x:Name="Devices_DG" Grid.Row="1" ItemsSource="{Binding DeviceInfos}"
+        <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
+
+            <DataGrid x:Name="Devices_DG" ItemsSource="{Binding DeviceInfos}"
                   AutoGenerateColumns="False"
                   BorderBrush="Transparent"
                   BorderThickness="0"
                   HeadersVisibility="Column"
                   VerticalAlignment="Stretch"
+                      Background="#10000000"
                   >
 
-            <DataGrid.Columns>
+                <DataGrid.Columns>
 
-                <!--Database Connection Status-->
-                <DataGridTemplateColumn MinWidth="30">
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="Database Connection Status" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
+                    <!--Database Connection Status-->
+                    <DataGridTemplateColumn MinWidth="30">
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Database Connection Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
                                         Displays a warning image if the Device's Database Connection cannot be established
-                                    </TextBlock>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                <Setter Property="Background" Value="Red"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-
-                                <Grid Width="20" Height="20" Margin="5">
-                                    <Grid.Resources>
-                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
-                                    </Grid.Resources>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
                                     <Grid.Style>
                                         <Style TargetType="Grid">
-                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Background" Value="White"/>
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Background" Value="Transparent"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Setter Property="Background" Value="#666666"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
+
+                                    <Grid Width="20" Height="20" Margin="5">
+                                        <Grid.Resources>
+                                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
+                                        </Grid.Resources>
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                                <Setter Property="Background" Value="White"/>
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Connected}" Value="false">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                    </Grid>
+
                                 </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-               
-                <!--Availabilty Status-->
-                <DataGridTemplateColumn MinWidth="30">
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="Device Availability Status" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
+                    <!--Availabilty Status-->
+                    <DataGridTemplateColumn MinWidth="30">
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Device Availability Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
                                         Displays a warning image if the Device's MTConnect Availability status is set to 'UNAVAILABLE'
-                                    </TextBlock>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Available}" Value="false">
-                                                <Setter Property="Background" Value="OrangeRed"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-
-                                <Grid Width="20" Height="20" Margin="5">
-                                    <Grid.Resources>
-                                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
-                                    </Grid.Resources>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
                                     <Grid.Style>
                                         <Style TargetType="Grid">
-                                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                            <Setter Property="Background" Value="White"/>
-                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Setter Property="Background" Value="Transparent"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Available}" Value="false">
-                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Setter Property="Background" Value="Orange"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+
+                                    <Grid Width="20" Height="20" Margin="5">
+                                        <Grid.Resources>
+                                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
+                                        </Grid.Resources>
+                                        <Grid.Style>
+                                            <Style TargetType="Grid">
+                                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                                <Setter Property="Background" Value="White"/>
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Available}" Value="false">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
+                                    </Grid>
+
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--Device Status-->
+                    <DataGridTemplateColumn MinWidth="30">
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Device Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                        Displays the Device's current status whether it is in Production, Idle, or Alert.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="S" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Production}" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Idle}" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource Window_Background}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Alert}" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
                                 </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!--Description-->
+                    <DataGridTemplateColumn Header="Description">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center">
 
-                <!--Device Status-->
-                <DataGridTemplateColumn MinWidth="30">
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="Device Status" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
-                                        Displays the Device's current status whether it is in Production, Idle, or Alert.
-                                    </TextBlock>
+                                    <!--Manufacturer Logo-->
+                                    <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5" MaxHeight="40"/>
+
+                                    <!--Device Description-->
+                                    <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10,5" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
                                 </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="S" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Production}" Value="true">
-                                                <Setter Property="Background" Value="{StaticResource High}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Idle}" Value="true">
-                                                <Setter Property="Background" Value="{StaticResource Medium}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Alert}" Value="true">
-                                                <Setter Property="Background" Value="{StaticResource Low}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Description Columns-->
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Device ID">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Viewbox Margin="10">
-                                <TextBlock Text="{Binding Description.Device_ID}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
-                            </Viewbox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Description" MaxWidth="200">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                    <!--Device Id-->
+                    <DataGridTemplateColumn Header="Device ID">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Viewbox Margin="10">
+                                    <TextBlock Text="{Binding Description.Device_ID}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </Viewbox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--OEE-->
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="OEE" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
+                    <!--OEE-->
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="OEE" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
                                         Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
-                                    </TextBlock>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="OEE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <th_wpf:MeterDisplay Value="{Binding Oee}" >
-                                <th_wpf:MeterDisplay.Style>
-                                    <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding OeeStatus}" Value="0">
-                                                <Setter Property="ActiveLevelBrush" Value="White"/>
-                                                <Setter Property="InactiveLevelBrush" Value="#88ffffff"/>
-                                                <Setter Property="Foreground" Value="White" />
-                                                <Setter Property="Background" Value="{StaticResource Low}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding OeeStatus}" Value="1">
-                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource Medium}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding OeeStatus}" Value="2">
-                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource High}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </th_wpf:MeterDisplay.Style>
-                            </th_wpf:MeterDisplay>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="OEE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <th_wpf:MeterDisplay Value="{Binding Oee}" >
+                                    <th_wpf:MeterDisplay.Style>
+                                        <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding OeeStatus}" Value="0">
+                                                    <Setter Property="ActiveLevelBrush" Value="White"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="#66ffffff"/>
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding OeeStatus}" Value="1">
+                                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding OeeStatus}" Value="2">
+                                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </th_wpf:MeterDisplay.Style>
+                                </th_wpf:MeterDisplay>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Availability-->
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="Availability" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
+                    <!--Availability-->
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Availability" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
                                         Availability portion of the Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
-                                    </TextBlock>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="Availability" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <th_wpf:MeterDisplay Value="{Binding Availability}" >
-                                <th_wpf:MeterDisplay.Style>
-                                    <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
-                                                <Setter Property="ActiveLevelBrush" Value="White"/>
-                                                <Setter Property="InactiveLevelBrush" Value="#88ffffff"/>
-                                                <Setter Property="Foreground" Value="White" />
-                                                <Setter Property="Background" Value="{StaticResource Low}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
-                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource Medium}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
-                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource High}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </th_wpf:MeterDisplay.Style>
-                            </th_wpf:MeterDisplay>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="Availability" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <th_wpf:MeterDisplay Value="{Binding Availability}" >
+                                    <th_wpf:MeterDisplay.Style>
+                                        <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="0">
+                                                    <Setter Property="ActiveLevelBrush" Value="White"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="#66ffffff"/>
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="1">
+                                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding AvailabilityStatus}" Value="2">
+                                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </th_wpf:MeterDisplay.Style>
+                                </th_wpf:MeterDisplay>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Performance-->
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="Performance" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
+                    <!--Performance-->
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Performance" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
                                         Performance portion of the Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
-                                    </TextBlock>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="Performance" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <th_wpf:MeterDisplay Value="{Binding Performance}" >
-                                <th_wpf:MeterDisplay.Style>
-                                    <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
-                                                <Setter Property="ActiveLevelBrush" Value="White"/>
-                                                <Setter Property="InactiveLevelBrush" Value="#88ffffff"/>
-                                                <Setter Property="Foreground" Value="White" />
-                                                <Setter Property="Background" Value="{StaticResource Low}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
-                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource Medium}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
-                                                <Setter Property="ActiveLevelBrush" Value="{StaticResource High}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </th_wpf:MeterDisplay.Style>
-                            </th_wpf:MeterDisplay>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="Performance" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <th_wpf:MeterDisplay Value="{Binding Performance}" >
+                                    <th_wpf:MeterDisplay.Style>
+                                        <Style TargetType="th_wpf:MeterDisplay" BasedOn="{StaticResource {x:Type th_wpf:MeterDisplay}}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="0">
+                                                    <Setter Property="ActiveLevelBrush" Value="White"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="#66ffffff"/>
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="Background" Value="{StaticResource StatusBlue}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="1">
+                                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusBlue}"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusBlue_Hover}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PerformanceStatus}" Value="2">
+                                                    <Setter Property="ActiveLevelBrush" Value="{StaticResource StatusGreen}"/>
+                                                    <Setter Property="InactiveLevelBrush" Value="{StaticResource StatusGreen_Hover}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </th_wpf:MeterDisplay.Style>
+                                </th_wpf:MeterDisplay>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Production Status-->
-                <DataGridTemplateColumn MinWidth="200">
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="Production Status" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
+                    <!--Production Status-->
+                    <DataGridTemplateColumn MinWidth="200">
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Production Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
                                         Current Production Status value and the percentage of time that the device has been in this status for the current shift.
-                                    </TextBlock>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="Production Status" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <th_wpf:TimeProgress Text="{Binding ProductionStatus}" Value="{Binding ProductionStatusSeconds}" Maximum="{Binding ProductionStatusTotal}">
-                                <th_wpf:TimeProgress.Style>
-                                    <Style TargetType="th_wpf:TimeProgress">
-                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                        <Setter Property="BarBrush" Value="{StaticResource Accent_Normal}"/>
-                                        <Setter Property="BarBackgroundBrush" Value="{StaticResource Accent_Hover}"/>
-                                        <Setter Property="BarHeight" Value="10"/>
-                                    </Style>
-                                </th_wpf:TimeProgress.Style>
-                            </th_wpf:TimeProgress>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="Production Status" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <th_wpf:TimeProgress Text="{Binding ProductionStatus}" Value="{Binding ProductionStatusSeconds}" Maximum="{Binding ProductionStatusTotal}">
+                                    <th_wpf:TimeProgress.Style>
+                                        <Style TargetType="th_wpf:TimeProgress">
+                                            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                            <Setter Property="BarBrush" Value="{Binding ProductionStatusBrush}"/>
+                                            <Setter Property="BarBackgroundBrush" Value="{Binding ProductionStatusBrushHover}"/>
+                                            <Setter Property="BarHeight" Value="10"/>
+                                        </Style>
+                                    </th_wpf:TimeProgress.Style>
+                                </th_wpf:TimeProgress>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-                <!--Part Count-->
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.Header>
-                        <Grid Background="Transparent">
-                            <Grid.ToolTip>
-                                <StackPanel MaxWidth="300">
-                                    <TextBlock Text="Part Count" FontWeight="Bold" Margin="0,0,0,5"/>
-                                    <TextBlock TextWrapping="Wrap">
+                    <!--Part Count-->
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Part Count" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
                                         Total Part Count for the current shift.
-                                    </TextBlock>
-                                </StackPanel>
-                            </Grid.ToolTip>
-                            <TextBlock Text="Part Count" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                    </DataGridTemplateColumn.Header>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Viewbox Margin="10">
-                                <TextBlock Text="{Binding PartCount}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
-                            </Viewbox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="Part Count" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Viewbox Margin="10">
+                                    <TextBlock Text="{Binding PartCount}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </Viewbox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
 
-            </DataGrid.Columns>
+                </DataGrid.Columns>
 
-        </DataGrid>
+            </DataGrid>
+
+        </Grid>
 
     </Grid>
     

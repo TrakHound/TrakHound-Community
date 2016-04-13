@@ -182,5 +182,40 @@ namespace TH_WPF
         public static readonly DependencyProperty ValueDecreasingProperty =
             DependencyProperty.Register("ValueDecreasing", typeof(bool), typeof(NumberDisplay), new PropertyMetadata(false));
 
+
+
+
+        public Brush Foreground
+        {
+            get { return (Brush)GetValue(ForegroundProperty); }
+            set { SetValue(ForegroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty ForegroundProperty =
+            DependencyProperty.Register("Foreground", typeof(Brush), typeof(NumberDisplay), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+
+
+
+        public Brush Background
+        {
+            get { return (Brush)GetValue(BackgroundProperty); }
+            set { SetValue(BackgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty BackgroundProperty =
+            DependencyProperty.Register("Background", typeof(Brush), typeof(NumberDisplay), new PropertyMetadata(null));
+
+
+
+        public Brush ArrowBrush
+        {
+            get { return (Brush)GetValue(ArrowBrushProperty); }
+            set { SetValue(ArrowBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty ArrowBrushProperty =
+            DependencyProperty.Register("ArrowBrush", typeof(Brush), typeof(NumberDisplay), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+
+
     }
 }

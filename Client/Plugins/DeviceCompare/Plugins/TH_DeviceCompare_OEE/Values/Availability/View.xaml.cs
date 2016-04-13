@@ -34,6 +34,15 @@ namespace TH_DeviceCompare_OEE.Values.Availability
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register("Value", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
 
+        public int Status
+        {
+            get { return (int)GetValue(StatusProperty); }
+            set { SetValue(StatusProperty, value); }
+        }
+
+        public static readonly DependencyProperty StatusProperty =
+            DependencyProperty.Register("Status", typeof(int), typeof(Plugin), new PropertyMetadata(0));
+
 
         const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
 
@@ -61,7 +70,10 @@ namespace TH_DeviceCompare_OEE.Values.Availability
                 var oeeData = OEEData.FromDataTable(dt);
 
                 Value = oeeData.Availability;
-                
+
+                if (oeeData.Availability >= 0.75) Status = 2;
+                else if (oeeData.Availability >= 0.5) Status = 1;
+                else Status = 0;
             }
         }
 

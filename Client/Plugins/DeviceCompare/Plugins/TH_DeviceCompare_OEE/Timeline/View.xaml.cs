@@ -92,8 +92,6 @@ namespace TH_DeviceCompare_OEE.Timeline
                 {
                     TH_WPF.Histogram.DataBar db;
 
-                    
-
                     int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.id);
                     if (dbIndex < 0)
                     {
@@ -110,6 +108,13 @@ namespace TH_DeviceCompare_OEE.Timeline
                     else db = histogram.DataBars[dbIndex];
 
                     db.Value = info.Oee * 100;
+
+                    int status = 0;
+                    if (info.Oee >= 0.75) status = 2;
+                    else if (info.Oee >= 0.5) status = 1;
+                    else status = 0;
+
+                    db.DataObject = status;
 
                     // Update ToolTip
                     if (db.ToolTipData != null)

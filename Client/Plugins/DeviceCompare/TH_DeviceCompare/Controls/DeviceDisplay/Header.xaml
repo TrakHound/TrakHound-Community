@@ -22,11 +22,15 @@
     <Border x:Name="root" CornerRadius="3" Margin="2" Height="300">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="Background" Value="#33000000"/>
+                <Setter Property="Background" Value="#44000000"/>
                 <Style.Triggers>
 
                     <DataTrigger Binding="{Binding Production}" Value="true">
                         <Setter Property="Background" Value="#FF19B419"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding Idle}" Value="true">
+                        <Setter Property="Background" Value="#44000000"/>
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Alert}" Value="true">

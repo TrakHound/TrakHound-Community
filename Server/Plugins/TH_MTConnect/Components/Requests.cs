@@ -74,7 +74,7 @@ namespace TH_MTConnect.Components
                     {
                         Device device = Tools.GetDeviceFromXML(deviceNode);
 
-                        device.DataItems = Tools.GetDataItemsFromDevice(device);
+                        //device.DataItems = Tools.GetDataItemsFromDevice(device);
 
                         result.Add(device);
                     }

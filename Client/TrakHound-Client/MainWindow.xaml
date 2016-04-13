@@ -1,4 +1,4 @@
-﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
+﻿<!--Copyright (c) 2016 Feenux LLC, All Rights Reserved.-->
 
 <!--This file is subject to the terms and conditions defined in-->
 <!--file 'LICENSE.txt', which is part of this source code package.-->
@@ -29,8 +29,8 @@
         Closing="Main_Window_Closing"
         Closed="Main_Window_Closed"
         
-        Height="750"
-        Width="1200"
+        Height="650"
+        Width="1000"
         
         MinHeight="400"
         MinWidth="300"

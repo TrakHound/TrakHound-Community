@@ -35,6 +35,17 @@ namespace TH_DeviceCompare_OEE.Values.OEE
             DependencyProperty.Register("Value", typeof(double), typeof(Plugin), new PropertyMetadata(0d));
 
 
+
+        public int Status
+        {
+            get { return (int)GetValue(StatusProperty); }
+            set { SetValue(StatusProperty, value); }
+        }
+
+        public static readonly DependencyProperty StatusProperty =
+            DependencyProperty.Register("Status", typeof(int), typeof(Plugin), new PropertyMetadata(0));
+
+
         const System.Windows.Threading.DispatcherPriority Priority_Background = System.Windows.Threading.DispatcherPriority.Background;
 
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
@@ -61,7 +72,10 @@ namespace TH_DeviceCompare_OEE.Values.OEE
                 var oeeData = OEEData.FromDataTable(dt);
 
                 Value = oeeData.Oee;
-                
+
+                if (oeeData.Oee >= 0.75) Status = 2;
+                else if (oeeData.Oee >= 0.5) Status = 1;
+                else Status = 0;
             }
         }
 

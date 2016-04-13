@@ -32,7 +32,7 @@
             <!--Separator-->
             <Rectangle Grid.Row="1" Fill="#33ffffff" Height="1"/>
 
-            <th_wpf:MeterDisplay x:Name="Meter" Grid.Row="2" Value=".75" >
+            <th_wpf:MeterDisplay x:Name="Meter" Grid.Row="2" Value="{Binding Value}" >
                 <th_wpf:MeterDisplay.Style>
                     <Style TargetType="th_wpf:MeterDisplay">
                         <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}" />

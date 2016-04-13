@@ -107,7 +107,7 @@ namespace TH_DeviceCompare_ProductionStatusTimes
                         int numval = -1;
                         int.TryParse(row["NUMVAL"].ToString(), out numval);
 
-                        if (Times.ToList().Find(x => x.Text == val) == null)
+                        if (!Times.ToList().Exists(x => x.Text == val))
                         {
                             var timeProgress = new TimeProgress();
 
@@ -124,6 +124,26 @@ namespace TH_DeviceCompare_ProductionStatusTimes
 
                             Times.SortReverse();
                         } 
+                    }
+
+                    // Set Bar Colors
+                    foreach (var time in Times)
+                    {
+                        if (time.Index == Times.Count - 1)
+                        {
+                            time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen");
+                            time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen_Hover");
+                        }
+                        else if (time.Index == 0)
+                        {
+                            time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed");
+                            time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed_Hover");
+                        }
+                        else
+                        {
+                            time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue");
+                            time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue_Hover");
+                        }
                     }
 
                     temp_dt.Dispose();

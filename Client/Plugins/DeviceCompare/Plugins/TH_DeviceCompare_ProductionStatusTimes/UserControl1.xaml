@@ -15,8 +15,7 @@
             <ItemsControl.Resources>
                 <Style TargetType="th_wpf:TimeProgress">
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    <Setter Property="BarBrush" Value="{StaticResource Accent_Normal}"/>
-                    <Setter Property="BarBackgroundBrush" Value="{StaticResource Accent_Hover}"/>
+                    <!--<Setter Property="BarBackgroundBrush" Value="#22000000"/>-->
                     <Setter Property="BarHeight" Value="10"/>
                 </Style>
             </ItemsControl.Resources>

@@ -66,6 +66,7 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\MessageCenter.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Notifications\Notification_Item.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\General\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\ListItem.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Page.g.cs
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Subcategory.g.cs
@@ -80,11 +81,10 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\Me
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Controls\TabHeader.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Menus\Main\Menu.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\MainWindow.baml
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Page.baml
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.g.resources
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.g.cs
-F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.baml
