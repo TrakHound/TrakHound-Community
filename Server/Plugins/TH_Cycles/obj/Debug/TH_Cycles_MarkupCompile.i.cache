@@ -16,5 +16,5 @@ DEBUG;TRACE
 25-373625773
 ConfigurationPage\Controls\OverrideLinkItem.xaml;ConfigurationPage\Controls\ProductionTypeItem.xaml;ConfigurationPage\Page.xaml;
 
-False
+True
 

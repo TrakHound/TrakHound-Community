@@ -375,7 +375,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
 
         void SaveValue(Value v, Event e, DataTable dt)
         {
-            int id = DataTable_Functions.TrakHound.GetUnusedAddressId("/GeneratedData/GeneratedEvents/Event" + e.id.ToString("00") + "/Value", dt);
+            int id = DataTable_Functions.TrakHound.GetUnusedAddressId("/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Value", dt);
             string adr = "/GeneratedData/GeneratedEvents/Event||" + e.id.ToString("00") + "/Value||" + id.ToString("00");
 
             v.id = id;

@@ -1,0 +1,200 @@
+﻿<UserControl x:Class="TH_StatusTable.StatusTable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TH_StatusTable"
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="MinHeight" Value="30"/>
+            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
+                        <Border Name="bd"
+                            Background="{TemplateBinding Background}"
+                            Margin="0,0,0,0"
+                            BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
+                            BorderThickness="0,0,1,0"    
+                            >
+                            <Grid>
+                                <!--Content-->
+                                <Border>
+                                    <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                                        <ContentPresenter.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            </Style>
+                                        </ContentPresenter.Resources>
+                                    </ContentPresenter>
+                                </Border>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Background" Value="#33ffffff"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--<ContextMenu x:Key="DataGridRowContextMenu">
+            <local:DataGridMenuItem Header="Open Device Page" DataObject="{Binding}" Click="DataGridMenuItem_Click"/>
+        </ContextMenu>-->
+
+        <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Setter Property="Background" Value="{StaticResource Window_Background}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <!--<Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>-->
+            <Setter Property="MinHeight" Value="50"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="BorderThickness" Value="0,0,0,0"/>
+            <Setter Property="MinHeight" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="{TemplateBinding Background}"
+                                Margin="0"
+                                Padding="0"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                >
+                            <Grid>
+
+                                <!--Content-->
+                                <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="false">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Self}}"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type th_wpf:MeterDisplay}">
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}" />
+            <Setter Property="ActiveLevelBrush" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="InactiveLevelBrush" Value="{StaticResource Accent_Hover}"/>
+            <Setter Property="FontSize" Value="24pt"/>
+            <Setter Property="Maximum" Value="1"/>
+            <Setter Property="ValueFormat" Value="P1"/>
+            <Setter Property="Width" Value="auto"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Navbar-->
+        <StackPanel Orientation="Horizontal" Background="{StaticResource Accent_Normal}">
+            <StackPanel.Resources>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="Width" Value="30"/>
+                    <Setter Property="Margin" Value="2,0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#33ffffff"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+
+            <!--<th_wpf:Button ToolTip="Refresh" Image="Resources/Refresh_01.png" Clicked="Refresh_Clicked"/>-->
+
+        </StackPanel>
+
+        <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
+
+            <DataGrid x:Name="Devices_DG" ItemsSource="{Binding DeviceInfos}"
+                  AutoGenerateColumns="False"
+                  BorderBrush="Transparent"
+                  BorderThickness="0"
+                  HeadersVisibility="Column"
+                  VerticalAlignment="Stretch"
+                  Background="#10000000"
+                  >
+
+                <DataGrid.Columns>
+
+                    <!--Description-->
+                    <DataGridTemplateColumn Header="Description">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel VerticalAlignment="Center">
+
+                                    <!--Manufacturer Logo-->
+                                    <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5" MaxHeight="40"/>
+
+                                    <!--Device Description-->
+                                    <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10,5" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--Device Id-->
+                    <DataGridTemplateColumn Header="Device ID">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Viewbox Margin="10">
+                                    <TextBlock Text="{Binding Description.Device_ID}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </Viewbox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Grid>
+
+    </Grid>
+
+</UserControl>

@@ -16,5 +16,5 @@ DEBUG;TRACE
 17-537016345
 Overrides\Feedrate\View.xaml;Overrides\Rapidrate\View.xaml;Overrides\SpindleSpeed\View.xaml;Text\Alarm\View.xaml;Text\Controller Mode\View.xaml;Text\Execution Mode\View.xaml;Text\Emergency Stop\View.xaml;Text\Part Count\View.xaml;Text\Program Name\View.xaml;Text\TextDisplay.xaml;
 
-False
+True
 

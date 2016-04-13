@@ -100,7 +100,7 @@
                                                     <Setter Property="Background" Value="#11000000"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                    <Setter Property="Background" Value="#22000000"/>
+                                                    <Setter Property="Background" Value="#11000000"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -178,7 +178,7 @@
                 <DataGrid.Columns>
 
                     <!--Database Connection Status-->
-                    <DataGridTemplateColumn MinWidth="30">
+                    <!--<DataGridTemplateColumn MinWidth="30">
                         <DataGridTemplateColumn.Header>
                             <Grid Background="Transparent">
                                 <Grid.ToolTip>
@@ -227,10 +227,10 @@
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    </DataGridTemplateColumn>-->
 
                     <!--Availabilty Status-->
-                    <DataGridTemplateColumn MinWidth="30">
+                    <!--<DataGridTemplateColumn MinWidth="30">
                         <DataGridTemplateColumn.Header>
                             <Grid Background="Transparent">
                                 <Grid.ToolTip>
@@ -279,7 +279,7 @@
                                 </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    </DataGridTemplateColumn>-->
 
                     <!--Device Status-->
                     <DataGridTemplateColumn MinWidth="30">
@@ -306,7 +306,7 @@
                                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Idle}" Value="true">
-                                                    <Setter Property="Background" Value="{StaticResource Window_Background}"/>
+                                                    <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Alert}" Value="true">
                                                     <Setter Property="Background" Value="{StaticResource StatusRed}"/>
