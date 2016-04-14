@@ -59,5 +59,15 @@ namespace TH_StatusTable.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Stoplight_01 {
+            get {
+                object obj = ResourceManager.GetObject("Stoplight_01", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

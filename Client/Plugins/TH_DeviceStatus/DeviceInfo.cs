@@ -79,254 +79,32 @@ namespace TH_StatusTable
         #endregion
 
 
-        // Status Level
-        //private int _statusLevel;
-        //public int StatusLevel
-        //{
-        //    get { return _statusLevel; }
-        //    set
-        //    {
-        //        var val = _statusLevel;
-        //        _statusLevel = value;
-
-        //        if (val != _statusLevel) NotifyChanged("StatusLevel");
-
-
-        private int[] _statusLevel;
-        public int[] StatusLevel
+        private HourData[] _hourdatas;
+        public HourData[] HourDatas
         {
-            get { return _statusLevel; }
+            get { return _hourdatas; }
             set
             {
-                var val = _statusLevel;
-                _statusLevel = value;
+                var val = _hourdatas;
+                _hourdatas = value;
 
-                if (val != _statusLevel) NotifyChanged("StatusLevel");
+                if (val != _hourdatas) NotifyChanged("HourDatas");
             }
         }
-        //}
-        //}
 
-
-
-        #region "Status"
-
-        //private bool _alert;
-        //public bool Alert
+        //private BindableTwoDArray<SegmentData> _segmentDatas;
+        //public BindableTwoDArray<SegmentData> SegmentDatas
         //{
-        //    get { return _alert; }
+        //    get { return _segmentDatas; }
         //    set
         //    {
-        //        var val = _alert;
-        //        _alert = value;
-        //        if (val != _alert) NotifyChanged("Alert");
+        //        var val = _segmentDatas;
+        //        _segmentDatas = value;
+
+        //        if (val != _segmentDatas) NotifyChanged("SegmentDatas");
         //    }
         //}
 
-        //private bool _idle;
-        //public bool Idle
-        //{
-        //    get { return _idle; }
-        //    set
-        //    {
-        //        var val = _idle;
-        //        _idle = value;
-        //        if (val != _idle) NotifyChanged("Idle");
-        //    }
-        //}
-
-        //private bool _production;
-        //public bool Production
-        //{
-        //    get { return _production; }
-        //    set
-        //    {
-        //        var val = _production;
-        //        _production = value;
-        //        if (val != _production) NotifyChanged("Production");
-        //    }
-        //}
-
-        #endregion
-
-        #region "OEE"
-
-        //private double _oee;
-        //public double Oee
-        //{
-        //    get { return _oee; }
-        //    set
-        //    {
-        //        var val = _oee;
-        //        _oee = value;
-        //        if (val != _oee) NotifyChanged("Oee");
-
-        //        if (_oee >= 0.75) OeeStatus = 2;
-        //        else if (_oee >= 0.5) OeeStatus = 1;
-        //        else OeeStatus = 0;
-        //    }
-        //}
-
-        //private int _oeeStatus;
-        //public int OeeStatus
-        //{
-        //    get { return _oeeStatus; }
-        //    set
-        //    {
-        //        var val = _oeeStatus;
-        //        _oeeStatus = value;
-        //        if (val != _oeeStatus) NotifyChanged("OeeStatus");
-        //    }
-        //}
-
-        //private double _availability;
-        //public double Availability
-        //{
-        //    get { return _availability; }
-        //    set
-        //    {
-        //        var val = _availability;
-        //        _availability = value;
-        //        if (val != _availability) NotifyChanged("Availability");
-
-        //        if (_availability >= 0.75) AvailabilityStatus = 2;
-        //        else if (_availability >= 0.5) AvailabilityStatus = 1;
-        //        else AvailabilityStatus = 0;
-        //    }
-        //}
-
-        //private int _availabilityStatus;
-        //public int AvailabilityStatus
-        //{
-        //    get { return _availabilityStatus; }
-        //    set
-        //    {
-        //        var val = _availabilityStatus;
-        //        _availabilityStatus = value;
-        //        if (val != _availabilityStatus) NotifyChanged("AvailabilityStatus");
-        //    }
-        //}
-
-        //private double _performance;
-        //public double Performance
-        //{
-        //    get { return _performance; }
-        //    set
-        //    {
-        //        var val = _performance;
-        //        _performance = value;
-        //        if (val != _performance) NotifyChanged("Performance");
-
-        //        if (_performance >= 0.75) PerformanceStatus = 2;
-        //        else if (_performance >= 0.5) PerformanceStatus = 1;
-        //        else PerformanceStatus = 0;
-        //    }
-        //}
-
-        //private int _performanceStatus;
-        //public int PerformanceStatus
-        //{
-        //    get { return _performanceStatus; }
-        //    set
-        //    {
-        //        var val = _performanceStatus;
-        //        _performanceStatus = value;
-        //        if (val != _performanceStatus) NotifyChanged("PerformanceStatus");
-        //    }
-        //}
-
-        #endregion
-
-        #region "Production Status"
-
-        //public class ProductionStatusInfo
-        //{
-        //    public string Value { get; set; }
-        //    public int Numval { get; set; }
-        //    public Brush Brush { get; set; }
-        //    public Brush HoverBrush { get; set; }
-        //}
-
-        //public List<ProductionStatusInfo> ProductionStatusInfos = new List<ProductionStatusInfo>();
-
-        //private string _productionStatus;
-        //public string ProductionStatus
-        //{
-        //    get { return _productionStatus; }
-        //    set
-        //    {
-        //        var val = _productionStatus;
-        //        _productionStatus = value;
-        //        if (val != _productionStatus) NotifyChanged("ProductionStatus");
-        //    }
-        //}
-
-        //private double _productionStatusTotal;
-        //public double ProductionStatusTotal
-        //{
-        //    get { return _productionStatusTotal; }
-        //    set
-        //    {
-        //        var val = _productionStatusTotal;
-        //        _productionStatusTotal = value;
-        //        if (val != _productionStatusTotal) NotifyChanged("ProductionStatusTotal");
-        //    }
-        //}
-
-        //private double _productionStatusSeconds;
-        //public double ProductionStatusSeconds
-        //{
-        //    get { return _productionStatusSeconds; }
-        //    set
-        //    {
-        //        var val = _productionStatusSeconds;
-        //        _productionStatusSeconds = value;
-        //        if (val != _productionStatusSeconds) NotifyChanged("ProductionStatusSeconds");
-        //    }
-        //}
-
-
-        //private Brush _productionStatusBrush;
-        //public Brush ProductionStatusBrush
-        //{
-        //    get { return _productionStatusBrush; }
-        //    set
-        //    {
-        //        var val = _productionStatusBrush;
-        //        _productionStatusBrush = value;
-        //        if (val != _productionStatusBrush) NotifyChanged("ProductionStatusBrush");
-        //    }
-        //}
-
-        //private Brush _productionStatusBrushHover;
-        //public Brush ProductionStatusBrushHover
-        //{
-        //    get { return _productionStatusBrushHover; }
-        //    set
-        //    {
-        //        var val = _productionStatusBrushHover;
-        //        _productionStatusBrushHover = value;
-        //        if (val != _productionStatusBrushHover) NotifyChanged("ProductionStatusBrushHover");
-        //    }
-        //}
-
-        #endregion
-
-        #region "Part Count"
-
-        //private int _partCount;
-        //public int PartCount
-        //{
-        //    get { return _partCount; }
-        //    set
-        //    {
-        //        var val = _partCount;
-        //        _partCount = value;
-        //        if (val != _partCount) NotifyChanged("PartCount");
-        //    }
-        //}
-
-        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 

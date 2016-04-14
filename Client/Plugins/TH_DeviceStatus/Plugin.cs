@@ -21,7 +21,7 @@ namespace TH_StatusTable
 
         public string Description { get { return "View Production Status data for the current day"; } }
 
-        public ImageSource Image { get { return null; } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TH_StatusTable;component/Resources/Stoplight_01.png")); } }
 
 
         public string Author { get { return "TrakHound"; } }

@@ -49,15 +49,24 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Segment.xaml.cs">
+      <DependentUpon>Segment.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DeviceInfo.cs" />
     <Compile Include="Devices.cs" />
+    <Compile Include="HourData.cs" />
     <Compile Include="ManufacturerLogo.cs" />
+    <Compile Include="SegmentData.cs" />
     <Compile Include="Update Data.cs" />
     <Page Include="Controls\Cell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Header.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Segment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,6 +135,9 @@
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Stoplight_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

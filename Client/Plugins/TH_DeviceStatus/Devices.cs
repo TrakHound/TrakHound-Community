@@ -13,16 +13,16 @@ namespace TH_StatusTable
     public partial class StatusTable
     {
 
-        ObservableCollection<DeviceInfo> _deviceInfos;
+        List_Functions.ObservableCollectionEx<DeviceInfo> _deviceInfos;
         /// <summary>
         /// Collection of TH_Configuration.Configuration objects that represent the devices
         /// </summary>
-        public ObservableCollection<DeviceInfo> DeviceInfos
+        public List_Functions.ObservableCollectionEx<DeviceInfo> DeviceInfos
         {
             get
             {
                 if (_deviceInfos == null)
-                    _deviceInfos = new ObservableCollection<DeviceInfo>();
+                    _deviceInfos = new List_Functions.ObservableCollectionEx<DeviceInfo>();
                 return _deviceInfos;
             }
 

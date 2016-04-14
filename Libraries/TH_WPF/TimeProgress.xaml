@@ -6,74 +6,68 @@
              
              xmlns:th_wpf="clr-namespace:TH_WPF"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             
+             Margin="10"
              >
 
-    <Grid x:Name="root">
+    <StackPanel x:Name="root">
 
-        <Grid  Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel>
+                <!--<Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>-->
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <!--Title-->
+                <Viewbox MaxHeight="16" HorizontalAlignment="Left">
 
-                    <!--Title-->
-                    <Viewbox MaxHeight="16" HorizontalAlignment="Left">
+                    <TextBlock Text="{Binding Text}" FontSize="14" TextAlignment="Left">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
-                        <TextBlock Text="{Binding Text}" FontSize="14" TextAlignment="Left">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                                    <Setter Property="FontWeight" Value="Normal"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                            <Setter Property="FontWeight" Value="SemiBold"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                </Viewbox>
 
-                    </Viewbox>
+                <!--Time Elapsed-->
+                <TextBlock Text="{Binding Time}" FontSize="10" Foreground="{Binding Foreground}" />
 
-                    <!--Time Elapsed-->
-                    <TextBlock Grid.Row="1" Text="{Binding Time}" FontSize="10" Foreground="{Binding Foreground}" />
+            </StackPanel>
 
-                </Grid>
-
-                <!--Percentage-->
-                <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" Text="{Binding Percentage}" FontSize="20" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" >
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                            <Setter Property="FontWeight" Value="Normal"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsSelected}" Value="true">
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-
-            </Grid>
-
-            <!--Time Bar-->
-            <th_wpf:ProgressBar Grid.Row="1" Height="{Binding BarHeight}" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{Binding BarBrush}" Background="{Binding BarBackgroundBrush}" BorderThickness="0"/>
+            <!--Percentage-->
+            <TextBlock Canvas.Left="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="10,0" Text="{Binding Percentage}" FontSize="20" FontFamily="/TH_DeviceCompare;component/Fonts/#DS-Digital" >
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                        <Setter Property="FontWeight" Value="Normal"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
         </Grid>
 
-    </Grid>
+        <!--Time Bar-->
+        <th_wpf:ProgressBar Height="{Binding BarHeight}" Margin="0,5,0,0" Value="{Binding BarValue}" Maximum="{Binding BarMaximum}" Foreground="{Binding BarBrush}" Background="{Binding BarBackgroundBrush}" BorderThickness="0"/>
+
+    </StackPanel>
 
 </UserControl>

@@ -292,6 +292,7 @@ namespace TH_StatusData
             DataTable snapshots = GetTableFromList(GetTableName(TableNames.SnapShots, config.DatabaseId), list);
             DataTable geneventvalues = GetTableFromList(GetTableName(TableNames.GenEventValues, config.DatabaseId), list);
             DataTable shifts = GetTableFromList(GetTableName(TableNames.Shifts, config.DatabaseId), list);
+            DataTable shiftSegments = GetTableFromList(GetTableName(TableNames.ShiftSegments, config.DatabaseId), list);
             DataTable oee = GetTableFromList(GetTableName(TableNames.OEE, config.DatabaseId), list);
             DataTable status = GetTableFromList(GetTableName(TableNames.Status, config.DatabaseId), list);
 
@@ -309,6 +310,11 @@ namespace TH_StatusData
                 EventData snapshotData = GetSnapShots(snapshots, config);
                 // Send Snapshot Data
                 SendDataEvent(snapshotData);
+
+                //Get Shift Segment List
+                EventData shiftSegmentData = GetShiftSegments(shiftSegments, config);
+                // Send Shift Segment List
+                SendDataEvent(shiftSegmentData);
 
                 // Get ShiftData from Variable Data
                 ShiftData shiftData = GetShiftData(variables);
@@ -350,6 +356,23 @@ namespace TH_StatusData
             {
                 var data = new EventData();
                 data.Id = "StatusData_Variables";
+                data.Data01 = config;
+                data.Data02 = dt;
+
+                result = data;
+            }
+
+            return result;
+        }
+
+        private static EventData GetShiftSegments(DataTable dt, Configuration config)
+        {
+            var result = new EventData();
+
+            if (dt != null)
+            {
+                var data = new EventData();
+                data.Id = "StatusData_ShiftSegments";
                 data.Data01 = config;
                 data.Data02 = dt;
 

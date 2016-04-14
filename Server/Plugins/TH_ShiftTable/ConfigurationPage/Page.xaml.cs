@@ -304,8 +304,8 @@ namespace TH_ShiftTable.ConfigurationPage
         {
             List<Segment> result = new List<Segment>();
 
-            ShiftTime interval = new ShiftTime();
-            interval.hour = 1;
+            var interval = new ShiftTime();
+            interval.minute = 5;
 
             ShiftTime begintime = shift.begintime.Copy();
             ShiftTime endtime = shift.endtime.Copy();
@@ -359,9 +359,15 @@ namespace TH_ShiftTable.ConfigurationPage
 
                 if (!breakfound)
                 {
-                    time.hour += 1;
-                    time.minute = 0;
-                    time.second = 0;
+                    time = time.AddShiftTime(interval);
+
+                    //time.hour = 0;
+                    //time.minute += 5;
+                    //time.second = 0;
+
+                    //time.hour += 1;
+                    //time.minute = 0;
+                    //time.second = 0;
 
                     if (time > endtime) time = endtime.Copy();
                 }

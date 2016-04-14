@@ -325,6 +325,34 @@ namespace TH_ShiftTable
             int s = second + time.second;
             if (s > 59) { m += 1; s = s - 60; }
 
+            //if (second > 59)
+            //{
+            //    int m = 0;
+            //    int s = second - 60;
+            //    while (s > 59)
+            //    {
+            //        m += 1;
+            //        s = second - 60;
+            //    }
+
+            //    minute += m;
+            //    second = s;
+            //}
+
+            //if (minute > 59)
+            //{
+            //    int h = 0;
+            //    int m = minute - 60;
+            //    while (m > 59)
+            //    {
+            //        h += 1;
+            //        m = second - 60;
+            //    }
+
+            //    hour += h;
+            //    minute = m;
+            //}
+
             result.hour = h;
             result.minute = m;
             result.second = s;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
@@ -33,12 +34,6 @@ namespace TH_StatusTable
                         UpdateAvailability(data, info);
 
                         UpdateStatus(data, info);
-
-                        //UpdateOEE(data, info);
-
-                        //UpdateProductionStatus(data, info);
-
-                        //UpdatePartCount(data, info);
                     }
                 }
             }
@@ -68,351 +63,180 @@ namespace TH_StatusTable
 
         private void UpdateStatus(EventData data, DeviceInfo info)
         {
+            if (data.Id.ToLower() == "statusdata_shiftsegments")
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    UpdateShiftSegments(data.Data02, info);
+                }), PRIORITY_BACKGROUND, new object[] { });
+            }
+
             if (data.Id.ToLower() == "statusdata_shiftdata")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    UpdateProductionStatusTime(data.Data02, info);
+                    UpdateShiftTimes(data.Data02, info);
                 }), PRIORITY_BACKGROUND, new object[] { });
             }
-
-            //if (data.Id.ToLower() == "statusdata_snapshots")
-            //{
-            //    Dispatcher.BeginInvoke(new Action(() =>
-            //    {
-            //        bool b;
-            //        string s;
-
-            //        // Alert
-            //        b = false;
-            //        s = GetTableValue(data.Data02, "Alert");
-            //        bool.TryParse(s, out b);
-            //        info.Alert = b;
-
-            //        // Idle
-            //        b = false;
-            //        s = GetTableValue(data.Data02, "Idle");
-            //        bool.TryParse(s, out b);
-            //        info.Idle = b;
-
-            //        // Production
-            //        b = false;
-            //        s = GetTableValue(data.Data02, "Production");
-            //        bool.TryParse(s, out b);
-            //        info.Production = b;
-
-            //    }), PRIORITY_BACKGROUND, new object[] { });
-            //}
         }
 
-        private void UpdateProductionStatusTime(object shiftData, DeviceInfo info)
+        //bool once = false;
+
+        /// <summary>
+        ///  Create SegmentData objects for each shift segment
+        /// </summary>
+        /// <param name="shiftSegmentData"></param>
+        /// <param name="info"></param>
+        private void UpdateShiftSegments(object shiftSegmentData, DeviceInfo info)
+        {
+            DataTable dt = shiftSegmentData as DataTable;
+            if (dt != null && info.HourDatas == null)
+            {
+                //var segmentDatas = new BindableTwoDArray<SegmentData>(24, 12);
+
+                var hourDatas = new HourData[24];
+
+                var segments = new List<HourInfo>();
+                foreach (DataRow row in dt.Rows) segments.Add(HourInfo.Get(row));
+
+                var hours = segments.GroupBy(x => x.StartHour, (key, group) => group.First()).ToList();
+
+                for (var x = 0; x <= hours.Count - 1; x++)
+                {
+                    var hour = hours[x];
+
+                    var hourData = new HourData();
+
+                    HourInfo first = null;
+                    HourInfo last = null;
+
+                    var sameHours = segments.FindAll(s => s.StartHour == hour.StartHour);
+                    if (sameHours != null)
+                    {
+                        for (var y = 0; y <= sameHours.Count - 1; y++)
+                        {
+                            var sameHour = sameHours[y];
+
+                            if (y == 0) first = sameHour;
+                            if (y >= 11) last = sameHour;
+
+                            var data = new SegmentData();
+                            data.Title = sameHour.Start.ToShortTimeString() + " - " + sameHour.End.ToShortTimeString();
+                            data.HourInfo = sameHour;
+                            data.Status = -1;
+                            hourData.SegmentDatas[y] = data;
+                            //segmentDatas[hour.StartHour, y] = data;
+                        }
+                    }
+
+                    // Set Hour Data
+                    if (first != null && last != null) hourData.Title = first.Start.ToShortTimeString() + " - " + last.End.ToShortTimeString();
+                    hourData.Status = -1;
+                    hourDatas[hour.StartHour] = hourData;
+                }
+
+                //info.SegmentDatas = segmentDatas;
+                info.HourDatas = hourDatas;
+            }
+        }
+
+
+        private class SegmentInfo
+        {
+            public HourInfo HourInfo { get; set; }
+
+            public double TotalSeconds { get; set; }
+
+            public double ProductionSeconds { get; set; }
+            public double IdleSeconds { get; set; }
+            public double AlertSeconds { get; set; }
+
+            public static SegmentInfo Get(DataRow row)
+            {
+                var info = new SegmentInfo();
+                info.HourInfo = HourInfo.Get(row);
+
+                info.TotalSeconds = GetTime("totaltime", row);
+
+                info.ProductionSeconds = GetTime("production__true", row);
+                info.IdleSeconds = GetTime("idle__true", row);
+                info.AlertSeconds = GetTime("alert__true", row);
+
+                return info;
+            }
+        }
+
+        private void UpdateShiftTimes(object shiftData, DeviceInfo info)
         {
             DataTable dt = shiftData as DataTable;
             if (dt != null)
             {
-                // Get Total Time for this shift (all segments)
-                //double totalSeconds = GetTime("TOTALTIME", dt);
+                // Get Segment Infos
+                var segmentInfos = new List<SegmentInfo>();
+                foreach (DataRow row in dt.Rows) segmentInfos.Add(SegmentInfo.Get(row));
 
-                var status = new int[24];
+                //var datas = info.SegmentDatas;
 
-                foreach (DataRow row in dt.Rows)
+                // Loop through both dimensions of the info.SegmentDatas array to set times
+                for (var x = 0; x <= 23; x++)
                 {
+                    double totalSeconds = 0;
 
-                    HourInfo hour = GetHourInfo(row);
-
-                    double alertSeconds = 0;
-                    double idleSeconds = 0;
                     double productionSeconds = 0;
+                    double idleSeconds = 0;
+                    double alertSeconds = 0;
 
-                    // Get List of variables from 'Shifts' table and collect the total number of seconds
-                    foreach (DataColumn column in dt.Columns)
+                    var hourData = info.HourDatas[x];
+                    if (hourData != null)
                     {
-                        switch (column.ColumnName.ToLower())
+
+                        for (var y = 0; y <= 11; y++)
+                    {
+                        var data = hourData.SegmentDatas[y];
+                        if (data != null)
                         {
-                            case "alert__true":
+                            // Look for match in segmentInfos list
+                            var match = segmentInfos.Find(m => m.HourInfo.Start == data.HourInfo.Start && m.HourInfo.End == data.HourInfo.End);
+                            if (match != null)
+                            {
+                                data.TotalSeconds = match.TotalSeconds;
+                                totalSeconds += match.TotalSeconds;
 
-                                alertSeconds = GetTime(column.ColumnName, dt);
-                                break;
+                                // Set status times for the segment
+                                data.ProductionSeconds = match.ProductionSeconds;
+                                data.IdleSeconds = match.IdleSeconds;
+                                data.AlertSeconds = match.AlertSeconds;
 
-                            case "idle__true":
+                                // Inrement totals for the hour
+                                productionSeconds += match.ProductionSeconds;
+                                idleSeconds += match.IdleSeconds;
+                                alertSeconds += match.AlertSeconds;
 
-                                idleSeconds = GetTime(column.ColumnName, dt);
-                                break;
-
-                            case "production__true":
-
-                                productionSeconds = GetTime(column.ColumnName, dt);
-                                break;
+                                // Set status based on the which status had the most seconds
+                                if (data.AlertSeconds == 0 && data.IdleSeconds == 0 && data.ProductionSeconds == 0) data.Status = -1;
+                                else if (data.AlertSeconds >= data.IdleSeconds && data.AlertSeconds >= data.ProductionSeconds) data.Status = 0;
+                                else if (data.IdleSeconds > data.AlertSeconds && data.IdleSeconds >= data.ProductionSeconds) data.Status = 1;
+                                else data.Status = 2;
+                            }
                         }
                     }
 
-                    if (alertSeconds >= idleSeconds && alertSeconds >= productionSeconds) status[hour.Start] = 0;
-                    else if (idleSeconds > alertSeconds && idleSeconds >= productionSeconds) status[hour.Start] = 1;
-                    else status[hour.Start] = 2;
+                    
+                        hourData.TotalSeconds = totalSeconds;
+                        hourData.ProductionSeconds = productionSeconds;
+                        hourData.IdleSeconds = idleSeconds;
+                        hourData.AlertSeconds = alertSeconds;
 
-
-
+                        // Set status based on the which status had the most seconds
+                        if (hourData.AlertSeconds == 0 && hourData.IdleSeconds == 0 && hourData.ProductionSeconds == 0) hourData.Status = -1;
+                        else if (hourData.AlertSeconds >= hourData.IdleSeconds && hourData.AlertSeconds >= hourData.ProductionSeconds) hourData.Status = 0;
+                        else if (hourData.IdleSeconds > hourData.AlertSeconds && hourData.IdleSeconds >= hourData.ProductionSeconds) hourData.Status = 1;
+                        else hourData.Status = 2;
+                    }
                 }
-
-                //for (var x = 0; x <= 23; x++)
-                //{
-                //    //int hour = x;
-
-                //    double alertSeconds = 0;
-                //    double idleSeconds = 0;
-                //    double productionSeconds = 0;
-
-                //    // Get List of variables from 'Shifts' table and collect the total number of seconds
-                //    foreach (DataColumn column in dt.Columns)
-                //    {
-                //        switch (column.ColumnName.ToLower())
-                //        {
-                //            case "alert__true":
-
-                //                alertSeconds = GetTime(column.ColumnName, dt);
-                //                break;
-
-                //            case "idle__true":
-
-                //                idleSeconds = GetTime(column.ColumnName, dt);
-                //                break;
-
-                //            case "production__true":
-
-                //                productionSeconds = GetTime(column.ColumnName, dt);
-                //                break;
-                //        }
-                //    }
-
-                //    if (alertSeconds >= idleSeconds && alertSeconds >= productionSeconds) status[x] = 0;
-                //    else if (idleSeconds > alertSeconds && idleSeconds >= productionSeconds) status[x] = 1;
-                //    else status[x] = 2;
-                //}
-
-                info.StatusLevel = status;
             }
         }
 
-
-        class HourInfo
-        {
-            public int Start { get; set; }
-            public int End { get; set; }
-        }
-
-        private static HourInfo GetHourInfo(DataRow row)
-        {
-            string start = DataTable_Functions.GetRowValue("START", row);
-            string end = DataTable_Functions.GetRowValue("END", row);
-
-            DateTime s = DateTime.MinValue;
-            DateTime e = DateTime.MinValue;
-
-            DateTime.TryParse(start, out s);
-            DateTime.TryParse(end, out e);
-
-            var info = new HourInfo();
-            info.Start = s.Hour;
-            info.End = e.Hour;
-
-            return info;
-        }
-
-
-        //private void UpdateOEE(EventData data, DeviceInfo info)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_oee")
-        //    {
-        //        Dispatcher.BeginInvoke(new Action(() =>
-        //        {
-        //            var dt = data.Data02 as DataTable;
-        //            if (dt != null)
-        //            {
-        //                var oeeData = OEEData.FromDataTable(dt);
-
-        //                info.Oee = oeeData.Oee;
-        //                info.Availability = oeeData.Availability;
-        //                info.Performance = oeeData.Performance;
-        //            }
-        //        }), PRIORITY_BACKGROUND, new object[] { });
-        //    }
-        //}
-
-
-        //private void UpdateProductionStatus(EventData data, DeviceInfo info)
-        //{
-        //    if (data.Id.ToLower() == "statusdata_snapshots")
-        //    {
-        //        Dispatcher.BeginInvoke(new Action(() =>
-        //        {
-        //            info.ProductionStatus = GetTableValue(data.Data02, "Production Status");
-
-        //            var i = info.ProductionStatusInfos.Find(x => x.Value == info.ProductionStatus);
-        //            if (i != null)
-        //            {
-        //                info.ProductionStatusBrush = i.Brush;
-        //                info.ProductionStatusBrushHover = i.HoverBrush;
-        //            }
-        //        }), PRIORITY_BACKGROUND, new object[] { });
-        //    }
-
-        //    if (data.Id.ToLower() == "statusdata_shiftdata")
-        //    {
-        //        Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(UpdateProductionStatusTime), PRIORITY_BACKGROUND, new object[] { data.Data02, info });
-        //    }
-
-        //    if (data.Id.ToLower() == "statusdata_geneventvalues")
-        //    {
-        //        Dispatcher.BeginInvoke(new Action<object, DeviceInfo>(UpdateProductionStatusTimes_GenEventValues), PRIORITY_BACKGROUND, new object[] { data.Data02, info });
-        //    }
-        //}
-
-        //// Get list of Production Status variables to get numval for each to set colors
-        //void UpdateProductionStatusTimes_GenEventValues(object geneventvalues, DeviceInfo info)
-        //{
-        //    DataTable dt = geneventvalues as DataTable;
-        //    if (dt != null)
-        //    {
-        //        DataView dv = dt.AsDataView();
-        //        dv.RowFilter = "EVENT = 'production_status'";
-        //        DataTable temp_dt = dv.ToTable();
-
-        //        if (temp_dt != null)
-        //        {
-        //            foreach (DataRow row in temp_dt.Rows)
-        //            {
-        //                string val = row["VALUE"].ToString();
-
-        //                // Get the Numval 
-        //                int numval = -1;
-        //                int.TryParse(row["NUMVAL"].ToString(), out numval);
-
-        //                if (!info.ProductionStatusInfos.ToList().Exists(x => x.Value == val))
-        //                {
-        //                    var i = new DeviceInfo.ProductionStatusInfo();
-        //                    i.Value = val;
-        //                    i.Numval = numval;
-        //                    info.ProductionStatusInfos.Add(i);
-
-        //                    info.ProductionStatusInfos = info.ProductionStatusInfos.OrderByDescending(x => x.Numval).ToList();
-        //                }
-        //            }
-
-        //            // Set Bar Colors
-        //            foreach (var i in info.ProductionStatusInfos)
-        //            {
-        //                if (i.Numval == info.ProductionStatusInfos.Count - 1)
-        //                {
-        //                    i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen");
-        //                    i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen_Hover");
-        //                }
-        //                else if (i.Numval == 0)
-        //                {
-        //                    i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed");
-        //                    i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed_Hover");
-        //                }
-        //                else
-        //                {
-        //                    i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue");
-        //                    i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue_Hover");
-        //                }
-        //            }
-
-        //            temp_dt.Dispose();
-        //        }
-        //    }
-        //}
-
-        //private void UpdateProductionStatusTime(object shiftData, DeviceInfo info)
-        //{
-        //    DataTable dt = shiftData as DataTable;
-        //    if (dt != null)
-        //    {
-        //        // Get Total Time for this shift (all segments)
-        //        double totalSeconds = GetTime("TOTALTIME", dt);
-
-        //        // Get List of variables from 'Shifts' table and collect the total number of seconds
-        //        foreach (DataColumn column in dt.Columns)
-        //        {
-        //            if (column.ColumnName.Contains("PRODUCTION_STATUS") || column.ColumnName.Contains("Production_Status") || column.ColumnName.Contains("production_status"))
-        //            {
-        //                // Get Value name from Column Name
-        //                string valueName = null;
-        //                if (column.ColumnName.Contains("__"))
-        //                {
-        //                    int i = column.ColumnName.IndexOf("__") + 2;
-        //                    if (i < column.ColumnName.Length)
-        //                    {
-        //                        string name = column.ColumnName.Substring(i);
-        //                        name = name.Replace('_', ' ');
-
-        //                        valueName = name;
-        //                    }
-        //                }
-
-        //                if (valueName != null && info.ProductionStatus != null && valueName.ToLower() == info.ProductionStatus.ToLower())
-        //                {
-        //                    // Get Seconds for Value
-        //                    double seconds = GetTime(column.ColumnName, dt);
-
-        //                    // Update TimeDisplay
-        //                    info.ProductionStatusTotal = totalSeconds;
-        //                    info.ProductionStatusSeconds = seconds;
-
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-
-        //private bool useSnapshotForParts = false;
-
-        //private void UpdatePartCount(EventData data, DeviceInfo info)
-        //{
-        //    // Use Snapshot table if Part Count is given as a total for the day
-        //    if (data.Id.ToLower() == "statusdata_snapshots")
-        //    {
-        //        Dispatcher.BeginInvoke(new Action(() =>
-        //        {
-        //            int count = 0;
-
-        //            string val = GetTableValue(data.Data02, "Part Count");
-        //            if (val != null)
-        //            {
-        //                useSnapshotForParts = true;
-
-        //                int.TryParse(val, out count);
-
-        //                info.PartCount = count;
-        //            }
-        //        }), PRIORITY_BACKGROUND, new object[] { });
-        //    }
-
-        //    // Use the Parts table is Part Count is given as DISCRETE (number of parts per event) and not the total for the day
-        //    if (data.Id.ToLower() == "statusdata_parts" && data.Data02 != null && !useSnapshotForParts)
-        //    {
-        //        Dispatcher.BeginInvoke(new Action(() =>
-        //        {
-        //            var dt = data.Data02 as DataTable;
-        //            if (dt != null && dt.Columns.Contains("count"))
-        //            {
-        //                int count = 0;
-
-        //                foreach (DataRow row in dt.Rows)
-        //                {
-        //                    string val = row["count"].ToString();
-
-        //                    int i = 0;
-        //                    if (int.TryParse(val, out i)) count += i;
-        //                }
-
-        //                info.PartCount = count;
-        //            }
-        //        }), PRIORITY_BACKGROUND, new object[] { });
-        //    }
-        //}
 
 
         private static double GetTime(string columnName, DataTable dt)
@@ -427,6 +251,16 @@ namespace TH_StatusTable
                     if (d >= 0) result += d;
                 }
             }
+
+            return result;
+        }
+
+        private static double GetTime(string columnName, DataRow row)
+        {
+            double result = 0;
+
+            double d = DataTable_Functions.GetDoubleFromRow(columnName, row);
+            if (d >= 0) result = d;
 
             return result;
         }

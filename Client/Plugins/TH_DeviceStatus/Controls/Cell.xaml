@@ -4,25 +4,275 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TH_StatusTable.Controls"
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
     <Grid x:Name="root">
-        <Grid.Style>
-            <Style TargetType="Grid">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding StatusLevel}" Value="2">
-                        <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding StatusLevel}" Value="1">
-                        <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding StatusLevel}" Value="0">
-                        <Setter Property="Background" Value="{StaticResource StatusRed}"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <!--Hour Status-->
+        <Border x:Name="hour" BorderBrush="#aaa" BorderThickness="0,0,0,1">
+            <Border.ToolTip>
+                <Grid MinWidth="250">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!--Title-->
+                    <TextBlock FontWeight="Bold" Text="{Binding HourData.Title}"/>
+
+                    <StackPanel Grid.Row="1">
+                        <StackPanel.Resources>
+                            <Style TargetType="th_wpf:TimeProgress">
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                <Setter Property="BarHeight" Value="10"/>
+                                <Setter Property="Margin" Value="0,5"/>
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <th_wpf:TimeProgress Text="Production" 
+                                             Value="{Binding HourData.ProductionSeconds}" Maximum="{Binding HourData.TotalSeconds}"
+                                             BarBrush="{StaticResource StatusGreen}" BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
+
+                        <th_wpf:TimeProgress Text="Idle" Value="{Binding HourData.IdleSeconds}" Maximum="{Binding HourData.TotalSeconds}"
+                                             BarBrush="{StaticResource StatusYellow}" BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
+
+                        <th_wpf:TimeProgress Text="Alert" Value="{Binding HourData.AlertSeconds}" Maximum="{Binding HourData.TotalSeconds}"
+                                             BarBrush="{StaticResource StatusRed}" BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
+
+                    </StackPanel>
+
+                </Grid>
+            </Border.ToolTip>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HourData.Status}" Value="2">
+                            <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HourData.Status}" Value="1">
+                            <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HourData.Status}" Value="0">
+                            <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                        </DataTrigger>
+
+                        <!--No Data-->
+                        <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
+                            <Setter Property="Background" Value="#10000000"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <!--Overlay-->
+            <Grid>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=hour}" Value="true">
+                                <Setter Property="Background" Value="#66ffffff"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+            </Grid>
+            
+        </Border>
+
+        <!--Segment Data-->
+        <UniformGrid Grid.Row="1" Columns="12">
+
+            <!--<Grid DataContext="{Binding HourData.SegmentDatas[0]}">
+                <Grid.ToolTip>
+                    <Grid MinWidth="250">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        --><!--Title--><!--
+                        <TextBlock FontWeight="Bold" Text="{Binding Title}"/>
+
+                        <StackPanel Grid.Row="1">
+                            <StackPanel.Resources>
+                                <Style TargetType="th_wpf:TimeProgress">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="BarHeight" Value="10"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <th_wpf:TimeProgress Text="Production" Value="{Binding ProductionSeconds}" Maximum="{Binding TotalSeconds}"
+                                         BarBrush="{StaticResource StatusGreen}" BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
+
+                            <th_wpf:TimeProgress Text="Idle" Value="{Binding IdleSeconds}" Maximum="{Binding TotalSeconds}"
+                                         BarBrush="{StaticResource StatusYellow}" BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
+
+                            <th_wpf:TimeProgress Text="Alert" Value="{Binding AlertSeconds}" Maximum="{Binding TotalSeconds}"
+                                         BarBrush="{StaticResource StatusRed}" BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
+
+                        </StackPanel>
+
+                    </Grid>
+                </Grid.ToolTip>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="2">
+                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="1">
+                                <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="0">
+                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                            </DataTrigger>
+
+                            --><!--No Data--><!--
+                            <DataTrigger Binding="{Binding Status}" Value="-1">
+                                <Setter Property="Background" Value="#10000000"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                --><!--Overlay--><!--
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" Value="true">
+                                    <Setter Property="Background" Value="#66ffffff"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+            </Grid>
+
+            <Grid DataContext="{Binding HourData.SegmentDatas[1]}">
+                <Grid.ToolTip>
+                    <Grid MinWidth="250">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        --><!--Title--><!--
+                        <TextBlock FontWeight="Bold" Text="{Binding Title}"/>
+
+                        <StackPanel Grid.Row="1">
+                            <StackPanel.Resources>
+                                <Style TargetType="th_wpf:TimeProgress">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    <Setter Property="BarHeight" Value="10"/>
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <th_wpf:TimeProgress Text="Production" Value="{Binding ProductionSeconds}" Maximum="{Binding TotalSeconds}"
+                                         BarBrush="{StaticResource StatusGreen}" BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
+
+                            <th_wpf:TimeProgress Text="Idle" Value="{Binding IdleSeconds}" Maximum="{Binding TotalSeconds}"
+                                         BarBrush="{StaticResource StatusYellow}" BarBackgroundBrush="{StaticResource StatusYellow_Hover}"/>
+
+                            <th_wpf:TimeProgress Text="Alert" Value="{Binding AlertSeconds}" Maximum="{Binding TotalSeconds}"
+                                         BarBrush="{StaticResource StatusRed}" BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
+
+                        </StackPanel>
+
+                    </Grid>
+                </Grid.ToolTip>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="2">
+                                <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="1">
+                                <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="0">
+                                <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                            </DataTrigger>
+
+                            --><!--No Data--><!--
+                            <DataTrigger Binding="{Binding Status}" Value="-1">
+                                <Setter Property="Background" Value="#10000000"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+
+                --><!--Overlay--><!--
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType={x:Type Grid}}}" Value="true">
+                                    <Setter Property="Background" Value="#66ffffff"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                </Grid>
+            </Grid>-->
+
+
+            <local:Segment Grid.Column="0" SegmentData="{Binding HourData.SegmentDatas[0]}"/>
+            <local:Segment Grid.Column="1" SegmentData="{Binding HourData.SegmentDatas[1]}"/>
+            <local:Segment Grid.Column="2" SegmentData="{Binding HourData.SegmentDatas[2]}"/>
+            <local:Segment Grid.Column="3" SegmentData="{Binding HourData.SegmentDatas[3]}"/>
+            <local:Segment Grid.Column="4" SegmentData="{Binding HourData.SegmentDatas[4]}"/>
+            <local:Segment Grid.Column="5" SegmentData="{Binding HourData.SegmentDatas[5]}"/>
+            <local:Segment Grid.Column="6" SegmentData="{Binding HourData.SegmentDatas[6]}"/>
+            <local:Segment Grid.Column="7" SegmentData="{Binding HourData.SegmentDatas[7]}"/>
+            <local:Segment Grid.Column="8" SegmentData="{Binding HourData.SegmentDatas[8]}"/>
+            <local:Segment Grid.Column="9" SegmentData="{Binding HourData.SegmentDatas[9]}"/>
+            <local:Segment Grid.Column="10" SegmentData="{Binding HourData.SegmentDatas[10]}"/>
+            <local:Segment Grid.Column="11" SegmentData="{Binding HourData.SegmentDatas[11]}"/>
+
+            <!--<Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="10"/>
+            </Grid.ColumnDefinitions>-->
+
+            <!--<local:Segment Grid.Column="0" SegmentData="{Binding SegmentDatas[0]}"/>
+            <local:Segment Grid.Column="1" SegmentData="{Binding Data01}"/>
+            <local:Segment Grid.Column="2" SegmentData="{Binding Data02}"/>
+            <local:Segment Grid.Column="3" SegmentData="{Binding Data03}"/>
+            <local:Segment Grid.Column="4" SegmentData="{Binding Data04}"/>
+            <local:Segment Grid.Column="5" SegmentData="{Binding Data05}"/>
+            <local:Segment Grid.Column="6" SegmentData="{Binding Data06}"/>
+            <local:Segment Grid.Column="7" SegmentData="{Binding Data07}"/>
+            <local:Segment Grid.Column="8" SegmentData="{Binding Data08}"/>
+            <local:Segment Grid.Column="9" SegmentData="{Binding Data09}"/>
+            <local:Segment Grid.Column="10" SegmentData="{Binding Data10}"/>
+            <local:Segment Grid.Column="11" SegmentData="{Binding Data11}"/>-->
+
+        <!--</Grid>-->
+
+
+
+        </UniformGrid>
+
     </Grid>
 
 </UserControl>
