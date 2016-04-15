@@ -79,6 +79,12 @@
     <SolidColorBrush x:Key="StatusYellow" Color="Yellow"/>
     <SolidColorBrush x:Key="StatusRed" Color="Red"/>
 
+    <SolidColorBrush x:Key="StatusBlue_Light" Color="#8000B4FF"/>
+    <SolidColorBrush x:Key="StatusWhite_Light" Color="#80FFFFFF"/>
+    <SolidColorBrush x:Key="StatusGreen_Light" Color="#8019B419"/>
+    <SolidColorBrush x:Key="StatusYellow_Light" Color="#60FFFF00"/>
+    <SolidColorBrush x:Key="StatusRed_Light" Color="#60FF0000"/>
+
     <SolidColorBrush x:Key="StatusBlue_Hover" Color="#2000B4FF"/>
     <SolidColorBrush x:Key="StatusWhite_Hover" Color="#20FFFFFF"/>
     <SolidColorBrush x:Key="StatusGreen_Hover" Color="#2019B419"/>

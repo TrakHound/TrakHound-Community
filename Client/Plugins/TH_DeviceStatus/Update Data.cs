@@ -80,7 +80,6 @@ namespace TH_StatusTable
             }
         }
 
-        //bool once = false;
 
         /// <summary>
         ///  Create SegmentData objects for each shift segment
@@ -92,8 +91,6 @@ namespace TH_StatusTable
             DataTable dt = shiftSegmentData as DataTable;
             if (dt != null && info.HourDatas == null)
             {
-                //var segmentDatas = new BindableTwoDArray<SegmentData>(24, 12);
-
                 var hourDatas = new HourData[24];
 
                 var segments = new List<HourInfo>();
@@ -125,7 +122,6 @@ namespace TH_StatusTable
                             data.HourInfo = sameHour;
                             data.Status = -1;
                             hourData.SegmentDatas[y] = data;
-                            //segmentDatas[hour.StartHour, y] = data;
                         }
                     }
 
@@ -135,7 +131,6 @@ namespace TH_StatusTable
                     hourDatas[hour.StartHour] = hourData;
                 }
 
-                //info.SegmentDatas = segmentDatas;
                 info.HourDatas = hourDatas;
             }
         }
@@ -169,16 +164,14 @@ namespace TH_StatusTable
         private void UpdateShiftTimes(object shiftData, DeviceInfo info)
         {
             DataTable dt = shiftData as DataTable;
-            if (dt != null)
+            if (dt != null && info.HourDatas != null)
             {
                 // Get Segment Infos
                 var segmentInfos = new List<SegmentInfo>();
                 foreach (DataRow row in dt.Rows) segmentInfos.Add(SegmentInfo.Get(row));
 
-                //var datas = info.SegmentDatas;
-
-                // Loop through both dimensions of the info.SegmentDatas array to set times
-                for (var x = 0; x <= 23; x++)
+                // Loop through both dimensions of the info.HourDatas array to set times
+                for (var x = 0; x <= info.HourDatas.Length - 1; x++)
                 {
                     double totalSeconds = 0;
 
@@ -186,52 +179,54 @@ namespace TH_StatusTable
                     double idleSeconds = 0;
                     double alertSeconds = 0;
 
-                    var hourData = info.HourDatas[x];
-                    if (hourData != null)
+                    if (x <= info.HourDatas.Length - 1)
                     {
-
-                        for (var y = 0; y <= 11; y++)
-                    {
-                        var data = hourData.SegmentDatas[y];
-                        if (data != null)
+                        var hourData = info.HourDatas[x];
+                        if (hourData != null)
                         {
-                            // Look for match in segmentInfos list
-                            var match = segmentInfos.Find(m => m.HourInfo.Start == data.HourInfo.Start && m.HourInfo.End == data.HourInfo.End);
-                            if (match != null)
+
+                            for (var y = 0; y <= 11; y++)
                             {
-                                data.TotalSeconds = match.TotalSeconds;
-                                totalSeconds += match.TotalSeconds;
+                                var data = hourData.SegmentDatas[y];
+                                if (data != null)
+                                {
+                                    // Look for match in segmentInfos list
+                                    var match = segmentInfos.Find(m => m.HourInfo.Start == data.HourInfo.Start && m.HourInfo.End == data.HourInfo.End);
+                                    if (match != null)
+                                    {
+                                        data.TotalSeconds = match.TotalSeconds;
+                                        totalSeconds += match.TotalSeconds;
 
-                                // Set status times for the segment
-                                data.ProductionSeconds = match.ProductionSeconds;
-                                data.IdleSeconds = match.IdleSeconds;
-                                data.AlertSeconds = match.AlertSeconds;
+                                        // Set status times for the segment
+                                        data.ProductionSeconds = match.ProductionSeconds;
+                                        data.IdleSeconds = match.IdleSeconds;
+                                        data.AlertSeconds = match.AlertSeconds;
 
-                                // Inrement totals for the hour
-                                productionSeconds += match.ProductionSeconds;
-                                idleSeconds += match.IdleSeconds;
-                                alertSeconds += match.AlertSeconds;
+                                        // Inrement totals for the hour
+                                        productionSeconds += match.ProductionSeconds;
+                                        idleSeconds += match.IdleSeconds;
+                                        alertSeconds += match.AlertSeconds;
 
-                                // Set status based on the which status had the most seconds
-                                if (data.AlertSeconds == 0 && data.IdleSeconds == 0 && data.ProductionSeconds == 0) data.Status = -1;
-                                else if (data.AlertSeconds >= data.IdleSeconds && data.AlertSeconds >= data.ProductionSeconds) data.Status = 0;
-                                else if (data.IdleSeconds > data.AlertSeconds && data.IdleSeconds >= data.ProductionSeconds) data.Status = 1;
-                                else data.Status = 2;
+                                        // Set status based on the which status had the most seconds
+                                        if (data.AlertSeconds == 0 && data.IdleSeconds == 0 && data.ProductionSeconds == 0) data.Status = -1;
+                                        else if (data.AlertSeconds >= data.IdleSeconds && data.AlertSeconds >= data.ProductionSeconds) data.Status = 0;
+                                        else if (data.IdleSeconds > data.AlertSeconds && data.IdleSeconds >= data.ProductionSeconds) data.Status = 1;
+                                        else data.Status = 2;
+                                    }
+                                }
                             }
+
+                            hourData.TotalSeconds = totalSeconds;
+                            hourData.ProductionSeconds = productionSeconds;
+                            hourData.IdleSeconds = idleSeconds;
+                            hourData.AlertSeconds = alertSeconds;
+
+                            // Set status based on the which status had the most seconds
+                            if (hourData.AlertSeconds == 0 && hourData.IdleSeconds == 0 && hourData.ProductionSeconds == 0) hourData.Status = -1;
+                            else if (hourData.AlertSeconds >= hourData.IdleSeconds && hourData.AlertSeconds >= hourData.ProductionSeconds) hourData.Status = 0;
+                            else if (hourData.IdleSeconds > hourData.AlertSeconds && hourData.IdleSeconds >= hourData.ProductionSeconds) hourData.Status = 1;
+                            else hourData.Status = 2;
                         }
-                    }
-
-                    
-                        hourData.TotalSeconds = totalSeconds;
-                        hourData.ProductionSeconds = productionSeconds;
-                        hourData.IdleSeconds = idleSeconds;
-                        hourData.AlertSeconds = alertSeconds;
-
-                        // Set status based on the which status had the most seconds
-                        if (hourData.AlertSeconds == 0 && hourData.IdleSeconds == 0 && hourData.ProductionSeconds == 0) hourData.Status = -1;
-                        else if (hourData.AlertSeconds >= hourData.IdleSeconds && hourData.AlertSeconds >= hourData.ProductionSeconds) hourData.Status = 0;
-                        else if (hourData.IdleSeconds > hourData.AlertSeconds && hourData.IdleSeconds >= hourData.ProductionSeconds) hourData.Status = 1;
-                        else hourData.Status = 2;
                     }
                 }
             }

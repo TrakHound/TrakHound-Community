@@ -96,28 +96,84 @@ namespace TH_WPF
             {
                 var ts = TimeSpan.FromMilliseconds((long)e.NewValue);
 
-                o.Value_Text = ts.ToString();
+                //o.Value_FormattedString = ts.ToString(@"dd\.hh\:mm\:ss\.ff");
+                //o.Value_Text = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(ts);
+
+                if (ts >= new TimeSpan(1, 0, 0, 0) && ts.Hours == 0 && ts.Days == 1)
+                {
+                    o.Value_Text = ts.ToString(@"d\ \D\a\y");
+                }
+                else if (ts >= new TimeSpan(1, 0, 0, 0) && ts.Hours == 0)
+                {
+                    o.Value_Text = ts.ToString(@"d\ \D\a\y\s");
+                }
+                else if (ts >= new TimeSpan(1, 0, 0, 0))
+                {
+                    //return ts.ToString("d' Days 'h'h 'm'm 's's'");
+                    o.Value_Text = ts.ToString(@"d\ \D\a\y\s\ h\h");
+                }
+                else if (ts >= new TimeSpan(1, 0, 0))
+                {
+                    //return ts.ToString("h'h 'm'm 's's'");
+                    o.Value_Text = ts.ToString(@"hh\:mm\:ss");
+                }
+                else if (ts >= new TimeSpan(0, 1, 0))
+                {
+                    //return ts.ToString("m'm 's's'");
+                    o.Value_Text = ts.ToString(@"mm\:ss");
+                }
+                else if (ts >= new TimeSpan(0, 0, 1))
+                {
+                    //return ts.ToString("s\\.ff' Seconds'");
+                    o.Value_Text = ts.ToString(@"s\.ff\ \s");
+                }
+                else
+                {
+                    //return ts.ToString("fff' Milliseconds'");
+                    o.Value_Text = ts.ToString(@"fff\ \m\s");
+                }
+
+                //o.Value_Text = ts.ToString(@"dd\.hh\:mm\:ss\.FF");
                 o.Value_FormattedString = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(ts);
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var txt = (System.Windows.Controls.TextBox)sender;
+            if (txt.IsMouseCaptured || txt.IsKeyboardFocused)
+            {
+                string text = txt.Text;
+
+                if (text != String.Empty)
+                {
+                    TimeSpan ts = GetTimeSpanFromString(text);
+                    Value_FormattedString = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(ts);
+                    if (ts.TotalMilliseconds < long.MaxValue)
+                    {
+                        Value = Convert.ToInt64(ts.TotalMilliseconds);
+                    }
+                }
             }
         }
 
         private static void Value_Text_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            var o = obj as TimeSlider;
-            if (o != null)
-            {
-                string text = e.NewValue.ToString();
+            //var o = obj as TimeSlider;
+            //if (o != null)
+            //{
+            //    string text = e.NewValue.ToString();
 
-                if (text != String.Empty)
-                {
-                    TimeSpan ts = GetTimeSpanFromString(text);
-                    o.Value_FormattedString = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(ts);
-                    if (ts.TotalMilliseconds < long.MaxValue)
-                    {
-                        o.Value = Convert.ToInt64(ts.TotalMilliseconds);
-                    }
-                }
-            }
+            //    if (text != String.Empty)
+            //    {
+            //        TimeSpan ts = GetTimeSpanFromString(text);
+            //        o.Value_FormattedString = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(ts);
+            //        if (ts.TotalMilliseconds < long.MaxValue)
+            //        {
+            //            o.Value = Convert.ToInt64(ts.TotalMilliseconds);
+            //        }
+            //    }
+            //}
         }
 
         private static TimeSpan GetTimeSpanFromString(string s)
@@ -263,5 +319,7 @@ namespace TH_WPF
                 }
             }
         }
+
+        
     }
 }

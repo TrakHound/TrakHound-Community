@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 using System.ComponentModel;
-using System.Linq.Expressions;
-using System.Windows.Media;
-
-using System.Data;
-
-using TH_Global;
-using TH_Global.Functions;
 
 namespace TH_StatusTable
 {
@@ -20,7 +15,17 @@ namespace TH_StatusTable
             SegmentDatas = new SegmentData[12];
         }
 
-        public string Title { get; set; }
+        private string _title;
+        public string Title
+        {
+            get { return _title; }
+            set
+            {
+                var val = _title;
+                _title = value;
+                if (val != _title) NotifyChanged("Title");
+            }
+        }
 
         private double _totalSeconds;
         public double TotalSeconds

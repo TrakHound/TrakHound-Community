@@ -204,7 +204,8 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             var ip = (IPAddress)o;
 
-            var ports = new int[] { 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010 };
+            //var ports = new int[] { 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010 };
+            var ports = CreatePortArray(5000, 20);
 
             portCount = ports.Length;
             returnedPorts = 0;
@@ -217,6 +218,13 @@ namespace TH_DeviceManager.AddDevice.Pages
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbeOnPort), info);
             } 
+        }
+
+        private static int[] CreatePortArray(int start, int count)
+        {
+            var ports = new List<int>();
+            for (var x = start; x <= (start + count) - 1; x++) ports.Add(x);
+            return ports.ToArray();
         }
 
         private void RunProbeOnPort(object o)
@@ -509,6 +517,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                                     // Update Configuration to be Enabled, use the selected Agent Settings, and
                                     // if no databases are set then create new SQLite database configs
                                     UpdateEnabled(config);
+                                    UpdateDescriptionConfiguration(info, config);
                                     UpdateAgentConfiguration(info, config);
                                     UpdateDatabaseConfiguration(config);
 
@@ -604,6 +613,21 @@ namespace TH_DeviceManager.AddDevice.Pages
             string path = FileLocations.Databases + "\\TrakHound.db";
 
             XML_Functions.SetInnerText(config.ConfigurationXML, prefix + "/SQLite/DatabasePath", path);
+        }
+
+        private void UpdateDescriptionConfiguration(DeviceInfo info, Configuration config)
+        {
+            // Save Device Description
+            config.Description.Description = info.Device.Description.CDATA;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Description", info.Device.Description.CDATA);
+
+            // Save Serial Number
+            config.Description.Serial = info.Device.Description.SerialNumber;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Serial", info.Device.Description.SerialNumber);
+
+            // Save Manufacturer
+            config.Description.Manufacturer = info.Device.Description.Manufacturer;
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Manufacturer", info.Device.Description.Manufacturer);
         }
 
         private bool SaveLocalConfigurationToUser(Configuration config)

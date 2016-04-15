@@ -37,30 +37,51 @@ namespace TH_DeviceCompare_OEE.Timeline
                 // OEE Table Data
                 if (data.Id.ToLower() == "statusdata_oee")
                 {
-                    // OEE Values
                     this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), Priority_Context, new object[] { data.Data02 });
                 }
 
                 // Variables Table Data
                 if (data.Id.ToLower() == "statusdata_variables")
                 {
-                    // OEE Timeline / Histogram
                     this.Dispatcher.BeginInvoke(new Action<object>(Update_VariablesData), Priority_Context, new object[] { data.Data02 });
                 }
 
-                // Shifts Table Data
-                if (data.Id.ToLower() == "statusdata_shiftdata")
+                // Shift Segments Table Data
+                if (data.Id.ToLower() == "statusdata_shiftsegments")
                 {
-                    // OEE Timeline / Histogram
-                    this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftData), Priority_Context, new object[] { data.Data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(Update_ShiftSegmentsData), Priority_Context, new object[] { data.Data02 });
                 }
             }
         }
 
         class OEE_TimelineInfo
         {
-            public string id { get; set; }
-            public string segmentTimes { get; set; }
+            public OEE_TimelineInfo()
+            {
+                HourInfos = new List<HourInfo>();
+                Id = String_Functions.RandomString(20);
+            }
+
+            // Links to Timeline.Databar
+            public string Id { get; set; }
+
+            public string Title
+            {
+                get
+                {
+                    if (HourInfos != null)
+                    {
+                        var infos = HourInfos.OrderBy(x => x.Start).ToList();
+                        var first = infos[0];
+                        var last = infos[infos.Count - 1];
+
+                        return first.Start.ToShortTimeString() + " - " + last.End.ToShortTimeString();
+                    }
+                    return null;
+                }
+            }
+
+            public List<HourInfo> HourInfos { get; set; }
 
             public double Oee { get; set; }
             public double Availability { get; set; }
@@ -69,144 +90,258 @@ namespace TH_DeviceCompare_OEE.Timeline
 
         void Update_OEEData(object oeedata)
         {
-            List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
-
-            DataTable dt = oeedata as DataTable;
-            if (dt != null)
+            var dt = oeedata as DataTable;
+            if (dt != null && timelineInfos != null)
             {
                 var oeeData = OEEData.FromDataTable(dt);
 
-                foreach (var segment in oeeData.ShiftSegments)
+                foreach (OEE_TimelineInfo info in timelineInfos)
                 {
-                    OEE_TimelineInfo info = new OEE_TimelineInfo();
-                    info.id = segment.ShiftId;
+                    var oee = new OEEData();
+                    oee.ConstantQuality = 1;
 
-                    info.Oee = segment.Oee;
-                    info.Availability = segment.Availability;
-                    info.Performance = segment.Performance;
+                    foreach (var segment in oeeData.ShiftSegments)
+                    {
+                        var match = info.HourInfos.Find(x => TestShiftSegment(segment.ShiftId, x.ShiftIdSuffix));
+                        if (match != null)
+                        {
+                            oee.ShiftSegments.Add(segment);
+                        }
+                    }
 
-                    infos.Add(info);
+                    int index = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
+                    if (index >= 0)
+                    {
+                        var db = histogram.DataBars[index];
+
+                        db.Value = oee.Oee * 100;
+
+                        int status = 0;
+                        if (oee.Oee >= 0.75) status = 2;
+                        else if (oee.Oee >= 0.5) status = 1;
+                        else status = 0;
+
+                        db.DataObject = status;
+
+                        // Update ToolTip
+                        if (db.ToolTipData != null)
+                        {
+                            var toolTip = (OeeToolTip)db.ToolTipData;
+                            toolTip.Oee = oee.Oee.ToString("P2");
+                            toolTip.Availability = oee.Availability.ToString("P2");
+                            toolTip.Performance = oee.Performance.ToString("P2");
+                        }
+                    }
+                }
+            }
+        }
+
+        private List<OEE_TimelineInfo> timelineInfos = new List<OEE_TimelineInfo>();
+        private bool newShift = true;
+
+        public class HourInfo
+        {
+            public DateTime Start { get; set; }
+            public DateTime End { get; set; }
+
+            public int StartHour { get; set; }
+            public int EndHour { get; set; }
+
+            public string StartText { get; set; }
+            public string EndText { get; set; }
+
+            public string ShiftIdSuffix { get; set; }
+            public string ShiftIdTest { get; set; }
+
+            public static HourInfo Get(DataRow row)
+            {
+                string start = DataTable_Functions.GetRowValue("START", row);
+                string end = DataTable_Functions.GetRowValue("END", row);
+
+                string sshiftId = DataTable_Functions.GetRowValue("SHIFT_ID", row);
+                string ssegmentId = DataTable_Functions.GetRowValue("SEGMENT_ID", row);
+
+                int shiftId = -1;
+                int segmentId = -1;
+                int.TryParse(sshiftId, out shiftId);
+                int.TryParse(ssegmentId, out segmentId);
+
+                string shiftIdSuffix = null;
+                string shiftIdTest = null;
+                if (shiftId >= 0 && segmentId >= 0) shiftIdSuffix = "_" + shiftId.ToString("00") + "_" + segmentId.ToString("00");
+                if (shiftId >= 0 && segmentId >= 0) shiftIdTest = "_" + shiftId.ToString("00") + "_";
+
+                DateTime s = DateTime.MinValue;
+                DateTime e = DateTime.MinValue;
+
+                DateTime.TryParse(start, out s);
+                DateTime.TryParse(end, out e);
+
+                var info = new HourInfo();
+                info.Start = s;
+                info.End = e;
+
+                info.StartHour = s.Hour;
+                info.EndHour = e.Hour;
+
+                info.StartText = start;
+                info.EndText = end;
+
+                info.ShiftIdSuffix = shiftIdSuffix;
+                info.ShiftIdTest = shiftIdTest;
+
+                return info;
+            }
+        }
+
+        private static bool TestShiftId(string s1, string s2)
+        {
+            if (s1 == null || s2 == null) return false;
+            else if (s1.Contains(s2)) return true;
+            else return false;
+        }
+
+        private static bool TestShiftSegment(string s1, string s2)
+        {
+            if (s1 == null || s2 == null) return false;
+            if (s1.EndsWith(s2)) return true;
+            else return false;
+        }
+
+        void Update_ShiftSegmentsData(object shiftSegmentsData)
+        {
+            var dt = shiftSegmentsData as DataTable;
+            if (dt != null && currentShiftId != null && newShift)
+            {
+                timelineInfos.Clear();
+
+                var segments = new List<HourInfo>();
+
+                // Get Hour Infos for each Row / Segment
+                foreach (DataRow row in dt.Rows) segments.Add(HourInfo.Get(row));
+
+                segments = segments.FindAll(x => TestShiftId(currentShiftId, x.ShiftIdTest));
+
+                var hours = segments.GroupBy(x => x.StartHour, (key, group) => group.First()).ToList();
+
+                // Create OEE_TimelineInfos for each Hour
+                foreach (var hour in hours)
+                {
+                    var info = new OEE_TimelineInfo();
+
+                    var sameHours = segments.FindAll(s => s.StartHour == hour.StartHour);
+                    if (sameHours != null)
+                    {
+                        foreach (var sameHour in sameHours)
+                        {
+                            info.HourInfos.Add(sameHour);
+                        }
+                    }
+
+                    timelineInfos.Add(info);
                 }
 
-                foreach (OEE_TimelineInfo info in infos)
+                histogram.DataBars.Clear();
+
+                foreach (var info in timelineInfos)
                 {
                     TH_WPF.Histogram.DataBar db;
 
-                    int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.id);
+                    int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
                     if (dbIndex < 0)
                     {
                         db = new TH_WPF.Histogram.DataBar();
-                        db.Id = info.id;
+                        db.Id = info.Id;
 
                         var tt = new OeeToolTip();
-                        tt.Times = info.segmentTimes;
+                        tt.Times = info.Title;
                         db.ToolTipData = tt;
 
                         histogram.AddDataBar(db);
-
-                    }
-                    else db = histogram.DataBars[dbIndex];
-
-                    db.Value = info.Oee * 100;
-
-                    int status = 0;
-                    if (info.Oee >= 0.75) status = 2;
-                    else if (info.Oee >= 0.5) status = 1;
-                    else status = 0;
-
-                    db.DataObject = status;
-
-                    // Update ToolTip
-                    if (db.ToolTipData != null)
-                    {
-                        var toolTip = (OeeToolTip)db.ToolTipData;
-                        toolTip.Oee = info.Oee.ToString("P2");
-                        toolTip.Availability = info.Availability.ToString("P2");
-                        toolTip.Performance = info.Performance.ToString("P2");
                     }
                 }
-            }
+
+                newShift = false;
+            } 
         }
 
-        void Update_ShiftData(object shiftData)
-        {
-            // Get Segment Times (for ToolTip)
-            foreach (TH_WPF.Histogram.DataBar db in histogram.DataBars)
-            {
-                string segmentTimes = GetSegmentName(db.Id, shiftData);
-                if (segmentTimes != null)
-                {
-                    if (db.ToolTipData != null)
-                    {
-                        var tooltip = (OeeToolTip)db.ToolTipData;
-                        if (tooltip.Times != segmentTimes) tooltip.Times = segmentTimes;
-                    }
-                }
-            }
-        }
+        //void Update_ShiftData(object shiftData)
+        //{
+        //    // Get Segment Times (for ToolTip)
+        //    foreach (TH_WPF.Histogram.DataBar db in histogram.DataBars)
+        //    {
+        //        string segmentTimes = GetSegmentName(db.Id, shiftData);
+        //        if (segmentTimes != null)
+        //        {
+        //            if (db.ToolTipData != null)
+        //            {
+        //                var tooltip = (OeeToolTip)db.ToolTipData;
+        //                if (tooltip.Times != segmentTimes) tooltip.Times = segmentTimes;
+        //            }
+        //        }
+        //    }
+        //}
+
+
+        string currentShiftId = null;
+        string currentShiftName = null;
 
         void Update_VariablesData(object variableData)
         {
-            List<OEE_TimelineInfo> infos = new List<OEE_TimelineInfo>();
+            var infos = new List<OEE_TimelineInfo>();
 
-            DataTable dt = variableData as DataTable;
+            var dt = variableData as DataTable;
             if (dt != null)
             {
+                currentShiftId = DataTable_Functions.GetTableValue(dt, "variable", "shift_id", "value");
+
                 // Get Shift Name to check if still in the same shift as last update
-                string prev_shiftName = histogram.Id;
-                histogram.Id = DataTable_Functions.GetTableValue(dt, "variable", "shift_name", "value");
-                if (prev_shiftName != histogram.Id) histogram.DataBars.Clear();
-
-                // Get Current Segment
-                foreach (TH_WPF.Histogram.DataBar db in histogram.DataBars)
-                {
-                    string currentShiftId = DataTable_Functions.GetTableValue(dt, "variable", "shift_id", "value");
-                    if (currentShiftId == db.Id) db.IsSelected = true;
-                    else db.IsSelected = false;
-                }
+                string prev_currentShift = currentShiftName;
+                currentShiftName = DataTable_Functions.GetTableValue(dt, "variable", "shift_name", "value");
+                if (prev_currentShift != currentShiftName) newShift = true;
             }
         }
 
-        string GetSegmentName(string shiftId, object shiftData)
-        {
-            string Result = null;
+        //string GetSegmentName(string shiftId, object shiftData)
+        //{
+        //    string Result = null;
 
-            DataTable dt = shiftData as DataTable;
-            if (dt != null)
-            {
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = "id='" + shiftId + "'";
-                DataTable temp_dt = dv.ToTable();
+        //    DataTable dt = shiftData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        DataView dv = dt.AsDataView();
+        //        dv.RowFilter = "id='" + shiftId + "'";
+        //        DataTable temp_dt = dv.ToTable();
 
-                // Should be max of one row
-                if (temp_dt.Rows.Count > 0)
-                {
-                    DataRow row = temp_dt.Rows[0];
+        //        // Should be max of one row
+        //        if (temp_dt.Rows.Count > 0)
+        //        {
+        //            DataRow row = temp_dt.Rows[0];
 
-                    //Get Segment start Time
-                    string start = DataTable_Functions.GetRowValue("start", row);
+        //            //Get Segment start Time
+        //            string start = DataTable_Functions.GetRowValue("start", row);
 
-                    // Get Segment end Time
-                    string end = DataTable_Functions.GetRowValue("end", row);
+        //            // Get Segment end Time
+        //            string end = DataTable_Functions.GetRowValue("end", row);
 
-                    // Create Segment Times string
-                    if (start != null && end != null)
-                    {
-                        DateTime timestamp = DateTime.MinValue;
-                        DateTime.TryParse(start, out timestamp);
-                        if (timestamp > DateTime.MinValue) start = timestamp.ToShortTimeString();
+        //            // Create Segment Times string
+        //            if (start != null && end != null)
+        //            {
+        //                DateTime timestamp = DateTime.MinValue;
+        //                DateTime.TryParse(start, out timestamp);
+        //                if (timestamp > DateTime.MinValue) start = timestamp.ToShortTimeString();
 
-                        timestamp = DateTime.MinValue;
-                        DateTime.TryParse(end, out timestamp);
-                        if (timestamp > DateTime.MinValue) end = timestamp.ToShortTimeString();
+        //                timestamp = DateTime.MinValue;
+        //                DateTime.TryParse(end, out timestamp);
+        //                if (timestamp > DateTime.MinValue) end = timestamp.ToShortTimeString();
 
-                        Result = start + " - " + end;
-                    }
-                }
-            }
+        //                Result = start + " - " + end;
+        //            }
+        //        }
+        //    }
 
-            return Result;
-        }
+        //    return Result;
+        //}
 
     }
 }

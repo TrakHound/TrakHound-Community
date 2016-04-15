@@ -118,7 +118,21 @@ namespace TH_StatusData
 
         #region "Options"
 
-        public IPage Options { get; set; }
+        //public IPage Options { get; set; }
+
+        private IPage _options;
+        public IPage Options
+        {
+            get
+            {
+                if (_options == null) _options = new OptionsPage();
+                return _options;
+            }
+            set
+            {
+                _options = value;
+            }
+        }
 
         #endregion
 

@@ -556,7 +556,7 @@ namespace TrakHound_Client
         /// <param name="plugin"></param>
         private void Plugin_CreateOptionsPage(IClientPlugin plugin)
         {
-            //if (plugin.Options != null) optionsManager.AddPage(plugin.Options);
+            if (plugin.Options != null) Options_AddPage(plugin.Options);
         }
 
         /// <summary>

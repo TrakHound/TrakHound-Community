@@ -623,6 +623,12 @@ namespace TrakHound_Client
             }
         }
 
+        public void Options_AddPage(IPage page)
+        {
+            Options_Initialize();
+            optionsManager.AddPage(page);
+        }
+
         public void Options_Open()
         {
             Options_Initialize();

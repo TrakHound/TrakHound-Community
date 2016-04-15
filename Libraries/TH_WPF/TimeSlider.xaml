@@ -76,7 +76,7 @@
                     VerticalAlignment="Center"
                     />
 
-            <Border BorderThickness="1" CornerRadius="1" Margin="0,0,10,0" Background="#fff">
+            <Border BorderThickness="1" CornerRadius="1" Margin="0,0,10,0" Background="#fff" MinWidth="75">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
@@ -94,12 +94,13 @@
                 <Grid Margin="10,0">
 
                     <!--User Input-->
-                    <TextBox Text="{Binding Value_Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding Value_Text}" 
                             BorderThickness="0" Background="Transparent" Foreground="{StaticResource Foreground_Normal}"
                             FontSize="{Binding FontSize}" Height="35"
                             VerticalAlignment="Center" VerticalContentAlignment="Center"
                             MaxLines="1" CaretBrush="Black"
-                            ToolTip="{Binding Value_FormattedString}"/>
+                            ToolTip="{Binding Value_FormattedString}"
+                            TextChanged="TextBox_TextChanged"/>
 
                 </Grid>
 

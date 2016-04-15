@@ -61,7 +61,7 @@ namespace TH_StatusData
             public ManualResetEvent Stop { get; set; }
         }
 
-        private const int INTERVAL_MIN = 5000;
+        private int interval_min = 5000;
         private const int INTERVAL_MAX = 60000;
 
         List<UpdateInfo> UpdateInfos = new List<UpdateInfo>();
@@ -114,7 +114,7 @@ namespace TH_StatusData
 
                 if (info.Stop != null)
                 {
-                    int interval = INTERVAL_MIN;
+                    int interval = Properties.Settings.Default.DatabaseReadInterval;
                     bool first = true;
 
                     while (!info.Stop.WaitOne(0, true))
@@ -131,7 +131,7 @@ namespace TH_StatusData
                         if (connected)
                         {
                             // Reset the interval back to the Minimum
-                            interval = INTERVAL_MIN;
+                            interval = Properties.Settings.Default.DatabaseReadInterval;
 
                             var tables = GetTables(info.Group);
 

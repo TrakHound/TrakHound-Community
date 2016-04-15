@@ -5,9 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:local="clr-namespace:TH_StatusTable"
+             xmlns:controls="clr-namespace:TH_StatusTable.Controls"
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
-             
-             Loaded="UserControl_Loaded"
              
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
@@ -54,10 +53,6 @@
             </Setter>
         </Style>
         
-        <!--<ContextMenu x:Key="DataGridRowContextMenu">
-            <local:DataGridMenuItem Header="Open Device Page" DataObject="{Binding}" Click="DataGridMenuItem_Click"/>
-        </ContextMenu>-->
-
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
@@ -110,53 +105,42 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="HourColumnTemplate" TargetType="DataGridCell">
+            <Setter Property="BorderThickness" Value="0,0,0,0"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Border Background="HotPink"
+                                Margin="0"
+                                Padding="0"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0"
+                                >
+                            <Grid>
+
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="false">
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Self}}"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid x:Name="root">
-        <!--<Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>-->
-
-        <!--Navbar-->
-        <!--<StackPanel Orientation="Horizontal" Background="{StaticResource Accent_Normal}">-->
-            <!--<StackPanel.Resources>
-                <Style TargetType="th_wpf:Button">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                    <Setter Property="Height" Value="30"/>
-                    <Setter Property="Width" Value="30"/>
-                    <Setter Property="Margin" Value="2,0"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" Value="#33ffffff"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </StackPanel.Resources>
-
-            --><!--<th_wpf:Button ToolTip="Refresh" Image="Resources/Refresh_01.png" Clicked="Refresh_Clicked"/>--><!--
-
-        </StackPanel>-->
 
         <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
-
-            <!--<ListView>
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Test"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>-->
-            
-            <!--<DataGrid x:Name="Devices_DG"
-                  AutoGenerateColumns="False"
-                  BorderBrush="Transparent"
-                  BorderThickness="0"
-                  HeadersVisibility="Column"
-                  VerticalAlignment="Stretch"
-                  Background="#10000000"
-                  >-->
 
                 <DataGrid x:Name="Devices_DG" ItemsSource="{Binding DeviceInfos, IsAsync=True}"
                   AutoGenerateColumns="False"
@@ -164,31 +148,36 @@
                   BorderThickness="0"
                   HeadersVisibility="Column"
                   VerticalAlignment="Stretch"
-                  Background="#10000000"
+                  Background="#EEE"
                   IsReadOnly="True"
+                  EnableRowVirtualization="True"
                   >
 
                 <DataGrid.Columns>
 
                     <!--Description-->
-                    <DataGridTemplateColumn Header="Description" Width="200">
+                    <DataGridTemplateColumn Header="Description" MinWidth="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
 
                                     <!--Manufacturer Logo-->
                                     <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5" MaxHeight="40"/>
 
                                     <!--Device Description-->
-                                    <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10,2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10,2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                                </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <!--Device Id-->
-                    <DataGridTemplateColumn Header="Device ID">
+                    <DataGridTemplateColumn Header="Device ID" MinWidth="75" MaxWidth="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Viewbox Margin="10">

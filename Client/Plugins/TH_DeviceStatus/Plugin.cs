@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -138,55 +143,7 @@ namespace TH_StatusTable
             }
             return null;
         }
-
-        //private void AddDeviceInfo(Configuration config)
-        //{
-        //    Global.Initialize(config.Databases_Client);
-
-        //    Controls.DeviceButton db = new DeviceButton();
-        //    db.Description = config.Description.Description;
-        //    db.Manufacturer = config.Description.Manufacturer;
-        //    db.Model = config.Description.Model;
-        //    db.Serial = config.Description.Serial;
-        //    db.Id = config.Description.Device_ID;
-
-        //    db.Clicked += db_Clicked;
-
-        //    ListButton lb = new ListButton();
-        //    lb.ButtonContent = db;
-        //    lb.ShowImage = false;
-        //    lb.Selected += lb_Device_Selected;
-        //    lb.DataObject = config;
-
-        //    db.Parent = lb;
-
-        //    DeviceList.Add(lb);
-        //}
-
-        //ObservableCollection<Configuration> devices;
-        //public ObservableCollection<Configuration> Devices
-        //{
-        //    get { return devices; }
-        //    set
-        //    {
-        //        devices = value;
-
-        //        if (devices != null)
-        //        {
-        //            //DeviceDisplays = new List<DeviceDisplay>();
-        //            //RowHeaders.Clear();
-        //            //Rows.Clear();
-
-        //            DeviceInfos.Clear();
-
-        //            foreach (var device in devices)
-        //            {
-        //                AddDevice(device);
-        //                //CreateDeviceDisplay(device);
-        //            }
-        //        }
-        //    }
-        //}
+        
 
         public TH_Global.IPage Options { get; set; }
 

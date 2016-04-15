@@ -340,6 +340,7 @@
                 <DataGridTextColumn Header="Port" Binding="{Binding Port}"/>
                 <DataGridTextColumn Header="Device Name" Binding="{Binding Device.Name}"/>
 
+                <DataGridTextColumn Header="Description" Binding="{Binding DeviceDescription.CDATA}"/>
                 <DataGridTextColumn Header="Manufacturer" Binding="{Binding DeviceDescription.Manufacturer}"/>
                 <DataGridTextColumn Header="Type" Binding="{Binding DeviceType}"/>
                 <DataGridTextColumn Header="Model" Binding="{Binding DeviceDescription.Model}"/>

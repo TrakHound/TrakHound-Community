@@ -47,14 +47,5 @@ namespace TH_StatusTable.Controls
             DependencyProperty.Register("TooltipHeader", typeof(string), typeof(Header), new PropertyMetadata(null));
 
 
-        public string TooltipText
-        {
-            get { return (string)GetValue(TooltipTextProperty); }
-            set { SetValue(TooltipTextProperty, value); }
-        }
-
-        public static readonly DependencyProperty TooltipTextProperty =
-            DependencyProperty.Register("TooltipText", typeof(string), typeof(Header), new PropertyMetadata(null));
-
     }
 }

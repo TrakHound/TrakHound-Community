@@ -4,9 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq.Expressions;
 using System.Windows.Media;
 
 using TH_Configuration;
@@ -15,6 +13,7 @@ namespace TH_StatusTable
 {
     public class DeviceInfo : INotifyPropertyChanged, IComparable
     {
+
         private bool _connected;
         public bool Connected
         {
@@ -82,7 +81,10 @@ namespace TH_StatusTable
         private HourData[] _hourdatas;
         public HourData[] HourDatas
         {
-            get { return _hourdatas; }
+            get
+            {
+                return _hourdatas;
+            }
             set
             {
                 var val = _hourdatas;
@@ -91,19 +93,6 @@ namespace TH_StatusTable
                 if (val != _hourdatas) NotifyChanged("HourDatas");
             }
         }
-
-        //private BindableTwoDArray<SegmentData> _segmentDatas;
-        //public BindableTwoDArray<SegmentData> SegmentDatas
-        //{
-        //    get { return _segmentDatas; }
-        //    set
-        //    {
-        //        var val = _segmentDatas;
-        //        _segmentDatas = value;
-
-        //        if (val != _segmentDatas) NotifyChanged("SegmentDatas");
-        //    }
-        //}
 
 
         public event PropertyChangedEventHandler PropertyChanged;
