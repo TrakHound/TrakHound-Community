@@ -67,3 +67,12 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.pdb
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.csprojResolveAssemblyReference.cache
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\Dashboard.baml
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\Dashboard.g.cs
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard_MarkupCompile.cache
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.g.resources
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.Properties.Resources.resources
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.csproj.GenerateResource.Cache
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.dll
+D:\Trakhound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.pdb

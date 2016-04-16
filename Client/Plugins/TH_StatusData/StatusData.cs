@@ -304,8 +304,8 @@ namespace TH_StatusData
             EventData availablityData = GetAvailability(variables, config);
             SendDataEvent(availablityData);
 
-            if ((bool)availablityData.Data02)
-            {
+            //if ((bool)availablityData.Data02)
+            //{
                 // Get Snapshot Data
                 EventData snapshotData = GetSnapShots(snapshots, config);
                 // Send Snapshot Data
@@ -344,7 +344,7 @@ namespace TH_StatusData
                 EventData statusData = GetStatus(status, config);
                 // Send Status Data
                 SendDataEvent(statusData);
-            }
+            //}
         }
 
 

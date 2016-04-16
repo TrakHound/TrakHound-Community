@@ -196,8 +196,8 @@ namespace TH_DeviceTable
                         }
                         else
                         {
-                            i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue");
-                            i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue_Hover");
+                            i.Brush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow");
+                            i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow_Hover");
                         }
                     }
 

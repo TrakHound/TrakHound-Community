@@ -141,8 +141,8 @@ namespace TH_DeviceCompare_ProductionStatusTimes
                         }
                         else
                         {
-                            time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue");
-                            time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusBlue_Hover");
+                            time.BarBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow");
+                            time.BarBackgroundBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow_Hover");
                         }
                     }
 

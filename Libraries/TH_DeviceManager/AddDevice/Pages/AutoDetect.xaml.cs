@@ -170,8 +170,12 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         #region "Network Nodes"
 
+        bool pingFinished = false;
+
         private void FindNodes()
         {
+            pingFinished = false;
+
             this.Dispatcher.BeginInvoke(new Action(DeviceInfos.Clear));
 
             var pingNodes = new Network_Functions.PingNodes();
@@ -187,7 +191,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void PingNodes_Finished()
         {
-            //Dispatcher.BeginInvoke(new Action(() => { DevicesLoading = false; }));
+            pingFinished = true;
         }
 
         #endregion

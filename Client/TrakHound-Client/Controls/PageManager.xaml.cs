@@ -121,7 +121,7 @@ namespace TrakHound_Client.Controls
 
         private void pagemanager_Loaded(object sender, RoutedEventArgs e)
         {
-            if (Pages.Count > 0)
+            if (Pages.Count > 0 && PageContent == null)
             {
                 ListButton lb = (ListButton)Pages[0];
 

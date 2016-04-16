@@ -29,7 +29,7 @@ namespace TH_GeneratedData.SnapshotData
                 new ColumnDefinition("PREVIOUS_VALUE", DataType.LargeText)
             };
 
-            Table.Create(config.Databases_Server, GetTableName(config), columns.ToArray(), snapshotsPrimaryKey);
+            Table.Replace(config.Databases_Server, GetTableName(config), columns.ToArray(), snapshotsPrimaryKey);
         }
 
         public static void IntializeRows(Configuration config)

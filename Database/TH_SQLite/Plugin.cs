@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 using System.Data;
 using System.Data.SQLite;
@@ -103,42 +103,65 @@ namespace TH_SQLite
 
         static string GetConnectionString(SQLite_Configuration config)
         {
-            return "Data Source=" + GetDatabasePath(config) + "; Version=3; Pooling=True; Max Pool Size=150";
+            return "Data Source=" + GetDatabasePath(config) + "; Version=3; Pooling=True; Max Pool Size=300;";
         }
 
-        static object ExecuteQuery<T>(SQLite_Configuration config, string query)
+        static object ExecuteQuery<T>(SQLite_Configuration config, string query, int attempts = 3, int failureDelay = 500)
         {
             object result = null;
 
-            using (var connection = new SQLiteConnection(GetConnectionString(config)))
+            int attempt = 0;
+            bool success = false;
+
+            while (!success && attempt < attempts)
             {
-                connection.Close();
-
-                try
-                {
-                    connection.Open();
-
-                    using (var command = new SQLiteCommand(query, connection))
-                    {
-                        result = ProcessResult<T>(command);
-                    }
-                }
-                catch (SQLiteException sqex)
-                {
-                    Logger.Log("SQLiteException :: " + sqex.Message, Logger.LogLineType.Error);
-                    if (typeof(T) == typeof(bool)) result = false;
-                }
-                catch (Exception ex)
-                {
-                    Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error);
-                    if (typeof(T) == typeof(bool)) result = false;
-                }
-                finally
+                using (var connection = new SQLiteConnection(GetConnectionString(config)))
                 {
                     connection.Close();
+
+                    try
+                    {
+                        connection.BusyTimeout = 10000;
+                        connection.Open();
+
+                        using (var command = new SQLiteCommand(query, connection))
+                        {
+                            result = ProcessResult<T>(command);
+                        }
+
+                        success = true;
+                    }
+                    catch (ObjectDisposedException ex)
+                    {
+                        Logger.Log("ObjectDisposedException :: " + ex.Message, Logger.LogLineType.Error);
+                        if (typeof(T) == typeof(bool)) result = false;
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Logger.Log("InvalidOperationException :: " + ex.Message, Logger.LogLineType.Error);
+                        if (typeof(T) == typeof(bool)) result = false;
+                    }
+                    catch (SQLiteException ex)
+                    {
+                        Logger.Log("SQLiteException :: " + ex.Message, Logger.LogLineType.Error);
+                        if (typeof(T) == typeof(bool)) result = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error);
+                        if (typeof(T) == typeof(bool)) result = false;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
                 }
+
+                if (!success) Thread.Sleep(failureDelay);
+
+                attempt += 1;
             }
-            
+
             return result;
         }
 
@@ -149,93 +172,115 @@ namespace TH_SQLite
             // Object
             if (typeof(T) == typeof(object))
             {
-                result = command.ExecuteScalar();
+                using (command)
+                {
+                    result = command.ExecuteScalar();
+                }    
             }
 
             // Boolean
             if (typeof(T) == typeof(bool))
             {
-                object o = command.ExecuteNonQuery();
-                var val = (int)(-1);
-                if (o != null) int.TryParse(o.ToString(), out val);
+                using (command)
+                {
+                    object o = command.ExecuteNonQuery();
+                    return true;
+                    //var val = (int)(-1);
+                    //if (o != null) int.TryParse(o.ToString(), out val);
 
-                if (val >= 0) result = true;
-                else result = false;
+                    //if (val >= 0) result = true;
+                    //else result = false;
+                }
             }
 
             // int
             if (typeof(T) == typeof(int))
             {
-                object o = command.ExecuteScalar();
-                var val = (int)(-1);
-                if (o != null) int.TryParse(o.ToString(), out val);
-                result = val;
+                using (command)
+                {
+                    object o = command.ExecuteScalar();
+                    var val = (int)(-1);
+                    if (o != null) int.TryParse(o.ToString(), out val);
+                    result = val;
+                }
             }
 
             // Int64
             if (typeof(T) == typeof(Int64))
             {
-                object o = command.ExecuteScalar();
-                Int64 val = -1;
-                if (o != null) Int64.TryParse(o.ToString(), out val);
-                result = val;
+                using (command)
+                {
+                    object o = command.ExecuteScalar();
+                    Int64 val = -1;
+                    if (o != null) Int64.TryParse(o.ToString(), out val);
+                    result = val;
+                }
             }
 
             // string
             if (typeof(T) == typeof(string))
             {
-                object o = command.ExecuteScalar();
-                if (o != null) result = ConvertFromSafe(o.ToString());
+                using (command)
+                {
+                    object o = command.ExecuteScalar();
+                    if (o != null) result = ConvertFromSafe(o.ToString());
+                }
             }
 
             // DataTable
             if (typeof(T) == typeof(DataTable))
             {
-                var dt = new DataTable();
-                using (var a = new SQLiteDataAdapter(command))
+                using (command)
                 {
-                    a.Fill(dt);
+                    var dt = new DataTable();
+                    using (var a = new SQLiteDataAdapter(command))
+                    {
+                        a.Fill(dt);
+                    }
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        ConvertRowFromSafe(row);
+                    }
+                    result = dt;
                 }
-                foreach (DataRow row in dt.Rows)
-                {
-                    ConvertRowFromSafe(row);
-                }
-                result = dt;
             }
 
             // DataRow
             if (typeof(T) == typeof(DataRow))
             {
-                using (var reader = command.ExecuteReader())
+                using (command)
                 {
-                    if (reader.HasRows)
+                    using (var reader = command.ExecuteReader())
                     {
-                        int columnCount = reader.FieldCount;
-
-                        DataTable temp_dt = new DataTable();
-
-                        for (int x = 0; x <= columnCount - 1; x++)
+                        if (reader.HasRows)
                         {
-                            temp_dt.Columns.Add(reader.GetName(x));
-                        }
+                            int columnCount = reader.FieldCount;
 
-                        DataRow row = temp_dt.NewRow();
+                            DataTable temp_dt = new DataTable();
 
-                        object[] values = new object[columnCount];
-
-                        while (reader.Read())
-                        {
-                            for (int j = 0; j <= values.Length - 1; j++)
+                            for (int x = 0; x <= columnCount - 1; x++)
                             {
-                                values[j] = reader[j];
+                                temp_dt.Columns.Add(reader.GetName(x));
                             }
+
+                            DataRow row = temp_dt.NewRow();
+
+                            object[] values = new object[columnCount];
+
+                            while (reader.Read())
+                            {
+                                for (int j = 0; j <= values.Length - 1; j++)
+                                {
+                                    values[j] = reader[j];
+                                }
+                            }
+
+                            row.ItemArray = values;
+
+                            ConvertRowFromSafe(row);
+
+                            result = row;
                         }
-
-                        row.ItemArray = values;
-
-                        ConvertRowFromSafe(row);
-
-                        result = row;
                     }
                 }
             }
@@ -243,29 +288,35 @@ namespace TH_SQLite
             // string[]
             if (typeof(T) == typeof(string[]))
             {
-                var tables = new List<string>();
-                using (var reader = command.ExecuteReader())
+                using (command)
                 {
-                    if (reader.HasRows)
+                    var tables = new List<string>();
+                    using (var reader = command.ExecuteReader())
                     {
-                        while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
+                        }
                     }
+                    result = tables.ToArray();
                 }
-                result = tables.ToArray();
             }
 
             // List<string>
             if (typeof(T) == typeof(List<string>))
             {
-                var tables = new List<string>();
-                using (var reader = command.ExecuteReader())
+                using (command)
                 {
-                    if (reader.HasRows)
+                    var tables = new List<string>();
+                    using (var reader = command.ExecuteReader())
                     {
-                        while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
+                        }
                     }
+                    result = tables;
                 }
-                result = tables;
             }
 
             return result;
@@ -273,8 +324,19 @@ namespace TH_SQLite
 
         private static void ConvertRowFromSafe(DataRow row)
         {
-            for (var x = 0; x <= row.ItemArray.Length - 1; x++) { row[x] = ConvertFromSafe(row.ItemArray[x].ToString()); }
+            for (var x = 0; x <= row.ItemArray.Length - 1; x++)
+            {
+                if (row.Table.Columns[x].DataType == typeof(string))
+                {
+                    row[x] = ConvertFromSafe(row.ItemArray[x].ToString());
+                }
+            }
         }
+
+        //private static void ConvertRowFromSafe(DataRow row)
+        //{
+        //    for (var x = 0; x <= row.ItemArray.Length - 1; x++) { row[x] = ConvertFromSafe(row.ItemArray[x].ToString()); }
+        //}
 
 
         public const string dateString = "yyyy-MM-dd H:mm:ss";

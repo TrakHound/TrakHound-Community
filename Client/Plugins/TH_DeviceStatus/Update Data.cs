@@ -61,8 +61,37 @@ namespace TH_StatusTable
             }
         }
 
+
         private void UpdateStatus(EventData data, DeviceInfo info)
         {
+            if (data.Id.ToLower() == "statusdata_snapshots")
+            {
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    bool b;
+                    string s;
+
+                    // Alert
+                    b = false;
+                    s = GetTableValue(data.Data02, "Alert");
+                    bool.TryParse(s, out b);
+                    info.Alert = b;
+
+                    // Idle
+                    b = false;
+                    s = GetTableValue(data.Data02, "Idle");
+                    bool.TryParse(s, out b);
+                    info.Idle = b;
+
+                    // Production
+                    b = false;
+                    s = GetTableValue(data.Data02, "Production");
+                    bool.TryParse(s, out b);
+                    info.Production = b;
+
+                }), PRIORITY_BACKGROUND, new object[] { });
+            }
+
             if (data.Id.ToLower() == "statusdata_shiftsegments")
             {
                 Dispatcher.BeginInvoke(new Action(() =>

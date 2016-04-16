@@ -189,19 +189,24 @@ namespace TH_GeneratedData.GeneratedEvents
             }
 
             // Get CaptureItems
-            ReturnValue.CaptureItems.Clear();
+            //ReturnValue.CaptureItems.Clear();
             foreach (CaptureItem item in CaptureItems)
             {
-                var i = new CaptureItem();
-                i.id = item.id;
-                i.name = item.name;
-                i.link = item.link;
+                var i = ReturnValue.CaptureItems.Find(x => x.id == item.id);
+                if (i == null)
+                {
+                    i = new CaptureItem();
+                    i.id = item.id;
+                    i.name = item.name;
+                    i.link = item.link;
+                    ReturnValue.CaptureItems.Add(i);
+                }
+
+                i.previous_value = i.value;
 
                 InstanceData.DataItemValue instanceValue = instanceData.Values.ToList().Find(x => Tools.GetValue(x, "Id") == Tools.GetValue(item, "Link"));
                 if (instanceValue != null) i.value = instanceValue.Value;
                 else i.value = "";
-
-                ReturnValue.CaptureItems.Add(i);
             }
 
             ReturnValue.TimeStamp = instanceData.Timestamp;

@@ -61,7 +61,7 @@
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
-            <Setter Property="MinHeight" Value="50"/>
+            <Setter Property="Height" Value="65"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
@@ -76,7 +76,7 @@
 
         <Style TargetType="{x:Type DataGridCell}">
             <Setter Property="BorderThickness" Value="0,0,0,0"/>
-            <Setter Property="MinHeight" Value="35"/>
+            <Setter Property="Height" Value="65"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DataGridCell}">
@@ -177,110 +177,6 @@
 
                 <DataGrid.Columns>
 
-                    <!--Database Connection Status-->
-                    <!--<DataGridTemplateColumn MinWidth="30">
-                        <DataGridTemplateColumn.Header>
-                            <Grid Background="Transparent">
-                                <Grid.ToolTip>
-                                    <StackPanel MaxWidth="300">
-                                        <TextBlock Text="Database Connection Status" FontWeight="Bold" Margin="0,0,0,5"/>
-                                        <TextBlock TextWrapping="Wrap">
-                                        Displays a warning image if the Device's Database Connection cannot be established
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Grid.ToolTip>
-                                <TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.Style>
-                                        <Style TargetType="Grid">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                    <Setter Property="Background" Value="#666666"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-
-                                    <Grid Width="20" Height="20" Margin="5">
-                                        <Grid.Resources>
-                                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
-                                        </Grid.Resources>
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                                <Setter Property="Background" Value="White"/>
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-                                    </Grid>
-
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
-
-                    <!--Availabilty Status-->
-                    <!--<DataGridTemplateColumn MinWidth="30">
-                        <DataGridTemplateColumn.Header>
-                            <Grid Background="Transparent">
-                                <Grid.ToolTip>
-                                    <StackPanel MaxWidth="300">
-                                        <TextBlock Text="Device Availability Status" FontWeight="Bold" Margin="0,0,0,5"/>
-                                        <TextBlock TextWrapping="Wrap">
-                                        Displays a warning image if the Device's MTConnect Availability status is set to 'UNAVAILABLE'
-                                        </TextBlock>
-                                    </StackPanel>
-                                </Grid.ToolTip>
-                                <TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
-                        </DataGridTemplateColumn.Header>
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.Style>
-                                        <Style TargetType="Grid">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Available}" Value="false">
-                                                    <Setter Property="Background" Value="Orange"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-
-                                    <Grid Width="20" Height="20" Margin="5">
-                                        <Grid.Resources>
-                                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="Resources/Warning_01_40px.png" />
-                                        </Grid.Resources>
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                                <Setter Property="Background" Value="White"/>
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Available}" Value="false">
-                                                        <Setter Property="Visibility" Value="Visible"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-                                    </Grid>
-
-                                </Grid>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
-
                     <!--Device Status-->
                     <DataGridTemplateColumn MinWidth="30">
                         <DataGridTemplateColumn.Header>
@@ -320,24 +216,82 @@
                     </DataGridTemplateColumn>
 
                     <!--Description-->
-                    <DataGridTemplateColumn Header="Description">
+                    <DataGridTemplateColumn Header="Description" Width="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel VerticalAlignment="Center">
+                                <Grid Background="Transparent">
+                                    <Grid.ToolTip>
+                                        <StackPanel Margin="10" Width="300">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="FontSize" Value="12"/>
+                                                    <Setter Property="Margin" Value="0,2"/>
+                                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                                </Style>
+                                            </StackPanel.Resources>
+
+                                            <!--Manufacturer Logo-->
+                                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="5" MaxHeight="60" MaxWidth="150" HorizontalAlignment="Left"/>
+
+                                            <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" TextWrapping="Wrap"/>
+
+                                            <TextBlock>
+                                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+
+                                            <TextBlock>
+                                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                        </StackPanel>
+                                    </Grid.ToolTip>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition>
+                                            <RowDefinition.Style>
+                                                <Style TargetType="RowDefinition">
+                                                    <Setter Property="Height" Value="6*"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ManufacturerLogo}" Value="{x:Null}">
+                                                            <Setter Property="Height" Value="0"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </RowDefinition.Style>
+                                        </RowDefinition>
+                                        <RowDefinition Height="4*"/>
+                                    </Grid.RowDefinitions>
 
                                     <!--Manufacturer Logo-->
                                     <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5" MaxHeight="40"/>
 
                                     <!--Device Description-->
-                                    <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10,5" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding DeviceDescription}" Foreground="{StaticResource Foreground_Normal}" FontSize="12" Margin="0,2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
-                                </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
                     <!--Device Id-->
-                    <DataGridTemplateColumn Header="Device ID">
+                    <DataGridTemplateColumn Header="Device ID" MinWidth="75" MaxWidth="100">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Viewbox Margin="10">

@@ -155,21 +155,113 @@
 
                 <DataGrid.Columns>
 
-                    <!--Description-->
-                    <DataGridTemplateColumn Header="Description" MinWidth="200">
+                    <!--Device Status-->
+                    <DataGridTemplateColumn MinWidth="30">
+                        <DataGridTemplateColumn.Header>
+                            <Grid Background="Transparent">
+                                <Grid.ToolTip>
+                                    <StackPanel MaxWidth="300">
+                                        <TextBlock Text="Device Status" FontWeight="Bold" Margin="0,0,0,5"/>
+                                        <TextBlock TextWrapping="Wrap">
+                                        Displays the Device's current status whether it is in Production, Idle, or Alert.
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid.ToolTip>
+                                <TextBlock Text="S" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
+                                    <Grid.Style>
+                                        <Style TargetType="Grid">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Production}" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Idle}" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Alert}" Value="true">
+                                                    <Setter Property="Background" Value="{StaticResource StatusRed}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
+                                </Grid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <!--Description-->
+                    <DataGridTemplateColumn Header="Description" Width="200">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent">
+                                    <Grid.ToolTip>
+                                        <StackPanel Margin="10" Width="300">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="FontSize" Value="12"/>
+                                                    <Setter Property="Margin" Value="0,2"/>
+                                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                                </Style>
+                                            </StackPanel.Resources>
+
+                                            <!--Manufacturer Logo-->
+                                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="5" MaxHeight="60" MaxWidth="150" HorizontalAlignment="Left"/>
+
+                                            <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" TextWrapping="Wrap"/>
+
+                                            <TextBlock>
+                                                <Run Text="Manufacturer :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Manufacturer}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="Model :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Model}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="Serial :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Serial}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                            <TextBlock>
+                                                <Run Text="Controller :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Controller}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+
+                                            <TextBlock>
+                                                <Run Text="Location :" Foreground="{StaticResource Foreground_Light}"/>
+                                                <Run Text="{Binding Description.Location}" Foreground="{StaticResource Foreground_Normal}"/>
+                                            </TextBlock>
+
+                                        </StackPanel>
+                                    </Grid.ToolTip>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition>
+                                            <RowDefinition.Style>
+                                                <Style TargetType="RowDefinition">
+                                                    <Setter Property="Height" Value="6*"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ManufacturerLogo}" Value="{x:Null}">
+                                                            <Setter Property="Height" Value="0"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </RowDefinition.Style>
+                                        </RowDefinition>
+                                        <RowDefinition Height="4*"/>
                                     </Grid.RowDefinitions>
 
                                     <!--Manufacturer Logo-->
                                     <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5" MaxHeight="40"/>
 
                                     <!--Device Description-->
-                                    <TextBlock Grid.Row="1" Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" TextWrapping="Wrap" Margin="10,2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Row="1" Text="{Binding DeviceDescription}" Foreground="{StaticResource Foreground_Normal}" FontSize="12" Margin="0,2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
 
                                 </Grid>
                             </DataTemplate>

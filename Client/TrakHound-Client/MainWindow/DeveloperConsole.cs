@@ -83,7 +83,7 @@ namespace TrakHound_Client
 
         void Log_Updated_GUI(Logger.Line line, string applicationName)
         {
-            developerConsole.AddLine(line, applicationName);
+            if (developerConsole != null) developerConsole.AddLine(line, applicationName);
         }
 
     }

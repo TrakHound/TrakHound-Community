@@ -5,6 +5,8 @@
 
 using System;
 using System.ComponentModel;
+using System.Globalization;
+using System.Windows;
 using System.Windows.Media;
 
 using TH_Configuration;
@@ -49,6 +51,61 @@ namespace TH_StatusTable
             }
         }
 
+        public string DeviceDescription
+        {
+            get
+            {
+                if (Description != null)
+                {
+                    string t = FormatDeviceDescription(Description.Description);
+                    return t;
+                }
+                else return null;
+            }
+        }
+
+        private const double MAX_TEXT_WIDTH = 150;
+
+        private string FormatDeviceDescription(string s)
+        {
+            string t = s;
+
+            if (t != null)
+            {
+                double textWidth = GetFormattedText(t).Width;
+
+                if (textWidth > MAX_TEXT_WIDTH)
+                {
+                    // Keep removing characters from the string until the max width is met
+                    while (textWidth > MAX_TEXT_WIDTH)
+                    {
+                        t = t.Substring(0, t.Length - 1);
+                        textWidth = GetFormattedText(t).Width;
+                    }
+
+                    // Make sure the last character is not a space
+                    if (t[t.Length - 1] == ' ' && s.Length > t.Length + 2) t = s.Substring(0, t.Length + 2);
+
+                    // Add the ...
+                    t = t + "...";
+                }
+                else t = s;
+            }
+
+            return t;
+        }
+
+        private static FormattedText GetFormattedText(string s)
+        {
+            return new FormattedText(
+                        s,
+                        CultureInfo.GetCultureInfo("en-us"),
+                        FlowDirection.LeftToRight,
+                        new Typeface("Arial"),
+                        12,
+                        Brushes.Black);
+        }
+
         #region "Image"
 
         private ImageSource _manufacturerLogo;
@@ -77,6 +134,45 @@ namespace TH_StatusTable
 
         #endregion
 
+        #region "Status"
+
+        private bool _alert;
+        public bool Alert
+        {
+            get { return _alert; }
+            set
+            {
+                var val = _alert;
+                _alert = value;
+                if (val != _alert) NotifyChanged("Alert");
+            }
+        }
+
+        private bool _idle;
+        public bool Idle
+        {
+            get { return _idle; }
+            set
+            {
+                var val = _idle;
+                _idle = value;
+                if (val != _idle) NotifyChanged("Idle");
+            }
+        }
+
+        private bool _production;
+        public bool Production
+        {
+            get { return _production; }
+            set
+            {
+                var val = _production;
+                _production = value;
+                if (val != _production) NotifyChanged("Production");
+            }
+        }
+
+        #endregion
 
         private HourData[] _hourdatas;
         public HourData[] HourDatas

@@ -30,6 +30,9 @@ namespace TH_Parts.ConfigurationPage
         {
             InitializeComponent();
             DataContext = this;
+
+            CalculationTypes.Add(CalculationType.Incremental.ToString());
+            CalculationTypes.Add(CalculationType.Reset_At_Zero.ToString());
         }
 
         public string Title { get { return "Parts"; } }
@@ -84,13 +87,15 @@ namespace TH_Parts.ConfigurationPage
             LoadPartsEventName(dt);
             LoadProducedEventValueName(dt);
             LoadPartCountLink(dt);
+            LoadCalculationType(dt);      
         }
 
         public void SaveConfiguration(DataTable dt)
         { 
-                SavePartsEventName(dt);
-                SaveProducedEventValueName(dt);
-                SavePartCountLink(dt);
+            SavePartsEventName(dt);
+            SaveProducedEventValueName(dt);
+            SavePartCountLink(dt);
+            SaveCalculationType(dt);
         }
 
         DataTable configurationTable;
@@ -110,6 +115,22 @@ namespace TH_Parts.ConfigurationPage
             set
             {
                 _generatedEventItems = value;
+            }
+        }
+
+        ObservableCollection<string> _calculationTypes;
+        public ObservableCollection<string> CalculationTypes
+        {
+            get
+            {
+                if (_calculationTypes == null)
+                    _calculationTypes = new ObservableCollection<string>();
+                return _calculationTypes;
+            }
+
+            set
+            {
+                _calculationTypes = value;
             }
         }
 
@@ -368,6 +389,50 @@ namespace TH_Parts.ConfigurationPage
 
         #endregion
 
+        #region "Calculation Type"
+
+        public string SelectedCalculationType
+        {
+            get { return (string)GetValue(SelectedCalculationTypeProperty); }
+            set { SetValue(SelectedCalculationTypeProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedCalculationTypeProperty =
+            DependencyProperty.Register("SelectedCalculationType", typeof(string), typeof(Page), new PropertyMetadata("Interval"));
+
+
+
+        private void CalculationType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox cmbox = (ComboBox)sender;
+            if (cmbox.IsKeyboardFocused || cmbox.IsMouseCaptured) if (SettingChanged != null) SettingChanged("Calculation Type Changed", null, null);
+        }
+
+        void LoadCalculationType(DataTable dt)
+        {
+            string query = "Address = '" + prefix + "CalculationType'";
+
+            var rows = dt.Select(query);
+            if (rows != null)
+            {
+                foreach (var row in rows)
+                {
+                    string val = DataTable_Functions.GetRowValue("Value", row);
+                    if (val != null) SelectedCalculationType = val;
+                }
+            }
+        }
+
+        void SaveCalculationType(DataTable dt)
+        {
+            string val = "";
+            if (SelectedPartCountLink != null) val = SelectedCalculationType.ToString();
+
+            if (val != null) DataTable_Functions.UpdateTableValue(dt, "address", prefix + "CalculationType", "value", val);
+        }
+
+        #endregion
+
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (sender.GetType() == typeof(Rectangle))
@@ -419,5 +484,9 @@ namespace TH_Parts.ConfigurationPage
             }
         }
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

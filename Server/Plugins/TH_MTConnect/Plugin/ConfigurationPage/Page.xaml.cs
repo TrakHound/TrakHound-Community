@@ -271,6 +271,8 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             public HTTP.ProxySettings proxy;
         }
 
+        Thread testConnectedThread;
+
         void RunProbe(string address, TH_MTConnect.HTTP.ProxySettings proxy, int port, string deviceName)
         {
             var info = new Probe_Info();
@@ -279,7 +281,12 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
             info.deviceName = deviceName;
             info.proxy = proxy;
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
+            if (testConnectedThread != null) testConnectedThread.Abort();
+
+            testConnectedThread = new Thread(new ParameterizedThreadStart(RunProbe_Worker));
+            testConnectedThread.Start(info);
+
+            //ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe_Worker), info);
         }
 
         void RunProbe_Worker(object o)
@@ -289,43 +296,53 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
                 var info = o as Probe_Info;
                 if (info != null)
                 {
-                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
+                    //string url = HTTP.GetUrl(info.address, info.port, info.deviceName);
 
-                    ReturnData returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
+                    //ReturnData returnData = Requests.Get(url, info.proxy, 2000, 1);
 
-                    if (returnData != null)
-                    {
-                        // Update port
-                        if (info.port > 0)
-                        {
-                            this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { info.port });
-                        }
+                    RunProbe(info);
 
-                        this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
-
-                        this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
-
-                        //this.Dispatcher.BeginInvoke(new Action<string, int>(GetAgentInfo), priority, new object[] { info.address, info.port });
-                    }
-                    else
-                    {
-                        this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { info.address + ":" + info.port.ToString() });
-
-                        // Run Probe again using other ports
-                        if (tryPortIndex < tryPorts.Length - 1)
-                        {
-                            RunProbe(info.address, info.proxy, tryPorts[tryPortIndex], info.deviceName);
-                            tryPortIndex += 1;
-                        }
-                        else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
-                    }
+                    
                 }
             }
 
             //this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
         }
 
-        
+        void RunProbe(Probe_Info info)
+        {
+            string url = HTTP.GetUrl(info.address, info.port, info.deviceName);
+
+            ReturnData returnData = Requests.Get(url, info.proxy, 2000, 1);
+            if (returnData != null)
+            {
+                // Update port
+                if (info.port > 0)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<int>(UpdatePort), new object[] { info.port });
+                }
+
+                this.Dispatcher.BeginInvoke(new Action<ReturnData>(AddDevices), priority, new object[] { returnData });
+
+                this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+
+                //this.Dispatcher.BeginInvoke(new Action<string, int>(GetAgentInfo), priority, new object[] { info.address, info.port });
+            }
+            else
+            {
+                this.Dispatcher.BeginInvoke(new Action<string>(AddMessage), new object[] { info.address + ":" + info.port.ToString() });
+
+                // Run Probe again using other ports
+                if (tryPortIndex < tryPorts.Length - 1)
+                {
+                    //RunProbe(info.address, info.proxy, tryPorts[tryPortIndex], info.deviceName);
+                    info.port = tryPorts[tryPortIndex];
+                    RunProbe(info);
+                    tryPortIndex += 1;
+                }
+                else this.Dispatcher.BeginInvoke(new Action<bool>(UpdateConnectionTestLoading), priority, new object[] { false });
+            }
+        }
 
         //void RunProbe(string url, int port, string deviceName)
         //{

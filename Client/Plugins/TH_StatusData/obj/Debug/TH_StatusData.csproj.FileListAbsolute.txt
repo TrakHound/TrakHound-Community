@@ -26,3 +26,12 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\OptionsPage
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.g.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.Properties.Resources.resources
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.csproj.GenerateResource.Cache
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.csprojResolveAssemblyReference.cache
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\OptionsPage.baml
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\OptionsPage.g.cs
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData_MarkupCompile.cache
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.g.resources
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.Properties.Resources.resources
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.csproj.GenerateResource.Cache
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.dll
+D:\Trakhound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.pdb

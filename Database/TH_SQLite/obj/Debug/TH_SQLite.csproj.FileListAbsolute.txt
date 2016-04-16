@@ -40,3 +40,15 @@ F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.Properties.
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.dll
 F:\feenux\TrakHound\TrakHound\Database\TH_SQLite\obj\Debug\TH_SQLite.pdb
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite.csprojResolveAssemblyReference.cache
+D:\Trakhound\Database\TH_SQLite\obj\Debug\ConfigurationPage\Page.baml
+D:\Trakhound\Database\TH_SQLite\obj\Debug\ConfigurationPage\Button.g.cs
+D:\Trakhound\Database\TH_SQLite\obj\Debug\ConfigurationPage\Page.g.cs
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite_MarkupCompile.cache
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite_MarkupCompile.lref
+D:\Trakhound\Database\TH_SQLite\obj\Debug\ConfigurationPage\Button.baml
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite.g.resources
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite.Properties.Resources.resources
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite.csproj.GenerateResource.Cache
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite.dll
+D:\Trakhound\Database\TH_SQLite\obj\Debug\TH_SQLite.pdb

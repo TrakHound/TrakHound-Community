@@ -274,6 +274,13 @@
                           VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
                           FontSize="14" Background="{x:Null}" Cursor="Hand"/>
 
+                <ComboBox Margin="0,10" Width="200" Height="30"
+                          ItemsSource="{Binding CalculationTypes}"
+                          SelectedValue="{Binding SelectedCalculationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                          SelectionChanged="CalculationType_SelectionChanged" 
+                          VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                          FontSize="14" Background="{x:Null}" Cursor="Hand"/>
+
             </StackPanel>
 
         </ScrollViewer>

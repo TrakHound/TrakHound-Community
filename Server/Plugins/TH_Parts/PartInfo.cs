@@ -48,7 +48,18 @@ namespace TH_Parts
                             info.ShiftId = shiftId;
                             info.Id = String_Functions.RandomString(80);
                             info.Timestamp = timestamp;
-                            info.Count = count;
+
+                            if (pc.CalculationType == CalculationType.Incremental)
+                            {
+                                info.Count = count;
+                            }
+                            else if (pc.CalculationType == CalculationType.Reset_At_Zero)
+                            {
+                                int previousCount = 0;
+                                int.TryParse(captureItem.previous_value, out previousCount);
+
+                                info.Count = count - previousCount;
+                            }
 
                             return info;
                         }

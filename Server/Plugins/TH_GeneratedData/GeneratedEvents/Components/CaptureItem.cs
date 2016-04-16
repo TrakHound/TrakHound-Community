@@ -13,6 +13,7 @@ namespace TH_GeneratedData.GeneratedEvents
         public string name { get; set; }
         public string link { get; set; }
         public string value { get; set; }
+        public string previous_value { get; set; }
 
         public static CaptureItem Read(XmlNode node)
         {

@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Windows.Media;
+using System.Windows;
+using System.Globalization;
 
 using TH_Configuration;
 
@@ -48,6 +50,61 @@ namespace TH_DeviceTable
                 if (Configuration != null) return Configuration.Description;
                 return null;
             }
+        }
+
+        public string DeviceDescription
+        {
+            get
+            {
+                if (Description != null)
+                {
+                    string t = FormatDeviceDescription(Description.Description);
+                    return t;
+                }
+                else return null;
+            }
+        }
+
+        private const double MAX_TEXT_WIDTH = 150;
+
+        private string FormatDeviceDescription(string s)
+        {
+            string t = s;
+
+            if (t != null)
+            {
+                double textWidth = GetFormattedText(t).Width;
+
+                if (textWidth > MAX_TEXT_WIDTH)
+                {
+                    // Keep removing characters from the string until the max width is met
+                    while (textWidth > MAX_TEXT_WIDTH)
+                    {
+                        t = t.Substring(0, t.Length - 1);
+                        textWidth = GetFormattedText(t).Width;
+                    }
+
+                    // Make sure the last character is not a space
+                    if (t[t.Length - 1] == ' ' && s.Length > t.Length + 2) t = s.Substring(0, t.Length + 2);
+
+                    // Add the ...
+                    t = t + "...";
+                }
+                else t = s;
+            }
+
+            return t;
+        }
+
+        private static FormattedText GetFormattedText(string s)
+        {
+            return new FormattedText(
+                        s,
+                        CultureInfo.GetCultureInfo("en-us"),
+                        FlowDirection.LeftToRight,
+                        new Typeface("Arial"),
+                        12,
+                        Brushes.Black);
         }
 
         #region "Image"

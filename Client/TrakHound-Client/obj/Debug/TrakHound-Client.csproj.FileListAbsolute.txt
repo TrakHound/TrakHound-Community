@@ -88,3 +88,92 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound_Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\LICENSE.txt
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TrakHound-Client.exe.config
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TrakHound-Client.exe
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TrakHound-Client.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Configuration.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Database.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_DeviceManager.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Global.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Plugins.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Styles.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_UserManagement.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_WPF.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_MTConnect.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\Newtonsoft.Json.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\WPFToolkit.dll
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Configuration.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Database.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_DeviceManager.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Global.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Plugins.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_Styles.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_UserManagement.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_WPF.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\TH_MTConnect.pdb
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\Newtonsoft.Json.xml
+D:\Trakhound\Client\TrakHound-Client\bin\Debug\WPFToolkit.pdb
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csprojResolveAssemblyReference.cache
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\PageManager.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\TabManager.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\About\Information\Page.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\About\License\Page.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Fullscreen.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Developer Console\PopUp.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\PluginItem.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Page.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\TH_ToolBarItem.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Main\Exit_BT.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\MenuItem.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Message.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\MessageCenter.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Notifications\Notification_Item.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Options\General\Page.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\ListItem.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Subcategory.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Splash\PluginIcon.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Splash\Screen.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\App.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\PageManager.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\TabManager.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\About\Information\Page.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\About\License\Page.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Fullscreen.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Developer Console\PopUp.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\PluginItem.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\Menu.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Page.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\TabHeader.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\TH_ToolBarItem.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Main\Menu.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Main\Exit_BT.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\MenuItem.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\MainWindow.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Message.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\MessageCenter.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\Message Center\Notifications\Notification_Item.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Options\General\Page.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\ListItem.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Page.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Subcategory.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Splash\PluginIcon.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Splash\Screen.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\App.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client_Content.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client_MarkupCompile.cache
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client_MarkupCompile.lref
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Plugins\Menu.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Controls\TabHeader.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Menus\Main\Menu.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\MainWindow.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Options\Logger\Page.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\Pages\Plugins\Installed\Page.baml
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.g.resources
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound_Client.Properties.Resources.resources
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
+D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb

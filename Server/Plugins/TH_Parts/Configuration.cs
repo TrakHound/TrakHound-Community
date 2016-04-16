@@ -11,6 +11,12 @@ using TH_Configuration;
 
 namespace TH_Parts
 {
+    public enum CalculationType
+    {
+        Incremental,
+        Reset_At_Zero,
+    }
+
     public class PartsConfiguration
     {
 
@@ -20,6 +26,7 @@ namespace TH_Parts
 
         public string PartsCaptureItemLink { get; set; }
 
+        public CalculationType CalculationType { get; set; }
 
         public static PartsConfiguration Read(XmlDocument xml)
         {
@@ -37,14 +44,25 @@ namespace TH_Parts
                     {
                         if (child.NodeType == XmlNodeType.Element)
                         {
-                            Type Setting = typeof(PartsConfiguration);
-                            PropertyInfo info = Setting.GetProperty(child.Name);
-
-                            if (info != null)
+                            if (child.Name.ToLower() == "calculationtype")
                             {
-                                Type t = info.PropertyType;
-                                info.SetValue(result, Convert.ChangeType(child.InnerText, t), null);
+                                switch (child.InnerText.ToLower())
+                                {
+                                    case "incremental": result.CalculationType = CalculationType.Incremental; break;
+                                    case "reset_at_zero": result.CalculationType = CalculationType.Reset_At_Zero; break;
+                                }
                             }
+                            else
+                            {
+                                Type Setting = typeof(PartsConfiguration);
+                                PropertyInfo info = Setting.GetProperty(child.Name);
+
+                                if (info != null)
+                                {
+                                    Type t = info.PropertyType;
+                                    info.SetValue(result, Convert.ChangeType(child.InnerText, t), null);
+                                }
+                            } 
                         }
                     }
                 }

@@ -39,10 +39,17 @@ namespace TH_Global.Functions
                 if (ip != null)
                 {
                     var list = GetAddressList(ip);
-                    expectedIndexes = list.Length;
-                    for (var x = 0; x <= list.Length - 1; x++)
+                    if (list.Length > 0)
                     {
-                        StartPing(list[x], x);
+                        expectedIndexes = list.Length;
+
+                        Logger.Log("Pinging Addresses :: " + list[0].ToString() + " to " + list[list.Length - 1].ToString(), Logger.LogLineType.Notification);
+
+                    for (var x = 0; x <= list.Length - 1; x++)
+                        {
+                            int index = x;
+                            StartPing(list[x], index);
+                        }
                     }
                 }
             }
@@ -123,10 +130,14 @@ namespace TH_Global.Functions
                 var ping = new Ping();
                 ping.PingCompleted += Ping_PingCompleted;
                 ping.SendAsync(ipAddress, 2000, index);
+
+                Logger.Log("Ping Sent : " + ipAddress.ToString());
             }
 
             private void Ping_PingCompleted(object sender, PingCompletedEventArgs e)
             {
+                Logger.Log("Ping Response : " + e.Reply.Status + " : " + e.Reply.Address + " : " + e.Reply.RoundtripTime + "ms", Logger.LogLineType.Notification);
+
                 var status = e.Reply.Status;
                 var ip = e.Reply.Address;
                 var index = e.UserState;

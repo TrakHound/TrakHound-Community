@@ -7,7 +7,7 @@
         WindowStartupLocation="CenterScreen"
             
         Title="{Binding WindowTitle}" 
-        Height="200" Width="400" Icon="Resources/TrakHound_Logo_Initials_10_30px.png"
+        Height="200" Width="400" Icon="Resources/TrakHound_Logo_Initials_10_30px.png" MaxHeight="600"
         >
 
     <Grid Background="{StaticResource Window_Background}">

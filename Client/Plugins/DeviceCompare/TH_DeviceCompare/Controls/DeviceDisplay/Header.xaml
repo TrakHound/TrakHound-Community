@@ -22,19 +22,19 @@
     <Border x:Name="root" CornerRadius="3" Margin="2" Height="300">
         <Border.Style>
             <Style TargetType="Border">
-                <Setter Property="Background" Value="#44000000"/>
+                <Setter Property="Background" Value="#22000000"/>
                 <Style.Triggers>
 
                     <DataTrigger Binding="{Binding Production}" Value="true">
-                        <Setter Property="Background" Value="#FF19B419"/>
+                        <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Idle}" Value="true">
-                        <Setter Property="Background" Value="#44000000"/>
+                        <Setter Property="Background" Value="{StaticResource StatusYellow}"/>
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Alert}" Value="true">
-                        <Setter Property="Background" Value="Red"/>
+                        <Setter Property="Background" Value="{StaticResource StatusRed}"/>
                     </DataTrigger>
 
                 </Style.Triggers>
@@ -362,23 +362,20 @@
                 </Grid>
 
                 <!--Device Description-->
-                <TextBlock Grid.Row="3" Text="{Binding DeviceDescription.Description}" >
-                    <TextBlock.Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                            <Setter Property="Background" Value="Transparent"/>
+                <Border Grid.Row="3">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="#66000000"/>
                             <Setter Property="Padding" Value="10,5,10,2"/>
-                            <Setter Property="FontSize" Value="10pt"/>
-                            <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="TextAlignment" Value="Center"/>
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Large}">
+                                <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Minimized}">
+                                    <Setter Property="Padding" Value="10,0,10,0"/>
+                                    <Setter Property="CornerRadius" Value="3,0,0,3"/>
+                                    <Setter Property="Margin" Value="1,1,40,1"/>
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation From="Transparent" To="#44000000" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
+                                                <ColorAnimation From="#66000000" To="#CCffffff" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -389,7 +386,7 @@
                                     <DataTrigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation From="#44000000" To="Transparent" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
+                                                <ColorAnimation From="#CCffffff" To="#66000000" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -398,29 +395,44 @@
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Minimized}">
-                                    <Setter Property="Padding" Value="10,5,10,2"/>
-                                    <Setter Property="TextAlignment" Value="Left"/>
-                                </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                    </Border.Style>
+                    <TextBlock Text="{Binding DeviceDescription.Description}" >
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                <Setter Property="FontSize" Value="10pt"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="TextAlignment" Value="Center"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource Self}}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Minimized}">
+                                        <Setter Property="TextAlignment" Value="Left"/>
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Border>
 
                 <!--Device Info-->
                 <Grid Grid.Row="4">
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Style.Triggers>
+                            <!--<Setter Property="Background" Value="Transparent"/>-->
+                            <Setter Property="Background" Value="#66000000"/>
+                            <!--<Style.Triggers>
                                 <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Large}">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation From="Transparent" To="#44000000" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
+                                                <ColorAnimation From="Transparent" To="#66000000" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -431,7 +443,7 @@
                                     <DataTrigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation From="#44000000" To="Transparent" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
+                                                <ColorAnimation From="#66000000" To="Transparent" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -440,7 +452,7 @@
                                         </BeginStoryboard>
                                     </DataTrigger.ExitActions>
                                 </DataTrigger>
-                            </Style.Triggers>
+                            </Style.Triggers>-->
                         </Style>
                     </Grid.Style>
 

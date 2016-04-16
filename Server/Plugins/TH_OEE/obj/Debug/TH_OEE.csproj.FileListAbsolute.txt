@@ -13,3 +13,12 @@ F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.Properties.
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.dll
 F:\feenux\TrakHound\TrakHound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.pdb
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.csprojResolveAssemblyReference.cache
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\ConfigurationPage\Page.baml
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\ConfigurationPage\Page.g.cs
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE_MarkupCompile.cache
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.g.resources
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.Properties.Resources.resources
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.csproj.GenerateResource.Cache
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.dll
+D:\Trakhound\Server\Plugins\TH_OEE\obj\Debug\TH_OEE.pdb
