@@ -33,8 +33,7 @@ namespace TH_ShiftTable
 
         public void Initialize(Configuration config)
         {
-            ShiftConfiguration sc = ShiftConfiguration.Read(config.ConfigurationXML);
-
+            var sc = ShiftConfiguration.Read(config.ConfigurationXML);
             if (sc != null)
             {
                 config.CustomClasses.Add(sc);
@@ -151,7 +150,7 @@ namespace TH_ShiftTable
 
         #region "Database"
 
-        void CreateShiftSegmentsTable(List<Shift> shifts)
+        public void CreateShiftSegmentsTable(List<Shift> shifts)
         {
             List<ColumnDefinition> columns = new List<ColumnDefinition>()
             {
@@ -212,7 +211,7 @@ namespace TH_ShiftTable
 
         List<string> GenEventColumns;
 
-        void CreateTable()
+        public void CreateTable()
         {
             List<ColumnDefinition> columns = new List<ColumnDefinition>();
 
@@ -358,7 +357,7 @@ namespace TH_ShiftTable
             return Result;
         }
 
-        void UpdateShiftRows(List<ShiftRowInfo> infos)
+        public void UpdateShiftRows(List<ShiftRowInfo> infos)
         {
             List<List<object>> rowValues = new List<List<object>>();
 

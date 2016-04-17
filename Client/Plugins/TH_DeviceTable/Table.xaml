@@ -216,7 +216,7 @@
                     </DataGridTemplateColumn>
 
                     <!--Description-->
-                    <DataGridTemplateColumn Header="Description" Width="200">
+                    <DataGridTemplateColumn Header="Description" Width="200" MinWidth="200">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent">
@@ -291,7 +291,7 @@
                     </DataGridTemplateColumn>
 
                     <!--Device Id-->
-                    <DataGridTemplateColumn Header="Device ID" MinWidth="75" MaxWidth="100">
+                    <DataGridTemplateColumn Header="Device ID" Width="75" MinWidth="75">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Viewbox Margin="10">
