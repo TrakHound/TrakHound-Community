@@ -121,14 +121,16 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             if (ParentPage != null && ParentPage.DeviceManager != null)
             {
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    DevicesLoading = true;
-                    DeviceInfos.Clear();
-                    catalogInfos.Clear();
-                    DevicesAlreadyAdded = 0;
-                    DevicesNotAdded = 0;
-                }));
+                DevicesLoading = true;
+                DeviceInfos.Clear();
+                catalogInfos.Clear();
+                DevicesAlreadyAdded = 0;
+                DevicesNotAdded = 0;
+
+                //Dispatcher.BeginInvoke(new Action(() =>
+                //{
+
+                //}), UI_Functions.PRIORITY_BACKGROUND, new object[] { });
 
                 if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
 
@@ -176,8 +178,6 @@ namespace TH_DeviceManager.AddDevice.Pages
         {
             pingFinished = false;
 
-            this.Dispatcher.BeginInvoke(new Action(DeviceInfos.Clear));
-
             var pingNodes = new Network_Functions.PingNodes();
             pingNodes.PingSuccessful += PingNodes_PingSuccessful;
             pingNodes.Finished += PingNodes_Finished;
@@ -186,7 +186,8 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void PingNodes_PingSuccessful(System.Net.NetworkInformation.PingReply reply)
         {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe), reply.Address);
+            //ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbe), reply.Address);
+            RunProbe(reply.Address);
         }
 
         private void PingNodes_Finished()
@@ -221,6 +222,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                 info.Port = port;
 
                 ThreadPool.QueueUserWorkItem(new WaitCallback(RunProbeOnPort), info);
+                //RunProbeOnPort(info);
             } 
         }
 
@@ -239,7 +241,7 @@ namespace TH_DeviceManager.AddDevice.Pages
 
                 string url = TH_MTConnect.HTTP.GetUrl(info.Address.ToString(), info.Port, null);
 
-                var probe = Requests.Get(url, null, 2000, 1);
+                var probe = Requests.Get(url, null, 1000, 1);
                 if (probe != null)
                 {
                     foreach (var device in probe.Devices)
@@ -708,5 +710,11 @@ namespace TH_DeviceManager.AddDevice.Pages
 
         private void AddDevicesManually_Clicked(TH_WPF.Button bt) { if (ParentPage != null) ParentPage.ShowManual(); }
 
+        private void Cancel_Clicked(TH_WPF.Button bt)
+        {
+            if (LoadCatalog_THREAD != null) LoadCatalog_THREAD.Abort();
+
+            DevicesLoading = false;
+        }
     }
 }

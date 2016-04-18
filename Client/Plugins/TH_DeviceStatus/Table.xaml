@@ -56,8 +56,8 @@
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-            <Setter Property="BorderThickness" Value="0,1,0,1" />
-            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="Margin" Value="0,0,0,0"/>
             <!--<Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>-->
             <Setter Property="Height" Value="65"/>
             <Style.Triggers>

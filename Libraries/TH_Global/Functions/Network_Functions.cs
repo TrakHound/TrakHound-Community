@@ -136,8 +136,6 @@ namespace TH_Global.Functions
 
             private void Ping_PingCompleted(object sender, PingCompletedEventArgs e)
             {
-                Logger.Log("Ping Response : " + e.Reply.Status + " : " + e.Reply.Address + " : " + e.Reply.RoundtripTime + "ms", Logger.LogLineType.Notification);
-
                 var status = e.Reply.Status;
                 var ip = e.Reply.Address;
                 var index = e.UserState;

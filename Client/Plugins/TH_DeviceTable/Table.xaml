@@ -144,7 +144,7 @@
         </Grid.RowDefinitions>
 
         <!--Navbar-->
-        <StackPanel Orientation="Horizontal" Background="{StaticResource Accent_Normal}">
+        <!--<StackPanel Orientation="Horizontal" Background="{StaticResource Accent_Normal}">
             <StackPanel.Resources>
                 <Style TargetType="th_wpf:Button">
                     <Setter Property="Background" Value="Transparent"/>
@@ -162,7 +162,7 @@
 
             <th_wpf:Button ToolTip="Refresh" Image="Resources/Refresh_01.png" Clicked="Refresh_Clicked"/>
 
-        </StackPanel>
+        </StackPanel>-->
 
         <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
 
