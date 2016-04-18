@@ -32,7 +32,7 @@ namespace TH_Parts.ConfigurationPage
             DataContext = this;
 
             CalculationTypes.Add(CalculationType.Incremental.ToString());
-            CalculationTypes.Add(CalculationType.Reset_At_Zero.ToString());
+            CalculationTypes.Add(CalculationType.Total.ToString());
         }
 
         public string Title { get { return "Parts"; } }

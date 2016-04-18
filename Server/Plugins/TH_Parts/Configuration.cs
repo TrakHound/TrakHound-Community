@@ -13,8 +13,15 @@ namespace TH_Parts
 {
     public enum CalculationType
     {
+        /// <summary>
+        /// Incrementally increased as each event is added to the total
+        /// </summary>
         Incremental,
-        Reset_At_Zero,
+
+        /// <summary>
+        /// Event carries total value
+        /// </summary>
+        Total,
     }
 
     public class PartsConfiguration
@@ -49,7 +56,7 @@ namespace TH_Parts
                                 switch (child.InnerText.ToLower())
                                 {
                                     case "incremental": result.CalculationType = CalculationType.Incremental; break;
-                                    case "reset_at_zero": result.CalculationType = CalculationType.Reset_At_Zero; break;
+                                    case "total": result.CalculationType = CalculationType.Total; break;
                                 }
                             }
                             else

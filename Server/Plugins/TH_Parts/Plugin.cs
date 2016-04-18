@@ -50,7 +50,7 @@ namespace TH_Parts
                         foreach (var item in genEventItems)
                         {
                             PartInfo info = PartInfo.Get(configuration, item);
-                            if (info != null) infos.Add(info);
+                            if (info != null && info.Count > 0) infos.Add(info);
                         }
 
                         if (infos.Count > 0)

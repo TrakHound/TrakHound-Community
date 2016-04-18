@@ -311,7 +311,7 @@ namespace TH_MTConnect.Plugin.ConfigurationPage
 
         void RunProbe(Probe_Info info)
         {
-            string url = HTTP.GetUrl(info.address, info.port, info.deviceName);
+            string url = HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
 
             ReturnData returnData = Requests.Get(url, info.proxy, 2000, 1);
             if (returnData != null)

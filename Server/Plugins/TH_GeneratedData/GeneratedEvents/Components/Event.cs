@@ -204,7 +204,7 @@ namespace TH_GeneratedData.GeneratedEvents
 
                 i.previous_value = i.value;
 
-                InstanceData.DataItemValue instanceValue = instanceData.Values.ToList().Find(x => Tools.GetValue(x, "Id") == Tools.GetValue(item, "Link"));
+                InstanceData.DataItemValue instanceValue = instanceData.Values.ToList().Find(x => Tools.GetValue(x, "Id") == Tools.GetValue(item, "link"));
                 if (instanceValue != null) i.value = instanceValue.Value;
                 else i.value = "";
             }

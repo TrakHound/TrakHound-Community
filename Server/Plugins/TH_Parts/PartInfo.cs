@@ -53,7 +53,7 @@ namespace TH_Parts
                             {
                                 info.Count = count;
                             }
-                            else if (pc.CalculationType == CalculationType.Reset_At_Zero)
+                            else if (pc.CalculationType == CalculationType.Total)
                             {
                                 int previousCount = 0;
                                 int.TryParse(captureItem.previous_value, out previousCount);

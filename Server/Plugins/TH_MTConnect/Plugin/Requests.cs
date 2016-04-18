@@ -79,6 +79,15 @@ namespace TH_MTConnect.Plugin
                         // Send the Current data to other plugins
                         SendCurrentData(currentData, config);
                     }
+                    else
+                    {
+                        probeData = null;
+                        UpdateAvailability(false, config);
+                    }
+                }
+                else
+                {
+                    UpdateAvailability(false, config);
                 }
             }
         }

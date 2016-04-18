@@ -602,7 +602,7 @@ namespace TH_DeviceManager
                 var info = o as Probe_Info;
                 if (info != null)
                 {
-                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName);
+                    string url = TH_MTConnect.HTTP.GetUrl(info.address, info.port, info.deviceName) + "probe";
 
                     var returnData = TH_MTConnect.Components.Requests.Get(url, info.proxy, 2000, 1);
                     if (returnData != null)
