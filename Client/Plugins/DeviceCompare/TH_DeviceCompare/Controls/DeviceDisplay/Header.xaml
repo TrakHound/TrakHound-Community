@@ -228,6 +228,10 @@
                             <Setter Property="MaxHeight" Value="50"/>
                             <Setter Property="Opacity" Value="1.0"/>
                             <Style.Triggers>
+                                <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Small}">
+                                    <Setter Property="MinHeight" Value="40"/>
+                                    <Setter Property="MaxHeight" Value="40"/>
+                                </DataTrigger>
                                 <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Minimized}">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
@@ -345,15 +349,15 @@
                     </Grid.Style>
 
                     <!--Alert Indicator-->
-                    <Rectangle  HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White" Opacity="0.8">
+                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White" Opacity="0.8">
                         <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Warning_01_200px.png"  />
+                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TH_DeviceCompare;component/Resources/Warning_01_200px.png"  />
                         </Rectangle.Resources>
                         <Rectangle.Style>
                             <Style TargetType="Rectangle">
-                                <Setter Property="MaxHeight" Value="150"/>
+                                <Setter Property="Height" Value="110"/>
                                 <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
-                                <Setter Property="Margin" Value="10"/>
+                                <Setter Property="Margin" Value="5"/>
                                 <Setter Property="OpacityMask" Value="{StaticResource IMG}"/>
                             </Style>
                         </Rectangle.Style>
@@ -457,7 +461,7 @@
                     </Grid.Style>
 
                     <!--Device ID-->
-                    <Viewbox MaxWidth="100" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <Viewbox MaxWidth="80" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right">
                         <Viewbox.Style>
                             <Style TargetType="Viewbox">
                                 <Setter Property="MaxHeight" Value="75"/>
@@ -476,7 +480,7 @@
                     </Viewbox>
 
                     <!--Device Info-->
-                    <StackPanel Margin="10" VerticalAlignment="Top">
+                    <StackPanel Margin="10,5" VerticalAlignment="Top">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Setter Property="Visibility" Value="Visible"/>

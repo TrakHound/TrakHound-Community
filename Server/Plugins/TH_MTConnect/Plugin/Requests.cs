@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Threading;
 
 using TH_Configuration;
 using TH_Database.Tables;
-using TH_Global;
-using TH_Global.Functions;
 
 namespace TH_MTConnect.Plugin
 {
@@ -14,6 +11,7 @@ namespace TH_MTConnect.Plugin
         private System.Timers.Timer requestTimer;
 
         Components.ReturnData probeData;
+        Streams.ReturnData currentData;
 
         private void Start(Configuration config)
         {
@@ -45,6 +43,19 @@ namespace TH_MTConnect.Plugin
             requestTimer.Enabled = false;
             RunRequests(configuration);
             if (requestTimer != null) requestTimer.Enabled = true;
+
+            //if (requestTimer != null)
+            //{
+            //    if (TH_Global.Variables.SIMULATION_MODE)
+            //    {
+            //        requestTimer.Enabled = false;
+            //        Console.WriteLine("Simulation Mode :: Single Sample Request Recieved :: Subsequent Requests Suspended");
+            //    }
+            //    else
+            //    {
+            //        requestTimer.Enabled = true;
+            //    }
+            //}
         }
 
         private void RunRequests(Configuration config)
@@ -63,7 +74,7 @@ namespace TH_MTConnect.Plugin
                 if (probeData != null)
                 {
                     // Run a Current request and get the returned data
-                    var currentData = GetCurrent(ac);
+                    currentData = GetCurrent(ac);
                     if (currentData != null)
                     {
                         // Run a Sample request and get the returned data

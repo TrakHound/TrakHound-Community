@@ -32,7 +32,6 @@ namespace TH_DeviceTable
 
             public int GoodPieces { get; set; }
 
-
             public double Oee
             {
                 get
@@ -46,6 +45,8 @@ namespace TH_DeviceTable
             {
                 get
                 {
+                    //if (ConstantAvailability > 0) return ConstantAvailability;
+
                     if (PlannedProductionTime > 0)
                     {
                         return Math.Min(1, OperatingTime / PlannedProductionTime);
@@ -58,6 +59,8 @@ namespace TH_DeviceTable
             {
                 get
                 {
+                    //if (ConstantPerformance > 0) return ConstantPerformance;
+
                     if (OperatingTime > 0)
                     {
                         return Math.Min(1, IdealOperatingTime / OperatingTime);
@@ -70,6 +73,8 @@ namespace TH_DeviceTable
             {
                 get
                 {
+                    //if (ConstantQuality > 0) return ConstantQuality;
+
                     if (TotalPieces > 0)
                     {
                         return Math.Min(1, GoodPieces / TotalPieces);

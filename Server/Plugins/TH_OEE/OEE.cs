@@ -85,7 +85,7 @@ namespace TH_OEE
         string TableName = TableNames.OEE;
         string[] primaryKey = { "SHIFT_ID", "CYCLE_ID", "CYCLE_INSTANCE_ID" };
 
-        void CreateTable()
+        public void CreateTable()
         {
             if (config.DatabaseId != null) TableName = config.DatabaseId + "_" + TableNames.OEE;
             else TableName = TableNames.OEE;
@@ -116,7 +116,7 @@ namespace TH_OEE
             Table.Create(config.Databases_Server, TableName, ColArray, primaryKey);  
         }
 
-        void UpdateRows(List<OEEData> datas)
+        public void UpdateRows(List<OEEData> datas)
         {
             List<List<object>> rowValues = new List<List<object>>();
 

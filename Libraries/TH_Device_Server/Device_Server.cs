@@ -148,7 +148,7 @@ namespace TH_Device_Server
             if (Configuration.DatabaseId != null) tablePrefix = Configuration.DatabaseId + "_";
             else tablePrefix = "";
 
-            Variables.CreateTable(Configuration.Databases_Server, tablePrefix);
+            TH_Database.Tables.Variables.CreateTable(Configuration.Databases_Server, tablePrefix);
         }
 
         void PrintDeviceHeader(Configuration config)

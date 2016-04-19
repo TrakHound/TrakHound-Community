@@ -32,27 +32,31 @@ namespace TH_InstanceTable
 
         public void Update_Probe(TH_MTConnect.Components.ReturnData returnData)
         {
-
             columnNames = GetVariablesFromProbeData(returnData);
 
             if (AddDatabases) CreateInstanceTable(columnNames);
-
         }
 
         public void Update_Current(TH_MTConnect.Streams.ReturnData returnData)
         {
-            currentData = returnData;
+            if (currentData == null)
+            {
+                currentData = returnData;
 
-            InstanceData instanceData = ProcessSingleInstance(returnData);
+                if (!TH_Global.Variables.SIMULATION_MODE)
+                {
+                    InstanceData instanceData = ProcessSingleInstance(returnData);
 
-            PreviousInstanceData_old = PreviousInstanceData_new;
+                    PreviousInstanceData_old = PreviousInstanceData_new;
 
-            CurrentInstanceData cid = new CurrentInstanceData();
-            cid.CurrentData = returnData;
-            cid.Data = instanceData;
+                    CurrentInstanceData cid = new CurrentInstanceData();
+                    cid.CurrentData = returnData;
+                    cid.Data = instanceData;
 
-            SendCurrentInstanceData(configuration, cid);
-            SendInstanceData(configuration, new List<InstanceData>() { instanceData });
+                    SendCurrentInstanceData(configuration, cid);
+                    SendInstanceData(configuration, new List<InstanceData>() { instanceData });
+                }
+            } 
         }
 
         private void SendInstanceData(Configuration config, List<InstanceData> instanceDatas)

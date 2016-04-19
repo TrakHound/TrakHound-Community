@@ -486,7 +486,8 @@ namespace TH_StatusData
 
             if (shiftData.shiftDate != null && shiftData.shiftName != null)
             {
-                DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
+                //DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
+                DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "'");
                 if (shifts_DT != null)
                 {
                     var data = new EventData();
@@ -546,7 +547,8 @@ namespace TH_StatusData
             {
                 if (shiftData.shiftId.Contains("_"))
                 {
-                    string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_'));
+                    //string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_')); // Get Current Shift
+                    string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.IndexOf('_')); // Get Whole day
 
                     DataTable dt = Table.Get(config.Databases_Client, GetTableName(TableNames.OEE, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)

@@ -5,7 +5,6 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\bin\Debug\Newtonsoft.Json.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\bin\Debug\Newtonsoft.Json.xml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\obj\Debug\TH_Global.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\obj\Debug\TH_Global.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\obj\Debug\TH_Global.csprojResolveAssemblyReference.cache
 D:\Trakhound\Libraries\TH_Global\bin\Debug\LICENSE.txt
 D:\Trakhound\Libraries\TH_Global\bin\Debug\TH_Global.dll
 D:\Trakhound\Libraries\TH_Global\bin\Debug\TH_Global.pdb
@@ -14,3 +13,4 @@ D:\Trakhound\Libraries\TH_Global\bin\Debug\Newtonsoft.Json.xml
 D:\Trakhound\Libraries\TH_Global\obj\Debug\TH_Global.csprojResolveAssemblyReference.cache
 D:\Trakhound\Libraries\TH_Global\obj\Debug\TH_Global.dll
 D:\Trakhound\Libraries\TH_Global\obj\Debug\TH_Global.pdb
+F:\feenux\TrakHound\TrakHound\Libraries\TH_Global\obj\Debug\TH_Global.csprojResolveAssemblyReference.cache

@@ -2,7 +2,7 @@
 
 using TH_Configuration;
 using TH_Database.Tables;
-using TH_Global;
+//using TH_Global;
 using TH_Plugins;
 
 using TH_MTConnect.Streams;
@@ -46,14 +46,14 @@ namespace TH_MTConnect.Plugin
                     result = Requests.Get(url, proxy);
                     if (result != null)
                     {
-                        Logger.Log("Sample Successful : " + url);
+                        TH_Global.Logger.Log("Sample Successful : " + url);
                     }
                     else
                     {
-                        Logger.Log("Sample Error : " + url);
+                        TH_Global.Logger.Log("Sample Error : " + url);
                     }
                 }
-                else Logger.Log("Sample Skipped");
+                else TH_Global.Logger.Log("Sample Skipped");
             }
 
             return result;
@@ -130,28 +130,35 @@ namespace TH_MTConnect.Plugin
 
         private SampleInfo GetSampleInfo(Header_Streams header, Configuration config)
         {
-            SampleInfo result = new SampleInfo();
+            var result = new SampleInfo();
 
             //Get Sequence Number to use -----------------------
             Int64 first = header.FirstSequence;
-            if (!startFromFirst)
+            if (TH_Global.Variables.SIMULATION_MODE)
             {
-                first = header.LastSequence;
-                startFromFirst = true;
+                Console.WriteLine("Sample Simulation Enabled");
             }
-            else if (lastInstanceId == agentInstanceId && lastSequenceSampled > 0 && lastSequenceSampled >= header.FirstSequence)
+            else
             {
-                //first = lastSequenceSampled + 1;
-                first = lastSequenceSampled;
-            }
-            else if (first > 0)
-            {
-                // Increment some sequences since the Agent might change the first sequence
-                // before the Sample request gets read
-                // (should be fixed in Agent to automatically read the first 'available' sequence
-                // instead of returning an error)
-                first += 20;
-            }
+                if (!startFromFirst)
+                {
+                    first = header.LastSequence;
+                    startFromFirst = true;
+                }
+                else if (lastInstanceId == agentInstanceId && lastSequenceSampled > 0 && lastSequenceSampled >= header.FirstSequence)
+                {
+                    //first = lastSequenceSampled + 1;
+                    first = lastSequenceSampled;
+                }
+                else if (first > 0)
+                {
+                    // Increment some sequences since the Agent might change the first sequence
+                    // before the Sample request gets read
+                    // (should be fixed in Agent to automatically read the first 'available' sequence
+                    // instead of returning an error)
+                    first += 20;
+                }
+            }           
 
             result.From = first;
 

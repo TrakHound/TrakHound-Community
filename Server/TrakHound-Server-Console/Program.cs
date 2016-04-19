@@ -21,6 +21,16 @@ namespace TrakHound_Server_Console
     {
         static void Main(string[] args)
         {
+            if (args.Length > 0)
+            {
+                if (args[0] == "simulation")
+                {
+                    Variables.SIMULATION_MODE = true;
+                    Console.Write("Simulation Mode Enabled");
+                }
+            }
+
+
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
 
