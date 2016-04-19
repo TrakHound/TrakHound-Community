@@ -95,33 +95,33 @@ namespace TH_Global
 
         public static void CleanTempDirectory(int days)
         {
-            if (days == 0)
-            {
-                // Delete everything
-                if (!Directory.Exists(TrakHoundTemp)) Directory.Delete(TrakHoundTemp, true);
-            }
-            else
-            {
-                // Only delete files older than the days set in parameter
-                DateTime threshold = DateTime.Now - TimeSpan.FromDays(days);
+            // Only delete files older than the days set in parameter
+            DateTime threshold = DateTime.Now - TimeSpan.FromDays(days);
 
-                if (Directory.Exists(TrakHoundTemp))
+            if (Directory.Exists(TrakHoundTemp))
+            {
+                string[] filePaths = Directory.GetFiles(TrakHoundTemp, "*.*", SearchOption.AllDirectories);
+                if (filePaths.Length > 0)
                 {
-                    string[] filePaths = Directory.GetFiles(TrakHoundTemp, "*.*", SearchOption.AllDirectories);
-                    if (filePaths.Length > 0)
+                    foreach (var filePath in filePaths)
                     {
-                        foreach (var filePath in filePaths)
+                        var fileInfo = new FileInfo(filePath);
+                        if (fileInfo != null)
                         {
-                            var fileInfo = new FileInfo(filePath);
-                            if (fileInfo != null)
+                            if (fileInfo.LastWriteTime < threshold || days == 0)
                             {
-                                if (fileInfo.LastWriteTime < threshold) File.Delete(filePath);
+                                try
+                                {
+                                    File.Delete(filePath);
+                                }
+                                catch (IOException ex) { Logger.Log("IO Exception :: " + ex.Message); }
+                                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }
                             }
                         }
                     }
-
-                    CleanSubDirectories(TrakHoundTemp);
                 }
+
+                CleanSubDirectories(TrakHoundTemp);
             }
         }
 
