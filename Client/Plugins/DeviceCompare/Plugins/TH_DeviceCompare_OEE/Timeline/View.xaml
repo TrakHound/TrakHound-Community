@@ -14,7 +14,7 @@
         <th_wpf:Histogram x:Name="histogram" Margin="5" Height="100">
             <th_wpf:Histogram.Style>
                 <Style TargetType="th_wpf:Histogram">
-                    <Setter Property="MaxBarWidth" Value="{Binding MaxBarWidth}"/>
+                    <!--<Setter Property="MaxBarWidth" Value="{Binding MaxBarWidth}"/>-->
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                     <Setter Property="Maximum" Value="1"/>
@@ -25,7 +25,7 @@
             </th_wpf:Histogram.Style>
             <th_wpf:Histogram.Resources>
                 <Style TargetType="th_wpf:Label">
-                    <Setter Property="Foreground" Value="{Binding Foreground_Normal}"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                     <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
                 </Style>
                 <Style TargetType="th_wpf:DataBar">

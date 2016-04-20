@@ -202,6 +202,9 @@
   <ItemGroup>
     <Resource Include="Resources\Power_01.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Power_01_200px.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del $(TargetName).cplugin

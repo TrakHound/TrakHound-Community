@@ -126,7 +126,7 @@ namespace TH_WPF
             set { SetValue(MaxImageHeightProperty, value); }
         }
         public static readonly DependencyProperty MaxImageHeightProperty =
-            DependencyProperty.Register("MaxImageHeight", typeof(double), typeof(Button), new PropertyMetadata(double.NaN));
+            DependencyProperty.Register("MaxImageHeight", typeof(double), typeof(Button), new PropertyMetadata(50d));
 
 
 

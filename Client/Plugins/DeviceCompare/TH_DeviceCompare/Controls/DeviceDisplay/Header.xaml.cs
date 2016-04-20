@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Globalization;
 
 using TH_Configuration;
 using TH_Global.Functions;
@@ -68,11 +69,47 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
         public Description_Settings DeviceDescription
         {
             get { return (Description_Settings)GetValue(DeviceDescriptionProperty); }
-            set { SetValue(DeviceDescriptionProperty, value); }
+            set
+            {
+                SetValue(DeviceDescriptionProperty, value);
+
+                string shortdescriptionText = null;
+                string longdescriptionText = null;
+                if (value != null)
+                {
+                    shortdescriptionText = FormatDeviceDescription(value.Description, 90);
+                    longdescriptionText = FormatDeviceDescription(value.Description, 130);
+                }
+                SetValue(ShortDescriptionTextProperty, shortdescriptionText);
+                SetValue(LongDescriptionTextProperty, longdescriptionText);
+            }
         }
 
         public static readonly DependencyProperty DeviceDescriptionProperty =
             DependencyProperty.Register("DeviceDescription", typeof(Description_Settings), typeof(Header), new PropertyMetadata(null));
+
+
+
+        public string ShortDescriptionText
+        {
+            get { return (string)GetValue(ShortDescriptionTextProperty); }
+            set { SetValue(ShortDescriptionTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShortDescriptionTextProperty =
+            DependencyProperty.Register("ShortDescriptionText", typeof(string), typeof(Header), new PropertyMetadata(null));
+
+
+        public string LongDescriptionText
+        {
+            get { return (string)GetValue(LongDescriptionTextProperty); }
+            set { SetValue(LongDescriptionTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty LongDescriptionTextProperty =
+            DependencyProperty.Register("LongDescriptionText", typeof(string), typeof(Header), new PropertyMetadata(null));
+
+
 
 
         const System.Windows.Threading.DispatcherPriority priority = System.Windows.Threading.DispatcherPriority.Background;
@@ -190,6 +227,25 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
         public static readonly DependencyProperty ConnectedProperty =
             DependencyProperty.Register("Connected", typeof(bool), typeof(Header), new PropertyMetadata(false));
 
+
+        public bool Loading
+        {
+            get { return (bool)GetValue(LoadingProperty); }
+            set { SetValue(LoadingProperty, value); }
+        }
+
+        public static readonly DependencyProperty LoadingProperty =
+            DependencyProperty.Register("Loading", typeof(bool), typeof(Header), new PropertyMetadata(false));
+
+
+        public string ConnectionText
+        {
+            get { return (string)GetValue(ConnectionTextProperty); }
+            set { SetValue(ConnectionTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty ConnectionTextProperty =
+            DependencyProperty.Register("ConnectionText", typeof(string), typeof(Header), new PropertyMetadata(null));
 
 
         public bool Production
@@ -571,6 +627,52 @@ namespace TH_DeviceCompare.Controls.DeviceDisplay
         public static bool operator >=(Header c1, Header c2)
         {
             return GreaterThan(c1, c2) || EqualTo(c1, c2);
+        }
+
+        #endregion
+
+        #region "Text Overflow Formatter"
+
+        //private const double MAX_TEXT_WIDTH = 95;
+
+        private static string FormatDeviceDescription(string s, int maxWidth)
+        {
+            string t = s;
+
+            if (t != null)
+            {
+                double textWidth = GetFormattedText(t).Width;
+
+                if (textWidth > maxWidth)
+                {
+                    // Keep removing characters from the string until the max width is met
+                    while (textWidth > maxWidth)
+                    {
+                        t = t.Substring(0, t.Length - 1);
+                        textWidth = GetFormattedText(t).Width;
+                    }
+
+                    // Make sure the last character is not a space
+                    if (t[t.Length - 1] == ' ' && s.Length > t.Length + 2) t = s.Substring(0, t.Length + 2);
+
+                    // Add the ...
+                    t = t + "...";
+                }
+                else t = s;
+            }
+
+            return t;
+        }
+
+        private static FormattedText GetFormattedText(string s)
+        {
+            return new FormattedText(
+                        s,
+                        CultureInfo.GetCultureInfo("en-us"),
+                        FlowDirection.LeftToRight,
+                        new Typeface("Arial"),
+                        12,
+                        Brushes.Black);
         }
 
         #endregion

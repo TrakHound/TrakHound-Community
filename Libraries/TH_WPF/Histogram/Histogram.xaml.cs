@@ -74,9 +74,6 @@ namespace TH_WPF.Histogram
                 txt.Value = x;
                 txt.Text = x.ToString(ValueFormat);
 
-                //if (x == min) txt.VerticalAlignment = VerticalAlignment.Bottom;
-                //else if (x == Maximum) txt.VerticalAlignment = VerticalAlignment.Top;
-
                 labels.Add(txt);
             }
 
@@ -91,8 +88,8 @@ namespace TH_WPF.Histogram
 
             for (var x = 0; x <= labels.Count - 1; x++)
             {
-                labels[x].TopPadding = padding;
-                labels[x].BottomPadding = padding;
+                labels[x].TopPadding = Math.Max(0,padding);
+                labels[x].BottomPadding = Math.Max(0, padding);
 
                 if (x == 0) labels[x].TopPadding = 0;
                 else if (x == labels.Count - 1) labels[x].BottomPadding = 0;

@@ -50,7 +50,7 @@
         PreviewMouseDown="Main_Window_PreviewMouseDown"
         PreviewKeyUp="Main_Window_PreviewKeyUp"
         
-        x:Name="Main_Window" Icon="Resources/TrakHound_Logo_Initials_10.ico"
+        Icon="Resources/TrakHound_Logo_Initials_10.ico"
         >
 
     <Window.Resources>
@@ -80,7 +80,7 @@
                     <Style TargetType="RowDefinition">
                         <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                            <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                 <Setter Property="Height" Value="0"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -93,7 +93,7 @@
                     <Style TargetType="RowDefinition">
                         <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                            <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                 <Setter Property="Height" Value="0"/>
                             </DataTrigger>
                         </Style.Triggers>
@@ -109,7 +109,7 @@
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                     <Setter Property="Width" Value="0"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -122,7 +122,7 @@
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                     <Setter Property="Width" Value="0"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -158,7 +158,7 @@
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                     <Setter Property="Width" Value="0"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -171,7 +171,7 @@
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                     <Setter Property="Width" Value="0"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -192,21 +192,21 @@
 
                     <!--Top Resize Borders-->
                     <DockPanel DockPanel.Dock="Top">
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness, ElementName=Main_Window}" Height="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_TopLeft_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness, ElementName=Main_Window}" Height="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_TopRight_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Top" Height="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_TopMiddle_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
+                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_TopLeft_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
+                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_TopRight_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
+                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Top" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_TopMiddle_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
                     </DockPanel>
 
                     <!--Bottom Resize Borders-->
                     <DockPanel DockPanel.Dock="Bottom">
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness, ElementName=Main_Window}" Height="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_BottomLeft_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness, ElementName=Main_Window}" Height="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_BottomRight_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Top" Height="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_BottomMiddle_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
+                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_BottomLeft_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
+                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_BottomRight_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
+                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Top" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_BottomMiddle_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
                     </DockPanel>
 
-                    <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_WE_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize" />
+                    <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_WE_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize" />
 
-                    <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness, ElementName=Main_Window}" MouseEnter="Rectangle_WE_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize" />
+                    <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_WE_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize" />
 
                     <!--Title Bar-->
                     <Border DockPanel.Dock="Top" >
@@ -336,7 +336,7 @@
                                                         </BeginStoryboard>
                                                     </Trigger.ExitActions>
                                                 </Trigger>
-                                                <DataTrigger Binding="{Binding Maximized, ElementName=Main_Window}" Value="True">
+                                                <DataTrigger Binding="{Binding Maximized}" Value="True">
                                                     <Setter Property="ToolTip" Value="Restore Down"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -350,7 +350,7 @@
                                                 <Style TargetType="Grid">
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Maximized, ElementName=Main_Window}" Value="True">
+                                                        <DataTrigger Binding="{Binding Maximized}" Value="True">
                                                             <Setter Property="Visibility" Value="Hidden"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -391,7 +391,7 @@
                                                 <Style TargetType="Grid">
                                                     <Setter Property="Visibility" Value="Hidden"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Maximized, ElementName=Main_Window}" Value="True">
+                                                        <DataTrigger Binding="{Binding Maximized}" Value="True">
                                                             <Setter Property="Visibility" Value="Visible"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
@@ -1088,7 +1088,7 @@
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                     <Setter Property="Width" Value="0"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -1101,7 +1101,7 @@
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
+                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
                                     <Setter Property="Width" Value="0"/>
                                 </DataTrigger>
                             </Style.Triggers>

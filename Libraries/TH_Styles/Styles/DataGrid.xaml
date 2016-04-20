@@ -37,8 +37,7 @@
                     <Border Name="bd"
                                 Background="{TemplateBinding Background}"
                                 Margin="0,0,0,0"
-                                BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
-                                BorderThickness="0,0,1,0"    
+                                BorderThickness="0,0,0,0"    
                                 >
                         <Grid>
                             <!--Content-->
@@ -108,7 +107,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="DataGridRowHeader">
+    <!--<Style TargetType="DataGridRowHeader">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
         <Setter Property="BorderThickness" Value="0,0,1,0"/>
@@ -118,6 +117,6 @@
         <Setter Property="VerticalContentAlignment" Value="Top"/>
         <Setter Property="SeparatorBrush" Value="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
         <Setter Property="SeparatorVisibility" Value="Visible"/>
-    </Style>
+    </Style>-->
 
 </ResourceDictionary>

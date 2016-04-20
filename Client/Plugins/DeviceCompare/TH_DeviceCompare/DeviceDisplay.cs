@@ -43,17 +43,17 @@ namespace TH_DeviceCompare
                 // Create DeviceDisplay Components
                 var header = new Header(config);
                 var column = new Column(this);
-                var overlay = new Overlay(config);
+                //var overlay = new Overlay(config);
 
                 header.Index = config.Index;
                 column.Index = config.Index;
-                overlay.Index = config.Index;
+                //overlay.Index = config.Index;
 
                 // Setup Group of Components
                 Group = new GroupInfo();
                 Group.Header = header;
                 Group.Column = column;
-                Group.Overlay = overlay;
+                //Group.Overlay = overlay;
 
                 // Load Plugins
                 ProcessPlugins(plugins, configs);
@@ -82,7 +82,7 @@ namespace TH_DeviceCompare
 
             public Column Column { get; set; }
 
-            public Overlay Overlay { get; set; }
+            //public Overlay Overlay { get; set; }
         }
 
 
@@ -109,10 +109,10 @@ namespace TH_DeviceCompare
         public bool Connected { get; set; }
 
         public int connectionAttempts { get; set; }
-        public const int maxConnectionAttempts = 5;
+        public const int maxConnectionAttempts = 3;
 
-        private BitmapImage warningImage;
-        private BitmapImage connectionImage;
+        //private BitmapImage warningImage;
+        //private BitmapImage connectionImage;
 
         public void UpdateData(EventData data)
         {
@@ -131,36 +131,23 @@ namespace TH_DeviceCompare
                     // Increment connection attempts
                     connectionAttempts++;
 
-                    var overlay = Group.Overlay;
-                    if (overlay != null)
-                    {
-                        // if still retrying
-                        if (connectionAttempts < maxConnectionAttempts)
-                        {
-                            overlay.Loading = true;
-                            overlay.ConnectionImage = null;
-                            overlay.ConnectionStatus = "Retrying..." + Environment.NewLine + "Attempt #" + connectionAttempts.ToString();
-                        }
-                        // if max retries have been exceeded
-                        else
-                        {
-                            overlay.Loading = false;
-
-                            if (warningImage == null)
-                            {
-                                warningImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Warning_01_40px.png"));
-                                warningImage.Freeze();
-                            }
-
-                            overlay.ConnectionImage = warningImage;
-                            overlay.ConnectionStatus = "Could Not Connect To Database";
-                        }
-                    }
-
                     var header = Group.Header;
                     if (header != null)
                     {
                         header.Connected = false;
+
+                        // if still retrying
+                        if (connectionAttempts < maxConnectionAttempts)
+                        {
+                            header.Loading = true;
+                            header.ConnectionText = "Retrying..." + Environment.NewLine + "Attempt #" + connectionAttempts.ToString();
+                        }
+                        // if max retries have been exceeded
+                        else
+                        {
+                            header.Loading = false;
+                            header.ConnectionText = "Could Not Connect To Database";
+                        }
                     }
 
                     Connected = connected;
@@ -172,19 +159,14 @@ namespace TH_DeviceCompare
 
                     if (connected != Connected)
                     {
-                        var overlay = Group.Overlay;
-                        if (overlay != null)
-                        {
-                            overlay.Loading = false;
-                            overlay.ConnectionImage = null;
-                            overlay.ConnectionStatus = null;
-                        }
+                        //var header = Group.Header;
+                        //if (header != null)
+                        //{
+                        //    header.Connected = true;
 
-                        var header = Group.Header;
-                        if (header != null)
-                        {
-                            header.Connected = true;
-                        }
+                        //    header.Loading = false;
+                        //    header.ConnectionText = null;
+                        //}
 
                         Connected = connected;
                     }
@@ -198,29 +180,40 @@ namespace TH_DeviceCompare
                 {
                     if (data.Data02.GetType() == typeof(bool))
                     {
-                        var overlay = Group.Overlay;
-                        if (overlay != null)
-                        {
-                            bool avail = (bool)data.Data02;
-                            if (avail)
-                            {
-                                overlay.Loading = false;
-                                overlay.ConnectionImage = null;
-                                overlay.ConnectionStatus = null;
-                            }
-                            else
-                            {
-                                if (connectionImage == null)
-                                {
-                                    connectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Power_01.png"));
-                                    connectionImage.Freeze();
-                                }
+                        bool avail = (bool)data.Data02;
 
-                                overlay.ConnectionImage = connectionImage;
-                                overlay.Loading = true;
-                                overlay.ConnectionStatus = "Device Not Connected";
-                            }
+                        var header = Group.Header;
+                        if (header != null)
+                        {
+                            header.Connected = avail;
+
+                            header.Loading = false;
+                            header.ConnectionText = null;
                         }
+
+                        //var overlay = Group.Overlay;
+                        //if (overlay != null)
+                        //{
+                        //    bool avail = (bool)data.Data02;
+                        //    if (avail)
+                        //    {
+                        //        overlay.Loading = false;
+                        //        overlay.ConnectionImage = null;
+                        //        overlay.ConnectionStatus = null;
+                        //    }
+                        //    else
+                        //    {
+                        //        if (connectionImage == null)
+                        //        {
+                        //            connectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Power_01.png"));
+                        //            connectionImage.Freeze();
+                        //        }
+
+                        //        overlay.ConnectionImage = connectionImage;
+                        //        overlay.Loading = true;
+                        //        overlay.ConnectionStatus = "Device Not Connected";
+                        //    }
+                        //}
                     }
                 }
 

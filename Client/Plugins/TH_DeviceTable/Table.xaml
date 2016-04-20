@@ -25,8 +25,7 @@
                         <Border Name="bd"
                             Background="{TemplateBinding Background}"
                             Margin="0,0,0,0"
-                            BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
-                            BorderThickness="0,0,1,0"    
+                            BorderThickness="0,0,0,0"    
                             >
                             <Grid>
                                 <!--Content-->
@@ -59,17 +58,20 @@
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <!--<Setter Property="BorderThickness" Value="0,0,0,1" />-->
+            <Setter Property="BorderThickness" Value="0,1,0,1" />
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
             <Setter Property="Height" Value="65"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="true">
                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}" />
                 </Trigger>
                 <Trigger Property="IsSelected" Value="true">
                     <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -86,12 +88,12 @@
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="0"
                                 >
-                            <Grid>
+                            <!--<Grid>-->
 
                                 <!--Content-->
                                 <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
-                                <!--Overlay-->
+                                <!--Overlay--><!--
                                 <Grid>
                                     <Grid.Style>
                                         <Style TargetType="Grid">
@@ -105,9 +107,9 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Grid.Style>
-                                </Grid>
+                                </Grid>-->
 
-                            </Grid>
+                            <!--</Grid>-->
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -134,6 +136,10 @@
             <Setter Property="Width" Value="auto"/>
             <Setter Property="Padding" Value="5"/>
         </Style>
+
+        <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TH_DeviceTable;component/Resources/Power_01.png"  />
+
+        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TH_DeviceTable;component/Resources/Warning_01.png"  />
 
     </UserControl.Resources>
 
@@ -194,9 +200,9 @@
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.Style>
-                                        <Style TargetType="Grid">
+                                <Border>
+                                    <Border.Style>
+                                        <Style TargetType="Border">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Production}" Value="true">
                                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
@@ -209,8 +215,53 @@
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Grid.Style>
-                                </Grid>
+                                    </Border.Style>
+
+                                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White">
+                                        <Rectangle.Style>
+                                            <Style TargetType="Rectangle">
+                                                <Setter Property="Height" Value="20"/>
+                                                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+                                                <Setter Property="Margin" Value="0"/>
+                                                <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
+                                                <Setter Property="Opacity" Value="0"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Available}" Value="true">
+                                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
+                                                    </DataTrigger>
+                                                    <Trigger Property="Opacity" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Rectangle.Style>
+                                    </Rectangle>
+                                    
+                                </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -231,7 +282,7 @@
                                             </StackPanel.Resources>
 
                                             <!--Manufacturer Logo-->
-                                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="5" MaxHeight="60" MaxWidth="150" HorizontalAlignment="Left"/>
+                                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Padding="5" MaxHeight="60" MaxWidth="150" HorizontalAlignment="Left"/>
 
                                             <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" TextWrapping="Wrap"/>
 
@@ -280,7 +331,7 @@
                                     </Grid.RowDefinitions>
 
                                     <!--Manufacturer Logo-->
-                                    <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5" MaxHeight="40"/>
+                                    <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Padding="10,5" MaxHeight="40"/>
 
                                     <!--Device Description-->
                                     <TextBlock Grid.Row="1" Text="{Binding DeviceDescription}" Foreground="{StaticResource Foreground_Normal}" FontSize="12" Margin="0,2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -304,17 +355,17 @@
                     <!--OEE-->
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.Header>
-                            <Grid Background="Transparent">
-                                <Grid.ToolTip>
+                            <Border Background="Transparent">
+                                <Border.ToolTip>
                                     <StackPanel MaxWidth="300">
                                         <TextBlock Text="OEE" FontWeight="Bold" Margin="0,0,0,5"/>
                                         <TextBlock TextWrapping="Wrap">
                                         Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
                                         </TextBlock>
                                     </StackPanel>
-                                </Grid.ToolTip>
+                                </Border.ToolTip>
                                 <TextBlock Text="OEE" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
+                            </Border>
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -347,17 +398,17 @@
                     <!--Availability-->
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.Header>
-                            <Grid Background="Transparent">
-                                <Grid.ToolTip>
+                            <Border Background="Transparent">
+                                <Border.ToolTip>
                                     <StackPanel MaxWidth="300">
                                         <TextBlock Text="Availability" FontWeight="Bold" Margin="0,0,0,5"/>
                                         <TextBlock TextWrapping="Wrap">
                                         Availability portion of the Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
                                         </TextBlock>
                                     </StackPanel>
-                                </Grid.ToolTip>
+                                </Border.ToolTip>
                                 <TextBlock Text="Availability" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
+                            </Border>
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -390,17 +441,17 @@
                     <!--Performance-->
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.Header>
-                            <Grid Background="Transparent">
-                                <Grid.ToolTip>
+                            <Border Background="Transparent">
+                                <Border.ToolTip>
                                     <StackPanel MaxWidth="300">
                                         <TextBlock Text="Performance" FontWeight="Bold" Margin="0,0,0,5"/>
                                         <TextBlock TextWrapping="Wrap">
                                         Performance portion of the Overall Equipment Efficiency (OEE) for the Device. Value is given for the current shift.
                                         </TextBlock>
                                     </StackPanel>
-                                </Grid.ToolTip>
+                                </Border.ToolTip>
                                 <TextBlock Text="Performance" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
+                            </Border>
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -433,17 +484,17 @@
                     <!--Production Status-->
                     <DataGridTemplateColumn MinWidth="200">
                         <DataGridTemplateColumn.Header>
-                            <Grid Background="Transparent">
-                                <Grid.ToolTip>
+                            <Border Background="Transparent">
+                                <Border.ToolTip>
                                     <StackPanel MaxWidth="300">
                                         <TextBlock Text="Production Status" FontWeight="Bold" Margin="0,0,0,5"/>
                                         <TextBlock TextWrapping="Wrap">
                                         Current Production Status value and the percentage of time that the device has been in this status for the current shift.
                                         </TextBlock>
                                     </StackPanel>
-                                </Grid.ToolTip>
+                                </Border.ToolTip>
                                 <TextBlock Text="Production Status" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
+                            </Border>
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -464,17 +515,17 @@
                     <!--Part Count-->
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.Header>
-                            <Grid Background="Transparent">
-                                <Grid.ToolTip>
+                            <Border Background="Transparent">
+                                <Border.ToolTip>
                                     <StackPanel MaxWidth="300">
                                         <TextBlock Text="Part Count" FontWeight="Bold" Margin="0,0,0,5"/>
                                         <TextBlock TextWrapping="Wrap">
                                         Total Part Count for the current shift.
                                         </TextBlock>
                                     </StackPanel>
-                                </Grid.ToolTip>
+                                </Border.ToolTip>
                                 <TextBlock Text="Part Count" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Grid>
+                            </Border>
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

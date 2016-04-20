@@ -83,7 +83,8 @@ namespace TrakHound_Updater
                         if (serverRunning) StartServerService();
                     }
 
-                    Directory.Delete(updatePath, true);
+                    // Clean up
+                    FileSystem_Functions.DeleteDirectory(updatePath);
                     DeleteUpdatePath(info);
                     DeleteUpdateVersion(info);
                 }

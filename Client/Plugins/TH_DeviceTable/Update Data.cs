@@ -56,6 +56,9 @@ namespace TH_DeviceTable
                 if (data.Data02.GetType() == typeof(bool))
                 {
                     info.Connected = (bool)data.Data02;
+
+                    //bool connected = (bool)data.Data02;
+                    //if (!connected) info.Connected = false;
                 }
             }
         }
@@ -67,6 +70,9 @@ namespace TH_DeviceTable
                 if (data.Data02.GetType() == typeof(bool))
                 {
                     info.Available = (bool)data.Data02;
+
+                    //bool avail = (bool)data.Data02;
+                    //if (avail) info.Connected = true;
                 }
             }
         }

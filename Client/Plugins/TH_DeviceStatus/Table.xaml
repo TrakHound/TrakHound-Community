@@ -26,8 +26,7 @@
                         <Border Name="bd"
                             Background="{TemplateBinding Background}"
                             Margin="0,0,0,0"
-                            BorderBrush="{Binding VerticalGridLineBrush, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" 
-                            BorderThickness="0,0,1,0"    
+                            BorderThickness="0,0,0,0"    
                             >
                             <Grid>
                                 <!--Content-->
@@ -56,8 +55,8 @@
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-            <Setter Property="BorderThickness" Value="0,2,0,2" />
-            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="BorderThickness" Value="0,1,0,1" />
+            <Setter Property="Margin" Value="0,0,0,0"/>
             <!--<Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>-->
             <Setter Property="Height" Value="65"/>
             <Style.Triggers>
@@ -139,6 +138,10 @@
             </Style.Triggers>
         </Style>
 
+        <ImageBrush x:Key="Power_IMG" Stretch="Uniform" ImageSource="/TH_StatusTable;component/Resources/Power_01.png"  />
+
+        <ImageBrush x:Key="Alert_IMG" Stretch="Uniform" ImageSource="/TH_StatusTable;component/Resources/Warning_01.png"  />
+
     </UserControl.Resources>
 
     <Grid x:Name="root">
@@ -175,9 +178,9 @@
                         </DataGridTemplateColumn.Header>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.Style>
-                                        <Style TargetType="Grid">
+                                <Border>
+                                    <Border.Style>
+                                        <Style TargetType="Border">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Production}" Value="true">
                                                     <Setter Property="Background" Value="{StaticResource StatusGreen}"/>
@@ -190,8 +193,53 @@
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </Grid.Style>
-                                </Grid>
+                                    </Border.Style>
+
+                                    <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Fill="White">
+                                        <Rectangle.Style>
+                                            <Style TargetType="Rectangle">
+                                                <Setter Property="Height" Value="20"/>
+                                                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"/>
+                                                <Setter Property="Margin" Value="0"/>
+                                                <Setter Property="OpacityMask" Value="{StaticResource Power_IMG}"/>
+                                                <Setter Property="Opacity" Value="0"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Alert}" Value="true">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="0" To="1" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Duration="00:00:1.0" Storyboard.TargetProperty="Opacity" From="1" To="0" >
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Available}" Value="true">
+                                                        <Setter Property="OpacityMask" Value="{StaticResource Alert_IMG}"/>
+                                                    </DataTrigger>
+                                                    <Trigger Property="Opacity" Value="0">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Rectangle.Style>
+                                    </Rectangle>
+
+                                </Border>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -212,7 +260,7 @@
                                             </StackPanel.Resources>
 
                                             <!--Manufacturer Logo-->
-                                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="5" MaxHeight="60" MaxWidth="150" HorizontalAlignment="Left"/>
+                                            <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Padding="5" MaxHeight="60" MaxWidth="150" HorizontalAlignment="Left"/>
 
                                             <TextBlock Text="{Binding Description.Description}" Foreground="{StaticResource Foreground_Normal}" FontSize="14" TextWrapping="Wrap"/>
 
@@ -261,7 +309,7 @@
                                     </Grid.RowDefinitions>
 
                                     <!--Manufacturer Logo-->
-                                    <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Loading="{Binding ManufacturingLogoLoading}" Padding="10,5" MaxHeight="40"/>
+                                    <th_wpf:ImageDisplay Image="{Binding ManufacturerLogo}" Padding="10,5" MaxHeight="40"/>
 
                                     <!--Device Description-->
                                     <TextBlock Grid.Row="1" Text="{Binding DeviceDescription}" Foreground="{StaticResource Foreground_Normal}" FontSize="12" Margin="0,2" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>

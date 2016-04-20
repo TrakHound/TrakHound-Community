@@ -65,11 +65,6 @@
                 <RowDefinition.Style>
                     <Style TargetType="RowDefinition">
                         <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
-                                <Setter Property="Height" Value="0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
                     </Style>
                 </RowDefinition.Style>
             </RowDefinition>
@@ -78,11 +73,6 @@
                 <RowDefinition.Style>
                     <Style TargetType="RowDefinition">
                         <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
-                                <Setter Property="Height" Value="0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
                     </Style>
                 </RowDefinition.Style>
             </RowDefinition>
@@ -94,11 +84,6 @@
                     <ColumnDefinition.Style>
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
                         </Style>
                     </ColumnDefinition.Style>
                 </ColumnDefinition>
@@ -107,11 +92,6 @@
                     <ColumnDefinition.Style>
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
                         </Style>
                     </ColumnDefinition.Style>
                 </ColumnDefinition>
@@ -145,11 +125,6 @@
                     <ColumnDefinition.Style>
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
                         </Style>
                     </ColumnDefinition.Style>
                 </ColumnDefinition>
@@ -209,44 +184,6 @@
                                 </Style>
                             </th_wpf:Button.Style>
                         </th_wpf:Button>
-
-                        <!--Clear All-->
-                        <!--<Grid Width="60" PreviewMouseDown="ClearAll_PreviewMouseDown">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Background" Value="#00000000"/>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Trigger.EnterActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard>
-                                                        <ColorAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Background.Color" To="#33ffffff">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.EnterActions>
-                                            <Trigger.ExitActions>
-                                                <BeginStoryboard>
-                                                    <Storyboard FillBehavior="Stop">
-                                                        <ColorAnimation Duration="00:00:0.2" Storyboard.TargetProperty="Background.Color" To="#00000000">
-                                                            <ColorAnimation.EasingFunction>
-                                                                <CubicEase EasingMode="EaseOut"/>
-                                                            </ColorAnimation.EasingFunction>
-                                                        </ColorAnimation>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </Trigger.ExitActions>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-
-                            <TextBlock Text="Clear All" Foreground="#aaffffff" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-
-                        </Grid>-->
 
                     </StackPanel>
 
@@ -494,12 +431,6 @@
 
             </Grid>
 
-            <!--<Rectangle Grid.Column="1">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>-->
-
         </Grid>
 
         <Grid Grid.Row="2">
@@ -508,27 +439,10 @@
                     <ColumnDefinition.Style>
                         <Style TargetType="ColumnDefinition">
                             <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
                         </Style>
                     </ColumnDefinition.Style>
                 </ColumnDefinition>
                 <ColumnDefinition Width="*"/>
-                <!--<ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState, ElementName=Main_Window}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>-->
             </Grid.ColumnDefinitions>
 
             <Rectangle Grid.Column="0">
@@ -542,12 +456,6 @@
                     <LinearGradientBrush EndPoint="0,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />
                 </Rectangle.Fill>
             </Rectangle>
-
-            <!--<Rectangle Grid.Column="1">
-                <Rectangle.Fill>
-                    <RadialGradientBrush Center="0,0" RadiusX="1" RadiusY="1" GradientOrigin="0,0" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>-->
 
         </Grid>
 

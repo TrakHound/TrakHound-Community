@@ -94,9 +94,6 @@
     <Resource Include="Resources\Carrot_Arrow_Up_02.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Warning_01_40px.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Arrow_Down_01.png" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +130,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Refresh_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Power_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning_01.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

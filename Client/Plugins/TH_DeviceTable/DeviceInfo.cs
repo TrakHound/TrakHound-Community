@@ -121,18 +121,6 @@ namespace TH_DeviceTable
             }
         }
 
-        private bool _manufacturerLogoLoading;
-        public bool ManufacturerLogoLoading
-        {
-            get { return _manufacturerLogoLoading; }
-            set
-            {
-                var val = _manufacturerLogoLoading;
-                _manufacturerLogoLoading = value;
-                if (val != _manufacturerLogoLoading) NotifyChanged("ManufacturerLogoLoading");
-            }
-        }
-
         #endregion
 
         #region "Status"

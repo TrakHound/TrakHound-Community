@@ -99,16 +99,20 @@ namespace TH_UserManagement.Management
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
 
                     // Open CURRENT_USER/Software/TrakHound Key
-                    RegistryKey rootKey = key.OpenSubKey("TrakHound");
+                    if (key != null) key = key.OpenSubKey("TrakHound");
 
                     // Open CURRENT_USER/Software/TrakHound/Updates Key
-                    RegistryKey updatesKey = rootKey.OpenSubKey("RememberMe");
+                    if (key != null) key = key.OpenSubKey("RememberMe");
 
                     // Open CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                    RegistryKey updateKey = updatesKey.OpenSubKey(keyName);
+                    if (key != null) key = key.OpenSubKey(keyName);
 
                     // Read value for [keyName] to [keyValue]
-                    Result = updateKey.GetValue(keyName).ToString();
+                    if (key != null)
+                    {
+                        var val = key.GetValue(keyName);
+                        if (val != null) Result = val.ToString();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -128,12 +132,12 @@ namespace TH_UserManagement.Management
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
 
                     // Open CURRENT_USER/Software/TrakHound Key
-                    RegistryKey rootKey = key.OpenSubKey("TrakHound");
+                    if (key != null) key = key.OpenSubKey("TrakHound");
 
                     // Open CURRENT_USER/Software/TrakHound/Updates Key
-                    RegistryKey updatesKey = rootKey.OpenSubKey("RememberMe");
+                    if (key != null) key = key.OpenSubKey("RememberMe");
 
-                    Result = updatesKey.GetSubKeyNames();
+                    if (key != null) Result = key.GetSubKeyNames();
                 }
                 catch (Exception ex)
                 {
@@ -151,13 +155,13 @@ namespace TH_UserManagement.Management
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
 
                     // Open CURRENT_USER/Software/TrakHound Key
-                    RegistryKey rootKey = key.OpenSubKey("TrakHound", true);
+                    if (key != null) key = key.OpenSubKey("TrakHound", true);
 
                     // Open CURRENT_USER/Software/TrakHound/Updates Key
-                    RegistryKey updatesKey = rootKey.OpenSubKey("RememberMe", true);
+                    if (key != null) key = key.OpenSubKey("RememberMe", true);
 
                     // Delete CURRENT_USER/Software/TrakHound/Updates/[keyName] Key
-                    updatesKey.DeleteSubKey(keyName, true);
+                    if (key != null) key.DeleteSubKey(keyName, false);
                 }
                 catch (Exception ex)
                 {

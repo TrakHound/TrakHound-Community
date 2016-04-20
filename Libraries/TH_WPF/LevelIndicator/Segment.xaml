@@ -6,8 +6,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Border Background="{Binding Foreground}"
-            CornerRadius="1"
-            />
+    <Rectangle Fill="{Binding Foreground}" RadiusX="1" RadiusY="1" />
     
 </UserControl>

@@ -15,9 +15,9 @@
 
     <Border x:Name="bd" CornerRadius="1">
 
-        <Border Background="{Binding Foreground}" CornerRadius="1">
-            <Border.Style>
-                <Style TargetType="Border">
+        <Rectangle Fill="{Binding Foreground}" RadiusX="1" RadiusY="1">
+            <Rectangle.Style>
+                <Style TargetType="Rectangle">
                     <Setter Property="Width" Value="{Binding ProgressWidth}"/>
                     <Setter Property="Height" Value="auto"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -31,8 +31,8 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Border.Style>
-        </Border>
+            </Rectangle.Style>
+        </Rectangle>
         
     </Border>
 

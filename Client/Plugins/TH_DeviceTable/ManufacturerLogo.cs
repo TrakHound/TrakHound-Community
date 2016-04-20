@@ -25,8 +25,6 @@ namespace TH_DeviceTable
 
         public void LoadManufacturerLogo(string filename, DeviceInfo info)
         {
-            info.ManufacturerLogoLoading = true;
-
             var deviceInfo = new LoadManufacturerLogoInfo();
             deviceInfo.Filename = filename;
             deviceInfo.DeviceInfo = info;
@@ -74,8 +72,6 @@ namespace TH_DeviceTable
         void LoadManufacturerLogo_GUI(LoadManufacturerLogoInfo info)
         {
             info.DeviceInfo.ManufacturerLogo = info.Image;
-
-            info.DeviceInfo.ManufacturerLogoLoading = false;
         }
 
 

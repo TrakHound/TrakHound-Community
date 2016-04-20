@@ -19,249 +19,225 @@
              Focusable="False"
              >
 
-    <Border x:Name="bd" FocusManager.IsFocusScope="False">
+    <Border x:Name="bd" Background="{Binding Background}" CornerRadius="{Binding CornerRadius}" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}"  FocusManager.IsFocusScope="False">
 
-        <Border Background="{Binding Background}" CornerRadius="{Binding CornerRadius}" BorderBrush="{Binding BorderBrush}" BorderThickness="{Binding BorderThickness}"  FocusManager.IsFocusScope="False">
+        <Grid FocusManager.IsFocusScope="False">
 
-            <Grid FocusManager.IsFocusScope="False">
+            <Border Padding="{Binding Padding}" FocusManager.IsFocusScope="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="#20ffffff" Offset="0"/>
+                                    <GradientStop Color="#20ffffff" Offset="0.3"/>
+                                    <GradientStop Color="Transparent" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Background}" Value="{x:Null}">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Background}" Value="Transparent">
+                                <Setter Property="Background" Value="Transparent"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                <Border Padding="{Binding Padding}" FocusManager.IsFocusScope="False">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Background">
-                                <Setter.Value>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop Color="#20ffffff" Offset="0"/>
-                                        <GradientStop Color="#20ffffff" Offset="0.3"/>
-                                        <GradientStop Color="Transparent" Offset="1"/>
-                                    </LinearGradientBrush>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Background}" Value="{x:Null}">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Background}" Value="Transparent">
-                                    <Setter Property="Background" Value="Transparent"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
+                <Grid FocusManager.IsFocusScope="False">
 
-                    <Grid FocusManager.IsFocusScope="False">
+                    <Grid.ColumnDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            
-                            <ColumnDefinition>
-                                <ColumnDefinition.Style>
-                                    <Style TargetType="ColumnDefinition">
-                                        <Setter Property="Width" Value="*"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
-                                                <Setter Property="Width" Value="auto"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                                <Setter Property="Width" Value="*"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
-                                                <Setter Property="Width" Value="*"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ColumnDefinition.Style>
-                            </ColumnDefinition>
-
-                            <!--Blank Space (Between Image and Text)-->
-                            <ColumnDefinition>
-                                <ColumnDefinition.Style>
-                                    <Style TargetType="ColumnDefinition">
-                                        <Setter Property="Width" Value="0"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
-                                                <Setter Property="Width" Value="{Binding ImageTextPadding}"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                                <Setter Property="Width" Value="0"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
-                                                <Setter Property="Width" Value="0"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ColumnDefinition.Style>
-                            </ColumnDefinition>
-
-                            <ColumnDefinition>
-                                <ColumnDefinition.Style>
-                                    <Style TargetType="ColumnDefinition">
-                                        <Setter Property="Width" Value="0"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
-                                                <Setter Property="Width" Value="auto"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
-                                                <Setter Property="Width" Value="*"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
-                                                <Setter Property="Width" Value="auto"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ColumnDefinition.Style>
-                            </ColumnDefinition>
-
-                        </Grid.ColumnDefinitions>
-
-                        <!--Image-->
-                        <Grid MaxHeight="{Binding MaxImageHeight}" FocusManager.IsFocusScope="False">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="*"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Setter Property="Width" Value="auto"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+
+                        <!--Blank Space (Between Image and Text)-->
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="{Binding ImageTextPadding}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="0"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style TargetType="ColumnDefinition">
+                                    <Setter Property="Width" Value="0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="auto"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                            <Setter Property="Width" Value="*"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                            <Setter Property="Width" Value="auto"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
+
+                    </Grid.ColumnDefinitions>
+
+                    <!--Image-->
+                    <Grid MaxHeight="{Binding MaxImageHeight}" FocusManager.IsFocusScope="False">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                        <Setter Property="Grid.Column" Value="2"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" FocusManager.IsFocusScope="False">
+                            <Grid.Resources>
+                                <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="{Binding Image, Mode=OneWay}" />
+                            </Grid.Resources>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Background" Value="{Binding Foreground}"/>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                    </Grid>
+
+                    <!--Text Label-->
+                    <Grid FocusManager.IsFocusScope="False">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="{Binding TextBottomPadding}"/>
+                        </Grid.RowDefinitions>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Grid.Column" Value="2"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
+                                        <Setter Property="Grid.Column" Value="0"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <TextBlock Text="{Binding Text}" FontSize="{Binding FontSize}" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{Binding Foreground}"/>
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
-                                            <Setter Property="Grid.Column" Value="2"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
-
-                            <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" FocusManager.IsFocusScope="False">
-                                <Grid.Resources>
-                                    <ImageBrush x:Key="IMG" ice:Freeze="True" Stretch="Uniform" ImageSource="{Binding Image, Mode=OneWay}" />
-                                </Grid.Resources>
-                                <Grid.Style>
-                                    <Style TargetType="Grid">
-                                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                        <Setter Property="Background" Value="{Binding Foreground}"/>
-                                    </Style>
-                                </Grid.Style>
-                            </Grid>
-
-                        </Grid>
-
-                        <!--Text Label-->
-                        <Grid FocusManager.IsFocusScope="False">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="{Binding TextBottomPadding}"/>
-                            </Grid.RowDefinitions>
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Setter Property="Grid.Column" Value="2"/>
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ButtonContent}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
                                             <Setter Property="Grid.Column" Value="0"/>
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Grid.Style>
-
-                            <TextBlock Text="{Binding Text}" FontSize="{Binding FontSize}" VerticalAlignment="Center" FocusManager.IsFocusScope="False">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="{Binding Foreground}"/>
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text}" Value="{x:Null}">
-                                                <Setter Property="Visibility" Value="Collapsed"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding ImageTextRelation}" Value="{x:Static local:ImageTextRelationSetting.TextBeforeImage}">
-                                                <Setter Property="Grid.Column" Value="0"/>
-                                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                        </Grid>
-
-                        <!--Custom Content-->
-                        <ContentControl Grid.ColumnSpan="3" Content="{Binding ButtonContent}" FocusManager.IsFocusScope="False"/>
+                            </TextBlock.Style>
+                        </TextBlock>
 
                     </Grid>
 
-                </Border>
+                    <!--Custom Content-->
+                    <ContentControl Grid.ColumnSpan="3" Content="{Binding ButtonContent}" FocusManager.IsFocusScope="False"/>
 
-                <!--Gloss Effect-->
-                <Border Grid.ColumnSpan="3" IsHitTestVisible="False" FocusManager.IsFocusScope="False">
-                    <Border.Style>
-                        <Style TargetType="Border">
-                            <Setter Property="Visibility" Value="Visible"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="false">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Background}" Value="Transparent">
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
+                </Grid>
 
-                    <Grid IsHitTestVisible="False">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="4*"/>
-                            <RowDefinition Height="6*"/>
-                        </Grid.RowDefinitions>
+            </Border>
 
-                        <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                            <Border.Background>
-                                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                    <RadialGradientBrush.GradientStops>
-                                        <GradientStop Color="#20ffffff" Offset="0" />
-                                        <GradientStop Color="#00ffffff" Offset="1.0" />
-                                    </RadialGradientBrush.GradientStops>
-                                </RadialGradientBrush>
-                            </Border.Background>
-                        </Border>
+            <!--Gloss Effect-->
+            <Border Grid.ColumnSpan="3" IsHitTestVisible="False" FocusManager.IsFocusScope="False">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=bd}" Value="false">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Background}" Value="Transparent">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
 
-                        <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
-                            <Border.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#00ffffff" Offset="0.2"/>
-                                    <GradientStop Color="#66ffffff" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                        </Border>
+                <Grid IsHitTestVisible="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="6*"/>
+                    </Grid.RowDefinitions>
 
-                        <!--<Border Grid.Row="1" IsHitTestVisible="False">
-                            <Border.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                    <GradientStop Color="#00ffffff" Offset="0"/>
-                                    <GradientStop Color="#08000000" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                        </Border>-->
+                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="#20ffffff" Offset="0" />
+                                    <GradientStop Color="#00ffffff" Offset="1.0" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
 
-                        <!--<Border Grid.RowSpan="2" IsHitTestVisible="False">
-                            <Border.Background>
-                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                    <GradientStop Color="#04000000" Offset="0"/>
-                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
-                                    --><!--<GradientStop Color="#10ffffff" Offset="0.6"/>--><!--
-                                    <GradientStop Color="#04000000" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                        </Border>-->
+                    <Border CornerRadius="0,0,200,200" IsHitTestVisible="False">
+                        <Border.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#00ffffff" Offset="0.2"/>
+                                <GradientStop Color="#66ffffff" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                    </Border>
 
-                    </Grid>
+                </Grid>
 
-                </Border>
+            </Border>
 
-            </Grid>
-
-        </Border>
+        </Grid>
 
     </Border>
 

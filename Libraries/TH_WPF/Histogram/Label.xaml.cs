@@ -25,8 +25,6 @@ namespace TH_WPF.Histogram
             root.DataContext = this;
         }
 
-
-
         public double TopPadding
         {
             get { return (double)GetValue(TopPaddingProperty); }

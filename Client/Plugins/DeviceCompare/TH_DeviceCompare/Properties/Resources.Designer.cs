@@ -103,6 +103,16 @@ namespace TH_DeviceCompare.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Power_01_200px {
+            get {
+                object obj = ResourceManager.GetObject("Power_01_200px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ScheduledDownTime_01 {
             get {
                 object obj = ResourceManager.GetObject("ScheduledDownTime_01", resourceCulture);

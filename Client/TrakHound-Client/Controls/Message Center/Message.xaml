@@ -13,7 +13,6 @@
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d"
-             x:Name="msg"
              >
     
     <UserControl.RenderTransform>
@@ -184,7 +183,7 @@
                             <Style TargetType="TextBlock">
                                 <Setter Property="Visibility" Value="Visible"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=msg}" Value="true">
+                                    <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -203,7 +202,7 @@
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter Property="Background" Value="#10ffffff"/>
                                     </Trigger>
-                                    <DataTrigger Binding="{Binding IsMouseOver, ElementName=msg}" Value="true">
+                                    <DataTrigger Binding="{Binding IsMouseOver}" Value="true">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>

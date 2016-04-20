@@ -8,6 +8,8 @@ using System.IO;
 
 using TH_GitHub;
 
+using TH_Global.Functions;
+
 namespace TestConsole
 {
     class Program
@@ -15,6 +17,12 @@ namespace TestConsole
 
         static void Main(string[] args)
         {
+
+            FileSystem_Functions.DeleteDirectory(@"C:\TestClientPlugins");
+
+
+
+
             //var infos = new List<StatusInfo>();
 
             //var probeData = TH_MTConnect.Components.Requests.Get("http://127.0.0.1:5000/OKUMA.Lathe/probe", null, 2000, 1);
@@ -45,23 +53,23 @@ namespace TestConsole
 
 
 
-            string time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 0, 45));
-            Console.WriteLine(time);
+            //string time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 0, 45));
+            //Console.WriteLine(time);
 
-            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 1, 23));
-            Console.WriteLine(time);
+            //time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 1, 23));
+            //Console.WriteLine(time);
 
-            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(2,39, 1));
-            Console.WriteLine(time);
+            //time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(2,39, 1));
+            //Console.WriteLine(time);
 
-            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 0, 0, 0, 329));
-            Console.WriteLine(time);
+            //time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(0, 0, 0, 0, 329));
+            //Console.WriteLine(time);
 
 
-            time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(3, 14, 7, 56, 246));
-            Console.WriteLine(time);
+            //time = TH_Global.Functions.TimeSpan_Functions.ToFormattedString(new TimeSpan(3, 14, 7, 56, 246));
+            //Console.WriteLine(time);
 
-            Console.ReadLine();
+            //Console.ReadLine();
 
             
         }

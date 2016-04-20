@@ -49,7 +49,7 @@ namespace TH_DeviceCompare
                         var dd = DeviceDisplays[index];
                         Headers.Remove(dd.Group.Header);
                         Columns.Remove(dd.Group.Column);
-                        Overlays.Remove(dd.Group.Overlay);
+                        //Overlays.Remove(dd.Group.Overlay);
                         DeviceDisplays.Remove(dd);
                     }
                 }
@@ -117,7 +117,7 @@ namespace TH_DeviceCompare
                 DeviceDisplays.Add(display);
                 if (display.Group.Header != null) Headers.Add(display.Group.Header);
                 if (display.Group.Column != null) Columns.Add(display.Group.Column);
-                if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
+                //if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
             }
         }
 
@@ -131,7 +131,7 @@ namespace TH_DeviceCompare
             DeviceDisplays.Add(display);
             if (display.Group.Header != null) Headers.Add(display.Group.Header);
             if (display.Group.Column != null) Columns.Add(display.Group.Column);
-            if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
+            //if (display.Group.Overlay != null) Overlays.Add(display.Group.Overlay);
 
             SortDataItems();
             LoadHeaderView();

@@ -33,6 +33,14 @@ namespace TrakHound_Client.Controls
             ZoomLevels.Add("150%");
             ZoomLevels.Add("200%");
 
+            //ZoomLevels.Add(new ZoomInfo(0.50));
+            //ZoomLevels.Add(new ZoomInfo(0.75));
+            //ZoomLevels.Add(new ZoomInfo(1.00));
+            //ZoomLevels.Add(new ZoomInfo(1.50));
+            //ZoomLevels.Add(new ZoomInfo(2.00));
+
+            //ZoomLevel = new ZoomInfo(1.00);
+
             fPreviousExecutionState = NativeMethods.SetThreadExecutionState(NativeMethods.ES_CONTINUOUS | NativeMethods.ES_SYSTEM_REQUIRED);
         }
 
@@ -75,7 +83,27 @@ namespace TrakHound_Client.Controls
             if (e.Key == Key.Escape) this.Close();
         }
 
+
+
         #region "Page Control"
+
+
+
+        //public ZoomInfo ZoomLevel
+        //{
+        //    get { return (ZoomInfo)GetValue(ZoomLevelProperty); }
+        //    set { SetValue(ZoomLevelProperty, value); }
+        //}
+
+        //public static readonly DependencyProperty ZoomLevelProperty =
+        //    DependencyProperty.Register("ZoomLevel", typeof(ZoomInfo), typeof(Fullscreen), new PropertyMetadata(null, new PropertyChangedCallback(Value_PropertyChanged)));
+
+        //private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        //{
+        //    var o = obj as Fullscreen;
+        //    if (o != null) o.SetZoom((ZoomInfo)e.NewValue);
+        //}
+
 
         public double ZoomLevel
         {
@@ -112,15 +140,58 @@ namespace TrakHound_Client.Controls
             }
         }
 
+        //public class ZoomInfo
+        //{
+        //    public ZoomInfo(double value)
+        //    {
+        //        Value = value;
+        //        Text = value.ToString("P0");
+        //    }
+
+        //    public double Value { get; set; }
+        //    public string Text { get; set; }
+        //    //public string Text
+        //    //{
+        //    //    get
+        //    //    {
+        //    //        return Value.ToString("P2");
+        //    //    }
+        //    //}
+        //}
+
+        //ObservableCollection<ZoomInfo> _zoomlevels;
+        //public ObservableCollection<ZoomInfo> ZoomLevels
+        //{
+        //    get
+        //    {
+        //        if (_zoomlevels == null)
+        //            _zoomlevels = new ObservableCollection<ZoomInfo>();
+        //        return _zoomlevels;
+        //    }
+
+        //    set
+        //    {
+        //        _zoomlevels = value;
+        //    }
+        //}
+
         private void ZoomOut_Clicked(TH_WPF.Button bt)
         {
             double zoom = Math.Max(ZoomLevel - 0.1, 0.5);
+            //var index = ZoomLevels.ToList().FindIndex(x => x.Value == ZoomLevel.Value);
+            //if (index > 0) SetZoom(ZoomLevels[index - 1]);
+
             zoom_COMBO.Text = zoom.ToString("P0");
+            SetZoom(zoom);
         }
 
         private void ZoomIn_Clicked(TH_WPF.Button bt)
         {
+            //var index = ZoomLevels.ToList().FindIndex(x => x.Value == ZoomLevel.Value);
+            //if (index < ZoomLevels.Count - 1) SetZoom(ZoomLevels[index + 1]);
+
             double zoom = Math.Min(ZoomLevel + 0.1, 2.0);
+            SetZoom(zoom);
             zoom_COMBO.Text = zoom.ToString("P0");
         }
 
@@ -153,6 +224,11 @@ namespace TrakHound_Client.Controls
         //    }
         //}
 
+        //void SetZoom(ZoomInfo zoom)
+        //{
+        //    ZoomLevel = zoom;
+        //}
+
         void SetZoom(double zoom)
         {
             ZoomLevel = zoom;
@@ -179,5 +255,10 @@ namespace TrakHound_Client.Controls
         }
 
         #endregion
+
+        private void Zoom_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
