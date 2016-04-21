@@ -1,149 +1,141 @@
-﻿<!--Copyright (c) 2015 Feenux LLC, All Rights Reserved.-->
-
-<!--This file is subject to the terms and conditions defined in-->
-<!--file 'LICENSE.txt', which is part of this source code package.-->
-
-<UserControl x:Class="TrakHound_Client.Pages.Options.Updates.Page"
+﻿<UserControl x:Class="TrakHound_Client.Pages.Options.Updates.Page"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TrakHound_Client.Pages.Options.Logger"
              
-             xmlns:controls="clr-namespace:TrakHound_Client.Controls"            
-             xmlns:local="clr-namespace:TrakHound_Client.Pages.Options.Updates"
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
              mc:Ignorable="d" 
-             Width="800"
-             Loaded="UserControl_Loaded"
-             >
-    
+             d:DesignWidth="600">
+
+
     <StackPanel>
-        
-        <StackPanel>
+        <StackPanel.Resources>
+            
+            <Style TargetType="th_wpf:Button">
+                <Setter Property="Visibility" Value="Visible"/>
+                <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Padding" Value="10,5"/>
+                <Setter Property="Margin" Value="0,10"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="CornerRadius" Value="2"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="false">
+                        <Setter Property="Foreground" Value="#aa000000"/>
+                        <Setter Property="Background" Value="#cccccc"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            
+        </StackPanel.Resources>
 
-            <RadioButton x:Name="Auto_RADIO" Content="Automatically install updates (recommeded)" GroupName="UpdateBehavior" Margin="0,5" Checked="Auto_RadioButton_Checked"/>
+        <Border Margin="0,10" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2" HorizontalAlignment="Left">
 
-            <RadioButton x:Name="SemiAuto_RADIO" Content="Check for updates, but let me decide when to install them" GroupName="UpdateBehavior" Margin="0,5" Checked="SemiAuto_RadioButton_Checked"/>
+            <StackPanel Margin="10">
 
-            <RadioButton x:Name="Manual_RADIO" Content="Never automatically check for updates" GroupName="UpdateBehavior" Margin="0,5" Checked="Manual_RadioButton_Checked"/>
+                <CheckBox Height="40" Content="Enable Automatic Updates" IsChecked="{Binding UpdatesEnabled}" Margin="0,0,0,10"/>
 
-        </StackPanel>
+                <!--Update Check Interval-->
+                <th_wpf:TimeSlider Title="Update Check Interval" 
+                HelpText="Sets the interval to check for updates automatically"
+                Value="{Binding UpdateCheckInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Maximum="60000" Minimum="1000" LargeChange="1000" TickFrequency="1000"
+                Width="500" HorizontalAlignment="Left">
+                    <th_wpf:TimeSlider.Style>
+                        <Style TargetType="th_wpf:TimeSlider">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UpdatesEnabled}" Value="false">
+                                    <Setter Property="Opacity" Value="0.4"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:TimeSlider.Style>
+                </th_wpf:TimeSlider>
 
-        <!--Check for Updates Button-->
-        <th_wpf:Button Image="/TrakHound-Client;component/Resources/Refresh_01.png" Text="Check for Updates" Height="40" Margin="0,20,0,10" HorizontalAlignment="Left" Clicked="CheckForUpdates_Clicked">
-            <th_wpf:Button.Style>
-                <Style TargetType="th_wpf:Button">
-                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    <Setter Property="Background" Value="#00000000"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Padding" Value="5"/>
-                    <Setter Property="FontSize" Value="14"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        </Trigger>
-                    </Style.Triggers>                   
-                </Style>
-            </th_wpf:Button.Style>
-        </th_wpf:Button>
-        
-        <!--TrakHound Client-->
-        <Border CornerRadius="1" BorderThickness="1" BorderBrush="{StaticResource Shade_Normal}" Margin="0, 20">
-            <Grid Margin="10, 20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            </StackPanel>
 
-                <Image Source="/TrakHound-Client;component/Resources/TrakHound_Logo_10.png" Height="75" Margin="10,0"/>
+        </Border>
 
-                <StackPanel Grid.Column="1">
 
-                    <TextBlock Text="{Binding ClientVersion}" FontSize="14" Foreground="{StaticResource Foreground_Normal}" Margin="0,5,0,0"/>
+        <StackPanel Margin="0,20">
 
-                    <TextBlock Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}">
-                        <Run Text="TrakHound" FontSize="30" FontWeight="600"/>
-                        <Run Text="Client" FontSize="18"/>
-                    </TextBlock>
+            <!--Check for Updates Button-->
+            <th_wpf:Button Text="Check for Updates" Clicked="CheckForUpdates_Clicked" Margin="10"/>
 
-                    <TextBlock Text="© 2015 Feenux LLC, All Rights Reserved" FontSize="8" Foreground="{StaticResource Foreground_Normal}" />
+            <!--Apply Updates Button-->
+            <Border BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2" Margin="0,10">
 
-                </StackPanel>
+                <Grid Margin="10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="60,0,20,0">
-
-                    <TextBlock Text="{Binding ClientCheckResult}" FontSize="14" MaxWidth="200" Margin="10,0,10,0" Foreground="{Binding ClientCheckBrush}" VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
-
-                    <Rectangle Height="25" Width="25" Margin="10,0,0,0" VerticalAlignment="Center">
-                        <Rectangle.Resources>
-                            <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding ClientCheckImage}" />
-                        </Rectangle.Resources>
-
-                        <Rectangle.Style>
-                            <Style TargetType="Rectangle">
-                                <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                                <Setter Property="Fill" Value="{Binding ClientCheckBrush}"/>
-                                <Setter Property="Visibility" Value="Visible"/>
+                    <!--Button-->
+                    <th_wpf:Button Text="Apply Updates" Clicked="ApplyUpdates_Clicked" IsEnabled="False">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ClientCheckImage}" Value="{x:Null}">
+                                    <DataTrigger Binding="{Binding AvailableUpdates}" Value="0">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
+
+                    <!--Number of Available Updates Text-->
+                    <TextBlock Grid.Column="1">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="20,0"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AvailableUpdates}" Value="0">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Rectangle.Style>
-                    </Rectangle>
-
-                    <Grid>
-                        <Grid.Style>
-                            <Style TargetType="Grid">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ClientUpdateShown}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-
-                        <!--<controls:TH_Button x:Name="Download_BT" Text="Update" Height="40" Margin="10,0,0,0"
-                                        Clicked="Download_Button_Clicked"                
-                                       />-->
-
-                    </Grid>
-                    
-                    <Border BorderBrush="Green" BorderThickness="1">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ClientInstalledShown}" Value="true">
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
-                        <TextBlock Text="Restart TrakHound to Apply Update" Width="100" Margin="10" FontSize="12" Foreground="Green" TextAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </TextBlock.Style>
                         
-                    </Border>
+                        <Run Text="{Binding AvailableUpdates}"/>
+                        <Run>
+                            <Run.Style>
+                                <Style TargetType="Run">
+                                    <Setter Property="Text" Value="Updates Available"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AvailableUpdates}" Value="1">
+                                            <Setter Property="Text" Value="Update Available"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Run.Style>
+                        </Run>
+                    </TextBlock>
 
-                </StackPanel>
-             
-            </Grid>
-        </Border>  
-        
-        <!--Plugins-->
+                </Grid>
 
-        <TextBlock Text="Plugins" FontSize="16" Foreground="{StaticResource Foreground_Light}"/>
+            </Border>
+            
+            <!--Clear Updates Queue-->
+            <th_wpf:Button Text="Clear Updates Queue" Clicked="ClearUpdatesQueue_Clicked" Margin="10"/>
 
-        <Rectangle Fill="{StaticResource Shade_Normal}" Height="1" Margin="0,10,0,20"/>
+        </StackPanel>
 
-        <StackPanel x:Name="Plugin_STACK" Grid.Row="1"/>
+
+        <!--Restore Defaults Button-->
+        <th_wpf:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Margin="10"/>
 
     </StackPanel>
-    
+
 </UserControl>

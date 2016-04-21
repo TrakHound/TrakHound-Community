@@ -9,6 +9,7 @@ using System.IO;
 
 using TH_Global;
 using TH_Global.Functions;
+using TH_Global.Updates;
 
 namespace TrakHound_Updater
 {
@@ -17,33 +18,37 @@ namespace TrakHound_Updater
 
         public static AppInfo Get(string appInfoUrl)
         {
-            Logger.Log("Getting AppInfo..");
+            Logger.Log("Getting AppInfo @ " + appInfoUrl, Logger.LogLineType.Notification);
 
             var info = AppInfo.Get(appInfoUrl);
             if (info != null)
             {
-                string installed = GetInstalledVersion(info);
+                Logger.Log("AppInfo retrieved for " + info.Name, Logger.LogLineType.Notification);
+
+                string installed = InstalledVersion.Get(info);
                 string update = info.Version;
-                string queued = GetUpdateVersion(info);
+                string queued = UpdateVersion.Get(info);
+
+                UpdateUrl.Set(info);
 
                 if (UpdateNeeded(update, installed, queued))
                 {
-                    Logger.Log("Downloading Update Files (" + info.Size + ")...");
+                    Logger.Log("Downloading Update Files (" + info.Size + ")...", Logger.LogLineType.Notification);
                     string filesPath = Files.GetSetupFiles(info.DownloadUrl);
                     if (filesPath != null)
                     {
-                        SetUpdatePath(info, filesPath);
-                        SetUpdateVersion(info);
-                        Logger.Log("Registry Keys Updated");
+                        UpdatePath.Set(info, filesPath);
+                        UpdateVersion.Set(info);
+                        Logger.Log("Registry Keys Updated", Logger.LogLineType.Notification);
                     }
-                    else Logger.Log("Error during GetSetupFiles()");
+                    else Logger.Log("Error during GetSetupFiles()", Logger.LogLineType.Error);
                 }
                 else
                 {
-                    Logger.Log(info.Name + " Up to Date");
+                    Logger.Log(info.Name + " Up to Date", Logger.LogLineType.Notification);
 
-                    DeleteUpdatePath(info);
-                    DeleteUpdateVersion(info);
+                    UpdatePath.Delete(info);
+                    UpdateVersion.Delete(info);
                 }
             }
 
@@ -52,9 +57,9 @@ namespace TrakHound_Updater
 
         public static void Apply(AppInfo info)
         {
-            Logger.Log("Applying Update..");
+            Logger.Log("Applying Update..", Logger.LogLineType.Notification);
 
-            string updatePath = GetUpdatePath(info);
+            string updatePath = UpdatePath.Get(info);
             if (updatePath != null && Directory.Exists(updatePath))
             {
                 WaitForClientClose();
@@ -66,35 +71,61 @@ namespace TrakHound_Updater
 
                 if (StopServerService())
                 {
-                    string installPath = GetInstallDirectory(info);
+                    string installPath = InstallDirectory.Get(info);
                     if (installPath != null)
                     {
-                        Logger.Log("Updating Files...");
+                        Logger.Log("Updating Files...", Logger.LogLineType.Notification);
 
                         // Update Files by copying entire folder
                         Files.DirectoryCopy(updatePath, installPath, true, true);
 
-                        Logger.Log("Files Updated");
+                        Logger.Log("Files Updated", Logger.LogLineType.Notification);
 
-                        SetInstalledVersion(info);
+                        InstalledVersion.Set(info);
 
-                        Logger.Log("Installed Version Registry Key Set : " + info.Version);
+                        Logger.Log("Installed Version Registry Key Set : " + info.Version, Logger.LogLineType.Notification);
 
                         if (serverRunning) StartServerService();
                     }
 
                     // Clean up
                     FileSystem_Functions.DeleteDirectory(updatePath);
-                    DeleteUpdatePath(info);
-                    DeleteUpdateVersion(info);
+                    UpdatePath.Delete(info);
+                    UpdateVersion.Delete(info);
                 }
                 else
                 {
-                    Logger.Log("Error: TrakHound Server Service could not be stopped");
+                    Logger.Log("Error: TrakHound Server Service could not be stopped", Logger.LogLineType.Error);
+                }
+            }
+            else Logger.Log("Update Path Not Found : Aborting Update..", Logger.LogLineType.Warning);
+        }
+
+        public static void ClearAll()
+        {
+            ClearRegistryKeys();
+            ClearUpdateFiles();
+        }
+
+        public static void ClearRegistryKeys()
+        {
+            string[] names = Registry.GetKeyNames();
+            if (names != null)
+            {
+                foreach (var name in names)
+                {
+                    Registry.DeleteValue(Registry.UPDATE_PATH, name);
+                    Registry.DeleteValue(Registry.UPDATE_VERSION, name);
+                    Registry.DeleteValue(Registry.INSTALL_VERSION, name);
                 }
             }
         }
 
+        public static void ClearUpdateFiles()
+        {
+            FileSystem_Functions.DeleteDirectory(FileLocations.Updates);
+            FileLocations.CreateUpdatesDirectory();
+        }
 
         #region "Application Interaction"
 
@@ -105,11 +136,11 @@ namespace TrakHound_Updater
             var service = Service_Functions.GetServiceController(ApplicationNames.TRAKHOUND_SERVER_SEVICE_NAME);
             if (service != null)
             {
-                Logger.Log("Starting Server Service...");
+                Logger.Log("Starting Server Service...", Logger.LogLineType.Notification);
                 service.Start();
                 service.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Running, new TimeSpan(0, 0, 30));
                 if (service.Status != System.ServiceProcess.ServiceControllerStatus.Running) result = false;
-                else Logger.Log("Server Service Started");
+                else Logger.Log("Server Service Started", Logger.LogLineType.Notification);
             }
 
             return result;
@@ -122,11 +153,11 @@ namespace TrakHound_Updater
             var service = Service_Functions.GetServiceController(ApplicationNames.TRAKHOUND_SERVER_SEVICE_NAME);
             if (service != null)
             {
-                Logger.Log("Stopping Server Service...");
+                Logger.Log("Stopping Server Service...", Logger.LogLineType.Notification);
                 if (service.Status == System.ServiceProcess.ServiceControllerStatus.Running) service.Stop();
                 service.WaitForStatus(System.ServiceProcess.ServiceControllerStatus.Stopped, new TimeSpan(0, 0, 30));
                 if (service.Status != System.ServiceProcess.ServiceControllerStatus.Stopped) result = false;
-                else Logger.Log("Server Service Stopped");
+                else Logger.Log("Server Service Stopped", Logger.LogLineType.Notification);
             }
 
             return result;
@@ -137,9 +168,9 @@ namespace TrakHound_Updater
             Process[] processes = Process.GetProcessesByName(ApplicationNames.TRAKHOUND_CLIENT_PROCESS_NAME);
             foreach (var process in processes)
             {
-                Logger.Log("Waiting for " + process.ProcessName + " to Close...");
+                Logger.Log("Waiting for " + process.ProcessName + " to Close...", Logger.LogLineType.Notification);
                 process.WaitForExit();
-                Logger.Log(process.ProcessName + " Closed");
+                Logger.Log(process.ProcessName + " Closed", Logger.LogLineType.Notification);
             }
         }
 
@@ -147,177 +178,109 @@ namespace TrakHound_Updater
 
         #region "Registry"
 
-        private const string TRAKHOUND_BUNDLE = "trakhound-bundle";
-        private const string TRAKHOUND_CLIENT = "trakhound-client";
-        private const string TRAKHOUND_SERVER = "trakhound-server";
-
-
-        private const string BUNDLE_UPDATE_PATH = "BUNDLE_UPDATE_PATH";
-        private const string CLIENT_UPDATE_PATH = "CLIENT_UPDATE_PATH";
-        private const string SERVER_UPDATE_PATH = "SERVER_UPDATE_PATH";
-
-        private static string GetUpdatePath(AppInfo info)
+        private static string CreateKeyName(AppInfo info)
         {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
+            if (info.Name != null)
             {
-                return Registry.GetValue(BUNDLE_UPDATE_PATH);
+                return info.Name.Replace(' ','_').ToLower();
             }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                return Registry.GetValue(CLIENT_UPDATE_PATH);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                return Registry.GetValue(SERVER_UPDATE_PATH);
-            }
-
             return null;
         }
 
-        private static void SetUpdatePath(AppInfo info, string path)
+        private static class UpdatePath
         {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
+            public static string Get(AppInfo info)
             {
-                Registry.SetKey(BUNDLE_UPDATE_PATH, path);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                Registry.SetKey(CLIENT_UPDATE_PATH, path);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                Registry.SetKey(SERVER_UPDATE_PATH, path);
-            }     
-        }
+                string keyName = CreateKeyName(info);
+                if (keyName != null) return Registry.GetValue(Registry.UPDATE_PATH, keyName);
 
-        private static void DeleteUpdatePath(AppInfo info)
-        {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
-            {
-                Registry.DeleteValue(BUNDLE_UPDATE_PATH);
+                return null;
             }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
+
+            public static void Set(AppInfo info, string path)
             {
-                Registry.DeleteValue(CLIENT_UPDATE_PATH);
+                string keyName = CreateKeyName(info);
+                if (keyName != null) Registry.SetKey(Registry.UPDATE_PATH, path, keyName);
             }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
+
+            public static void Delete(AppInfo info)
             {
-                Registry.DeleteValue(SERVER_UPDATE_PATH);
+                string keyName = CreateKeyName(info);
+                if (keyName != null) Registry.DeleteValue(Registry.UPDATE_PATH, keyName);
             }
         }
-
-
-        private const string BUNDLE_UPDATE_VERSION = "BUNDLE_UPDATE_VERSION";
-        private const string CLIENT_UPDATE_VERSION = "CLIENT_UPDATE_VERSION";
-        private const string SERVER_UPDATE_VERSION = "SERVER_UPDATE_VERSION";
-
-        private static string GetUpdateVersion(AppInfo info)
+        
+        private static class UpdateVersion
         {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
+            public static string Get(AppInfo info)
             {
-                return Registry.GetValue(BUNDLE_UPDATE_VERSION);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                return Registry.GetValue(CLIENT_UPDATE_VERSION);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                return Registry.GetValue(SERVER_UPDATE_VERSION);
+                string keyName = CreateKeyName(info);
+                if (keyName != null) return Registry.GetValue(Registry.UPDATE_VERSION, keyName);
+
+                return null;
             }
 
-            return null;
-        }
+            public static void Set(AppInfo info)
+            {
+                string keyName = CreateKeyName(info);
+                if (keyName != null) Registry.SetKey(Registry.UPDATE_VERSION, info.Version, keyName);
+            }
 
-        private static void SetUpdateVersion(AppInfo info)
-        {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
+            public static void Delete(AppInfo info)
             {
-                Registry.SetKey(BUNDLE_UPDATE_VERSION, info.Version);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                Registry.SetKey(CLIENT_UPDATE_VERSION, info.Version);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                Registry.SetKey(SERVER_UPDATE_VERSION, info.Version);
+                string keyName = CreateKeyName(info);
+                if (keyName != null) Registry.DeleteValue(Registry.UPDATE_VERSION, keyName);
             }
         }
-
-        private static void DeleteUpdateVersion(AppInfo info)
+        
+        private static class InstalledVersion
         {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
+            public static string Get(AppInfo info)
             {
-                Registry.DeleteValue(BUNDLE_UPDATE_VERSION);
+                string keyName = CreateKeyName(info);
+                if (keyName != null) return Registry.GetValue(Registry.INSTALL_VERSION, keyName);
+
+                return null;
             }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
+
+            public static void Set(AppInfo info)
             {
-                Registry.DeleteValue(CLIENT_UPDATE_VERSION);
+                string keyName = CreateKeyName(info);
+                if (keyName != null) Registry.SetKey(Registry.INSTALL_VERSION, info.Version, keyName);
             }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
+
+            public static void Delete(AppInfo info)
             {
-                Registry.DeleteValue(SERVER_UPDATE_VERSION);
+                string keyName = CreateKeyName(info);
+                if (keyName != null) Registry.DeleteValue(Registry.INSTALL_VERSION, keyName);
             }
         }
 
-
-        private const string BUNDLE_INSTALLED_VERSION = "BUNDLE_INSTALLED_VERSION";
-        private const string CLIENT_INSTALLED_VERSION = "CLIENT_INSTALLED_VERSION";
-        private const string SERVER_INSTALLED_VERSION = "SERVER_INSTALLED_VERSION";
-
-        private static string GetInstalledVersion(AppInfo info)
+        private static class InstallDirectory
         {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
+            public static string Get(AppInfo info)
             {
-                return Registry.GetValue(BUNDLE_INSTALLED_VERSION);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                return Registry.GetValue(CLIENT_INSTALLED_VERSION);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                return Registry.GetValue(SERVER_INSTALLED_VERSION);
-            }
+                string keyName = CreateKeyName(info);
+                if (keyName != null) return Registry.GetValue(Registry.INSTALL_PATH, keyName);
 
-            return null;
-        }
-
-        private static void SetInstalledVersion(AppInfo info)
-        {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
-            {
-                Registry.SetKey(BUNDLE_INSTALLED_VERSION, info.Version);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                Registry.SetKey(CLIENT_INSTALLED_VERSION, info.Version);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                Registry.SetKey(SERVER_INSTALLED_VERSION, info.Version);
+                return null;
             }
         }
 
-        private static void DeleteInstalledVersion(AppInfo info)
+        private static class UpdateUrl
         {
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
+            public static void Set(AppInfo info)
             {
-                Registry.DeleteValue(BUNDLE_INSTALLED_VERSION);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                Registry.DeleteValue(CLIENT_INSTALLED_VERSION);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                Registry.DeleteValue(SERVER_INSTALLED_VERSION);
+                string keyName = CreateKeyName(info);
+                if (keyName != null && !String.IsNullOrEmpty(info.AppInfoUrl))
+                {
+                    Logger.Log("Update_URL Updated to : " + info.AppInfoUrl, Logger.LogLineType.Notification);
+                    Registry.SetKey(Registry.UPDATE_URL, info.AppInfoUrl, keyName);
+                }
             }
         }
 
         #endregion
-
 
         private static bool UpdateNeeded(string update, string installed, string queued)
         {
@@ -343,31 +306,6 @@ namespace TrakHound_Updater
             Version version;
             if (Version.TryParse(input, out version)) return version;
             return null;
-        }
-
-
-        private const string BUNDLE_INSTALL_PATH = "BUNDLE_INSTALL_PATH";
-        private const string CLIENT_INSTALL_PATH = "CLIENT_INSTALL_PATH";
-        private const string SERVER_INSTALL_PATH = "SERVER_INSTALL_PATH";
-
-        private static string GetInstallDirectory(AppInfo info)
-        {
-            string result = null;
-
-            if (info.Name.ToLower() == TRAKHOUND_BUNDLE)
-            {
-                result = Registry.GetValue(BUNDLE_INSTALL_PATH);
-            }
-            else if (info.Name.ToLower() == TRAKHOUND_CLIENT)
-            {
-                result = Registry.GetValue(CLIENT_INSTALL_PATH);
-            }
-            else if(info.Name.ToLower() == TRAKHOUND_SERVER)
-            {
-                result = Registry.GetValue(SERVER_INSTALL_PATH);
-            }
-
-            return result;
         }
 
     }

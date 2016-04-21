@@ -117,8 +117,8 @@
     <Compile Include="Controls\Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
     </Compile>
-    <None Include="Pages\Options\Updates\Page.xaml.cs">
-      <DependentUpon>Page.xaml</DependentUpon>
+    <None Include="Pages\Options\Updates\PageOld.xaml.cs">
+      <DependentUpon>PageOld.xaml</DependentUpon>
     </None>
     <None Include="Pages\Options\Updates\UpdateItem.xaml.cs">
       <DependentUpon>UpdateItem.xaml</DependentUpon>
@@ -163,6 +163,9 @@
     <Compile Include="Pages\Options\Logger\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Options\Updates\Page.xaml.cs">
+      <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Plugins\Installed\ListItem.xaml.cs">
       <DependentUpon>ListItem.xaml</DependentUpon>
     </Compile>
@@ -205,7 +208,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <None Include="Pages\Options\Updates\Page.xaml">
+    <None Include="Pages\Options\Updates\PageOld.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
@@ -276,6 +279,10 @@
     <Page Include="Pages\Options\Logger\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Options\Updates\Page.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\Plugins\Installed\ListItem.xaml">
       <Generator>MSBuild:Compile</Generator>

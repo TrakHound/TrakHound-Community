@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 
 using TH_Global;
+using TH_Global.Updates;
+using System.IO;
 
 namespace TrakHound_Updater
 {
@@ -27,7 +29,7 @@ namespace TrakHound_Updater
             status.dwWaitHint = 10000;
             SetServiceStatus(this.ServiceHandle, ref status);
 
-            StartUpdates();
+            Start();
 
             // Update the service state to Running.
             status.dwCurrentState = ServiceState.SERVICE_RUNNING;
@@ -41,7 +43,7 @@ namespace TrakHound_Updater
             status.dwWaitHint = 10000;
             SetServiceStatus(this.ServiceHandle, ref status);
 
-            StopUpdates();
+            Stop();
 
             // Update the service state to Stopped.
             status.dwCurrentState = ServiceState.SERVICE_STOPPED;
@@ -79,22 +81,61 @@ namespace TrakHound_Updater
         #endregion
 
 
-        System.Timers.Timer updateTimer;
-
-        private const double INITIAL_UPDATE_INTERVAL = 60000; // 1 Minute
-        private const double CONTINUOUS_UPDATE_INTERVAL = 3600000; // 1 Hour
-
-        public void StartUpdates()
+        public void Start()
         {
-            Logger.Log("TrakHound-Updater Started!");
+            ReadConfigFile();
+        }
+
+        public void Stop()
+        {
+            StopUpdates();
+        }
+
+
+        private void ReadConfigFile()
+        {
+            // Read the update_config.xml file
+            configuration = UpdateConfiguration.Read();
+
+            if (configuration.ApplyNow)
+            {
+                AppInfo[] infos = GetUpdates();
+                ApplyUpdates(infos);
+            }
+            else if (configuration.CheckNow)
+            {
+                GetUpdates();
+            }
+
+            configuration.ApplyNow = false;
+            configuration.CheckNow = false;
+            StopConfigurationFileWatcher();
+            UpdateConfiguration.Create(configuration);
+
+            // Monitor update_config.xml file for any changes
+            StartConfigurationFileWatcher();
+
+            // If updates are enabled then start auto check timer
+            if (configuration.Enabled) StartUpdates();
+            else Logger.Log("Auto Updates Disabled", Logger.LogLineType.Notification);
+        }
+
+
+        private System.Timers.Timer updateTimer;
+
+        private void StartUpdates()
+        {
+            Logger.Log("TrakHound-Updater Started!", Logger.LogLineType.Notification);
+
+            StopUpdates();
 
             updateTimer = new System.Timers.Timer();
-            updateTimer.Interval = INITIAL_UPDATE_INTERVAL;
+            updateTimer.Interval = GetMillisecondsFromMinutes(configuration.UpdateCheckInterval);
             updateTimer.Elapsed += UpdateTimer_Elapsed;
             updateTimer.Enabled = true;
         }
 
-        public void StopUpdates()
+        private void StopUpdates()
         {
             if (updateTimer != null) updateTimer.Enabled = false;
         }
@@ -110,8 +151,10 @@ namespace TrakHound_Updater
 
             ApplyUpdates(infos);
 
-            timer.Interval = CONTINUOUS_UPDATE_INTERVAL;
+            timer.Interval = GetMillisecondsFromMinutes(configuration.UpdateCheckInterval);
             timer.Enabled = true;
+
+            Logger.Log("Update Timer : Interval = " + timer.Interval.ToString() + "ms", Logger.LogLineType.Debug);
         }
 
 
@@ -119,12 +162,13 @@ namespace TrakHound_Updater
         {
             var infos = new List<AppInfo>();
 
-            string[] names = Registry.GetValueNames("Update_Urls");
+            //string[] names = Registry.GetValueNames("Update_Urls");
+            string[] names = Registry.GetKeyNames();
             if (names != null)
             {
                 foreach (var name in names)
                 {
-                    string url = Registry.GetValue(name, "Update_Urls");
+                    string url = Registry.GetValue(Registry.UPDATE_URL, name);
                     if (url != null) infos.Add(Update.Get(url));
                 }
             }
@@ -142,5 +186,40 @@ namespace TrakHound_Updater
                 }
             }
         }
+
+        private UpdateConfiguration configuration;
+
+        private FileSystemWatcher watcher;
+
+        private void StartConfigurationFileWatcher()
+        {
+            StopConfigurationFileWatcher();
+
+            watcher = new FileSystemWatcher(FileLocations.TrakHound, UpdateConfiguration.CONFIG_FILENAME);
+            watcher.Changed += Watcher_Changed;
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void StopConfigurationFileWatcher()
+        {
+            if (watcher != null) watcher.EnableRaisingEvents = false;
+        }
+
+        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            ReadConfigFile();
+        }
+
+        private static double GetMillisecondsFromMinutes(double minutes)
+        {
+            var ts = TimeSpan.FromMinutes(minutes);
+            return ts.TotalMilliseconds;
+        }
+
+        private void ClearUpdateQueue()
+        {
+
+        }
+
     }
 }

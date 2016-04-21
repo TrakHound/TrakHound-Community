@@ -177,3 +177,5 @@ D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound_Client.Properties.Resou
 D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.csproj.GenerateResource.Cache
 D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 D:\Trakhound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Updates\Page.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Pages\Options\Updates\Page.baml

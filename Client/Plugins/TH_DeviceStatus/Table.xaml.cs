@@ -85,6 +85,11 @@ namespace TH_StatusTable
 
 
         }
+
+        private void Refresh_Clicked(TH_WPF.Button bt)
+        {
+            Devices_DG.Items.Refresh();
+        }
     }
 
 }

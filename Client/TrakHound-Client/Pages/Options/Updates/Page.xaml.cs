@@ -3,47 +3,37 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using Microsoft.Win32;
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 using TH_Global;
-using TH_Plugins.Client;
-using TH_Updater;
+using TH_Global.Functions;
+using TH_Global.Updates;
 
 namespace TrakHound_Client.Pages.Options.Updates
 {
     /// <summary>
-    /// Interaction logic for General.xaml
+    /// Interaction logic for Page.xaml
     /// </summary>
-    public partial class Page : UserControl, TH_Global.IPage
+    public partial class Page : UserControl, IPage
     {
+
         public Page()
         {
             InitializeComponent();
             DataContext = this;
 
-            mw = Application.Current.MainWindow as MainWindow;
-
-            updateBehavior = ProcessUpdateBehavior();
-
-            if (updateBehavior == 0 || updateBehavior == 1) AutoUpdater_Start();
+            Load();
         }
-
-        int updateBehavior = 0;
-
-        MainWindow mw;
 
         public string Title { get { return "Updates"; } }
 
-        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Arrow_Up_01.png")); } }
+        public ImageSource Image { get { return new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Update_01.png")); } }
 
 
         public void Opened() { }
@@ -53,560 +43,298 @@ namespace TrakHound_Client.Pages.Options.Updates
         public bool Closing() { return true; }
 
 
-        void LaunchUpdater()
+        private void Load()
         {
-            //string appStartPath = AppDomain.CurrentDomain.BaseDirectory + "\\" + "trakhound-client.exe";
+            var config = TH_Global.Updates.UpdateConfiguration.Read();
 
-            //string appStartPath = @"F:\feenux\TrakHound\TrakHound\Client\AppStart\bin\Debug\AppStart.exe";
+            //QueueWriteInterval = config.QueueWriteInterval;
 
-            string appStartPath = AppDomain.CurrentDomain.BaseDirectory + "\\Updater\\" + "AppStart.exe";
+            //DebugEnabled = config.Debug;
+            //ErrorEnabled = config.Error;
+            //NotificationEnabled = config.Notification;
+            //WarningEnabled = config.Warning;
 
-            if (File.Exists(appStartPath))
+            //DebugRecycleDays = GetMillisecondsFromDays(config.DebugRecycleDays);
+            //ErrorRecycleDays = GetMillisecondsFromDays(config.ErrorRecycleDays);
+            //NotificationRecycleDays = GetMillisecondsFromDays(config.NotificationRecycleDays);
+            //WarningRecycleDays = GetMillisecondsFromDays(config.WarningRecycleDays);
+        }
+
+        private System.Timers.Timer settingChangedTimer;
+
+        public void SettingChanged()
+        {
+            if (settingChangedTimer != null) settingChangedTimer.Enabled = false;
+
+            settingChangedTimer = new System.Timers.Timer();
+            settingChangedTimer.Interval = 1000;
+            settingChangedTimer.Elapsed += SettingChangedTimer_Elapsed;
+            settingChangedTimer.Enabled = true;
+        }
+
+        private void SettingChangedTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var timer = (System.Timers.Timer)sender;
+            timer.Enabled = false;
+
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                var p = new Process();
-
-                p.StartInfo.FileName = appStartPath;
-                p.StartInfo.Arguments = Process.GetCurrentProcess().ProcessName;
-
-                p.Start();
-            }
-            else
-            {
-                Logger.Log("LaunchUpdater() :: Can't find " + appStartPath);
-            }
+                Save();
+            }), UI_Functions.PRIORITY_BACKGROUND, new object[] { });           
         }
 
-
-        void AutoUpdater_Start()
+        private void Save()
         {
-            UpdateCheck updateCheck = new UpdateCheck();
-            updateCheck.AppInfoReceived += AutoUpdater_AppInfoReceived;
-            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.json");
+            var config = new TH_Global.Updates.UpdateConfiguration();
+
+            //config.QueueWriteInterval = QueueWriteInterval;
+
+            //config.Debug = DebugEnabled;
+            //config.Error = ErrorEnabled;
+            //config.Notification = NotificationEnabled;
+            //config.Warning = WarningEnabled;
+
+            //config.DebugRecycleDays = GetDaysFromMilliseconds(DebugRecycleDays);
+            //config.ErrorRecycleDays = GetDaysFromMilliseconds(ErrorRecycleDays);
+            //config.NotificationRecycleDays = GetDaysFromMilliseconds(NotificationRecycleDays);
+            //config.WarningRecycleDays = GetDaysFromMilliseconds(WarningRecycleDays);
+
+            //TH_Global.Logger.LoggerConfiguration.Create(config);
         }
 
-        void AutoUpdater_AppInfoReceived(UpdateCheck.AppInfo info)
+        private static int GetDaysFromMilliseconds(long ms)
         {
-            if (info != null)
-            {
-                // Print Auto Update info to Console
-                Logger.Log("---- Auto-Update Info ----");
-                Logger.Log("TrakHound - Client");
-                Logger.Log("Release Type : " + info.releaseType);
-                Logger.Log("Version : " + info.version);
-                Logger.Log("Build Date : " + info.buildDate);
-                Logger.Log("Download URL : " + info.downloadUrl);
-                Logger.Log("Update URL : " + info.updateUrl);
-                Logger.Log("File Size : " + info.size);
-                Logger.Log("--------------------------");
-
-                this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(AutoUpdater_AppInfoReceived_GUI), new object[] { info });
-            }
+            var ts = TimeSpan.FromMilliseconds(ms);
+            return ts.Days;
         }
 
-        void AutoUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
+        private static long GetMillisecondsFromDays(int days)
         {
-            // Check if version is Up-to-date
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            Version version = assembly.GetName().Version;
-
-            ClientVersion = "v" + version.ToString();
-
-            Version latestVersion = null;
-            Version.TryParse(info.version, out latestVersion);
-
-            ClientUpdateShown = false;
-
-            if (latestVersion != null)
-            {
-                if (version < latestVersion)
-                {
-                    // Run Updater
-                    Updater updater = new Updater();
-                    updater.assembly = Assembly.GetExecutingAssembly();
-                    updater.Start(info.updateUrl);
-
-                    Logger.Log("Update Available : " + latestVersion.ToString());
-
-                    // Add Notification to Message Center
-                    Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.Title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.Text = "Reopen TrakHound to apply update";
-
-                    mw.messageCenter.AddMessage(mData);
-
-                    
-                    ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
-                    ClientCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));
-                    ClientCheckImage = null;
-
-                    ClientUpdateShown = true;
-                }
-                else
-                {
-                    ClientCheckResult = "Up to Date";
-                    ClientCheckBrush = new SolidColorBrush(Colors.Green);
-                    ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/CheckMark_01.png"));
-                }
-            }
-            else
-            {
-                ClientCheckResult = "Error during Update Check";
-                ClientCheckBrush = new SolidColorBrush(Colors.Red);
-                ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/X_01.png"));
-            }
+            var ts = TimeSpan.FromDays(days);
+            return Convert.ToInt64(ts.TotalMilliseconds);
         }
 
 
-        UpdateCheck.AppInfo appInfo;
+        #region "Dependency Properties"
 
-        void ManualUpdater_Start()
+        private static void Value_PropertyChanged(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            UpdateCheck updateCheck = new UpdateCheck();
-            updateCheck.AppInfoReceived += ManualUpdater_AppInfoReceived;
-            updateCheck.Start("http://www.feenux.com/trakhound/appinfo/th/client-appinfo.json");
+            var o = obj as Page;
+            if (o != null) o.SettingChanged();
         }
 
-        void ManualUpdater_AppInfoReceived(UpdateCheck.AppInfo info)
+
+        public int UpdateCheckInterval
         {
-            appInfo = info;
-
-            if (info != null)
-            {
-                // Print Auto Update info to Console
-                Logger.Log("---- Manual-Update Info ----");
-                Logger.Log("TrakHound - Client");
-                Logger.Log("Release Type : " + info.releaseType);
-                Logger.Log("Version : " + info.version);
-                Logger.Log("Build Date : " + info.buildDate);
-                Logger.Log("Download URL : " + info.downloadUrl);
-                Logger.Log("Update URL : " + info.updateUrl);
-                Logger.Log("File Size : " + info.size);
-                Logger.Log("--------------------------");
-
-                this.Dispatcher.BeginInvoke(new Action<UpdateCheck.AppInfo>(ManualUpdater_AppInfoReceived_GUI), new object[] { info });
-            }
+            get { return (int)GetValue(UpdateCheckIntervalProperty); }
+            set { SetValue(UpdateCheckIntervalProperty, value); }
         }
 
-        void ManualUpdater_AppInfoReceived_GUI(UpdateCheck.AppInfo info)
+        public static readonly DependencyProperty UpdateCheckIntervalProperty =
+            DependencyProperty.Register("UpdateCheckInterval", typeof(int), typeof(Page), new PropertyMetadata(5000, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public bool UpdatesEnabled
         {
-            // Check if version is Up-to-date
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            Version version = assembly.GetName().Version;
-
-            ClientVersion = "v" + version.ToString();
-
-            Version latestVersion = null;
-            Version.TryParse(info.version, out latestVersion);
-
-            ClientUpdateShown = false;
-
-            if (latestVersion != null)
-            {
-                if (version < latestVersion)
-                {
-                    Logger.Log("Update Available : " + latestVersion.ToString());
-
-                    // Add Notification to Message Center
-                    Controls.Message_Center.Message_Data mData = new Controls.Message_Center.Message_Data();
-                    mData.Title = "Version " + latestVersion.ToString() + " is Available";
-                    mData.Text = "Click to Update";
-
-                    mw.messageCenter.AddMessage(mData);
-
-                    ClientCheckResult = "Version " + latestVersion.ToString() + " is available";
-                    ClientCheckBrush = new SolidColorBrush(Color.FromRgb(0, 128, 255));
-                    ClientCheckImage = null;
-
-                    ClientUpdateShown = true;
-                }
-                else
-                {
-                    ClientCheckResult = "Up to Date";
-                    ClientCheckBrush = new SolidColorBrush(Colors.Green);
-                    ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/CheckMark_01.png"));
-                }
-            }
-            else
-            {
-                ClientCheckResult = "Error during Update Check";
-                ClientCheckBrush = new SolidColorBrush(Colors.Red);
-                ClientCheckImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/X_01.png"));
-            }
+            get { return (bool)GetValue(UpdatesEnabledProperty); }
+            set { SetValue(UpdatesEnabledProperty, value); }
         }
 
-        public void LoadPluginConfigurations()
+        public static readonly DependencyProperty UpdatesEnabledProperty =
+            DependencyProperty.Register("UpdatesEnabled", typeof(bool), typeof(Page), new PropertyMetadata(false, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public int AvailableUpdates
         {
-            Plugin_STACK.Children.Clear();
-
-            if (mw != null)
-            {
-                var configs = mw.PluginConfigurations;
-
-                foreach (var config in configs)
-                {
-                    if (mw.Plugins != null)
-                    {
-                        try
-                        {
-                            var plugin = mw.Plugins.Find(x =>
-                                x.Title == config.Name &&
-                                x.DefaultParent == config.Parent &&
-                                x.DefaultParentCategory == config.Category
-                                );
-                            if (plugin != null)
-                            {
-                                UpdateItem ui = new UpdateItem();
-                                ui.PluginTitle = config.Name;
-                                ui.PluginImage = plugin.Image;
-
-                                // Build Information
-                                Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-                                Version version = assembly.GetName().Version;
-
-                                ui.assembly = assembly;
-                                ui.version = version;
-                                ui.PluginVersion = "v" + version.ToString();
-
-                                // Author Info
-                                ui.PluginAuthor = plugin.Author;
-                                ui.PluginAuthorInfo = plugin.AuthorText;
-
-                                // Update Info
-                                ui.UpdateFileUrl = plugin.UpdateFileURL;
-
-                                Plugin_STACK.Children.Add(ui);
-                            }
-                        }
-                        catch (Exception ex) { Logger.Log("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
-                    }
-
-                    if (config.SubCategories != null)
-                    {
-                        foreach (PluginConfigurationCategory subcat in config.SubCategories)
-                        {
-                            foreach (PluginConfiguration subConfig in subcat.PluginConfigurations)
-                            {
-                                var plugin = mw.Plugins.Find(x =>
-                                    x.Title == subConfig.Name &&
-                                    x.DefaultParent == subConfig.Parent &&
-                                    x.DefaultParentCategory == subConfig.Category
-                                    );
-                                if (plugin != null)
-                                {
-                                    try
-                                    {
-                                        UpdateItem ui = new UpdateItem();
-                                        ui.PluginTitle = subConfig.Name;
-                                        ui.PluginImage = plugin.Image;
-
-                                        // Build Information
-                                        Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-                                        Version version = assembly.GetName().Version;
-
-                                        ui.assembly = assembly;
-                                        ui.version = version;
-                                        ui.PluginVersion = "v" + version.ToString();
-
-                                        // Author Info
-                                        ui.PluginAuthor = plugin.Author;
-                                        ui.PluginAuthorInfo = plugin.AuthorText;
-
-                                        // Update Info
-                                        ui.UpdateFileUrl = plugin.UpdateFileURL;
-
-                                        Plugin_STACK.Children.Add(ui);
-                                    }
-                                    catch { }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            get { return (int)GetValue(AvailableUpdatesProperty); }
+            set { SetValue(AvailableUpdatesProperty, value); }
         }
 
-        //public void LoadPluginConfigurations()
-        //{
-        //    Plugin_STACK.Children.Clear();
-
-        //    // Load Plugin Configurations
-        //    if (Properties.Settings.Default.Plugin_Configurations != null)
-        //    {
-        //        List<PluginConfiguration> configs = Properties.Settings.Default.Plugin_Configurations.ToList();
-
-        //        foreach (PluginConfiguration config in configs)
-        //        {
-        //            if (mw != null)
-        //            {
-        //                if (mw.Plugins != null)
-        //                {
-        //                    try
-        //                    {
-        //                        var plugin = mw.Plugins.Find(x => x.Title == config.Name);
-        //                        if (plugin != null)
-        //                        {
-        //                            UpdateItem ui = new UpdateItem();
-        //                            ui.PluginTitle = config.Name;
-        //                            ui.PluginImage = plugin.Image;
-
-        //                            // Build Information
-        //                            Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-        //                            Version version = assembly.GetName().Version;
-
-        //                            ui.assembly = assembly;
-        //                            ui.version = version;
-        //                            ui.PluginVersion = "v" + version.ToString();
-
-        //                            // Author Info
-        //                            ui.PluginAuthor = plugin.Author;
-        //                            ui.PluginAuthorInfo = plugin.AuthorText;
-
-        //                            // Update Info
-        //                            ui.UpdateFileUrl = plugin.UpdateFileURL;
-
-        //                            Plugin_STACK.Children.Add(ui);
-        //                        }
-        //                    }
-        //                    catch (Exception ex) { Logger.Log("Updates.Page.LoadPluginConfigurations() :: Exception :: " + ex.Message); }
-        //                }
-        //            }
-
-        //            if (config.SubCategories != null)
-        //            {
-        //                foreach (PluginConfigurationCategory subcat in config.SubCategories)
-        //                {
-        //                    foreach (PluginConfiguration subConfig in subcat.PluginConfigurations)
-        //                    {
-        //                        var plugin = mw.Plugins.Find(x => x.Title == subConfig.Name);
-        //                        if (plugin != null)
-        //                        {
-        //                            try
-        //                            {
-        //                                UpdateItem ui = new UpdateItem();
-        //                                ui.PluginTitle = subConfig.Name;
-        //                                ui.PluginImage = plugin.Image;
-
-        //                                // Build Information
-        //                                Assembly assembly = Assembly.GetAssembly(plugin.GetType());
-        //                                Version version = assembly.GetName().Version;
-
-        //                                ui.assembly = assembly;
-        //                                ui.version = version;
-        //                                ui.PluginVersion = "v" + version.ToString();
-
-        //                                // Author Info
-        //                                ui.PluginAuthor = plugin.Author;
-        //                                ui.PluginAuthorInfo = plugin.AuthorText;
-
-        //                                // Update Info
-        //                                ui.UpdateFileUrl = plugin.UpdateFileURL;
-
-        //                                Plugin_STACK.Children.Add(ui);
-        //                            }
-        //                            catch { }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        public static readonly DependencyProperty AvailableUpdatesProperty =
+            DependencyProperty.Register("AvailableUpdates", typeof(int), typeof(Page), new PropertyMetadata(0));
 
 
-        public string ClientVersion
+
+
+
+        public int QueueWriteInterval
         {
-            get { return (string)GetValue(ClientVersionProperty); }
-            set { SetValue(ClientVersionProperty, value); }
+            get { return (int)GetValue(QueueWriteIntervalProperty); }
+            set { SetValue(QueueWriteIntervalProperty, value); }
         }
 
-        public static readonly DependencyProperty ClientVersionProperty =
-            DependencyProperty.Register("ClientVersion", typeof(string), typeof(Page), new PropertyMetadata(null));
+        public static readonly DependencyProperty QueueWriteIntervalProperty =
+            DependencyProperty.Register("QueueWriteInterval", typeof(int), typeof(Page), new PropertyMetadata(5000, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
-        public string ClientCheckResult
+
+        public bool DebugEnabled
         {
-            get { return (string)GetValue(ClientCheckResultProperty); }
-            set { SetValue(ClientCheckResultProperty, value); }
+            get { return (bool)GetValue(DebugEnabledProperty); }
+            set { SetValue(DebugEnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty ClientCheckResultProperty =
-            DependencyProperty.Register("ClientCheckResult", typeof(string), typeof(Page), new PropertyMetadata(null));
+        public static readonly DependencyProperty DebugEnabledProperty =
+            DependencyProperty.Register("DebugEnabled", typeof(bool), typeof(Page), new PropertyMetadata(false, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
-        public SolidColorBrush ClientCheckBrush
+        public bool ErrorEnabled
         {
-            get { return (SolidColorBrush)GetValue(ClientCheckBrushProperty); }
-            set { SetValue(ClientCheckBrushProperty, value); }
+            get { return (bool)GetValue(ErrorEnabledProperty); }
+            set { SetValue(ErrorEnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty ClientCheckBrushProperty =
-            DependencyProperty.Register("ClientCheckBrush", typeof(SolidColorBrush), typeof(Page), new PropertyMetadata(new SolidColorBrush(Colors.Black)));
+        public static readonly DependencyProperty ErrorEnabledProperty =
+            DependencyProperty.Register("ErrorEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
 
-        public ImageSource ClientCheckImage
+
+        public bool NotificationEnabled
         {
-            get { return (ImageSource)GetValue(ClientCheckImageProperty); }
-            set { SetValue(ClientCheckImageProperty, value); }
+            get { return (bool)GetValue(NotificationEnabledProperty); }
+            set { SetValue(NotificationEnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty ClientCheckImageProperty =
-            DependencyProperty.Register("ClientCheckImage", typeof(ImageSource), typeof(Page), new PropertyMetadata(null));
+        public static readonly DependencyProperty NotificationEnabledProperty =
+            DependencyProperty.Register("NotificationEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
-        public bool ClientUpdateShown
+        public bool WarningEnabled
         {
-            get { return (bool)GetValue(ClientUpdateShownProperty); }
-            set { SetValue(ClientUpdateShownProperty, value); }
+            get { return (bool)GetValue(WarningEnabledProperty); }
+            set { SetValue(WarningEnabledProperty, value); }
         }
 
-        public static readonly DependencyProperty ClientUpdateShownProperty =
-            DependencyProperty.Register("ClientUpdateShown", typeof(bool), typeof(Page), new PropertyMetadata(false));
+        public static readonly DependencyProperty WarningEnabledProperty =
+            DependencyProperty.Register("WarningEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
-        public bool ClientInstalledShown
+        private const long DAY_MS = 86400000;
+        private const long WEEK_MS = 604800000;
+
+
+        public long DebugRecycleDays
         {
-            get { return (bool)GetValue(ClientInstalledShownProperty); }
-            set { SetValue(ClientInstalledShownProperty, value); }
+            get { return (long)GetValue(DebugRecycleDaysProperty); }
+            set { SetValue(DebugRecycleDaysProperty, value); }
         }
 
-        public static readonly DependencyProperty ClientInstalledShownProperty =
-            DependencyProperty.Register("ClientInstalledShown", typeof(bool), typeof(Page), new PropertyMetadata(false));
+        public static readonly DependencyProperty DebugRecycleDaysProperty =
+            DependencyProperty.Register("DebugRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(WEEK_MS, new PropertyChangedCallback(Value_PropertyChanged)));
 
- 
-        #region "Update Behavior"
 
-        int tryCount = 0;
-
-        int ProcessUpdateBehavior()
+        public long ErrorRecycleDays
         {
-            int Result = -1;
-
-            tryCount += 1;
-
-            object updateBehavior = GetRegistryKey("Update_Behavior");
-
-            if (updateBehavior != null)
-            {
-                int val = -1;
-                int.TryParse(updateBehavior.ToString(), out val);
-                if (val >= 0)
-                {
-                    switch (val)
-                    {
-                        case 1: SemiAuto_RADIO.IsChecked = true; break;
-
-                        case 2: Manual_RADIO.IsChecked = true; break;
-
-                        default: Auto_RADIO.IsChecked = true; break;
-                    }
-
-                    Result = val;
-                }
-            }
-            else
-            {
-                SetRegistryKey("Update_Behavior", 0);
-                // Try max of 3 times before giving up (don't want to get stuck in a loop)
-                if (tryCount < 4) ProcessUpdateBehavior();
-            }
-
-            return Result;
+            get { return (long)GetValue(ErrorRecycleDaysProperty); }
+            set { SetValue(ErrorRecycleDaysProperty, value); }
         }
 
-        private void Auto_RadioButton_Checked(object sender, RoutedEventArgs e) { SetRegistryKey("Update_Behavior", 0); }
+        public static readonly DependencyProperty ErrorRecycleDaysProperty =
+            DependencyProperty.Register("ErrorRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(WEEK_MS, new PropertyChangedCallback(Value_PropertyChanged)));
 
-        private void SemiAuto_RadioButton_Checked(object sender, RoutedEventArgs e) { SetRegistryKey("Update_Behavior", 1); }
 
-        private void Manual_RadioButton_Checked(object sender, RoutedEventArgs e) { SetRegistryKey("Update_Behavior", 2); }
-
-        static void SetRegistryKey(string keyName, object keyValue)
+        public long NotificationRecycleDays
         {
-            try
-            {
-                // Open CURRENT_USER/Software Key
-                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
-
-                // Create/Open CURRENT_USER/Software/TrakHound Key
-                RegistryKey rootKey = key.CreateSubKey("TrakHound");
-
-                // Create/Open CURRENT_USER/Software/TrakHound/[keyName] Key
-                RegistryKey updateKey = rootKey.CreateSubKey(keyName);
-
-                // Update value for [keyName] to [keyValue]
-                updateKey.SetValue(keyName, keyValue, RegistryValueKind.String);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("TrakHound-Client.Pages.Options.Update.Page.SetRegistryKey() : " + ex.Message);
-            }
+            get { return (long)GetValue(NotificationRecycleDaysProperty); }
+            set { SetValue(NotificationRecycleDaysProperty, value); }
         }
 
-        static string GetRegistryKey(string keyName)
+        public static readonly DependencyProperty NotificationRecycleDaysProperty =
+            DependencyProperty.Register("NotificationRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(DAY_MS, new PropertyChangedCallback(Value_PropertyChanged)));
+
+
+        public long WarningRecycleDays
         {
-            string Result = null;
-
-            try
-            {
-                // Open CURRENT_USER/Software Key
-                RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true);
-
-                // Open CURRENT_USER/Software/TrakHound Key
-                RegistryKey rootKey = key.OpenSubKey("TrakHound");
-
-                // Open CURRENT_USER/Software/TrakHound/[keyName] Key
-                RegistryKey updateKey = rootKey.OpenSubKey(keyName);
-
-                if (updateKey != null)
-                {
-                    // Read value for [keyName] to [keyValue]
-                    object val = updateKey.GetValue(keyName, 0);
-                    if (val != null) Result = val.ToString();
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("TrakHound-Client.Pages.Options.Updates.Page.GetRegistryKey() : " + ex.Message);
-            }
-
-            return Result;
+            get { return (long)GetValue(WarningRecycleDaysProperty); }
+            set { SetValue(WarningRecycleDaysProperty, value); }
         }
+
+        public static readonly DependencyProperty WarningRecycleDaysProperty =
+            DependencyProperty.Register("WarningRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(DAY_MS, new PropertyChangedCallback(Value_PropertyChanged)));
 
         #endregion
 
-        private void CheckForUpdates_Clicked(TH_WPF.Button bt)
-        {
-            AutoUpdater_Start();
 
-            foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
+        private void Help_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
             {
-                ui.CheckUpdateVersion();
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void Help_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = true;
+                    }
+                }
+            }
+        }
+
+        private void Help_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType() == typeof(Rectangle))
+            {
+                Rectangle rect = (Rectangle)sender;
+
+                if (rect.ToolTip != null)
+                {
+                    if (rect.ToolTip.GetType() == typeof(ToolTip))
+                    {
+                        ToolTip tt = (ToolTip)rect.ToolTip;
+                        tt.IsOpen = false;
+                    }
+                }
             }
         }
 
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void CheckForUpdates_Clicked(TH_WPF.Button bt)
         {
-            LoadPluginConfigurations();
 
-            if (updateBehavior < 2)
-            {
-                foreach (UpdateItem ui in Plugin_STACK.Children.OfType<UpdateItem>().ToList())
-                {
-                    ui.CheckUpdateVersion();
-                }
-            }  
         }
 
-        void updater_Finished()
+        private void ApplyUpdates_Clicked(TH_WPF.Button bt)
         {
-            this.Dispatcher.BeginInvoke(new Action(updater_Finished_GUI));
+
         }
 
-        void updater_Finished_GUI()
+        private void ClearUpdatesQueue_Clicked(TH_WPF.Button bt)
         {
-            ClientUpdateShown = false;
-            ClientInstalledShown = true;
-            ClientCheckResult = "";
+
         }
+
+        private void RestoreDefaults_Clicked(TH_WPF.Button bt)
+        {
+            QueueWriteInterval = 5000;
+
+            DebugEnabled = false;
+            ErrorEnabled = true;
+            NotificationEnabled = true;
+            WarningEnabled = true;
+
+            DebugRecycleDays = WEEK_MS;
+            ErrorRecycleDays = WEEK_MS;
+            NotificationRecycleDays = DAY_MS;
+            WarningRecycleDays = DAY_MS;
+        }
+
     }
-
 }

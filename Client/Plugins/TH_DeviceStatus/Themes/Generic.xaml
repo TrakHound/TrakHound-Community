@@ -31,15 +31,15 @@
                                     <TextBlock FontWeight="Bold" Text="{Binding HourData.Title, RelativeSource={RelativeSource TemplatedParent}}"/>
 
                                     <StackPanel Grid.Row="1">
-                                        <StackPanel.Resources>
+                                        <!--<StackPanel.Resources>
                                             <Style TargetType="th_wpf:TimeProgress">
                                                 <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
                                                 <Setter Property="BarHeight" Value="10"/>
                                                 <Setter Property="Margin" Value="0,5"/>
                                             </Style>
-                                        </StackPanel.Resources>
+                                        </StackPanel.Resources>-->
 
-                                        <th_wpf:TimeProgress Text="Production" 
+                                        <!--<th_wpf:TimeProgress Text="Production" 
                                              Value="{Binding HourData.ProductionSeconds, RelativeSource={RelativeSource TemplatedParent}}"
                                                              Maximum="{Binding HourData.TotalSeconds, RelativeSource={RelativeSource TemplatedParent}}"
                                              BarBrush="{StaticResource StatusGreen}" BarBackgroundBrush="{StaticResource StatusGreen_Hover}"/>
@@ -50,7 +50,7 @@
 
                                         <th_wpf:TimeProgress Text="Alert" Value="{Binding HourData.AlertSeconds, RelativeSource={RelativeSource TemplatedParent}}"
                                                              Maximum="{Binding HourData.TotalSeconds, RelativeSource={RelativeSource TemplatedParent}}"
-                                             BarBrush="{StaticResource StatusRed}" BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>
+                                             BarBrush="{StaticResource StatusRed}" BarBackgroundBrush="{StaticResource StatusRed_Hover}"/>-->
 
                                     </StackPanel>
 
@@ -105,9 +105,10 @@
                         <UniformGrid Canvas.Top="15" Height="50" Width="{TemplateBinding ActualWidth}" Columns="12">
                             <UniformGrid.Resources>
                                 <Style TargetType="Rectangle">
-                                    <Setter Property="Fill" Value="#EEE"/>
+                                    <!--<Setter Property="Fill" Value="#EEE"/>-->
                                     <Setter Property="ToolTip" Value="{Binding Title}"/>
-                                    <Style.Triggers>
+                                    <Setter Property="Fill" Value="{Binding FillBrush}"/>
+                                    <!--<Style.Triggers>
 
                                         <DataTrigger Binding="{Binding Status}" Value="2">
                                             <Setter Property="Fill" Value="{StaticResource StatusGreen}"/>
@@ -141,9 +142,22 @@
                                             <Setter Property="Fill" Value="{StaticResource StatusRed_Light}"/>
                                         </MultiDataTrigger>
 
-                                    </Style.Triggers>
+                                    </Style.Triggers>-->
                                 </Style>
                             </UniformGrid.Resources>
+
+                            <!--<Rectangle Grid.Column="0"/>
+                            <Rectangle Grid.Column="1"/>
+                            <Rectangle Grid.Column="2"/>
+                            <Rectangle Grid.Column="3"/>
+                            <Rectangle Grid.Column="4"/>
+                            <Rectangle Grid.Column="5"/>
+                            <Rectangle Grid.Column="6"/>
+                            <Rectangle Grid.Column="7"/>
+                            <Rectangle Grid.Column="8"/>
+                            <Rectangle Grid.Column="9"/>
+                            <Rectangle Grid.Column="10"/>
+                            <Rectangle Grid.Column="11"/>-->
 
                             <Rectangle Grid.Column="0" DataContext="{Binding HourData.SegmentDatas[0], RelativeSource={RelativeSource TemplatedParent}}"/>
                             <Rectangle Grid.Column="1" DataContext="{Binding HourData.SegmentDatas[1], RelativeSource={RelativeSource TemplatedParent}}"/>

@@ -1,0 +1,33 @@
+﻿<Window x:Class="SimpleClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SimplePluginHost"
+        
+        Closing="Window_Closing"
+        
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+
+    <Canvas>
+
+        <Rectangle Fill="Blue" Width="100" Height="30" Canvas.Top="-20"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--<ItemsControl ItemsSource="{Binding Plugins}"/>-->
+
+            <ListBox ItemsSource="{Binding Plugins}" DisplayMemberPath="Title" SelectedValue="{Binding SelectedPlugin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <ContentControl Grid.Column="1" Content="{Binding SelectedPlugin}"/>
+
+        </Grid>
+
+    </Canvas>
+
+</Window>

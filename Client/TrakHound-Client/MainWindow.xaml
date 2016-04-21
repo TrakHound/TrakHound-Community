@@ -959,16 +959,16 @@
                                         <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
                                     </Grid.RowDefinitions>
 
-                                    <ContentPresenter x:Name="CurrentPage_CONTENT" Grid.Row="1" Content="{Binding CurrentPage}">
-                                        <ContentPresenter.LayoutTransform>
+                                    <ContentControl x:Name="CurrentPage_CONTENT" Grid.Row="1" Content="{Binding CurrentPage}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                        <ContentControl.LayoutTransform>
                                             <TransformGroup>
                                                 <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
                                                 <SkewTransform/>
                                                 <RotateTransform/>
                                                 <TranslateTransform/>
                                             </TransformGroup>
-                                        </ContentPresenter.LayoutTransform>
-                                    </ContentPresenter>
+                                        </ContentControl.LayoutTransform>
+                                    </ContentControl>
 
                                     <GridSplitter Grid.Row="2" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
                                         <GridSplitter.Style>

@@ -150,5 +150,73 @@ namespace TH_Global.Functions
             }
         }
 
+
+        public static void WriteDocument(XmlDocument doc, string path)
+        {
+            var settings = new XmlWriterSettings();
+            settings.Indent = true;
+
+            int attempt = 0;
+            int maxAttempts = 3;
+            bool success = false;
+
+            while (!success && attempt < maxAttempts)
+            {
+                try
+                {
+                    using (var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
+                    {
+                        using (var writer = XmlWriter.Create(fs, settings))
+                        {
+                            doc.Save(writer);
+                            success = true;
+                        }
+                    }
+                }
+                catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message, Logger.LogLineType.Error); }
+                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error); }
+
+                if (!success) System.Threading.Thread.Sleep(50);
+
+                attempt++;
+            }
+        }
+
+        public static XmlDocument ReadDocument(string path, XmlReaderSettings settings = null)
+        {
+            if (File.Exists(path))
+            {
+                int attempt = 0;
+                int maxAttempts = 3;
+                bool success = false;
+
+                while (!success && attempt < maxAttempts)
+                {
+
+                    try
+                    {
+                        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                        {
+                            using (var reader = XmlReader.Create(fs, settings))
+                            {
+                                var xml = new XmlDocument();
+                                xml.Load(reader);
+                                success = true;
+                                return xml;
+                            }
+                        }
+                    }
+                    catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message, Logger.LogLineType.Error); }
+                    catch (Exception ex) { Logger.Log("Exception :: " + ex.Message, Logger.LogLineType.Error); }
+
+                    if (!success) System.Threading.Thread.Sleep(50);
+
+                    attempt++;
+                }
+            }
+
+            return null;
+        }
+
     }
 }

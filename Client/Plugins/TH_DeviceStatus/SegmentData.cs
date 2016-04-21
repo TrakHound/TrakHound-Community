@@ -6,8 +6,10 @@
 using System;
 using System.ComponentModel;
 using System.Data;
+using System.Windows.Media;
 
 using TH_Global.Functions;
+using TH_WPF;
 
 namespace TH_StatusTable
 {
@@ -77,6 +79,19 @@ namespace TH_StatusTable
                 if (val != _status) NotifyChanged("Status");
             }
         }
+
+        private Brush _fillBrush;
+        public Brush FillBrush
+        {
+            get { return _fillBrush; }
+            set
+            {
+                var val = _fillBrush;
+                _fillBrush = value;
+                if (val != _fillBrush) NotifyChanged("FillBrush");
+            }
+        }
+
 
         public HourInfo HourInfo { get; set; }
 

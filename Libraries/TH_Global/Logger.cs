@@ -109,11 +109,9 @@ namespace TH_Global
                 case LogLineType.Warning: path = FileLocations.WarningLogs + path; break;
             }
 
-            try
+            var doc = XML_Functions.ReadDocument(path);
+            if (doc != null)
             {
-                var doc = new XmlDocument();
-                doc.Load(path);
-
                 if (doc.DocumentElement != null)
                 {
                     var node = doc.DocumentElement.SelectSingleNode("//" + applicationName);
@@ -139,13 +137,46 @@ namespace TH_Global
 
                         result = nodes.ToArray();
                     }
-
                 }
             }
-            catch (Exception ex)
-            {
-                Log(ex.Message);
-            }
+
+            //try
+            //{
+            //    var doc = new XmlDocument();
+            //    doc.Load(path);
+
+            //    if (doc.DocumentElement != null)
+            //    {
+            //        var node = doc.DocumentElement.SelectSingleNode("//" + applicationName);
+            //        if (node != null)
+            //        {
+            //            var nodes = new List<XmlNode>();
+
+            //            foreach (XmlNode lineNode in node.ChildNodes)
+            //            {
+            //                string t = XML_Functions.GetAttributeValue(lineNode, "timestamp");
+            //                if (t != null)
+            //                {
+            //                    DateTime date = DateTime.MinValue;
+            //                    if (DateTime.TryParse(t, out date))
+            //                    {
+            //                        if (date > timestamp)
+            //                        {
+            //                            nodes.Add(lineNode);
+            //                        }
+            //                    }
+            //                }
+            //            }
+
+            //            result = nodes.ToArray();
+            //        }
+
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Log(ex.Message);
+            //}
 
             return result;
         }
@@ -478,29 +509,31 @@ namespace TH_Global
                             AddToLog(doc, line);
                         }
 
-                        WriteDocument(doc, path);
+                        XML_Functions.WriteDocument(doc, path);
+
+                        //WriteDocument(doc, path);
                     }
                     catch (Exception ex) { Console.WriteLine("ProcessQueue(LogLineType) :: Exception :: " + type.ToString() + " :: " + ex.Message); }
                 }
             }
 
-            private static void WriteDocument(XmlDocument doc, string path)
-            {
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.Indent = true;
+            //private static void WriteDocument(XmlDocument doc, string path)
+            //{
+            //    XmlWriterSettings settings = new XmlWriterSettings();
+            //    settings.Indent = true;
 
-                try
-                {
-                    using (var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
-                    {
-                        using (XmlWriter writer = XmlWriter.Create(fs, settings))
-                        {
-                            doc.Save(writer);
-                        }
-                    }
-                }
-                catch (Exception ex) { Console.WriteLine("Logger.WriteDocument() :: Exception :: " + ex.Message); }
-            }
+            //    try
+            //    {
+            //        using (var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
+            //        {
+            //            using (XmlWriter writer = XmlWriter.Create(fs, settings))
+            //            {
+            //                doc.Save(writer);
+            //            }
+            //        }
+            //    }
+            //    catch (Exception ex) { Console.WriteLine("Logger.WriteDocument() :: Exception :: " + ex.Message); }
+            //}
 
             private static XmlDocument CreateDocument(string LogFile)
             {

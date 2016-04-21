@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Updates\AppInfo.cs" />
+    <None Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\Files.cs" />
     <Compile Include="Updates\Registry.cs" />
     <Compile Include="Service\Service1.cs">

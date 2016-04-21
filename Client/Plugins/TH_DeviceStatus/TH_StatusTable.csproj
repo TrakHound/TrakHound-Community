@@ -150,6 +150,9 @@
   <ItemGroup>
     <Resource Include="Resources\Warning_01.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Refresh_01.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del $(TargetName).cplugin

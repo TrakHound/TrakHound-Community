@@ -619,6 +619,7 @@ namespace TrakHound_Client
                 optionsManager = new PageManager();
                 optionsManager.TabTitle = "Options";
                 optionsManager.TabImage = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/options_gear_30px.png"));
+                optionsManager.AddPage(new Pages.Options.Updates.Page());
                 optionsManager.AddPage(new Pages.Options.Logger.Page());
             }
         }

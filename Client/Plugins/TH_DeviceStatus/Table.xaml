@@ -145,6 +145,31 @@
     </UserControl.Resources>
 
     <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--Navbar-->
+        <StackPanel Orientation="Horizontal" Background="{StaticResource Accent_Normal}">
+            <StackPanel.Resources>
+                <Style TargetType="th_wpf:Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                    <Setter Property="Height" Value="30"/>
+                    <Setter Property="Width" Value="30"/>
+                    <Setter Property="Margin" Value="2,0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="#33ffffff"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Resources>
+
+            <th_wpf:Button ToolTip="Refresh" Clicked="Refresh_Clicked" Image="Resources/Refresh_01.png"/>
+
+        </StackPanel>
 
         <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
 

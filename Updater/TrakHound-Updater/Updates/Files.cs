@@ -25,14 +25,14 @@ namespace TrakHound_Updater
                 using (WebClient webClient = new WebClient())
                 {
                     webClient.DownloadFile(url, path);
-                    Logger.Log("Download Complete");
+                    Logger.Log("Download Complete", Logger.LogLineType.Notification);
                 }
 
                 result = true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error during Update DownloadFile() : " + ex.Message);
+                Logger.Log("Error during Update DownloadFile() : " + ex.Message, Logger.LogLineType.Error);
             }
 
             return result;
@@ -50,7 +50,7 @@ namespace TrakHound_Updater
                 {
                     return ExtractFiles(setupPath);
                 }
-                else Logger.Log("Setup File Doesn't Exist :: " + setupPath);
+                else Logger.Log("Setup File Doesn't Exist :: " + setupPath, Logger.LogLineType.Warning);
             }
             return null;
         }
@@ -74,7 +74,7 @@ namespace TrakHound_Updater
 
                     return copyPath;
                 }
-                else Logger.Log("Files Directory Not Found :: " + filesPath);
+                else Logger.Log("Files Directory Not Found :: " + filesPath, Logger.LogLineType.Warning);
             }
             return null;
         }
@@ -124,7 +124,7 @@ namespace TrakHound_Updater
 
             try
             {
-                Logger.Log("Extracting Setup Files...");
+                Logger.Log("Extracting Setup Files...", Logger.LogLineType.Notification);
 
                 string args = path + " /a /s /b\"" + tempPath + "\"" + " /v\"/qn TARGETDIR=\\\"" + extractPath + "\\\"\"";
 
@@ -142,7 +142,7 @@ namespace TrakHound_Updater
                 process.Start();
                 process.WaitForExit();
 
-                Logger.Log("Setup Files Extracted Successfully");
+                Logger.Log("Setup Files Extracted Successfully", Logger.LogLineType.Notification);
 
                 // Delete the Setup.Exe file after it has been extracted
                 if (File.Exists(path)) File.Delete(path);
@@ -154,7 +154,7 @@ namespace TrakHound_Updater
             }
             catch (Exception ex)
             {
-                Logger.Log("Error Extracting Setup Files :: " + ex.Message);
+                Logger.Log("Error Extracting Setup Files :: " + ex.Message, Logger.LogLineType.Error);
             }
 
             return null;
