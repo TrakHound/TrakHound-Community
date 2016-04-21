@@ -32,1103 +32,368 @@
         Height="650"
         Width="1000"
         
-        MinHeight="400"
+        MinHeight="300"
         MinWidth="300"
                 
         WindowStartupLocation="CenterScreen"
-        
-        WindowState="Maximized" 
-        WindowStyle="None"
-        AllowsTransparency="True"
-        
-        ResizeMode="NoResize"
+        WindowState="Maximized"         
         SizeChanged="Main_Window_SizeChanged"
-        Background="#00000000"
         
         FontFamily="arial"
         
         PreviewMouseDown="Main_Window_PreviewMouseDown"
         PreviewKeyUp="Main_Window_PreviewKeyUp"
         
-        Icon="Resources/TrakHound_Logo_Initials_10.ico"
+        Icon="Resources/TrakHound_Logo_Initials_10.ico" ScrollViewer.VerticalScrollBarVisibility="Disabled"
         >
 
-    <Window.Resources>
-        
-        <!--Main Window Borders-->
-        <SolidColorBrush x:Key="ResizeBorder_Brush" Color="#FFEEEEEE"/>
+    <!--Window Content-->
+    <Grid x:Name="root">
 
-        <Color x:Key="WindowControl_Color">#FFCCCCCC</Color>
-        <SolidColorBrush x:Key="WindowControl_Brush" Color="{StaticResource WindowControl_Color}"/>
+        <DockPanel>
 
-    </Window.Resources>
-
-    <!--Shadow Border for Main Window (Shadow width is set by Margin)-->
-    <Grid x:Name="Root_GRID">
-        <Grid.Resources>
-            <GridLength x:Key="ShadowWidth">10</GridLength>
-
-            <Color x:Key="inside">#22000000</Color>
-            <GradientStopCollection x:Key="gradient">
-                <GradientStop Color="#00000000" Offset="1"/>
-                <GradientStop Color="{DynamicResource inside}" Offset="0.1"/>
-            </GradientStopCollection>
-        </Grid.Resources>
-        <Grid.RowDefinitions>
-            <RowDefinition>
-                <RowDefinition.Style>
-                    <Style TargetType="RowDefinition">
-                        <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
+            <!--Top Bar-->
+            <Grid DockPanel.Dock="Top" Grid.Row="0" Height="35">
+                <Grid.Resources>
+                    <Style TargetType="th_wpf:Button">
+                        <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
+                        <Setter Property="Width" Value="30"/>
+                        <Setter Property="Height" Value="30"/>
+                        <Setter Property="Padding" Value="2"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                <Setter Property="Height" Value="0"/>
-                            </DataTrigger>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
-                </RowDefinition.Style>
-            </RowDefinition>
-            <RowDefinition Height="*"/>
-            <RowDefinition>
-                <RowDefinition.Style>
-                    <Style TargetType="RowDefinition">
-                        <Setter Property="Height" Value="{StaticResource ShadowWidth}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                <Setter Property="Height" Value="0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </RowDefinition.Style>
-            </RowDefinition>
-        </Grid.RowDefinitions>
-
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <Rectangle Grid.Column="0">
-                <Rectangle.Fill>
-                    <RadialGradientBrush Center="1,1" RadiusX="1" RadiusY="1" GradientOrigin="1,1" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <Rectangle Grid.Column="1">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="0,1" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <Rectangle Grid.Column="2">
-                <Rectangle.Fill>
-                    <RadialGradientBrush Center="0,1" RadiusX="1" RadiusY="1" GradientOrigin="0,1" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-        </Grid>
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <Rectangle Grid.Column="0">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0,0" MappingMode="RelativeToBoundingBox" StartPoint="1,0" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <Grid Grid.Column="1" x:Name="Main_GRID" Background="{StaticResource Window_Background}">
-
-                <DockPanel>
-
-                    <!--Top Resize Borders-->
-                    <DockPanel DockPanel.Dock="Top">
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_TopLeft_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_TopRight_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Top" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_TopMiddle_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                    </DockPanel>
-
-                    <!--Bottom Resize Borders-->
-                    <DockPanel DockPanel.Dock="Bottom">
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_BottomLeft_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness}" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_BottomRight_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                        <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Top" Height="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_BottomMiddle_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-                    </DockPanel>
-
-                    <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Left" Width="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_WE_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize" />
-
-                    <Rectangle Fill="{StaticResource ResizeBorder_Brush}" DockPanel.Dock="Right" Width="{Binding ResizeBorderThickness}" MouseEnter="Rectangle_WE_MouseEnter" MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize" />
-
-                    <!--Title Bar-->
-                    <Border DockPanel.Dock="Top" >
-                        <Border MouseDown="TitleBar_MouseDown" Height="28" Background="{StaticResource Window_Background}">
-                            <DockPanel x:Name="TitleBar">
-
-                                <!--Close Button-->
-                                <Border x:Name="Close_BD" DockPanel.Dock="Right" Width="45" MouseDown="Close_BD_MouseDown" ToolTip="Close" Margin="1,0,0,0">
-                                    <Border.Style>
-                                        <Style TargetType="{x:Type Border}">
-                                            <Setter Property="Background" Value="#00000000" />
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#e81123"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard FillBehavior="Stop">
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.ExitActions>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-
-                                    <Grid>
-
-                                        <Rectangle Width="14" Height="1" RenderTransformOrigin="0.5,0.5">
-                                            <Rectangle.RenderTransform>
-                                                <TransformGroup>
-                                                    <ScaleTransform/>
-                                                    <SkewTransform/>
-                                                    <RotateTransform Angle="135"/>
-                                                    <TranslateTransform/>
-                                                </TransformGroup>
-                                            </Rectangle.RenderTransform>
-                                            <Rectangle.Style>
-                                                <Style TargetType="{x:Type Rectangle}">
-                                                    <Setter Property="Fill" Value="#888" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Close_BD}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Rectangle.Style>
-                                        </Rectangle>
-
-                                        <Rectangle Width="14" Height="1" RenderTransformOrigin="0.5,0.5">
-                                            <Rectangle.RenderTransform>
-                                                <TransformGroup>
-                                                    <ScaleTransform/>
-                                                    <SkewTransform/>
-                                                    <RotateTransform Angle="45"/>
-                                                    <TranslateTransform/>
-                                                </TransformGroup>
-                                            </Rectangle.RenderTransform>
-                                            <Rectangle.Style>
-                                                <Style TargetType="{x:Type Rectangle}">
-                                                    <Setter Property="Fill" Value="#888" />
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Close_BD}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#fff"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Rectangle.Style>
-                                        </Rectangle>
-
-                                    </Grid>
-
-                                </Border>
-
-                                <!--Maximize Button-->
-                                <Border x:Name="Maximize_BD" DockPanel.Dock="Right" Width="45" MouseDown="Maximize_BD_MouseDown" Margin="1,0,0,0">
-                                    <Border.Style>
-                                        <Style TargetType="{x:Type Border}">
-                                            <Setter Property="Background" Value="#00000000" />
-                                            <Setter Property="ToolTip" Value="Maximize"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard FillBehavior="Stop">
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.ExitActions>
-                                                </Trigger>
-                                                <DataTrigger Binding="{Binding Maximized}" Value="True">
-                                                    <Setter Property="ToolTip" Value="Restore Down"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-
-                                    <Grid>
-
-                                        <Grid>
-                                            <Grid.Style>
-                                                <Style TargetType="Grid">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Maximized}" Value="True">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Style>
-                                            <Grid.Resources>
-                                                <Style TargetType="Rectangle">
-                                                    <Setter Property="Fill" Value="#888"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Maximize_BD}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#333"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Resources>
-
-                                            <Rectangle Margin="0,-9,0,0" Width="11" Height="1" />
-                                            <Rectangle Margin="-10,0,0,0" Width="1" Height="10" />
-                                            <Rectangle Margin="0,0,-10,0" Width="1" Height="10" />
-                                            <Rectangle Margin="0,11,0,0" Width="11" Height="1" />
-                                        </Grid>
-
-                                        <Grid>
-                                            <Grid.Style>
-                                                <Style TargetType="Grid">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Maximized}" Value="True">
-                                                            <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Style>
-                                            <Grid.Resources>
-                                                <Style TargetType="Rectangle">
-                                                    <Setter Property="Fill" Value="#888"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Maximize_BD}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#333"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Resources>
-
-                                            <Grid Margin="-8,9,0,0">
-                                                <Rectangle Margin="0,-12,-8,0" Width="9" Height="1" />
-                                                <Rectangle Margin="0,-4,0,0" Width="1" Height="7" />
-                                                <Rectangle Margin="16,-4,0,0" Width="1" Height="7" />
-                                                <Rectangle Margin="8,4,0,0" Width="9" Height="1" />
-                                            </Grid>
-
-                                            <Grid>
-                                                <Rectangle Margin="0,-7,-4,0" Width="9" Height="1" />
-                                                <Rectangle Margin="-5,-4,0,0" Width="1" Height="2" />
-                                                <Rectangle Margin="0,1,-12,0" Width="1" Height="7" />
-                                                <Rectangle Margin="11,9,0,0" Width="2" Height="1" />
-                                            </Grid>
-
-                                        </Grid>
-
-                                    </Grid>
-
-                                </Border>
-
-                                <!--Minimize Button-->
-                                <Border x:Name="Minimize_BD" DockPanel.Dock="Right" Width="45" MouseDown="Minimize_BD_MouseDown" ToolTip="Minimize" >
-                                    <Border.Style>
-                                        <Style TargetType="{x:Type Border}">
-                                            <Setter Property="Background" Value="#00000000" />
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Trigger.EnterActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#10000000"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.EnterActions>
-                                                    <Trigger.ExitActions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard FillBehavior="Stop">
-                                                                <ColorAnimation Duration="0:0:0.1" Storyboard.TargetProperty="Background.Color" To="#00000000"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </Trigger.ExitActions>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-
-                                    <Grid>
-                                        <Rectangle Margin="0,7,0,0" Width="10" Height="1" >
-                                            <Rectangle.Style>
-                                                <Style TargetType="Rectangle">
-                                                    <Setter Property="Fill" Value="#888"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Minimize_BD}" Value="true">
-                                                            <DataTrigger.EnterActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard>
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#333"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.EnterActions>
-                                                            <DataTrigger.ExitActions>
-                                                                <BeginStoryboard>
-                                                                    <Storyboard FillBehavior="Stop">
-                                                                        <ColorAnimation Duration="0:0:0.2" Storyboard.TargetProperty="Fill.Color" To="#888"/>
-                                                                    </Storyboard>
-                                                                </BeginStoryboard>
-                                                            </DataTrigger.ExitActions>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Rectangle.Style>
-                                        </Rectangle>
-                                    </Grid>
-
-                                </Border>
-
-                                <!--Login-->
-                                <Grid x:Name="Login_GRID" DockPanel.Dock="Right" PreviewMouseDown="Login_GRID_PreviewMouseDown" Margin="5,0" Cursor="Hand">
-
-                                    <!--Logged In-->
-                                    <Border>
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Setter Property="Opacity" Value="0.0"/>
-                                                <Setter Property="MaxWidth" Value="200"/>
-                                                <Setter Property="CornerRadius" Value="0,0,2,2"/>
-                                                <Setter Property="Background" Value="{StaticResource Accent_Normal}" />
-                                                <Style.Triggers>
-
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource Accent_Light}" />
-                                                    </Trigger>
-
-                                                    <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                                                        <DataTrigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                                        <DoubleAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseIn"/>
-                                                                        </DoubleAnimation.EasingFunction>
-                                                                    </DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                        <DiscreteDoubleKeyFrame Value="200" />
-                                                                    </DoubleAnimationUsingKeyFrames>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.EnterActions>
-                                                        <DataTrigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                                        <DoubleAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseIn"/>
-                                                                        </DoubleAnimation.EasingFunction>
-                                                                    </DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                        <DiscreteDoubleKeyFrame Value="0" />
-                                                                    </DoubleAnimationUsingKeyFrames>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.ExitActions>
-                                                    </DataTrigger>
-
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
-
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="auto"/>
-                                            </Grid.ColumnDefinitions>
-
-                                            <Grid Grid.ColumnSpan="2">
-                                                <Grid.Background>
-                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                        <GradientStop Color="Transparent" Offset="0"/>
-                                                        <GradientStop Color="#40ffffff" Offset="1"/>
-                                                    </LinearGradientBrush>
-                                                    <!--<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                        <GradientStop Color="#00ffffff" Offset="0"/>
-                                                        <GradientStop Color="#00ffffff" Offset="0.5"/>
-                                                        <GradientStop Color="#40ffffff" Offset="1"/>
-                                                    </LinearGradientBrush>-->
-                                                </Grid.Background>
-                                            </Grid>
-
-
-
-                                            <!--UserName-->
-                                            <TextBlock Text="{Binding CurrentUsername}" Foreground="{StaticResource Foreground_Opposite_Normal}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,10,0"/>
-
-                                            <!--Arrow-->
-                                            <Path 
-                                        Fill="{StaticResource Foreground_Opposite_Normal}"
-                                        Margin="5"
-                                        Grid.Column="1"     
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
-                                          />
-
-                                            <!--Gloss Effect-->
-                                            <Border Grid.ColumnSpan="2">
-
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="4.5*"/>
-                                                        <RowDefinition Height="5.5*"/>
-                                                    </Grid.RowDefinitions>
-
-                                                    <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                                                        <Border.Background>
-                                                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
-                                                                <RadialGradientBrush.GradientStops>
-                                                                    <GradientStop Color="#22ffffff" Offset="0" />
-                                                                    <GradientStop Color="#00ffffff" Offset="1.0" />
-                                                                </RadialGradientBrush.GradientStops>
-                                                            </RadialGradientBrush>
-                                                        </Border.Background>
-                                                    </Border>
-
-                                                    <!--<Border CornerRadius="0,0,50,50">
-                                                        <Border.Background>
-                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                <GradientStop Color="#00ffffff" Offset="0.2"/>
-                                                                <GradientStop Color="#33ffffff" Offset="1"/>
-                                                            </LinearGradientBrush>
-                                                        </Border.Background>
-                                                    </Border>-->
-
-                                                    <Border CornerRadius="0,0,50,50">
-                                                        <Border.Background>
-                                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                <GradientStop Color="#00ffffff" Offset="0.2"/>
-                                                                <GradientStop Color="#33ffffff" Offset="1"/>
-                                                            </LinearGradientBrush>
-                                                        </Border.Background>
-                                                    </Border>
-
-                                                    <!--<Border Grid.Row="1">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                                    <GradientStop Color="#00ffffff" Offset="0"/>
-                                                                    <GradientStop Color="#66000000" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>-->
-
-                                                                                        <!--<Border Grid.RowSpan="2">
-                                                            <Border.Background>
-                                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                                                    <GradientStop Color="#66000000" Offset="0"/>
-                                                                    <GradientStop Color="#10ffffff" Offset="0.4"/>
-                                                                    <GradientStop Color="#10ffffff" Offset="0.6"/>
-                                                                    <GradientStop Color="#66000000" Offset="1"/>
-                                                                </LinearGradientBrush>
-                                                            </Border.Background>
-                                                        </Border>-->
-
-                                                </Grid>
-
-                                            </Border>
-
-                                        </Grid>
-
-                                    </Border>
-
-                                    <!--Logged Out-->
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Setter Property="Opacity" Value="1.0"/>
-                                                <Setter Property="MaxWidth" Value="100"/>
-                                                <Setter Property="Background" Value="#00000000" />
-                                                <Style.Triggers>
-
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                                    </Trigger>
-
-                                                    <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                                                        <DataTrigger.EnterActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Duration="00:00:0.1" Storyboard.TargetProperty="Opacity" From="1" To="0" >
-                                                                        <DoubleAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseIn"/>
-                                                                        </DoubleAnimation.EasingFunction>
-                                                                    </DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                        <DiscreteDoubleKeyFrame Value="0" />
-                                                                    </DoubleAnimationUsingKeyFrames>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.EnterActions>
-                                                        <DataTrigger.ExitActions>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimation Duration="00:00:0.15" Storyboard.TargetProperty="Opacity" From="0" To="1" >
-                                                                        <DoubleAnimation.EasingFunction>
-                                                                            <CubicEase EasingMode="EaseIn"/>
-                                                                        </DoubleAnimation.EasingFunction>
-                                                                    </DoubleAnimation>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                            <BeginStoryboard>
-                                                                <Storyboard>
-                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="MaxWidth" Duration="0" BeginTime="00:00:0.15">
-                                                                        <DiscreteDoubleKeyFrame Value="100" />
-                                                                    </DoubleAnimationUsingKeyFrames>
-                                                                </Storyboard>
-                                                            </BeginStoryboard>
-                                                        </DataTrigger.ExitActions>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-
-                                        <!--Text-->
-                                        <TextBlock Text="Login" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Login_GRID}" Value="True">
-                                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
-                                                            <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                        <!--Arrow-->
-                                        <Path 
-                                        Margin="5"
-                                        Grid.Column="1"     
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
-                                          >
-                                            <Path.Style>
-                                                <Style TargetType="Path">
-                                                    <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsMouseOver, ElementName=Login_GRID}" Value="True">
-                                                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
-                                                            <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Path.Style>
-                                        </Path>
-
-                                    </Grid>
-
-                                </Grid>
-
-                                <!--Local User Database Indicator-->
-                                <TextBlock Text="Local" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="20,0,40,0">
-                                    <TextBlock.ToolTip>
-                                        User Accounts are set to load from a Local database
-                                    </TextBlock.ToolTip>
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="#88000000"/>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding UserDatabaseSettings}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-
-                                <!--TrakHound Icon-->
-                                <Image x:Name="Icon_IMG" DockPanel.Dock="Left" Width="23" Height="23" Margin="5,1,12,3" Source="Resources/TrakHound_Logo_Initials_10_30px.png"/>
-
-                                <!--Window Title-->
-                                <TextBlock Text="{Binding Title}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0" Foreground="{StaticResource Foreground_Normal}"/>
-
-                            </DockPanel>
-                        </Border>
-
-                    </Border>
-
-                    <!--Window Content-->
-                    <Grid Height="auto" Width="auto" Background="{StaticResource Window_Background}">
-
-                        <DockPanel x:Name="Root_DOCK">
-
-                            <!--Status Bar-->
-                            <Grid x:Name="StatusBar_GRID" DockPanel.Dock="Bottom" Height="25" Background="{StaticResource Accent_Normal}" >
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="auto" />
-                                </Grid.ColumnDefinitions>
-                                
-                                <!--Developer Console Show Button-->
-                                <StackPanel HorizontalAlignment="Left">
-                                    <StackPanel.Style>
-                                        <Style TargetType="StackPanel">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DevConsole_Shown}" Value="true">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </StackPanel.Style>
-
-                                    <th_wpf:Button Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)">
-                                        <th_wpf:Button.Style>
-                                            <Style TargetType="th_wpf:Button">
-                                                <Setter Property="Foreground" Value="White"/>
-                                                <Setter Property="Background" Value="Transparent"/>
-                                                <Setter Property="Height" Value="30"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </th_wpf:Button.Style>
-                                    </th_wpf:Button>
-
-                                </StackPanel>
-
-                                
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-
-                                    <!--Server Management-->
-                                    <StackPanel Orientation="Horizontal" Margin="20,0">
-                                        <StackPanel.Style>
-                                            <Style TargetType="StackPanel">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding ServerInstalled}" Value="false">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </StackPanel.Style>
-
-                                        <!--Start / Stop Icon-->
-                                        <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,4,5,4">
-                                            <Grid.Resources>
-                                                <ImageBrush x:Key="Running_IMG" Stretch="Uniform" ImageSource="Resources/Start_01.png"/>
-                                                <ImageBrush x:Key="Pause_IMG" Stretch="Uniform" ImageSource="Resources/Pause_01.png"/>
-                                                <ImageBrush x:Key="Stop_IMG" Stretch="Uniform" ImageSource="Resources/Stop_01.png"/>
-                                                <ImageBrush x:Key="Changing_IMG" Stretch="Uniform" ImageSource="Resources/Generate_01.png"/>
-                                            </Grid.Resources>
-                                            <Grid.Style>
-                                                <Style TargetType="Grid">
-                                                    <Setter Property="OpacityMask" Value="{StaticResource Pause_IMG}" />
-                                                    <Setter Property="Background" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
-                                                            <Setter Property="OpacityMask" Value="{StaticResource Running_IMG}" />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
-                                                            <Setter Property="OpacityMask" Value="{StaticResource Stop_IMG}" />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
-                                                            <Setter Property="OpacityMask" Value="{StaticResource Changing_IMG}" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Style>
-                                        </Grid>
-
-                                        <TextBlock Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="8pt" VerticalAlignment="Center">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
-                                                            <Setter Property="Text" Value="Server Running" />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
-                                                            <Setter Property="Text" Value="Server Stopped" />
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
-                                                            <Setter Property="Text" Value="Server Status Changing" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-
-                                    </StackPanel>
-                                    
-                                    <!--Message Center-->
-                                    <StackPanel Orientation="Horizontal" Margin="20,0,50,0">
-
-                                        <th_wpf:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
-                                            <th_wpf:Button.Style>
-                                                <Style TargetType="th_wpf:Button">
-                                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
-                                                    <Setter Property="Background" Value="Transparent"/>
-                                                    <Style.Triggers>
-                                                        <Trigger Property="IsMouseOver" Value="true">
-                                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
-                                                        </Trigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </th_wpf:Button.Style>
-                                        </th_wpf:Button>
-
-                                        <Border CornerRadius="2" Margin="5,4">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Setter Property="Background" Value="#33000000"/>
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <Border.ToolTip>
-                                                <TextBlock>
-                                                <Run Text="{Binding NotificationsCount}"/>
-                                                <Run Text="New Messages"/>
-                                                </TextBlock>
-                                            </Border.ToolTip>
-                                            <TextBlock Text="{Binding NotificationsCount}" FontSize="14" Foreground="White" Margin="5,0"/>
-                                        </Border>
-
-                                    </StackPanel>
-
-                                </StackPanel>
-                                
-
-                                <!--Resize Grip Lines-->
-                                <Grid Grid.Column="1" Width="25">
-                                    <Line X1="2" Y1="20" X2="20" Y2="2" Stroke="#33000000" StrokeThickness="1"/>
-                                    <Line X1="8" Y1="22" X2="22" Y2="8" Stroke="#33000000" StrokeThickness="1"/>
-                                    <Line X1="15" Y1="22" X2="22" Y2="15" Stroke="#33000000" StrokeThickness="1"/>
-                                </Grid>
-                                
-                                <Rectangle x:Name="Corner_BottomRight_RECT" Grid.Column="1" Fill="#00000000" MouseEnter="Rectangle_BottomRight_MouseEnter"  MouseLeave="Resize_MouseLeave" MouseLeftButtonDown="Resize_Begin" MouseLeftButtonUp="Resize_End" MouseMove="Resize"/>
-
-                            </Grid>
-
-                            <Border CornerRadius="0">
-
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="*" MinHeight="200"/>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
-                                    </Grid.RowDefinitions>
-
-                                    <ContentControl x:Name="CurrentPage_CONTENT" Grid.Row="1" Content="{Binding CurrentPage}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                                        <ContentControl.LayoutTransform>
-                                            <TransformGroup>
-                                                <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
-                                                <SkewTransform/>
-                                                <RotateTransform/>
-                                                <TranslateTransform/>
-                                            </TransformGroup>
-                                        </ContentControl.LayoutTransform>
-                                    </ContentControl>
-
-                                    <GridSplitter Grid.Row="2" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
-                                        <GridSplitter.Style>
-                                            <Style TargetType="GridSplitter">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Shown, ElementName=developerConsole}" Value="false">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </GridSplitter.Style>
-                                    </GridSplitter>
-
-                                    <!--Developer Console-->
-                                    <devconsole:PopUp x:Name="developerConsole" Grid.Row="3" ShownChanged="developerConsole_ShownChanged"/>
-
-                                    <!--Top Bar-->
-                                    <Grid Height="35">
-                                        <Grid.Resources>
-                                            <Style TargetType="th_wpf:Button">
-                                                <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                                <Setter Property="Width" Value="30"/>
-                                                <Setter Property="Height" Value="30"/>
-                                                <Setter Property="Padding" Value="2"/>
-                                                <Style.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                                                    </Trigger>
-                                                    <Trigger Property="IsSelected" Value="true">
-                                                        <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Resources>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <ItemsControl x:Name="TabPanel" Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Window_Background}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                        </ItemsControl>
-
-                                        <!--Plugin Launcher Buttons-->
-                                        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,0">
-
-                                            <!--Plugin Launcher Button-->
-                                            <th_wpf:Button x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked"/>
-                                            
-                                            <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
-
-                                        </StackPanel>
-
-                                        <!--Main Menu, etc. Buttons-->
-                                        <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,0">
-
-                                            <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
-                                            
-                                            <!--MainMenu Button-->
-                                            <th_wpf:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked"/>
-
-                                        </StackPanel>
-
-                                    </Grid>
-
-                                </Grid>
-
-                            </Border>
-
-                        </DockPanel>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ItemsControl x:Name="TabPanel" Grid.Column="1" VerticalAlignment="Bottom" ItemsSource="{Binding TabHeaders}" Background="{StaticResource Window_Background}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <!--Plugin Launcher Buttons-->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="2,0,0,0">
+
+                    <!--Plugin Launcher Button-->
+                    <th_wpf:Button x:Name="PluginLauncher_BT" Image="Resources/Rocket_02.png" Clicked="PluginLauncher_BT_Clicked"/>
+
+                    <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
+
+                </StackPanel>
+
+                <!--Main Menu, etc. Buttons-->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,0">
+
+                    <!--Login Button-->
+                    <Grid x:Name="Login_GRID" PreviewMouseDown="Login_GRID_PreviewMouseDown" Margin="5,0" Cursor="Hand">
+
+                        <!--Logged Out-->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                    <Setter Property="MaxWidth" Value="200"/>
+                                    <Setter Property="Background" Value="#00000000" />
+                                    <Style.Triggers>
+
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
+                                        </Trigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+
+                            <!--Text-->
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource Foreground_Light}"/>
+                                        <Setter Property="Text" Value="Login"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                                                <Setter Property="Text" Value="{Binding CurrentUsername}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=Login_GRID}" Value="True">
+                                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
+                                                <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <!--Arrow-->
+                            <Path 
+                                Margin="5"
+                                Grid.Column="1"     
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+                                >
+                                <Path.Style>
+                                    <Style TargetType="Path">
+                                        <Setter Property="Fill" Value="{StaticResource Foreground_Light}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LoggedIn}" Value="true">
+                                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsMouseOver, ElementName=Login_GRID}" Value="True">
+                                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Shown, ElementName=LoginMenu}" Value="true">
+                                                <Setter Property="Fill" Value="{StaticResource Accent_Normal}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Path.Style>
+                            </Path>
+
+                        </Grid>
 
                     </Grid>
 
-                </DockPanel>
-                
-                <!--Plugins Launcher Menu-->
-                <menus_plugins:Menu x:Name="PluginLauncher" 
+                    <Rectangle Width="1" Fill="{StaticResource Shade_Normal}" Margin="5,2"/>
+
+                    <!--MainMenu Button-->
+                    <th_wpf:Button x:Name="MainMenu_BT" Image="Resources/Menu_01.png" Clicked="MainMenu_BT_Clicked"/>
+
+                </StackPanel>
+
+            </Grid>
+
+            <!--Status Bar-->
+            <Grid DockPanel.Dock="Bottom" Grid.Row="2" Height="25" Background="{StaticResource Accent_Normal}" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <!--Developer Console Show Button-->
+                <StackPanel HorizontalAlignment="Left">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding DevConsole_Shown}" Value="true">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+
+                    <th_wpf:Button Clicked="DeveloperConsole_ToolBarItem_Clicked" Image="Resources/Carrot_Arrow_Up_01.png" HorizontalAlignment="Left" ToolTip="Show Developer Console (F12)">
+                        <th_wpf:Button.Style>
+                            <Style TargetType="th_wpf:Button">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Height" Value="30"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </th_wpf:Button.Style>
+                    </th_wpf:Button>
+
+                </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <!--Server Management-->
+                    <StackPanel Orientation="Horizontal" Margin="20,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ServerInstalled}" Value="false">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+
+                        <!--Start / Stop Icon-->
+                        <Grid Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,4,5,4">
+                            <Grid.Resources>
+                                <ImageBrush x:Key="Running_IMG" Stretch="Uniform" ImageSource="Resources/Start_01.png"/>
+                                <ImageBrush x:Key="Pause_IMG" Stretch="Uniform" ImageSource="Resources/Pause_01.png"/>
+                                <ImageBrush x:Key="Stop_IMG" Stretch="Uniform" ImageSource="Resources/Stop_01.png"/>
+                                <ImageBrush x:Key="Changing_IMG" Stretch="Uniform" ImageSource="Resources/Generate_01.png"/>
+                            </Grid.Resources>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="OpacityMask" Value="{StaticResource Pause_IMG}" />
+                                    <Setter Property="Background" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Running_IMG}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Stop_IMG}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
+                                            <Setter Property="OpacityMask" Value="{StaticResource Changing_IMG}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <TextBlock Foreground="{StaticResource Foreground_Opposite_Normal}" FontSize="8pt" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Running}">
+                                            <Setter Property="Text" Value="Server Running" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Stopped}">
+                                            <Setter Property="Text" Value="Server Stopped" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ServerStatus}" Value="{x:Static services:ServiceStatus.Changing}">
+                                            <Setter Property="Text" Value="Server Status Changing" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </StackPanel>
+
+                    <!--Message Center-->
+                    <StackPanel Orientation="Horizontal" Margin="20,0,50,0">
+
+                        <th_wpf:Button Clicked="MessageCenter_ToolBarItem_Clicked" Image="Resources/Envelope_01.png" ToolTip="Show Message Center">
+                            <th_wpf:Button.Style>
+                                <Style TargetType="th_wpf:Button">
+                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </th_wpf:Button.Style>
+                        </th_wpf:Button>
+
+                        <Border CornerRadius="2" Margin="5,4">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="#33000000"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NotificationsCount}" Value="0">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.ToolTip>
+                                <TextBlock>
+                                                <Run Text="{Binding NotificationsCount}"/>
+                                                <Run Text="New Messages"/>
+                                </TextBlock>
+                            </Border.ToolTip>
+                            <TextBlock Text="{Binding NotificationsCount}" FontSize="14" Foreground="White" Margin="5,0"/>
+                        </Border>
+
+                    </StackPanel>
+
+                </StackPanel>
+
+                <!--Resize Grip Lines-->
+                <Grid Grid.Column="1" Width="25">
+                    <Line X1="2" Y1="20" X2="20" Y2="2" Stroke="#33000000" StrokeThickness="1"/>
+                    <Line X1="8" Y1="22" X2="22" Y2="8" Stroke="#33000000" StrokeThickness="1"/>
+                    <Line X1="15" Y1="22" X2="22" Y2="15" Stroke="#33000000" StrokeThickness="1"/>
+                </Grid>
+
+            </Grid>
+
+            <!--Content-->
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="200"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="{Binding DeveloperConsoleHeight, Mode=TwoWay}"/>
+                </Grid.RowDefinitions>
+
+                <!--Page Content Display-->
+                <ContentControl x:Name="CurrentPage_CONTENT" Grid.Row="0" Content="{Binding CurrentPage}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ContentControl.LayoutTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="{Binding ZoomLevel}" ScaleY="{Binding ZoomLevel}"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </ContentControl.LayoutTransform>
+                </ContentControl>
+
+                <GridSplitter Grid.Row="1" Background="{StaticResource Accent_Dark}" HorizontalAlignment="Stretch" Height="5">
+                    <GridSplitter.Style>
+                        <Style TargetType="GridSplitter">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Shown, ElementName=developerConsole}" Value="false">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </GridSplitter.Style>
+                </GridSplitter>
+
+                <!--Developer Console-->
+                <devconsole:PopUp x:Name="developerConsole" Grid.Row="2" ShownChanged="developerConsole_ShownChanged"/>
+
+            </Grid>
+
+        </DockPanel>
+        
+       
+        <!--Plugins Launcher Menu-->
+        <menus_plugins:Menu x:Name="PluginLauncher" 
                            Shown="False" ShownChanged="PluginLauncher_ShownChanged"
                             />
 
-                <!--Main Menu Drop Down--> 
-                <menus_main:Menu x:Name="MainMenu"
+        <!--Main Menu Drop Down-->
+        <menus_main:Menu x:Name="MainMenu"
                             Shown="False" ShownChanged="MainMenu_ShownChanged"
                             />
 
-                <!--Login Menu-->
-                <user:Menu x:Name="LoginMenu" Margin="0,30,144,0" Shown="False" 
+        <!--Login Menu-->
+        <user:Menu x:Name="LoginMenu" Margin="0,35,47,0" Shown="False" 
                            CurrentUserChanged="LoginMenu_CurrentUserChanged" 
                            ShownChanged="LoginMenu_ShownChanged" 
                            MyAccountClicked="LoginMenu_MyAccountClicked"
                            CreateClicked="LoginMenu_CreateClicked"
                            />
 
-                <!--Message Center-->
-                <message:MessageCenter x:Name="messageCenter" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,25" Shown="False"/>
-
-            </Grid>
-
-            <Rectangle Grid.Column="2">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="1,0" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-        </Grid>
-
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition>
-                    <ColumnDefinition.Style>
-                        <Style TargetType="ColumnDefinition">
-                            <Setter Property="Width" Value="{StaticResource ShadowWidth}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding WindowState}" Value="Maximized">
-                                    <Setter Property="Width" Value="0"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ColumnDefinition.Style>
-                </ColumnDefinition>
-            </Grid.ColumnDefinitions>
-
-            <Rectangle Grid.Column="0">
-                <Rectangle.Fill>
-                    <RadialGradientBrush Center="1,0" RadiusX="1" RadiusY="1" GradientOrigin="1,0" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <Rectangle Grid.Column="1">
-                <Rectangle.Fill>
-                    <LinearGradientBrush EndPoint="0,1" MappingMode="RelativeToBoundingBox" StartPoint="0,0" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-            <Rectangle Grid.Column="2">
-                <Rectangle.Fill>
-                    <RadialGradientBrush Center="0,0" RadiusX="1" RadiusY="1" GradientOrigin="0,0" GradientStops="{DynamicResource gradient}" />
-                </Rectangle.Fill>
-            </Rectangle>
-
-        </Grid>
+        <!--Message Center-->
+        <message:MessageCenter x:Name="messageCenter" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,0,25" Shown="False"/>
 
     </Grid>
 

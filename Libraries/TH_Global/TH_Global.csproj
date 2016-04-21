@@ -68,6 +68,7 @@
     <Compile Include="Functions\Network_Functions.cs" />
     <Compile Include="Functions\Object_Functions.cs" />
     <Compile Include="Functions\Plugin_Functions.cs" />
+    <Compile Include="Functions\Registry_Functions.cs" />
     <Compile Include="Functions\Service_Functions.cs" />
     <Compile Include="Functions\String_Functions.cs" />
     <Compile Include="Functions\TimeSpan_Functions.cs" />

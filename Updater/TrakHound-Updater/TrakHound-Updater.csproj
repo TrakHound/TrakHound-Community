@@ -57,7 +57,7 @@
   <ItemGroup>
     <None Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\Files.cs" />
-    <Compile Include="Updates\Registry.cs" />
+    <None Include="Updates\Registry.cs" />
     <Compile Include="Service\Service1.cs">
       <SubType>Component</SubType>
     </Compile>

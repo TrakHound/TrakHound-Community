@@ -45,10 +45,10 @@
 
                 <!--Update Check Interval-->
                 <th_wpf:TimeSlider Title="Update Check Interval" 
-                HelpText="Sets the interval to check for updates automatically"
-                Value="{Binding UpdateCheckInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Maximum="60000" Minimum="1000" LargeChange="1000" TickFrequency="1000"
-                Width="500" HorizontalAlignment="Left">
+                    HelpText="Sets the interval to check for updates automatically"
+                    Value="{Binding UpdateCheckInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Maximum="21600000" Minimum="300000" LargeChange="300000" TickFrequency="300000"
+                    Width="500" HorizontalAlignment="Left">
                     <th_wpf:TimeSlider.Style>
                         <Style TargetType="th_wpf:TimeSlider">
                             <Style.Triggers>
@@ -81,7 +81,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!--Button-->
-                    <th_wpf:Button Text="Apply Updates" Clicked="ApplyUpdates_Clicked" IsEnabled="False">
+                    <th_wpf:Button Text="Apply Updates" Clicked="ApplyUpdates_Clicked">
                         <th_wpf:Button.Style>
                             <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
                                 <Style.Triggers>
@@ -104,6 +104,9 @@
                                     <DataTrigger Binding="{Binding AvailableUpdates}" Value="0">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding UpdatesSetToApply}" Value="true">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Style>
@@ -121,6 +124,24 @@
                                 </Style>
                             </Run.Style>
                         </Run>
+                    </TextBlock>
+
+                    <!--Update Ready Text-->
+                    <TextBlock Grid.Column="1">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Margin" Value="20,0"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="Green"/>
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Text" Value="Applying Updates.. Restart TrakHound Client to finish"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding UpdatesSetToApply}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
                     </TextBlock>
 
                 </Grid>

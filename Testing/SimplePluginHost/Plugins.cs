@@ -86,14 +86,14 @@ namespace SimpleClient
 
         private void LoadPlugins()
         {
-            Plugins = GetPlugins();
+            //Plugins = GetPlugins();
 
-            PluginConfigurations = GetPluginConfigurations(Plugins); 
+            //PluginConfigurations = GetPluginConfigurations(Plugins); 
 
-            foreach (var config in PluginConfigurations)
-            {
-                Plugin_Load(config);
-            }
+            //foreach (var config in PluginConfigurations)
+            //{
+            //    Plugin_Load(config);
+            //}
         }
 
 
@@ -161,6 +161,37 @@ namespace SimpleClient
 
             return result;
         }
+
+        //private static List<Lazy<object>> GetLazyPlugins(string path)
+        //{
+        //    var result = new List<Lazy<object>>();
+
+        //    var plugins = Reader.FindLazyPlugins<IClientPlugin>(path, new ClientPlugin.PluginContainer(), ClientPlugin.PLUGIN_EXTENSION);
+        //    foreach (var plugin in plugins)
+        //    {
+        //        // Only add if not already in returned list
+        //        //if (result.Find(x =>
+        //        //    x.Title == plugin.Title &&
+        //        //    x.DefaultParent == plugin.DefaultParent &&
+        //        //    x.DefaultParentCategory == plugin.DefaultParentCategory
+        //        //    ) == null)
+        //        //{
+        //            result.Add(plugin);
+        //        //}
+        //    }
+
+        //    // Load from subdirectories
+        //    var subdirectories = Directory.GetDirectories(path);
+        //    if (subdirectories != null)
+        //    {
+        //        foreach (var subdirectory in subdirectories)
+        //        {
+        //            result.AddRange(GetLazyPlugins(subdirectory));
+        //        }
+        //    }
+
+        //    return result;
+        //}
 
         /// <summary>
         /// Add plugins to list making sure that plugins are not repeated in list

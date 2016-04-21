@@ -30,10 +30,10 @@ namespace SimpleClient
             // Read Database Plugins (stores to static list in TH_Database.Global.Plugins)
             TH_Database.DatabasePluginReader.ReadPlugins();
 
-            Application.Current.MainWindow = this;
+            //Application.Current.MainWindow = this;
 
             DeviceManager_Initialize();
-            
+
             LoadPlugins();
         }
 

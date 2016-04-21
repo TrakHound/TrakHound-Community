@@ -14,11 +14,11 @@
              MinHeight="50"
              >
 
-    <Grid PreviewMouseDown="Control_MouseDown">
-        <Grid.RowDefinitions>
+    <Border PreviewMouseDown="Control_MouseDown" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="0,0,0,1">
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
+        </Grid.RowDefinitions>-->
         <!--<Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Background" Value="#00000000"/>
@@ -33,13 +33,17 @@
             </Style>
         </Grid.Style>-->
 
-        <ContentControl Content="{Binding Data}"/>
+        <Grid>
 
-        <Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}"/>
+            <ContentControl Content="{Binding Data}"/>
 
-        <!--Gloss Effect-->
-        <controls:GlossOverlay />
+            <!--<Rectangle Grid.Row="1" Height="1" Fill="{StaticResource Shade_Normal}"/>-->
 
-    </Grid>
+            <!--Gloss Effect-->
+            <controls:GlossOverlay />
+
+        </Grid>
+
+    </Border>
     
 </UserControl>

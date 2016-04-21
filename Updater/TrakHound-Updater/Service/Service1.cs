@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 
 using TH_Global;
+using TH_Global.Functions;
 using TH_Global.Updates;
 using System.IO;
 
@@ -97,6 +98,11 @@ namespace TrakHound_Updater
             // Read the update_config.xml file
             configuration = UpdateConfiguration.Read();
 
+            if (configuration.ClearUpdateQueue)
+            {
+                Update.ClearAll();
+            }
+
             if (configuration.ApplyNow)
             {
                 AppInfo[] infos = GetUpdates();
@@ -109,6 +115,7 @@ namespace TrakHound_Updater
 
             configuration.ApplyNow = false;
             configuration.CheckNow = false;
+            configuration.ClearUpdateQueue = false;
             StopConfigurationFileWatcher();
             UpdateConfiguration.Create(configuration);
 
@@ -163,12 +170,12 @@ namespace TrakHound_Updater
             var infos = new List<AppInfo>();
 
             //string[] names = Registry.GetValueNames("Update_Urls");
-            string[] names = Registry.GetKeyNames();
+            string[] names = Registry_Functions.GetKeyNames();
             if (names != null)
             {
                 foreach (var name in names)
                 {
-                    string url = Registry.GetValue(Registry.UPDATE_URL, name);
+                    string url = Registry_Functions.GetValue(Update.UPDATE_URL, name);
                     if (url != null) infos.Add(Update.Get(url));
                 }
             }
@@ -214,11 +221,6 @@ namespace TrakHound_Updater
         {
             var ts = TimeSpan.FromMinutes(minutes);
             return ts.TotalMilliseconds;
-        }
-
-        private void ClearUpdateQueue()
-        {
-
         }
 
     }

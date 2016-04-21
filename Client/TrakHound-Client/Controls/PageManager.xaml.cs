@@ -28,7 +28,7 @@ namespace TrakHound_Client.Controls
         public PageManager()
         {
             InitializeComponent();
-            DataContext = this;
+            root.DataContext = this;
         }
 
         public string Title { get { return TabTitle; } }

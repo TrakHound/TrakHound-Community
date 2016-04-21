@@ -14,7 +14,7 @@ namespace TrakHound_Client
 
         private void PluginLauncher_BT_Clicked(TH_WPF.Button bt)
         {
-            Point point = bt.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+            Point point = bt.TransformToAncestor(root).Transform(new Point(0, 0));
             PluginLauncher.Margin = new Thickness(0, point.Y + bt.RenderSize.Height, 0, 0);
 
             PluginLauncher.Shown = true;

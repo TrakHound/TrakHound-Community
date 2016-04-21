@@ -14,7 +14,7 @@ namespace TrakHound_Client
 
         private void MainMenu_BT_Clicked(Button bt)
         {
-            Point point = bt.TransformToAncestor(Main_GRID).Transform(new Point(0, 0));
+            Point point = bt.TransformToAncestor(root).Transform(new Point(0, 0));
             MainMenu.Margin = new Thickness(0, point.Y + bt.RenderSize.Height, 5, 0);
 
             MainMenu.Shown = true;

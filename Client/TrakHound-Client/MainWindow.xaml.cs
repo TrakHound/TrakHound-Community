@@ -49,7 +49,7 @@ namespace TrakHound_Client
 
             developerConsole.CurrentOutput = CLIENT_NAME;
 
-            this.SourceInitialized += new EventHandler(win_SourceInitialized);
+            //this.SourceInitialized += new EventHandler(win_SourceInitialized);
 
             Application.Current.MainWindow = this;
 
@@ -58,8 +58,6 @@ namespace TrakHound_Client
 
             DeviceManager_Initialize();
 
-            // Set border thickness (maybe make this a static resource in XAML?)
-            ResizeBorderThickness = 1;
 
             // Read Users and Login
             Splash_UpdateStatus("...Logging in User", 60);

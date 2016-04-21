@@ -25,33 +25,33 @@
                 <RowDefinition Height="5.5*"/>
             </Grid.RowDefinitions>
 
-            <Border IsHitTestVisible="False">
-                <Border.Background>
+            <Rectangle IsHitTestVisible="False">
+                <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#10ffffff" Offset="0"/>
                         <GradientStop Color="#30ffffff" Offset="1"/>
                     </LinearGradientBrush>
-                </Border.Background>
-            </Border>
+                </Rectangle.Fill>
+            </Rectangle>
 
-            <Border Grid.Row="1" IsHitTestVisible="False">
-                <Border.Background>
+            <Rectangle Grid.Row="1" IsHitTestVisible="False">
+                <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#10000000" Offset="0"/>
                         <GradientStop Color="#00ffffff" Offset="1"/>
                     </LinearGradientBrush>
-                </Border.Background>
-            </Border>
+                </Rectangle.Fill>
+            </Rectangle>
 
-            <Border Grid.RowSpan="2" IsHitTestVisible="False">
-                <Border.Background>
+            <Rectangle Grid.RowSpan="2" IsHitTestVisible="False">
+                <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                         <GradientStop Color="#10000000" Offset="0"/>
                         <GradientStop Color="#10ffffff" Offset="0.5"/>
                         <GradientStop Color="#10000000" Offset="1"/>
                     </LinearGradientBrush>
-                </Border.Background>
-            </Border>
+                </Rectangle.Fill>
+            </Rectangle>
 
         </Grid>
         

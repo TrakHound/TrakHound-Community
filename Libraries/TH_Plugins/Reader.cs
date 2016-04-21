@@ -100,6 +100,77 @@ namespace TH_Plugins
             return result;
         }
 
+        public static List<Lazy<object>> FindLazyPlugins<T>(string path, ReaderContainer readerContainer, string extension = null)
+        {
+            var result = new List<Lazy<object>>();
+
+            if (path != null && readerContainer != null)
+            {
+                CompositionContainer container = null;
+
+                // path is to an individual file
+                if (System.IO.File.Exists(path))
+                {
+                    string ext = System.IO.Path.GetExtension(path);
+
+                    // Check that the file extension is correct
+                    if (ext != null && extension != null)
+                    {
+                        if (ext.ToLower() == extension)
+                        {
+                            var assembly = GetAssemblyFromPath(path);
+                            if (assembly != null)
+                            {
+                                var assemblyCatalog = new AssemblyCatalog(assembly);
+                                container = new CompositionContainer(assemblyCatalog);
+                            }
+                        }
+                    }
+                }
+                // path is to a directory
+                else if (System.IO.Directory.Exists(path))
+                {
+                    DirectoryCatalog directoryCatalog;
+                    if (extension != null) directoryCatalog = new DirectoryCatalog(path, "*" + extension);
+                    else directoryCatalog = new DirectoryCatalog(path);
+
+                    container = new CompositionContainer(directoryCatalog);
+                }
+
+                if (container != null)
+                {
+                    // Try Loading the Imports (Plugins)
+                    try
+                    {
+                        container.SatisfyImportsOnce(readerContainer);
+                    }
+                    catch (System.Reflection.ReflectionTypeLoadException rtex)
+                    {
+                        Logger.Log("ReflectionTypeLoadException : " + rtex.Message);
+
+                        foreach (var lex in rtex.LoaderExceptions)
+                        {
+                            Logger.Log("LoaderException : " + lex.Message);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Log("Exception : " + ex.Message);
+                    }
+
+                    if (readerContainer.Plugins != null)
+                    {
+                        foreach (var lPlugin in readerContainer.Plugins)
+                        {
+                            result.Add(lPlugin);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         static Assembly GetAssemblyFromPath(string path)
         {
             Assembly result = null;

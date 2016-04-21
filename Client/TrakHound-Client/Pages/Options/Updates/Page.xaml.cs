@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -29,6 +30,8 @@ namespace TrakHound_Client.Pages.Options.Updates
             DataContext = this;
 
             Load();
+
+            RegistryCheck_Initialize();
         }
 
         public string Title { get { return "Updates"; } }
@@ -45,19 +48,11 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         private void Load()
         {
-            var config = TH_Global.Updates.UpdateConfiguration.Read();
+            var config = UpdateConfiguration.Read();
 
-            //QueueWriteInterval = config.QueueWriteInterval;
+            UpdateCheckInterval = GetMillisecondsFromMinutes(config.UpdateCheckInterval);
 
-            //DebugEnabled = config.Debug;
-            //ErrorEnabled = config.Error;
-            //NotificationEnabled = config.Notification;
-            //WarningEnabled = config.Warning;
-
-            //DebugRecycleDays = GetMillisecondsFromDays(config.DebugRecycleDays);
-            //ErrorRecycleDays = GetMillisecondsFromDays(config.ErrorRecycleDays);
-            //NotificationRecycleDays = GetMillisecondsFromDays(config.NotificationRecycleDays);
-            //WarningRecycleDays = GetMillisecondsFromDays(config.WarningRecycleDays);
+            UpdatesEnabled = config.Enabled;
         }
 
         private System.Timers.Timer settingChangedTimer;
@@ -85,35 +80,74 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         private void Save()
         {
-            var config = new TH_Global.Updates.UpdateConfiguration();
+            var config = new UpdateConfiguration();
 
-            //config.QueueWriteInterval = QueueWriteInterval;
+            config.UpdateCheckInterval = GetMinutesFromMilliseconds(UpdateCheckInterval);
 
-            //config.Debug = DebugEnabled;
-            //config.Error = ErrorEnabled;
-            //config.Notification = NotificationEnabled;
-            //config.Warning = WarningEnabled;
+            config.Enabled = UpdatesEnabled;
 
-            //config.DebugRecycleDays = GetDaysFromMilliseconds(DebugRecycleDays);
-            //config.ErrorRecycleDays = GetDaysFromMilliseconds(ErrorRecycleDays);
-            //config.NotificationRecycleDays = GetDaysFromMilliseconds(NotificationRecycleDays);
-            //config.WarningRecycleDays = GetDaysFromMilliseconds(WarningRecycleDays);
+            config.CheckNow = checkNow;
+            config.ApplyNow = applyNow;
+            config.ClearUpdateQueue = clearUpdateQueue;
 
-            //TH_Global.Logger.LoggerConfiguration.Create(config);
+            UpdateConfiguration.Create(config);
         }
 
-        private static int GetDaysFromMilliseconds(long ms)
+        private static int GetMinutesFromMilliseconds(long ms)
         {
             var ts = TimeSpan.FromMilliseconds(ms);
-            return ts.Days;
+            return Convert.ToInt32(ts.TotalMinutes);
         }
 
-        private static long GetMillisecondsFromDays(int days)
+        private static long GetMillisecondsFromMinutes(int minutes)
         {
-            var ts = TimeSpan.FromDays(days);
+            var ts = TimeSpan.FromMinutes(minutes);
             return Convert.ToInt64(ts.TotalMilliseconds);
         }
 
+
+        private bool checkNow;
+        private bool applyNow;
+        private bool clearUpdateQueue;
+
+
+        private System.Timers.Timer registryCheckTimer;
+
+        private void RegistryCheck_Initialize()
+        {
+            if (registryCheckTimer != null) registryCheckTimer.Enabled = false;
+
+            registryCheckTimer = new System.Timers.Timer();
+            registryCheckTimer.Interval = 5000;
+            registryCheckTimer.Elapsed += RegistryCheckTimer_Elapsed;
+            registryCheckTimer.Enabled = true;
+        }
+
+        private void RegistryCheckTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var timer = (System.Timers.Timer)sender;
+            timer.Enabled = false;
+
+            int availableUpdates = 0;
+
+            var appNames = Registry_Functions.GetKeyNames();
+            if (appNames != null)
+            {
+                foreach (var appName in appNames)
+                {
+                    var valueNames = Registry_Functions.GetValueNames(appName);
+                    if (valueNames != null)
+                    {
+                        var updatePath = valueNames.ToList().Exists(x => x == "update_path");
+                        if (updatePath) availableUpdates++;
+                    }
+                }
+            }
+
+            Dispatcher.BeginInvoke(new Action(() => { AvailableUpdates = availableUpdates; }));
+
+            timer.Enabled = true;
+        }
 
         #region "Dependency Properties"
 
@@ -123,15 +157,16 @@ namespace TrakHound_Client.Pages.Options.Updates
             if (o != null) o.SettingChanged();
         }
 
+        private const long HOUR_MS = 3600000;
 
-        public int UpdateCheckInterval
+        public long UpdateCheckInterval
         {
-            get { return (int)GetValue(UpdateCheckIntervalProperty); }
+            get { return (long)GetValue(UpdateCheckIntervalProperty); }
             set { SetValue(UpdateCheckIntervalProperty, value); }
         }
 
         public static readonly DependencyProperty UpdateCheckIntervalProperty =
-            DependencyProperty.Register("UpdateCheckInterval", typeof(int), typeof(Page), new PropertyMetadata(5000, new PropertyChangedCallback(Value_PropertyChanged)));
+            DependencyProperty.Register("UpdateCheckInterval", typeof(long), typeof(Page), new PropertyMetadata(HOUR_MS, new PropertyChangedCallback(Value_PropertyChanged)));
 
 
         public bool UpdatesEnabled
@@ -154,102 +189,14 @@ namespace TrakHound_Client.Pages.Options.Updates
             DependencyProperty.Register("AvailableUpdates", typeof(int), typeof(Page), new PropertyMetadata(0));
 
 
-
-
-
-        public int QueueWriteInterval
+        public bool UpdatesSetToApply
         {
-            get { return (int)GetValue(QueueWriteIntervalProperty); }
-            set { SetValue(QueueWriteIntervalProperty, value); }
+            get { return (bool)GetValue(UpdatesSetToApplyProperty); }
+            set { SetValue(UpdatesSetToApplyProperty, value); }
         }
 
-        public static readonly DependencyProperty QueueWriteIntervalProperty =
-            DependencyProperty.Register("QueueWriteInterval", typeof(int), typeof(Page), new PropertyMetadata(5000, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-
-        public bool DebugEnabled
-        {
-            get { return (bool)GetValue(DebugEnabledProperty); }
-            set { SetValue(DebugEnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty DebugEnabledProperty =
-            DependencyProperty.Register("DebugEnabled", typeof(bool), typeof(Page), new PropertyMetadata(false, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-        public bool ErrorEnabled
-        {
-            get { return (bool)GetValue(ErrorEnabledProperty); }
-            set { SetValue(ErrorEnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty ErrorEnabledProperty =
-            DependencyProperty.Register("ErrorEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-        public bool NotificationEnabled
-        {
-            get { return (bool)GetValue(NotificationEnabledProperty); }
-            set { SetValue(NotificationEnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty NotificationEnabledProperty =
-            DependencyProperty.Register("NotificationEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-        public bool WarningEnabled
-        {
-            get { return (bool)GetValue(WarningEnabledProperty); }
-            set { SetValue(WarningEnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty WarningEnabledProperty =
-            DependencyProperty.Register("WarningEnabled", typeof(bool), typeof(Page), new PropertyMetadata(true, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-        private const long DAY_MS = 86400000;
-        private const long WEEK_MS = 604800000;
-
-
-        public long DebugRecycleDays
-        {
-            get { return (long)GetValue(DebugRecycleDaysProperty); }
-            set { SetValue(DebugRecycleDaysProperty, value); }
-        }
-
-        public static readonly DependencyProperty DebugRecycleDaysProperty =
-            DependencyProperty.Register("DebugRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(WEEK_MS, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-        public long ErrorRecycleDays
-        {
-            get { return (long)GetValue(ErrorRecycleDaysProperty); }
-            set { SetValue(ErrorRecycleDaysProperty, value); }
-        }
-
-        public static readonly DependencyProperty ErrorRecycleDaysProperty =
-            DependencyProperty.Register("ErrorRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(WEEK_MS, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-        public long NotificationRecycleDays
-        {
-            get { return (long)GetValue(NotificationRecycleDaysProperty); }
-            set { SetValue(NotificationRecycleDaysProperty, value); }
-        }
-
-        public static readonly DependencyProperty NotificationRecycleDaysProperty =
-            DependencyProperty.Register("NotificationRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(DAY_MS, new PropertyChangedCallback(Value_PropertyChanged)));
-
-
-        public long WarningRecycleDays
-        {
-            get { return (long)GetValue(WarningRecycleDaysProperty); }
-            set { SetValue(WarningRecycleDaysProperty, value); }
-        }
-
-        public static readonly DependencyProperty WarningRecycleDaysProperty =
-            DependencyProperty.Register("WarningRecycleDays", typeof(long), typeof(Page), new PropertyMetadata(DAY_MS, new PropertyChangedCallback(Value_PropertyChanged)));
+        public static readonly DependencyProperty UpdatesSetToApplyProperty =
+            DependencyProperty.Register("UpdatesSetToApply", typeof(bool), typeof(Page), new PropertyMetadata(false));
 
         #endregion
 
@@ -308,32 +255,37 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         private void CheckForUpdates_Clicked(TH_WPF.Button bt)
         {
+            UpdatesSetToApply = false;
 
+            checkNow = true;
+            SettingChanged();
         }
 
         private void ApplyUpdates_Clicked(TH_WPF.Button bt)
         {
+            applyNow = true;
+            SettingChanged();
 
+            UpdatesSetToApply = true;
         }
 
         private void ClearUpdatesQueue_Clicked(TH_WPF.Button bt)
         {
-
+            checkNow = false;
+            applyNow = false;
+            clearUpdateQueue = true;
+            SettingChanged();
         }
 
         private void RestoreDefaults_Clicked(TH_WPF.Button bt)
         {
-            QueueWriteInterval = 5000;
+            checkNow = false;
+            applyNow = false;
+            clearUpdateQueue = false;
 
-            DebugEnabled = false;
-            ErrorEnabled = true;
-            NotificationEnabled = true;
-            WarningEnabled = true;
+            UpdateCheckInterval = HOUR_MS;
 
-            DebugRecycleDays = WEEK_MS;
-            ErrorRecycleDays = WEEK_MS;
-            NotificationRecycleDays = DAY_MS;
-            WarningRecycleDays = DAY_MS;
+            UpdatesEnabled = true;
         }
 
     }

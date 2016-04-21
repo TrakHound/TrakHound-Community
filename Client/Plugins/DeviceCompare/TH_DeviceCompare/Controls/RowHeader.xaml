@@ -33,9 +33,9 @@
                     <Trigger Property="IsMouseOver" Value="true">
                         <Setter Property="Background" Value="#04000000"/>
                     </Trigger>
-                    <DataTrigger Binding="{Binding IsSelected}" Value="true">
+                    <!--<DataTrigger Binding="{Binding IsSelected}" Value="true">
                         <Setter Property="Background" Value="#08000000"/>
-                    </DataTrigger>
+                    </DataTrigger>-->
                 </Style.Triggers>
             </Style>
         </Border.Style>

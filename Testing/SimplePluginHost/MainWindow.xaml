@@ -8,26 +8,18 @@
         Closing="Window_Closing"
         
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" MinHeight="300" MinWidth="300">
 
-    <Canvas>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <Rectangle Fill="Blue" Width="100" Height="30" Canvas.Top="-20"/>
+        <ListBox ItemsSource="{Binding Plugins}" DisplayMemberPath="Title" SelectedValue="{Binding SelectedPlugin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+        <ContentControl Grid.Column="1" Content="{Binding SelectedPlugin}"/>
 
-            <!--<ItemsControl ItemsSource="{Binding Plugins}"/>-->
-
-            <ListBox ItemsSource="{Binding Plugins}" DisplayMemberPath="Title" SelectedValue="{Binding SelectedPlugin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <ContentControl Grid.Column="1" Content="{Binding SelectedPlugin}"/>
-
-        </Grid>
-
-    </Canvas>
+    </Grid>
 
 </Window>

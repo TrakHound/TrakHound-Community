@@ -16,6 +16,12 @@ namespace TrakHound_Updater
     public static class Update
     {
 
+        public const string UPDATE_PATH = "update_path";
+        public const string INSTALL_PATH = "install_path";
+        public const string UPDATE_URL = "update_url";
+        public const string UPDATE_VERSION = "update_version";
+        public const string INSTALL_VERSION = "install_version";
+
         public static AppInfo Get(string appInfoUrl)
         {
             Logger.Log("Getting AppInfo @ " + appInfoUrl, Logger.LogLineType.Notification);
@@ -109,22 +115,26 @@ namespace TrakHound_Updater
 
         public static void ClearRegistryKeys()
         {
-            string[] names = Registry.GetKeyNames();
+            string[] names = Registry_Functions.GetKeyNames();
             if (names != null)
             {
                 foreach (var name in names)
                 {
-                    Registry.DeleteValue(Registry.UPDATE_PATH, name);
-                    Registry.DeleteValue(Registry.UPDATE_VERSION, name);
-                    Registry.DeleteValue(Registry.INSTALL_VERSION, name);
+                    Registry_Functions.DeleteValue(UPDATE_PATH, name);
+                    Registry_Functions.DeleteValue(UPDATE_VERSION, name);
+                    Registry_Functions.DeleteValue(INSTALL_VERSION, name);
                 }
             }
+
+            Logger.Log("Update Registy Keys Cleared Successfully!", Logger.LogLineType.Notification);
         }
 
         public static void ClearUpdateFiles()
         {
             FileSystem_Functions.DeleteDirectory(FileLocations.Updates);
             FileLocations.CreateUpdatesDirectory();
+
+            Logger.Log("Update Queue Files Cleared Successfully!", Logger.LogLineType.Notification);
         }
 
         #region "Application Interaction"
@@ -192,7 +202,7 @@ namespace TrakHound_Updater
             public static string Get(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) return Registry.GetValue(Registry.UPDATE_PATH, keyName);
+                if (keyName != null) return Registry_Functions.GetValue(UPDATE_PATH, keyName);
 
                 return null;
             }
@@ -200,13 +210,13 @@ namespace TrakHound_Updater
             public static void Set(AppInfo info, string path)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) Registry.SetKey(Registry.UPDATE_PATH, path, keyName);
+                if (keyName != null) Registry_Functions.SetKey(UPDATE_PATH, path, keyName);
             }
 
             public static void Delete(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) Registry.DeleteValue(Registry.UPDATE_PATH, keyName);
+                if (keyName != null) Registry_Functions.DeleteValue(UPDATE_PATH, keyName);
             }
         }
         
@@ -215,7 +225,7 @@ namespace TrakHound_Updater
             public static string Get(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) return Registry.GetValue(Registry.UPDATE_VERSION, keyName);
+                if (keyName != null) return Registry_Functions.GetValue(UPDATE_VERSION, keyName);
 
                 return null;
             }
@@ -223,13 +233,13 @@ namespace TrakHound_Updater
             public static void Set(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) Registry.SetKey(Registry.UPDATE_VERSION, info.Version, keyName);
+                if (keyName != null) Registry_Functions.SetKey(UPDATE_VERSION, info.Version, keyName);
             }
 
             public static void Delete(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) Registry.DeleteValue(Registry.UPDATE_VERSION, keyName);
+                if (keyName != null) Registry_Functions.DeleteValue(UPDATE_VERSION, keyName);
             }
         }
         
@@ -238,7 +248,7 @@ namespace TrakHound_Updater
             public static string Get(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) return Registry.GetValue(Registry.INSTALL_VERSION, keyName);
+                if (keyName != null) return Registry_Functions.GetValue(INSTALL_VERSION, keyName);
 
                 return null;
             }
@@ -246,13 +256,13 @@ namespace TrakHound_Updater
             public static void Set(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) Registry.SetKey(Registry.INSTALL_VERSION, info.Version, keyName);
+                if (keyName != null) Registry_Functions.SetKey(INSTALL_VERSION, info.Version, keyName);
             }
 
             public static void Delete(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) Registry.DeleteValue(Registry.INSTALL_VERSION, keyName);
+                if (keyName != null) Registry_Functions.DeleteValue(INSTALL_VERSION, keyName);
             }
         }
 
@@ -261,7 +271,7 @@ namespace TrakHound_Updater
             public static string Get(AppInfo info)
             {
                 string keyName = CreateKeyName(info);
-                if (keyName != null) return Registry.GetValue(Registry.INSTALL_PATH, keyName);
+                if (keyName != null) return Registry_Functions.GetValue(INSTALL_PATH, keyName);
 
                 return null;
             }
@@ -275,7 +285,7 @@ namespace TrakHound_Updater
                 if (keyName != null && !String.IsNullOrEmpty(info.AppInfoUrl))
                 {
                     Logger.Log("Update_URL Updated to : " + info.AppInfoUrl, Logger.LogLineType.Notification);
-                    Registry.SetKey(Registry.UPDATE_URL, info.AppInfoUrl, keyName);
+                    Registry_Functions.SetKey(UPDATE_URL, info.AppInfoUrl, keyName);
                 }
             }
         }
