@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
+using System;
 using System.ServiceModel;
+
 using TH_Global;
 using TH_Global.Functions;
 
@@ -13,8 +14,13 @@ namespace TrakHound_Updater
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class MessageServer : WCF_Functions.IMessage
     {
+        public MessageServer()
+        {
+            callback = OperationContext.Current.GetCallbackChannel<WCF_Functions.IMessageCallback>();
+        }
 
-        private WCF_Functions.IMessageCallback callback;
+
+        private static WCF_Functions.IMessageCallback callback;
 
 
         public object SendData(WCF_Functions.MessageData data)
@@ -34,13 +40,8 @@ namespace TrakHound_Updater
             return "Data Sent Successfully!";
         }
 
-        public void SendCallback(WCF_Functions.MessageData data)
+        public static void SendCallback(WCF_Functions.MessageData data)
         {
-            if (callback == null)
-            {
-                callback = OperationContext.Current.GetCallbackChannel<WCF_Functions.IMessageCallback>();
-            }
-
             try
             {
                 callback.OnCallback(data);

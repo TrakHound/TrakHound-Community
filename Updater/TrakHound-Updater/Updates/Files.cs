@@ -7,25 +7,43 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Threading;
 
 using TH_Global;
 using TH_Global.Functions;
+using TH_Global.Updates;
 
 namespace TrakHound_Updater
 {
     public static class Files
     {
 
-        public static bool Download(string url, string path)
+        private class WebClientWithData : WebClient
+        {
+            public AppInfo AppInfo { get; set; }
+        }
+
+        public static bool Download(AppInfo info, string path)
         {
             bool result = false;
 
             try
             {
-                using (WebClient webClient = new WebClient())
+                using (var webClient = new WebClientWithData())
                 {
-                    webClient.DownloadFile(url, path);
-                    Logger.Log("Download Complete", Logger.LogLineType.Notification);
+                    webClient.AppInfo = info;
+
+                    webClient.DownloadFileCompleted += WebClient_DownloadFileCompleted;
+                    webClient.DownloadProgressChanged += WebClient_DownloadProgressChanged;
+
+                    var syncObj = new object();
+                    lock (syncObj)
+                    {
+                        webClient.DownloadFileAsync(new Uri(info.DownloadUrl), path, syncObj);
+
+                        //This blocks the thread until download completes
+                        Monitor.Wait(syncObj);
+                    }
                 }
 
                 result = true;
@@ -38,13 +56,49 @@ namespace TrakHound_Updater
             return result;
         }
 
-        
-        public static string GetSetupFiles(string url)
+        private static void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
+        {
+            Console.WriteLine("Download Completed Successfully");
+
+            lock (e.UserState)
+            {
+                //releases blocked thread
+                Monitor.Pulse(e.UserState);
+            }
+
+            var webClient = (WebClientWithData)sender;
+
+            var message = new WCF_Functions.MessageData();
+            message.Id = "download_completed";
+            message.Data01 = webClient.AppInfo.Name;
+            message.Data02 = webClient.AppInfo.Title;
+            message.Data03 = webClient.AppInfo.SubTitle;
+
+            MessageServer.SendCallback(message);
+        }
+
+        private static void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            Console.WriteLine(e.ProgressPercentage.ToString());
+
+            var webClient = (WebClientWithData)sender;
+
+            var message = new WCF_Functions.MessageData();
+            message.Id = "download_progress_percentage";
+            message.Data01 = webClient.AppInfo.Name;
+            message.Data02 = webClient.AppInfo.Title;
+            message.Data03 = webClient.AppInfo.SubTitle;
+            message.Data04 = e.ProgressPercentage;
+
+            MessageServer.SendCallback(message);
+        }
+
+        public static string GetSetupFiles(AppInfo info)
         {
             string setupPath = CreateUpdatesPath() + ".exe";
 
             // Download Setup.exe (InstallShield) file
-            if (Download(url, setupPath))
+            if (Download(info, setupPath))
             {
                 if (File.Exists(setupPath))
                 {
@@ -54,6 +108,8 @@ namespace TrakHound_Updater
             }
             return null;
         }
+
+
 
         private static string ExtractFiles(string path)
         {

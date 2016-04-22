@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
 using System.ServiceModel;
 
 namespace TH_Global.Functions
@@ -16,14 +17,17 @@ namespace TH_Global.Functions
         {
             public MessageData() { }
 
-            public MessageData(string id, object data)
+            public MessageData(string id)
             {
                 Id = id;
-                Data = data;
             }
 
             public string Id { get; set; }
-            public object Data { get; set; }
+            public object Data01 { get; set; }
+            public object Data02 { get; set; }
+            public object Data03 { get; set; }
+            public object Data04 { get; set; }
+            public object Data05 { get; set; }
         }
 
         public interface IMessageCallback
@@ -46,6 +50,11 @@ namespace TH_Global.Functions
             public static ServiceHost Create<T>()
             {
                 return _Create<T>(typeof(IMessage));
+            }
+
+            public static ServiceHost Create<T>(string pipeName)
+            {
+                return _Create<T>(typeof(IMessage), pipeName);
             }
 
             public static ServiceHost Create<T>(Type interfaceType)
@@ -95,6 +104,11 @@ namespace TH_Global.Functions
             public static IMessage GetWithCallback(IMessageCallback callback)
             {
                 return _Get<IMessage>(DEFAULT_PIPE_NAME, callback);
+            }
+
+            public static IMessage GetWithCallback(string pipeName, IMessageCallback callback)
+            {
+                return _Get<IMessage>(pipeName, callback);
             }
 
             public static T GetWithCallback<T>(object callback)

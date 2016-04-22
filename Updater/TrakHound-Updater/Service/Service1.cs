@@ -103,47 +103,11 @@ namespace TrakHound_Updater
             // Read the update_config.xml file
             configuration = UpdateConfiguration.Read();
 
-            //if (configuration.ClearUpdateQueue)
-            //{
-            //    Update.ClearAll();
-            //}
-
-            //if (configuration.ApplyNow)
-            //{
-            //    AppInfo[] infos = GetUpdates();
-            //    ApplyUpdates(infos);
-            //}
-            //else if (configuration.CheckNow)
-            //{
-            //    GetUpdates();
-            //}
-
             // Enable Message Server Communication using WCF
             if (configuration.EnableMessageServer) StartMessageServer();
             else StopMessageServer();
 
-                //if (configuration.EnableMessageServer)
-                //    {
-                //        if (messageServer == null)
-                //        {
-                //            messageServer = new MessageServer();
-                //            messageServer.Start();
-                //        }
-                //    }
-                //    else
-                //    {
-                //        if (messageServer != null)
-                //        {
-                //            messageServer.Stop();
-                //            messageServer = null;
-                //        }
-                //    }
-
-
-                //configuration.ApplyNow = false;
-                //configuration.CheckNow = false;
-                //configuration.ClearUpdateQueue = false;
-                StopConfigurationFileWatcher();
+            StopConfigurationFileWatcher();
             UpdateConfiguration.Create(configuration);
 
             // Monitor update_config.xml file for any changes
@@ -187,8 +151,6 @@ namespace TrakHound_Updater
 
             timer.Interval = GetMillisecondsFromMinutes(configuration.UpdateCheckInterval);
             timer.Enabled = true;
-
-            Logger.Log("Update Timer : Interval = " + timer.Interval.ToString() + "ms", Logger.LogLineType.Debug);
         }
 
 
@@ -198,7 +160,6 @@ namespace TrakHound_Updater
         {
             var infos = new List<AppInfo>();
 
-            //string[] names = Registry.GetValueNames("Update_Urls");
             string[] names = Registry_Functions.GetKeyNames();
             if (names != null)
             {

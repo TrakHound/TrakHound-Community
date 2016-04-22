@@ -40,18 +40,34 @@ namespace TrakHound_Updater
                 if (UpdateNeeded(update, installed, queued))
                 {
                     Logger.Log("Downloading Update Files (" + info.Size + ")...", Logger.LogLineType.Notification);
-                    string filesPath = Files.GetSetupFiles(info.DownloadUrl);
+                    string filesPath = Files.GetSetupFiles(info);
                     if (filesPath != null)
                     {
                         UpdatePath.Set(info, filesPath);
                         UpdateVersion.Set(info);
                         Logger.Log("Registry Keys Updated", Logger.LogLineType.Notification);
+
+                        var message = new WCF_Functions.MessageData();
+                        message.Id = "update_ready";
+                        message.Data01 = info.Name;
+                        message.Data02 = info.Title;
+                        message.Data03 = info.SubTitle;
+
+                        MessageServer.SendCallback(message);
                     }
                     else Logger.Log("Error during GetSetupFiles()", Logger.LogLineType.Error);
                 }
                 else
                 {
                     Logger.Log(info.Name + " Up to Date", Logger.LogLineType.Notification);
+
+                    var message = new WCF_Functions.MessageData();
+                    message.Id = "up_to_date";
+                    message.Data01 = info.Name;
+                    message.Data02 = info.Title;
+                    message.Data03 = info.SubTitle;
+
+                    MessageServer.SendCallback(message);
 
                     UpdatePath.Delete(info);
                     UpdateVersion.Delete(info);

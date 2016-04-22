@@ -86,6 +86,7 @@
     <Compile Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\UpdateConfiguration.cs" />
     <Compile Include="Variables.cs" />
+    <Compile Include="Web\Download.cs" />
     <Compile Include="Web\HTTP.cs" />
     <Compile Include="Web\JSON.cs" />
   </ItemGroup>
