@@ -67,6 +67,7 @@ C:\TrakHound\Plugins\Pages\LICENSE.txt
 C:\TrakHound\Plugins\Pages\TH_Dashboard.dll.config
 C:\TrakHound\Plugins\Pages\TH_Dashboard.dll
 C:\TrakHound\Plugins\Pages\TH_Dashboard.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\Dashboard.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\Dashboard.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard_MarkupCompile.cache
@@ -75,4 +76,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.pdb
-F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_Dashboard\obj\Debug\TH_Dashboard.csprojResolveAssemblyReference.cache

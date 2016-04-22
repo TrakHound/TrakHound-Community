@@ -26,6 +26,7 @@ C:\TrakHound\Plugins\Pages\LICENSE.txt
 C:\TrakHound\Plugins\Pages\TH_StatusData.dll.config
 C:\TrakHound\Plugins\Pages\TH_StatusData.dll
 C:\TrakHound\Plugins\Pages\TH_StatusData.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\OptionsPage.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\OptionsPage.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData_MarkupCompile.cache
@@ -34,4 +35,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusDa
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.pdb
-F:\feenux\TrakHound\TrakHound\Client\Plugins\TH_StatusData\obj\Debug\TH_StatusData.csprojResolveAssemblyReference.cache

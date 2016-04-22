@@ -50,9 +50,7 @@ namespace TrakHound_Updater
                         var message = new WCF_Functions.MessageData();
                         message.Id = "update_ready";
                         message.Data01 = info.Name;
-                        message.Data02 = info.Title;
-                        message.Data03 = info.SubTitle;
-
+                        message.Data02 = info.Version;
                         MessageServer.SendCallback(message);
                     }
                     else Logger.Log("Error during GetSetupFiles()", Logger.LogLineType.Error);
@@ -64,9 +62,6 @@ namespace TrakHound_Updater
                     var message = new WCF_Functions.MessageData();
                     message.Id = "up_to_date";
                     message.Data01 = info.Name;
-                    message.Data02 = info.Title;
-                    message.Data03 = info.SubTitle;
-
                     MessageServer.SendCallback(message);
 
                     UpdatePath.Delete(info);

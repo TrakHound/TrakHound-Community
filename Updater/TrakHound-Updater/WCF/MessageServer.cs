@@ -19,7 +19,6 @@ namespace TrakHound_Updater
             callback = OperationContext.Current.GetCallbackChannel<WCF_Functions.IMessageCallback>();
         }
 
-
         private static WCF_Functions.IMessageCallback callback;
 
 
@@ -27,14 +26,28 @@ namespace TrakHound_Updater
         {
             if (data != null && data.Id != null)
             {
-                switch (data.Id.ToLower())
+                if (data.Data01 != null)
                 {
-                    case "check": Service1.GetUpdates(); break;
+                    string appName = data.Data01.ToString();
 
-                    case "apply": Service1.ApplyUpdates(); break;
+                    switch (data.Id.ToLower())
+                    {
+                        case "check": Service1.GetUpdate(appName); break;
 
-                    case "clear": Update.ClearAll(); break;
+                        case "apply": Service1.ApplyUpdate(appName); break;
+                    }
                 }
+                else
+                {
+                    switch (data.Id.ToLower())
+                    {
+                        case "check": Service1.GetUpdates(); break;
+
+                        case "apply": Service1.ApplyUpdates(); break;
+
+                        case "clear": Update.ClearAll(); break;
+                    }
+                }             
             }
 
             return "Data Sent Successfully!";

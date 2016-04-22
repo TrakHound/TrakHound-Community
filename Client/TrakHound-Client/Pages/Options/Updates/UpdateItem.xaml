@@ -3,82 +3,120 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TrakHound_Client.Pages.Options.Updates"
+             
+             xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+             xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
+             
+             Margin="10"
+             
              mc:Ignorable="d" 
-             >
+             Height="110" d:DesignWidth="400">
 
-    <Border BorderThickness="1" Margin="0, 0, 0, 20">
-        <Border.Style>
-            <Style TargetType="Border">
-                <Setter Property="Background" Value="#00000000"/>
-                <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="true">
-                        <Setter Property="Background" Value="{StaticResource Accent_Hover}"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </Border.Style>
-        
-        <Grid Margin="10, 5">
+    <UserControl.Resources>
+
+        <Style TargetType="th_wpf:Button">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#aa000000"/>
+                    <Setter Property="Background" Value="#cccccc"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Border x:Name="root" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="1">
+
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!--Plugin Image-->
-            <Rectangle Height="30" Width="30" Fill="{StaticResource Foreground_Normal}" Margin="10,0,20,0">
-                <Rectangle.Resources>
-                    <ImageBrush x:Key="IMG" ImageSource="{Binding PluginImage}" Stretch="Uniform" />
-                </Rectangle.Resources>
+            <!--Buttons-->
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <Rectangle.Style>
-                    <Style TargetType="Rectangle">
-                        <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                    </Style>
-                </Rectangle.Style>
-            </Rectangle>
+                <th_wpf:Button Text="Check" Clicked="Check_Clicked" DataObject="{Binding }"/>
 
-            <StackPanel Grid.Column="1">
+                <th_wpf:Button Grid.Row="1" Text="Apply" Clicked="Apply_Clicked" DataObject="{Binding }"/>
 
-                <!--Build Version-->
-                <TextBlock Text="{Binding PluginVersion}" FontSize="12" Foreground="{StaticResource Foreground_Normal}" Margin="0,5,0,0"/>
+            </Grid>
 
-                <!--Plugin Title-->
-                <TextBlock Text="{Binding PluginTitle}" FontSize="18" Margin="0,2,0,2" Foreground="{StaticResource Foreground_Normal}"/>
+            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="0,5"/>
 
-                <!--Plugin Author-->
-                <TextBlock FontSize="10" Margin="0,0,0,2" Foreground="{StaticResource Foreground_Light}">
-                    <Run Text="Author :" />
-                    <Run Text="{Binding PluginAuthor}" />
-                </TextBlock>
+            <Grid Grid.Column="2" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
 
-                <!--Plugin Author Info (Copyright info)-->
-                <TextBlock Text="{Binding PluginAuthorInfo}" Margin="0,0,0,5" FontSize="8" Foreground="{StaticResource Foreground_Light}" />
+                <StackPanel>
 
-            </StackPanel>
+                    <!--Application Title-->
+                    <TextBlock Text="{Binding ApplicationTitle}"  Foreground="{StaticResource Foreground_Normal}" FontSize="18" Margin="0,0,0,2"/>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="60,0,40,0">
+                    <!--Application Subtitle-->
+                    <TextBlock Text="{Binding ApplicationSubtitle}"  Foreground="{StaticResource Foreground_Light}" FontSize="14"/>
 
-                <TextBlock Text="{Binding UpdateCheckResult}" FontSize="14" Foreground="{Binding UpdateCheckBrush}" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                    <!--Available Version-->
+                    <!--<TextBlock Text="{Binding AvailableVersion}"  Foreground="{StaticResource Foreground_Normal}" FontSize="14"/>-->
 
-                <Rectangle Height="20" Width="20" Margin="10,0,0,0" VerticalAlignment="Center">
-                    <Rectangle.Resources>
-                        <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="{Binding UpdateCheckImage}" />
-                    </Rectangle.Resources>
+                </StackPanel>
+                
+                <StackPanel Grid.Row="1">
 
-                    <Rectangle.Style>
-                        <Style TargetType="Rectangle">
-                            <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
-                            <Setter Property="Fill" Value="{Binding UpdateCheckBrush}"/>
-                        </Style>
-                    </Rectangle.Style>
-                </Rectangle>
+                    <!--Status Text-->
+                    <TextBlock Text="{Binding Status}" Foreground="Green" FontSize="12"/>
 
-            </StackPanel>
+                    <!--Progress Indicators--> 
+                    <Grid Margin="0,5,0,0" Width="200" HorizontalAlignment="Left">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Loading}" Value="true">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <!--Loading Animation-->
+                        <loadinganimation:Wheel Height="20" Width="20" Foreground="Green" Margin="0,0,10,0"/>
+
+                        <!--Progress Bar-->
+                        <th_wpf:ProgressBar Grid.Column="1" Value="{Binding ProgressValue}" Maximum="120" Foreground="Green" Background="#10000000" Height="10"/>
+
+                    </Grid>
+
+                </StackPanel>
+                
+            </Grid>
 
         </Grid>
+
     </Border>
 
 </UserControl>

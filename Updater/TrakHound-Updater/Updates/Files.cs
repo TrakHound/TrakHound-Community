@@ -58,8 +58,6 @@ namespace TrakHound_Updater
 
         private static void WebClient_DownloadFileCompleted(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
         {
-            Console.WriteLine("Download Completed Successfully");
-
             lock (e.UserState)
             {
                 //releases blocked thread
@@ -71,24 +69,18 @@ namespace TrakHound_Updater
             var message = new WCF_Functions.MessageData();
             message.Id = "download_completed";
             message.Data01 = webClient.AppInfo.Name;
-            message.Data02 = webClient.AppInfo.Title;
-            message.Data03 = webClient.AppInfo.SubTitle;
 
             MessageServer.SendCallback(message);
         }
 
         private static void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            Console.WriteLine(e.ProgressPercentage.ToString());
-
             var webClient = (WebClientWithData)sender;
 
             var message = new WCF_Functions.MessageData();
             message.Id = "download_progress_percentage";
             message.Data01 = webClient.AppInfo.Name;
-            message.Data02 = webClient.AppInfo.Title;
-            message.Data03 = webClient.AppInfo.SubTitle;
-            message.Data04 = e.ProgressPercentage;
+            message.Data02 = e.ProgressPercentage;
 
             MessageServer.SendCallback(message);
         }

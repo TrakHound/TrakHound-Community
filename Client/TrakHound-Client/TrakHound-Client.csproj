@@ -120,8 +120,8 @@
     <None Include="Pages\Options\Updates\PageOld.xaml.cs">
       <DependentUpon>PageOld.xaml</DependentUpon>
     </None>
-    <None Include="Pages\Options\Updates\UpdateItem.xaml.cs">
-      <DependentUpon>UpdateItem.xaml</DependentUpon>
+    <None Include="Pages\Options\Updates\UpdateItemOld.xaml.cs">
+      <DependentUpon>UpdateItemOld.xaml</DependentUpon>
     </None>
     <Compile Include="Menus\Plugins\PluginItem.xaml.cs">
       <DependentUpon>PluginItem.xaml</DependentUpon>
@@ -165,6 +165,10 @@
     </Compile>
     <Compile Include="Pages\Options\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
+    </Compile>
+    <None Include="Pages\Options\Updates\UpdateItemControl.cs" />
+    <Compile Include="Pages\Options\Updates\UpdateItem.xaml.cs">
+      <DependentUpon>UpdateItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Plugins\Installed\ListItem.xaml.cs">
       <DependentUpon>ListItem.xaml</DependentUpon>
@@ -212,7 +216,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Pages\Options\Updates\UpdateItem.xaml">
+    <None Include="Pages\Options\Updates\UpdateItemOld.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
@@ -284,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\Options\Updates\UpdateItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Plugins\Installed\ListItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -320,6 +328,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <Page Include="Themes\UpdateItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

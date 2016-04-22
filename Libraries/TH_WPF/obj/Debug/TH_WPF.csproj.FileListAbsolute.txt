@@ -150,6 +150,7 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\MeterDisplay.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\ProgressBar.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Styles\Button.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TextBox.baml
+F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Themes\Generic.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\Segment.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeLine\TimeLine.baml
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TimeProgress.baml
@@ -159,4 +160,3 @@ F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.Properties.Resou
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.dll
 F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\TH_WPF.pdb
-F:\feenux\TrakHound\TrakHound\Libraries\TH_WPF\obj\Debug\Themes\Generic.baml

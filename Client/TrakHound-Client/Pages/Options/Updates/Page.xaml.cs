@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 using TH_Global;
 using TH_Global.Functions;
@@ -18,6 +19,7 @@ using TH_Global.Updates;
 
 namespace TrakHound_Client.Pages.Options.Updates
 {
+
     /// <summary>
     /// Interaction logic for Page.xaml
     /// </summary>
@@ -29,9 +31,12 @@ namespace TrakHound_Client.Pages.Options.Updates
             InitializeComponent();
             DataContext = this;
 
+            //UpdaterCommunications_Initialize();
+
             Load();
 
-            RegistryCheck_Initialize();
+            //RegistryCheck_Initialize();
+            GetInstalledApplications();
         }
 
         public string Title { get { return "Updates"; } }
@@ -86,10 +91,6 @@ namespace TrakHound_Client.Pages.Options.Updates
 
             config.Enabled = UpdatesEnabled;
 
-            config.CheckNow = checkNow;
-            config.ApplyNow = applyNow;
-            config.ClearUpdateQueue = clearUpdateQueue;
-
             UpdateConfiguration.Create(config);
         }
 
@@ -105,10 +106,73 @@ namespace TrakHound_Client.Pages.Options.Updates
             return Convert.ToInt64(ts.TotalMilliseconds);
         }
 
+        #region "Update Items"
 
-        private bool checkNow;
-        private bool applyNow;
-        private bool clearUpdateQueue;
+        ObservableCollection<UpdateItem> _updateItems;
+        public ObservableCollection<UpdateItem> UpdateItems
+        {
+            get
+            {
+                if (_updateItems == null)
+                    _updateItems = new ObservableCollection<UpdateItem>();
+                return _updateItems;
+            }
+
+            set
+            {
+                _updateItems = value;
+            }
+        }
+
+
+        private void GetInstalledApplications()
+        {
+            var appNames = Registry_Functions.GetKeyNames();
+            if (appNames != null)
+            {
+                foreach (var appName in appNames)
+                {
+                    var valueNames = Registry_Functions.GetValueNames(appName);
+
+                    var item = new UpdateItem();
+                    item.ApplyClicked += Item_ApplyClicked;
+                    item.CheckForUpdatesClicked += Item_CheckForUpdatesClicked;
+
+                    item.ApplicationName = appName;
+                    item.ApplicationTitle = GetValueData(valueNames.ToList().Find(x => x == "title"), appName);
+                    item.ApplicationSubtitle = GetValueData(valueNames.ToList().Find(x => x == "subtitle"), appName);
+
+                    UpdateItems.Add(item);
+                }
+            }
+        }
+
+        private void Item_CheckForUpdatesClicked(UpdateItem item)
+        {
+            item.Loading = true;
+            item.Status = "Retrieving Update Information..";
+
+            var message = new WCF_Functions.MessageData("check");
+            message.Data01 = item.ApplicationName;
+            SendMessage(message);
+        }
+
+        private void Item_ApplyClicked(UpdateItem item)
+        {
+            item.Loading = false;
+            item.Status = "Restart TrakHound to Apply Update";
+
+            var message = new WCF_Functions.MessageData("apply");
+            message.Data01 = item.ApplicationName;
+            SendMessage(message);
+        }
+
+        private static string GetValueData(string valueName, string appName)
+        {
+            return Registry_Functions.GetValue(valueName, appName);
+        }
+
+        #endregion
 
 
         private System.Timers.Timer registryCheckTimer;
@@ -147,6 +211,34 @@ namespace TrakHound_Client.Pages.Options.Updates
             Dispatcher.BeginInvoke(new Action(() => { AvailableUpdates = availableUpdates; }));
 
             timer.Enabled = true;
+        }
+
+        private void CheckForDownloadedUpdates()
+        {
+            int availableUpdates = 0;
+
+            var appNames = Registry_Functions.GetKeyNames();
+            if (appNames != null)
+            {
+                foreach (var appName in appNames)
+                {
+                    var valueNames = Registry_Functions.GetValueNames(appName);
+                    if (valueNames != null)
+                    {
+                        var updatePath = valueNames.ToList().Exists(x => x == "update_path");
+                        if (updatePath)
+                        {
+                            var item = new UpdateItem();
+                            item.AvailableVersion = valueNames.ToList().Find(x => x == "update_version");
+                            UpdateItems.Add(item);
+
+                            availableUpdates++;
+                        }
+                    }
+                }
+            }
+
+            AvailableUpdates = availableUpdates;
         }
 
         #region "Dependency Properties"
@@ -200,6 +292,7 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         #endregion
 
+        
 
         private void Help_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -255,38 +348,178 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         private void CheckForUpdates_Clicked(TH_WPF.Button bt)
         {
-            UpdatesSetToApply = false;
+            SendMessage(new WCF_Functions.MessageData("check"));
 
-            checkNow = true;
-            SettingChanged();
+            UpdatesSetToApply = false;
         }
 
         private void ApplyUpdates_Clicked(TH_WPF.Button bt)
         {
-            applyNow = true;
-            SettingChanged();
+            SendMessage(new WCF_Functions.MessageData("apply"));
 
             UpdatesSetToApply = true;
         }
 
         private void ClearUpdatesQueue_Clicked(TH_WPF.Button bt)
         {
-            checkNow = false;
-            applyNow = false;
-            clearUpdateQueue = true;
-            SettingChanged();
+            SendMessage(new WCF_Functions.MessageData("clear"));
         }
 
         private void RestoreDefaults_Clicked(TH_WPF.Button bt)
         {
-            checkNow = false;
-            applyNow = false;
-            clearUpdateQueue = false;
+
 
             UpdateCheckInterval = HOUR_MS;
 
             UpdatesEnabled = true;
         }
+
+        #region "WCF Updater Communications"
+
+        /// <summary>
+        /// Worker class run on a separate thread and send back the MessageData using an event
+        /// </summary>
+        private class MessageWorker : WCF_Functions.IMessageCallback
+        {
+            WCF_Functions.IMessage messageProxy;
+
+            public MessageWorker()
+            {
+                messageProxy = WCF_Functions.Client.GetWithCallback(UpdateConfiguration.UPDATER_PIPE_NAME, this);
+            }
+
+            public void SendMessage(WCF_Functions.MessageData data)
+            {
+                try
+                {
+                    if (messageProxy != null) messageProxy.SendData(data);
+                }
+                catch (Exception ex) { TH_Global.Logger.Log("Exception : " + ex.Message); }
+            }
+
+            public delegate void MessageRecieved_Handler(WCF_Functions.MessageData data);
+            public event MessageRecieved_Handler MessageRecieved;
+
+            public void OnCallback(WCF_Functions.MessageData data)
+            {
+                if (MessageRecieved != null) MessageRecieved(data);
+            }
+        }
+
+        MessageWorker messageWorker;
+
+        private void SendMessage(WCF_Functions.MessageData data)
+        {
+            System.Threading.ThreadPool.QueueUserWorkItem(SendMessage_Worker, data);
+        }
+
+        private void SendMessage_Worker(object o)
+        {
+            messageWorker = new MessageWorker();
+            messageWorker.MessageRecieved += MessageWorker_MessageRecieved;
+            messageWorker.SendMessage((WCF_Functions.MessageData)o);
+
+            //int timeout = 500;
+            //int t = 0;
+            //while (t < timeout)
+            //{
+            //    t++;
+
+            //    System.Threading.Thread.Sleep(10);
+            //}
+
+            //TH_Global.Logger.Log("SendMessage_Worker Exited", TH_Global.Logger.LogLineType.Notification);
+        }
+
+        private void MessageWorker_MessageRecieved(WCF_Functions.MessageData data)
+        {
+            //TH_Global.Logger.Log("MessageWorker_MessageRecieved", TH_Global.Logger.LogLineType.Notification);
+
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                switch (data.Id)
+                {
+                    case "download_progress_percentage": DownloadProgressPercentage(data); break;
+
+                    case "download_completed": DownloadCompleted(data); break;
+
+                    case "update_ready": UpdateReady(data); break;
+
+                    case "up_to_date": UpToDate(data); break;
+                }
+
+            }));
+            
+        }
+
+        private void DownloadProgressPercentage(WCF_Functions.MessageData data)
+        {
+            // data.Data01 = Application Name
+            // data.Data02 = Download Progress (int)
+
+            string name = data.Data01.ToString();
+            int percentage = (int)data.Data02;
+
+            int index = UpdateItems.ToList().FindIndex(x => x.ApplicationName == name);
+            if (index >= 0)
+            {
+                var item = UpdateItems[index];
+                item.ProgressValue = percentage;
+                item.Status = "Downloading..";
+            }
+        }
+
+
+        private void DownloadCompleted(WCF_Functions.MessageData data)
+        {
+            // data.Data01 = Application Name
+
+            string name = data.Data01.ToString();
+
+            int index = UpdateItems.ToList().FindIndex(x => x.ApplicationName == name);
+            if (index >= 0)
+            {
+                var item = UpdateItems[index];
+                item.ProgressValue = 100;
+                item.Status = "Extracting Files..";
+            }
+        }
+
+
+        private void UpdateReady(WCF_Functions.MessageData data)
+        {
+            // data.Data01 = Application Name
+            // data.Data02 = Version
+
+            string name = data.Data01.ToString();
+            string version = data.Data02.ToString();
+
+            int index = UpdateItems.ToList().FindIndex(x => x.ApplicationName == name);
+            if (index >= 0)
+            {
+                var item = UpdateItems[index];
+                item.ProgressValue = 120;
+                item.Loading = false;
+                item.Status = version + " Update Ready";
+            }
+        }
+
+
+        private void UpToDate(WCF_Functions.MessageData data)
+        {
+            // data.Data01 = Application Name
+
+            string name = data.Data01.ToString();
+
+            int index = UpdateItems.ToList().FindIndex(x => x.ApplicationName == name);
+            if (index >= 0)
+            {
+                var item = UpdateItems[index];
+                item.Status = "Up to Date";
+            }
+        }
+
+        #endregion
 
     }
 }

@@ -49,7 +49,7 @@ namespace TH_Global.Functions
             try
             {
                 // Open LOCAL_MACHINE/Software Key
-                RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
+                RegistryKey key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY);
 
                 // Create/Open LOCAL_MACHINE/Software/TrakHound Key
                 if (key != null) key = key.OpenSubKey(APP_KEY);
@@ -57,8 +57,8 @@ namespace TH_Global.Functions
                 // Try looking for 64 bit version in WOW6432Node key
                 if (key == null)
                 {
-                    key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY, true);
-                    if (key != null) key = key.OpenSubKey(WOW64_KEY, true);
+                    key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(ROOT_KEY);
+                    if (key != null) key = key.OpenSubKey(WOW64_KEY);
                     if (key != null) key = key.OpenSubKey(APP_KEY);
                 }
 

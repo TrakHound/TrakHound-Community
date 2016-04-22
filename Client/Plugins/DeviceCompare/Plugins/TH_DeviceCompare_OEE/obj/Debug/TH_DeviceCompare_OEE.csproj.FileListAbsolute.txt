@@ -35,6 +35,7 @@ D:\Trakhound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug
 C:\TrakHound\Plugins\Pages\LICENSE.txt
 C:\TrakHound\Plugins\Pages\TH_DeviceCompare_OEE.dll
 C:\TrakHound\Plugins\Pages\TH_DeviceCompare_OEE.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\TH_DeviceCompare_OEE.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\Timeline\ToolTip.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\Timeline\View.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\Values\Availability\View.baml
@@ -51,4 +52,3 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceComp
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\TH_DeviceCompare_OEE.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\TH_DeviceCompare_OEE.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\TH_DeviceCompare_OEE.pdb
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\Plugins\TH_DeviceCompare_OEE\obj\Debug\TH_DeviceCompare_OEE.csprojResolveAssemblyReference.cache

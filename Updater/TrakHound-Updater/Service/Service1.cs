@@ -4,6 +4,7 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
@@ -175,6 +176,22 @@ namespace TrakHound_Updater
             return infos.ToArray();
         }
 
+        public static AppInfo GetUpdate(string appName)
+        {
+            string[] names = Registry_Functions.GetKeyNames();
+            if (names != null)
+            {
+                var name = names.ToList().Find(x => x == appName);
+                if (name != null)
+                {
+                    string url = Registry_Functions.GetValue(Update.UPDATE_URL, name);
+                    if (url != null) return Update.Get(url);
+                }
+            }
+
+            return null;
+        }
+
         public static void ApplyUpdates()
         {
             if (appInfos != null)
@@ -194,6 +211,15 @@ namespace TrakHound_Updater
                 {
                     Update.Apply(info);
                 }
+            }
+        }
+
+        public static void ApplyUpdate(string appName)
+        {
+            if (appInfos != null)
+            {
+                var info = appInfos.ToList().Find(x => x.Name == appName);
+                if (info != null) Update.Apply(info);
             }
         }
 
