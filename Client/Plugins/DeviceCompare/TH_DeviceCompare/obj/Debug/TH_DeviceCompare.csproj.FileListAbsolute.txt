@@ -149,11 +149,8 @@ C:\TrakHound\Plugins\Pages\TH_DeviceCompare.dll.config
 C:\TrakHound\Plugins\Pages\TH_DeviceCompare.dll
 C:\TrakHound\Plugins\Pages\TH_DeviceCompare.pdb
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Column.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Overlay.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\GlossOverlay.baml
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Cell.g.cs
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Column.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Overlay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\GlossOverlay.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Header.g.cs
@@ -162,7 +159,6 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\GeneratedInternalTypeHelper.g.cs
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\TH_DeviceCompare_MarkupCompile.cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\TH_DeviceCompare_MarkupCompile.lref
-F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Cell.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\DeviceDisplay\Header.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Controls\RowHeader.baml
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\DeviceCompare.baml
@@ -171,3 +167,4 @@ F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.csproj.GenerateResource.Cache
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.dll
 F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\TH_DeviceCompare.pdb
+F:\feenux\TrakHound\TrakHound\Client\Plugins\DeviceCompare\TH_DeviceCompare\obj\Debug\Themes\Generic.baml

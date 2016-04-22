@@ -80,17 +80,17 @@ namespace TH_StatusTable
             }
         }
 
-        private Brush _fillBrush;
-        public Brush FillBrush
-        {
-            get { return _fillBrush; }
-            set
-            {
-                var val = _fillBrush;
-                _fillBrush = value;
-                if (val != _fillBrush) NotifyChanged("FillBrush");
-            }
-        }
+        //private Brush _fillBrush;
+        //public Brush FillBrush
+        //{
+        //    get { return _fillBrush; }
+        //    set
+        //    {
+        //        var val = _fillBrush;
+        //        _fillBrush = value;
+        //        if (val != _fillBrush) NotifyChanged("FillBrush");
+        //    }
+        //}
 
 
         public HourInfo HourInfo { get; set; }

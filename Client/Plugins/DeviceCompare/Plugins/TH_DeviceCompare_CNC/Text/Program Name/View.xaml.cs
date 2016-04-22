@@ -22,7 +22,7 @@ namespace TH_DeviceCompare_CNC.Text.Program_Name
         public Plugin()
         {
             InitializeComponent();
-            root.DataContext = this;
+            DataContext = this;
         }
 
         const string link = "Program Name";

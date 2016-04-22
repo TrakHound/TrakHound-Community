@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 
@@ -194,23 +195,16 @@ namespace TH_DeviceTable
         {
             var result = new OEEData();
 
-            var dv = dt.AsDataView();
-            var temp_dt = dv.ToTable(true, "shift_id");
-
-            foreach (DataRow row in temp_dt.Rows)
+            var shiftIds = DataTable_Functions.GetDistinctValues(dt, "shift_id");
+            foreach (var shiftId in shiftIds)
             {
-                string shiftId = row[0].ToString();
-
-                // Sort Table for just rows matching the ShiftId
-                dv = dt.AsDataView();
-                dv.RowFilter = "shift_id='" + shiftId + "'";
-                var id_dt = dv.ToTable();
+                var rows = DataTable_Functions.GetRows(dt, "shift_id='" + shiftId + "'");
 
                 double plannedProductionTime = 0;
                 double operatingTime = 0;
                 double idealOperatingTime = 0;
 
-                foreach (DataRow idRow in id_dt.Rows)
+                foreach (DataRow idRow in rows)
                 {
                     plannedProductionTime += DataTable_Functions.GetDoubleFromRow("planned_production_time", idRow);
                     operatingTime += DataTable_Functions.GetDoubleFromRow("operating_time", idRow);
@@ -229,5 +223,55 @@ namespace TH_DeviceTable
 
             return result;
         }
+
+        //public static OEEData FromDataTable(DataTable dt)
+        //{
+        //    var stpw = new System.Diagnostics.Stopwatch();
+        //    stpw.Start();
+
+        //    var result = new OEEData();
+
+        //    var dv = dt.AsDataView();
+        //    var temp_dt = dv.ToTable(true, "shift_id");
+
+        //    foreach (DataRow row in temp_dt.Rows)
+        //    {
+        //        string shiftId = row[0].ToString();
+
+        //        // Sort Table for just rows matching the ShiftId
+        //        dv = dt.AsDataView();
+        //        dv.RowFilter = "shift_id='" + shiftId + "'";
+        //        var id_dt = dv.ToTable();
+
+        //        double plannedProductionTime = 0;
+        //        double operatingTime = 0;
+        //        double idealOperatingTime = 0;
+
+        //        foreach (DataRow idRow in id_dt.Rows)
+        //        {
+        //            plannedProductionTime += DataTable_Functions.GetDoubleFromRow("planned_production_time", idRow);
+        //            operatingTime += DataTable_Functions.GetDoubleFromRow("operating_time", idRow);
+        //            idealOperatingTime += DataTable_Functions.GetDoubleFromRow("ideal_operating_time", idRow);
+        //        }
+
+        //        var data = new OEEData.SegmentData();
+        //        data.ShiftId = shiftId;
+        //        data.PlannedProductionTime = plannedProductionTime;
+        //        data.OperatingTime = operatingTime;
+        //        data.IdealOperatingTime = idealOperatingTime;
+        //        result.ShiftSegments.Add(data);
+
+        //        id_dt.Dispose();
+        //    }
+
+        //    temp_dt.Dispose();
+
+        //    result.ConstantQuality = 1;
+
+        //    stpw.Stop();
+        //    TH_Global.Logger.Log(stpw.ElapsedMilliseconds + "ms", TH_Global.Logger.LogLineType.Notification);
+
+        //    return result;
+        //}
     }
 }

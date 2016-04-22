@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-72076638798
+62100594746
 
-16-1107169571
+16289231591
 19369901227
-Controls\DeviceDisplay\Cell.xaml;Controls\DeviceDisplay\Column.xaml;Controls\DeviceDisplay\Overlay.xaml;Controls\GlossOverlay.xaml;Controls\DeviceDisplay\Header.xaml;Controls\RowHeader.xaml;DeviceCompare.xaml;
+Controls\DeviceDisplay\Overlay.xaml;Controls\GlossOverlay.xaml;Controls\DeviceDisplay\Header.xaml;Controls\RowHeader.xaml;DeviceCompare.xaml;Themes\Generic.xaml;
 
-True
+False
 

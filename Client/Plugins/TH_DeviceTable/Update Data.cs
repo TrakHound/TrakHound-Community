@@ -56,9 +56,6 @@ namespace TH_DeviceTable
                 if (data.Data02.GetType() == typeof(bool))
                 {
                     info.Connected = (bool)data.Data02;
-
-                    //bool connected = (bool)data.Data02;
-                    //if (!connected) info.Connected = false;
                 }
             }
         }
@@ -70,9 +67,6 @@ namespace TH_DeviceTable
                 if (data.Data02.GetType() == typeof(bool))
                 {
                     info.Available = (bool)data.Data02;
-
-                    //bool avail = (bool)data.Data02;
-                    //if (avail) info.Connected = true;
                 }
             }
         }
@@ -162,13 +156,10 @@ namespace TH_DeviceTable
             DataTable dt = geneventvalues as DataTable;
             if (dt != null)
             {
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = "EVENT = 'production_status'";
-                DataTable temp_dt = dv.ToTable();
-
-                if (temp_dt != null)
+                var rows = DataTable_Functions.GetRows(dt, "EVENT = 'production_status'");
+                if (rows != null)
                 {
-                    foreach (DataRow row in temp_dt.Rows)
+                    foreach (DataRow row in rows)
                     {
                         string val = row["VALUE"].ToString();
 
@@ -206,8 +197,6 @@ namespace TH_DeviceTable
                             i.HoverBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow_Hover");
                         }
                     }
-
-                    temp_dt.Dispose();
                 }
             }
         }

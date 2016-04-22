@@ -86,14 +86,14 @@ namespace SimpleClient
 
         private void LoadPlugins()
         {
-            //Plugins = GetPlugins();
+            Plugins = GetPlugins();
 
-            //PluginConfigurations = GetPluginConfigurations(Plugins); 
+            PluginConfigurations = GetPluginConfigurations(Plugins);
 
-            //foreach (var config in PluginConfigurations)
-            //{
-            //    Plugin_Load(config);
-            //}
+            foreach (var config in PluginConfigurations)
+            {
+                Plugin_Load(config);
+            }
         }
 
 

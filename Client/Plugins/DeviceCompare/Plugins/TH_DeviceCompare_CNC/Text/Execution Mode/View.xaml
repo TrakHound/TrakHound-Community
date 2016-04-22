@@ -9,10 +9,10 @@
              mc:Ignorable="d" 
              >
 
-    <Grid x:Name="root">
+    <!--<Grid x:Name="root">-->
 
         <local:TextDisplay Text="{Binding Value, Mode=OneWay}"/>
 
-    </Grid>
+    <!--</Grid>-->
     
 </UserControl>

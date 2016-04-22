@@ -23,7 +23,7 @@ namespace TH_DeviceCompare_CNC.Text.Controller_Mode
         public Plugin()
         {
             InitializeComponent();
-            root.DataContext = this;
+            DataContext = this;
         }
 
         const string link = "Controller Mode";

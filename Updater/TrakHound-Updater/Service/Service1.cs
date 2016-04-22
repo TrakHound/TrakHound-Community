@@ -17,6 +17,9 @@ namespace TrakHound_Updater
 {
     public partial class Service1 : ServiceBase
     {
+        // Used to send/recieve messages using WCF to other applications
+        MessageServer messageServer;
+
         public Service1()
         {
             InitializeComponent();
@@ -90,6 +93,8 @@ namespace TrakHound_Updater
         public void Stop()
         {
             StopUpdates();
+
+            StopMessageServer();
         }
 
 
@@ -98,25 +103,47 @@ namespace TrakHound_Updater
             // Read the update_config.xml file
             configuration = UpdateConfiguration.Read();
 
-            if (configuration.ClearUpdateQueue)
-            {
-                Update.ClearAll();
-            }
+            //if (configuration.ClearUpdateQueue)
+            //{
+            //    Update.ClearAll();
+            //}
 
-            if (configuration.ApplyNow)
-            {
-                AppInfo[] infos = GetUpdates();
-                ApplyUpdates(infos);
-            }
-            else if (configuration.CheckNow)
-            {
-                GetUpdates();
-            }
+            //if (configuration.ApplyNow)
+            //{
+            //    AppInfo[] infos = GetUpdates();
+            //    ApplyUpdates(infos);
+            //}
+            //else if (configuration.CheckNow)
+            //{
+            //    GetUpdates();
+            //}
 
-            configuration.ApplyNow = false;
-            configuration.CheckNow = false;
-            configuration.ClearUpdateQueue = false;
-            StopConfigurationFileWatcher();
+            // Enable Message Server Communication using WCF
+            if (configuration.EnableMessageServer) StartMessageServer();
+            else StopMessageServer();
+
+                //if (configuration.EnableMessageServer)
+                //    {
+                //        if (messageServer == null)
+                //        {
+                //            messageServer = new MessageServer();
+                //            messageServer.Start();
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (messageServer != null)
+                //        {
+                //            messageServer.Stop();
+                //            messageServer = null;
+                //        }
+                //    }
+
+
+                //configuration.ApplyNow = false;
+                //configuration.CheckNow = false;
+                //configuration.ClearUpdateQueue = false;
+                StopConfigurationFileWatcher();
             UpdateConfiguration.Create(configuration);
 
             // Monitor update_config.xml file for any changes
@@ -165,7 +192,9 @@ namespace TrakHound_Updater
         }
 
 
-        private AppInfo[] GetUpdates()
+        private static AppInfo[] appInfos;
+
+        public static AppInfo[] GetUpdates()
         {
             var infos = new List<AppInfo>();
 
@@ -180,10 +209,23 @@ namespace TrakHound_Updater
                 }
             }
 
+            appInfos = infos.ToArray();
+
             return infos.ToArray();
         }
 
-        private void ApplyUpdates(AppInfo[] infos)
+        public static void ApplyUpdates()
+        {
+            if (appInfos != null)
+            {
+                foreach (var info in appInfos)
+                {
+                    Update.Apply(info);
+                }
+            }
+        }
+
+        public static void ApplyUpdates(AppInfo[] infos)
         {
             if (infos != null)
             {
@@ -200,16 +242,18 @@ namespace TrakHound_Updater
 
         private void StartConfigurationFileWatcher()
         {
-            StopConfigurationFileWatcher();
+            if (watcher == null)
+            {
+                watcher = new FileSystemWatcher(FileLocations.TrakHound, UpdateConfiguration.CONFIG_FILENAME);
+                watcher.Changed += Watcher_Changed;
+            }
 
-            watcher = new FileSystemWatcher(FileLocations.TrakHound, UpdateConfiguration.CONFIG_FILENAME);
-            watcher.Changed += Watcher_Changed;
             watcher.EnableRaisingEvents = true;
         }
 
         private void StopConfigurationFileWatcher()
         {
-            if (watcher != null) watcher.EnableRaisingEvents = false;
+            if (watcher != null) { watcher.EnableRaisingEvents = false; }
         }
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)

@@ -22,7 +22,7 @@ namespace TH_DeviceCompare_CNC.Text.Alarm
         public Plugin()
         {
             InitializeComponent();
-            root.DataContext = this;
+            DataContext = this;
         }
 
         const string link = "Alarm";

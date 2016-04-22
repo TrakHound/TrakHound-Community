@@ -46,11 +46,9 @@ namespace TH_Global.Functions
 
             if (dt.Columns.Contains(keyColumn))
             {
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = keyColumn + "='" + key + "'";
-                DataTable temp_dt = dv.ToTable();
-                if (temp_dt != null && temp_dt.Rows.Count > 0) result = true;
-                temp_dt.Dispose();
+                string filter = keyColumn + "='" + key + "'";
+                var rows = GetRows(dt, filter);
+                if (rows != null && rows.Length > 0) result = true;
             }
 
             return result;
@@ -65,17 +63,14 @@ namespace TH_Global.Functions
             {
                 if (dt.Columns.Contains(keyColumn))
                 {
-                    DataView dv = dt.AsDataView();
-                    dv.RowFilter = keyColumn + "='" + key + "'";
-                    DataTable temp_dt = dv.ToTable(false, returnColumn);
-                    if (temp_dt != null)
+                    string filter = keyColumn + "='" + key + "'";
+                    var rows = GetRows(dt, filter);
+                    if (rows != null)
                     {
-                        if (temp_dt.Rows.Count > 0)
+                        if (rows.Length > 0)
                         {
-                            result = temp_dt.Rows[0][0].ToString();
+                            result = rows[0][returnColumn].ToString();
                         }
-
-                        temp_dt.Dispose();
                     }
                 }
             }
@@ -90,11 +85,17 @@ namespace TH_Global.Functions
             DataTable dt = table as DataTable;
             if (dt != null)
             {
-                DataView dv = dt.AsDataView();
-                dv.RowFilter = keyColumn + "='" + key + "'";
-                DataTable temp_dt = dv.ToTable();
-                foreach (DataRow row in temp_dt.Rows) result.Add(row);
-                temp_dt.Dispose();
+                //DataView dv = dt.AsDataView();
+                //dv.RowFilter = keyColumn + "='" + key + "'";
+                //DataTable temp_dt = dv.ToTable();
+
+
+                string filter = keyColumn + "='" + key + "'";
+                return GetRows(dt, filter).ToList();
+
+
+                //foreach (DataRow row in temp_dt.Rows) result.Add(row);
+                //temp_dt.Dispose();
             }
 
             return result;
@@ -125,6 +126,17 @@ namespace TH_Global.Functions
                 }
             }
         }
+
+        public static string[] GetDistinctValues(DataTable table, string columnName)
+        {
+            return table.AsEnumerable().Select(x => x.Field<string>(columnName)).Distinct().ToArray();
+        }
+
+        public static DataRow[] GetRows(DataTable table, string filter)
+        {
+            return table.Select(filter);
+        }
+
 
 
         public static class TrakHound

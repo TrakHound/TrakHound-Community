@@ -22,7 +22,7 @@ namespace TH_DeviceCompare_CNC.Text.Emergency_Stop
         public Plugin()
         {
             InitializeComponent();
-            root.DataContext = this;
+            DataContext = this;
         }
 
         const string link = "Emergency Stop";

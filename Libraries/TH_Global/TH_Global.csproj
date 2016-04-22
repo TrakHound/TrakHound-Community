@@ -45,6 +45,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -73,6 +74,7 @@
     <Compile Include="Functions\String_Functions.cs" />
     <Compile Include="Functions\TimeSpan_Functions.cs" />
     <Compile Include="Functions\UI_Functions.cs" />
+    <Compile Include="Functions\WCF_Functions.cs" />
     <Compile Include="Functions\Window_Functions.cs" />
     <Compile Include="Functions\XML_Functions.cs" />
     <Compile Include="Logger.cs" />

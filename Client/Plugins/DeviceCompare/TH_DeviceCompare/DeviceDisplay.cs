@@ -42,7 +42,9 @@ namespace TH_DeviceCompare
 
                 // Create DeviceDisplay Components
                 var header = new Header(config);
-                var column = new Column(this);
+                var column = new Column();
+                column.Index = config.Index;
+                column.ParentDisplay = this;
                 //var overlay = new Overlay(config);
 
                 header.Index = config.Index;
@@ -159,15 +161,6 @@ namespace TH_DeviceCompare
 
                     if (connected != Connected)
                     {
-                        //var header = Group.Header;
-                        //if (header != null)
-                        //{
-                        //    header.Connected = true;
-
-                        //    header.Loading = false;
-                        //    header.ConnectionText = null;
-                        //}
-
                         Connected = connected;
                     }
                 }
@@ -190,30 +183,6 @@ namespace TH_DeviceCompare
                             header.Loading = false;
                             header.ConnectionText = null;
                         }
-
-                        //var overlay = Group.Overlay;
-                        //if (overlay != null)
-                        //{
-                        //    bool avail = (bool)data.Data02;
-                        //    if (avail)
-                        //    {
-                        //        overlay.Loading = false;
-                        //        overlay.ConnectionImage = null;
-                        //        overlay.ConnectionStatus = null;
-                        //    }
-                        //    else
-                        //    {
-                        //        if (connectionImage == null)
-                        //        {
-                        //            connectionImage = new BitmapImage(new Uri("pack://application:,,,/TH_DeviceCompare;component/Resources/Power_01.png"));
-                        //            connectionImage.Freeze();
-                        //        }
-
-                        //        overlay.ConnectionImage = connectionImage;
-                        //        overlay.Loading = true;
-                        //        overlay.ConnectionStatus = "Device Not Connected";
-                        //    }
-                        //}
                     }
                 }
 

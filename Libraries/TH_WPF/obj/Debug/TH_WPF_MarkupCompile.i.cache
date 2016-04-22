@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 
-271460279145
+27-932463821
 
-31213561014
+311999405950
 161324386736
-Button.xaml;Charting\PieChart.xaml;CollapseButton.xaml;Histogram\Histogram.xaml;Histogram\Label.xaml;ImageDisplay.xaml;ImageBox.xaml;LevelIndicator\Indicator.xaml;LevelIndicator\Segment.xaml;ListButton.xaml;LoadingAnimation\Block.xaml;LoadingAnimation\Wheel.xaml;LoadingAnimation\Wheel2.xaml;MessageBox.xaml;MeterDisplay.xaml;NumberDisplay.xaml;PasswordBox.xaml;ProductionIndicator.xaml;ProgressBar.xaml;Styles\Button.xaml;Styles\Colors.xaml;TextBox.xaml;TimeLine\Segment.xaml;TimeLine\TickMark.xaml;TimeLine\TimeLine.xaml;TimeProgress.xaml;TimeSlider.xaml;
+Button.xaml;Charting\PieChart.xaml;CollapseButton.xaml;Histogram\Histogram.xaml;Histogram\Label.xaml;ImageDisplay.xaml;ImageBox.xaml;LevelIndicator\Indicator.xaml;ListButton.xaml;LoadingAnimation\Block.xaml;LoadingAnimation\Wheel.xaml;LoadingAnimation\Wheel2.xaml;MessageBox.xaml;MeterDisplay.xaml;NumberDisplay.xaml;PasswordBox.xaml;ProductionIndicator.xaml;ProgressBar.xaml;Styles\Button.xaml;Styles\Colors.xaml;TextBox.xaml;Themes\Generic.xaml;TimeLine\Segment.xaml;TimeLine\TickMark.xaml;TimeLine\TimeLine.xaml;TimeProgress.xaml;TimeSlider.xaml;
 
-True
+False
 

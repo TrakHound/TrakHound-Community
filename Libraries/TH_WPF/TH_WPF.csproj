@@ -65,6 +65,7 @@
     <Compile Include="ImageDisplay.xaml.cs">
       <DependentUpon>ImageDisplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LevelIndicator\BetterSegment.cs" />
     <Compile Include="LoadingAnimation\Wheel.xaml.cs">
       <DependentUpon>Wheel.xaml</DependentUpon>
     </Compile>
@@ -116,9 +117,9 @@
     <Compile Include="LevelIndicator\Indicator.xaml.cs">
       <DependentUpon>Indicator.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LevelIndicator\Segment.xaml.cs">
+    <None Include="LevelIndicator\Segment.xaml.cs">
       <DependentUpon>Segment.xaml</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="ListButton.xaml.cs">
       <DependentUpon>ListButton.xaml</DependentUpon>
     </Compile>
@@ -175,9 +176,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Themes\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="Button.xaml">
       <SubType>Designer</SubType>
@@ -235,10 +234,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LevelIndicator\Segment.xaml">
+    <None Include="LevelIndicator\Segment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
     <Page Include="ListButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -290,6 +289,10 @@
     <Page Include="TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="TimeLine\Segment.xaml">
       <SubType>Designer</SubType>

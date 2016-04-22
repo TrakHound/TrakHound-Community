@@ -43,19 +43,6 @@ namespace TH_MTConnect.Plugin
             requestTimer.Enabled = false;
             RunRequests(configuration);
             if (requestTimer != null) requestTimer.Enabled = true;
-
-            //if (requestTimer != null)
-            //{
-            //    if (TH_Global.Variables.SIMULATION_MODE)
-            //    {
-            //        requestTimer.Enabled = false;
-            //        Console.WriteLine("Simulation Mode :: Single Sample Request Recieved :: Subsequent Requests Suspended");
-            //    }
-            //    else
-            //    {
-            //        requestTimer.Enabled = true;
-            //    }
-            //}
         }
 
         private void RunRequests(Configuration config)

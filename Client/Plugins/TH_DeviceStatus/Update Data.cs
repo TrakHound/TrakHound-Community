@@ -242,10 +242,10 @@ namespace TH_StatusTable
                                         else if (data.IdleSeconds > data.AlertSeconds && data.IdleSeconds >= data.ProductionSeconds) data.Status = 1;
                                         else data.Status = 2;
 
-                                        if (data.Status == -1) data.FillBrush = null;
-                                        else if (data.Status == 0) data.FillBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed");
-                                        else if (data.Status == 1) data.FillBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow");
-                                        else if (data.Status == 2) data.FillBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen");
+                                        //if (data.Status == -1) data.FillBrush = null;
+                                        //else if (data.Status == 0) data.FillBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusRed");
+                                        //else if (data.Status == 1) data.FillBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusYellow");
+                                        //else if (data.Status == 2) data.FillBrush = Brush_Functions.GetSolidBrushFromResource(this, "StatusGreen");
                                     }
                                 }
                             }

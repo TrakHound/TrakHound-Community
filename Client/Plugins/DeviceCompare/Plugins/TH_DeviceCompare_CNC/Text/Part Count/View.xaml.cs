@@ -22,7 +22,7 @@ namespace TH_DeviceCompare_CNC.Text.Part_Count
         public Plugin()
         {
             InitializeComponent();
-            root.DataContext = this;
+            DataContext = this;
         }
 
         public string Value

@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +56,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WCF\Communications.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WCF\MessageServer.cs" />
     <None Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\Files.cs" />
     <None Include="Updates\Registry.cs" />

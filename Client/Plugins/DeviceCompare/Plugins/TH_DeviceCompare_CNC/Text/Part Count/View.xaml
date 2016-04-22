@@ -9,18 +9,18 @@
              mc:Ignorable="d" 
              >
 
-    <UserControl.Resources>
+    <!--<UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/TH_Styles;component/All.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </UserControl.Resources>
+    </UserControl.Resources>-->
 
-    <Grid x:Name="root">
+    <!--<Grid x:Name="root">-->
 
         <local:TextDisplay Text="{Binding Value, Mode=OneWay}" Foreground="{StaticResource Foreground_Normal}"/>
 
-    </Grid>
+    <!--</Grid>-->
     
 </UserControl>

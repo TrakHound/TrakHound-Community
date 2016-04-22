@@ -205,30 +205,30 @@ namespace TH_DeviceCompare
 
         void Rows_UnSelectAll()
         {
-            foreach (Column column in Columns)
-            {
-                foreach (Cell cell in column.Cells) cell.IsSelected = false;
-            }
+            //foreach (Column column in Columns)
+            //{
+            //    foreach (Cell cell in column.Cells) cell.IsSelected = false;
+            //}
         }
 
         void rh_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (sender.GetType() == typeof(RowHeader))
-            {
-                var rh = (RowHeader)sender;
+            //if (sender.GetType() == typeof(RowHeader))
+            //{
+            //    var rh = (RowHeader)sender;
 
-                int index = RowHeaders.IndexOf(rh);
+            //    int index = RowHeaders.IndexOf(rh);
 
-                foreach (Column column in Columns)
-                {
-                    for (int x = 0; x <= column.Cells.Count - 1; x++)
-                    {
-                        if (x != index) column.Cells[x].IsSelected = false;
-                    }
+            //    foreach (Column column in Columns)
+            //    {
+            //        for (int x = 0; x <= column.Cells.Count - 1; x++)
+            //        {
+            //            if (x != index) column.Cells[x].IsSelected = false;
+            //        }
 
-                    column.Cells[index].IsSelected = true;
-                }
-            }
+            //        column.Cells[index].IsSelected = true;
+            //    }
+            //}
         }
 
 
