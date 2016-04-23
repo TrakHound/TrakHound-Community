@@ -117,12 +117,6 @@
     <Compile Include="Controls\Developer Console\PopUp.xaml.cs">
       <DependentUpon>PopUp.xaml</DependentUpon>
     </Compile>
-    <None Include="Pages\Options\Updates\PageOld.xaml.cs">
-      <DependentUpon>PageOld.xaml</DependentUpon>
-    </None>
-    <None Include="Pages\Options\Updates\UpdateItemOld.xaml.cs">
-      <DependentUpon>UpdateItemOld.xaml</DependentUpon>
-    </None>
     <Compile Include="Menus\Plugins\PluginItem.xaml.cs">
       <DependentUpon>PluginItem.xaml</DependentUpon>
     </Compile>
@@ -166,7 +160,6 @@
     <Compile Include="Pages\Options\Updates\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <None Include="Pages\Options\Updates\UpdateItemControl.cs" />
     <Compile Include="Pages\Options\Updates\UpdateItem.xaml.cs">
       <DependentUpon>UpdateItem.xaml</DependentUpon>
     </Compile>
@@ -212,14 +205,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <None Include="Pages\Options\Updates\PageOld.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Pages\Options\Updates\UpdateItemOld.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </None>
     <Page Include="Menus\Plugins\PluginItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -7,6 +7,9 @@ namespace TH_Global
 {
     public static class ApplicationNames
     {
+        public const string TRAKHOUND_BUNDLE = "trakhound-bundle";
+
+
         /// <summary>
         /// Name of the TrakHound-Client Process Name
         /// </summary>
@@ -16,6 +19,8 @@ namespace TH_Global
         /// Name of the TrakHound-Server Windows Service Name
         /// </summary>
         public const string TRAKHOUND_SERVER_SEVICE_NAME = "TrakHound Server";
+
+        public const string TRAKHOUND_UPDATER_SEVICE_NAME = "TrakHound Updater";
 
     }
 }

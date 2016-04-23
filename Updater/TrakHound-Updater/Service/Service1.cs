@@ -155,7 +155,7 @@ namespace TrakHound_Updater
         }
 
 
-        private static AppInfo[] appInfos;
+        private static List<AppInfo> appInfos = new List<AppInfo>();
 
         public static AppInfo[] GetUpdates()
         {
@@ -167,11 +167,11 @@ namespace TrakHound_Updater
                 foreach (var name in names)
                 {
                     string url = Registry_Functions.GetValue(Update.UPDATE_URL, name);
-                    if (url != null) infos.Add(Update.Get(url));
+                    if (url != null) infos.Add(Update.Get(url, name));
                 }
             }
 
-            appInfos = infos.ToArray();
+            appInfos.AddRange(infos);
 
             return infos.ToArray();
         }
@@ -185,7 +185,15 @@ namespace TrakHound_Updater
                 if (name != null)
                 {
                     string url = Registry_Functions.GetValue(Update.UPDATE_URL, name);
-                    if (url != null) return Update.Get(url);
+                    if (url != null)
+                    {
+                        var info = Update.Get(url, appName);
+
+                        // Add to static list if not already in there
+                        if (!appInfos.Exists(x => x.Name == info.Name)) appInfos.Add(info);
+
+                        return info;
+                    }
                 }
             }
 

@@ -25,10 +25,11 @@ namespace TrakHound_Client.Pages.Options.Updates
             root.DataContext = this;
         }
 
+        public string ApplicationName { get; set; }
+
         public delegate void Clicked_Handler(UpdateItem item);
         public event Clicked_Handler CheckForUpdatesClicked;
         public event Clicked_Handler ApplyClicked;
-
 
 
         public bool Loading
@@ -41,29 +42,14 @@ namespace TrakHound_Client.Pages.Options.Updates
             DependencyProperty.Register("Loading", typeof(bool), typeof(UpdateItem), new PropertyMetadata(false));
 
 
-
-
-        //public bool IsSelected
-        //{
-        //    get { return (bool)GetValue(IsSelectedProperty); }
-        //    set { SetValue(IsSelectedProperty, value); }
-        //}
-
-        //public static readonly DependencyProperty IsSelectedProperty =
-        //    DependencyProperty.Register("IsSelected", typeof(bool), typeof(UpdateItem), new PropertyMetadata(false));
-
-
-
-        public string ApplicationName
+        public bool UpdateAvailable
         {
-            get { return (string)GetValue(ApplicationNameProperty); }
-            set { SetValue(ApplicationNameProperty, value); }
+            get { return (bool)GetValue(UpdateAvailableProperty); }
+            set { SetValue(UpdateAvailableProperty, value); }
         }
 
-        public static readonly DependencyProperty ApplicationNameProperty =
-            DependencyProperty.Register("ApplicationName", typeof(string), typeof(UpdateItem), new PropertyMetadata(null));
-
-
+        public static readonly DependencyProperty UpdateAvailableProperty =
+            DependencyProperty.Register("UpdateAvailable", typeof(bool), typeof(UpdateItem), new PropertyMetadata(false));
 
 
         public string Status
@@ -76,7 +62,6 @@ namespace TrakHound_Client.Pages.Options.Updates
             DependencyProperty.Register("Status", typeof(string), typeof(UpdateItem), new PropertyMetadata(null));
 
 
-
         public double ProgressValue
         {
             get { return (double)GetValue(ProgressValueProperty); }
@@ -87,8 +72,6 @@ namespace TrakHound_Client.Pages.Options.Updates
             DependencyProperty.Register("ProgressValue", typeof(double), typeof(UpdateItem), new PropertyMetadata(0d));
 
 
-
-
         public string ApplicationTitle
         {
             get { return (string)GetValue(ApplicationTitleProperty); }
@@ -97,7 +80,6 @@ namespace TrakHound_Client.Pages.Options.Updates
 
         public static readonly DependencyProperty ApplicationTitleProperty =
             DependencyProperty.Register("ApplicationTitle", typeof(string), typeof(UpdateItem), new PropertyMetadata(null));
-
 
 
         public string ApplicationSubtitle
@@ -111,15 +93,34 @@ namespace TrakHound_Client.Pages.Options.Updates
 
 
 
-        public string AvailableVersion
+        public string UpdateLastChecked
         {
-            get { return (string)GetValue(AvailableVersionProperty); }
-            set { SetValue(AvailableVersionProperty, value); }
+            get { return (string)GetValue(UpdateLastCheckedProperty); }
+            set { SetValue(UpdateLastCheckedProperty, value); }
         }
 
-        public static readonly DependencyProperty AvailableVersionProperty =
-            DependencyProperty.Register("AvailableVersion", typeof(string), typeof(UpdateItem), new PropertyMetadata(null));
+        public static readonly DependencyProperty UpdateLastCheckedProperty =
+            DependencyProperty.Register("UpdateLastChecked", typeof(string), typeof(UpdateItem), new PropertyMetadata("Never"));
 
+
+        public string UpdateLastInstalled
+        {
+            get { return (string)GetValue(UpdateLastInstalledProperty); }
+            set { SetValue(UpdateLastInstalledProperty, value); }
+        }
+
+        public static readonly DependencyProperty UpdateLastInstalledProperty =
+            DependencyProperty.Register("UpdateLastInstalled", typeof(string), typeof(UpdateItem), new PropertyMetadata("Never"));
+
+
+        public bool Error
+        {
+            get { return (bool)GetValue(ErrorProperty); }
+            set { SetValue(ErrorProperty, value); }
+        }
+
+        public static readonly DependencyProperty ErrorProperty =
+            DependencyProperty.Register("Error", typeof(bool), typeof(UpdateItem), new PropertyMetadata(false));
 
 
         private void Check_Clicked(TH_WPF.Button bt)

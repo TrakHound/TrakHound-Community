@@ -60,9 +60,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="WCF\MessageServer.cs" />
-    <None Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\Files.cs" />
-    <None Include="Updates\Registry.cs" />
     <Compile Include="Service\Service1.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -74,7 +74,7 @@ namespace TH_Global.Updates
 
         /// <summary>
         /// Url to the Verification file (used for Auto Updates).
-        /// This file must return the string 'true' when successful.
+        /// This file must return the string 'True', '1', or 'Yes' when successful.
         /// If left blank, the verification process will be skipped
         /// </summary>
         public string VerificationUrl { get; set; }
@@ -136,29 +136,22 @@ namespace TH_Global.Updates
         {
             AppInfo result = null;
 
-            try
+            if (File.Exists(path))
             {
-                if (File.Exists(path))
+                using (var r = new StreamReader(path))
                 {
-                    using (var r = new StreamReader(path))
-                    {
-                        string json = r.ReadToEnd();
+                    string json = r.ReadToEnd();
 
-                        var serializer = new JsonSerializer();
-                        try
-                        {
-                            result = (AppInfo)serializer.Deserialize(new JsonTextReader(new StringReader(json)), typeof(AppInfo));
-                        }
-                        catch
-                        {
-                            Logger.Log("Error During AppInfo File JSON Parse : " + path, Logger.LogLineType.Error);
-                        }
+                    var serializer = new JsonSerializer();
+                    try
+                    {
+                        result = (AppInfo)serializer.Deserialize(new JsonTextReader(new StringReader(json)), typeof(AppInfo));
+                    }
+                    catch
+                    {
+                        Logger.Log("Error During AppInfo File JSON Parse : " + path, Logger.LogLineType.Error);
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Logger.Log("Error during Update Check ParseFile() : " + ex.Message, Logger.LogLineType.Error);
             }
 
             return result;

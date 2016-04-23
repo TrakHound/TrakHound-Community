@@ -7,6 +7,7 @@ namespace TH_Global
 {
     public static class Variables
     {
+        public static bool DEBUG_MODE = false;
 
         public static bool SIMULATION_MODE = false;
 

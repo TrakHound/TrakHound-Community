@@ -22,7 +22,7 @@ namespace TH_StatusTable
         {
             if (data != null && data.Id != null && data.Data01 != null)
             {
-                Configuration config = data.Data01 as Configuration;
+                var config = data.Data01 as Configuration;
                 if (config != null)
                 {
                     int index = DeviceInfos.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
@@ -117,7 +117,7 @@ namespace TH_StatusTable
         /// <param name="info"></param>
         private void UpdateShiftSegments(object shiftSegmentData, DeviceInfo info)
         {
-            DataTable dt = shiftSegmentData as DataTable;
+            var dt = shiftSegmentData as DataTable;
             if (dt != null && info.HourDatas == null)
             {
                 var hourDatas = new HourData[24];

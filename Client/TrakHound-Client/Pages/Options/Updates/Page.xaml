@@ -13,7 +13,7 @@
 
     <StackPanel>
         <StackPanel.Resources>
-            
+
             <Style TargetType="th_wpf:Button">
                 <Setter Property="Visibility" Value="Visible"/>
                 <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
@@ -34,7 +34,7 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            
+
         </StackPanel.Resources>
 
         <Border Margin="0,10" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2" HorizontalAlignment="Left">
@@ -65,139 +65,27 @@
 
         </Border>
 
-
         <StackPanel Margin="0,20">
 
-            <!--Check for Updates Button-->
-            <th_wpf:Button Text="Check for Updates" Clicked="CheckForUpdates_Clicked" Margin="10"/>
+            <!--Update Items-->
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding UpdateItems}" MinHeight="50"/>
 
-            <!--Apply Updates Button-->
+            <!--Buttons-->
             <Border BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="2" Margin="0,10">
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
 
-                    <Grid Margin="10,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <!--Clear Updates Queue-->
+                    <th_wpf:Button Text="Clear Updates Queue" Clicked="ClearUpdatesQueue_Clicked" Margin="10"/>
 
-                        <!--Button-->
-                        <th_wpf:Button Text="Apply Updates" Clicked="ApplyUpdates_Clicked">
-                            <th_wpf:Button.Style>
-                                <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding AvailableUpdates}" Value="0">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </th_wpf:Button.Style>
-                        </th_wpf:Button>
+                    <!--Restore Defaults Button-->
+                    <th_wpf:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Margin="10"/>
 
-                        <!--Number of Available Updates Text-->
-                        <TextBlock Grid.Column="1">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="20,0"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding AvailableUpdates}" Value="0">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding UpdatesSetToApply}" Value="true">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        
-                        <Run Text="{Binding AvailableUpdates}"/>
-                        <Run>
-                            <Run.Style>
-                                <Style TargetType="Run">
-                                    <Setter Property="Text" Value="Updates Available"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding AvailableUpdates}" Value="1">
-                                            <Setter Property="Text" Value="Update Available"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Run.Style>
-                        </Run>
-                        </TextBlock>
+                </StackPanel>
 
-                        <!--Update Ready Text-->
-                        <TextBlock Grid.Column="1">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="20,0"/>
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="Foreground" Value="Green"/>
-                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                    <Setter Property="Text" Value="Applying Updates.. Restart TrakHound Client to finish"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding UpdatesSetToApply}" Value="true">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                    </Grid>
-
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding UpdateItems}">
-                        <!--<ItemsControl.Resources>
-                            <Style TargetType="{x:Type local:UpdateItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type local:UpdateItem}">
-                                            <Border Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}">
-
-                                                <StackPanel>
-
-                                                    <CheckBox IsChecked="{TemplateBinding IsSelected}"/>
-
-                                                    <TextBlock Text="{TemplateBinding ApplicationTitle}"/>
-
-                                                    <TextBlock Text="{TemplateBinding ApplicationSubtitle}"/>
-
-                                                    <TextBlock Text="{TemplateBinding AvailableVersion}"/>
-
-                                                    <TextBlock Text="{TemplateBinding ProgressValue}"/>
-
-                                                    <TextBlock Text="{TemplateBinding Status}"/>
-
-                                                </StackPanel>
-
-                                            </Border>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ItemsControl.Resources>-->
-                    </ItemsControl>
-
-                </Grid>
-                
             </Border>
-            
-            <!--Clear Updates Queue-->
-            <th_wpf:Button Text="Clear Updates Queue" Clicked="ClearUpdatesQueue_Clicked" Margin="10"/>
 
         </StackPanel>
-
-
-        <!--Restore Defaults Button-->
-        <th_wpf:Button Text="Restore Defaults" Clicked="RestoreDefaults_Clicked" Margin="10"/>
 
     </StackPanel>
 

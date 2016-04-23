@@ -8,10 +8,10 @@
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
              
-             Margin="10"
+             Margin="0,0,0,10"
              
              mc:Ignorable="d" 
-             Height="110" d:DesignWidth="400">
+             Height="auto" Width="600">
 
     <UserControl.Resources>
 
@@ -20,6 +20,7 @@
             <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
             <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
             <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="60"/>
             <Setter Property="Padding" Value="10,5"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="FontSize" Value="12"/>
@@ -38,7 +39,17 @@
 
     </UserControl.Resources>
 
-    <Border x:Name="root" BorderBrush="{StaticResource Shade_Normal}" BorderThickness="1" CornerRadius="1">
+    <Border x:Name="root" BorderThickness="1" CornerRadius="1" Background="Transparent">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="BorderBrush" Value="{StaticResource Accent_Normal}"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -49,42 +60,115 @@
 
             <!--Buttons-->
             <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70"/>
+                </Grid.ColumnDefinitions>
 
-                <th_wpf:Button Text="Check" Clicked="Check_Clicked" DataObject="{Binding }"/>
+                <!--Check for Updates Button-->
+                <th_wpf:Button Text="Check" Clicked="Check_Clicked" DataObject="{Binding }">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Loading}" Value="true">
+                                    <Setter Property="IsEnabled" Value="false"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
-                <th_wpf:Button Grid.Row="1" Text="Apply" Clicked="Apply_Clicked" DataObject="{Binding }"/>
+                <!--Apply Updates Button-->
+                <th_wpf:Button Grid.Column="1" Text="Apply" Clicked="Apply_Clicked" DataObject="{Binding }">
+                    <th_wpf:Button.Style>
+                        <Style TargetType="th_wpf:Button" BasedOn="{StaticResource {x:Type th_wpf:Button}}">
+                            <Setter Property="IsEnabled" Value="false"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UpdateAvailable}" Value="true">
+                                    <Setter Property="IsEnabled" Value="true"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </th_wpf:Button.Style>
+                </th_wpf:Button>
 
             </Grid>
 
-            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="0,5"/>
+            <!--Separator-->
+            <Rectangle Grid.Column="1" Fill="{StaticResource Shade_Normal}" Width="1" Margin="0,10"/>
 
             <Grid Grid.Column="2" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-
-                <StackPanel>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel VerticalAlignment="Center">
 
                     <!--Application Title-->
                     <TextBlock Text="{Binding ApplicationTitle}"  Foreground="{StaticResource Foreground_Normal}" FontSize="18" Margin="0,0,0,2"/>
 
                     <!--Application Subtitle-->
-                    <TextBlock Text="{Binding ApplicationSubtitle}"  Foreground="{StaticResource Foreground_Light}" FontSize="14"/>
+                    <TextBlock Text="{Binding ApplicationSubtitle}"  Foreground="{StaticResource Foreground_Light}" FontSize="14" Margin="0,0,0,5"/>
 
-                    <!--Available Version-->
-                    <!--<TextBlock Text="{Binding AvailableVersion}"  Foreground="{StaticResource Foreground_Normal}" FontSize="14"/>-->
+                    
+                    <!--Last Checked Timestamp-->
+                    <TextBlock FontSize="10">
+                        <Run Text="Last Checked :" Foreground="{StaticResource Foreground_Light}"/>
+                        <Run Text="{Binding UpdateLastChecked}" Foreground="{StaticResource Foreground_Normal}"/>
+                    </TextBlock>
+
+                    <!--Last Installed Timestamp-->
+                    <TextBlock FontSize="10">
+                        <Run Text="Last Updated :" Foreground="{StaticResource Foreground_Light}"/>
+                        <Run Text="{Binding UpdateLastInstalled}" Foreground="{StaticResource Foreground_Normal}"/>
+                    </TextBlock>
 
                 </StackPanel>
                 
-                <StackPanel Grid.Row="1">
+                <StackPanel Grid.Column="1" Margin="20,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Right">
 
-                    <!--Status Text-->
-                    <TextBlock Text="{Binding Status}" Foreground="Green" FontSize="12"/>
+                    <!--Status-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Error Icon-->
+                        <Grid Height="20" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Margin="0,0,10,0">
+                            <Grid.Resources>
+                                <ImageBrush x:Key="IMG" Stretch="Uniform" ImageSource="/TrakHound-Client;component/Resources/Error_01.png"  />
+                            </Grid.Resources>
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Setter Property="OpacityMask" Value="{StaticResource IMG}" />
+                                    <Setter Property="Background" Value="Red"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Error}" Value="true">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                        </Grid>
+
+                        <!--Status Text-->
+                        <TextBlock Grid.Column="1" Text="{Binding Status}" FontSize="12" VerticalAlignment="Center" TextWrapping="Wrap">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="Green"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Error}" Value="true">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                    </Grid>
 
                     <!--Progress Indicators--> 
                     <Grid Margin="0,5,0,0" Width="200" HorizontalAlignment="Left">
@@ -98,6 +182,9 @@
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Loading}" Value="true">
                                         <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Error}" Value="true">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
