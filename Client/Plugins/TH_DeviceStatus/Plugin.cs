@@ -110,29 +110,34 @@ namespace TH_StatusTable
 
         public void Devices_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            Dispatcher.BeginInvoke(new Action(() =>
             {
-                DeviceInfos.Clear();
-            }
-
-            if (e.NewItems != null)
-            {
-                foreach (Configuration newConfig in e.NewItems)
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
                 {
-                    if (newConfig != null) AddDevice(newConfig);
+                    DeviceInfos.Clear();
                 }
-            }
 
-            if (e.OldItems != null)
-            {
-                foreach (Configuration oldConfig in e.OldItems)
+                if (e.NewItems != null)
                 {
-                    Devices.Remove(oldConfig);
-
-                    int index = DeviceInfos.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == oldConfig.UniqueId);
-                    if (index >= 0) DeviceInfos.RemoveAt(index);
+                    foreach (Configuration newConfig in e.NewItems)
+                    {
+                        if (newConfig != null) AddDevice(newConfig);
+                    }
                 }
-            }
+
+                if (e.OldItems != null)
+                {
+                    foreach (Configuration oldConfig in e.OldItems)
+                    {
+                        Devices.Remove(oldConfig);
+
+                        int index = DeviceInfos.ToList().FindIndex(x => GetUniqueIdFromDeviceInfo(x) == oldConfig.UniqueId);
+                        if (index >= 0) DeviceInfos.RemoveAt(index);
+                    }
+                }
+            }));
+
+           
         }
 
         private static string GetUniqueIdFromDeviceInfo(DeviceInfo info)

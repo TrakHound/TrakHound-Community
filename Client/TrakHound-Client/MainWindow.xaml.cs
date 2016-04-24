@@ -98,7 +98,9 @@ namespace TrakHound_Client
 
         void currentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            System.Windows.MessageBox.Show(e.ExceptionObject.ToString());
+            //System.Windows.MessageBox.Show(e.ExceptionObject.ToString());
+
+            OpenBugReport();
         }
 
         private void CheckVersion()

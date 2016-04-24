@@ -137,7 +137,7 @@ namespace TrakHound_Client.Controls
 
         public void FullScreen()
         {
-            Fullscreen fs = new Fullscreen();
+            var fs = new Windows.Fullscreen();
             fs.FullScreenClosing += fs_FullScreenClosing;
 
             object o = PageContent;

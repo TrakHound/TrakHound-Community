@@ -19,7 +19,11 @@
 
     </UserControl.Resources>
 
-    <StackPanel x:Name="root">
+    <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
         <!--Title and Help-->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
@@ -68,7 +72,7 @@
 
         </StackPanel>
         
-        <Grid>
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="15"/>
@@ -158,9 +162,6 @@
                              FontSize="{Binding FontSize}"
                              Foreground="{StaticResource Foreground_Normal}"
                              Padding="0,8"
-                             VerticalAlignment="Center" 
-                             VerticalContentAlignment="Center"
-                             MaxLines="1"
                              CaretBrush="Black"
                              Focusable="True"
                              PreviewKeyDown="txt_PreviewKeyDown"
@@ -168,12 +169,17 @@
                              GotMouseCapture="txt_GotMouseCapture"
                              GotKeyboardFocus="txt_GotKeyboardFocus"
                              LostFocus="txt_LostFocus"
+                             UndoLimit="1"
                              >
                             <TextBox.Style>
                                 <Style TargetType="TextBox">
+                                    <Setter Property="MaxLines" Value="1"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding TextWrapping}" Value="true">
                                             <Setter Property="TextWrapping" Value="Wrap"/>
+                                            <Setter Property="MaxLines" Value="1000"/>
+                                            <Setter Property="VerticalAlignment" Value="Stretch"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -195,6 +201,9 @@
                                     <Trigger Property="IsMouseOver" Value="true">
                                         <Setter Property="Foreground" Value="{StaticResource Accent_Normal}"/>
                                     </Trigger>
+                                    <DataTrigger Binding="{Binding TextWrapping}" Value="true">
+                                        <Setter Property="VerticalAlignment" Value="Top"/>
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </th_wpf:Button.Style>
@@ -220,6 +229,6 @@
 
         </Grid>
 
-    </StackPanel>
+    </Grid>
     
 </UserControl>

@@ -37,6 +37,8 @@ namespace TH_StatusTable
             LoadManufacturerLogo(config.FileLocations.Manufacturer_Logo_Path, info);
             DeviceInfos.Add(info);
 
+
+
             DeviceInfos.Sort();
         }
 

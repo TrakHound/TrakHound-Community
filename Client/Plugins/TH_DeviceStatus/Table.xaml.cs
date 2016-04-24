@@ -19,10 +19,19 @@ namespace TH_StatusTable
         public StatusTable()
         {
             InitializeComponent();
-
             root.DataContext = this;
 
             CreateColumns(0, 24);
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Devices_DG.DataContext = this;
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            //Devices_DG.DataContext = null;
         }
 
         private void CreateColumns(int first, int count)
@@ -76,7 +85,7 @@ namespace TH_StatusTable
 
             foreach (var column in columns)
             {
-                Devices_DG.Columns.Add(column);
+                Dispatcher.BeginInvoke(new Action(() => { Devices_DG.Columns.Add(column); }), TH_Global.Functions.UI_Functions.PRIORITY_BACKGROUND, new object[] { });
             }
         }
 

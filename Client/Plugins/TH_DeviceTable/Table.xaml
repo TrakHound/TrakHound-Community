@@ -7,6 +7,9 @@
              xmlns:local="clr-namespace:TH_DeviceTable"     
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
+             Loaded="UserControl_Loaded"
+             Unloaded="UserControl_Unloaded"
+             
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="600">
 

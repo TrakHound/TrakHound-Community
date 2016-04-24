@@ -8,11 +8,14 @@
              xmlns:controls="clr-namespace:TH_StatusTable.Controls"
              xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
              
+             Loaded="UserControl_Loaded"
+             Unloaded="UserControl_Unloaded"
+             
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
     <UserControl.Resources>
-
+        
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="MinHeight" Value="30"/>
             <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
@@ -173,7 +176,11 @@
 
         <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
 
-                <DataGrid x:Name="Devices_DG" ItemsSource="{Binding DeviceInfos, IsAsync=True}"
+            <!--<ItemsControl ItemsSource="{Binding DeviceInfos}"/>-->
+
+
+
+            <DataGrid x:Name="Devices_DG" ItemsSource="{Binding DeviceInfos, IsAsync=True}"
                   AutoGenerateColumns="False"
                   BorderBrush="Transparent"
                   BorderThickness="0"

@@ -4,21 +4,11 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Collections.ObjectModel;
 
 using TH_UserManagement.Management;
 
@@ -52,6 +42,7 @@ namespace TrakHound_Client.Menus.Main
 
             // 2nd Row
             AddFullscreen_MenuItem();
+            AddReportBug_MenuItem();
             AddDeveloperConsole_MenuItem();
         }
 
@@ -195,7 +186,6 @@ namespace TrakHound_Client.Menus.Main
         void DeveloperConsole_Clicked(object obj)
         {
             if (mw != null) mw.developerConsole.Shown = !mw.developerConsole.Shown;
-
         }
 
         #endregion
@@ -272,7 +262,31 @@ namespace TrakHound_Client.Menus.Main
 
         private void Fullscreen_Clicked(object obj)
         {
+            Shown = false;
             if (mw != null && mw.CurrentPage != null) mw.CurrentPage.FullScreen();
+        }
+
+        #endregion
+
+        #region "Report Bug"
+
+        void AddReportBug_MenuItem()
+        {
+            MenuItem mi = new MenuItem();
+            mi.Image = new BitmapImage(new Uri("pack://application:,,,/TrakHound-Client;component/Resources/Bug_01.png"));
+            mi.Text = "Report Bug";
+            mi.Clicked += ReportBug_Clicked;
+
+            var bt = new TH_WPF.Button();
+            bt.ButtonContent = mi;
+
+            MenuItems.Add(bt);
+        }
+
+        void ReportBug_Clicked(object obj)
+        {
+            Shown = false;
+            if (mw != null) mw.OpenBugReport();
         }
 
         #endregion

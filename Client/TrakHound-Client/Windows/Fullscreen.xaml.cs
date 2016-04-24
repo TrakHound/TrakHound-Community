@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 
-namespace TrakHound_Client.Controls
+namespace TrakHound_Client.Windows
 {
     /// <summary>
     /// Interaction logic for Fullscreen.xaml

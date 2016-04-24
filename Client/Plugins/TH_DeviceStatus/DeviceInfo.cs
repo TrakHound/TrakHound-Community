@@ -7,14 +7,19 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 using TH_Configuration;
 
 namespace TH_StatusTable
 {
-    public class DeviceInfo : INotifyPropertyChanged, IComparable
+    public class DeviceInfo : Control, INotifyPropertyChanged, IComparable
     {
+        static DeviceInfo()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(DeviceInfo), new FrameworkPropertyMetadata(typeof(DeviceInfo)));
+        }
 
         private bool _connected;
         public bool Connected
@@ -213,92 +218,11 @@ namespace TH_StatusTable
             var i = obj as DeviceInfo;
             if (i != null)
             {
-                if (i > this) return -1;
-                else if (i < this) return 1;
+                if (i.Index > Index) return -1;
+                else if (i.Index < Index) return 1;
                 else return 0;
             }
             else return 1;
-        }
-
-        public override bool Equals(object obj)
-        {
-
-            var other = obj as DeviceInfo;
-            if (object.ReferenceEquals(other, null)) return false;
-
-            return (this == other);
-        }
-
-        public override int GetHashCode()
-        {
-            char[] c = this.ToString().ToCharArray();
-            return base.GetHashCode();
-        }
-
-        #region "Private"
-
-        static bool EqualTo(DeviceInfo o1, DeviceInfo o2)
-        {
-            if (!object.ReferenceEquals(o1, null) && object.ReferenceEquals(o2, null)) return false;
-            if (object.ReferenceEquals(o1, null) && !object.ReferenceEquals(o2, null)) return false;
-            if (object.ReferenceEquals(o1, null) && object.ReferenceEquals(o2, null)) return true;
-
-            return o1.UniqueId == o2.UniqueId && o1.Index == o2.Index;
-        }
-
-        static bool NotEqualTo(DeviceInfo o1, DeviceInfo o2)
-        {
-            if (!object.ReferenceEquals(o1, null) && object.ReferenceEquals(o2, null)) return true;
-            if (object.ReferenceEquals(o1, null) && !object.ReferenceEquals(o2, null)) return true;
-            if (object.ReferenceEquals(o1, null) && object.ReferenceEquals(o2, null)) return false;
-
-            return o1.UniqueId != o2.UniqueId || o1.Index != o2.Index;
-        }
-
-        static bool LessThan(DeviceInfo o1, DeviceInfo o2)
-        {
-            if (o1.Index > o2.Index) return false;
-            else return true;
-        }
-
-        static bool GreaterThan(DeviceInfo o1, DeviceInfo o2)
-        {
-            if (o1.Index < o2.Index) return false;
-            else return true;
-        }
-
-        #endregion
-
-        public static bool operator ==(DeviceInfo o1, DeviceInfo o2)
-        {
-            return EqualTo(o1, o2);
-        }
-
-        public static bool operator !=(DeviceInfo o1, DeviceInfo o2)
-        {
-            return NotEqualTo(o1, o2);
-        }
-
-
-        public static bool operator <(DeviceInfo o1, DeviceInfo o2)
-        {
-            return LessThan(o1, o2);
-        }
-
-        public static bool operator >(DeviceInfo o1, DeviceInfo o2)
-        {
-            return GreaterThan(o1, o2);
-        }
-
-
-        public static bool operator <=(DeviceInfo o1, DeviceInfo o2)
-        {
-            return LessThan(o1, o2) || EqualTo(o1, o2);
-        }
-
-        public static bool operator >=(DeviceInfo o1, DeviceInfo o2)
-        {
-            return GreaterThan(o1, o2) || EqualTo(o1, o2);
         }
 
         #endregion

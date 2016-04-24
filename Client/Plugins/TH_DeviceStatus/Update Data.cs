@@ -25,16 +25,19 @@ namespace TH_StatusTable
                 var config = data.Data01 as Configuration;
                 if (config != null)
                 {
-                    int index = DeviceInfos.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
-                    if (index >= 0)
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        DeviceInfo info = DeviceInfos[index];
+                        int index = DeviceInfos.ToList().FindIndex(x => x.Configuration.UniqueId == config.UniqueId);
+                        if (index >= 0)
+                        {
+                            DeviceInfo info = DeviceInfos[index];
 
-                        UpdateDatabaseConnection(data, info);
-                        UpdateAvailability(data, info);
+                            UpdateDatabaseConnection(data, info);
+                            UpdateAvailability(data, info);
 
-                        UpdateStatus(data, info);
-                    }
+                            UpdateStatus(data, info);
+                        }
+                    }));
                 }
             }
         }

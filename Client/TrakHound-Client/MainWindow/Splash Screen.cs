@@ -5,15 +5,17 @@
 
 using System;
 
+using TrakHound_Client.Windows;
+
 namespace TrakHound_Client
 {
     public partial class MainWindow
     {
-        Splash.Screen splsh;
+        Splash splsh;
 
         void Splash_Initialize()
         {
-            splsh = new Splash.Screen();
+            splsh = new Splash();
             Splash_Show();
 
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();

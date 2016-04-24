@@ -64,10 +64,15 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
@@ -93,17 +98,18 @@
     <Compile Include="Controls\TabManager.xaml.cs">
       <DependentUpon>TabManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow\DeveloperConsole.cs" />
+    <Compile Include="MainWindow\Developer Console.cs" />
     <Compile Include="MainWindow\Devices.cs" />
-    <Compile Include="MainWindow\MainMenu.cs" />
-    <Compile Include="MainWindow\MessageCenter.cs" />
+    <Compile Include="MainWindow\Main Menu.cs" />
+    <Compile Include="MainWindow\Message Center.cs" />
     <Compile Include="MainWindow\Pages.cs" />
-    <Compile Include="MainWindow\PluginMenu.cs" />
+    <Compile Include="MainWindow\Plugin Menu.cs" />
     <Compile Include="MainWindow\Plugins.cs" />
+    <Compile Include="MainWindow\Report Bug.cs" />
     <Compile Include="MainWindow\Server Management.cs" />
-    <Compile Include="MainWindow\SplashScreen.cs" />
+    <Compile Include="MainWindow\Splash Screen.cs" />
     <Compile Include="MainWindow\Users.cs" />
-    <Compile Include="MainWindow\WelcomeMessage.cs" />
+    <Compile Include="MainWindow\Welcome Message.cs" />
     <Compile Include="MainWindow\Window.cs" />
     <Compile Include="Pages\About\Information\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
@@ -111,7 +117,10 @@
     <Compile Include="Pages\About\License\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Fullscreen.xaml.cs">
+    <Compile Include="Windows\BugReport.xaml.cs">
+      <DependentUpon>BugReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Fullscreen.xaml.cs">
       <DependentUpon>Fullscreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Developer Console\PopUp.xaml.cs">
@@ -173,13 +182,11 @@
       <DependentUpon>Subcategory.xaml</DependentUpon>
     </Compile>
     <Compile Include="SingleInstance.cs" />
-    <Compile Include="Splash\PluginIcon.xaml.cs">
-      <DependentUpon>PluginIcon.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Splash\Screen.xaml.cs">
-      <DependentUpon>Screen.xaml</DependentUpon>
+    <Compile Include="Windows\Splash.xaml.cs">
+      <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
     <None Include="Controls\TH_TabItem.cs" />
+    <None Include="packages.config" />
     <None Include="TrakHound-Client.licenseheader" />
     <Page Include="Controls\PageManager.xaml">
       <SubType>Designer</SubType>
@@ -197,7 +204,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Fullscreen.xaml">
+    <Page Include="Windows\BugReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Fullscreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -289,11 +300,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Splash\PluginIcon.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Splash\Screen.xaml">
+    <Page Include="Windows\Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -353,6 +360,7 @@
     <Resource Include="Resources\TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Bug_01.png" />
     <Resource Include="Resources\Update_01.png" />
     <Resource Include="Resources\Generate_01.png" />
     <Resource Include="Resources\Forward_01.png" />

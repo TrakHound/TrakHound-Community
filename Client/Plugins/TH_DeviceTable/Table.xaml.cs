@@ -16,7 +16,17 @@ namespace TH_DeviceTable
         public DeviceTable()
         {
             InitializeComponent();
+            //Devices_DG.DataContext = this;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
             Devices_DG.DataContext = this;
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Devices_DG.DataContext = null;
         }
 
         private void DataGridMenuItem_Click(object sender, RoutedEventArgs e)

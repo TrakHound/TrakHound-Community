@@ -50,9 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\CustomControl1.cs" />
+    <Compile Include="Controls\Row.xaml.cs">
+      <DependentUpon>Row.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Segment.xaml.cs">
       <DependentUpon>Segment.xaml</DependentUpon>
     </Compile>
+    <None Include="DeviceInfo.xaml.cs">
+      <DependentUpon>DeviceInfo.xaml</DependentUpon>
+    </None>
+    <None Include="DeviceInfoOld.cs" />
     <Compile Include="DeviceInfo.cs" />
     <Compile Include="Devices.cs" />
     <Compile Include="HourData.cs" />
@@ -67,10 +74,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Row.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Segment.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <None Include="DeviceInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <Page Include="Table.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -86,6 +101,10 @@
       <DependentUpon>Table.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <None Include="Themes\DeviceInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,26 +138,32 @@
     <ProjectReference Include="..\..\..\Libraries\TH_Configuration\TH_Configuration.csproj">
       <Project>{147a0360-5f86-4d33-a874-46f785723ead}</Project>
       <Name>TH_Configuration</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>
       <Name>TH_Global</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Plugins\TH_Plugins.csproj">
       <Project>{eb5e38e0-af12-49f7-990b-243389690ea6}</Project>
       <Name>TH_Plugins</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_Styles\TH_Styles.csproj">
       <Project>{ebfabb3a-6fb4-47ae-8cb1-b663d57cf5b1}</Project>
       <Name>TH_Styles</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_UserManagement\TH_UserManagement.csproj">
       <Project>{85f2c2a8-cd43-486b-9918-2a1f11cfc15f}</Project>
       <Name>TH_UserManagement</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Libraries\TH_WPF\TH_WPF.csproj">
       <Project>{e039a6be-d47c-4046-86d3-71acd62a217a}</Project>
       <Name>TH_WPF</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
