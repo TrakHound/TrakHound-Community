@@ -364,10 +364,48 @@ namespace TH_Global.Web
 
         #endregion
 
+        #region "PUT"
 
-        private static string SendData(string method, string url, byte[] postBytes = null, HeaderData[] headers = null, string userAgent = null, NetworkCredential credential = null)
+        public static string GET(string url)
         {
+            return SendData("GET", url);
+        }
 
+        //public static string GET(string url, byte[] postBytes)
+        //{
+        //    return SendData("PUT", url, postBytes);
+        //}
+
+        public static string GET(string url, HeaderData[] headers)
+        {
+            return SendData("GET", url, null, headers);
+        }
+
+        //public static string GET(string url, byte[] postBytes, HeaderData[] headers)
+        //{
+        //    return SendData("PUT", url, postBytes, headers);
+        //}
+
+        public static string GET(string url, HeaderData[] headers, string userAgent)
+        {
+            return SendData("GET", url, null, headers, userAgent);
+        }
+
+        //public static string GET(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
+        //{
+        //    return SendData("PUT", url, postBytes, headers, userAgent);
+        //}
+
+        public static string GET(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
+        {
+            return SendData("GET", url, postBytes, headers, userAgent, credential);
+        }
+
+        #endregion
+
+
+        private static string SendData(string method, string url, byte[] sendBytes = null, HeaderData[] headers = null, string userAgent = null, NetworkCredential credential = null)
+        {
             string result = null;
 
             int attempts = 0;
@@ -411,12 +449,12 @@ namespace TH_Global.Web
                     }
 
                     // Add POST data to request stream
-                    if (postBytes != null)
+                    if (sendBytes != null)
                     {
-                        request.ContentLength = postBytes.Length;
+                        request.ContentLength = sendBytes.Length;
 
                         Stream postStream = request.GetRequestStream();
-                        postStream.Write(postBytes, 0, postBytes.Length);
+                        postStream.Write(sendBytes, 0, sendBytes.Length);
                         postStream.Flush();
                         postStream.Close();
                     }

@@ -46,7 +46,7 @@ namespace TH_WPF
         }
 
 
-        public MessageBoxDialogResult DialogResult
+        public new MessageBoxDialogResult DialogResult
         {
             get { return (MessageBoxDialogResult)GetValue(DialogResultProperty); }
             set { SetValue(DialogResultProperty, value); }

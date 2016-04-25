@@ -182,6 +182,9 @@
       <DependentUpon>Subcategory.xaml</DependentUpon>
     </Compile>
     <Compile Include="SingleInstance.cs" />
+    <Compile Include="Windows\GithubLogin.xaml.cs">
+      <DependentUpon>GithubLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
@@ -300,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\GithubLogin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\Splash.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -360,6 +367,7 @@
     <Resource Include="Resources\TrakHound_Logo_Initials_10.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\github_01.png" />
     <Resource Include="Resources\Bug_01.png" />
     <Resource Include="Resources\Update_01.png" />
     <Resource Include="Resources\Generate_01.png" />
@@ -419,6 +427,10 @@
     <ProjectReference Include="..\..\Libraries\TH_DeviceManager\TH_DeviceManager.csproj">
       <Project>{b5f883cc-0e97-468c-9ca4-84031f446edf}</Project>
       <Name>TH_DeviceManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Libraries\TH_GitHub\TH_GitHub.csproj">
+      <Project>{725221c1-50a4-41a4-a8a8-11735ebe0d88}</Project>
+      <Name>TH_GitHub</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Libraries\TH_Global\TH_Global.csproj">
       <Project>{3233b466-2fa9-4ae7-8a21-7eeb57bb61f4}</Project>

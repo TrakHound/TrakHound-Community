@@ -100,7 +100,8 @@ namespace TrakHound_Client
         {
             //System.Windows.MessageBox.Show(e.ExceptionObject.ToString());
 
-            OpenBugReport();
+            OpenBugReport((Exception)e.ExceptionObject);
+            if (e.IsTerminating) Close();
         }
 
         private void CheckVersion()

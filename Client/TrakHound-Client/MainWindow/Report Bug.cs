@@ -12,14 +12,22 @@ namespace TrakHound_Client
 {
     public partial class MainWindow
     {
+        public void OpenBugReport(Exception ex)
+        {
+            Cursor = System.Windows.Input.Cursors.Wait;
+            var bugReport = new Windows.BugReport(ex);
+            bugReport.ScreenshotPath = bugReport.GetScreenshot(this);
+            Cursor = System.Windows.Input.Cursors.Arrow;
+            bugReport.ShowDialog();
+        }
+
         public void OpenBugReport()
         {
             Cursor = System.Windows.Input.Cursors.Wait;
             var bugReport = new Windows.BugReport();
             bugReport.ScreenshotPath = bugReport.GetScreenshot(this);
-            Cursor = System.Windows.Input.Cursors.Wait;
+            Cursor = System.Windows.Input.Cursors.Arrow;
             bugReport.ShowDialog();
         }
-
     }
 }

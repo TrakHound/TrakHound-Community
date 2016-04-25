@@ -183,3 +183,7 @@ F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.exe
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\TrakHound-Client.pdb
 F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\ICSharpCode.SharpZipLib.dll
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_GitHub.dll
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\bin\Debug\TH_GitHub.pdb
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Windows\GithubLogin.g.cs
+F:\feenux\TrakHound\TrakHound\Client\TrakHound-Client\obj\Debug\Windows\GithubLogin.baml

@@ -1,0 +1,90 @@
+﻿<Window x:Class="TrakHound_Client.Windows.GithubLogin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrakHound_Client.Windows"
+        
+        xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+        
+        mc:Ignorable="d"
+        Title="GithubLogin" 
+        Height="275"
+        Width="300" WindowStyle="ToolWindow"
+        >
+
+    <Window.Resources>
+
+        <Style TargetType="th_wpf:Button">
+            <Setter Property="Visibility" Value="Visible"/>
+            <Setter Property="Foreground" Value="{StaticResource Foreground_Opposite_Normal}"/>
+            <Setter Property="Background" Value="{StaticResource Accent_Normal}"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Background" Value="{StaticResource Accent_Light}"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Foreground" Value="#aa000000"/>
+                    <Setter Property="Background" Value="#cccccc"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!--Title-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!--Github Logo-->
+            <Image Source="/TrakHound-Client;component/Resources/github_01.png" VerticalAlignment="Center" HorizontalAlignment="Left" Height="30" Margin="10"/>
+
+            <TextBlock Grid.Column="1" FontSize="10" Foreground="{StaticResource Foreground_Light}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,10,0">
+            Login to Github to post Issues directly to TrakHound.
+            </TextBlock>
+
+        </Grid>
+
+        <StackPanel Grid.Row="1" Margin="20,10,5,10">
+
+            <!--Username-->
+            <th_wpf:TextBox Title="Username"/>
+
+            <!--Password-->
+            <th_wpf:PasswordBox Title="Password"/>
+            
+        </StackPanel>
+        
+        <!--Options-->
+        <Grid Grid.Row="2" Margin="20,0,20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Content="Remember Me" IsChecked="True"/>
+
+            <!--Login Button-->
+            <th_wpf:Button Grid.Column="1" Text="Login"/>
+
+        </Grid>
+
+    </Grid>
+
+</Window>

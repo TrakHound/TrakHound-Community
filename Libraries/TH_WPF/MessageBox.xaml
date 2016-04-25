@@ -52,8 +52,8 @@
             <Grid.Resources>
                 <Style TargetType="th_wpf:Button">
                     <Setter Property="Foreground" Value="{StaticResource Foreground_Normal}"/>
-                    <Setter Property="Background" Value="#00000000"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Normal}"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="{StaticResource Shade_Dark}"/>
                     <Setter Property="BorderThickness" Value="1"/>
                     <Setter Property="FontSize" Value="14"/>
                     <Setter Property="MinWidth" Value="100"/>

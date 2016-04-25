@@ -41,11 +41,30 @@ namespace TH_GitHub
             postData = "{ " + postData + " }";
 
             var headers = new HTTP.HeaderData[1];
-            headers[0] = Authentication.GetHeaderData(credentials);
+            //headers[0] = Authentication.GetBasicHeader(credentials);
+            //string token = Authentication.GetToken(credentials.Username);
+            //headers[0] = Authentication.GetOAuth2Header(token);
 
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
 
             HTTP.POST(REPOSITORY_URL, byteArray, headers, "TrakHound");
+        }
+
+        public static bool Create(Issue issue, HTTP.HeaderData loginHeader)
+        {
+            string format = "\"title\": \"{0}\", \"body\": \"{1}\"";
+
+            string body = ComposeBody(issue);
+
+            string postData = string.Format(format, issue.Title, body);
+            postData = "{ " + postData + " }";
+
+            var headers = new HTTP.HeaderData[1];
+            headers[0] = loginHeader;
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+            return !string.IsNullOrEmpty(HTTP.POST(REPOSITORY_URL, byteArray, headers, "TrakHound"));
         }
 
         private static string ComposeBody(Issue issue)

@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:TrakHound_Client.Windows"
         
         xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+        xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
 
         Title="TrakHound Bug Reporter"
         Height="600" Width="500"
@@ -43,14 +44,11 @@
         </Style>
 
     </Window.Resources>
-    
-    <Grid>
+
+    <Grid Background="{StaticResource Window_Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <!--Title-->
@@ -73,133 +71,207 @@
             </StackPanel>
 
         </Grid>
-        
-        <!--Gathered Data-->
-        <Border Grid.Row="1" Style="{StaticResource group}" Margin="20,10">
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+        <!--Data-->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-                <!--Environment Data-->
-                <UniformGrid Margin="10" Rows="3">
-                    <UniformGrid.Resources>
-                        <Style x:Key="label" TargetType="Run">
-                            <Setter Property="Foreground" Value="#888"/>
-                            <Setter Property="FontSize" Value="12"/>
-                        </Style>
-                        <Style x:Key="value" TargetType="Run">
-                            <Setter Property="Foreground" Value="#333"/>
-                            <Setter Property="FontSize" Value="12"/>
-                        </Style>
-                    </UniformGrid.Resources>
+            <!--Gathered Data-->
+            <Border Grid.Row="0" Style="{StaticResource group}" Margin="20,10">
 
-                    <!--Date-->
-                    <TextBlock>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--Environment Data-->
+                    <UniformGrid Margin="10" Rows="3">
+                        <UniformGrid.Resources>
+                            <Style x:Key="label" TargetType="Run">
+                                <Setter Property="Foreground" Value="#888"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                            <Style x:Key="value" TargetType="Run">
+                                <Setter Property="Foreground" Value="#333"/>
+                                <Setter Property="FontSize" Value="12"/>
+                            </Style>
+                        </UniformGrid.Resources>
+
+                        <!--Date-->
+                        <TextBlock>
                     <Run Style="{StaticResource label}" Text="Date :"/>
                     <Run Style="{StaticResource value}" Text="{Binding Timestamp}"/>
-                    </TextBlock>
+                        </TextBlock>
 
-                    <!--Operating System-->
-                    <TextBlock>
+                        <!--Operating System-->
+                        <TextBlock>
                     <Run Style="{StaticResource label}" Text="OS :"/>
                     <Run Style="{StaticResource value}" Text="{Binding OperatingSystem}"/>
-                    </TextBlock>
+                        </TextBlock>
 
-                    <!--Memory Usage-->
-                    <TextBlock>
+                        <!--Memory Usage-->
+                        <TextBlock>
                     <Run Style="{StaticResource label}" Text="Memory Usage :"/>
                     <Run Style="{StaticResource value}" Text="{Binding MemoryUsed}"/>
-                    </TextBlock>
+                        </TextBlock>
 
-                </UniformGrid>
+                    </UniformGrid>
 
-                <!--Data Options-->
-                <StackPanel Grid.Column="1" Margin="10">
+                    <!--Data Options-->
+                    <StackPanel Grid.Column="1" Margin="10">
 
-                    <!--Include Log Files-->
-                    <StackPanel Orientation="Horizontal">
+                        <!--Include Log Files-->
+                        <StackPanel Orientation="Horizontal">
 
-                        <CheckBox Content="Include Log Files" IsChecked="{Binding IncludeLogFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <CheckBox Content="Include Log Files" IsChecked="{Binding IncludeLogFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                        <!--View Log File Link-->
-                        <TextBlock Margin="10,0,0,0" FontSize="8pt" VerticalAlignment="Center">
+                            <!--View Log File Link-->
+                            <TextBlock Margin="10,0,0,0" FontSize="8pt" VerticalAlignment="Center">
                         <Hyperlink NavigateUri="{Binding LogFilePath}" RequestNavigate="ViewLogFiles_RequestNavigate">
                             View
                         </Hyperlink>
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding LogFilePath}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Hidden"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LogFilePath}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Hidden"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
-                    </StackPanel>
-                    
-                    <!--Include Screenshot-->
-                    <StackPanel Orientation="Horizontal">
+                        </StackPanel>
 
-                        <CheckBox Content="Include Screenshot" IsChecked="{Binding IncludeScreenshot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!--Include Screenshot-->
+                        <StackPanel Orientation="Horizontal">
 
-                        <!--View Screenshot Link-->
-                        <TextBlock Margin="10,0,0,0" FontSize="8pt" VerticalAlignment="Center">
+                            <CheckBox Content="Include Screenshot" IsChecked="{Binding IncludeScreenshot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                            <!--View Screenshot Link-->
+                            <TextBlock Margin="10,0,0,0" FontSize="8pt" VerticalAlignment="Center">
                         <Hyperlink NavigateUri="{Binding ScreenshotPath}" RequestNavigate="ViewScreenshot_RequestNavigate">
                             View
                         </Hyperlink>
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ScreenshotPath}" Value="{x:Null}">
-                                            <Setter Property="Visibility" Value="Hidden"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ScreenshotPath}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Hidden"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                        </StackPanel>
 
                     </StackPanel>
 
-                </StackPanel>
-                
-            </Grid>
+                </Grid>
+
+            </Border>
+
+            <!--Subject-->
+            <th_wpf:TextBox Grid.Row="1" Title="Title" Text="{Binding Subject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="20,0,5,0"/>
+
+            <!--Message-->
+            <th_wpf:TextBox Grid.Row="2" Title="Message" Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="20,10,5,0" TextWrapping="True"/>
+
+            <!--Bottom Bar-->
+            <Border Grid.Row="3" Style="{StaticResource group}" Margin="20,10">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+
+                        <!--<StackPanel Margin="10,0">-->
+
+                            <!--Github Logo-->
+                        <Image Source="/TrakHound-Client;component/Resources/github_01.png" Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30"/>
+
+                            
+                            
+                        <!--</StackPanel>-->
+                        
+                        
+                        <!--Login Information-->
+                        <StackPanel Margin="0,5,20,5" VerticalAlignment="Center">
+
+                            <TextBlock Text="Logged in as :" FontSize="8" Foreground="{StaticResource Foreground_Light}"/>
+
+                            <TextBlock Text="PatrickRitchie"/>
+
+                            <!--Links-->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Hyperlink NavigateUri="{Binding LogFilePath}" RequestNavigate="ViewLogFiles_RequestNavigate">
+                                        About
+                                    </Hyperlink>
+                                </TextBlock>
+
+                                <TextBlock Grid.Column="1" Margin="10,0,0,0" FontSize="10" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Hyperlink NavigateUri="{Binding LogFilePath}" RequestNavigate="ViewLogFiles_RequestNavigate">
+                                        Logout
+                                    </Hyperlink>
+                                </TextBlock>
+
+                            </Grid>
+
+                        </StackPanel>
+                                                
+                        <CheckBox Content="Create Issue on GitHub" IsChecked="True"/>
+
+                    </StackPanel>
+
+                    <!--Send Button-->
+                    <th_wpf:Button Grid.Column="2" Text="Send" Clicked="Send_Clicked"/>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+        <!--Loading-->
+        <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <loadinganimation:Wheel Height="100" Width="100" Foreground="{StaticResource Accent_Normal}"/>
+
+                <TextBlock Text="{Binding LoadingStatus}" Foreground="{StaticResource Accent_Normal}" FontSize="12"/>
+
+            </StackPanel>
             
-        </Border>
-
-        <!--Title-->
-        <th_wpf:TextBox Grid.Row="2" Title="Title" Text="{Binding BugTitle}" Margin="20,0,5,0"/>
-
-        <!--Message-->
-        <th_wpf:TextBox Grid.Row="3" Title="Message" Text="{Binding BugTitle}" Margin="20,10,5,0" TextWrapping="True"/>
-
-        <!--Bottom Bar-->
-        <Border Grid.Row="4" Style="{StaticResource group}" Margin="20,10">
-
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="1" VerticalAlignment="Center">
-
-                    <!--<CheckBox Content="Create Issue on GitHub" />-->
-
-                </StackPanel>
-
-                <!--Send Button-->
-                <th_wpf:Button Grid.Column="2" Text="Send" Clicked="Send_Clicked"/>
-
-            </Grid>
-            
-        </Border>
-
+        </Grid>
+        
     </Grid>
-    
+
 </Window>
