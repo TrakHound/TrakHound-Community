@@ -43,6 +43,7 @@
         
         PreviewMouseDown="Main_Window_PreviewMouseDown"
         PreviewKeyUp="Main_Window_PreviewKeyUp"
+        AllowDrop="True"
         
         Icon="Resources/TrakHound_Logo_Initials_10.ico" ScrollViewer.VerticalScrollBarVisibility="Disabled"
         >

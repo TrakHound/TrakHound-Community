@@ -426,7 +426,7 @@ namespace TrakHound_Client.Windows
                 {
                     var credentials = new Authentication.Crendentials();
                     credentials.Username = "patrickritchie";
-                    credentials.Password = "ethan123";
+                    credentials.Password = "*******"; // SET PASSWORD BACK
 
                     if (rememberToken)
                     {

@@ -298,20 +298,25 @@ namespace TH_Configuration
 
             if (File.Exists(path))
             {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(path);
-
-                result = Read(doc);
-
-                string filename = Path.GetFileNameWithoutExtension(path);
-                result.FilePath = filename;
-                XML_Functions.SetInnerText(result.ConfigurationXML, "/FilePath", result.FilePath);
-
-                if (result.UniqueId == null)
+                try
                 {
-                    result.UniqueId = GenerateUniqueID();
-                    XML_Functions.SetInnerText(result.ConfigurationXML, "/UniqueId", result.UniqueId);
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(path);
+
+                    result = Read(doc);
+
+                    string filename = Path.GetFileNameWithoutExtension(path);
+                    result.FilePath = filename;
+                    XML_Functions.SetInnerText(result.ConfigurationXML, "/FilePath", result.FilePath);
+
+                    if (result.UniqueId == null)
+                    {
+                        result.UniqueId = GenerateUniqueID();
+                        XML_Functions.SetInnerText(result.ConfigurationXML, "/UniqueId", result.UniqueId);
+                    }
                 }
+                catch (XmlException ex) { Logger.Log("XmlException :: " + ex.Message); }
+                catch (Exception ex) { Logger.Log("Exception :: " + ex.Message); }             
             }
             else
             {

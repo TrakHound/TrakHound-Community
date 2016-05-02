@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using TH_Global.Shifts;
+
 namespace TH_Cycles
 {
     public class CycleData
@@ -43,7 +45,7 @@ namespace TH_Cycles
         public DateTime StartTimeUtc { get; set; }
         public DateTime StopTimeUtc { get; set; }
 
-        public string ShiftId { get; set; }
+        public ShiftId ShiftId { get; set; }
 
         public TimeSpan Duration
         {

@@ -12,6 +12,7 @@ using TH_Configuration;
 using TH_Cycles;
 using TH_Database;
 using TH_Global;
+using TH_Global.Shifts;
 using TH_Plugins;
 using TH_Plugins.Server;
 using TH_Plugins.Database;
@@ -29,7 +30,9 @@ namespace TH_OEE
         {
             config = configuration;
 
-            CreateTable();
+            Database.CycleBased.CreateTable(config);
+            Database.ShiftBased.CreateTable(config);
+            Database.SegmentBased.CreateTable(config);
         }
 
 
@@ -41,7 +44,7 @@ namespace TH_OEE
                 {
                     if (data.Data02.GetType() == typeof(List<CycleData>))
                     {
-                        List<CycleData> cycles = (List<CycleData>)data.Data02;
+                        var cycles = (List<CycleData>)data.Data02;
 
                         ProcessOEE(cycles);
                     }
@@ -55,15 +58,8 @@ namespace TH_OEE
 
         public event Status_Handler ErrorOccurred;
 
-        public void Closing()
-        {
+        public void Closing() { }
 
-        }
-
-        //public TH_Plugins_Server.ConfigurationPage ConfigurationPage { get { return null; } }
-
-        ////public Type Config_Page { get { return typeof(ConfigurationPage.Page); } }
-        //public Type Config_Page { get { return null; } }
         public Type[] ConfigurationPageTypes { get { return null; } }
 
         public bool UseDatabases { get; set; }
@@ -78,142 +74,382 @@ namespace TH_OEE
 
         #endregion
 
-        #region "OEE"
-
-        #region "Database"
-
-        string TableName = TableNames.OEE;
-        string[] primaryKey = { "SHIFT_ID", "CYCLE_ID", "CYCLE_INSTANCE_ID" };
-
-        public void CreateTable()
-        {
-            if (config.DatabaseId != null) TableName = config.DatabaseId + "_" + TableNames.OEE;
-            else TableName = TableNames.OEE;
-
-            List<ColumnDefinition> columns = new List<ColumnDefinition>();
-
-            columns.Add(new ColumnDefinition("SHIFT_ID", DataType.LargeText, true));
-            columns.Add(new ColumnDefinition("CYCLE_ID", DataType.LargeText, true));
-            columns.Add(new ColumnDefinition("CYCLE_INSTANCE_ID", DataType.LargeText, true));
-
-            columns.Add(new ColumnDefinition("OEE", DataType.Double));
-
-            columns.Add(new ColumnDefinition("AVAILABILITY", DataType.Double));
-            columns.Add(new ColumnDefinition("PERFORMANCE", DataType.Double));
-            columns.Add(new ColumnDefinition("QUALITY", DataType.Double));
-
-            columns.Add(new ColumnDefinition("OPERATING_TIME", DataType.Double));
-            columns.Add(new ColumnDefinition("PLANNED_PRODUCTION_TIME", DataType.Double));
-            columns.Add(new ColumnDefinition("IDEAL_OPERATING_TIME", DataType.Double));
-
-            columns.Add(new ColumnDefinition("IDEAL_CYCLE_TIME", DataType.Long));
-            columns.Add(new ColumnDefinition("TOTAL_PIECES", DataType.Long));
-
-            columns.Add(new ColumnDefinition("GOOD_PIECES", DataType.Long));
-
-            ColumnDefinition[] ColArray = columns.ToArray();
-
-            Table.Create(config.Databases_Server, TableName, ColArray, primaryKey);  
-        }
-
-        public void UpdateRows(List<OEEData> datas)
-        {
-            List<List<object>> rowValues = new List<List<object>>();
-
-            List<string> columns = new List<string>();
-            columns.Add("shift_id");
-            columns.Add("cycle_id");
-            columns.Add("cycle_instance_id");
-
-            columns.Add("oee");
-            columns.Add("availability");
-            columns.Add("performance");
-            columns.Add("quality");
-
-            columns.Add("operating_time");
-            columns.Add("planned_production_time");
-            columns.Add("ideal_operating_time");
-
-            columns.Add("ideal_cycle_time");
-            columns.Add("total_pieces");
-
-            columns.Add("good_pieces");
-
-            foreach (var data in datas)
-            {
-                List<object> values = new List<object>();
-
-                values.Add(data.ShiftId);
-                values.Add(data.CycleId);
-                values.Add(data.CycleInstanceId);
-
-                values.Add(data.Oee);
-                values.Add(data.Availability);
-                values.Add(data.Performance);
-                values.Add(data.Quality);
-
-                values.Add(data.OperatingTime);
-                values.Add(data.PlannedProductionTime);
-                values.Add(data.IdealOperatingTime);
-
-                values.Add(data.IdealCycleTime);
-
-                values.Add(data.TotalPieces);
-                values.Add(data.GoodPieces);
-
-                rowValues.Add(values);
-            }
-
-            Row.Insert(config.Databases_Server, TableName, columns.ToArray(), rowValues, primaryKey, true);
-        }
-
-        #endregion
-
         #region "Processing"
 
         void ProcessOEE(List<CycleData> cycles)
         {
             if (cycles.Count > 0)
             {
-                var oeeDatas = new List<OEEData>();
-
-                foreach (var cycle in cycles)
-                {
-                    // Get (or create) the OEEInfo for each cycle
-                    OEEData oeeData;
-                    oeeData = oeeDatas.Find(x => x.CycleId == cycle.CycleId && x.CycleInstanceId == cycle.InstanceId);
-                    if (oeeData == null)
-                    {
-                        oeeData = new OEEData();
-                        oeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
-                        oeeData.ShiftId = cycle.ShiftId;
-                        oeeData.CycleId = cycle.CycleId;
-                        oeeData.CycleInstanceId = cycle.InstanceId;
-                        oeeDatas.Add(oeeData);
-                    }
-
-                    oeeData.PlannedProductionTime = cycle.Duration.TotalSeconds;
-
-                    if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
-                    {
-                        oeeData.OperatingTime = cycle.Duration.TotalSeconds;
-
-                        if (cycle.CycleOverrides.Count > 0)
-                        {
-                            oeeData.IdealOperatingTime = IdealTimeFromOverrides(cycle).TotalSeconds;
-                        }
-                        else
-                        {
-                            oeeData.IdealOperatingTime = oeeData.OperatingTime;
-                        }                  
-                    }
-                }
-
-                UpdateRows(oeeDatas);
+                ProcessCycles(cycles);
+                ProcessShifts(cycles);
+                ProcessSegments(cycles);
             }
         }
 
-        private static TimeSpan IdealTimeFromOverrides(CycleData cycle)
+        OEEData cycleOeeData;
+        double previousCycleCycleDuration; // rename this variable cause this name sucks
+
+        private void ProcessCycles(List<CycleData> cycles)
+        {
+            var oeeDatas = new List<OEEData>();
+
+            foreach (var cycle in cycles)
+            {
+                if (cycleOeeData == null)
+                {
+                    cycleOeeData = new OEEData();
+                    cycleOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                    cycleOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                    cycleOeeData.CycleId = cycle.CycleId;
+                    cycleOeeData.CycleInstanceId = cycle.InstanceId;
+
+                    previousCycleCycleDuration = 0;
+                }
+
+                // Get (or create) the OEEInfo for each cycle
+                OEEData oeeData;
+                oeeData = oeeDatas.Find(x => x.CycleId == cycle.CycleId && x.CycleInstanceId == cycle.InstanceId);
+                if (oeeData == null)
+                {
+                    if (cycleOeeData != null && cycleOeeData.CycleId == cycle.CycleId && cycleOeeData.CycleInstanceId == cycle.InstanceId)
+                    {
+                        oeeData = cycleOeeData;
+                    }
+                    else
+                    {
+                        oeeData = new OEEData();
+                        oeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                        oeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                        oeeData.CycleId = cycle.CycleId;
+                        oeeData.CycleInstanceId = cycle.InstanceId;
+                    }
+
+                    oeeDatas.Add(oeeData);
+                }
+
+                // Set increment
+                double inc = cycle.Duration.TotalSeconds - previousCycleCycleDuration; ;
+                if (inc < 0) inc = cycle.Duration.TotalSeconds;
+                previousCycleCycleDuration = cycle.Duration.TotalSeconds;
+
+                oeeData.StartTime = cycle.StartTime;
+                oeeData.EndTime = cycle.StopTime;
+                oeeData.StartTimeUTC = cycle.StartTimeUtc;
+                oeeData.EndTimeUTC = cycle.StopTimeUtc;
+
+                oeeData.PlannedProductionTime += inc;
+
+                if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
+                {
+                    oeeData.OperatingTime += inc;
+
+                    if (cycle.CycleOverrides.Count > 0)
+                    {
+                        oeeData.IdealOperatingTime += IdealTimeFromOverrides(cycle, inc).TotalSeconds;
+                    }
+                    else
+                    {
+                        oeeData.IdealOperatingTime += inc; ;
+                    }
+                }
+
+                cycleOeeData = oeeData;
+            }
+
+            Database.CycleBased.UpdateRows(config, oeeDatas);
+        }
+
+        OEEData shiftOeeData;
+        double previousShiftCycleDuration; // rename this variable cause this name sucks
+
+        private void ProcessShifts(List<CycleData> cycles)
+        {
+            var oeeDatas = new List<OEEData>();
+
+            foreach (var cycle in cycles)
+            {
+                if (shiftOeeData == null)
+                {
+                    shiftOeeData = new OEEData();
+                    shiftOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                    shiftOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                    shiftOeeData.CycleId = cycle.CycleId;
+                    shiftOeeData.CycleInstanceId = cycle.InstanceId;
+
+                    previousShiftCycleDuration = 0;
+                }
+
+                // Get (or create) the OEEInfo for each cycle
+                OEEData oeeData;
+                oeeData = oeeDatas.Find(x => x.ShiftId.Shift == cycle.ShiftId.Shift);
+                if (oeeData == null)
+                {
+                    if (shiftOeeData != null && shiftOeeData.ShiftId.Shift == cycle.ShiftId.Shift)
+                    {
+                        oeeData = shiftOeeData;
+                    }
+                    else
+                    {
+                        oeeData = new OEEData();
+                        oeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                        oeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                        oeeData.CycleId = cycle.CycleId;
+                        oeeData.CycleInstanceId = cycle.InstanceId;
+                    }
+
+                    oeeDatas.Add(oeeData);
+                }
+
+                // Set increment
+                double inc = cycle.Duration.TotalSeconds - previousShiftCycleDuration; ;
+                if (inc < 0) inc = cycle.Duration.TotalSeconds;
+                previousShiftCycleDuration = cycle.Duration.TotalSeconds;
+
+                oeeData.StartTime = cycle.StartTime;
+                oeeData.EndTime = cycle.StopTime;
+                oeeData.StartTimeUTC = cycle.StartTimeUtc;
+                oeeData.EndTimeUTC = cycle.StopTimeUtc;
+
+                oeeData.PlannedProductionTime += inc;
+
+                if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
+                {
+                    oeeData.OperatingTime += inc;
+
+                    if (cycle.CycleOverrides.Count > 0)
+                    {
+                        oeeData.IdealOperatingTime += IdealTimeFromOverrides(cycle, inc).TotalSeconds;
+                    }
+                    else
+                    {
+                        oeeData.IdealOperatingTime += inc; ;
+                    }
+                }
+
+                shiftOeeData = oeeData;
+            }
+
+            Database.ShiftBased.UpdateRows(config, oeeDatas);
+        }
+
+        //OEEData cycleOeeData;
+
+        //private void ProcessCycles(List<CycleData> cycles)
+        //{
+        //    var oeeDatas = new List<OEEData>();
+
+        //    foreach (var cycle in cycles)
+        //    {
+        //        // Get (or create) the OEEInfo for each cycle
+        //        OEEData oeeData;
+        //        oeeData = oeeDatas.Find(x => x.CycleId == cycle.CycleId && x.CycleInstanceId == cycle.InstanceId);
+        //        if (oeeData == null)
+        //        {
+        //            if (cycleOeeData != null && cycleOeeData.CycleId == cycle.CycleId && cycleOeeData.CycleInstanceId == cycle.InstanceId)
+        //            {
+        //                Logger.Log("ProcessCycles() :: " + cycleOeeData.CycleId + " : " + cycle.CycleId + " :: " + cycleOeeData.CycleInstanceId + " : " + cycle.InstanceId);
+
+        //                oeeData = cycleOeeData;
+        //            }
+        //            else
+        //            {
+        //                Logger.Log("ProcessCycles() :: new OEEData Created");
+
+        //                oeeData = new OEEData();
+        //                oeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+        //                oeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+        //                oeeData.CycleId = cycle.CycleId;
+        //                oeeData.CycleInstanceId = cycle.InstanceId;
+        //            }
+
+        //            oeeDatas.Add(oeeData);
+
+        //            //oeeData = new OEEData();
+        //            //oeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+        //            //oeeData.ShiftId = cycle.ShiftId;
+        //            //oeeData.CycleId = cycle.CycleId;
+        //            //oeeData.CycleInstanceId = cycle.InstanceId;
+        //            //oeeDatas.Add(oeeData);
+        //        }
+
+        //        if (cycle.Duration.TotalSeconds < 0) Logger.Log("ProcessCycles() :: Negative Cycle Duration");
+
+        //        oeeData.PlannedProductionTime += (cycle.Duration.TotalSeconds - oeeData.PlannedProductionTime);
+
+        //        if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
+        //        {
+        //            oeeData.OperatingTime += (cycle.Duration.TotalSeconds - oeeData.PlannedProductionTime);
+
+        //            if (cycle.CycleOverrides.Count > 0)
+        //            {
+        //                oeeData.IdealOperatingTime += (IdealTimeFromOverrides(cycle).TotalSeconds - oeeData.IdealOperatingTime);
+        //            }
+        //            else
+        //            {
+        //                oeeData.IdealOperatingTime += (cycle.Duration.TotalSeconds - oeeData.PlannedProductionTime);
+        //            }
+        //        }
+
+        //        cycleOeeData = oeeData;
+
+        //        //oeeData.PlannedProductionTime = cycle.Duration.TotalSeconds;
+
+        //        //if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
+        //        //{
+        //        //    oeeData.OperatingTime = cycle.Duration.TotalSeconds;
+
+        //        //    if (cycle.CycleOverrides.Count > 0)
+        //        //    {
+        //        //        oeeData.IdealOperatingTime = IdealTimeFromOverrides(cycle).TotalSeconds;
+        //        //    }
+        //        //    else
+        //        //    {
+        //        //        oeeData.IdealOperatingTime = oeeData.OperatingTime;
+        //        //    }
+        //        //}
+        //    }
+
+        //    foreach (var item in oeeDatas) Logger.Log("Cycles = " + item.PlannedProductionTime);
+
+        //    Database.CycleBased.UpdateRows(config, oeeDatas);
+        //}
+
+
+        //private OEEData shiftOeeData;
+
+        //private void ProcessShifts(List<CycleData> cycles)
+        //{
+        //    var oeeDatas = new List<OEEData>();
+
+        //    foreach (var cycle in cycles)
+        //    {
+        //        // Get (or create) the OEEInfo for each cycle
+        //        OEEData oeeData;
+        //        oeeData = oeeDatas.Find(x => x.ShiftId.Shift == cycle.ShiftId.Shift);
+        //        if (oeeData == null)
+        //        {
+        //            if (shiftOeeData != null && shiftOeeData.ShiftId.Shift == cycle.ShiftId.Shift)
+        //            {
+        //                Logger.Log("ProcessShifts() :: " + shiftOeeData.ShiftId.Shift + " : " + cycle.ShiftId.Shift);
+
+        //                oeeData = shiftOeeData;
+        //            }
+        //            else
+        //            {
+        //                Logger.Log("ProcessShifts() :: new OEEData Created");
+
+        //                oeeData = new OEEData();
+        //                oeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+        //                oeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+        //                oeeData.CycleId = cycle.CycleId;
+        //                oeeData.CycleInstanceId = cycle.InstanceId;
+        //            }
+
+        //            oeeDatas.Add(oeeData);
+        //        }
+
+        //        if (cycle.Duration.TotalSeconds < 0) Logger.Log("ProcessShifts() :: Negative Cycle Duration");
+
+        //        oeeData.PlannedProductionTime += (cycle.Duration.TotalSeconds - oeeData.PlannedProductionTime);
+
+        //        if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
+        //        {
+        //            oeeData.OperatingTime += (cycle.Duration.TotalSeconds - oeeData.PlannedProductionTime);
+
+        //            if (cycle.CycleOverrides.Count > 0)
+        //            {
+        //                oeeData.IdealOperatingTime += (IdealTimeFromOverrides(cycle).TotalSeconds - oeeData.IdealOperatingTime);
+        //            }
+        //            else
+        //            {
+        //                oeeData.IdealOperatingTime += (cycle.Duration.TotalSeconds - oeeData.PlannedProductionTime);
+        //            }
+        //        }
+
+        //        shiftOeeData = oeeData;
+        //    }
+
+        //    foreach (var item in oeeDatas) Logger.Log("Shifts = " + item.PlannedProductionTime);
+
+        //    Database.ShiftBased.UpdateRows(config, oeeDatas);
+        //}
+
+
+        OEEData segmentOeeData;
+        double previousSegmentCycleDuration;
+
+        private void ProcessSegments(List<CycleData> cycles)
+        {
+            var oeeDatas = new List<OEEData>();
+
+            foreach (var cycle in cycles)
+            {
+                if (segmentOeeData == null)
+                {
+                    segmentOeeData = new OEEData();
+                    segmentOeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                    segmentOeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                    segmentOeeData.CycleId = cycle.CycleId;
+                    segmentOeeData.CycleInstanceId = cycle.InstanceId;
+
+                    previousSegmentCycleDuration = 0;
+                }
+
+                // Get (or create) the OEEInfo for each cycle
+                OEEData oeeData;
+                oeeData = oeeDatas.Find(x => x.ShiftId.Id == cycle.ShiftId.Id);
+                if (oeeData == null)
+                {
+                    if (segmentOeeData != null && segmentOeeData.ShiftId.Id == cycle.ShiftId.Id)
+                    {
+                        oeeData = segmentOeeData;
+                    }
+                    else
+                    {
+                        oeeData = new OEEData();
+                        oeeData.ConstantQuality = 1; // Change when Quality (TH_Parts) is implemented
+                        oeeData.ShiftId = new ShiftId(cycle.ShiftId.Id);
+                        oeeData.CycleId = cycle.CycleId;
+                        oeeData.CycleInstanceId = cycle.InstanceId;
+                    }
+
+                    oeeDatas.Add(oeeData);
+                }
+
+                // Set increment
+                double inc = cycle.Duration.TotalSeconds - previousSegmentCycleDuration; ;
+                if (inc < 0) inc = cycle.Duration.TotalSeconds;
+                previousSegmentCycleDuration = cycle.Duration.TotalSeconds;
+
+                oeeData.StartTime = cycle.StartTime;
+                oeeData.EndTime = cycle.StopTime;
+                oeeData.StartTimeUTC = cycle.StartTimeUtc;
+                oeeData.EndTimeUTC = cycle.StopTimeUtc;
+
+                oeeData.PlannedProductionTime += inc;
+
+                if (cycle.ProductionType == CycleData.CycleProductionType.IN_PRODUCTION)
+                {
+                    oeeData.OperatingTime += inc;
+
+                    if (cycle.CycleOverrides.Count > 0)
+                    {
+                        oeeData.IdealOperatingTime += IdealTimeFromOverrides(cycle, inc).TotalSeconds;
+                    }
+                    else
+                    {
+                        oeeData.IdealOperatingTime += inc; ;
+                    }
+                }
+
+                segmentOeeData = oeeData;
+            }
+
+            Database.SegmentBased.UpdateRows(config, oeeDatas);
+        }
+
+
+        private static TimeSpan IdealTimeFromOverrides(CycleData cycle, double duration)
         {
             // Create List of Averages for each Override
             var ovrAvgs = new List<double>();
@@ -228,50 +464,50 @@ namespace TH_OEE
             if (ovrAvgs.Count > 0) avg = ovrAvgs.Average();
 
             // Calculate IdealDuration based on percentage of the average override value and the Actual Duration of the Cycle
-            idealSeconds = cycle.Duration.TotalSeconds * (avg / 100);
+            idealSeconds = duration * (avg / 100);
 
             return TimeSpan.FromSeconds(idealSeconds);
         }
 
         #region "Cycle Infos (Possibly Obsolete - Need to see how to incorporate Cycle_Setup table values for Ideal_Cycle_Time)"
 
-        class CycleInfo
-        {
-            public string ShiftId { get; set; }
-            public double Duration { get; set; }
-            public double Override { get; set; }
-            //public int ideal_cycle_time { get; set; }
-        }
+        //class CycleInfo
+        //{
+        //    public string ShiftId { get; set; }
+        //    public double Duration { get; set; }
+        //    public double Override { get; set; }
+        //    //public int ideal_cycle_time { get; set; }
+        //}
 
-        List<CycleInfo> GetCyclesInfos(string shiftId)
-        {
-            List<CycleInfo> Result = new List<CycleInfo>();
+        //List<CycleInfo> GetCyclesInfos(string shiftId)
+        //{
+        //    var result = new List<CycleInfo>();
 
-            DataTable dt = Table.Get(config.Databases_Server, TableNames.Cycles, "WHERE START_SHIFT='" + shiftId + "'");
+        //    DataTable dt = Table.Get(config.Databases_Server, TableNames.Cycles, "WHERE START_SHIFT='" + shiftId + "'");
 
-            if (dt != null)
-            {
-                foreach (DataRow row in dt.Rows)
-                {
-                    if (dt.Columns.Contains("START_SHIFT"))
-                    {
-                        CycleInfo info = new CycleInfo();
-                        info.ShiftId = row["START_SHIFT"].ToString();
+        //    if (dt != null)
+        //    {
+        //        foreach (DataRow row in dt.Rows)
+        //        {
+        //            if (dt.Columns.Contains("START_SHIFT"))
+        //            {
+        //                CycleInfo info = new CycleInfo();
+        //                info.ShiftId = row["START_SHIFT"].ToString();
 
-                        if (dt.Columns.Contains("DURATION"))
-                        {
-                            double d = -1;
-                            double.TryParse(row["DURATION"].ToString(), out d);
-                            if (d >= 0) info.Duration = d;
-                        }
+        //                if (dt.Columns.Contains("DURATION"))
+        //                {
+        //                    double d = -1;
+        //                    double.TryParse(row["DURATION"].ToString(), out d);
+        //                    if (d >= 0) info.Duration = d;
+        //                }
 
-                        Result.Add(info);
-                    }
-                }
-            }
+        //                result.Add(info);
+        //            }
+        //        }
+        //    }
 
-            return Result;
-        }
+        //    return result;
+        //}
 
         #endregion
 
@@ -319,8 +555,6 @@ namespace TH_OEE
             edata.Data02 = dt;
             if (SendData != null) SendData(edata);
         }
-
-        #endregion
 
         #endregion
 

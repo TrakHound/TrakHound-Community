@@ -568,7 +568,7 @@ namespace TH_Global
 
                     // Add Created Timestamp Attribute
                     var created = doc.CreateAttribute("created");
-                    string timestamp = DateTime.Now.ToLongDateString() + " ";
+                    string timestamp = DateTime.Now.ToString("o") + " ";
                     timestamp += DateTime.Now.ToLongTimeString();
                     created.Value = timestamp;
                     result.Attributes.Append(created);

@@ -10,6 +10,9 @@ using TH_GitHub;
 
 using TH_Global.Functions;
 
+using TH_Configuration;
+using TH_Mobile;
+
 namespace TestConsole
 {
     class Program
@@ -18,7 +21,30 @@ namespace TestConsole
         static void Main(string[] args)
         {
 
-            FileSystem_Functions.DeleteDirectory(@"C:\TestClientPlugins");
+            //var config = new Configuration();
+            //config.UniqueId = Configuration.GenerateUniqueID();
+
+            //TH_Mobile.Database.CreateTable("testuser", config);
+
+            //var updateData = new TH_Mobile.UpdateData();
+            //updateData.Connected = true;
+            //updateData.Status = "Production";
+            //updateData.ProductionStatus = "Full Production";
+            //updateData.ProductionStatusTimer = 5000;
+
+            //TH_Mobile.Database.Update("testuser", config, updateData);
+
+            TH_Mobile.Database.Get("testuser");
+
+            Console.ReadLine();
+
+
+
+
+
+
+
+            //FileSystem_Functions.DeleteDirectory(@"C:\TestClientPlugins");
 
 
 

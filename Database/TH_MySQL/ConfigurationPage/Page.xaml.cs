@@ -113,7 +113,7 @@ namespace TH_MySQL.ConfigurationPage
             Table_Functions.UpdateTableValue(Username, prefix + "Username", dt);
 
             // Save Password
-            if (PasswordVerified || UseTrakHoundCloudServer)
+            if (!PasswordEntered || PasswordVerified || UseTrakHoundCloudServer)
             {
                 Table_Functions.UpdateTableValue(password_TXT.PasswordText, prefix + "Password", dt);
             }

@@ -29,6 +29,12 @@ namespace TH_ShiftTable
 
         public Segment segment { get; set; }
 
+        public DateTime segmentStart { get; set; }
+        public DateTime segmentStartUTC { get; set; }
+
+        public DateTime segmentEnd { get; set; }
+        public DateTime segmentEndUTC { get; set; }
+
         public static CurrentShiftInfo Get(Configuration config, DateTime ts)
         {
             CurrentShiftInfo Result = null;
@@ -96,6 +102,12 @@ namespace TH_ShiftTable
 
                             Result.shiftStartUTC = shiftStart.ToUniversalTime();
                             Result.shiftEndUTC = shiftEnd.ToUniversalTime();
+
+                            Result.segmentStart = segmentStart;
+                            Result.segmentEnd = segmentEnd;
+
+                            Result.segmentStartUTC = segmentStart.ToUniversalTime();
+                            Result.segmentEndUTC = segmentEnd.ToUniversalTime();
 
                             Result.name = shift.name;
                             Result.shift = shift;

@@ -125,6 +125,9 @@
                             <Style TargetType="StackPanel">
                                 <Setter Property="Margin" Value="0,5"/>
                             </Style>
+                            <Style TargetType="th_wpf:TextBox">
+                                <Setter Property="Margin" Value="0,10"/>
+                            </Style>
                         </StackPanel.Resources>
 
                         <!--Database Name-->
@@ -314,6 +317,9 @@
                             <StackPanel.Resources>
                                 <Style TargetType="StackPanel">
                                     <Setter Property="Margin" Value="0,5"/>
+                                </Style>
+                                <Style TargetType="th_wpf:TextBox">
+                                    <Setter Property="Margin" Value="0,10"/>
                                 </Style>
                             </StackPanel.Resources>
                             <StackPanel.Style>

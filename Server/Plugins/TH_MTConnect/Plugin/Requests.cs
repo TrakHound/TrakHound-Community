@@ -2,6 +2,7 @@
 
 using TH_Configuration;
 using TH_Database.Tables;
+using TH_Plugins;
 
 namespace TH_MTConnect.Plugin
 {
@@ -106,6 +107,12 @@ namespace TH_MTConnect.Plugin
             else tablePrefix = "";
 
             Variables.Update(config.Databases_Server, "device_available", available.ToString(), DateTime.Now, tablePrefix);
+
+            var data = new EventData();
+            data.Id = "DeviceAvailability";
+            data.Data01 = config;
+            data.Data02 = available;
+            if (SendData != null) SendData(data);
         }
 
         private bool GetAvailability(Streams.ReturnData data)

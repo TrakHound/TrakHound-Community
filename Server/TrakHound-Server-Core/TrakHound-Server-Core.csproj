@@ -46,6 +46,7 @@
     <Compile Include="Devices.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="Login.cs" />
+    <Compile Include="Plugins.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,16 +4,33 @@
 // file 'LICENSE.txt', which is part of this source code package.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
+using TH_Global.Shifts;
 
 namespace TH_OEE
 {
 
     public class OEEData
     {
-        public string ShiftId { get; set; }
+        public OEEData()
+        {
+            PlannedProductionTime = 0;
+            OperatingTime = 0;
+            IdealOperatingTime = 0;
+            IdealCycleTime = 0;
+            IdealRunRate = 0;
+            TotalPieces = 0;
+            GoodPieces = 0;
+        }
+
+        public ShiftId ShiftId { get; set; }
+
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public DateTime StartTimeUTC { get; set; }
+        public DateTime EndTimeUTC { get; set; }
+
+        //public string ShiftId { get; set; }
         public string CycleId { get; set; }
         public string CycleInstanceId { get; set; }
 

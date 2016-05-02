@@ -50,7 +50,7 @@ namespace TableCreator
             info.CycleInstanceId = String_Functions.RandomString(20);
 
             info.PlannedProductionTime = 300;
-            info.OperatingTime = 
+            //info.OperatingTime = 
 
 
             return info;

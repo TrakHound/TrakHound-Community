@@ -35,6 +35,12 @@ namespace TH_GeneratedData.SnapshotData
         public DateTime Timestamp { get; set; }
         public DateTime PreviousTimestamp { get; set; }
 
+        public Snapshot()
+        {
+            Timestamp = DateTime.UtcNow;
+            PreviousTimestamp = DateTime.UtcNow;
+        }
+
 
         public Snapshot Copy()
         {
@@ -141,10 +147,11 @@ namespace TH_GeneratedData.SnapshotData
                     snapshot.PreviousValue = snapshot.Value;
 
                     snapshot.Value = dataItem.CDATA;
-                    snapshot.Timestamp = dataItem.Timestamp;
-
-                    result = true;
                 }
+
+                snapshot.Timestamp = dataItem.Timestamp;
+
+                result = true;
             }
 
             return result;
@@ -162,11 +169,12 @@ namespace TH_GeneratedData.SnapshotData
                     snapshot.PreviousTimestamp = snapshot.Timestamp;
                     snapshot.PreviousValue = snapshot.Value;
 
-                    snapshot.Value = dataItem.CDATA;
-                    snapshot.Timestamp = dataItem.Timestamp;
-
-                    result = true;
+                    snapshot.Value = dataItem.CDATA; 
                 }
+
+                snapshot.Timestamp = dataItem.Timestamp;
+
+                result = true;
             }
 
             return result;
@@ -185,10 +193,11 @@ namespace TH_GeneratedData.SnapshotData
                     snapshot.PreviousValue = snapshot.Value;
 
                     snapshot.Value = dataItem.CDATA;
-                    snapshot.Timestamp = dataItem.Timestamp;
-
-                    result = true;
                 }
+
+                snapshot.Timestamp = dataItem.Timestamp;
+
+                result = true;
             }
 
             return result;
@@ -208,8 +217,9 @@ namespace TH_GeneratedData.SnapshotData
                     snapshot.PreviousValue = snapshot.Value;
 
                     snapshot.Value = returnValue.Value;
-                    snapshot.Timestamp = returnValue.TimeStamp;
                 }
+
+                snapshot.Timestamp = returnValue.TimeStamp;
             }
         }
 

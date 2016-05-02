@@ -205,7 +205,6 @@ namespace TH_Global.Functions
 
         public static Bitmap BitmapImage2Bitmap(BitmapImage bitmapImage)
         {
-            // BitmapImage bitmapImage = new BitmapImage(new Uri("../Images/test.png", UriKind.Relative));
             if (bitmapImage != null)
             {
                 using (MemoryStream outStream = new MemoryStream())

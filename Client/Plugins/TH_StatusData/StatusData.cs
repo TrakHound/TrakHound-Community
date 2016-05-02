@@ -222,11 +222,11 @@ namespace TH_StatusData
             null,
         };
 
-        private static string GetTableName(string tablename, string id)
-        {
-            if (!String.IsNullOrEmpty(id)) return id + "_" + tablename;
-            return tablename;
-        }
+        //private static string GetTableName(string tablename, string id)
+        //{
+        //    if (!String.IsNullOrEmpty(id)) return id + "_" + tablename;
+        //    return tablename;
+        //}
 
         private static List<DataTable> GetTables(DatabaseGroup group)
         {
@@ -242,7 +242,7 @@ namespace TH_StatusData
             {
                 foreach (var tableName in dataTableNames)
                 {
-                    tableNames.Add(GetTableName(tableName, config.DatabaseId));
+                    tableNames.Add(Global.GetTableName(tableName, config.DatabaseId));
                 }
 
                 columns.AddRange(dataTableColumns);
@@ -288,13 +288,13 @@ namespace TH_StatusData
             var list = tables.ToList();
 
             // Assign tables
-            DataTable variables = GetTableFromList(GetTableName(TableNames.Variables, config.DatabaseId), list);
-            DataTable snapshots = GetTableFromList(GetTableName(TableNames.SnapShots, config.DatabaseId), list);
-            DataTable geneventvalues = GetTableFromList(GetTableName(TableNames.GenEventValues, config.DatabaseId), list);
-            DataTable shifts = GetTableFromList(GetTableName(TableNames.Shifts, config.DatabaseId), list);
-            DataTable shiftSegments = GetTableFromList(GetTableName(TableNames.ShiftSegments, config.DatabaseId), list);
-            DataTable oee = GetTableFromList(GetTableName(TableNames.OEE, config.DatabaseId), list);
-            DataTable status = GetTableFromList(GetTableName(TableNames.Status, config.DatabaseId), list);
+            DataTable variables = GetTableFromList(Global.GetTableName(TableNames.Variables, config.DatabaseId), list);
+            DataTable snapshots = GetTableFromList(Global.GetTableName(TableNames.SnapShots, config.DatabaseId), list);
+            DataTable geneventvalues = GetTableFromList(Global.GetTableName(TableNames.GenEventValues, config.DatabaseId), list);
+            DataTable shifts = GetTableFromList(Global.GetTableName(TableNames.Shifts, config.DatabaseId), list);
+            DataTable shiftSegments = GetTableFromList(Global.GetTableName(TableNames.ShiftSegments, config.DatabaseId), list);
+            DataTable oee = GetTableFromList(Global.GetTableName(TableNames.OEE, config.DatabaseId), list);
+            DataTable status = GetTableFromList(Global.GetTableName(TableNames.Status, config.DatabaseId), list);
 
             // Get Variable Data
             EventData variableData = GetVariables(variables, config);
@@ -487,7 +487,7 @@ namespace TH_StatusData
             if (shiftData.shiftDate != null && shiftData.shiftName != null)
             {
                 //DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "' AND Shift='" + shiftData.shiftName + "'");
-                DataTable shifts_DT = Table.Get(config.Databases_Client, GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "'");
+                DataTable shifts_DT = Table.Get(config.Databases_Client, Global.GetTableName(TableNames.Shifts, config.DatabaseId), "WHERE Date='" + shiftData.shiftDate + "'");
                 if (shifts_DT != null)
                 {
                     var data = new EventData();
@@ -550,7 +550,7 @@ namespace TH_StatusData
                     //string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_')); // Get Current Shift
                     string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.IndexOf('_')); // Get Whole day
 
-                    DataTable dt = Table.Get(config.Databases_Client, GetTableName(TableNames.OEE, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+                    DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(TableNames.OEE, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
                         var data = new EventData();
@@ -576,7 +576,7 @@ namespace TH_StatusData
                 {
                     string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_'));
 
-                    DataTable dt = Table.Get(config.Databases_Client, GetTableName(TableNames.Parts, config.DatabaseId), "WHERE SHIFT_ID LIKE '" + shiftQuery + "%'");
+                    DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(TableNames.Parts, config.DatabaseId), "WHERE SHIFT_ID LIKE '" + shiftQuery + "%'");
                     if (dt != null)
                     {
                         var data = new EventData();

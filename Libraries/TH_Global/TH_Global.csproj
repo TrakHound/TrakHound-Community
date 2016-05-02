@@ -83,6 +83,7 @@
     <Compile Include="Security.cs" />
     <Compile Include="States.cs" />
     <Compile Include="TableNames.cs" />
+    <Compile Include="TrakHound\Shifts.cs" />
     <Compile Include="Updates\AppInfo.cs" />
     <Compile Include="Updates\UpdateConfiguration.cs" />
     <Compile Include="Variables.cs" />

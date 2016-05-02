@@ -194,18 +194,12 @@
                         <ColumnDefinition Width="auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!--Turned Visibility off till I can get login window implemented-->
+                    <StackPanel Visibility="Collapsed" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
 
-                        <!--<StackPanel Margin="10,0">-->
-
-                            <!--Github Logo-->
+                        <!--Github Logo-->
                         <Image Source="/TrakHound-Client;component/Resources/github_01.png" Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30"/>
 
-                            
-                            
-                        <!--</StackPanel>-->
-                        
-                        
                         <!--Login Information-->
                         <StackPanel Margin="0,5,20,5" VerticalAlignment="Center">
 

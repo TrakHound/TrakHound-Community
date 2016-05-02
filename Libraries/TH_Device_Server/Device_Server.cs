@@ -7,7 +7,6 @@ using System;
 
 using TH_Configuration;
 using TH_Database;
-using TH_Database.Tables;
 using TH_Global;
 using TH_Plugins;
 
@@ -57,6 +56,14 @@ namespace TH_Device_Server
             Logger.Log("Device Server Stopped :: " + Configuration.Description.Description + " [" + Configuration.Description.Device_ID + "]", Logger.LogLineType.Notification);
         }
 
+        public void SendPluginsData(string id, string message)
+        {
+            var data = new EventData();
+            data.Id = id;
+            data.Data01 = message;
+
+            Plugins_Update_SendData(data);
+        }
 
         private void Initialize(Configuration config)
         {

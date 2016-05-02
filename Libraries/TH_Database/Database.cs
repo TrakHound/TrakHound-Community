@@ -103,6 +103,12 @@ namespace TH_Database
             return match;
         }
 
+        public static string GetTableName(string tablename, string databaseId)
+        {
+            if (!string.IsNullOrEmpty(databaseId)) return databaseId + "_" + tablename;
+            return tablename;
+        }
+
     }
 
     public static class Database

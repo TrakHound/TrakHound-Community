@@ -95,6 +95,7 @@ namespace TH_GeneratedData.SnapshotData
             dt.Columns.Add("Timestamp");
             dt.Columns.Add("Name");
             dt.Columns.Add("Value");
+            dt.Columns.Add("PREVIOUS_TIMESTAMP");
             dt.Columns.Add("Previous_Value");
 
             foreach (var snapshot in snapshots)
@@ -103,6 +104,7 @@ namespace TH_GeneratedData.SnapshotData
                 row["Timestamp"] = snapshot.Timestamp;
                 row["Name"] = snapshot.Name;
                 row["Value"] = snapshot.Value;
+                row["Previous_Timestamp"] = snapshot.PreviousTimestamp;
                 row["Previous_Value"] = snapshot.PreviousValue;
 
                 dt.Rows.Add(row);

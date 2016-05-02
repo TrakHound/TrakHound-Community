@@ -37,7 +37,10 @@ namespace TH_Global
         // ------------------------------------------------
 
         // OEE --------------------------------------------
-        public const string OEE = "oee";
+        public const string OEE = "oee"; // DEPRECATED 4-25-16
+        public const string OEE_Cycles = "oee_cycles";
+        public const string OEE_Segments = "oee_segments";
+        public const string OEE_Shifts = "oee_shifts";
         // ------------------------------------------------
 
         // Parts --------------------------------------------

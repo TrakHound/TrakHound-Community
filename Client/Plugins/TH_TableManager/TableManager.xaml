@@ -22,49 +22,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--Admin Functions Toolbar-->
-        <!--<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,2">
-
-            --><!--Admin Functions Label--><!--
-            <TextBlock Text="Admin Functions" FontSize="8pt" Foreground="{StaticResource Foreground_Opposite_Light}" Margin="10,0" VerticalAlignment="Center"/>
-
-            --><!--Seperator--><!--
-            <Rectangle Fill="{StaticResource Shade_Light}" Width="1" Margin="5" />
-
-            --><!--Drop Table(s)--><!-- 
-            <Grid>
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Opacity" Value="0.3"/>
-                        <Setter Property="IsEnabled" Value="false"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding TableIsSelected}" Value="true">
-                                <Setter Property="Opacity" Value="1.0"/>
-                                <Setter Property="IsEnabled" Value="true"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-
-                <th_wpf:Button Clicked="DropTables_Button_Clicked" Image="Resources/TrashCan_01.png" ToolTip="Drop Tables">
-                    <th_wpf:Button.Style>
-                        <Style TargetType="th_wpf:Button">
-                            <Setter Property="Foreground" Value="White"/>
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Height" Value="30"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" Value="#33ffffff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </th_wpf:Button.Style>
-                </th_wpf:Button>
-
-            </Grid>
-            
-        </StackPanel>-->
-
         <!--Content-->
         <Grid Grid.Row="1">
 
@@ -645,26 +602,6 @@
             </StackPanel>
 
         </Grid>
-
-        <!--Not Logged in Panel-->
-        <!--<Grid Grid.Row="1" Background="{Binding Background, ElementName=root_GRID}">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Setter Property="Visibility" Value="Visible"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding LoggedIn}" Value="true">
-                            <Setter Property="Visibility" Value="Collapsed"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
-
-            <TextBlock FontSize="16pt" Foreground="{StaticResource Foreground_Opposite_Normal}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">         
-                Not Logged In <LineBreak/>
-                Click the 'Login' button above to login
-            </TextBlock>
-
-        </Grid>-->
 
     </Grid>
 

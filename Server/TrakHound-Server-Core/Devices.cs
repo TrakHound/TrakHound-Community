@@ -42,7 +42,16 @@ namespace TrakHound_Server_Core
 
             var server = new Device_Server(config);
             Devices.Add(server);
-            server.Start(); 
+            server.Start();
+
+            UpdateLoginInformation(server);
+        }
+
+        private void UpdateLoginInformation(Device_Server server)
+        {
+            // Send User Login info
+            if (CurrentUser != null) server.SendPluginsData("UserLogin", CurrentUser.username);
+            else server.SendPluginsData("UserLogin", GetLoginRegistyKey());
         }
 
         #region "Devices Monitor"
@@ -122,6 +131,8 @@ namespace TrakHound_Server_Core
                                     {
                                         server.Configuration = config;
                                         server.Start();
+
+                                        UpdateLoginInformation(server);
                                     }
                                     else // Remove from List
                                     {

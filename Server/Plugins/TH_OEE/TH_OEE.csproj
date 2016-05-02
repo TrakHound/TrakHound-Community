@@ -48,9 +48,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationPage\Page.xaml.cs">
+    <None Include="ConfigurationPage\Page.xaml.cs">
       <DependentUpon>Page.xaml</DependentUpon>
-    </Compile>
+    </None>
+    <Compile Include="Database\CycleBased.cs" />
+    <Compile Include="Database\SegmentBased.cs" />
+    <Compile Include="Database\ShiftBased.cs" />
     <Compile Include="OEE.cs" />
     <None Include="OEEConfiguration.cs" />
     <Compile Include="OEEData.cs" />
@@ -101,11 +104,6 @@
       <Name>TH_Cycles</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\TH_ShiftTable\TH_ShiftTable.csproj">
-      <Project>{21996c58-2404-42e4-a2d7-bec46aef6357}</Project>
-      <Name>TH_ShiftTable</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt">
@@ -114,10 +112,10 @@
     <Resource Include="Resources\Chart_01.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="ConfigurationPage\Page.xaml">
+    <None Include="ConfigurationPage\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

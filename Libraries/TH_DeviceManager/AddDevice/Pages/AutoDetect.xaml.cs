@@ -301,6 +301,7 @@ namespace TH_DeviceManager.AddDevice.Pages
                     info.IPAddress = address.ToString();
                     info.Port = port;
                     info.Device = device;
+                    if (info.Device.Description.CDATA != null) info.Device.Description.CDATA = info.Device.Description.CDATA.Trim();
                     info.Image = GetSourceFromImage(catalogInfo.Image);
                     info.SharedListItem = catalogInfo.Item;
 
@@ -595,7 +596,7 @@ namespace TH_DeviceManager.AddDevice.Pages
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/DeviceName", info.Device.Name);
 
             // Save Heartbeat
-            config.Agent.DeviceName = info.Device.Name;
+            config.Agent.Heartbeat = 5000;
             XML_Functions.SetInnerText(config.ConfigurationXML, "/Agent/Heartbeat", "5000");
         }
 
@@ -624,16 +625,16 @@ namespace TH_DeviceManager.AddDevice.Pages
         private void UpdateDescriptionConfiguration(DeviceInfo info, Configuration config)
         {
             // Save Device Description
-            config.Description.Description = info.Device.Description.CDATA;
-            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Description", info.Device.Description.CDATA);
+            config.Description.Description = info.Device.Description.CDATA.Trim();
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Description", info.Device.Description.CDATA.Trim());
 
             // Save Serial Number
-            config.Description.Serial = info.Device.Description.SerialNumber;
-            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Serial", info.Device.Description.SerialNumber);
+            config.Description.Serial = info.Device.Description.SerialNumber.Trim();
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Serial", info.Device.Description.SerialNumber.Trim());
 
             // Save Manufacturer
-            config.Description.Manufacturer = info.Device.Description.Manufacturer;
-            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Manufacturer", info.Device.Description.Manufacturer);
+            config.Description.Manufacturer = info.Device.Description.Manufacturer.Trim();
+            XML_Functions.SetInnerText(config.ConfigurationXML, "/Description/Manufacturer", info.Device.Description.Manufacturer.Trim());
         }
 
         private bool SaveLocalConfigurationToUser(Configuration config)

@@ -27,7 +27,7 @@ namespace TrakHound_Server_Core
 
         void SendCurrentUserChanged(UserConfiguration userConfig)
         {
-            if (CurrentUserChanged != null) CurrentUserChanged(userConfig);
+            if (CurrentUserChanged != null) CurrentUserChanged(userConfig);  
         }
 
         public delegate void CurrentUserChanged_Handler(UserConfiguration userConfig);
@@ -63,5 +63,22 @@ namespace TrakHound_Server_Core
             CurrentUser = null;
         }
 
+
+        private const string LOCAL_USER_ID = "local_user_id";
+
+        private string GetLoginRegistyKey()
+        {
+            string localUserId = Registry_Functions.GetValue(LOCAL_USER_ID);
+            if (localUserId == null)
+            {
+                // Generate new random Local User ID if not already set in Registry
+                // (Should only need to be set once)
+                localUserId = String_Functions.RandomString(10);
+
+                Registry_Functions.SetKey(LOCAL_USER_ID, localUserId);
+            }
+
+            return localUserId;
+        }
     }
 }

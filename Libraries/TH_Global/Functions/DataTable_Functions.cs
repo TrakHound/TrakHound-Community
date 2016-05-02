@@ -28,6 +28,18 @@ namespace TH_Global.Functions
             return result;
         }
 
+        public static bool GetBooleanFromRow(string key, DataRow row)
+        {
+            bool result = false;
+
+            string val = null;
+            if (row.Table.Columns.Contains(key)) if (row[key] != null) val = row[key].ToString();
+
+            if (val != null) bool.TryParse(val, out result);
+
+            return result;
+        }
+
         public static double GetDoubleFromRow(string key, DataRow row)
         {
             double result = 0;
@@ -36,6 +48,18 @@ namespace TH_Global.Functions
             if (row.Table.Columns.Contains(key)) if (row[key] != null) val = row[key].ToString();
 
             if (val != null) double.TryParse(val, out result);
+
+            return result;
+        }
+
+        public static DateTime GetDateTimeFromRow(string key, DataRow row)
+        {
+            DateTime result = DateTime.MinValue;
+
+            string val = null;
+            if (row.Table.Columns.Contains(key)) if (row[key] != null) val = row[key].ToString();
+
+            if (val != null) DateTime.TryParse(val, out result);
 
             return result;
         }
@@ -71,6 +95,74 @@ namespace TH_Global.Functions
                         {
                             result = rows[0][returnColumn].ToString();
                         }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static bool GetBooleanTableValue(object table, string keyColumn, string key, string returnColumn)
+        {
+            bool result = false;
+
+            DataTable dt = table as DataTable;
+            if (dt != null)
+            {
+                if (dt.Columns.Contains(keyColumn))
+                {
+                    string filter = keyColumn + "='" + key + "'";
+                    var rows = GetRows(dt, filter);
+                    if (rows != null)
+                    {
+                        if (rows.Length > 0)
+                        {
+                            result = GetBooleanFromRow(returnColumn, rows[0]);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static DateTime GetDateTimeTableValue(object table, string keyColumn, string key, string returnColumn)
+        {
+            DateTime result = DateTime.MinValue;
+
+            DataTable dt = table as DataTable;
+            if (dt != null)
+            {
+                if (dt.Columns.Contains(keyColumn))
+                {
+                    string filter = keyColumn + "='" + key + "'";
+                    var rows = GetRows(dt, filter);
+                    if (rows != null)
+                    {
+                        if (rows.Length > 0)
+                        {
+                            result = GetDateTimeFromRow(returnColumn, rows[0]);
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static string GetTableValue(object table, string filter, string returnColumn)
+        {
+            string result = null;
+
+            DataTable dt = table as DataTable;
+            if (dt != null)
+            {
+                var rows = GetRows(dt, filter);
+                if (rows != null)
+                {
+                    if (rows.Length > 0)
+                    {
+                        result = rows[0][returnColumn].ToString();
                     }
                 }
             }
