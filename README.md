@@ -1,3 +1,9 @@
+<!--
+  Title: TrakHound
+  Description: Open Source MDC Software Package using MTConnect
+  Author: Feenux LLC
+  -->
+  
 ![TrakHound Logo] (http://feenux.com/github/images/header_02.png)
 
 <p align="center">
