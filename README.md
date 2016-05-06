@@ -15,8 +15,22 @@ TrakHound is an Open Source MDC software package designed to retrieve and store 
 
 Machine Data Collection (MDC) software is used to evaluate shop productivity and identify problem areas. TrakHound provides free dashboards to view current machine status and basic production data so shop supervisors can quickly see which machines are operating normally and which ones are in need of attention. This transparency allows for a smoother workflow through your shop with reduced downtime. 
 
-Setup is easy using the built in Device Manager page. Devices can be added from our Device Catalog which contains preconfigured devices and all that is needed is to enter in the MTConnect Agent and database information. Users can also share their devices using the Device Catalog so each configuration can be improved upon by the community. The Device Manager has all of the tools to fully configure each device. Some pages are specific to the Server or Client applications so depending on which application the Device Manager is opened in, the options may vary.
+Setup is easy using the built in Device Manager where a user can search their entire network for MTConnect compatible machines and then those machines get cross-referenced with our Device Catalog to find the best matched Device Configuration. Once matched, a list of machines on the network will be shown and the user can simply select which ones to monitor. Device Configurations are fully customizable by the user.
 
+##How it Works
+
+TrakHound works by reading data using the MTConnect communications protocol. This data is then processed and stored in a database. The default database is SQLite where data is stored on the PC that TrakHound is installed on. Other databases can be used for remote storage and currently MySQL and SQL Server are supported.
+
+####Basic Setup
+Below is a diagram showing how a basic setup works. This shows two machines communicating directly with one PC and all data is stored on that PC. This is a good starting point for most users and can be used in scenarios where only one user needs to view data.
+![Basic Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_basic_01.png)
+
+####Standalone Server Setup
+Below is a diagram showing how a standalone server setup works. This shows two machines communicating with a standalone server with TrakHound Server installed. The server then stores the data in a separate database that can be accessed by PC's on the network. Multiple PC's can then view data using TrakHound while reading directly from the database.
+![Standalone Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_basic_01.png)
+
+##Licensing
+TrakHound is licensed under the GPLv3 software license. For more information please contact us at info@TrakHound.org.
 
 ##Contributions
 TrakHound welcomes any comments, reccomendations, pull requests, or any other type of contributions! Please fork and contribute back at any time as this project was created as a tool for the community. If you have any questions please contact us at info@TrakHound.org.
