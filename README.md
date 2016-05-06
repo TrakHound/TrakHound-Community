@@ -17,6 +17,22 @@ Machine Data Collection (MDC) software is used to evaluate shop productivity and
 
 Setup is easy using the built in Device Manager where a user can search their entire network for MTConnect compatible machines and then those machines get cross-referenced with our Device Catalog to find the best matched Device Configuration. Once matched, a list of machines on the network will be shown and the user can simply select which ones to monitor. Device Configurations are fully customizable by the user.
 
+ <table style="width:100%">
+ 
+  <tr>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_01.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_02.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/Dashboard_03.png"/></td>
+  </tr>
+  
+  <tr>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_01.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_02.png"/></td>
+    <td><img src="http://www.feenux.com/github/v2/images/screenshots/DeviceManager_05.png"/></td>
+  </tr>
+  
+</table> 
+
 ##How it Works
 
 TrakHound works by reading data using the MTConnect communications protocol. This data is then processed and stored in a database. The default database is SQLite where data is stored on the PC that TrakHound is installed on. Other databases can be used for remote storage and currently MySQL and SQL Server are supported.
