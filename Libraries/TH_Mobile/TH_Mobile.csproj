@@ -58,6 +58,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateData.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Server\Plugins\TH_Status\TH_Status.csproj">
+      <Project>{4e167a2b-4229-444c-9b35-0ed814791fe1}</Project>
+      <Name>TH_Status</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(TargetName).dll $(TargetName).splugin</PostBuildEvent>

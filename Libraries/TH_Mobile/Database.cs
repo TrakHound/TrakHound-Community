@@ -3,28 +3,20 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using System.Collections.Specialized;
-using System.Data;
+using System.Threading;
 
-using TH_Global.Web;
 using TH_Configuration;
+using TH_Global.Web;
 
 namespace TH_Mobile
 {
     public static class Database
     {
-        private const string PHP_URL = "http://www.feenux.com/php/mobile/";
+        private const string PHP_URL = "https://www.feenux.com/trakhound/api/mobile/";
 
-        public static bool CreateTable(string userId, Configuration config)
+        public static void CreateTable(string userId, Configuration config)
         {
-            bool result = false;
-
             if (!string.IsNullOrEmpty(userId) && config != null)
             {
                 var values = new NameValueCollection();
@@ -39,23 +31,17 @@ namespace TH_Mobile
                 values["serial"] = config.Description.Serial;
                 values["controller"] = config.Description.Controller;
                 values["logo_url"] = config.FileLocations.Manufacturer_Logo_Path;
+                values["image_url"] = config.FileLocations.Image_Path;
 
-                string url = PHP_URL + "create_table.php";
-                string responseString = HTTP.SendData(url, values);
+                string url = PHP_URL + "create";
 
-                if (responseString != null && responseString == "true")
-                {
-                    result = true;
-                }
+                var info = new SendDataInfo(url, values);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(SendData), info);
             }
-
-            return result;
         }
 
-        public static bool Update(string userId, Configuration config, UpdateData updateData)
+        public static void Update(string userId, Configuration config, UpdateData updateData)
         {
-            bool result = false;
-
             if (!string.IsNullOrEmpty(userId) && config != null)
             {
                 var values = new NameValueCollection();
@@ -64,95 +50,49 @@ namespace TH_Mobile
 
                 values["unique_id"] = config.UniqueId;
                 values["connected"] = updateData.Connected.ToString();
+
                 values["status"] = updateData.Status;
                 values["production_status"] = updateData.ProductionStatus;
                 values["production_status_timer"] = updateData.ProductionStatusTimer.ToString();
 
-                string url = PHP_URL + "update.php";
-                string responseString = HTTP.SendData(url, values);
+                values["controller_mode"] = updateData.ControllerMode;
+                values["emergency_stop"] = updateData.EmergencyStop;
+                values["execution_mode"] = updateData.ExecutionMode;
+                values["system_status"] = updateData.SystemStatus;
+                values["system_message"] = updateData.SystemMessage;
 
-                if (responseString != null && responseString == "true")
-                {
-                    result = true;
-                }
+                string url = PHP_URL + "update";
+
+                var info = new SendDataInfo(url, values);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(SendData), info);
             }
-
-            return result;
         }
 
-        //public static bool Get(string userId)
-        //{
-        //    bool result = false;
+        private class SendDataInfo
+        {
+            public SendDataInfo(string url, NameValueCollection values)
+            {
+                Url = url;
+                Values = values;
+            }
 
-        //    if (!string.IsNullOrEmpty(userId))
-        //    {
-        //        var values = new NameValueCollection();
-        //        values["user_id"] = userId;
+            public string Url { get; set; }
+            public NameValueCollection Values { get; set; }
+        }
 
+        private static void SendData(object o)
+        {
+            if (o != null)
+            {
+                var info = (SendDataInfo)o;
 
-        //        string url = PHP_URL + "get.php";
-        //        string responseString = HTTP.SendData(url, values);
-
-        //        if (responseString != null && responseString == "true")
-        //        {
-        //            result = true;
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
-
-
-        //public static List<DataTable> GetTablesFromString(string s)
-        //{
-        //    List<Configuration> result = null;
-
-        //    NameValueCollection values = new NameValueCollection();
-
-        //    if (userConfig.username != null) values["username"] = userConfig.username.ToLower();
-
-        //    string url = PHPFilePath + "getconfigurationslist.php";
-        //    string responseString = HTTP.SendData(url, values);
-
-        //    if (responseString != null)
-        //    {
-        //        result = new List<Configuration>();
-
-        //        string[] tables = responseString.Split(TABLE_DELIMITER_START.ToCharArray());
-
-        //        foreach (string table in tables)
-        //        {
-        //            if (!String.IsNullOrEmpty(table))
-        //            {
-        //                var delimiter = table.IndexOf(TABLE_DELIMITER_END);
-        //                if (delimiter > 0)
-        //                {
-        //                    string tablename = table.Substring(0, delimiter);
-        //                    string tabledata = table.Substring(delimiter + TABLE_DELIMITER_END.Length);
-
-        //                    DataTable dt = JSON.ToTable(tabledata);
-        //                    if (dt != null)
-        //                    {
-        //                        XmlDocument xml = TH_Configuration.Converter.TableToXML(dt);
-        //                        if (xml != null)
-        //                        {
-        //                            Configuration config = TH_Configuration.Configuration.Read(xml);
-        //                            if (config != null)
-        //                            {
-        //                                config.Remote = true;
-        //                                config.TableName = tablename;
-        //                                result.Add(config);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return result;
-        //}
-
+                var httpInfo = new HTTP.HTTPInfo();
+                httpInfo.Url = info.Url;
+                httpInfo.Data = HTTP.CreatePostBytes(info.Values);
+                httpInfo.Timeout = 3000;
+                httpInfo.MaxAttempts = 1;
+                HTTP.POST(httpInfo);
+            }
+        }
     }
 }

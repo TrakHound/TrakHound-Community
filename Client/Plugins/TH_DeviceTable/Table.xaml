@@ -61,8 +61,8 @@
         <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
             <Setter Property="Background" Value="{StaticResource Window_Background}"/>
             <Setter Property="BorderBrush" Value="{StaticResource LightBorder}" />
-            <!--<Setter Property="BorderThickness" Value="0,0,0,1" />-->
-            <Setter Property="BorderThickness" Value="0,1,0,1" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <!--<Setter Property="BorderThickness" Value="0,1,0,1" />-->
             <Setter Property="ContextMenu" Value="{StaticResource DataGridRowContextMenu}"/>
             <Setter Property="Height" Value="65"/>
             <Style.Triggers>
@@ -91,28 +91,53 @@
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="0"
                                 >
-                            <!--<Grid>-->
+                            <Grid>
 
                                 <!--Content-->
                                 <ContentPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
-                                <!--Overlay--><!--
-                                <Grid>
-                                    <Grid.Style>
-                                        <Style TargetType="Grid">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Available}" Value="false">
-                                                    <Setter Property="Background" Value="#11000000"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Connected}" Value="false">
-                                                    <Setter Property="Background" Value="#11000000"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-                                </Grid>-->
+                                <!--Gloss Effect-->
+                                <Border IsHitTestVisible="False">
 
-                            <!--</Grid>-->
+                                    <Grid IsHitTestVisible="False">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="4.5*"/>
+                                            <RowDefinition Height="5.5*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Rectangle IsHitTestVisible="False">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10ffffff" Offset="0"/>
+                                                    <GradientStop Color="#20ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+
+                                        <Rectangle Grid.Row="1" IsHitTestVisible="False">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#00ffffff" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+
+                                        <!--<Rectangle Grid.RowSpan="2" IsHitTestVisible="False">
+                                            <Rectangle.Fill>
+                                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                                    <GradientStop Color="#10000000" Offset="0"/>
+                                                    <GradientStop Color="#10ffffff" Offset="0.5"/>
+                                                    <GradientStop Color="#10000000" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>-->
+
+                                    </Grid>
+
+                                </Border>
+
+                            </Grid>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -173,7 +198,7 @@
 
         </StackPanel>-->
 
-        <Grid Grid.Row="1" Background="{StaticResource Window_Background}">
+        <Grid Grid.Row="1" Background="{StaticResource Window_Background_Gradient}">
 
             <DataGrid x:Name="Devices_DG" ItemsSource="{Binding DeviceInfos}"
                   AutoGenerateColumns="False"
@@ -181,7 +206,6 @@
                   BorderThickness="0"
                   HeadersVisibility="Column"
                   VerticalAlignment="Stretch"
-                      Background="#10000000"
                   >
 
                 <DataGrid.Columns>

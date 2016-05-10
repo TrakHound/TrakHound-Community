@@ -6,11 +6,12 @@
         xmlns:local="clr-namespace:TrakHound_Client.Windows"
         
         xmlns:th_wpf="clr-namespace:TH_WPF;assembly=TH_WPF"
+        xmlns:loadinganimation="clr-namespace:TH_WPF.LoadingAnimation;assembly=TH_WPF"
         
         mc:Ignorable="d"
-        Title="GithubLogin" 
+        Title="GitHub Login" 
         Height="275"
-        Width="300" WindowStyle="ToolWindow"
+        Width="300" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
         >
 
     <Window.Resources>
@@ -38,11 +39,10 @@
 
     </Window.Resources>
 
-    <Grid>
+    <Grid x:Name="root">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <!--Title-->
@@ -61,30 +61,61 @@
 
         </Grid>
 
-        <StackPanel Grid.Row="1" Margin="20,10,5,10">
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-            <!--Username-->
-            <th_wpf:TextBox Title="Username"/>
+            <StackPanel Grid.Row="0" Margin="20,10,5,10">
 
-            <!--Password-->
-            <th_wpf:PasswordBox Title="Password"/>
-            
-        </StackPanel>
-        
-        <!--Options-->
-        <Grid Grid.Row="2" Margin="20,0,20,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
+                <!--Username-->
+                <th_wpf:TextBox Title="Username" Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <CheckBox Content="Remember Me" IsChecked="True"/>
+                <!--Password-->
+                <th_wpf:PasswordBox Title="Password" PasswordText="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <!--Login Button-->
-            <th_wpf:Button Grid.Column="1" Text="Login"/>
+            </StackPanel>
+
+            <!--Options-->
+            <Grid Grid.Row="1" Margin="20,0,20,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
+
+                <CheckBox Content="Remember Me" IsChecked="{Binding RememberLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!--Login Button-->
+                <th_wpf:Button Grid.Column="1" Text="Login" Clicked="Login_Clicked"/>
+
+            </Grid>
 
         </Grid>
+        
+        <!--Loading Animation-->
+        <Grid Grid.Row="1" Background="#FFF">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Loading}" Value="true">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <loadinganimation:Wheel Width="50" Height="50" Foreground="{StaticResource Accent_Normal}" />
+
+                <TextBlock Text="Logging In.." Foreground="{StaticResource Accent_Normal}" FontSize="12" Margin="0,10,0,0"/>
+
+            </StackPanel>
+
+        </Grid>
+        
     </Grid>
 
 </Window>

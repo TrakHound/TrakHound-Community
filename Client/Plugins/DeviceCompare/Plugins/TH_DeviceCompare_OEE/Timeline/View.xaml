@@ -21,6 +21,7 @@
                     <Setter Property="Minimum" Value="0"/>
                     <Setter Property="MajorStep" Value="0.5"/>
                     <Setter Property="ValueFormat" Value="P0"/>
+                    <Setter Property="BarMargin" Value="1,0"/>
                 </Style>
             </th_wpf:Histogram.Style>
             <th_wpf:Histogram.Resources>
@@ -34,8 +35,6 @@
 
                     <Setter Property="Maximum" Value="100"/>
                     <Setter Property="Width" Value="{Binding BarWidth, RelativeSource={RelativeSource Self}}"/>
-                    <Setter Property="Margin" Value="2,0"/>
-
 
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="BorderBrush" Value="#00000000"/>

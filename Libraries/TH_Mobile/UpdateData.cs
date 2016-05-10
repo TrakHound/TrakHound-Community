@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
+
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
 
 namespace TH_Mobile
 {
@@ -13,6 +14,12 @@ namespace TH_Mobile
 
         public string ProductionStatus { get; set; }
         public int ProductionStatusTimer { get; set; }
+
+        public string ControllerMode { get; set; }
+        public string EmergencyStop { get; set; }
+        public string ExecutionMode { get; set; }
+        public string SystemStatus { get; set; }
+        public string SystemMessage { get; set; }
 
     }
 }

@@ -13,7 +13,36 @@ namespace TH_MTConnect.Components
 {
     public static class Requests
     {
-        public static ReturnData Get(string url, HTTP.ProxySettings proxySettings, int timeout = 10000, int maxattempts = 3)
+
+        public static ReturnData Get(string url)
+        {
+            return _Get(url);
+        }
+
+        public static ReturnData Get(string url, HTTP.ProxySettings proxySettings)
+        {
+            return _Get(url, proxySettings);
+        }
+
+        public static ReturnData Get(string url, int timeout)
+        {
+            return _Get(url, null, timeout);
+        }
+
+        public static ReturnData Get(string url, int timeout, int maxattempts)
+        {
+            return _Get(url, null, timeout, maxattempts);
+        }
+
+        public static ReturnData Get(string url, HTTP.ProxySettings proxySettings, int timeout, int maxattempts)
+        {
+            return _Get(url, proxySettings, timeout, maxattempts);
+        }
+
+
+        #region "Private"
+
+        private static ReturnData _Get(string url, HTTP.ProxySettings proxySettings = null, int timeout = 10000, int maxattempts = 3)
         {
             ReturnData result = null;
 
@@ -58,7 +87,7 @@ namespace TH_MTConnect.Components
             return result;
         }
 
-        static List<Device> GetDevices(XmlElement root)
+        private static List<Device> GetDevices(XmlElement root)
         {
             List<Device> result = null;
 
@@ -72,9 +101,7 @@ namespace TH_MTConnect.Components
 
                     foreach (XmlElement deviceNode in deviceNodes)
                     {
-                        Device device = Tools.GetDeviceFromXML(deviceNode);
-
-                        //device.DataItems = Tools.GetDataItemsFromDevice(device);
+                        var device = new Device(deviceNode);
 
                         result.Add(device);
                     }
@@ -84,7 +111,7 @@ namespace TH_MTConnect.Components
             return result;
         }
 
-        static Header_Devices GetHeader(XmlElement root)
+        private static Header_Devices GetHeader(XmlElement root)
         {
             Header_Devices result = null;
 
@@ -104,6 +131,8 @@ namespace TH_MTConnect.Components
 
             return result;
         }
+
+        #endregion
 
     }
 }

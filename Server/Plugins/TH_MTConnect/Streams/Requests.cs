@@ -13,13 +13,40 @@ namespace TH_MTConnect.Streams
 {
     public static class Requests
     {
-        //public static ReturnData Get(string url, int timeout = 10000, int maxattempts = 3)
-        public static ReturnData Get(string url, HTTP.ProxySettings proxySettings, int timeout = 10000, int maxattempts = 3)
+
+        public static ReturnData Get(string url)
+        {
+            return _Get(url);
+        }
+
+        public static ReturnData Get(string url, HTTP.ProxySettings proxySettings)
+        {
+            return _Get(url, proxySettings);
+        }
+
+        public static ReturnData Get(string url, int timeout)
+        {
+            return _Get(url, null, timeout);
+        }
+
+        public static ReturnData Get(string url, int timeout, int maxattempts)
+        {
+            return _Get(url, null, timeout, maxattempts);
+        }
+
+        public static ReturnData Get(string url, HTTP.ProxySettings proxySettings, int timeout, int maxattempts)
+        {
+            return _Get(url, proxySettings, timeout, maxattempts);
+        }
+
+
+        #region "Private"
+
+        private static ReturnData _Get(string url, HTTP.ProxySettings proxySettings = null, int timeout = 10000, int maxattempts = 3)
         {
             ReturnData result = null;
 
             string response = HTTP.GetData(url, proxySettings, timeout, maxattempts);
-
             if (response != null)
             {
                 try
@@ -73,9 +100,7 @@ namespace TH_MTConnect.Streams
 
                     foreach (XmlElement deviceNode in deviceStreamNodes)
                     {
-                        DeviceStream deviceStream = Tools.GetDeviceStreamFromXML(deviceNode);
-
-                        deviceStream.DataItems = Tools.GetDataItemsFromDeviceStream(deviceStream);
+                        DeviceStream deviceStream = new DeviceStream(deviceNode);
 
                         result.Add(deviceStream);
                     }
@@ -105,5 +130,8 @@ namespace TH_MTConnect.Streams
 
             return result;
         }
+
+        #endregion
+
     }
 }

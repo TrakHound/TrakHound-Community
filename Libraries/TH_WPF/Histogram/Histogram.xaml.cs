@@ -108,15 +108,17 @@ namespace TH_WPF.Histogram
             {
                 int count = DataBars.Count;
 
-                int margin = 4;
+                double margin = BarMargin.Left + BarMargin.Right;
 
                 barWidth = (controlWidth - (count * margin)) / count;
+                //barWidth = controlWidth - (count * margin);
                 barWidth = Math.Min(MaxBarWidth, barWidth);
             }
 
             foreach (var dataBar in DataBars)
             {
                 dataBar.BarWidth = barWidth;
+                dataBar.Margin = BarMargin;
             }
         }
 
@@ -204,6 +206,19 @@ namespace TH_WPF.Histogram
 
         public static readonly DependencyProperty MinimumProperty =
             DependencyProperty.Register("Minimum", typeof(double), typeof(Histogram), new PropertyMetadata(0d, new PropertyChangedCallback(PropertyValueChanged)));
+
+
+
+        public Thickness BarMargin
+        {
+            get { return (Thickness)GetValue(BarMarginProperty); }
+            set { SetValue(BarMarginProperty, value); }
+        }
+
+        public static readonly DependencyProperty BarMarginProperty =
+            DependencyProperty.Register("BarMargin", typeof(Thickness), typeof(Histogram), new PropertyMetadata(new Thickness(2, 0, 2, 0)));
+
+
 
     }
 

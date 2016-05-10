@@ -22,12 +22,14 @@ namespace TH_Status
 
             columns.Add(new ColumnDefinition("INFO_TYPE", DataType.Short));
             columns.Add(new ColumnDefinition("ADDRESS", DataType.MediumText));
+            columns.Add(new ColumnDefinition("CATEGORY", DataType.MediumText));
             columns.Add(new ColumnDefinition("ID", DataType.MediumText));
             columns.Add(new ColumnDefinition("NAME", DataType.MediumText));
             columns.Add(new ColumnDefinition("TYPE", DataType.MediumText));
             columns.Add(new ColumnDefinition("SUB_TYPE", DataType.MediumText));
             columns.Add(new ColumnDefinition("TIMESTAMP", DataType.DateTime));
-            columns.Add(new ColumnDefinition("VALUE", DataType.LargeText));
+            columns.Add(new ColumnDefinition("VALUE1", DataType.LargeText));
+            columns.Add(new ColumnDefinition("VALUE2", DataType.LargeText));
 
             ColumnDefinition[] ColArray = columns.ToArray();
 
@@ -39,6 +41,7 @@ namespace TH_Status
             var columns = new List<string>();
             columns.Add("INFO_TYPE");
             columns.Add("ADDRESS");
+            columns.Add("CATEGORY");
             columns.Add("ID");
             columns.Add("NAME");
             columns.Add("TYPE");
@@ -51,6 +54,7 @@ namespace TH_Status
                 var rowValues = new List<object>();
                 rowValues.Add((int)info.InfoType);
                 rowValues.Add(info.Address);
+                rowValues.Add(info.Category.ToString());
                 rowValues.Add(info.Id);
                 rowValues.Add(info.Name);
                 rowValues.Add(info.Type);
@@ -67,13 +71,15 @@ namespace TH_Status
             var columns = new List<string>();
             columns.Add("INFO_TYPE");
             columns.Add("ADDRESS");
+            columns.Add("CATEGORY");
             columns.Add("ID");
             columns.Add("NAME");
             columns.Add("TYPE");
             columns.Add("SUB_TYPE");
 
             columns.Add("TIMESTAMP");
-            columns.Add("VALUE");
+            columns.Add("VALUE1");
+            columns.Add("VALUE2");
 
             var tableValues = new List<List<object>>();
 
@@ -82,13 +88,15 @@ namespace TH_Status
                 var rowValues = new List<object>();
                 rowValues.Add((int)info.InfoType);
                 rowValues.Add(info.Address);
+                rowValues.Add(info.Category);
                 rowValues.Add(info.Id);
                 rowValues.Add(info.Name);
                 rowValues.Add(info.Type);
                 rowValues.Add(info.SubType);
 
                 rowValues.Add(info.Timestamp);
-                rowValues.Add(info.Value);
+                rowValues.Add(info.Value1);
+                rowValues.Add(info.Value2);
 
                 tableValues.Add(rowValues);
             }

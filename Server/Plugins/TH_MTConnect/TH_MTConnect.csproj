@@ -48,8 +48,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Classes.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\Constraints.cs" />
+    <Compile Include="Components\DataItem.cs" />
+    <Compile Include="Components\Description.cs" />
+    <Compile Include="Components\Device.cs" />
+    <Compile Include="Components\Filter.cs" />
     <Compile Include="Components\Requests.cs" />
+    <Compile Include="Components\Source.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Components\ReturnData.cs" />
     <Compile Include="Components\Tools.cs" />
@@ -72,9 +78,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Streams\Classes.cs" />
+    <Compile Include="Streams\ComponentStream.cs" />
+    <Compile Include="Streams\Condition.cs" />
+    <Compile Include="Streams\DataItem.cs" />
+    <Compile Include="Streams\DeviceStream.cs" />
+    <Compile Include="Streams\Event.cs" />
     <Compile Include="Streams\Requests.cs" />
     <Compile Include="Streams\ReturnData.cs" />
+    <Compile Include="Streams\Sample.cs" />
     <Compile Include="Streams\Tools.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>

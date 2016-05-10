@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using TH_MTConnect.Streams;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
+
+using System;
+using System.Collections.Generic;
+
 using TH_MTConnect.Components;
+using TH_MTConnect.Streams;
 
 namespace TH_Status
 {
@@ -25,13 +27,14 @@ namespace TH_Status
 
         public DateTime Timestamp { get; set; }
 
+        public TH_MTConnect.Components.DataItemCategory Category { get; set; }
         public string Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string SubType { get; set; }
 
-        public string Value { get; set; }
-
+        public string Value1 { get; set; }
+        public string Value2 { get; set; }
 
         #region "Get (Probe)"
 
@@ -43,9 +46,7 @@ namespace TH_Status
             {
                 var device = probe.Devices[0];
 
-                foreach (var item in device.DataItems.Conditions) result.Add(ProcessDataItem(item));
-                foreach (var item in device.DataItems.Events) result.Add(ProcessDataItem(item));
-                foreach (var item in device.DataItems.Samples) result.Add(ProcessDataItem(item));
+                foreach (var item in device.DataItems) result.Add(ProcessDataItem(item));
 
                 foreach (var component in device.Components)
                 {
@@ -76,9 +77,7 @@ namespace TH_Status
         {
             var result = new List<StatusInfo>();
 
-            foreach (var item in component.DataItems.Conditions) result.Add(ProcessDataItem(item));
-            foreach (var item in component.DataItems.Events) result.Add(ProcessDataItem(item));
-            foreach (var item in component.DataItems.Samples) result.Add(ProcessDataItem(item));
+            foreach (var item in component.DataItems) result.Add(ProcessDataItem(item));
 
             return result;
         }
@@ -88,6 +87,7 @@ namespace TH_Status
             var info = new StatusInfo();
             info.InfoType = StatusInfoType.MTConnect_Data_Item;
 
+            info.Category = item.Category;
             info.Address = item.FullAddress;
             info.Name = item.Name;
             info.Id = item.Id;
@@ -107,9 +107,7 @@ namespace TH_Status
             {
                 var device = current.DeviceStreams[0];
 
-                foreach (var item in device.DataItems.Conditions) ProcessDataItem(item, infos);
-                foreach (var item in device.DataItems.Events) ProcessDataItem(item, infos);
-                foreach (var item in device.DataItems.Samples) ProcessDataItem(item, infos);
+                foreach (var item in device.DataItems) ProcessDataItem(item, infos);
 
                 foreach (var componentStream in device.ComponentStreams)
                 {
@@ -120,9 +118,7 @@ namespace TH_Status
 
         private static void ProcessComponentStream(ComponentStream componentStream, List<StatusInfo> infos)
         {
-            foreach (var item in componentStream.DataItems.Conditions) ProcessDataItem(item, infos);
-            foreach (var item in componentStream.DataItems.Events) ProcessDataItem(item, infos);
-            foreach (var item in componentStream.DataItems.Samples) ProcessDataItem(item, infos);
+            foreach (var item in componentStream.DataItems) ProcessDataItem(item, infos);
         }
 
         private static void ProcessDataItem(TH_MTConnect.Streams.DataItem item, List<StatusInfo> infos)
@@ -131,7 +127,11 @@ namespace TH_Status
             if (info != null)
             {
                 info.Timestamp = item.Timestamp;
-                info.Value = item.CDATA;
+                info.Value1 = item.CDATA;
+                if (info.Category == TH_MTConnect.Components.DataItemCategory.CONDITION)
+                {
+                    info.Value2 = item.Value;
+                }
             }
         }
 

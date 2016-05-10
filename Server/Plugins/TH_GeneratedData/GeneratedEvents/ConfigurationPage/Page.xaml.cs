@@ -151,7 +151,7 @@ namespace TH_GeneratedData.GeneratedEvents.ConfigurationPage
             {
                 Id = dataItem.Id;
                 Name = dataItem.Name;
-                Category = dataItem.Category;
+                Category = dataItem.Category.ToString();
                 Type = dataItem.Type;
 
                 if (Name != null) Display = Id + " : " + Name;

@@ -217,6 +217,10 @@ namespace TH_DeviceCompare_OEE
                     idealOperatingTime += DataTable_Functions.GetDoubleFromRow("ideal_operating_time", idRow);
                 }
 
+                //double plannedProductionTime = DataTable_Functions.GetDoubleFromRow("planned_production_time", row);
+                //double operatingTime = DataTable_Functions.GetDoubleFromRow("operating_time", row);
+                //double idealOperatingTime = DataTable_Functions.GetDoubleFromRow("ideal_operating_time", row);
+
                 var data = new OEEData.SegmentData();
                 data.ShiftId = shiftId;
                 data.PlannedProductionTime = plannedProductionTime;

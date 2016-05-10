@@ -94,7 +94,7 @@ namespace TH_GeneratedData.SnapshotData
                                 var gec = GeneratedEvents.GeneratedEventsConfiguration.Get(config);
                                 if (gec != null)
                                 {
-                                    ProcessGenerated(snapshot, gec, info.CurrentInstanceData);
+                                    ProcessGenerated(snapshot, gec, info.CurrentInstanceData, info.CurrentData);
                                 }
                                 
                                 break;
@@ -115,7 +115,7 @@ namespace TH_GeneratedData.SnapshotData
 
             if (currentData.DeviceStreams != null)
             {
-                TH_MTConnect.Streams.DataItemCollection dataItems = TH_MTConnect.Streams.Tools.GetDataItemsFromDeviceStream(currentData.DeviceStreams[0]);
+                var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
 
                 bool found = false;
 
@@ -134,13 +134,19 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedCondtion(Snapshot snapshot, TH_MTConnect.Streams.DataItemCollection dataItems)
+        private static bool ProcessCollectedCondtion(Snapshot snapshot, List<TH_MTConnect.Streams.DataItem> dataItems)
         {
             bool result = false;
 
-            TH_MTConnect.Streams.Condition dataItem = dataItems.Conditions.Find(x => x.DataItemId.ToLower() == snapshot.Link.ToLower());
+            var dataItem = dataItems.Find(x => x.DataItemId.ToLower() == snapshot.Link.ToLower());
             if (dataItem != null)
             {
+                // If first pass
+                if (snapshot.PreviousValue == null)
+                {
+                    snapshot.PreviousTimestamp = dataItem.Timestamp;
+                }
+
                 if (snapshot.Value != dataItem.CDATA)
                 {
                     snapshot.PreviousTimestamp = snapshot.Timestamp;
@@ -157,13 +163,19 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedEvent(Snapshot snapshot, TH_MTConnect.Streams.DataItemCollection dataItems)
+        private static bool ProcessCollectedEvent(Snapshot snapshot, List<TH_MTConnect.Streams.DataItem> dataItems)
         {
             bool result = false;
 
-            TH_MTConnect.Streams.Event dataItem = dataItems.Events.Find(x => x.DataItemId.ToLower() == snapshot.Link.ToLower());
+            var dataItem = dataItems.Find(x => x.DataItemId.ToLower() == snapshot.Link.ToLower());
             if (dataItem != null)
             {
+                // If first pass
+                if (snapshot.PreviousValue == null)
+                {
+                    snapshot.PreviousTimestamp = dataItem.Timestamp;
+                }
+
                 if (snapshot.Value != dataItem.CDATA)
                 {
                     snapshot.PreviousTimestamp = snapshot.Timestamp;
@@ -180,13 +192,19 @@ namespace TH_GeneratedData.SnapshotData
             return result;
         }
 
-        private static bool ProcessCollectedSample(Snapshot snapshot, TH_MTConnect.Streams.DataItemCollection dataItems)
+        private static bool ProcessCollectedSample(Snapshot snapshot, List<TH_MTConnect.Streams.DataItem> dataItems)
         {
             bool result = false;
 
-            TH_MTConnect.Streams.Sample dataItem = dataItems.Samples.Find(x => x.DataItemId.ToLower() == snapshot.Link.ToLower());
+            var dataItem = dataItems.Find(x => x.DataItemId.ToLower() == snapshot.Link.ToLower());
             if (dataItem != null)
             {
+                // If first pass
+                if (snapshot.PreviousValue == null)
+                {
+                    snapshot.PreviousTimestamp = dataItem.Timestamp;
+                }
+
                 if (snapshot.Value != dataItem.CDATA)
                 {
                     snapshot.PreviousTimestamp = snapshot.Timestamp;
@@ -204,7 +222,7 @@ namespace TH_GeneratedData.SnapshotData
         }
 
 
-        private static void ProcessGenerated(Snapshot snapshot, GeneratedEvents.GeneratedEventsConfiguration gec, InstanceData currentInstanceData)
+        private static void ProcessGenerated(Snapshot snapshot, GeneratedEventsConfiguration gec, InstanceData currentInstanceData, TH_MTConnect.Streams.ReturnData currentData)
         {
             var e = gec.Events.Find(x => x.Name.ToLower() == snapshot.Link.ToLower());
             if (e != null)
@@ -213,7 +231,16 @@ namespace TH_GeneratedData.SnapshotData
 
                 if (snapshot.Value != returnValue.Value)
                 {
-                    snapshot.PreviousTimestamp = snapshot.Timestamp;
+                    if (returnValue != null)
+                    {
+                        var value = e.Values.Find(x => x.Result.NumVal == returnValue.NumVal);
+                        if (value != null)
+                        {
+                            snapshot.PreviousTimestamp = GetTimestampFromCurrent(value, currentData);
+                        }
+                    }
+
+                    //snapshot.PreviousTimestamp = snapshot.Timestamp;
                     snapshot.PreviousValue = snapshot.Value;
 
                     snapshot.Value = returnValue.Value;
@@ -221,6 +248,41 @@ namespace TH_GeneratedData.SnapshotData
 
                 snapshot.Timestamp = returnValue.TimeStamp;
             }
+        }
+
+        static DateTime GetTimestampFromCurrent(GeneratedEvents.Value value, TH_MTConnect.Streams.ReturnData currentData)
+        {
+            var result = DateTime.MinValue;
+
+            var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
+
+            foreach (var trigger in value.Triggers)
+            {
+                var timestamp = GetTimestampFromTrigger(trigger, dataItems);
+                if (timestamp > result) result = timestamp;
+            }
+
+            foreach (var multitrigger in value.MultiTriggers)
+            {
+                foreach (var trigger in multitrigger.Triggers)
+                {
+                    var timestamp = GetTimestampFromTrigger(trigger, dataItems);
+                    if (timestamp > result) result = timestamp;
+                }
+            }
+
+            return result;
+        }
+
+        static DateTime GetTimestampFromTrigger(Trigger trigger, List<TH_MTConnect.Streams.DataItem> dataItems)
+        {
+            var result = DateTime.MinValue;
+
+            TH_MTConnect.Streams.DataItem item = dataItems.Find(x => x.DataItemId == trigger.Link);
+
+            if (item != null) if (item.Timestamp > result) result = item.Timestamp;
+
+            return result;
         }
 
 

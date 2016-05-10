@@ -53,7 +53,7 @@ namespace TH_DeviceCompare_OEE.Values.Performance
             if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
             {
                 // OEE Table Data
-                if (data.Id.ToLower() == "statusdata_oee")
+                if (data.Id.ToLower() == "statusdata_oee_segments")
                 {
                     // OEE Values
                     this.Dispatcher.BeginInvoke(new Action<object>(OEEValues_Update), Priority_Context, new object[] { data.Data02 });

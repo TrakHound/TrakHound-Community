@@ -90,6 +90,10 @@
       <Project>{168e0b49-fac0-4c2d-9da3-a643ba9dd515}</Project>
       <Name>TH_Mobile</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\Plugins\TH_MTConnect\TH_MTConnect.csproj">
+      <Project>{318e6702-3c9e-4acc-b326-e3ec903417a8}</Project>
+      <Name>TH_MTConnect</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets')" />

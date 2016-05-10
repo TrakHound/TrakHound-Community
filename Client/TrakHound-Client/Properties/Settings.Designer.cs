@@ -116,5 +116,17 @@ namespace TrakHound_Client.Properties {
                 this["Github_Token"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Github_Username {
+            get {
+                return ((string)(this["Github_Username"]));
+            }
+            set {
+                this["Github_Username"] = value;
+            }
+        }
     }
 }

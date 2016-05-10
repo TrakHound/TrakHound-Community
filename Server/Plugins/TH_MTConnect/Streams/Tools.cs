@@ -13,137 +13,137 @@ namespace TH_MTConnect.Streams
     public static class Tools
     {
 
-        public static DeviceStream GetDeviceStreamFromXML(XmlNode DeviceNode)
-        {
-            DeviceStream result = null;
+        //public static DeviceStream GetDeviceStreamFromXML(XmlNode DeviceNode)
+        //{
+        //    DeviceStream result = null;
 
-            if (DeviceNode != null)
-            {
-                DeviceStream deviceStream = new DeviceStream(DeviceNode);
+        //    if (DeviceNode != null)
+        //    {
+        //        DeviceStream deviceStream = new DeviceStream(DeviceNode);
 
-                foreach (XmlNode ChildNode in DeviceNode.ChildNodes)
-                {
-                    if (ChildNode.NodeType == XmlNodeType.Element)
-                    {
-                        switch (ChildNode.Name.ToLower())
-                        {
-                            case "componentstream":
+        //        foreach (XmlNode ChildNode in DeviceNode.ChildNodes)
+        //        {
+        //            if (ChildNode.NodeType == XmlNodeType.Element)
+        //            {
+        //                switch (ChildNode.Name.ToLower())
+        //                {
+        //                    case "componentstream":
 
-                                deviceStream.ComponentStreams.Add(ProcessComponentStream(ChildNode));
+        //                        deviceStream.ComponentStreams.Add(ProcessComponentStream(ChildNode));
 
-                                break;
+        //                        break;
 
-                            case "events":
+        //                    case "events":
 
-                                result.DataItems.Events.AddRange(ProcessEvents(ChildNode));
+        //                        result.DataItems.Events.AddRange(ProcessEvents(ChildNode));
 
-                                break;
+        //                        break;
 
-                            case "samples":
+        //                    case "samples":
 
-                                result.DataItems.Samples.AddRange(ProcessSamples(ChildNode));
+        //                        result.DataItems.Samples.AddRange(ProcessSamples(ChildNode));
 
-                                break;
-                        }
-                    }
-                }
+        //                        break;
+        //                }
+        //            }
+        //        }
 
-                result = deviceStream;
-            }
+        //        result = deviceStream;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static ComponentStream ProcessComponentStream(XmlNode ComponentStreamNode)
-        {
-            ComponentStream result = new ComponentStream(ComponentStreamNode);
+        //public static ComponentStream ProcessComponentStream(XmlNode ComponentStreamNode)
+        //{
+        //    ComponentStream result = new ComponentStream(ComponentStreamNode);
 
-            foreach (XmlNode DataItemNode in ComponentStreamNode.ChildNodes)
-            {
-                if (DataItemNode.NodeType == XmlNodeType.Element)
-                {
-                    switch (DataItemNode.Name.ToLower())
-                    {
-                        case "condition":
+        //    foreach (XmlNode DataItemNode in ComponentStreamNode.ChildNodes)
+        //    {
+        //        if (DataItemNode.NodeType == XmlNodeType.Element)
+        //        {
+        //            switch (DataItemNode.Name.ToLower())
+        //            {
+        //                case "condition":
 
-                            result.DataItems.Conditions.AddRange(ProcessConditions(DataItemNode));
+        //                    result.DataItems.Conditions.AddRange(ProcessConditions(DataItemNode));
 
-                            break;
+        //                    break;
 
-                        case "events":
+        //                case "events":
 
-                            result.DataItems.Events.AddRange(ProcessEvents(DataItemNode));
+        //                    result.DataItems.Events.AddRange(ProcessEvents(DataItemNode));
 
-                            break;
+        //                    break;
 
-                        case "samples":
+        //                case "samples":
 
-                            result.DataItems.Samples.AddRange(ProcessSamples(DataItemNode));
+        //                    result.DataItems.Samples.AddRange(ProcessSamples(DataItemNode));
 
-                            break;
-                    }
-                }
-            }
+        //                    break;
+        //            }
+        //        }
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static List<Condition> ProcessConditions(XmlNode ConditionNode)
-        {
-            List<Condition> result = new List<Condition>();
+        //public static List<Condition> ProcessConditions(XmlNode ConditionNode)
+        //{
+        //    List<Condition> result = new List<Condition>();
 
-            foreach (XmlNode ChildNode in ConditionNode.ChildNodes)
-            {
-                Condition condition = new Condition(ChildNode);
-                result.Add(condition);
-            }
+        //    foreach (XmlNode ChildNode in ConditionNode.ChildNodes)
+        //    {
+        //        Condition condition = new Condition(ChildNode);
+        //        result.Add(condition);
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static List<Event> ProcessEvents(XmlNode EventsNode)
-        {
-            List<Event> result = new List<Event>();
+        //public static List<Event> ProcessEvents(XmlNode EventsNode)
+        //{
+        //    List<Event> result = new List<Event>();
 
-            foreach (XmlNode EventNode in EventsNode.ChildNodes)
-            {
-                Event event_DI = new Event(EventNode);
-                result.Add(event_DI);
-            }
+        //    foreach (XmlNode EventNode in EventsNode.ChildNodes)
+        //    {
+        //        Event event_DI = new Event(EventNode);
+        //        result.Add(event_DI);
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static List<Sample> ProcessSamples(XmlNode SamplesNode)
-        {
-            List<Sample> result = new List<Sample>();
+        //public static List<Sample> ProcessSamples(XmlNode SamplesNode)
+        //{
+        //    List<Sample> result = new List<Sample>();
 
-            foreach (XmlNode SampleNode in SamplesNode.ChildNodes)
-            {
-                Sample sample_DI = new Sample(SampleNode);
-                result.Add(sample_DI);
-            }
+        //    foreach (XmlNode SampleNode in SamplesNode.ChildNodes)
+        //    {
+        //        Sample sample_DI = new Sample(SampleNode);
+        //        result.Add(sample_DI);
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static DataItemCollection GetDataItemsFromDeviceStream(DeviceStream deviceStream)
-        {
-            DataItemCollection result = new DataItemCollection();
+        //public static DataItemCollection GetDataItemsFromDeviceStream(DeviceStream deviceStream)
+        //{
+        //    DataItemCollection result = new DataItemCollection();
 
-            foreach (ComponentStream componentStream in deviceStream.ComponentStreams)
-            {
-                foreach (Condition item in componentStream.DataItems.Conditions) result.Conditions.Add(item);
-                foreach (Event item in componentStream.DataItems.Events) result.Events.Add(item);
-                foreach (Sample item in componentStream.DataItems.Samples) result.Samples.Add(item);
-            }
+        //    foreach (ComponentStream componentStream in deviceStream.ComponentStreams)
+        //    {
+        //        foreach (Condition item in componentStream.DataItems.Conditions) result.Conditions.Add(item);
+        //        foreach (Event item in componentStream.DataItems.Events) result.Events.Add(item);
+        //        foreach (Sample item in componentStream.DataItems.Samples) result.Samples.Add(item);
+        //    }
 
-            foreach (Condition item in deviceStream.DataItems.Conditions) result.Conditions.Add(item);
-            foreach (Event item in deviceStream.DataItems.Events) result.Events.Add(item);
-            foreach (Sample item in deviceStream.DataItems.Samples) result.Samples.Add(item);
+        //    foreach (Condition item in deviceStream.DataItems.Conditions) result.Conditions.Add(item);
+        //    foreach (Event item in deviceStream.DataItems.Events) result.Events.Add(item);
+        //    foreach (Sample item in deviceStream.DataItems.Samples) result.Samples.Add(item);
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
         public static string GetFullAddress(XmlNode node)

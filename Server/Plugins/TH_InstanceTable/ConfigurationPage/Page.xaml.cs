@@ -268,15 +268,15 @@ namespace TH_InstanceTable.ConfigurationPage
         private void LoadProbeData(List<DataItem> items)
         {
             //Conditions
-            foreach (var item in items.FindAll(x => x.Category.ToLower() == "condition"))
+            foreach (var item in items.FindAll(x => x.Category == DataItemCategory.CONDITION))
                 this.Dispatcher.BeginInvoke(new Action<DataItem>(AddConditionItem), priority, new object[] { item });
 
             // Events
-            foreach (var item in items.FindAll(x => x.Category.ToLower() == "event"))
+            foreach (var item in items.FindAll(x => x.Category == DataItemCategory.EVENT))
                 this.Dispatcher.BeginInvoke(new Action<DataItem>(AddEventItem), priority, new object[] { item });
 
             // Samples
-            foreach (var item in items.FindAll(x => x.Category.ToLower() == "sample"))
+            foreach (var item in items.FindAll(x => x.Category == DataItemCategory.SAMPLE))
                 this.Dispatcher.BeginInvoke(new Action<DataItem>(AddSampleItem), priority, new object[] { item });
         }
 

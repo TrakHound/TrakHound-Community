@@ -21,7 +21,7 @@
 
         <ResourceDictionary Source="Styles/RadioButtons.Xaml" />
 
-        <!--<ResourceDictionary Source="Styles/Text.Xaml" />-->
+        <ResourceDictionary Source="Styles/Text.Xaml" />
         
         <!--<ResourceDictionary Source="Styles/Borders.Xaml" />-->
 

@@ -335,6 +335,11 @@ namespace TH_StatusData
                 // Send OEE Data
                 SendDataEvent(oeeData);
 
+                // Get OEE Segments Data
+                EventData oeeSegmentsData = GetOEESegments(config, shiftData);
+                // Send OEE Segments Data
+                SendDataEvent(oeeSegmentsData);
+
                 // Get Parts Data
                 EventData partsData = GetParts(config, shiftData);
                 // Send Parts Data
@@ -555,6 +560,33 @@ namespace TH_StatusData
                     {
                         var data = new EventData();
                         data.Id = "StatusData_OEE";
+                        data.Data01 = config;
+                        data.Data02 = dt;
+
+                        result = data;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        static EventData GetOEESegments(Configuration config, ShiftData shiftData)
+        {
+            var result = new EventData();
+
+            if (shiftData.shiftId != null)
+            {
+                if (shiftData.shiftId.Contains("_"))
+                {
+                    //string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.LastIndexOf('_')); // Get Current Shift
+                    string shiftQuery = shiftData.shiftId.Substring(0, shiftData.shiftId.IndexOf('_')); // Get Whole day
+
+                    DataTable dt = Table.Get(config.Databases_Client, Global.GetTableName(TableNames.OEE_Segments, config.DatabaseId), "WHERE Shift_Id LIKE '" + shiftQuery + "%'");
+                    if (dt != null)
+                    {
+                        var data = new EventData();
+                        data.Id = "StatusData_OEE_Segments";
                         data.Data01 = config;
                         data.Data02 = dt;
 

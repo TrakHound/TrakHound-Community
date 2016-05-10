@@ -473,7 +473,7 @@
                 <Border Grid.Row="3">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="#66000000"/>
+                            <Setter Property="Background" Value="#aa888888"/>
                             <Setter Property="Padding" Value="10,5,10,2"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ViewType}" Value="{x:Static local:HeaderViewType.Minimized}">
@@ -483,7 +483,7 @@
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation From="#66000000" To="#ffffff" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
+                                                <ColorAnimation From="#aa888888" To="#ffffff" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -494,7 +494,7 @@
                                     <DataTrigger.ExitActions>
                                         <BeginStoryboard>
                                             <Storyboard>
-                                                <ColorAnimation From="#ffffff" To="#66000000" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
+                                                <ColorAnimation From="#ffffff" To="#aa888888" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Duration="0:0:0.3">
                                                     <ColorAnimation.EasingFunction>
                                                         <CubicEase EasingMode="EaseOut"/>
                                                     </ColorAnimation.EasingFunction>
@@ -542,7 +542,7 @@
                 <Grid Grid.Row="4">
                     <Grid.Style>
                         <Style TargetType="Grid">
-                            <Setter Property="Background" Value="#66000000"/>
+                            <Setter Property="Background" Value="#aa666666"/>
                         </Style>
                     </Grid.Style>
 

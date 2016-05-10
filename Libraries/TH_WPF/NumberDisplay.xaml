@@ -27,22 +27,22 @@
 
                 <!--Previous Value 3-->
                 <TextBlock Grid.Row="0" Text="{Binding PreviousValue3}" FontSize="10" Foreground="{Binding Foreground}" Opacity="0.25"
-                       FontFamily="/TH_WPF;component/Fonts/#DS-Digital"/>
+                       FontFamily="{StaticResource RobotoFont}"/>
 
                 <!--Previous Value 2-->
                 <TextBlock Grid.Row="1" Text="{Binding PreviousValue2}" FontSize="10" Foreground="{Binding Foreground}" Opacity="0.5"
-                       FontFamily="/TH_WPF;component/Fonts/#DS-Digital"/>
+                       FontFamily="{StaticResource RobotoFont}"/>
 
                 <!--Previous Value 1-->
                 <TextBlock Grid.Row="2" Text="{Binding PreviousValue1}" FontSize="10" Foreground="{Binding Foreground}" Opacity="0.75"
-                       FontFamily="/TH_WPF;component/Fonts/#DS-Digital"/>
+                       FontFamily="{StaticResource RobotoFont}"/>
             </Grid>
 
             <!--Number Value-->
             <TextBlock Grid.Column="1" Text="{Binding ValueText}" FontSize="24"
                    Foreground="{Binding Foreground}"
                    VerticalAlignment="Center" HorizontalAlignment="Right"
-                   FontFamily="/TH_WPF;component/Fonts/#DS-Digital"
+                   FontFamily="{StaticResource RobotoFont}"
                    Margin="5,0"
                    />
 

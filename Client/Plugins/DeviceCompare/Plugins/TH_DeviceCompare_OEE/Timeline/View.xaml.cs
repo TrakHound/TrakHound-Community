@@ -35,7 +35,7 @@ namespace TH_DeviceCompare_OEE.Timeline
             if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
             {
                 // OEE Table Data
-                if (data.Id.ToLower() == "statusdata_oee")
+                if (data.Id.ToLower() == "statusdata_oee_segments")
                 {
                     this.Dispatcher.BeginInvoke(new Action<object>(Update_OEEData), Priority_Context, new object[] { data.Data02 });
                 }
@@ -100,14 +100,22 @@ namespace TH_DeviceCompare_OEE.Timeline
                     var oee = new OEEData();
                     oee.ConstantQuality = 1;
 
-                    foreach (var segment in oeeData.ShiftSegments)
+                    foreach (var hourInfo in info.HourInfos)
                     {
-                        var match = info.HourInfos.Find(x => TestShiftSegment(segment.ShiftId, x.ShiftIdSuffix));
-                        if (match != null)
-                        {
-                            oee.ShiftSegments.Add(segment);
-                        }
+                        var matches = oeeData.ShiftSegments.FindAll(x => TestShiftSegment(x.ShiftId, hourInfo.ShiftIdSuffix));
+                        oee.ShiftSegments.AddRange(matches);
                     }
+
+                    //foreach (var segment in oee.ShiftSegments) TH_Global.Logger.Log(segment.ShiftId);
+
+                    //foreach (var segment in oeeData.ShiftSegments)
+                    //{
+                    //    var match = info.HourInfos.Find(x => TestShiftSegment(segment.ShiftId, x.ShiftIdSuffix));
+                    //    if (match != null)
+                    //    {
+                    //        oee.ShiftSegments.Add(segment);
+                    //    }
+                    //}
 
                     int index = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
                     if (index >= 0)
@@ -153,7 +161,7 @@ namespace TH_DeviceCompare_OEE.Timeline
             public string ShiftIdSuffix { get; set; }
             public string ShiftIdTest { get; set; }
 
-            public static HourInfo Get(DataRow row)
+            public static HourInfo Get(DataRow row, string date)
             {
                 string start = DataTable_Functions.GetRowValue("START", row);
                 string end = DataTable_Functions.GetRowValue("END", row);
@@ -174,8 +182,8 @@ namespace TH_DeviceCompare_OEE.Timeline
                 DateTime s = DateTime.MinValue;
                 DateTime e = DateTime.MinValue;
 
-                DateTime.TryParse(start, out s);
-                DateTime.TryParse(end, out e);
+                DateTime.TryParse(date + " " + start, out s);
+                DateTime.TryParse(date + " " + end, out e);
 
                 var info = new HourInfo();
                 info.Start = s;
@@ -211,16 +219,16 @@ namespace TH_DeviceCompare_OEE.Timeline
         void Update_ShiftSegmentsData(object shiftSegmentsData)
         {
             var dt = shiftSegmentsData as DataTable;
-            if (dt != null && currentShiftId != null && newShift)
+            if (dt != null && currentShiftId != null && currentShiftDate != null && newShift)
             {
                 timelineInfos.Clear();
 
                 var segments = new List<HourInfo>();
 
                 // Get Hour Infos for each Row / Segment
-                foreach (DataRow row in dt.Rows) segments.Add(HourInfo.Get(row));
+                foreach (DataRow row in dt.Rows) segments.Add(HourInfo.Get(row, currentShiftDate));
 
-                segments = segments.FindAll(x => TestShiftId(currentShiftId, x.ShiftIdTest));
+                //segments = segments.FindAll(x => TestShiftId(currentShiftId, x.ShiftIdTest));
 
                 var hours = segments.GroupBy(x => x.StartHour, (key, group) => group.First()).ToList();
 
@@ -245,12 +253,12 @@ namespace TH_DeviceCompare_OEE.Timeline
 
                 foreach (var info in timelineInfos)
                 {
-                    TH_WPF.Histogram.DataBar db;
+                    //TH_WPF.Histogram.DataBar db;
 
                     int dbIndex = histogram.DataBars.ToList().FindIndex(x => x.Id == info.Id);
                     if (dbIndex < 0)
                     {
-                        db = new TH_WPF.Histogram.DataBar();
+                        var db = new TH_WPF.Histogram.DataBar();
                         db.Id = info.Id;
 
                         var tt = new OeeToolTip();
@@ -285,6 +293,7 @@ namespace TH_DeviceCompare_OEE.Timeline
 
         string currentShiftId = null;
         string currentShiftName = null;
+        string currentShiftDate = null;
 
         void Update_VariablesData(object variableData)
         {
@@ -294,6 +303,8 @@ namespace TH_DeviceCompare_OEE.Timeline
             if (dt != null)
             {
                 currentShiftId = DataTable_Functions.GetTableValue(dt, "variable", "shift_id", "value");
+
+                currentShiftDate = DataTable_Functions.GetTableValue(dt, "variable", "shift_date", "value");
 
                 // Get Shift Name to check if still in the same shift as last update
                 string prev_currentShift = currentShiftName;

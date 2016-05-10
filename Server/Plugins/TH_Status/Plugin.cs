@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 
 using TH_Configuration;
-using TH_Database;
 using TH_Plugins;
 using TH_Plugins.Server;
 
@@ -40,9 +39,12 @@ namespace TH_Status
                         Database.AddRows(configuration, infos);
                     }
                 }
-                if (data.Id.ToLower() == "mtconnect_current" && data.Data02 != null)
+                else if (data.Id.ToLower() == "mtconnect_current" && data.Data02 != null)
                 {
                     StatusInfo.ProcessList((TH_MTConnect.Streams.ReturnData)data.Data02, statusInfos);
+
+                    SendStatusData(statusInfos);
+
                     Database.UpdateRows(configuration, statusInfos);
                 }
             }
@@ -60,6 +62,16 @@ namespace TH_Status
 
 
         private Configuration configuration;
+
+        private void SendStatusData(List<StatusInfo> infos)
+        {
+            var data = new EventData();
+            data.Id = "Status_Data";
+            data.Data01 = configuration;
+            data.Data02 = infos;
+
+            if (SendData != null) SendData(data);
+        }
 
     }
 }

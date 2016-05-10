@@ -51,11 +51,16 @@ namespace TH_Plugins
                 // path is to a directory
                 else if (System.IO.Directory.Exists(path))
                 {
-                    DirectoryCatalog directoryCatalog;
-                    if (extension != null) directoryCatalog = new DirectoryCatalog(path, "*" + extension);
-                    else directoryCatalog = new DirectoryCatalog(path);
+                    try
+                    {
+                        DirectoryCatalog directoryCatalog;
+                        if (extension != null) directoryCatalog = new DirectoryCatalog(path, "*" + extension);
+                        else directoryCatalog = new DirectoryCatalog(path);
 
-                    container = new CompositionContainer(directoryCatalog);
+                        container = new CompositionContainer(directoryCatalog);
+                    }
+                    catch (UnauthorizedAccessException ex) { Logger.Log("UnauthorizedAccessException : " + ex.Message); }
+                    catch (Exception ex) { Logger.Log("Exception : " + ex.Message); }
                 }
 
                 if (container != null)
@@ -65,7 +70,7 @@ namespace TH_Plugins
                     {
                         container.SatisfyImportsOnce(readerContainer);
                     }
-                    catch (System.Reflection.ReflectionTypeLoadException rtex)
+                    catch (ReflectionTypeLoadException rtex)
                     {
                         Logger.Log("ReflectionTypeLoadException : " + rtex.Message);
 

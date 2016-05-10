@@ -611,21 +611,10 @@ namespace TH_DeviceManager
 
                         foreach (var device in returnData.Devices)
                         {
-                            var dataItems = TH_MTConnect.Components.Tools.GetDataItemsFromDevice(device);
+                            var dataItems = device.GetAllDataItems();
 
-                            var items = new List<TH_MTConnect.Components.DataItem>();
-
-                            // Conditions
-                            foreach (var dataItem in dataItems.Conditions) if (!items.Exists(x => x.Id == dataItem.Id)) items.Add(dataItem);
-
-                            // Events
-                            foreach (var dataItem in dataItems.Events) if (!items.Exists(x => x.Id == dataItem.Id)) items.Add(dataItem);
-
-                            // Samples
-                            foreach (var dataItem in dataItems.Samples) if (!items.Exists(x => x.Id == dataItem.Id)) items.Add(dataItem);
-
-                            SendProbeDataItems(items);
-                            probeData = items;
+                            SendProbeDataItems(dataItems);
+                            probeData = dataItems;
                         }
                     }
                 }

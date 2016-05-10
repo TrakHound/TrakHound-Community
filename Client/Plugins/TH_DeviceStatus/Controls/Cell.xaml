@@ -68,7 +68,7 @@
 
                         <!--No Data-->
                         <DataTrigger Binding="{Binding HourData.Status}" Value="-1">
-                            <Setter Property="Fill" Value="#10000000"/>
+                            <Setter Property="Fill" Value="Transparent"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

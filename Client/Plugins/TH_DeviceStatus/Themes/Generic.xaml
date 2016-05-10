@@ -220,7 +220,7 @@
                             </Rectangle.ToolTip>
                             <Rectangle.Style>
                                 <Style TargetType="Rectangle">
-                                    <Setter Property="Fill" Value="#EEE"/>
+                                    <Setter Property="Fill" Value="#FFF"/>
                                     <Style.Triggers>
 
                                         <DataTrigger Binding="{Binding HourData.Status, RelativeSource={RelativeSource TemplatedParent}}" Value="2">
@@ -267,7 +267,7 @@
                         <UniformGrid Canvas.Top="15" Height="50" Width="{TemplateBinding ActualWidth}" Columns="12">
                             <UniformGrid.Resources>
                                 <Style TargetType="Rectangle">
-                                    <Setter Property="Fill" Value="#EEE"/>
+                                    <Setter Property="Fill" Value="#FFF"/>
                                     <Setter Property="ToolTip" Value="{Binding Title}"/>
                                     <Style.Triggers>
 

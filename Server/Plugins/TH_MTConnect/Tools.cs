@@ -46,26 +46,39 @@ namespace TH_MTConnect
         {
             foreach (System.Reflection.PropertyInfo info in obj.GetType().GetProperties())
             {
-                string Value = GetAttribute(Node, info.Name);
-                if (Value != "")
+                string value = GetAttribute(Node, info.Name);
+                if (value != "")
                 {
                     Type t = info.PropertyType;
 
                     // Make sure DateTime gets set as UTC
                     if (t == typeof(DateTime))
                     {
-                        DateTime dt = DateTime_Functions.ConvertStringToUTC(Value);
+                        DateTime dt = DateTime_Functions.ConvertStringToUTC(value);
                         info.SetValue(obj, dt, null);
+                    }
+                    else if (t.IsEnum)
+                    {
+                        try
+                        {
+                            var val = Enum.Parse(t, value, true);
+                            info.SetValue(obj, val, null);
+                        }
+                        catch (Exception ex) { TH_Global.Logger.Log("Exception :: " + ex.Message); }
                     }
                     else
                     {
-                        info.SetValue(obj, Convert.ChangeType(Value, t), null);
+                        info.SetValue(obj, Convert.ChangeType(value, t), null);
                     }
                 }
             }
         }
 
-        
+        public static T ParseEnum<T>(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
+
     }
 
     public static class Tables

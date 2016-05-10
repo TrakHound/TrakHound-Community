@@ -92,6 +92,8 @@ namespace TrakHound_Client.Windows
             OperatingSystem = GetOperatingSystem();
             MemoryUsed = GetMemoryUsed();
 
+            GitHub_Login();
+
             GetLogFiles();
         }
 
@@ -291,10 +293,10 @@ namespace TrakHound_Client.Windows
                 if (debugPath != null || errorPath != null || notificationsPath != null || warningPath != null)
                 {
                     // Copy files to tempPath directory
-                    if (debugPath != null) File.Copy(debugPath, Path.Combine(tempPath, Path.GetFileName(debugPath)), true);
-                    if (errorPath != null) File.Copy(errorPath, Path.Combine(tempPath, Path.GetFileName(errorPath)), true);
-                    if (notificationsPath != null) File.Copy(notificationsPath, Path.Combine(tempPath, Path.GetFileName(notificationsPath)), true);
-                    if (warningPath != null) File.Copy(warningPath, Path.Combine(tempPath, Path.GetFileName(warningPath)), true);
+                    if (debugPath != null) File.Copy(debugPath, Path.Combine(tempPath, "Debug-" + Path.GetFileName(debugPath)), true);
+                    if (errorPath != null) File.Copy(errorPath, Path.Combine(tempPath, "Error-" + Path.GetFileName(errorPath)), true);
+                    if (notificationsPath != null) File.Copy(notificationsPath, Path.Combine(tempPath, "Notification-" + Path.GetFileName(notificationsPath)), true);
+                    if (warningPath != null) File.Copy(warningPath, Path.Combine(tempPath, "Warning-" + Path.GetFileName(warningPath)), true);
 
                     // Create Zip file for tempPath
                     CreateZipFile(zipPath, tempPath);
@@ -323,9 +325,11 @@ namespace TrakHound_Client.Windows
             {
                 string filename = Path.GetFileName(filePath);
 
-                string match = "Log-" + DateTime.Now.ToString("yyyy-M-dd") + ".xml";
+                string match1 = "Log-" + DateTime.Now.ToString("yyyy-M-d") + ".xml";
+                //string match2 = "Log-" + DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToString("yyyy-M-d") + ".xml";
 
-                if (filename == match)
+                //if (filename == match1 || filename == match2)
+                if (filename == match1)
                 {
                     return filePath;
                 }
@@ -333,6 +337,7 @@ namespace TrakHound_Client.Windows
 
             return null;
         }
+
 
         public void CreateZipFile(string destPath, string sourcePath)
         {
@@ -412,9 +417,50 @@ namespace TrakHound_Client.Windows
 
         #region "GitHub"
 
+        public bool GitHubCreateIssue
+        {
+            get { return (bool)GetValue(GitHubCreateIssueProperty); }
+            set { SetValue(GitHubCreateIssueProperty, value); }
+        }
+
+        public static readonly DependencyProperty GitHubCreateIssueProperty =
+            DependencyProperty.Register("GitHubCreateIssue", typeof(bool), typeof(BugReport), new PropertyMetadata(true));
+
+
+        public string GitHubUsername
+        {
+            get { return (string)GetValue(GitHubUsernameProperty); }
+            set { SetValue(GitHubUsernameProperty, value); }
+        }
+
+        public static readonly DependencyProperty GitHubUsernameProperty =
+            DependencyProperty.Register("GitHubUsername", typeof(string), typeof(BugReport), new PropertyMetadata(null));
+
+
+        public string GitHubPassword
+        {
+            get { return (string)GetValue(GitHubPasswordProperty); }
+            set { SetValue(GitHubPasswordProperty, value); }
+        }
+        public static readonly DependencyProperty GitHubPasswordProperty =
+            DependencyProperty.Register("GitHubPassword", typeof(string), typeof(BugReport), new PropertyMetadata(null));
+
+
+        public bool GitHubLoggedIn
+        {
+            get { return (bool)GetValue(GitHubLoggedInProperty); }
+            set { SetValue(GitHubLoggedInProperty, value); }
+        }
+
+        public static readonly DependencyProperty GitHubLoggedInProperty =
+            DependencyProperty.Register("GitHubLoggedIn", typeof(bool), typeof(BugReport), new PropertyMetadata(false));
+
+
         private class GitHub
         {
-            public static HTTP.HeaderData GetLogin(bool rememberToken)
+            public static HTTP.HeaderData LoginHeaderData { get; set; }
+
+            public static HTTP.HeaderData GetLogin()
             {
                 string token = Properties.Settings.Default.Github_Token;
                 //string token = null;
@@ -422,24 +468,8 @@ namespace TrakHound_Client.Windows
                 {
                     return Authentication.GetOAuth2Header(token);
                 }
-                else // Use Basic Authentication
-                {
-                    var credentials = new Authentication.Crendentials();
-                    credentials.Username = "patrickritchie";
-                    credentials.Password = "*******"; // SET PASSWORD BACK
 
-                    if (rememberToken)
-                    {
-                        var oAuth2Token = OAuth2Token.Get(credentials);
-                        if (oAuth2Token != null && !string.IsNullOrEmpty(oAuth2Token.Token))
-                        {
-                            Properties.Settings.Default.Github_Token = oAuth2Token.Token;
-                            Properties.Settings.Default.Save();
-                        }
-                    }
-
-                    return Authentication.GetBasicHeader(credentials);
-                }
+                return null;
             }
 
             public static bool CreateIssue(HTTP.HeaderData loginHeader)
@@ -455,9 +485,26 @@ namespace TrakHound_Client.Windows
             }
         }
 
-        
+        private void Login_Clicked(TH_WPF.Button bt)
+        {
+            var loginData = GithubLogin.Show();
+            if (loginData != null)
+            {
+                GitHub_Login();
+            }
+        }
 
-        
+        private void GitHub_Login()
+        {
+            string username = Properties.Settings.Default.Github_Username;
+            string token = Properties.Settings.Default.Github_Token;
+
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(token))
+            {
+                GitHubUsername = username;
+                GitHubLoggedIn = true;
+            }
+        }
 
         #endregion
 
@@ -469,8 +516,19 @@ namespace TrakHound_Client.Windows
             LoadingStatus = "Sending Bug Report..";
 
             // Create Issue on Github
-            var loginHeader = GitHub.GetLogin(true);
-            GitHub.CreateIssue(loginHeader);
+            if (GitHubLoggedIn && GitHubCreateIssue)
+            {
+                HTTP.HeaderData loginHeader = null;
+                loginHeader = GitHub.GetLogin();
+                if (loginHeader != null)
+                {
+                    bool success = GitHub.CreateIssue(loginHeader);
+                    if (!success)
+                    {
+                        TH_WPF.MessageBox.Show("Error Creating GitHub Issue. Check GitHub login credentials and try again. If problems persist, uncheck 'Create GitHub Issue' and create an issue using www.GitHub.com", "Error Creating GitHub Issue", TH_WPF.MessageBoxButtons.Ok);
+                    }
+                }
+            }          
 
             string subject = Subject;
             string body = CreateBody();
@@ -538,8 +596,6 @@ namespace TrakHound_Client.Windows
         #endregion
 
         #endregion
-
-
 
     }
 }

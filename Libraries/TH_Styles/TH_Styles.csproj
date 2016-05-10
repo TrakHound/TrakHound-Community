@@ -76,6 +76,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\DS-DIGI.TTF" />
+    <Resource Include="Fonts\DS-DIGIB.TTF" />
+    <Resource Include="Fonts\DS-DIGII.TTF" />
+    <Resource Include="Fonts\DS-DIGIT.TTF" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

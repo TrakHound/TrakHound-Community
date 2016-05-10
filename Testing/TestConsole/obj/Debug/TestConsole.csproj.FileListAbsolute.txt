@@ -46,3 +46,7 @@ F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Plugins.dll
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Configuration.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Mobile.pdb
 F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_Plugins.pdb
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.dll
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_WPF.dll
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_MTConnect.pdb
+F:\feenux\TrakHound\TrakHound\Testing\TestConsole\bin\Debug\TH_WPF.pdb

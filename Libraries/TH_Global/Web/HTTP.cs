@@ -14,9 +14,9 @@ namespace TH_Global.Web
 {
     public static class HTTP
     {
-        const int connectionAttempts = 3;
+        const int CONNECTION_ATTEMPTS = 3;
 
-        const int timeout = 10000;
+        const int TIMEOUT = 10000;
 
         public static bool UploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
         {
@@ -27,7 +27,7 @@ namespace TH_Global.Web
 
             HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
             wr.ContentType = "multipart/form-data; boundary=" + boundary;
-            wr.Timeout = timeout;
+            wr.Timeout = TIMEOUT;
             wr.Method = "POST";
             wr.KeepAlive = true;
             wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
@@ -67,7 +67,7 @@ namespace TH_Global.Web
             int attempts = 0;
             bool success = false;
 
-            while (attempts < connectionAttempts && !success)
+            while (attempts < CONNECTION_ATTEMPTS && !success)
             {
                 attempts += 1;
 
@@ -143,7 +143,7 @@ namespace TH_Global.Web
             string message = null;
 
             // Try to send data for number of connectionAttempts
-            while (attempts < connectionAttempts && !success)
+            while (attempts < CONNECTION_ATTEMPTS && !success)
             {
                 attempts += 1;
 
@@ -155,7 +155,7 @@ namespace TH_Global.Web
 
                     // Create HTTP request and define Header info
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Timeout = timeout;
+                    request.Timeout = TIMEOUT;
                     request.Method = "POST";
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = postBytes.Length;
@@ -188,7 +188,7 @@ namespace TH_Global.Web
         /// </summary>
         /// <param name="nvc"></param>
         /// <returns></returns>
-        static byte[] CreatePostBytes(NameValueCollection nvc)
+        public static byte[] CreatePostBytes(NameValueCollection nvc)
         {
             var postData = new StringBuilder();
             for (var x = 0; x <= nvc.AllKeys.Length - 1; x++)
@@ -244,7 +244,7 @@ namespace TH_Global.Web
             string message = null;
 
             // Try to send data for number of connectionAttempts
-            while (attempts < connectionAttempts && !success)
+            while (attempts < CONNECTION_ATTEMPTS && !success)
             {
                 attempts += 1;
 
@@ -273,7 +273,7 @@ namespace TH_Global.Web
 
                     // Create HTTP request and define Header info
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Timeout = timeout;
+                    request.Timeout = TIMEOUT;
                     request.Method = "POST";
                     request.ContentType = "application/x-www-form-urlencoded";
                     request.ContentLength = postBytes.Length;
@@ -311,7 +311,44 @@ namespace TH_Global.Web
             public string Text { get; set; }
         }
 
+        public class HTTPInfo
+        {
+            public HTTPInfo()
+            {
+                Init();
+            }
+
+            public HTTPInfo(string url)
+            {
+                Init();
+                Url = url;
+            }
+
+            private void Init()
+            {
+                Url = "";
+                Data = null;
+                Headers = null;
+                UserAgent = null;
+                Timeout = 5000;
+                MaxAttempts = 3;
+            }
+
+            public string Url { get; set; }
+            public byte[] Data { get; set; }
+            public HeaderData[] Headers { get; set; }
+            public string UserAgent { get; set; }
+            public NetworkCredential Credential { get; set; }
+            public int Timeout { get; set; }
+            public int MaxAttempts { get; set; }
+        }
+
         #region "POST"
+
+        public static string POST(HTTPInfo info)
+        {
+            return SendData("POST", info.Url, info.Data, info.Headers, info.UserAgent, info.Credential, info.Timeout, info.MaxAttempts);
+        }
 
         public static string POST(string url, byte[] postBytes)
         {
@@ -364,37 +401,22 @@ namespace TH_Global.Web
 
         #endregion
 
-        #region "PUT"
+        #region "GET"
 
         public static string GET(string url)
         {
             return SendData("GET", url);
         }
 
-        //public static string GET(string url, byte[] postBytes)
-        //{
-        //    return SendData("PUT", url, postBytes);
-        //}
-
         public static string GET(string url, HeaderData[] headers)
         {
             return SendData("GET", url, null, headers);
         }
 
-        //public static string GET(string url, byte[] postBytes, HeaderData[] headers)
-        //{
-        //    return SendData("PUT", url, postBytes, headers);
-        //}
-
         public static string GET(string url, HeaderData[] headers, string userAgent)
         {
             return SendData("GET", url, null, headers, userAgent);
         }
-
-        //public static string GET(string url, byte[] postBytes, HeaderData[] headers, string userAgent)
-        //{
-        //    return SendData("PUT", url, postBytes, headers, userAgent);
-        //}
 
         public static string GET(string url, byte[] postBytes, HeaderData[] headers, string userAgent, NetworkCredential credential)
         {
@@ -404,7 +426,10 @@ namespace TH_Global.Web
         #endregion
 
 
-        private static string SendData(string method, string url, byte[] sendBytes = null, HeaderData[] headers = null, string userAgent = null, NetworkCredential credential = null)
+        private static string SendData(string method, string url,
+            byte[] sendBytes = null, HeaderData[] headers = null,
+            string userAgent = null, NetworkCredential credential = null,
+            int timeout = TIMEOUT, int maxAttempts = CONNECTION_ATTEMPTS)
         {
             string result = null;
 
@@ -413,7 +438,7 @@ namespace TH_Global.Web
             string message = null;
 
             // Try to send data for number of connectionAttempts
-            while (attempts < connectionAttempts && !success)
+            while (attempts < maxAttempts && !success)
             {
                 attempts += 1;
 
@@ -567,7 +592,7 @@ namespace TH_Global.Web
             string message = null;
 
             // Try to receive data for number of connectionAttempts
-            while (attempts < connectionAttempts && !success)
+            while (attempts < CONNECTION_ATTEMPTS && !success)
             {
                 attempts += 1;
 
@@ -575,7 +600,7 @@ namespace TH_Global.Web
                 {
                     // Create HTTP request and define Header info
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                    request.Timeout = timeout;
+                    request.Timeout = TIMEOUT;
 
                     // Get HTTP resonse and return as string
                     using (var response = (HttpWebResponse)request.GetResponse())

@@ -18,9 +18,9 @@
              >
 
     <!--Disable the Vertical ScrollBar and use the one for the Columns and RowHeaders (only applies if Page is zoomed)-->
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Background="{StaticResource Window_Background}">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Background="{StaticResource Window_Background_Gradient}">
 
-        <Grid Background="#10000000">
+        <Grid >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" MinHeight="30"/>
                 <RowDefinition Height="*" />
@@ -106,7 +106,7 @@
                 <!--Scrolling View-->
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalAlignment="Stretch">
 
-                    <Grid Background="{StaticResource Window_Background}" HorizontalAlignment="Left">
+                    <Grid HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="149" />
                             <ColumnDefinition Width="auto" />

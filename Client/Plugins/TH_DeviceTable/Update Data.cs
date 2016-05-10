@@ -104,7 +104,7 @@ namespace TH_DeviceTable
 
         private void UpdateOEE(EventData data, DeviceInfo info)
         {
-            if (data.Id.ToLower() == "statusdata_oee")
+            if (data.Id.ToLower() == "statusdata_oee_segments")
             {
                 Dispatcher.BeginInvoke(new Action(() =>
                 {

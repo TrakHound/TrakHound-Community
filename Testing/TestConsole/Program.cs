@@ -12,6 +12,7 @@ using TH_Global.Functions;
 
 using TH_Configuration;
 using TH_Mobile;
+using TH_MTConnect;
 
 namespace TestConsole
 {
@@ -34,7 +35,18 @@ namespace TestConsole
 
             //TH_Mobile.Database.Update("testuser", config, updateData);
 
-            TH_Mobile.Database.Get("testuser");
+            //TH_Mobile.Database.Get("testuser");
+
+            var returnData = TH_MTConnect.Components.Requests.Get("http://agent.mtconnect.org", null);
+            if (returnData != null)
+            {
+                var items = returnData.Devices[0].GetAllDataItems();
+                if (items != null)
+                {
+
+                }
+            }
+
 
             Console.ReadLine();
 

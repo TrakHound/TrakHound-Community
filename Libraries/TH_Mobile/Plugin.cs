@@ -10,6 +10,7 @@ using TH_Configuration;
 using TH_Global.Functions;
 using TH_Plugins;
 using TH_Plugins.Server;
+using TH_Status;
 
 namespace TH_Mobile
 {
@@ -117,6 +118,39 @@ namespace TH_Mobile
 
                         break;
 
+                    // Get Status Data
+                    case "status_data":
+
+                        if (data.Data01 != null && data.Data02 != null && !string.IsNullOrEmpty(username))
+                        {
+                            var infos = (List<StatusInfo>)data.Data02;
+                            StatusInfo info = null;
+
+                            // Controller Mode
+                            info = infos.Find(x => x.Type == "CONTROLLER_MODE");
+                            if (info != null) updateData.ControllerMode = info.Value1;
+
+                            // Emergency Stop
+                            info = infos.Find(x => x.Type == "EMERGENCY_STOP");
+                            if (info != null) updateData.EmergencyStop = info.Value1;
+
+                            // Execution Mode
+                            info = infos.Find(x => x.Type == "EXECUTION");
+                            if (info != null) updateData.ExecutionMode = info.Value1;
+
+                            // System status
+                            info = infos.Find(x => x.Type == "SYSTEM");
+                            if (info != null)
+                            {
+                                updateData.SystemMessage = info.Value1;
+                                updateData.SystemStatus = info.Value2;
+                            }
+
+                            Database.Update(username, configuration, updateData);
+                        }
+
+                        break;
+
                 }
             }
         }
@@ -127,7 +161,14 @@ namespace TH_Mobile
 
         public event Status_Handler ErrorOccurred;
 
-        public void Closing() { }
+        public void Closing()
+        {
+            if (updateData != null)
+            {
+                updateData.Connected = false;
+                Database.Update(username, configuration, updateData);
+            }
+        }
 
         public Type[] ConfigurationPageTypes { get { return null; } }
 

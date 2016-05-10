@@ -10,8 +10,18 @@
     <Color ice:Freeze="True" x:Key="Accent_HoverBorder_Color">#600080ff</Color>
 
     <!--Window Backgrounds-->
-    <SolidColorBrush ice:Freeze="True" x:Key="Window_Background" Color="#fff"/>
-    <SolidColorBrush ice:Freeze="True" x:Key="Window_Background_Dark" Color="#f8f8f8"/>
+    <Color ice:Freeze="True" x:Key="Window_Background_Color">#fff</Color>
+    <Color ice:Freeze="True" x:Key="Window_Background_Dark_Color">#f8f8f8</Color>
+
+    <SolidColorBrush ice:Freeze="True" x:Key="Window_Background" Color="{StaticResource Window_Background_Color}"/>
+    <SolidColorBrush ice:Freeze="True" x:Key="Window_Background_Dark" Color="{StaticResource Window_Background_Dark_Color}"/>
+
+    <RadialGradientBrush ice:Freeze="True" x:Key="Window_Background_Gradient" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Color="{StaticResource Window_Background_Color}" Offset="0.6" />
+            <GradientStop Color="{StaticResource Window_Background_Dark_Color}" Offset="1" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
 
     <RadialGradientBrush ice:Freeze="True" x:Key="Window_Background_Accent_Gradient" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
         <RadialGradientBrush.GradientStops>
