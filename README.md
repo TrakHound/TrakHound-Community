@@ -43,7 +43,7 @@ Below is a diagram showing how a basic setup works. This shows two machines comm
 
 ####Standalone Server Setup
 Below is a diagram showing how a standalone server setup works. This shows two machines communicating with a standalone server with TrakHound Server installed. The server then stores the data in a separate database that can be accessed by PC's on the network. Multiple PC's can then view data using TrakHound while reading directly from the database.
-![Standalone Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_basic_01.png)
+![Standalone Communications Setup] (http://feenux.com/github/v2/images/diagrams/overview_standalone_01.png)
 
 ##Licensing
 TrakHound is licensed under the GPLv3 software license. For more information please contact us at info@TrakHound.org.
