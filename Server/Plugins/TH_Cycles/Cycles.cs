@@ -204,16 +204,17 @@ namespace TH_Cycles
                     values.Add(cycle.Duration.TotalSeconds);
 
                     // Add Override Values
-                    foreach (var ovr in cycle.CycleOverrides)
+                    foreach (var ovr in cc.OverrideLinks)
                     {
-                        values.Add(ovr.Value);
+                        var o = cycle.CycleOverrides.Find(x => x.Id == ovr);
+                        if (o != null) values.Add(o.Value);
+                        else values.Add(null);
                     }
 
                     rowValues.Add(values);
                 }
 
                 Row.Insert(configuration.Databases_Server, Global.GetTableName(TableNames.Cycles, configuration.DatabaseId), columns.ToArray(), rowValues, cyclePrimaryKey, true);
-
             }
         }
 
@@ -455,13 +456,13 @@ namespace TH_Cycles
         /// <returns></returns>
         List<CycleData> ProcessCycleEvent(ref List<CycleData> cycles, Event cycleEvent, InstanceData instanceData, CycleConfiguration cc)
         {
-            List<CycleData> result = new List<CycleData>();
+            var result = new List<CycleData>();
 
             // Search for cycle name link in InstanceData
             var instanceValue = instanceData.Values.Find(x => x.Id == cc.CycleNameLink);
             if (instanceValue != null)
             {
-                List<CycleOverride> cycleOverrides = new List<CycleOverride>();
+                var cycleOverrides = new List<CycleOverride>();
 
                 // Get CycleOverride values from InstanceData
                 foreach (var ovr in cc.OverrideLinks)

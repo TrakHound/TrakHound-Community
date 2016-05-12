@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 using TH_Database;
+using TH_Global.Functions;
 using TH_Plugins.Database;
 
 namespace TH_MySQL
@@ -33,14 +34,14 @@ namespace TH_MySQL
             return Result;
         }
 
-        public static string ConvertToSafe(string s)
-        {
-            string r = s;
-            if (r.Contains(@"\")) r = r.Replace(@"\", @"\\");
-            if (r.Contains("'")) r = r.Replace("'", "\'");
-            //if (r.Contains("%")) r = r.Replace("%", @"\%");
-            return r;
-        }
+        //public static string ConvertToSafe(string s)
+        //{
+        //    string r = s;
+        //    if (r.Contains(@"\")) r = r.Replace(@"\", @"\\");
+        //    if (r.Contains("'")) r = r.Replace("'", "\'");
+        //    //if (r.Contains("%")) r = r.Replace("%", @"\%");
+        //    return r;
+        //}
 
 
         public static string COLUMN_NAME_START = "`";
@@ -111,8 +112,12 @@ namespace TH_MySQL
                 {
                     object val = Values[x];
                     if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
+                    else if (val.GetType() == typeof(string))
+                    {
+                        val = String_Functions.ToSpecial(val.ToString());
+                    }
 
-                    if (Values[x].ToString().ToLower() != "null") vals += "'" + MySQL_Tools.ConvertToSafe(val.ToString()) + "'";
+                    if (Values[x].ToString().ToLower() != "null") vals += "'" + val.ToString() + "'";
                     else vals += Values[x].ToString();
                 }
 
@@ -133,8 +138,12 @@ namespace TH_MySQL
                     if (val != null)
                     {
                         if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
+                        else if (val.GetType() == typeof(string))
+                        {
+                            val = String_Functions.ToSpecial(val.ToString());
+                        }
 
-                        update += "'" + MySQL_Tools.ConvertToSafe(val.ToString()) + "'";
+                        update += "'" + val.ToString() + "'";
                     }
                     else update += "null";
 
@@ -172,8 +181,12 @@ namespace TH_MySQL
                     {
                         object val = ValueSet[x];
                         if (val.GetType() == typeof(DateTime)) val = MySQL_Tools.ConvertDateStringtoMySQL(val.ToString());
+                        else if (val.GetType() == typeof(string))
+                        {
+                            val = String_Functions.ToSpecial(val.ToString());
+                        }
 
-                        if (val.ToString().ToLower() != "null") vals += "'" + MySQL_Tools.ConvertToSafe(val.ToString()) + "'";
+                        if (val.ToString().ToLower() != "null") vals += "'" + val.ToString() + "'";
                         else vals += val.ToString();
                     }
 

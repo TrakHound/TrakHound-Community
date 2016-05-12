@@ -21,5 +21,9 @@ namespace TH_Mobile
         public string SystemStatus { get; set; }
         public string SystemMessage { get; set; }
 
+        public double Oee { get; set; }
+        public double Availability { get; set; }
+        public double Performance { get; set; }
+
     }
 }

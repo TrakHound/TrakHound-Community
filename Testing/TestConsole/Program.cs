@@ -14,6 +14,7 @@ using TH_Configuration;
 using TH_Mobile;
 using TH_MTConnect;
 
+
 namespace TestConsole
 {
     class Program
@@ -37,16 +38,37 @@ namespace TestConsole
 
             //TH_Mobile.Database.Get("testuser");
 
-            var returnData = TH_MTConnect.Components.Requests.Get("http://agent.mtconnect.org", null);
-            if (returnData != null)
+            //var returnData = TH_MTConnect.Components.Requests.Get("http://agent.mtconnect.org", null);
+            //if (returnData != null)
+            //{
+            //    var items = returnData.Devices[0].GetAllDataItems();
+            //    if (items != null)
+            //    {
+
+            //    }
+            //}
+
+            TH_Database.DatabasePluginReader.ReadPlugins();
+
+            while (true)
             {
-                var items = returnData.Devices[0].GetAllDataItems();
-                if (items != null)
+                var configs = TH_Configuration.Configuration.ReadAll(@"C:\TrakHound\Devices\");
+                foreach (var config in configs)
                 {
+                    if (config.ServerEnabled)
+                    {
+                        TH_Database.Global.Initialize(config.Databases_Server);
 
+                        string msg = "";
+                        bool ping = TH_Database.Global.Ping(config.Databases_Server.Databases[0], out msg);
+
+                        Console.WriteLine(ping.ToString() + " :: " + msg);
+                    }
                 }
-            }
 
+                System.Threading.Thread.Sleep(5000);
+            }
+            
 
             Console.ReadLine();
 

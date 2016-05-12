@@ -509,7 +509,7 @@ namespace TH_Global
                             AddToLog(doc, line);
                         }
 
-                        XML_Functions.WriteDocument(doc, path);
+                        if (!FileSystem_Functions.IsFileLocked(path)) XML_Functions.WriteDocument(doc, path);
 
                         //WriteDocument(doc, path);
                     }
@@ -535,11 +535,11 @@ namespace TH_Global
             //    catch (Exception ex) { Console.WriteLine("Logger.WriteDocument() :: Exception :: " + ex.Message); }
             //}
 
-            private static XmlDocument CreateDocument(string LogFile)
+            private static XmlDocument CreateDocument(string path)
             {
                 var result = new XmlDocument();
 
-                if (!File.Exists(LogFile))
+                if (!File.Exists(path))
                 {
                     XmlNode docNode = result.CreateXmlDeclaration("1.0", "UTF-8", null);
                     result.AppendChild(docNode);
@@ -548,11 +548,18 @@ namespace TH_Global
                 }
                 else
                 {
-                    try
-                    {
-                        result.Load(LogFile);
-                    }
-                    catch (Exception ex) { Console.WriteLine("Logger.CreateDocument() :: Exception :: " + ex.Message); }
+                    var xml = XML_Functions.ReadDocument(path);
+                    if (xml != null) result = xml;
+
+                    //if (!FileSystem_Functions.IsFileLocked(LogFile))
+                    //{
+                    //    try
+                    //    {
+                    //        result.Load(LogFile);
+                    //    }
+                    //    catch ()
+                    //    catch (Exception ex) { Console.WriteLine("Logger.CreateDocument() :: Exception :: " + ex.Message); }
+                    //}
                 }
 
                 return result;

@@ -192,7 +192,6 @@ namespace TH_Global.Functions
 
                 while (!success && attempt < maxAttempts)
                 {
-
                     try
                     {
                         using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -217,6 +216,8 @@ namespace TH_Global.Functions
 
             return null;
         }
+
+      
 
     }
 }

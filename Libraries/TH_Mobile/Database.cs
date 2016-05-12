@@ -33,7 +33,7 @@ namespace TH_Mobile
                 values["logo_url"] = config.FileLocations.Manufacturer_Logo_Path;
                 values["image_url"] = config.FileLocations.Image_Path;
 
-                string url = PHP_URL + "create";
+                string url = PHP_URL + "create/";
 
                 var info = new SendDataInfo(url, values);
                 ThreadPool.QueueUserWorkItem(new WaitCallback(SendData), info);
@@ -61,7 +61,11 @@ namespace TH_Mobile
                 values["system_status"] = updateData.SystemStatus;
                 values["system_message"] = updateData.SystemMessage;
 
-                string url = PHP_URL + "update";
+                values["oee"] = updateData.Oee.ToString("N2");
+                values["oee_availability"] = updateData.Availability.ToString("N2");
+                values["oee_performance"] = updateData.Performance.ToString("N2");
+
+                string url = PHP_URL + "update/";
 
                 var info = new SendDataInfo(url, values);
                 ThreadPool.QueueUserWorkItem(new WaitCallback(SendData), info);
@@ -89,8 +93,7 @@ namespace TH_Mobile
                 var httpInfo = new HTTP.HTTPInfo();
                 httpInfo.Url = info.Url;
                 httpInfo.Data = HTTP.CreatePostBytes(info.Values);
-                httpInfo.Timeout = 3000;
-                httpInfo.MaxAttempts = 1;
+                httpInfo.GetResponse = false;
                 HTTP.POST(httpInfo);
             }
         }

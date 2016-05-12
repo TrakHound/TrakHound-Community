@@ -223,7 +223,7 @@ namespace TH_SQLite
                 using (command)
                 {
                     object o = command.ExecuteScalar();
-                    if (o != null) result = ConvertFromSafe(o.ToString());
+                    if (o != null) result = String_Functions.FromSpecial(o.ToString());
                 }
             }
 
@@ -295,7 +295,7 @@ namespace TH_SQLite
                     {
                         if (reader.HasRows)
                         {
-                            while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
+                            while (reader.Read()) tables.Add(String_Functions.FromSpecial(reader[0].ToString()));
                         }
                     }
                     result = tables.ToArray();
@@ -312,7 +312,7 @@ namespace TH_SQLite
                     {
                         if (reader.HasRows)
                         {
-                            while (reader.Read()) tables.Add(ConvertFromSafe(reader[0].ToString()));
+                            while (reader.Read()) tables.Add(String_Functions.FromSpecial(reader[0].ToString()));
                         }
                     }
                     result = tables;
@@ -328,7 +328,7 @@ namespace TH_SQLite
             {
                 if (row.Table.Columns[x].DataType == typeof(string))
                 {
-                    row[x] = ConvertFromSafe(row.ItemArray[x].ToString());
+                    row[x] = String_Functions.FromSpecial(row.ItemArray[x].ToString());
                 }
             }
         }
@@ -414,23 +414,23 @@ namespace TH_SQLite
             }
         }
 
-        static string ConvertToSafe(string s)
-        {
-            string r = s;
-            if (r.Contains("'")) r = r.Replace("'", "%27");
-            if (r.Contains("@")) r = r.Replace("@", "%40");
-            if (r.Contains("=")) r = r.Replace("=", "%3D");
-            return r;
-        }
+        //static string ConvertToSafe(string s)
+        //{
+        //    string r = s;
+        //    if (r.Contains("'")) r = r.Replace("'", "%27");
+        //    if (r.Contains("@")) r = r.Replace("@", "%40");
+        //    if (r.Contains("=")) r = r.Replace("=", "%3D");
+        //    return r;
+        //}
 
-        static string ConvertFromSafe(string s)
-        {
-            string r = s;
-            if (r.Contains("%27")) r = r.Replace("%27", "'");
-            if (r.Contains("%40")) r = r.Replace("%40", "@");
-            if (r.Contains("%3D")) r = r.Replace("%3D", "=");
-            return r;
-        }
+        //static string ConvertFromSafe(string s)
+        //{
+        //    string r = s;
+        //    if (r.Contains("%27")) r = r.Replace("%27", "'");
+        //    if (r.Contains("%40")) r = r.Replace("%40", "@");
+        //    if (r.Contains("%3D")) r = r.Replace("%3D", "=");
+        //    return r;
+        //}
 
     }
 }

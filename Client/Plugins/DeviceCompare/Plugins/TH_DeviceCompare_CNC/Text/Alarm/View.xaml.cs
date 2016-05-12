@@ -25,7 +25,8 @@ namespace TH_DeviceCompare_CNC.Text.Alarm
             DataContext = this;
         }
 
-        const string link = "Alarm";
+        const string SNAPSHOT_LINK = "Alarm";
+        const string STATUS_LINK = "SYSTEM";
 
 
         public string Value
@@ -42,6 +43,7 @@ namespace TH_DeviceCompare_CNC.Text.Alarm
 
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
+        bool snapshotFound = false;
 
         void Update(EventData data)
         {
@@ -50,19 +52,48 @@ namespace TH_DeviceCompare_CNC.Text.Alarm
                 // Snapshot Table Data
                 if (data.Id.ToLower() == "statusdata_snapshots")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.Data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateSnapshot), Priority_Context, new object[] { data.Data02 });
+                }
+
+                // Status Table Data
+                if (data.Id.ToLower() == "statusdata_status" && !snapshotFound)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateStatus), Priority_Context, new object[] { data.Data02 });
                 }
             }
         }
 
 
-        void UpdateText(object snapshotData)
+        void UpdateSnapshot(object data)
         {
-            DataTable dt = snapshotData as DataTable;
+            var dt = data as DataTable;
             if (dt != null)
             {
-                string value = DataTable_Functions.GetTableValue(dt, "name", link, "value");
+                string value = DataTable_Functions.GetTableValue(dt, "name", SNAPSHOT_LINK, "value");
 
+                if (value != null)
+                {
+                    ProcessValue(value);
+                    snapshotFound = true;
+                }
+                else snapshotFound = false;
+            }
+        }
+
+        void UpdateStatus(object data)
+        {
+            var dt = data as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "type", STATUS_LINK, "value1");
+                ProcessValue(value);
+            }
+        }
+
+        void ProcessValue(string value)
+        {
+            if (Value != value)
+            {
                 Value = value;
 
                 if (!String.IsNullOrEmpty(value))
@@ -77,6 +108,41 @@ namespace TH_DeviceCompare_CNC.Text.Alarm
                 }
             }
         }
+
+        //void Update(EventData data)
+        //{
+        //    if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
+        //    {
+        //        // Snapshot Table Data
+        //        if (data.Id.ToLower() == "statusdata_snapshots")
+        //        {
+        //            this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.Data02 });
+        //        }
+        //    }
+        //}
+
+
+        //void UpdateText(object snapshotData)
+        //{
+        //    DataTable dt = snapshotData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        string value = DataTable_Functions.GetTableValue(dt, "name", link, "value");
+
+        //        Value = value;
+
+        //        if (!String.IsNullOrEmpty(value))
+        //        {
+        //            Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        //            Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+        //        }
+        //        else
+        //        {
+        //            Foreground = (Brush)TryFindResource("Foreground_Normal");
+        //            Background = new SolidColorBrush(Colors.Transparent);
+        //        }
+        //    }
+        //}
 
     }
 }

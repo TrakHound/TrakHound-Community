@@ -160,8 +160,13 @@ namespace TH_SQLite
                 {
                     object val = Values[x];
                     if (val.GetType() == typeof(DateTime)) val = ConvertToDateTime(val.ToString());
+                    else if (val.GetType() == typeof(string))
+                    {
+                        val = String_Functions.ToSpecial(val.ToString());
+                    }
 
-                    if (Values[x].ToString().ToLower() != "null") vals += "'" + ConvertToSafe(val.ToString()) + "'";
+
+                    if (Values[x].ToString().ToLower() != "null") vals += "'" + val.ToString() + "'";
                     else vals += Values[x].ToString();
                 }
 
@@ -224,8 +229,12 @@ namespace TH_SQLite
                     {
                         object val = ValueSet[x];
                         if (val.GetType() == typeof(DateTime)) val = ConvertToDateTime(val.ToString());
+                        else if (val.GetType() == typeof(string))
+                        {
+                            val = String_Functions.ToSpecial(val.ToString());
+                        }
 
-                        if (val.ToString().ToLower() != "null") vals += "'" + ConvertToSafe(val.ToString()) + "'";
+                        if (val.ToString().ToLower() != "null") vals += "'" + val.ToString() + "'";
                         else vals += val.ToString();
                     }
 

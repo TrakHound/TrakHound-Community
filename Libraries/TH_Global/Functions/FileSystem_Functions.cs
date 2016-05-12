@@ -31,5 +31,39 @@ namespace TH_Global.Functions
             Directory.Delete(root.FullName);
         }
 
+
+        public static bool IsFileLocked(string filepath)
+        {
+            FileStream stream = null;
+
+            try
+            {
+                if (File.Exists(filepath))
+                {
+                    var file = new FileInfo(filepath);
+                    if (file != null)
+                    {
+                        stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
+        }
+
     }
 }

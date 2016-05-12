@@ -148,7 +148,7 @@ namespace TH_InstanceTable
                 if (sampleData.DeviceStreams != null && currentData.DeviceStreams != null)
                 {
                     // Get all of the DataItems from the DeviceStream object
-                    var dataItems = sampleData.DeviceStreams[0].DataItems;
+                    var dataItems = sampleData.DeviceStreams[0].GetAllDataItems();
 
                     // Convert the DataItems to a List of InstanceVariableData objects
                     List<InstanceVariableData> values = GetVariableDataFromDataItemCollection(dataItems);
@@ -201,9 +201,12 @@ namespace TH_InstanceTable
                                 // if value with id is already in data.values then overwrite the value
                                 if (oldval != null)
                                 {
-                                    if (oldval.Value != ivd.Value.ToString())
+                                    string s = null;
+                                    if (ivd.Value != null) s = ivd.Value.ToString();
+
+                                    if (oldval.Value != s)
                                     {
-                                        oldval.Value = ivd.Value.ToString();
+                                        oldval.Value = s;
                                     }
                                 }
                                 // if not already in data.values then create new InstanceData.Value object and add it
@@ -211,7 +214,7 @@ namespace TH_InstanceTable
                                 {
                                     var newval = new InstanceData.DataItemValue();
                                     newval.Id = ivd.Id;
-                                    newval.Value = ivd.Value.ToString();
+                                    if (ivd.Value != null) newval.Value = ivd.Value.ToString();
                                     data.Values.Add(newval);
                                 }
 
@@ -275,7 +278,7 @@ namespace TH_InstanceTable
         static void FillInstanceDataWithCurrentData(List<string> usedVariables, InstanceData data, TH_MTConnect.Streams.ReturnData currentData)
         {
             // Get all of the DataItems from the DeviceStream object
-            var dataItems = currentData.DeviceStreams[0].DataItems;
+            var dataItems = currentData.DeviceStreams[0].GetAllDataItems();
 
             foreach (var item in dataItems)
             {
@@ -283,7 +286,8 @@ namespace TH_InstanceTable
                 {
                     var value = new InstanceData.DataItemValue();
                     value.Id = item.DataItemId;
-                    value.Value = item.Value;
+                    //value.Value = item.Value;
+                    value.Value = item.CDATA;
                     data.Values.Add(value);
                     usedVariables.Add(value.Id);
                 }

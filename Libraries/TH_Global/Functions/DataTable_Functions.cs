@@ -85,7 +85,7 @@ namespace TH_Global.Functions
             DataTable dt = table as DataTable;
             if (dt != null)
             {
-                if (dt.Columns.Contains(keyColumn))
+                if (dt.Columns.Contains(keyColumn) && dt.Columns.Contains(returnColumn))
                 {
                     string filter = keyColumn + "='" + key + "'";
                     var rows = GetRows(dt, filter);
@@ -93,7 +93,9 @@ namespace TH_Global.Functions
                     {
                         if (rows.Length > 0)
                         {
-                            result = rows[0][returnColumn].ToString();
+                            var o = rows[0][returnColumn];
+
+                            result = o.ToString();
                         }
                     }
                 }

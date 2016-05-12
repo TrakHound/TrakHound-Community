@@ -120,7 +120,7 @@ namespace TH_MTConnect.Plugin
             if (data.DeviceStreams.Count > 0)
             {
                 var deviceStream = data.DeviceStreams[0];
-                var avail = deviceStream.DataItems.Find(x => x.Type.ToLower() == "availability");
+                var avail = deviceStream.GetAllDataItems().Find(x => x.Type.ToLower() == "availability");
                 if (avail != null)
                 {
                     if (avail.CDATA == "AVAILABLE") return true;

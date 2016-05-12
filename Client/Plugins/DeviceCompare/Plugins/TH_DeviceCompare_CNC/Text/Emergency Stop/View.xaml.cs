@@ -25,7 +25,8 @@ namespace TH_DeviceCompare_CNC.Text.Emergency_Stop
             DataContext = this;
         }
 
-        const string link = "Emergency Stop";
+        const string SNAPSHOT_LINK = "Emergency Stop";
+        const string STATUS_LINK = "EMERGENCY_STOP";
 
 
         public string Value
@@ -43,6 +44,8 @@ namespace TH_DeviceCompare_CNC.Text.Emergency_Stop
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
+        bool snapshotFound = false;
+
         void Update(EventData data)
         {
             if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
@@ -50,34 +53,102 @@ namespace TH_DeviceCompare_CNC.Text.Emergency_Stop
                 // Snapshot Table Data
                 if (data.Id.ToLower() == "statusdata_snapshots")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.Data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateSnapshot), Priority_Context, new object[] { data.Data02 });
+                }
+
+                // Status Table Data
+                if (data.Id.ToLower() == "statusdata_status" && !snapshotFound)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateStatus), Priority_Context, new object[] { data.Data02 });
                 }
             }
         }
 
 
-        void UpdateText(object snapshotData)
+        void UpdateSnapshot(object data)
         {
-            DataTable dt = snapshotData as DataTable;
+            var dt = data as DataTable;
             if (dt != null)
             {
-                string value = DataTable_Functions.GetTableValue(dt, "name", link, "value");
+                string value = DataTable_Functions.GetTableValue(dt, "name", SNAPSHOT_LINK, "value");
 
+                if (value != null)
+                {
+                    ProcessValue(value);
+                    snapshotFound = true;
+                }
+                else snapshotFound = false;
+            }
+        }
+
+        void UpdateStatus(object data)
+        {
+            var dt = data as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "type", STATUS_LINK, "value1");
+                ProcessValue(value);
+            }
+        }
+
+        void ProcessValue(string value)
+        {
+            if (Value != value)
+            {
                 Value = value;
 
-                switch (value)
+                if (value != null)
                 {
-                    case "ARMED":
-                        Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                        Background = new SolidColorBrush(Color.FromRgb(25, 180, 25));
-                        break;
-                    case "TRIGGERED":
-                        Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                        Background = new SolidColorBrush(Colors.Red);
-                        break;
+                    switch (value)
+                    {
+                        case "ARMED":
+                            Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                            Background = new SolidColorBrush(Color.FromRgb(25, 180, 25));
+                            break;
+                        case "TRIGGERED":
+                            Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                            Background = new SolidColorBrush(Colors.Red);
+                            break;
+                    }
                 }
             }
         }
+
+        //void Update(EventData data)
+        //{
+        //    if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
+        //    {
+        //        // Snapshot Table Data
+        //        if (data.Id.ToLower() == "statusdata_snapshots")
+        //        {
+        //            this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.Data02 });
+        //        }
+        //    }
+        //}
+
+
+        //void UpdateText(object snapshotData)
+        //{
+        //    DataTable dt = snapshotData as DataTable;
+        //    if (dt != null)
+        //    {
+        //        string value = DataTable_Functions.GetTableValue(dt, "name", link, "value");
+
+        //        Value = value;
+
+        //        switch (value)
+        //        {
+        //            case "ARMED":
+        //                Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        //                Background = new SolidColorBrush(Color.FromRgb(25, 180, 25));
+        //                break;
+        //            case "TRIGGERED":
+        //                Foreground = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+        //                Background = new SolidColorBrush(Colors.Red);
+        //                break;
+        //        }
+        //    }
+        //}
 
     }
 }

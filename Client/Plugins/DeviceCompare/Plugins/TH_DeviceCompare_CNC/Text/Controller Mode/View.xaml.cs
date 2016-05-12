@@ -26,7 +26,8 @@ namespace TH_DeviceCompare_CNC.Text.Controller_Mode
             DataContext = this;
         }
 
-        const string link = "Controller Mode";
+        const string SNAPSHOT_LINK = "Controller Mode";
+        const string STATUS_LINK = "CONTROLLER_MODE";
 
 
         public string Value
@@ -44,6 +45,8 @@ namespace TH_DeviceCompare_CNC.Text.Controller_Mode
         const System.Windows.Threading.DispatcherPriority Priority_Context = System.Windows.Threading.DispatcherPriority.ContextIdle;
 
 
+        bool snapshotFound = false;
+
         void Update(EventData data)
         {
             if (data != null && data.Data01 != null && data.Data01.GetType() == typeof(Configuration))
@@ -51,19 +54,48 @@ namespace TH_DeviceCompare_CNC.Text.Controller_Mode
                 // Snapshot Table Data
                 if (data.Id.ToLower() == "statusdata_snapshots")
                 {
-                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateText), Priority_Context, new object[] { data.Data02 });
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateSnapshot), Priority_Context, new object[] { data.Data02 });
+                }
+
+                // Status Table Data
+                if (data.Id.ToLower() == "statusdata_status" && !snapshotFound)
+                {
+                    this.Dispatcher.BeginInvoke(new Action<object>(UpdateStatus), Priority_Context, new object[] { data.Data02 });
                 }
             }
         }
 
 
-        void UpdateText(object snapshotData)
+        void UpdateSnapshot(object data)
         {
-            DataTable dt = snapshotData as DataTable;
+            var dt = data as DataTable;
             if (dt != null)
             {
-                string value = DataTable_Functions.GetTableValue(dt, "name", link, "value");
+                string value = DataTable_Functions.GetTableValue(dt, "name", SNAPSHOT_LINK, "value");
 
+                if (value != null)
+                {
+                    ProcessValue(value);
+                    snapshotFound = true;
+                }
+                else snapshotFound = false;
+            }
+        }
+
+        void UpdateStatus(object data)
+        {
+            var dt = data as DataTable;
+            if (dt != null)
+            {
+                string value = DataTable_Functions.GetTableValue(dt, "type", STATUS_LINK, "value1");
+                ProcessValue(value); 
+            }
+        }
+
+        void ProcessValue(string value)
+        {
+            if (Value != value)
+            {
                 Value = value;
 
                 if (value != null)

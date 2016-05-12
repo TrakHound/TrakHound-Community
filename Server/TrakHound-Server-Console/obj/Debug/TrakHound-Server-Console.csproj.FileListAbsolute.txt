@@ -24,10 +24,15 @@ D:\Trakhound\Server\TrakHound-Server-Console\bin\Debug\Newtonsoft.Json.xml
 D:\Trakhound\Server\TrakHound-Server-Console\bin\Debug\TH_WPF.pdb
 D:\Trakhound\Server\TrakHound-Server-Console\bin\Debug\TH_Device_Server.pdb
 D:\Trakhound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.csprojResolveAssemblyReference.cache
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Global.dll
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_UserManagement.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\LICENSE.txt
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Header.txt
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.exe.config
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.exe
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.pdb
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Configuration.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Database.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Global.dll
+F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_UserManagement.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Core.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Plugins.dll
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Newtonsoft.Json.dll
@@ -45,8 +50,3 @@ F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TH_Devic
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.csprojResolveAssemblyReference.cache
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.exe
 F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\obj\Debug\TrakHound-Server-Console.pdb
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.exe.config
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\LICENSE.txt
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\Header.txt
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.exe
-F:\feenux\TrakHound\TrakHound\Server\TrakHound-Server-Console\bin\Debug\TrakHound-Server-Console.pdb

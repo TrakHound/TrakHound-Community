@@ -157,6 +157,8 @@ namespace TH_OEE
             }
 
             Database.CycleBased.UpdateRows(config, oeeDatas);
+
+            SendCyclesTable(oeeDatas);
         }
 
         OEEData shiftOeeData;
@@ -230,6 +232,8 @@ namespace TH_OEE
             }
 
             Database.ShiftBased.UpdateRows(config, oeeDatas);
+
+            SendShiftsTable(oeeDatas);
         }
 
         //OEEData cycleOeeData;
@@ -446,6 +450,8 @@ namespace TH_OEE
             }
 
             Database.SegmentBased.UpdateRows(config, oeeDatas);
+
+            SendShiftsTable(oeeDatas);
         }
 
 
@@ -511,7 +517,7 @@ namespace TH_OEE
 
         #endregion
 
-        void SendOEETable(List<OEEData> datas)
+        void SendCyclesTable(List<OEEData> datas)
         {
             DataTable dt = new DataTable();
             dt.Columns.Add("SHIFT_ID");
@@ -550,7 +556,91 @@ namespace TH_OEE
             }
 
             var edata = new EventData();
-            edata.Id = "OeeTable";
+            edata.Id = "oee_cycles";
+            edata.Data01 = config;
+            edata.Data02 = dt;
+            if (SendData != null) SendData(edata);
+        }
+
+        void SendShiftsTable(List<OEEData> datas)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("DATE");
+            dt.Columns.Add("SHIFT");
+            dt.Columns.Add("OEE");
+            dt.Columns.Add("AVAILABILITY");
+            dt.Columns.Add("PERFORMANCE");
+            dt.Columns.Add("QUALITY");
+            dt.Columns.Add("OPERATING_TIME");
+            dt.Columns.Add("PLANNED_PRODUCTION_TIME");
+            dt.Columns.Add("IDEAL_OPERATING_TIME");
+            dt.Columns.Add("IDEAL_CYCLE_TIME");
+            dt.Columns.Add("TOTAL_PIECES");
+            dt.Columns.Add("GOOD_PIECES");
+
+            foreach (var data in datas)
+            {
+                DataRow row = dt.NewRow();
+
+                row["DATE"] = data.ShiftId.FormattedDate;
+                row["SHIFT"] = data.ShiftId.Shift;
+                row["OEE"] = data.Oee;
+                row["AVAILABILITY"] = data.Availability;
+                row["PERFORMANCE"] = data.Performance;
+                row["QUALITY"] = data.Quality;
+                row["OPERATING_TIME"] = data.OperatingTime;
+                row["PLANNED_PRODUCTION_TIME"] = data.PlannedProductionTime;
+                row["IDEAL_OPERATING_TIME"] = data.IdealOperatingTime;
+                row["IDEAL_CYCLE_TIME"] = data.IdealCycleTime;
+                row["TOTAL_PIECES"] = data.TotalPieces;
+                row["GOOD_PIECES"] = data.GoodPieces;
+
+                dt.Rows.Add(row);
+            }
+
+            var edata = new EventData();
+            edata.Id = "oee_shifts";
+            edata.Data01 = config;
+            edata.Data02 = dt;
+            if (SendData != null) SendData(edata);
+        }
+
+        void SendSegmentsTable(List<OEEData> datas)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("SHIFT_ID");
+            dt.Columns.Add("OEE");
+            dt.Columns.Add("AVAILABILITY");
+            dt.Columns.Add("PERFORMANCE");
+            dt.Columns.Add("QUALITY");
+            dt.Columns.Add("OPERATING_TIME");
+            dt.Columns.Add("PLANNED_PRODUCTION_TIME");
+            dt.Columns.Add("IDEAL_OPERATING_TIME");
+            dt.Columns.Add("IDEAL_CYCLE_TIME");
+            dt.Columns.Add("TOTAL_PIECES");
+            dt.Columns.Add("GOOD_PIECES");
+
+            foreach (var data in datas)
+            {
+                DataRow row = dt.NewRow();
+
+                row["SHIFT_ID"] = data.ShiftId.ToString();
+                row["OEE"] = data.Oee;
+                row["AVAILABILITY"] = data.Availability;
+                row["PERFORMANCE"] = data.Performance;
+                row["QUALITY"] = data.Quality;
+                row["OPERATING_TIME"] = data.OperatingTime;
+                row["PLANNED_PRODUCTION_TIME"] = data.PlannedProductionTime;
+                row["IDEAL_OPERATING_TIME"] = data.IdealOperatingTime;
+                row["IDEAL_CYCLE_TIME"] = data.IdealCycleTime;
+                row["TOTAL_PIECES"] = data.TotalPieces;
+                row["GOOD_PIECES"] = data.GoodPieces;
+
+                dt.Rows.Add(row);
+            }
+
+            var edata = new EventData();
+            edata.Id = "oee_segments";
             edata.Data01 = config;
             edata.Data02 = dt;
             if (SendData != null) SendData(edata);

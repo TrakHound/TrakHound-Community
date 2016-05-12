@@ -341,6 +341,7 @@ namespace TH_Global.Web
             public NetworkCredential Credential { get; set; }
             public int Timeout { get; set; }
             public int MaxAttempts { get; set; }
+            public bool GetResponse { get; set; }
         }
 
         #region "POST"
@@ -429,7 +430,7 @@ namespace TH_Global.Web
         private static string SendData(string method, string url,
             byte[] sendBytes = null, HeaderData[] headers = null,
             string userAgent = null, NetworkCredential credential = null,
-            int timeout = TIMEOUT, int maxAttempts = CONNECTION_ATTEMPTS)
+            int timeout = TIMEOUT, int maxAttempts = CONNECTION_ATTEMPTS, bool getResonse = true)
         {
             string result = null;
 
@@ -447,6 +448,7 @@ namespace TH_Global.Web
                     // Create HTTP request and define Header info
                     var request = (HttpWebRequest)WebRequest.Create(url);
                     request.Timeout = timeout;
+                    request.ReadWriteTimeout = timeout;
                     request.ContentType = "application/x-www-form-urlencoded";
                     //request.ContentType = "application/json";
 
@@ -479,25 +481,30 @@ namespace TH_Global.Web
                         request.ContentLength = sendBytes.Length;
 
                         Stream postStream = request.GetRequestStream();
+                        postStream.WriteTimeout = timeout;
                         postStream.Write(sendBytes, 0, sendBytes.Length);
                         postStream.Flush();
                         postStream.Close();
                     }
                     else request.ContentLength = 0;
 
-                    // Get HTTP resonse and return as string
-                    using (var response = (HttpWebResponse)request.GetResponse())
-                    using (var s = response.GetResponseStream())
-                    using (var reader = new StreamReader(s))
+                    if (getResonse)
                     {
-                        result = reader.ReadToEnd();
-                        success = true;
+                        // Get HTTP resonse and return as string
+                        using (var response = (HttpWebResponse)request.GetResponse())
+                        using (var s = response.GetResponseStream())
+                        using (var reader = new StreamReader(s))
+                        {
+                            result = reader.ReadToEnd();
+                            success = true;
+                        }
                     }
+                    else success = true;
                 }
                 catch (WebException wex) { message = wex.Message; }
                 catch (Exception ex) { message = ex.Message; }
 
-                if (!success) System.Threading.Thread.Sleep(1000);
+                if (!success) System.Threading.Thread.Sleep(500);
             }
 
             if (!success) Logger.Log("Send :: " + attempts.ToString() + " Attempts :: URL = " + url + " :: " + message);

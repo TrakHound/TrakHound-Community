@@ -147,6 +147,21 @@ namespace TrakHound_Server_Core
                                 if (config.ServerEnabled) AddDevice(config);
                             }
                         }
+
+                        // Find devices that were removed
+                        foreach (var device in Devices.ToList())
+                        {
+                            if (!configs.Exists(x => x.UniqueId == device.Configuration.UniqueId))
+                            {
+                                var d = Devices.Find(x => x.Configuration.UniqueId == device.Configuration.UniqueId);
+                                if (d != null)
+                                {
+                                    d.Stop();
+
+                                    Devices.Remove(d);
+                                } 
+                            }
+                        }
                     }
                 }
             }
