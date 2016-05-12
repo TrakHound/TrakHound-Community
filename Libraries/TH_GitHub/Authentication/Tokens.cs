@@ -1,12 +1,14 @@
-﻿using System;
-using System.Text;
-using TH_Global.Web;
+﻿// Copyright (c) 2016 Feenux LLC, All Rights Reserved.
 
-using System.IO;
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE.txt', which is part of this source code package.
 
 using Newtonsoft.Json;
+using System.IO;
+using System.Text;
 
 using TH_Global;
+using TH_Global.Web;
 
 namespace TH_GitHub
 {
@@ -63,7 +65,7 @@ namespace TH_GitHub
 
             string response = HTTP.PUT(Authentication.AUTHENTICATION_URL + "/clients/" + client_id, bytes, headers, "TrakHound");
 
-            return OAuth2Token.Parse(response);
+            return Parse(response);
         }
     }
 
